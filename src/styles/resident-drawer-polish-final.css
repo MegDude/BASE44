@@ -28,14 +28,14 @@ html body #root#root#root .dp-map-page.dp-map-page-resident.dp-map-page-resident
   .dp-map-drawer-shell,
   .dp-map-directory-sheet
 ) {
-  left: max(6px, env(safe-area-inset-left, 0px)) !important;
-  right: max(6px, env(safe-area-inset-right, 0px)) !important;
-  width: auto !important;
-  max-width: min(760px, calc(100vw - 12px)) !important;
+  left: max(0px, env(safe-area-inset-left, 0px)) !important;
+  right: max(0px, env(safe-area-inset-right, 0px)) !important;
+  width: 100% !important;
+  max-width: min(760px, 100vw) !important;
   max-height: min(82dvh, calc(100dvh - 118px)) !important;
   margin-inline: auto !important;
   padding: 0 !important;
-  border-radius: 14px 14px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page-resident.dp-map-page-resident :is(

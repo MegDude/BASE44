@@ -11694,13 +11694,13 @@ html body #root .dp-map-page.dp-map-page :is(
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  max-width: min(760px, calc(100vw - 16px)) !important;
+  max-width: min(760px, 100vw) !important;
   height: auto !important;
   max-height: calc(50vh - 12px) !important;
   min-height: 0 !important;
   margin-right: auto !important;
   margin-left: auto !important;
-  border-radius: 12px 12px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   overflow: hidden !important;
@@ -12454,7 +12454,7 @@ html body #root .dp-map-page.dp-map-page :is(
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  max-width: min(760px, calc(100vw - 16px)) !important;
+  max-width: min(760px, 100vw) !important;
   height: auto !important;
   max-height: 48vh !important;
   min-height: 0 !important;
@@ -12462,7 +12462,7 @@ html body #root .dp-map-page.dp-map-page :is(
   margin-left: auto !important;
   transform: none !important;
   overflow: hidden !important;
-  border-radius: 12px 12px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
 }
 
 html body #root .dp-map-page.dp-map-page :is(
@@ -14413,7 +14413,7 @@ html body #root .dp-map-page.dp-map-page :is(
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  max-width: min(760px, calc(100vw - 16px)) !important;
+  max-width: min(760px, 100vw) !important;
   height: 84vh !important;
   max-height: 84vh !important;
   min-height: 0 !important;
@@ -14421,7 +14421,7 @@ html body #root .dp-map-page.dp-map-page :is(
   margin-left: auto !important;
   transform: none !important;
   overflow: hidden !important;
-  border-radius: 12px 12px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   box-shadow: 0 20px 60px rgba(11, 31, 51, 0.12) !important;

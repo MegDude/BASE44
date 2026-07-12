@@ -46,6 +46,7 @@
   border-radius: 999px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   touch-action: none !important;
+  pointer-events: none !important;
   transition: background var(--dp-ios-duration) var(--dp-ios-ease) !important;
 }
 
@@ -65,6 +66,19 @@
 .dp-map-page.dp-map-page .dp-native-drawer-handle-toggle:focus-visible {
   outline: 2px solid var(--dp-ios-gold) !important;
   outline-offset: -4px !important;
+}
+
+/* A visible sheet owns the gesture zone; the collapsed search rollup must not
+   cover or steal taps from the shared drawer handle. */
+.dp-map-page.dp-map-page:has(.dp-native-drawer-shell) .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.dp-map-page.dp-map-page:has(.dp-native-drawer-shell) {
+  --dp-search-rollup-opacity: 0;
+  --dp-search-rollup-pointer-events: none;
+  --dp-search-rollup-visibility: hidden;
 }
 
 .dp-map-page.dp-map-page .dp-native-drawer-grip {
@@ -102,6 +116,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-d
   transform: translateX(-50%) !important;
   background: transparent !important;
   touch-action: none !important;
+  pointer-events: none !important;
 }
 
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-drawer-handle-toggle.dp-native-drawer-handle-toggle {
@@ -239,13 +254,13 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-d
 @media (max-width: 767px) {
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-native-drawer-shell.dp-panel-shell.dp-map-drawer-shell[data-drawer-state] {
     top: auto !important;
-    right: 8px !important;
-    bottom: calc(var(--dp-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 8px) !important;
-    left: 8px !important;
-    width: auto !important;
+    right: 0 !important;
+    bottom: calc(var(--dp-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+    left: 0 !important;
+    width: 100% !important;
     max-width: none !important;
-    z-index: 740 !important;
-    border-radius: 20px !important;
+    z-index: 690 !important;
+    border-radius: 10px 10px 0 0 !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-native-drawer-shell.dp-panel-shell.dp-map-drawer-shell[data-drawer-state="collapsed"] {
@@ -259,28 +274,28 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-d
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-native-drawer-shell.dp-panel-shell.dp-map-drawer-shell[data-drawer-state="expanded"] {
-    height: min(82dvh, calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px))) !important;
-    max-height: calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
+    height: min(82dvh, calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px))) !important;
+    max-height: calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-native-drawer-shell.dp-panel-shell.dp-map-drawer-shell[data-drawer-state="full"] {
-    height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px) !important;
-    max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px) !important;
+    height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
   }
 
   .dp-map-page.dp-map-page .dp-native-drawer-shell,
   .dp-map-page.dp-map-page .dp-mobile-tab-drawer {
     --dp-native-drawer-top: auto;
     position: fixed !important;
-    z-index: 740 !important;
-    inset-inline: 8px !important;
-    bottom: calc(var(--dp-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 8px) !important;
-    width: auto !important;
+    z-index: 690 !important;
+    inset-inline: 0 !important;
+    bottom: calc(var(--dp-bottom-nav-height) + env(safe-area-inset-bottom, 0px)) !important;
+    width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
-    padding-inline: 18px !important;
+    padding-inline: 0 !important;
     overflow: hidden !important;
-    border-radius: 20px !important;
+    border-radius: 10px 10px 0 0 !important;
     transform: translateZ(0) !important;
     transition: height var(--dp-ios-duration) var(--dp-ios-ease), max-height var(--dp-ios-duration) var(--dp-ios-ease), border-radius var(--dp-ios-duration) var(--dp-ios-ease) !important;
     will-change: height, transform !important;
@@ -301,18 +316,18 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-d
   }
 
   .dp-map-page.dp-map-page :is(.dp-native-drawer-shell, .dp-mobile-tab-drawer)[data-drawer-state="expanded"] {
-    --dp-native-drawer-height: min(82dvh, calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)));
-    --dp-native-drawer-max-height: calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px));
-    height: min(82dvh, calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px))) !important;
-    max-height: calc(100dvh - 84px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
+    --dp-native-drawer-height: min(82dvh, calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)));
+    --dp-native-drawer-max-height: calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px));
+    height: min(82dvh, calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px))) !important;
+    max-height: calc(100dvh - 116px - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
   }
 
   .dp-map-page.dp-map-page :is(.dp-native-drawer-shell, .dp-mobile-tab-drawer)[data-drawer-state="full"] {
-    --dp-native-drawer-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px);
-    --dp-native-drawer-max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px);
-    height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px) !important;
-    max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px) - 8px) !important;
-    border-radius: 18px !important;
+    --dp-native-drawer-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px));
+    --dp-native-drawer-max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px));
+    height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
+    max-height: calc(100dvh - max(env(safe-area-inset-top, 0px), 10px) - var(--dp-bottom-nav-height) - env(safe-area-inset-bottom, 0px)) !important;
+    border-radius: 10px 10px 0 0 !important;
   }
 
   .dp-quick-search-overlay.dp-quick-search-overlay {
@@ -325,14 +340,14 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-d
     max-width: none !important;
     max-height: calc(100dvh - max(16px, env(safe-area-inset-top, 0px)) - env(safe-area-inset-bottom, 0px)) !important;
     margin: 0 !important;
-    border-radius: 20px !important;
+    border-radius: 12px !important;
     overflow: hidden !important;
   }
 }
 
 @media (min-width: 768px) {
   .dp-map-page.dp-map-page :is(.dp-native-drawer-shell, .dp-mobile-tab-drawer, .dp-map-sheet) {
-    border-radius: 16px !important;
+    border-radius: 10px !important;
   }
 }
 

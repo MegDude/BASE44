@@ -20,7 +20,7 @@
 /* Last word map panel cleanup: panel is the only container; sections are just content. */
 html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-panel-native-top-clearance: max(132px, calc(env(safe-area-inset-top, 0px) + 118px));
-  --dp-panel-native-edge: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-panel-native-edge: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-panel-native-copy: rgba(11, 31, 51, 0.66);
 }
 
@@ -425,7 +425,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-native-panel-top-gap: max(150px, calc(env(safe-area-inset-top, 0px) + 132px));
   --dp-native-panel-bottom-gap: max(12px, env(safe-area-inset-bottom, 0px));
-  --dp-native-panel-x-gap: max(8px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-native-panel-x-gap: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-native-panel-line: rgba(11, 31, 51, 0.08);
   --dp-native-panel-copy: rgba(11, 31, 51, 0.66);
 }
@@ -938,7 +938,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-camp
 @media (max-width: 430px) {
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     --dp-native-panel-top-gap: max(154px, calc(env(safe-area-inset-top, 0px) + 138px));
-    --dp-native-panel-x-gap: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+    --dp-native-panel-x-gap: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -16592,7 +16592,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-search-intent-console,
   .dp-product-shell-menu
 ) {
-  max-width: calc(100vw - max(16px, env(safe-area-inset-left) + env(safe-area-inset-right) + 16px)) !important;
+  max-width: calc(100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) !important;
   max-height: calc(100dvh - max(16px, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 16px)) !important;
   overflow-x: hidden !important;
 }
@@ -21208,10 +21208,10 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-form-
 
 /* Final map drawer viewport lock: keep every bottom-tab panel usable edge to edge. */
 html body #root#root .dp-map-page.dp-map-page.dp-map-page {
-  --dp-map-panel-safe-x: max(8px, env(safe-area-inset-left, 0px));
-  --dp-map-panel-safe-r: max(8px, env(safe-area-inset-right, 0px));
+  --dp-map-panel-safe-x: max(0px, env(safe-area-inset-left, 0px));
+  --dp-map-panel-safe-r: max(0px, env(safe-area-inset-right, 0px));
   --dp-map-panel-top-space: max(84px, env(safe-area-inset-top, 0px) + 64px);
-  --dp-map-panel-bottom-space: calc(var(--dp-map-bottom-dock-h, 66px) + max(10px, env(safe-area-inset-bottom, 0px)));
+  --dp-map-panel-bottom-space: calc(var(--dp-map-bottom-dock-h, 66px) + env(safe-area-inset-bottom, 0px));
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22127,7 +22127,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
 /* True final map panel cleanup: no cards, bento boxes, or bordered sections inside drawers. */
 html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-map-drawer-clear-top: max(132px, calc(env(safe-area-inset-top, 0px) + 118px));
-  --dp-map-drawer-edge: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-map-drawer-edge: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-map-panel-copy-final: rgba(11, 31, 51, 0.66);
 }
 
@@ -22149,7 +22149,7 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :i
   min-height: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 14px 14px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   background: #FFFFFF !important;
   background-image: none !important;
   box-shadow: 0 -12px 28px rgba(11, 31, 51, 0.12) !important;

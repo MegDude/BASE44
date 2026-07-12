@@ -7805,13 +7805,14 @@ function MapPanelButton({
   );
 }
 
-function MapSheet({ variant, ariaLabel, onClose, onBack, children, className = "" }) {
+function MapSheet({ variant, ariaLabel, onClose, onBack, drawerState = "expanded", children, className = "" }) {
   return (
     <motion.section
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      className={`dp-map-sheet dp-map-sheet--${variant} ${className}`.trim()}
+      className={`dp-map-sheet dp-native-drawer-shell dp-map-sheet--${variant} ${className}`.trim()}
       data-variant={variant}
+      data-drawer-state={drawerState}
       role="dialog"
       aria-modal="true"
       aria-label={ariaLabel}
@@ -7820,6 +7821,62 @@ function MapSheet({ variant, ariaLabel, onClose, onBack, children, className = "
     >
       {children}
     </motion.section>
+  );
+}
+
+const NATIVE_DRAWER_STATES = ["medium", "expanded", "full"];
+
+function NativeDrawerHandle({ state = "expanded", onStateChange, onDismiss }) {
+  const startYRef = useRef(null);
+  const didSwipeRef = useRef(false);
+
+  function moveDrawer(deltaY) {
+    const currentIndex = Math.max(0, NATIVE_DRAWER_STATES.indexOf(state));
+    if (deltaY <= -48) {
+      onStateChange?.(NATIVE_DRAWER_STATES[Math.min(currentIndex + 1, NATIVE_DRAWER_STATES.length - 1)]);
+      return;
+    }
+    if (deltaY >= 48) {
+      if (currentIndex === 0) onDismiss?.();
+      else onStateChange?.(NATIVE_DRAWER_STATES[currentIndex - 1]);
+    }
+  }
+
+  function cycleDrawer() {
+    const currentIndex = Math.max(0, NATIVE_DRAWER_STATES.indexOf(state));
+    onStateChange?.(NATIVE_DRAWER_STATES[(currentIndex + 1) % NATIVE_DRAWER_STATES.length]);
+  }
+
+  return (
+    <div className="dp-native-drawer-handle" data-drawer-handle="true">
+      <span className="dp-native-drawer-grip" aria-hidden="true" />
+      <button
+        type="button"
+        className="dp-native-drawer-handle-toggle"
+        aria-label={`Drawer size: ${state}. Swipe or activate to change the drawer height.`}
+        aria-expanded={state === "expanded" || state === "full"}
+        onPointerDown={(event) => {
+          startYRef.current = event.clientY;
+          didSwipeRef.current = false;
+          event.currentTarget.setPointerCapture?.(event.pointerId);
+        }}
+        onPointerUp={(event) => {
+          if (startYRef.current === null) return;
+          const deltaY = event.clientY - startYRef.current;
+          didSwipeRef.current = Math.abs(deltaY) >= 48;
+          moveDrawer(deltaY);
+          startYRef.current = null;
+        }}
+        onPointerCancel={() => { startYRef.current = null; }}
+        onClick={() => {
+          if (didSwipeRef.current) {
+            didSwipeRef.current = false;
+            return;
+          }
+          cycleDrawer();
+        }}
+      />
+    </div>
   );
 }
 
@@ -13599,6 +13656,7 @@ export default function MapPage() {
   const [entityAssistantLoading, setEntityAssistantLoading] = useState(false);
   const [selectedDrawerClosed, setSelectedDrawerClosed] = useState(false);
   const [selectedDrawerMinimized, setSelectedDrawerMinimized] = useState(false);
+  const [nativeDrawerState, setNativeDrawerState] = useState("expanded");
   const searchInputRef = useRef(null);
   const searchRollupRef = useRef(null);
   const updateViewportBounds = useCallback((bounds) => {
@@ -15568,6 +15626,7 @@ export default function MapPage() {
     setEntityAssistantLoading(false);
     setSelectedDrawerClosed(false);
     setSelectedDrawerMinimized(false);
+    setNativeDrawerState("expanded");
     setPulsingPinId(nextEntityId);
     setSelectedPlaceOverride(place);
     setSelectedId(nextEntityId);
@@ -15798,6 +15857,7 @@ export default function MapPage() {
   function openClusterDrawer(cluster) {
     setSelectedId("");
     setClusterDrawer(cluster);
+    setNativeDrawerState("expanded");
     setConsoleCollapsed(!consoleHasActiveWork);
     setActiveBottomTab("map");
     urlState.update({ entityId: "" });
@@ -16459,6 +16519,7 @@ export default function MapPage() {
     setNeighborhoodsOpen(false);
     setSecondaryRailOpen(false);
     setActiveBottomTab("map");
+    setNativeDrawerState("expanded");
     setConsoleCollapsed(Boolean(options.collapseConsole));
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }
@@ -16471,6 +16532,7 @@ export default function MapPage() {
     setIntelOpen(false);
     setFiltersOpen(false);
     setSecondaryRailOpen(false);
+    setNativeDrawerState("expanded");
     navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(nextFilter)}`);
   }
 
@@ -16508,6 +16570,20 @@ export default function MapPage() {
     navigate(`/map?mode=${urlState.mode}&tab=map&filter=${encodeURIComponent(activeFilter || "All")}${collectionParam}`, { replace: true });
   }, [activeFilter, navigate, urlState.collection, urlState.mode]);
 
+  const dismissVisibleNativeDrawer = useCallback(() => {
+    if (selected && !selectedDrawerClosed) {
+      closeSelectedMapDrawer();
+      return;
+    }
+    if (clusterDrawer) {
+      setClusterDrawer(null);
+      setActiveBottomTab("map");
+      urlState.update({ entityId: "", drawerClosed: "" });
+      return;
+    }
+    goBackToMap();
+  }, [closeSelectedMapDrawer, clusterDrawer, goBackToMap, selected, selectedDrawerClosed, urlState]);
+
   const handleSelectedDrawerCloseEvent = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -16544,6 +16620,7 @@ export default function MapPage() {
     clearOpenMapSelection();
     setConsoleCollapsed(true);
     setActiveBottomTab(panel);
+    setNativeDrawerState("expanded");
     navigate(`/map?mode=partner&tab=${panel}`);
   }
 
@@ -16552,6 +16629,7 @@ export default function MapPage() {
     setConsoleCollapsed(true);
     setActiveBottomTab("map");
     setActiveFilter(filter);
+    setNativeDrawerState("expanded");
     navigate(`/map?mode=partner&tab=map&filter=${encodeURIComponent(filter)}`);
   }
 
@@ -16777,11 +16855,13 @@ export default function MapPage() {
           <motion.section
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="dp-panel-shell dp-pass-panel pointer-events-auto flex max-h-[calc(100dvh-12px)] w-full max-w-xl flex-col overflow-hidden rounded-t-[12px] p-0 md:max-h-[calc(100dvh-2rem)] md:rounded-[12px]"
+            className="dp-panel-shell dp-pass-panel dp-native-drawer-shell pointer-events-auto flex max-h-[calc(100dvh-12px)] w-full max-w-xl flex-col overflow-hidden rounded-t-[10px] p-0 md:max-h-[calc(100dvh-2rem)] md:rounded-[10px]"
+            data-drawer-state={nativeDrawerState}
             role="dialog"
             aria-modal="true"
             aria-label="Partner scanner"
           >
+            <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <div className="dp-panel-header flex shrink-0 items-center justify-between gap-2 px-3 py-2 sm:px-4 md:py-2.5">
               <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -16822,9 +16902,10 @@ export default function MapPage() {
             ariaLabel="Resident access card"
             onBack={goBackToMap}
             onClose={() => switchMode(urlState.mode, "map")}
+            drawerState={nativeDrawerState}
             className="dp-resident-card-sheet pointer-events-auto"
           >
-            <div className="dp-map-sheet-handle" aria-hidden="true" />
+            <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <MapSheetToolbar
               eyebrow="RESIDENT CARD"
               onBack={goBackToMap}
@@ -17056,14 +17137,15 @@ export default function MapPage() {
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
-              ? "dp-map-directory-sheet dp-legends-directory-sheet"
-              : `dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
+              ? "dp-map-directory-sheet dp-legends-directory-sheet dp-native-drawer-shell"
+              : `dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[10px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[10px]`}
+            data-drawer-state={nativeDrawerState}
             style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
             aria-label={isLegendsDirectoryLayer ? "Legends Real Estate listings" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
           >
-            <div className={isLegendsDirectoryLayer ? "dp-map-directory-handle" : "dp-panel-handle mx-auto mb-2 h-0.5 w-10 shrink-0 rounded-[2px] bg-[#0B1F33]/14 md:mb-3 md:h-1 md:w-12"} aria-hidden="true" />
+            <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
               {isLegendsDirectoryLayer ? (
                 <>
@@ -17319,12 +17401,14 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
+            className="dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[10px] md:max-h-[68dvh] md:rounded-t-[10px]"
+            data-drawer-state={nativeDrawerState}
             style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
             aria-label="Grouped map places"
           >
+            <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <div className="dp-panel-header shrink-0">
               <button type="button" onClick={goBackToMap} className="dp-panel-back dp-panel-back-floating" aria-label="Back to map">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -17392,15 +17476,16 @@ export default function MapPage() {
             exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
             className={isInKindNetworkEntity(selected)
-              ? "dp-inkind-partner-drawer"
-              : `dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
+              ? "dp-inkind-partner-drawer dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell"
+              : `dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell dp-native-drawer-shell ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
             data-panel-kind={getMapDrawerPanelKind(selected, urlState.mode)}
-            data-drawer-state="expanded"
+            data-drawer-state={nativeDrawerState}
             role="dialog"
             aria-modal="true"
             aria-labelledby={!usesCleanResidentialEntityDrawer(selected) || shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? `destination-drawer-title-${selected.id}` : undefined}
             aria-label={shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? undefined : `${selected.name} details`}
           >
+            <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             {!usesCleanResidentialEntityDrawer(selected) && (
               <div className="dp-map-panel-header dp-drawer-control-row" aria-label="Drawer controls">
                 {!showTopMapBack ? (
