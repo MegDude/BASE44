@@ -7,7 +7,7 @@ import {
 
 const baseUrl = process.env.BASE_URL || "http://localhost:5173";
 const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All`;
-const partnerRoute = `${baseUrl.replace(/\/$/, "")}/app?mode=partner&tab=map&filter=Legends&query=leg&intent=legends`;
+const partnerRoute = `${baseUrl.replace(/\/$/, "")}/map?mode=partner&tab=map&filter=All`;
 const screenshotDir = "/private/tmp/search-intent-chips";
 
 function assertRegisteredIntentDefinitions() {
@@ -26,13 +26,14 @@ async function ensureConsole(page) {
   await console.waitFor({ state: "attached", timeout: 15_000 });
   const hidden = await console.getAttribute("aria-hidden");
   if (hidden === "true") {
-    await page.locator(".dp-search-intent-rollup").first().click();
+    await page.locator(".dp-search-intent-rollup").first().click({ force: true });
   }
   await expect(console).toBeVisible({ timeout: 10_000 });
 }
 
 async function chip(page, id: string) {
-  return page.locator(`.dp-expanding-intent-chip[data-intent-id="${id}"]`).first();
+  if (id === "more") return page.locator(`.dp-search-more-toggle[data-intent-id="more"]:visible`).first();
+  return page.locator(`.dp-compact-intent-chip[data-intent-id="${id}"]:visible`).first();
 }
 
 async function expectExpanded(locator, label: string) {
@@ -49,21 +50,26 @@ async function runDesktopChecks(browser) {
   const dining = await chip(page, "dining");
   const more = await chip(page, "more");
   const initialUrl = page.url();
+  const primaryOrder = await page.locator(".dp-search-intent-primary-rail [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));
+  expect(primaryOrder.at(-1)).toBe("more");
+  const primaryIcons = await page.locator(".dp-search-intent-primary-rail .dp-search-intent-filter-icon").evaluateAll((items) => items.map((item) => Array.from(item.classList).find((name) => name.startsWith("lucide-") && name !== "lucide") || ""));
+  expect(new Set(primaryIcons).size).toBe(primaryIcons.length);
 
+  await expect(coffee).toHaveAttribute("data-expanded", "false");
   await coffee.hover();
-  await expectExpanded(coffee, "Coffee nearby");
-  await expect(coffee).toContainText("Coffee shops, cafes, active perks and curated coffee routes");
+  await expect(coffee).toHaveAttribute("data-expanded", "false");
   if (page.url() !== initialUrl) {
     throw new Error("Hovering Coffee changed the map URL before selection.");
   }
 
-  await page.mouse.move(10, 10);
-  await expect(coffee).toHaveAttribute("data-expanded", "false", { timeout: 5_000 });
-
   await coffee.click();
   await expect(coffee).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
   await expectExpanded(coffee, "Coffee nearby");
-  await expect(coffee.locator(".dp-expanding-intent-chip__description")).toContainText(/place|Finding|No active matches|Could not load/i);
+  await expect(coffee.locator(".dp-selected-intent-label")).toContainText("Coffee nearby");
+
+  await coffee.click();
+  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
+  await expect(coffee).toHaveAttribute("data-expanded", "false", { timeout: 5_000 });
 
   await dining.click();
   await expect(dining).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
@@ -73,11 +79,11 @@ async function runDesktopChecks(browser) {
   await page.screenshot({ path: `${screenshotDir}/desktop-1440-search-intents.png`, fullPage: false });
 
   await page.locator('[data-intent-id="events"]').first().focus();
-  await expectExpanded(await chip(page, "events"), "Events nearby");
+  await expect(await chip(page, "events")).toHaveAttribute("data-expanded", "false");
   await page.keyboard.press("Escape");
   await expect(await chip(page, "events")).toHaveAttribute("data-expanded", "false", { timeout: 5_000 });
 
-  await more.click();
+  await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
   await expect(page.locator(".dp-search-more-intent-panel__header")).toContainText("Explore more intents");
   if (/filter=More/.test(page.url())) {
@@ -95,8 +101,8 @@ async function runMobileChecks(browser) {
   const coffee = await chip(page, "coffee");
   await coffee.tap();
   await expect(coffee).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expect(page.locator(".dp-search-intent-description-strip")).toBeVisible({ timeout: 5_000 });
-  await expect(page.locator(".dp-search-intent-description-strip")).toContainText("Coffee nearby");
+  await expectExpanded(coffee, "Coffee nearby");
+  await expect(coffee.locator(".dp-selected-intent-label")).toBeVisible({ timeout: 5_000 });
 
   const railBox = await page.locator(".dp-search-intent-prompt-rail").first().boundingBox();
   const viewport = page.viewportSize();
@@ -113,31 +119,39 @@ async function runPartnerChecks(browser) {
   await page.goto(partnerRoute, { waitUntil: "domcontentloaded", timeout: 30_000 });
   await ensureConsole(page);
 
+  const more = await chip(page, "more");
+  await more.click({ force: true });
+  await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
   const campaigns = await chip(page, "campaigns");
   const performance = await chip(page, "performance");
-  const more = await chip(page, "more");
 
-  await campaigns.click();
+  await campaigns.click({ force: true });
   await expect(campaigns).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("campaigns");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
 
-  await performance.click();
+  if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
+  await performance.click({ force: true });
   await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
 
-  const requestsBeforeDuplicate = await page.evaluate(() => (window as any).__DP_MAP_SEARCH_METRICS__?.searchRequestCount || 0);
-  await performance.click();
-  await page.waitForTimeout(300);
-  const requestsAfterDuplicate = await page.evaluate(() => (window as any).__DP_MAP_SEARCH_METRICS__?.searchRequestCount || 0);
-  expect(requestsAfterDuplicate).toBe(requestsBeforeDuplicate);
+  if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
+  await performance.click({ force: true });
+  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
+  expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
 
-  await more.click();
+  await expect(more).toHaveAttribute("aria-expanded", "false", { timeout: 5_000 });
+  await more.click({ force: true });
+  await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
   const parking = await chip(page, "parking");
   await parking.click();
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("parking");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
+
+  await page.goBack();
+  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
+  expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
 
   await page.goBack();
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");

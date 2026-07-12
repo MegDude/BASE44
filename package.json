@@ -27,6 +27,8 @@
     "audit:map-intents": "tsx scripts/audit-map-search-intents.ts",
     "test:map-intents": "tsx scripts/test-map-search-intents.ts",
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",
+    "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
+    "test:search-intent-exclusivity": "tsx scripts/test-search-intent-exclusivity.ts",
     "test:daa-hospitality": "node scripts/test-daa-hospitality.mjs",
     "test:residential-content": "node scripts/test-residential-mixed-use.mjs",
     "audit:media-reconciliation": "tsx scripts/media-reconciliation-audit.ts",

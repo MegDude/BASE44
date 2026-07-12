@@ -35,6 +35,7 @@ import '@/styles/partner-access-formatting-final.css'
 import '@/styles/partner-signup-cleanup-final.css'
 import '@/styles/inkind-partner-drawer-final.css'
 import '@/styles/search-intent-rail-alignment-final.css'
+import '@/styles/resident-product-alignment-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

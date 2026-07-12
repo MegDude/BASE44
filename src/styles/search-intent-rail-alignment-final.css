@@ -10,6 +10,21 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console
   flex: 0 0 auto !important;
 }
 
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header :is(
+  .dp-search-intent-label,
+  .dp-search-intent-label .dp-search-brand-mark,
+  .dp-search-intent-label .dp-search-brand-mark > span,
+  .dp-search-intent-audience-tabs button
+) {
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-style: normal !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs {
   display: inline-flex !important;
   align-items: center !important;
@@ -37,8 +52,7 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console
 
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs button.is-active {
   color: #a47b2f !important;
-  text-decoration: underline !important;
-  text-underline-offset: 4px !important;
+  text-decoration: none !important;
 }
 
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-top-actions {
@@ -75,6 +89,44 @@ html body #root .dp-map-page .dp-search-intent-console .dp-expanding-intent-chip
   fill: none !important;
 }
 
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-secondary-track,
+  .dp-search-intent-more-panel
+) button,
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-secondary-track,
+  .dp-search-intent-more-panel
+) button::before,
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-secondary-track,
+  .dp-search-intent-more-panel
+) button::after {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-compact-intent-chip__icon,
+  .dp-expanding-intent-chip__icon,
+  .dp-compact-intent-chip__icon svg,
+  .dp-expanding-intent-chip__icon svg,
+  .dp-search-intent-filter-icon
+) {
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  stroke-width: 1.8 !important;
+}
+
 html body #root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip:not([data-expanded="true"]) .dp-compact-intent-chip__text.dp-compact-intent-chip__text {
   display: none !important;
 }
@@ -90,6 +142,17 @@ html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-
   display: none !important;
 }
 
+html body #root .dp-map-page .dp-search-intent-console .dp-selected-intent-label {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: none !important;
+  align-items: center !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  white-space: nowrap !important;
+}
+
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-status:empty,
 html body #root .dp-map-page .dp-search-intent-console .dp-search-audience-row {
   display: none !important;
@@ -102,5 +165,18 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-audience-row {
 
   html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console-header .dp-search-intent-audience-tabs {
     gap: 9px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip[data-expanded="true"] .dp-compact-intent-chip__text.dp-compact-intent-chip__text {
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console button.dp-compact-intent-chip.dp-compact-intent-chip:not([data-expanded="true"]) .dp-compact-intent-chip__text.dp-compact-intent-chip__text {
+    display: none !important;
   }
 }

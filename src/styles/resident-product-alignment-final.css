@@ -1,0 +1,51 @@
+.dp-resident-signin-page,
+.dp-auth-callback {
+  min-height: 100dvh;
+  background: #F7F8FB;
+  color: #0B1F33;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+.dp-resident-signin-shell { width: min(100%, 480px); min-height: 100dvh; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom)); }
+.dp-resident-signin-header { min-height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(11,31,51,.08); }
+.dp-resident-signin-header a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: #0B1F33; font-size: 14px; font-weight: 650; }
+.dp-resident-signin-header a:first-child span { width: 10px; height: 10px; border-radius: 50%; background: #C8A96A; }
+.dp-resident-signin-header svg { width: 16px; height: 16px; }
+.dp-resident-signin-content { padding: clamp(48px, 10vh, 88px) 0; }
+.dp-resident-signin-eyebrow { margin: 0; color: #9A7B42; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.dp-resident-signin-content h1 { max-width: 10ch; margin: 16px 0 0; font-size: clamp(44px, 12vw, 56px); line-height: .98; letter-spacing: -.045em; font-weight: 650; }
+.dp-resident-signin-content > p:not(.dp-resident-signin-eyebrow):not(.dp-resident-signin-note) { max-width: 36ch; margin: 22px 0 0; color: #526075; font-size: 16px; line-height: 1.7; }
+.dp-resident-signin-content form { margin-top: 36px; }
+.dp-resident-signin-content label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 650; }
+.dp-resident-signin-content input { width: 100%; min-height: 48px; border: 1px solid rgba(11,31,51,.14); border-radius: 14px; background: #FFF; padding: 0 16px; color: #0B1F33; font-size: 16px; outline: none; }
+.dp-resident-signin-content input:focus { border-color: #0B1F33; box-shadow: 0 0 0 2px rgba(11,31,51,.1); }
+.dp-resident-signin-content form > button { width: 100%; min-height: 48px; margin-top: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 14px; background: #C8A96A; color: #0B1F33; font-size: 14px; font-weight: 700; }
+.dp-resident-signin-content form > button svg { width: 16px; height: 16px; }
+.dp-resident-signin-content form > button:disabled { opacity: .58; cursor: wait; }
+.dp-resident-signin-status { margin: 12px 0 0; font-size: 14px; line-height: 1.5; }
+.dp-resident-signin-status.is-error { color: #A23832; }
+.dp-resident-signin-note { margin: 22px 0 0; color: #697589; font-size: 14px; line-height: 1.65; }
+.dp-auth-callback { display: grid; place-items: center; padding: 20px; text-align: center; }
+.dp-auth-callback span { display: block; width: 32px; height: 32px; margin: 0 auto 18px; border: 2px solid rgba(11,31,51,.12); border-top-color: #C8A96A; border-radius: 50%; animation: dp-auth-spin .8s linear infinite; }
+.dp-auth-callback strong { font-size: 16px; }
+.dp-auth-callback p { margin: 8px 0 0; color: #697589; font-size: 14px; }
+@keyframes dp-auth-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .dp-auth-callback span { animation: none; } }
+
+/* Card route: one editorial surface, platform palette, no nested marketing shells. */
+.dp-resident-access-page { min-height: 100dvh !important; background: #F7F8FB !important; color: #0B1F33 !important; font-family: Inter, ui-sans-serif, system-ui, sans-serif !important; }
+.dp-resident-access-page :is(h1,h2,h3,p,span,label,legend,button,a,input,select) { font-family: inherit !important; }
+.dp-resident-access-shell { align-items: start !important; gap: clamp(36px, 6vw, 72px) !important; }
+.dp-resident-access-copy h1 { font-size: clamp(44px, 6vw, 56px) !important; line-height: .98 !important; letter-spacing: -.045em !important; }
+.dp-resident-access-panel { background: #FFF !important; border-color: rgba(11,31,51,.08) !important; box-shadow: none !important; border-radius: 16px !important; }
+.dp-resident-access-plan,
+.dp-resident-access-card { background: #FFF !important; border-color: rgba(11,31,51,.08) !important; box-shadow: none !important; }
+.dp-resident-access-paths button { background: transparent !important; border-color: rgba(11,31,51,.1) !important; box-shadow: none !important; }
+.dp-resident-access-paths button[data-active="true"] { border-color: #C8A96A !important; }
+.dp-resident-access-actions > button,
+.dp-resident-access-actions > a:first-child { min-height: 48px !important; border-radius: 14px !important; }
+
+/* One shared mobile tab contract for both products. */
+.dp-map-page .dp-map-bottom-nav { background: rgba(255,255,255,.94) !important; border-top: 1px solid rgba(11,31,51,.08) !important; box-shadow: none !important; backdrop-filter: blur(18px) saturate(1.08) !important; }
+.dp-map-page .dp-map-bottom-nav > button { min-height: 56px !important; color: rgba(11,31,51,.58) !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+.dp-map-page .dp-map-bottom-nav > button[aria-pressed="true"] { color: #0B1F33 !important; }
+.dp-map-page .dp-map-drawer-shell { max-height: min(88dvh, calc(100dvh - max(72px, env(safe-area-inset-top)) - 76px)) !important; border: 1px solid rgba(11,31,51,.08) !important; background: #FFF !important; box-shadow: 0 -12px 40px rgba(11,31,51,.08) !important; }

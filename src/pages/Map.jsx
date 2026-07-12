@@ -1814,7 +1814,7 @@ function selectProgressiveMarkerPlaces(places, {
   const deduped = dedupeMapPinPlaces(places);
   const hasIntent = Boolean(effectiveSearch || collection || activeFilter !== "All");
   const isFocusedIntent = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch && FOCUSED_INTENT_FILTERS.has(resolveFilterForIntent(effectiveSearch, "resident") || ""));
-  const source = isFocusedIntent && !(mode === "partner" && intent)
+  const source = isFocusedIntent
     ? deduped.filter((place) => matchesFilter(place, activeFilter, savedIds || new Set()))
     : deduped;
   const selectedPlace = selectedId ? source.find((place) => resolveMapEntityAlias(place.id) === selectedId) : null;
@@ -12840,9 +12840,7 @@ function SearchIntentConsole({
     const state = active ? "Pressed" : "Not pressed";
     return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
   };
-  const moreToggleInsertIndex = mode === "partner"
-    ? Math.min(1, Math.max(0, intentRail.length - 1))
-    : intentRail.length - 1;
+  const moreToggleInsertIndex = intentRail.length - 1;
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
     window.dispatchEvent(new CustomEvent("dp:map-filter-rail", {
@@ -12870,6 +12868,12 @@ function SearchIntentConsole({
   };
   const handleRailItem = (item) => {
     const isSecondaryFilter = moreFilterRail.includes(item);
+    if (isRailItemActive(item)) {
+      trackFilterRailEvent("filter_cleared", item, "collapsed");
+      setMoreOpen(false);
+      onClear?.();
+      return;
+    }
     trackFilterRailEvent(isSecondaryFilter ? "secondary_filter_selected" : "filter_selected", item);
     if (!isSecondaryFilter) setMoreOpen(false);
     if (item.collection) {
@@ -12946,13 +12950,6 @@ function SearchIntentConsole({
         aria-describedby={descriptionId}
         onPointerEnter={() => {}}
         onPointerLeave={() => {}}
-        onPointerUp={(event) => {
-          if (event.pointerType !== "touch") return;
-          event.preventDefault();
-          setPreviewIntentId(null);
-          setFocusedIntentId(null);
-          handleRailItem(item);
-        }}
         onFocus={() => {}}
         onBlur={() => {}}
         onClick={() => {
@@ -12980,14 +12977,8 @@ function SearchIntentConsole({
         <span className="dp-compact-intent-chip__icon" aria-hidden="true">
           {Icon ? <Icon className="dp-search-intent-filter-icon" aria-hidden="true" /> : null}
         </span>
-        <span className="dp-compact-intent-chip__text">
-          <span className="dp-compact-intent-chip__label dp-search-intent-filter-label">
-            {expanded ? definition.fullLabel : definition.shortLabel}
-          </span>
-          <span id={descriptionId} className="dp-expanding-intent-chip__description">
-            {summary}
-          </span>
-        </span>
+        {expanded ? <span className="dp-selected-intent-label dp-search-intent-filter-label">{definition.fullLabel}</span> : null}
+        <span id={descriptionId} className="sr-only">{summary}</span>
       </button>
     );
   };
@@ -13011,11 +13002,6 @@ function SearchIntentConsole({
         aria-describedby={descriptionId}
         onPointerEnter={() => {}}
         onPointerLeave={() => {}}
-        onPointerUp={(event) => {
-          if (event.pointerType !== "touch") return;
-          event.preventDefault();
-          handleMoreClick(event);
-        }}
         onFocus={() => {}}
         onBlur={() => {}}
         onClick={handleMoreClick}
@@ -13814,7 +13800,6 @@ export default function MapPage() {
     const isCivicLayerIntent = activeFilter === "Civic" || parsedIntents.includes("DAA_art_walk") || /\b(daa|dana|waterloo|art walk|public art|civic)\b/i.test(query);
     return places.filter((place) => {
       if (!shouldSurfaceHospitalityChild(place, activeFilter, query)) return false;
-      if (urlState.mode === "partner" && urlState.intent && !query) return true;
       if (isSingleSelectSearchIntentFilter(activeFilter)) {
         if (urlState.collection && getCollectionFilter(urlState.collection) !== activeFilter) return false;
       } else if (!matchesCollection(place, urlState.collection)) return false;
@@ -14001,7 +13986,7 @@ export default function MapPage() {
     }
 
     return getViewportBoundedMarkerPlaces(pinSourcePlaces, {
-      activeFilter: urlState.mode === "partner" && urlState.intent ? "All" : activeFilter,
+      activeFilter,
       query: effectiveSearch,
       viewportBounds,
       zoom: mapZoom,
@@ -15559,7 +15544,7 @@ export default function MapPage() {
     setNeighborhoodsOpen(false);
     setIntelOpen(false);
     setActiveBottomTab("map");
-    setSearch(nextQuery);
+    setSearch(options.displayQuery ?? nextQuery);
     setActiveFilter(nextFilter);
     setClusterDrawer(null);
     setMapAnswer(null);
@@ -15590,11 +15575,15 @@ export default function MapPage() {
       intent: options.intent || "",
       time: options.time || "",
       collection: options.collection || "",
+      collectionId: "",
+      routeId: "",
       layer: options.layer || "",
       district: options.district || "",
       radius: options.radius || "",
       entityType: options.entityType || "",
       entityId: "",
+      perkId: "",
+      eventId: "",
       listingId: "",
       listing: "",
       campaignId: "",
@@ -16235,7 +16224,10 @@ export default function MapPage() {
         ? item.id || getCanonicalIntentForFilter(item.filter, item.prompt || item.label)
         : getCanonicalIntentForFilter(item.filter, item.prompt || item.label);
       if (urlState.mode === "partner" && urlState.intent === nextIntentId && !effectiveSearch && !selectedId) return;
-      const nextFilter = beginSearchIntentTransition(item.filter, { intent: nextIntentId });
+      const nextFilter = beginSearchIntentTransition(item.filter, {
+        intent: nextIntentId,
+        displayQuery: item.label || item.filter,
+      });
       const localResults = await requestScopedMapResults({
         query: "",
         filterOverride: nextFilter,
@@ -16259,11 +16251,8 @@ export default function MapPage() {
   }
 
   function clearResidentSearchIntent() {
-    setSearch("");
-    setMapAnswer(null);
     setResidentSearchIntent({ intent: null, time: null });
-    setConsoleCollapsed(false);
-    urlState.update({ query: "", q: "", prompt: "", intent: "", time: "", collection: "", layer: "", entityId: "" });
+    beginSearchIntentTransition("All");
   }
 
   async function askEntityAssistant(prompt) {
@@ -16739,12 +16728,14 @@ export default function MapPage() {
           <nav
             className="dp-map-bottom-nav pointer-events-auto grid grid-cols-5"
             aria-label="Map bottom navigation"
+            role="tablist"
             style={{ "--dp-bottom-nav-count": 5 }}
           >
             {urlState.mode === "resident" && (
               <>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => {
                     beginSearchIntentTransition("All");
                     setConsoleCollapsed(true);
@@ -16752,12 +16743,14 @@ export default function MapPage() {
                     navigate("/map?mode=resident&tab=map&filter=All&panel=info");
                   }}
                   aria-pressed={activeBottomTab === "info"}
+                  aria-selected={activeBottomTab === "info"}
                 >
                   <Info className="h-4 w-4" />
                   <span>Home</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => {
                     beginSearchIntentTransition("All");
                     setConsoleCollapsed(true);
@@ -16765,12 +16758,14 @@ export default function MapPage() {
                     navigate("/map?mode=resident&tab=map&filter=All");
                   }}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "map" && activeFilter === "All"}
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "map" && activeFilter === "All"}
                 >
                   <MapPin className="h-4 w-4" />
                   <span>Map</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => {
                     beginSearchIntentTransition("Perks");
                     setConsoleCollapsed(true);
@@ -16778,12 +16773,14 @@ export default function MapPage() {
                     navigate("/map?mode=resident&tab=map&filter=Perks");
                   }}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "perks"}
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "perks"}
                 >
                   <Gift className="h-4 w-4" />
                   <span>Perks</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => {
                     beginSearchIntentTransition("Events");
                     setConsoleCollapsed(true);
@@ -16791,12 +16788,14 @@ export default function MapPage() {
                     navigate("/map?mode=resident&tab=map&filter=Events");
                   }}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "events"}
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "events"}
                 >
                   <Sparkles className="h-4 w-4" />
                   <span>Events</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => {
                     clearOpenMapSelection();
                     setConsoleCollapsed(true);
@@ -16804,6 +16803,7 @@ export default function MapPage() {
                     navigate("/map?mode=resident&tab=pass");
                   }}
                   aria-pressed={urlState.tab === "pass"}
+                  aria-selected={urlState.tab === "pass"}
                 >
                   <CreditCard className="h-4 w-4" />
                   <span>Card</span>
@@ -16814,45 +16814,55 @@ export default function MapPage() {
               <>
                 <button
                   type="button"
+                  role="tab"
+                  onClick={() => openPartnerPanel("info")}
+                  aria-pressed={activeBottomTab === "info"}
+                  aria-selected={activeBottomTab === "info"}
+                >
+                  <Info className="h-4 w-4" />
+                  <span>Overview</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
                   onClick={() => openPartnerMap("All")}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "map"}
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "map"}
                 >
                   <MapPin className="h-4 w-4" />
                   <span>Map</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => openPartnerPanel("campaigns")}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "campaigns"}
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "campaigns"}
                 >
                   <Sparkles className="h-4 w-4" />
                   <span>Campaigns</span>
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   onClick={() => openPartnerPanel("activity")}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "activity"}
-                  aria-label="Activity"
+                  aria-selected={urlState.tab === "map" && activeBottomTab === "activity"}
+                  aria-label="Audience"
                 >
                   <ScanLine className="h-4 w-4" />
-                  <span>Activity</span>
+                  <span>Audience</span>
                   {contextCount > 0 && <span aria-hidden="true" className="dp-nav-activity-badge">{Math.min(contextCount, 9)}</span>}
                 </button>
                 <button
                   type="button"
-                  onClick={() => openPartnerPanel("reports")}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "reports"}
+                  role="tab"
+                  onClick={() => navigate("/partner-workspace/overview")}
+                  aria-pressed={false}
+                  aria-selected={false}
                 >
                   <TrendingUp className="h-4 w-4" />
-                  <span>Reports</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openPartnerPanel("info")}
-                  aria-pressed={activeBottomTab === "info"}
-                >
-                  <Info className="h-4 w-4" />
-                  <span>Info</span>
+                  <span>Workspace</span>
                 </button>
               </>
             )}
