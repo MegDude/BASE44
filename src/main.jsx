@@ -68,6 +68,8 @@ import "@/styles/resident-discover-native-final.css"
 
 import "@/styles/partner-signin-native-final.css"
 
+import "@/styles/workspace-no-capsules-final.css"
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

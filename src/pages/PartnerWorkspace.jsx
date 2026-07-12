@@ -47,7 +47,7 @@ const CAT_LABELS = {
 const PUBLIC_PARTNER_USER = {
   email: "downtown-perks-workspace",
   full_name: "Partner Workspace",
-  partner_name: "Downtown Perks Partner",
+  partner_name: "Downtown Perks",
   partner_type: "neighborhood",
 };
 
@@ -228,7 +228,7 @@ function normalizeBusinessName(setup = {}) {
     setup.companyName ||
     setup.partnerName ||
     (setup.partnerType ? `${setup.partnerType} Workspace` : "") ||
-    "Downtown Perks Partner"
+    "Downtown Perks"
   );
 }
 

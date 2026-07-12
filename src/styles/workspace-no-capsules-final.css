@@ -1,0 +1,136 @@
+/* Partner workspace: no pills, capsules, circular badges, or rounded action rails. */
+html body #root .dp-partner-workspace-page :is(
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [role="tab"],
+  [class*="chip"],
+  [class*="badge"],
+  [class*="status"],
+  [class*="toggle"]
+) {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-horizontal-bars li > i,
+  .dp-horizontal-bars b,
+  .dp-district-distribution li > i,
+  .dp-district-distribution li > i > span,
+  .dp-profile-preview__image span,
+  .dp-partner-workspace-plan,
+  .dp-operating-status,
+  .dp-workspace-status-chip,
+  .dp-workspace-lifecycle-count
+) {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-partner-workspace-page :is(.dp-partner-workspace-plan, .dp-operating-status) i {
+  width: 2px !important;
+  height: 14px !important;
+  border-radius: 0 !important;
+  background: #c8a96a !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-partner-workspace-header-tools button {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  border-radius: 0 !important;
+  border-left: 1px solid rgba(11, 31, 51, 0.09) !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-partner-workspace-header-tools button:first-child {
+  border-left: 0 !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-signin {
+  min-width: 72px !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(11, 31, 51, 0.12) !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  font: 600 12px/1.2 Inter, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-nav-group a {
+  border-radius: 0 !important;
+  border-left: 2px solid transparent !important;
+  background: transparent !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-nav-group a.is-active {
+  border-left-color: #c8a96a !important;
+  background: #f7f8fb !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-link-row a,
+  .dp-workspace-category-link,
+  .dp-workspace-lifecycle-card,
+  .dp-profile-editor__primary,
+  .dp-profile-editor__secondary,
+  .dp-native-publisher__actions > button
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-link-row {
+  gap: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.1) !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-link-row a {
+  min-height: 44px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.1) !important;
+  background: transparent !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-status-chip {
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #c8a96a !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-partner-workspace-eyebrow,
+  .dp-workspace-nav-group > p,
+  .dp-workspace-eyebrow,
+  .dp-workspace-status-chip,
+  .dp-profile-editor__eyebrow,
+  .dp-profile-preview__image span
+) {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-partner-workspace-eyebrow {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font: 500 12px/1.3 Inter, sans-serif !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-partner-workspace-title {
+  color: #0b1f33 !important;
+  font: 650 15px/1.25 Inter, sans-serif !important;
+  letter-spacing: -0.01em !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-partner-workspace-page .dp-partner-workspace-title-copy {
+    gap: 8px !important;
+  }
+
+  html body #root .dp-partner-workspace-page .dp-partner-workspace-plan {
+    font-size: 11px !important;
+  }
+}
