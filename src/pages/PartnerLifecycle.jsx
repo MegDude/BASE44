@@ -608,6 +608,73 @@ function PlatformToolsSection() {
   );
 }
 
+
+function GrowthProgramsSection() {
+  const [activeGroupIndex, setActiveGroupIndex] = useState(0);
+  const activeGroup = impactGroups[activeGroupIndex];
+
+  return (
+    <section id="growth-programs" className="dp-partner-lifecycle-section dp-partner-growth-section">
+      <div className="dp-partner-lifecycle-section-head">
+        <p>Growth programs</p>
+        <h2>Choose the outcome, then choose the level of support.</h2>
+        <span>Focused programs for customer visits, event attendance, community insight, and map visibility. Pricing stays clear before setup begins.</span>
+      </div>
+      <div className="dp-growth-programs">
+        <div className="dp-growth-program-tabs" role="tablist" aria-label="Growth program categories">
+          {impactGroups.map((group, index) => (
+            <button
+              key={group.title}
+              id={`growth-tab-${index}`}
+              type="button"
+              role="tab"
+              aria-selected={activeGroupIndex === index}
+              aria-controls="growth-program-panel"
+              className={activeGroupIndex === index ? "is-active" : ""}
+              onClick={() => setActiveGroupIndex(index)}
+            >
+              <span>0{index + 1}</span>
+              {group.title}
+            </button>
+          ))}
+        </div>
+        <div
+          id="growth-program-panel"
+          className="dp-growth-program-panel"
+          role="tabpanel"
+          aria-labelledby={`growth-tab-${activeGroupIndex}`}
+        >
+          <div className="dp-growth-program-panel-head">
+            <p>Selected outcome</p>
+            <h3>{activeGroup.title}</h3>
+          </div>
+          <div className="dp-growth-program-list">
+            {activeGroup.items.map(([headline, who, when, outcome, price]) => (
+              <article key={headline}>
+                <div>
+                  <h4>{headline}</h4>
+                  <p>{who}</p>
+                </div>
+                <div className="dp-growth-program-context">
+                  <span>{when}</span>
+                  <strong>{outcome}</strong>
+                </div>
+                <div className="dp-growth-program-action">
+                  <b>{price}</b>
+                  <Link to={`/pricing?intent=partner-registration&module=${encodeURIComponent(headline)}`}>
+                    Add
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProfessionalServicesSection() {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-services-section">
@@ -618,12 +685,19 @@ function ProfessionalServicesSection() {
           Whether you need photography, campaign planning, QR installation, or a complete launch, our team can help you get everything live quickly.
         </span>
       </div>
-      <div className="dp-partner-services-grid">
-        {professionalServices.map(([title, Icon, copy]) => (
+      <div className="dp-professional-service-list">
+        {professionalServices.map(([title, Icon, copy], index) => (
           <article key={title}>
-            <Icon aria-hidden="true" />
-            <h3>{title}</h3>
-            <p>{copy}</p>
+            <span>0{index + 1}</span>
+            <span className="dp-professional-service-icon" aria-hidden="true"><Icon /></span>
+            <div>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </div>
+            <Link to={`/contact?service=${encodeURIComponent(title)}`}>
+              Discuss
+              <ArrowRight aria-hidden="true" />
+            </Link>
           </article>
         ))}
       </div>
@@ -744,6 +818,7 @@ function ToolsStage() {
   return (
     <>
       <PlatformToolsSection />
+      <GrowthProgramsSection />
       <IntegrationsSection />
       <ProfessionalServicesSection />
       <FinalCtaSection />
