@@ -1,4 +1,4 @@
-export const DEFAULT_RESIDENT_MAP_PATH = "/map?mode=resident&tab=map&filter=All";
+export const DEFAULT_RESIDENT_MAP_PATH = "/app/map?mode=resident&tab=map&filter=All";
 
 const PRESERVED_MAP_KEYS = [
   "mode",

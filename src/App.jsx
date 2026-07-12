@@ -4,7 +4,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
-import { buildResidentMapPath } from "@/lib/authReturnPath";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -20,6 +19,7 @@ const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const ResidentOnboardingFlow = lazy(() => import("./onboarding/ResidentOnboardingFlow"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
+const PublicMapGateway = lazy(() => import("./pages/PublicMapGateway"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerGateway = lazy(() => import("./pages/PartnerGateway"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
@@ -44,7 +44,7 @@ function MarketingFallback() {
 
 function ProtectedRoute({ children }) {
   const location = useLocation();
-  const { isAuthenticated, isLoadingAuth } = useAuth();
+  const { isAuthenticated, isLoadingAuth, user } = useAuth();
   const params = new URLSearchParams(location.search);
   const hasWorkspaceActivation =
     typeof window !== "undefined" &&
@@ -54,7 +54,12 @@ function ProtectedRoute({ children }) {
     (params.get("checkout") === "success" || params.get("provisioned") === "1" || hasWorkspaceActivation);
 
   if (isLoadingAuth) return <MarketingFallback />;
-  if (isAuthenticated || canBootstrapWorkspace) return children;
+  if (isAuthenticated) {
+    const role = String(user?.role || "resident").toLowerCase();
+    if (role === "resident") return <Navigate to="/app/map?mode=resident&tab=map&filter=All" replace />;
+    return children;
+  }
+  if (canBootstrapWorkspace) return children;
 
   return (
     <Navigate
@@ -63,6 +68,20 @@ function ProtectedRoute({ children }) {
       state={{ from: `${location.pathname}${location.search}${location.hash}` }}
     />
   );
+}
+
+function AuthenticatedResidentMap() {
+  const location = useLocation();
+  const { isAuthenticated, isLoadingAuth, user } = useAuth();
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
+
+  if (isLoadingAuth) return <MarketingFallback />;
+  if (!isAuthenticated) return <Navigate to={`/sign-in?returnTo=${encodeURIComponent(returnTo)}`} replace />;
+
+  const role = String(user?.role || "resident").toLowerCase();
+  if (role === "admin") return <Navigate to="/admin-studio/command-center" replace />;
+  if (role !== "resident") return <Navigate to="/partner-workspace/overview" replace />;
+  return <MapPage />;
 }
 
 function RedirectWithSearch({ to }) {
@@ -106,24 +125,14 @@ function HashScroll() {
 
 function SplashLaunchGate() {
   const location = useLocation();
-  const { isAuthenticated, isLoadingAuth } = useAuth();
-  const residentReturnTo = buildResidentMapPath(location.search, "/map");
-  const guestParams = new URLSearchParams(residentReturnTo.split("?")[1] || "");
-  guestParams.set("guest", "true");
-  const residentGuestHref = `/map?${guestParams.toString()}`;
-
-  if (isLoadingAuth) return <MarketingFallback />;
-  if (isAuthenticated) {
-    return <Navigate to={residentReturnTo} replace />;
-  }
+  const residentMapHref = `/app${location.search || "?mode=resident&tab=map&filter=All"}`;
 
   return (
     <Suspense fallback={<MarketingFallback />}>
       <SplashPage
-        residentSignInHref={`/sign-in?returnTo=${encodeURIComponent(residentReturnTo)}`}
-        residentCreateHref={`/resident-sign-up?returnTo=${encodeURIComponent(residentReturnTo)}`}
-        residentGuestHref={residentGuestHref}
+        residentMapHref={residentMapHref}
         partnerMapHref="/map?mode=partner&tab=map&filter=All"
+        replayOpening
       />
     </Suspense>
   );
@@ -131,32 +140,9 @@ function SplashLaunchGate() {
 
 function MapLaunchGate() {
   const location = useLocation();
-  const { isAuthenticated, isLoadingAuth } = useAuth();
-  const params = new URLSearchParams(location.search);
-  const mode = params.get("mode") || "resident";
-  const isEmbed = params.get("embed") === "true";
-  const isGuest = params.get("guest") === "true";
-  const isMapEntryRoute = location.pathname === "/map" || location.pathname === "/app" || location.pathname === "/app/map";
-
   if (location.pathname === "/app" && !location.search) {
     return <SplashLaunchGate />;
   }
-
-  if (isMapEntryRoute && !isEmbed && !isGuest) {
-    if (isLoadingAuth) return <MarketingFallback />;
-    if (isAuthenticated && location.pathname !== "/map") {
-      return <Navigate to={buildResidentMapPath(location.search, "/map")} replace />;
-    }
-    if (!isAuthenticated) {
-      const returnTo = buildResidentMapPath(location.search, "/map");
-      const target =
-        mode === "partner"
-          ? `/partners/sign-in?returnTo=${encodeURIComponent(returnTo)}`
-          : `/sign-in?returnTo=${encodeURIComponent(returnTo)}`;
-      return <Navigate to={target} replace />;
-    }
-  }
-
   return <MapPage />;
 }
 
@@ -171,8 +157,8 @@ function ProductRoutes() {
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
           <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/app" element={<MapLaunchGate />} />
-          <Route path="/app/map" element={<MapLaunchGate />} />
-          <Route path="/map" element={<MapLaunchGate />} />
+          <Route path="/app/map" element={<AuthenticatedResidentMap />} />
+          <Route path="/map" element={<PublicMapGateway />} />
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />

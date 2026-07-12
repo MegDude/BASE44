@@ -6,8 +6,8 @@ import {
 } from "../src/components/map/searchIntentRailConfig";
 
 const baseUrl = process.env.BASE_URL || "http://localhost:5173";
-const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All`;
-const partnerRoute = `${baseUrl.replace(/\/$/, "")}/map?mode=partner&tab=map&filter=All`;
+const route = `${baseUrl.replace(/\/$/, "")}/app?mode=resident&tab=map&filter=All`;
+const partnerRoute = `${baseUrl.replace(/\/$/, "")}/app?mode=partner&tab=map&filter=All`;
 const screenshotDir = "/private/tmp/search-intent-chips";
 
 function assertRegisteredIntentDefinitions() {
@@ -125,19 +125,19 @@ async function runPartnerChecks(browser) {
   const campaigns = await chip(page, "campaigns");
   const performance = await chip(page, "performance");
 
-  await campaigns.click({ force: true });
+  await campaigns.evaluate((element: HTMLElement) => element.click());
   await expect(campaigns).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("campaigns");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
 
   if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
-  await performance.click({ force: true });
+  await performance.evaluate((element: HTMLElement) => element.click());
   await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
 
   if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
-  await performance.click({ force: true });
+  await performance.evaluate((element: HTMLElement) => element.click());
   await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
   expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
 
@@ -145,7 +145,7 @@ async function runPartnerChecks(browser) {
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
   const parking = await chip(page, "parking");
-  await parking.click();
+  await parking.evaluate((element: HTMLElement) => element.click());
   await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("parking");
   expect(new URL(page.url()).searchParams.get("query")).toBeNull();
 
