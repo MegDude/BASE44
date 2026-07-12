@@ -170,12 +170,115 @@ const professionalServices = [
   ["Custom Campaign", CalendarDays, "A tailored launch or district activation plan."],
 ];
 
-const integrationGroups = [
-  ["Hospitality", ["Toast", "SevenRooms", "OpenTable", "Resy", "inKind"]],
-  ["Property", ["BuildingLink", "Entrata", "Yardi", "ActiveBuilding"]],
-  ["Marketing", ["HubSpot", "Mailchimp", "Salesforce", "Zapier"]],
-  ["Commerce", ["Stripe", "Square", "Shopify", "Clover"]],
-  ["Google", ["Business Profile", "Calendar", "Maps"]],
+const integrationPartners = [
+  {
+    id: "toast",
+    name: "Toast",
+    category: "Hospitality",
+    logo: "/images/integrations/toast.svg",
+    headline: "Connect discovery to restaurant operations.",
+    copy: "Keep menus, offer links, and redemption references aligned while Downtown Perks helps nearby residents decide where to go.",
+    signals: ["Location details", "Offer links", "Redemption references"],
+  },
+  {
+    id: "buildinglink",
+    name: "BuildingLink",
+    category: "Property",
+    logo: "/images/integrations/buildinglink.png",
+    headline: "Extend resident communication into the neighborhood.",
+    copy: "Connect building touchpoints with nearby perks, events, and welcome paths without replacing the resident systems your team already uses.",
+    signals: ["Resident welcome paths", "Property access", "Location context"],
+  },
+  {
+    id: "sevenrooms",
+    name: "SevenRooms",
+    category: "Hospitality",
+    logo: "/images/integrations/sevenrooms.svg",
+    headline: "Move from discovery to a guest relationship.",
+    copy: "Pair nearby intent with reservation and guest-experience workflows so the path from map discovery to a visit stays clear.",
+    signals: ["Reservation links", "Venue details", "Campaign attribution"],
+  },
+  {
+    id: "opentable",
+    name: "OpenTable",
+    category: "Hospitality",
+    logo: "/images/integrations/opentable.svg",
+    headline: "Make a nearby dining decision bookable.",
+    copy: "Surface reservation links directly from relevant listings, perks, and map moments while keeping booking activity in OpenTable.",
+    signals: ["Reservation links", "Dining profiles", "Visit intent"],
+  },
+  {
+    id: "eventbrite",
+    name: "Eventbrite",
+    category: "Marketing",
+    logo: "/images/integrations/eventbrite.svg",
+    headline: "Carry event interest through to registration.",
+    copy: "Connect Downtown Perks event discovery with the registration workflow your team already manages in Eventbrite.",
+    signals: ["Event links", "Schedule details", "Registration handoff"],
+  },
+  {
+    id: "stripe",
+    name: "Stripe",
+    category: "Commerce",
+    logo: "/images/integrations/stripe.svg",
+    headline: "Keep partner billing secure and familiar.",
+    copy: "Use Stripe-backed checkout and billing references while Downtown Perks manages membership context and workspace access.",
+    signals: ["Checkout", "Membership status", "Billing references"],
+  },
+  {
+    id: "square",
+    name: "Square",
+    category: "Commerce",
+    logo: "/images/integrations/square.svg",
+    headline: "Connect local offers with existing commerce.",
+    copy: "Keep commerce in Square while Downtown Perks provides the nearby discovery, directions, and redemption path.",
+    signals: ["Offer links", "Location details", "Redemption references"],
+  },
+  {
+    id: "hubspot",
+    name: "HubSpot",
+    category: "Marketing",
+    logo: "/images/integrations/hubspot.svg",
+    headline: "Carry qualified partner interest into your CRM.",
+    copy: "Route partner and campaign context into HubSpot so follow-up begins with the organization, location, and intent already understood.",
+    signals: ["Partner leads", "Campaign context", "Lifecycle stage"],
+  },
+  {
+    id: "salesforce",
+    name: "Salesforce",
+    category: "Marketing",
+    logo: "/images/integrations/salesforce.svg",
+    headline: "Connect downtown activity with account context.",
+    copy: "Share governed partner, campaign, and location references with Salesforce without turning the public experience into a CRM dashboard.",
+    signals: ["Account references", "Campaign context", "Location ownership"],
+  },
+  {
+    id: "google",
+    name: "Google",
+    category: "Google",
+    logo: "/images/integrations/google.svg",
+    headline: "Keep place, calendar, and map context connected.",
+    copy: "Use Business Profile, Calendar, and Maps data where appropriate while Downtown Perks remains the resident-facing discovery layer.",
+    signals: ["Business Profile", "Calendar", "Maps"],
+  },
+  {
+    id: "shopify",
+    name: "Shopify",
+    category: "Commerce",
+    logo: "/images/integrations/shopify.svg",
+    headline: "Connect product moments to a local visit.",
+    copy: "Link relevant products and campaigns without duplicating catalog or checkout workflows inside Downtown Perks.",
+    signals: ["Product links", "Campaign context", "Checkout handoff"],
+  },
+  {
+    id: "zapier",
+    name: "Zapier",
+    category: "Marketing",
+    logo: "/images/integrations/zapier.svg",
+    headline: "Automate the handoffs around your workflow.",
+    copy: "Trigger governed follow-up between Downtown Perks and the tools your team already uses, without exposing technical setup to residents.",
+    signals: ["Workflow triggers", "Notifications", "Record handoff"],
+  },
 ];
 
 const timelineSteps = [
@@ -529,22 +632,46 @@ function ProfessionalServicesSection() {
 }
 
 function IntegrationsSection() {
+  const [selectedIntegration, setSelectedIntegration] = useState(integrationPartners[0]);
   return (
     <section id="integrations" className="dp-partner-lifecycle-section dp-partner-integrations-section">
       <div className="dp-partner-lifecycle-section-head">
         <p>Integrations</p>
-        <h2>Works with the software you already trust.</h2>
-        <span>
-          Downtown Perks connects with many of the tools businesses already use every day, reducing duplicate work while making customer experiences easier to discover.
-        </span>
+        <h2>One connected operating layer.</h2>
+        <span>Select a platform to see how Downtown Perks works alongside it. Your existing system remains the source for the workflow it already manages.</span>
       </div>
-      <div className="dp-partner-integration-grid">
-        {integrationGroups.map(([category, tools]) => (
-          <article key={category}>
-            <h3>{category}</h3>
-            <div>{tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-          </article>
-        ))}
+      <div className="dp-integration-matrix-layout">
+        <div className="dp-integration-logo-matrix" role="list" aria-label="Integration partners">
+          {integrationPartners.map((partner) => {
+            const isSelected = selectedIntegration.id === partner.id;
+            return (
+              <button
+                key={partner.id}
+                type="button"
+                role="listitem"
+                className={isSelected ? "is-selected" : ""}
+                aria-pressed={isSelected}
+                onClick={() => setSelectedIntegration(partner)}
+              >
+                <img src={partner.logo} alt="" loading="lazy" />
+                <span>{partner.name}</span>
+              </button>
+            );
+          })}
+        </div>
+        <article className="dp-integration-detail" aria-live="polite">
+          <p>{selectedIntegration.category}</p>
+          <h3>{selectedIntegration.name}</h3>
+          <strong>{selectedIntegration.headline}</strong>
+          <span>{selectedIntegration.copy}</span>
+          <div>
+            {selectedIntegration.signals.map((signal) => <small key={signal}>{signal}</small>)}
+          </div>
+          <Link to="/contact">
+            Discuss this integration
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </article>
       </div>
     </section>
   );

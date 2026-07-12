@@ -101,7 +101,7 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta 
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta > span { color: rgba(255,255,255,.72) !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta a { border-color: #fff !important; border-radius: 12px !important; }
 @media (max-width:820px) {
-  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-integration-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-matrix-layout { grid-template-columns: 1fr !important; }
   html body #root#root main.dp-partner-lifecycle-page-start :is(.dp-partner-lifecycle-hero,.dp-partner-final-cta) { grid-template-columns: 1fr !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-utility-link { justify-self: start !important; }
   html body #root#root main.dp-partner-lifecycle-page-start :is(.dp-partner-lifestyle-grid,.dp-partner-recommendation-grid) { grid-template-columns: 1fr !important; }
@@ -109,8 +109,8 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-final-cta 
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-tools-list article p { grid-column: 2 !important; }
 }
 @media (max-width:639px) {
-  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-integration-grid { grid-template-columns: 1fr !important; }
-  html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-integration-grid > article { min-height: 0 !important; }
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button { min-height: 104px !important; }
   html body #root#root main.dp-partner-lifecycle-page-start { padding-top: 24px !important; }
   html body #root#root main.dp-partner-lifecycle-page-start :is(.dp-partner-lifecycle-hero,.dp-partner-trust-strip,.dp-partner-lifecycle-section) { width: calc(100% - 32px) !important; }
   html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero { padding: 32px 0 40px !important; }
