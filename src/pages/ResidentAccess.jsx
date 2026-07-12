@@ -7,7 +7,7 @@ import {
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
-const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
+const APP_HREF = "https://downtown-perks-backend.vercel.app/map?mode=resident&tab=map&filter=All";
 
 const INCLUDED = [
   "Nearby perks",
