@@ -281,6 +281,51 @@ const integrationPartners = [
   },
 ];
 
+const integrationCatalog = [
+  {
+    category: "Hospitality",
+    tools: ["Toast", "SevenRooms", "OpenTable", "Resy", "inKind"],
+    headline: "Keep discovery connected to the guest journey.",
+    copy: "Reservations, loyalty, and restaurant operations remain in the hospitality tools your team already uses.",
+    signals: ["Location details", "Reservation links", "Offer and loyalty context"],
+  },
+  {
+    category: "Property",
+    tools: ["BuildingLink", "Entrata", "Yardi", "ActiveBuilding"],
+    headline: "Extend resident systems into the neighborhood.",
+    copy: "Property platforms remain the operational source while Downtown Perks connects residents with nearby places, events, and benefits.",
+    signals: ["Resident welcome paths", "Property context", "Neighborhood access"],
+  },
+  {
+    category: "Marketing",
+    tools: ["HubSpot", "Mailchimp", "Salesforce", "Zapier"],
+    headline: "Carry useful context into follow-up.",
+    copy: "Keep customer and campaign workflows in your marketing stack while Downtown Perks provides governed location and intent context.",
+    signals: ["Campaign context", "Lifecycle handoff", "Workflow triggers"],
+  },
+  {
+    category: "Commerce",
+    tools: ["Stripe", "Square", "Shopify", "Clover"],
+    headline: "Connect intent without duplicating checkout.",
+    copy: "Commerce remains in the system built to manage it while Downtown Perks supports discovery, offers, and the path to purchase.",
+    signals: ["Checkout handoff", "Offer links", "Redemption references"],
+  },
+  {
+    category: "Google",
+    tools: ["Business Profile", "Calendar", "Maps"],
+    headline: "Keep place and schedule information aligned.",
+    copy: "Use Google services for governed business, calendar, and navigation context while Downtown Perks remains the resident-facing discovery layer.",
+    signals: ["Business Profile", "Calendar", "Maps"],
+  },
+];
+
+const integrationLogoAliases = {
+  inKind: "/pins/brands/inkind-logo.png",
+  "Business Profile": "/images/integrations/google.svg",
+  Calendar: "/images/integrations/google.svg",
+  Maps: "/images/integrations/google.svg",
+};
+
 const timelineSteps = [
   "Choose your membership",
   "Create your workspace",
@@ -706,40 +751,74 @@ function ProfessionalServicesSection() {
 }
 
 function IntegrationsSection() {
-  const [selectedIntegration, setSelectedIntegration] = useState(integrationPartners[0]);
+  const [activeCategory, setActiveCategory] = useState(integrationCatalog[0].category);
+  const [selectedTool, setSelectedTool] = useState(integrationCatalog[0].tools[0]);
+  const activeGroup = integrationCatalog.find((group) => group.category === activeCategory) || integrationCatalog[0];
+  const selectedPartner = integrationPartners.find((partner) => partner.name === selectedTool);
+  const selectedLogo = selectedPartner?.logo || integrationLogoAliases[selectedTool];
+  const detail = selectedPartner || {
+    name: selectedTool,
+    category: activeGroup.category,
+    headline: activeGroup.headline,
+    copy: activeGroup.copy,
+    signals: activeGroup.signals,
+  };
+
+  function selectCategory(group) {
+    setActiveCategory(group.category);
+    setSelectedTool(group.tools[0]);
+  }
+
   return (
     <section id="integrations" className="dp-partner-lifecycle-section dp-partner-integrations-section">
       <div className="dp-partner-lifecycle-section-head">
         <p>Integrations</p>
         <h2>One connected operating layer.</h2>
-        <span>Select a platform to see how Downtown Perks works alongside it. Your existing system remains the source for the workflow it already manages.</span>
+        <span>Select a category, then a platform. Every supported tool now lives in this single integration matrix.</span>
+      </div>
+      <div className="dp-integration-category-tabs" role="tablist" aria-label="Integration categories">
+        {integrationCatalog.map((group) => (
+          <button
+            key={group.category}
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === group.category}
+            className={activeCategory === group.category ? "is-active" : ""}
+            onClick={() => selectCategory(group)}
+          >
+            <span>{group.category}</span>
+            <small>{group.tools.length}</small>
+          </button>
+        ))}
       </div>
       <div className="dp-integration-matrix-layout">
-        <div className="dp-integration-logo-matrix" role="list" aria-label="Integration partners">
-          {integrationPartners.map((partner) => {
-            const isSelected = selectedIntegration.id === partner.id;
+        <div className="dp-integration-logo-matrix" role="list" aria-label={`${activeGroup.category} integrations`}>
+          {activeGroup.tools.map((tool) => {
+            const partner = integrationPartners.find((item) => item.name === tool);
+            const logo = partner?.logo || integrationLogoAliases[tool];
+            const isSelected = selectedTool === tool;
             return (
               <button
-                key={partner.id}
+                key={tool}
                 type="button"
                 role="listitem"
                 className={isSelected ? "is-selected" : ""}
                 aria-pressed={isSelected}
-                onClick={() => setSelectedIntegration(partner)}
+                onClick={() => setSelectedTool(tool)}
               >
-                <img src={partner.logo} alt="" loading="lazy" />
-                <span>{partner.name}</span>
+                {logo ? <img src={logo} alt="" loading="lazy" /> : <b aria-hidden="true">{tool.slice(0, 2)}</b>}
+                <span>{tool}</span>
               </button>
             );
           })}
         </div>
         <article className="dp-integration-detail" aria-live="polite">
-          <p>{selectedIntegration.category}</p>
-          <h3>{selectedIntegration.name}</h3>
-          <strong>{selectedIntegration.headline}</strong>
-          <span>{selectedIntegration.copy}</span>
+          <p>{activeGroup.category}</p>
+          <h3>{detail.name}</h3>
+          <strong>{detail.headline}</strong>
+          <span>{detail.copy}</span>
           <div>
-            {selectedIntegration.signals.map((signal) => <small key={signal}>{signal}</small>)}
+            {detail.signals.map((signal) => <small key={signal}>{signal}</small>)}
           </div>
           <Link to="/contact">
             Discuss this integration
