@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 
 const FOOTER_LINKS = {
   Residents: [
-    { to: "/app?mode=resident&tab=map", label: "Open App" },
+    { to: "/map?mode=resident&tab=map", label: "Open App" },
     { to: "/card", label: "Perks Card" },
   ],
   Partners: [
@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="dp-site-footer-layout mb-7 grid grid-cols-1 gap-6 md:grid-cols-[0.88fr_2.12fr] md:gap-8 lg:mb-8 lg:gap-10">
           <div>
-            <Link to="/app?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-white transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]" aria-label="Downtown Perks app">
+            <Link to="/map?mode=resident&tab=map" className="mb-5 inline-flex items-center gap-2.5 whitespace-nowrap leading-none text-white transition-colors hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]" aria-label="Downtown Perks app">
               <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A]" aria-hidden="true" />
               <span className="inline-flex items-center whitespace-nowrap font-sans text-[14.5px] font-semibold leading-none tracking-normal">
                 Downtown Perks

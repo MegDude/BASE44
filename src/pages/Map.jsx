@@ -140,7 +140,7 @@ const AUSTIN_CENTER = RAINEY_STREET_CENTER;
 const INITIAL_MAP_ZOOM = 16.8;
 const SELECTED_ROUTE_INITIAL_MAX_ZOOM = 16.4;
 const MAP_MAX_ZOOM = 22;
-const MAP_STREET_FOCUS_ZOOM = 19;
+const MAP_STREET_FOCUS_ZOOM = 21;
 const INITIAL_DISCOVERY_MARKER_LIMIT = 16;
 const DEFAULT_INTERACTION_MARKER_LIMIT = 36;
 const DEFAULT_HIGH_ZOOM_MARKER_LIMIT = 60;
@@ -226,16 +226,16 @@ const LEGENDS_BRAND_LINE = "Legends Real Estate";
 const LEGENDS_PIN_LOGO = "/pins/downtown-perks/legends-logo-gold.svg";
 const LEGENDS_PIN_ALT = "Legends Real Estate logo";
 const MAP_DRAWER_SURFACE_STYLE = {
-  backgroundColor: "rgba(255, 255, 255, 0.94)",
+  backgroundColor: "#FFFFFF",
   backgroundImage: "none",
   border: "1px solid rgba(11, 31, 51, 0.06)",
   borderBottom: 0,
-  borderRadius: "20px 20px 0 0",
-  boxShadow: "0 -16px 44px rgba(11, 31, 51, 0.10)",
+  borderRadius: "10px 10px 0 0",
+  boxShadow: "0 -10px 28px rgba(11, 31, 51, 0.08)",
   color: "#0B1F33",
   WebkitTextFillColor: "#0B1F33",
-  WebkitBackdropFilter: "blur(10px) saturate(1.1)",
-  backdropFilter: "blur(10px) saturate(1.1)",
+  WebkitBackdropFilter: "none",
+  backdropFilter: "none",
 };
 const FILTERS = [
   "All",
@@ -3825,19 +3825,16 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
     };
   }
   const fill = "#0B1F33";
-  const stroke = "#BFA46A";
-  const iconColor = "#BFA46A";
+  const stroke = "#C8A96A";
+  const iconColor = "#C8A96A";
   const pin = resolveEntityPin(place);
   const paths = mapIconSvgInner(pin.glyph);
   const iconSize = Math.max(18, Math.round(size * 0.5));
   const iconScale = Math.max(0.75, size / 48);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="${fill}" stroke="${stroke}" stroke-width="${isLegends ? "2.4" : "1.8"}"/>
-      ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.26" stroke-width="1"/>`}
-      ${isLegends ? "" : `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.4}" fill="none" stroke="#0B3E31" stroke-opacity="0.2" stroke-width="1"/>`}
-      ${selected ? `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 0.8}" fill="none" stroke="#BFA46A" stroke-opacity="0.42" stroke-width="1.2"/>` : ""}
-      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="${selected ? stroke : fill}" stroke="${selected ? fill : stroke}" stroke-width="1.35"/>
+      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${selected ? fill : iconColor}" fill="none" stroke="${selected ? fill : iconColor}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
       ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
@@ -3854,10 +3851,8 @@ function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 3}" fill="#0B1F33" stroke="#BFA46A" stroke-width="1.8"/>
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 7}" fill="none" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1"/>
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1.4}" fill="none" stroke="#0B3E31" stroke-opacity="0.22" stroke-width="1"/>
-      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#BFA46A">${label}</text>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33" stroke="#C8A96A" stroke-width="1.35"/>
+      <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#FFFFFF">${label}</text>
     </svg>`;
   return {
     url: svgMarkerDataUrl(svg),
@@ -12672,11 +12667,13 @@ function GoogleMapCanvas({
       button?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
+        markUserNavigated();
         onSelect(place);
       });
       button?.addEventListener("dblclick", (event) => {
         event.preventDefault();
         event.stopPropagation();
+        markUserNavigated();
         onSelectNearestLegends(place);
       });
 
@@ -12691,7 +12688,10 @@ function GoogleMapCanvas({
       });
 
       if (!canUseAdvancedMarkers) {
-        marker.addListener("click", () => onSelect(place));
+        marker.addListener("click", () => {
+          markUserNavigated();
+          onSelect(place);
+        });
       }
       markersRef.current.push(marker);
     });
@@ -15066,7 +15066,7 @@ export default function MapPage() {
         id: "legends",
         label: "Legends",
         filter: "Legends",
-        description: "Highlights Legends residential listings, buildings, and downtown living context.",
+        description: "Highlights Legends real estate listings, buildings, and downtown living context.",
         status: activeFilter === "Legends" ? "Showing now" : "Real estate",
         meta: ["Listings", "Buildings", "Tours"],
       },
@@ -16584,6 +16584,15 @@ export default function MapPage() {
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
     activeFilter === "Listings";
+  const showTopMapBack =
+    urlState.tab === "map" &&
+    (
+      Boolean(selected && !selectedDrawerClosed) ||
+      Boolean(clusterDrawer) ||
+      Boolean(activePartnerPanel) ||
+      isLegendsDirectoryLayer ||
+      (urlState.mode === "resident" && ["perks", "events", "saved", "info"].includes(activeBottomTab))
+    );
   const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab));
   const embedLoadEventKeyRef = useRef("");
   const fullMapHref = useMemo(() => {
@@ -16626,6 +16635,7 @@ export default function MapPage() {
     <div
       className={`dp-map-page relative h-screen overflow-hidden bg-white text-[#0B1F33] ${urlState.mode === "partner" ? "dp-map-page-partner" : "dp-map-page-resident"} ${urlState.embed ? "dp-map-page-embedded" : ""}`}
       data-map-zoom={mapZoom.toFixed(2)}
+      data-top-map-back={showTopMapBack ? "true" : "false"}
     >
       {urlState.embed ? (
         <header className="dp-embed-map-header">
@@ -16718,63 +16728,76 @@ export default function MapPage() {
         <div
           className="dp-map-search-anchor pointer-events-none absolute inset-x-0 top-[72px] z-[680] px-2.5 md:top-[80px] md:px-5"
         >
-          <SearchIntentConsole
-            mode={urlState.mode}
-            query={search}
-            placeholder={searchPlaceholder}
-            activeIntent={urlState.mode === "partner" ? urlState.intent : residentSearchIntent.intent}
-            activeTime={residentSearchIntent.time}
-            activeRadius={radius}
-            activeFilter={activeFilter}
-            activeCollection={urlState.collection}
-            resultCount={mapPlaces.length}
-            requestStatus={scopedRequestStatus}
-            lastTrigger={scopedLastTrigger}
-            inputRef={searchInputRef}
-            onQueryChange={(value) => {
-              setConsoleCollapsed(false);
-              setSearch(value);
-              if (mapAnswer) setMapAnswer(null);
-            }}
-            onSubmit={(event) => {
-              void runSearch(event);
-            }}
-            onClear={clearResidentSearchIntent}
-            onIntentSelect={applyResidentIntent}
-            onFilterSelect={applyResidentConsoleFilter}
-            onTimeSelect={applyResidentTime}
-            onRadiusSelect={applyResidentRadius}
-            onCollectionSelect={(collection, item) => openCollectionRoute(collection, item?.prompt || item?.label || "")}
-            onPromptSelect={(prompt) => {
-              setResidentSearchIntent({ intent: null, time: null });
-              void applyPrompt(prompt);
-            }}
-            onModeChange={(mode) => {
-              if (mode === urlState.mode) return;
-              setActiveBottomTab("map");
-              setSearch("");
-              setActiveFilter("All");
-              setSelectedId("");
-              setSelectedPlaceOverride(null);
-              setMapAnswer(null);
-              clearScopedMapResults();
-              urlState.update({
-                mode,
-                tab: "map",
-                filter: "All",
-                query: "",
-                q: "",
-                prompt: "",
-                intent: "",
-                entityId: "",
-                entityType: "",
-                collection: "",
-              });
-            }}
-            isCollapsed={shouldCollapseSearchConsole}
-            onCollapse={() => setConsoleCollapsed(true)}
-            onExpand={() => setConsoleCollapsed(false)}
-          />
+          <div className={`dp-map-top-nav ${showTopMapBack ? "has-back" : ""}`}>
+            {showTopMapBack ? (
+              <button
+                type="button"
+                className="dp-map-top-back"
+                onClick={isLegendsDirectoryLayer ? closeDirectoryToMap : goBackToMap}
+                aria-label="Back to map"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <span>Back</span>
+              </button>
+            ) : null}
+            <SearchIntentConsole
+              mode={urlState.mode}
+              query={search}
+              placeholder={searchPlaceholder}
+              activeIntent={urlState.mode === "partner" ? urlState.intent : residentSearchIntent.intent}
+              activeTime={residentSearchIntent.time}
+              activeRadius={radius}
+              activeFilter={activeFilter}
+              activeCollection={urlState.collection}
+              resultCount={mapPlaces.length}
+              requestStatus={scopedRequestStatus}
+              lastTrigger={scopedLastTrigger}
+              inputRef={searchInputRef}
+              onQueryChange={(value) => {
+                setConsoleCollapsed(false);
+                setSearch(value);
+                if (mapAnswer) setMapAnswer(null);
+              }}
+              onSubmit={(event) => {
+                void runSearch(event);
+              }}
+              onClear={clearResidentSearchIntent}
+              onIntentSelect={applyResidentIntent}
+              onFilterSelect={applyResidentConsoleFilter}
+              onTimeSelect={applyResidentTime}
+              onRadiusSelect={applyResidentRadius}
+              onCollectionSelect={(collection, item) => openCollectionRoute(collection, item?.prompt || item?.label || "")}
+              onPromptSelect={(prompt) => {
+                setResidentSearchIntent({ intent: null, time: null });
+                void applyPrompt(prompt);
+              }}
+              onModeChange={(mode) => {
+                if (mode === urlState.mode) return;
+                setActiveBottomTab("map");
+                setSearch("");
+                setActiveFilter("All");
+                setSelectedId("");
+                setSelectedPlaceOverride(null);
+                setMapAnswer(null);
+                clearScopedMapResults();
+                urlState.update({
+                  mode,
+                  tab: "map",
+                  filter: "All",
+                  query: "",
+                  q: "",
+                  prompt: "",
+                  intent: "",
+                  entityId: "",
+                  entityType: "",
+                  collection: "",
+                });
+              }}
+              isCollapsed={shouldCollapseSearchConsole}
+              onCollapse={() => setConsoleCollapsed(true)}
+              onExpand={() => setConsoleCollapsed(false)}
+            />
+          </div>
         </div>
       )}
 
@@ -17409,22 +17432,26 @@ export default function MapPage() {
           >
             {!usesCleanResidentialEntityDrawer(selected) && (
               <div className="dp-map-panel-header dp-drawer-control-row" aria-label="Drawer controls">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const parent = inKindParentRef.current;
-                    if (isInKindEntity(selected) && !isInKindNetworkEntity(selected) && parent) {
-                      inKindParentRef.current = null;
-                      selectPlace(parent);
-                      setActiveFilter("inKind");
-                      urlState.update({ filter: "inKind", collection: "inkind-dining-market", entityId: parent.id, listingId: "" });
-                    } else goBackToMap();
-                  }}
-                  className="dp-map-panel-icon-button dp-drawer-control dp-destination-back dp-drawer-back"
-                  aria-label="Back to map"
-                >
-                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                </button>
+                {!showTopMapBack ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const parent = inKindParentRef.current;
+                      if (isInKindEntity(selected) && !isInKindNetworkEntity(selected) && parent) {
+                        inKindParentRef.current = null;
+                        selectPlace(parent);
+                        setActiveFilter("inKind");
+                        urlState.update({ filter: "inKind", collection: "inkind-dining-market", entityId: parent.id, listingId: "" });
+                      } else goBackToMap();
+                    }}
+                    className="dp-map-panel-icon-button dp-drawer-control dp-destination-back dp-drawer-back"
+                    aria-label="Back to map"
+                  >
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                ) : (
+                  <span className="dp-drawer-control-spacer" aria-hidden="true" />
+                )}
                 <span id={`destination-drawer-title-${selected.id}`} className="dp-map-panel-title dp-drawer-control-title">{isInKindNetworkEntity(selected) ? "Partner details" : getEntityIdentity(selected, urlState.mode).displayTitle || selected.name}</span>
                 <button
                   type="button"

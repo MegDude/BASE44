@@ -9,21 +9,15 @@ const storyStates = [
     id: "start",
     index: "01",
     navLabel: "Start",
-    kicker: "Downtown Perks",
+    kicker: "Downtown Austin",
     headlineGroups: [
       [
-        { text: "More charm", tone: "gold" },
-      ],
-      [
-        { text: "than a biscuit", tone: "navy" },
-      ],
-      [
-        { text: "with honey.", tone: "navy" },
+        { text: "Your downtown map.", tone: "navy" },
       ],
     ],
-    meaning: "Downtown Perks brings the heat — and the hospitality.",
+    meaning: "Find nearby perks, events, buildings, hotels and local places.",
     supporting: [
-      "For the people who plan around live music, rooftop weather, taco runs, and “just one drink” — this is for you.",
+      "Sign in to access your Downtown Perks Card, saved places, resident-only perks, event RSVPs, and benefits available through your building and local partners.",
     ],
     visual: ["Music", "Rooftop", "Tacos"],
   },
@@ -161,7 +155,7 @@ const splashStoryShellVariants = {
 };
 
 function SplashStoryHeader({
-  residentMapHref,
+  residentSignInHref,
   partnerMapHref,
   storyMenuOpen,
   openNavMenu,
@@ -174,7 +168,7 @@ function SplashStoryHeader({
     <div className="dp-product-shell-topbar dp-splash-story-header">
       <div className="dp-story-header-inner">
         <Link
-          to={residentMapHref}
+          to={residentSignInHref}
           className="dp-product-shell-brand dp-story-app-brand"
           aria-label="Downtown Perks app"
           onClick={onLaunchMap}
@@ -184,7 +178,7 @@ function SplashStoryHeader({
         </Link>
 
         <nav className="dp-product-shell-nav-rail dp-story-desktop-nav" aria-label="Downtown Perks navigation">
-          <Link className="dp-story-nav-link is-active" to={residentMapHref} onClick={onLaunchMap}>
+          <Link className="dp-story-nav-link is-active" to={residentSignInHref} onClick={onLaunchMap}>
             Resident Map
           </Link>
           <Link className="dp-story-nav-link" to={partnerMapHref} onClick={onLaunchMap}>
@@ -282,13 +276,20 @@ function SplashStoryHeader({
   );
 }
 
-function SplashStoryFooter({ isLast, residentMapHref, onLaunchMap }) {
+function SplashStoryFooter({ isLast, residentSignInHref, residentCreateHref, residentGuestHref, onLaunchMap }) {
   return (
     <div className="dp-fixed-story-footer dp-splash-story-footer">
-      <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions ${isLast ? "is-emphasized" : ""}`} aria-label="Open map">
-        <Link className="dp-button dp-button-primary dp-button-wide" to={residentMapHref} onClick={onLaunchMap}>
-          Open the Map
+      <div className={`dp-fixed-story-cta-footer dp-fixed-story-final-ctas dp-fixed-map-actions dp-resident-auth-ctas ${isLast ? "is-emphasized" : ""}`} aria-label="Resident access">
+        <Link className="dp-button dp-button-primary dp-button-wide dp-resident-auth-primary" to={residentSignInHref} onClick={onLaunchMap}>
+          Sign in as a resident
         </Link>
+        <Link className="dp-button dp-button-secondary dp-button-wide dp-resident-auth-secondary" to={residentCreateHref} onClick={onLaunchMap}>
+          Create resident account
+        </Link>
+        <Link className="dp-resident-auth-guest" to={residentGuestHref} onClick={onLaunchMap}>
+          Continue as guest
+        </Link>
+        <p className="dp-resident-auth-note">Already signed in? You’ll be taken straight to your resident map.</p>
       </div>
     </div>
   );
@@ -309,7 +310,9 @@ function SplashStoryShell({ children }) {
 }
 
 export default function SplashPage({
-  residentMapHref = "/map?mode=resident&tab=map&filter=All",
+  residentSignInHref = "/sign-in?returnTo=%2Fmap%3Fmode%3Dresident%26tab%3Dmap%26filter%3DAll",
+  residentCreateHref = "/resident-sign-up?returnTo=%2Fmap%3Fmode%3Dresident%26tab%3Dmap%26filter%3DAll",
+  residentGuestHref = "/map?mode=resident&tab=map&filter=All&guest=true",
   partnerMapHref = "/map?mode=partner&tab=map&filter=All",
   onOpenMap,
   replayOpening = false,
@@ -476,7 +479,7 @@ export default function SplashPage({
       {!showIntro && (
         <SplashStoryShell>
           <SplashStoryHeader
-            residentMapHref={residentMapHref}
+            residentSignInHref={residentSignInHref}
             partnerMapHref={partnerMapHref}
             storyMenuOpen={storyMenuOpen}
             openNavMenu={openNavMenu}
@@ -497,11 +500,13 @@ export default function SplashPage({
             onActivate={activate}
           />
 
-          <Link className="dp-story-skip-link" to={residentMapHref} onClick={markMapLaunchReady}>
-            Skip story
-          </Link>
-
-          <SplashStoryFooter isLast={isLast} residentMapHref={residentMapHref} onLaunchMap={markMapLaunchReady} />
+          <SplashStoryFooter
+            isLast={isLast}
+            residentSignInHref={residentSignInHref}
+            residentCreateHref={residentCreateHref}
+            residentGuestHref={residentGuestHref}
+            onLaunchMap={markMapLaunchReady}
+          />
         </SplashStoryShell>
       )}
     </main>

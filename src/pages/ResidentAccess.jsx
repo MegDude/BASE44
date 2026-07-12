@@ -1,33 +1,21 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2, CreditCard, Home, MapPin, QrCode, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, CreditCard, Home, MapPin, QrCode, ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
+import { residentBuildingNames } from "@/data/residentBuildingOptions";
 import {
   markLocalRecord,
 } from "@/lib/productionGuards";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
-const APP_HREF = "https://downtown-perks-backend.vercel.app/map?mode=resident&tab=map&filter=All";
+const APP_HREF = "/map?mode=resident&tab=map&filter=All";
 
 const INCLUDED = [
-  "Nearby perks",
-  "Saved places",
-  "Events and map access",
-  "Resident-only moments",
-];
-
-const BUILDINGS = [
-  "The Independent",
-  "Seaholm Residences",
-  "Spring Condominiums",
-  "The Shore",
-  "Austin Proper Residences",
-  "Fifth & West",
-  "44 East",
-  "Milago",
-  "The Waterline",
-  "Four Seasons Residences",
-  "My building is not listed",
+  "Find nearby offers",
+  "Save places to revisit",
+  "See events around you",
+  "Use your resident card",
 ];
 
 function readRecords() {
@@ -71,7 +59,7 @@ function getResidentMapHref(record) {
   if (record?.id) params.set("residentId", record.id);
   if (record?.verificationStatus) params.set("access", record.verificationStatus);
 
-  return `/app?${params.toString()}`;
+  return `/map?${params.toString()}`;
 }
 
 function getResidentQrSrc(record) {
@@ -91,10 +79,11 @@ function toApp(record, extra = {}) {
     residentId: record.id,
     access: record.verificationStatus || "perks_card",
   });
-  window.location.href = `/app?${params.toString()}`;
+  window.location.href = `/map?${params.toString()}`;
 }
 
 export default function ResidentAccess() {
+  const navigate = useNavigate();
   const checkoutTarget = useMemo(() => resolveCheckoutTarget("residentJoinBuildingNotMember"), []);
   const [residentCard, setResidentCard] = useState(() => readCurrentResidentAccess());
   const [form, setForm] = useState({
@@ -203,15 +192,19 @@ export default function ResidentAccess() {
   return (
     <main className="dp-resident-access-page">
       <nav className="dp-resident-access-topbar" aria-label="Resident access navigation">
+        <button type="button" className="dp-resident-access-back" onClick={() => navigate(-1)}>
+          <ArrowLeft aria-hidden="true" />
+          Back
+        </button>
         <span className="dp-resident-access-brand">Downtown Perks</span>
         <a href={APP_HREF}>Open map <ArrowRight aria-hidden="true" /></a>
       </nav>
       <section className="dp-resident-access-shell" aria-labelledby="resident-access-title">
         <div className="dp-resident-access-copy">
-          <p className="dp-resident-access-eyebrow">Resident Access</p>
-          <h1 id="resident-access-title">Get your Downtown Perks Card.</h1>
+          <p className="dp-resident-access-eyebrow">Resident access</p>
+          <h1 id="resident-access-title">Get your Downtown Perks Card</h1>
           <p>
-            Verify a participating building or choose individual access. Your card keeps nearby perks, saved places, events, and map discovery in one simple resident experience.
+            Verify your building or start with an individual card. Use it to find nearby offers, save places, see events, and open the map when you are deciding where to go.
           </p>
           <div className="dp-resident-access-includes" aria-label="Included with resident access">
             {INCLUDED.map((item) => (
@@ -225,23 +218,23 @@ export default function ResidentAccess() {
             <div>
               <p className="dp-resident-access-eyebrow">Perks Card</p>
               <h2>$25 annually</h2>
-              <span>Individual access when your building is not active yet.</span>
+              <span>For residents whose building is not active yet.</span>
             </div>
             <CreditCard aria-hidden="true" />
           </div>
 
           <fieldset>
-            <legend>Choose your access path</legend>
+            <legend>Choose how to start</legend>
             <div className="dp-resident-access-paths">
               <button type="button" data-active={isBuildingPath} aria-pressed={isBuildingPath} onClick={() => updateField("accessPath", "building")}>
                 <Home aria-hidden="true" />
-                <strong>Verify my building</strong>
-                <span>Use your building, unit, and address.</span>
+                <strong>I live in a partner building</strong>
+                <span>Check your building and unit.</span>
               </button>
               <button type="button" data-active={!isBuildingPath} aria-pressed={!isBuildingPath} onClick={() => updateField("accessPath", "card")}>
                 <ShieldCheck aria-hidden="true" />
-                <strong>Get Perks Card</strong>
-                <span>Start with individual access.</span>
+                <strong>Individual card</strong>
+                <span>Join even if your building is not listed.</span>
               </button>
             </div>
           </fieldset>
@@ -267,7 +260,7 @@ export default function ResidentAccess() {
                 <span>Building</span>
                 <select value={form.buildingName} onChange={(event) => updateField("buildingName", event.target.value)} required>
                   <option value="">Choose building</option>
-                  {BUILDINGS.map((building) => <option key={building} value={building}>{building}</option>)}
+                  {residentBuildingNames.map((building) => <option key={building} value={building}>{building}</option>)}
                 </select>
               </label>
               <label>
@@ -335,7 +328,7 @@ export default function ResidentAccess() {
             </button>
           </div>
           <p className="dp-resident-access-footnote">
-            {isBuildingPath ? "We will check your building access before creating your card." : "Individual access continues through secure checkout."}
+            {isBuildingPath ? "We check your building before creating the card." : "Individual access continues through secure checkout."}
           </p>
         </form>
       </section>

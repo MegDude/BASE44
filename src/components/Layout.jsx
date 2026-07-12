@@ -52,6 +52,8 @@ export default function Layout() {
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
+  const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up";
+  const isPublicPartnerRoute = pathname === "/partners" || pathname.startsWith("/partners/");
 
   useEffect(() => {
     function handleOpenQuickSearch() {
@@ -66,6 +68,7 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/resident/home" ||
+    isResidentAccessRoute ||
     pathname === "/about" ||
     pathname === "/map" ||
     pathname === "/resident/home" ||
@@ -99,6 +102,7 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/map" ||
+    isResidentAccessRoute ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
     pathname === "/residents/map" ||
@@ -107,15 +111,31 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const showBackButton = pathname !== "/" && !isEmbeddedMap && !pathname.startsWith("/partner-workspace");
-  const showNavbar = pathname !== "/" && pathname !== "/resident/home" && !isEmbeddedMap;
-  const showProductSearchButton = !isEmbeddedMap && !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const showBackButton =
+    pathname !== "/" &&
+    pathname !== "/app" &&
+    pathname !== "/app/map" &&
+    pathname !== "/map" &&
+    pathname !== "/sign-in" &&
+    !isEmbeddedMap &&
+    !isResidentAccessRoute &&
+    !isPublicPartnerRoute &&
+    !pathname.startsWith("/partner-workspace");
+  const showNavbar =
+    pathname !== "/" &&
+    pathname !== "/app" &&
+    pathname !== "/app/map" &&
+    pathname !== "/map" &&
+    pathname !== "/resident/home" &&
+    !isEmbeddedMap &&
+    !isResidentAccessRoute;
+  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {
       window.sessionStorage?.setItem("dp-opening-story-seen", "true");
     }
-    navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   function getBackFallbackPath() {
@@ -129,9 +149,9 @@ export default function Layout() {
       return "/resident/home";
     }
 
-    if (pathname === "/resident/home") return "/app?mode=resident&tab=map&filter=All";
+    if (pathname === "/resident/home") return "/map?mode=resident&tab=map&filter=All";
     if (pathname === "/pricing" || pathname === "/contact") return "/partners";
-    if (pathname.startsWith("/ask-map")) return "/app?mode=resident&tab=map&filter=All";
+    if (pathname.startsWith("/ask-map")) return "/map?mode=resident&tab=map&filter=All";
     if (pathname.startsWith("/admin-studio")) return "/partner-workspace/overview";
     if (pathname.startsWith("/partners/")) return "/partners";
     if (pathname === "/partner-workspace/overview") return "/partners";

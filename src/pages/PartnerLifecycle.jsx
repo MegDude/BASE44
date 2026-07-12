@@ -332,7 +332,7 @@ const timelineSteps = [
   "Connect your existing software",
   "Publish your first offer or event",
   "Residents begin discovering your business",
-  "Track visits, engagement and results",
+  "Track visits, engagement, and results",
 ];
 
 const faqItems = [

@@ -527,6 +527,36 @@ export function useSearchDrivenMapEntities() {
     requestStatusRef.current = requestStatus;
   }, [requestStatus]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!registryPromiseRef.current) {
+      registryPromiseRef.current = loadRegistry();
+    }
+
+    registryPromiseRef.current
+      .then((entities) => {
+        if (cancelled) return;
+        loadedRegistryRef.current = entities;
+        setLoadedRegistry(entities);
+        setMetrics((current) => ({
+          ...current,
+          initialEntityRequestCount: current.initialEntityRequestCount || 1,
+          loadedRegistryCount: entities.length,
+        }));
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        registryPromiseRef.current = null;
+        console.warn("Map registry could not be loaded.", error);
+        setRequestStatus((current) => current === "idle" ? "error" : current);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const runSearch = useCallback(async (scope = {}, trigger = "search") => {
     const normalizedScope = normalizeScope(scope);
     const queryKey = buildQueryKey(normalizedScope);
@@ -614,29 +644,28 @@ export function useSearchDrivenMapEntities() {
     [resultState],
   );
 
+  const places = useMemo(() => {
+    const hasScopedRequest = Boolean(lastTrigger || resultState.queryKey || resultState.fetchedAt);
+    return hasScopedRequest ? resultPlaces : loadedRegistry;
+  }, [lastTrigger, loadedRegistry, resultPlaces, resultState.fetchedAt, resultState.queryKey]);
+
   useEffect(() => {
     if (typeof window === "undefined" || import.meta.env.PROD) return;
     window.__DP_MAP_SEARCH_METRICS__ = {
       ...metrics,
-      initialMarkerCount: resultPlaces.length ? resultPlaces.length : 0,
-      mountedMarkerCount: resultPlaces.length,
+      initialMarkerCount: places.length ? places.length : 0,
+      mountedMarkerCount: places.length,
       resultTotal: resultState.total,
       requestStatus,
       lastTrigger,
     };
-    if (!lastTrigger && resultPlaces.length > 0) {
-      console.warn("[map-search] initial general-purpose pins exceed zero", resultPlaces.length);
-    }
-    if (resultPlaces.length > 75) {
-      console.warn("[map-search] mounted marker count exceeds cap", resultPlaces.length);
-    }
     if (resultState.total > 100) {
       console.warn("[map-search] public request returned more than 100 records", resultState.total);
     }
-  }, [lastTrigger, metrics, requestStatus, resultPlaces.length, resultState.total]);
+  }, [lastTrigger, metrics, places.length, requestStatus, resultState.total]);
 
   return {
-    places: resultPlaces,
+    places,
     allLoadedPlaces: loadedRegistry,
     entitiesById: resultState.entitiesById,
     resultState,

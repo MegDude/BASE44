@@ -55,6 +55,22 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-console
   text-decoration: none !important;
 }
 
+html body #root .dp-map-page .dp-map-top-nav :is(
+  .dp-search-intent-audience-tabs button,
+  .dp-search-intent-top-actions button,
+  .dp-map-top-back,
+  .dp-search-intent-label
+)::before,
+html body #root .dp-map-page .dp-map-top-nav :is(
+  .dp-search-intent-audience-tabs button,
+  .dp-search-intent-top-actions button,
+  .dp-map-top-back,
+  .dp-search-intent-label
+)::after {
+  display: none !important;
+  content: none !important;
+}
+
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-top-actions {
   margin-left: auto !important;
 }

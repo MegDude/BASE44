@@ -131,7 +131,7 @@ const SEARCH_INTENT_COPY = {
   },
   legends: {
     fullLabel: "Legends listings",
-    description: "Legends residential listings, featured properties and nearby places",
+    description: "Legends real estate listings, featured properties and nearby places",
     includesBrands: true,
   },
   arts: {

@@ -19,6 +19,7 @@ export function createDowntownMarker({
 }: MarkerAdapterInput): any {
   const canUseAdvancedMarkers = Boolean(preferAdvanced && maps.marker?.AdvancedMarkerElement && content);
   if (canUseAdvancedMarkers) {
+    const collisionBehavior = maps.CollisionBehavior?.OPTIONAL_AND_HIDES_LOWER_PRIORITY;
     return new maps.marker.AdvancedMarkerElement({
       map,
       position,
@@ -26,6 +27,8 @@ export function createDowntownMarker({
       title,
       anchorLeft: "-50%",
       anchorTop: "-50%",
+      gmpDraggable: false,
+      ...(collisionBehavior ? { collisionBehavior } : {}),
     });
   }
   return new maps.Marker({
@@ -34,5 +37,8 @@ export function createDowntownMarker({
     title,
     icon,
     optimized: true,
+    draggable: false,
+    clickable: true,
+    crossOnDrag: false,
   });
 }

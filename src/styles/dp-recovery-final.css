@@ -3111,7 +3111,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet, .dp-map-directory-sh
 }
 
 html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet, .dp-map-directory-sheet, .dp-map-drawer-shell, .dp-panel-shell, .dp-detail-drawer, .dp-bottom-sheet, .dp-pass-panel, .dp-quick-search-modal) {
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
 }
 
 @media (min-width: 768px) {
@@ -3291,7 +3291,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet, .dp-map-directory-sh
 }
 
 html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet, .dp-map-directory-sheet, .dp-map-drawer-shell, .dp-panel-shell, .dp-detail-drawer, .dp-bottom-sheet, .dp-pass-panel, .dp-quick-search-modal) {
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
 }
 
 @media (min-width: 768px) {
@@ -45209,7 +45209,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-search-intent-console, .dp-map-
 }
 
 html body #root .dp-map-page.dp-map-page :is(.dp-map-drawer-shell, .dp-panel-shell, .dp-detail-drawer, .dp-destination-drawer, .dp-map-sheet, .dp-map-directory-sheet, .dp-bottom-sheet, .dp-pass-panel, .dp-quick-search-modal) {
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
 }
 
 html body #root .dp-map-page.dp-map-page :is(.dp-map-sheet-scroll, .dp-drawer-scroll, .dp-destination-scroll, .dp-destination-content, .dp-panel-content, .dp-pass-panel-body) {
@@ -45261,7 +45261,7 @@ html body #root div.dp-map-page.dp-map-page aside.dp-panel-shell.dp-detail-drawe
   background-color: rgba(255, 255, 255, .82) !important;
   background-image: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .76)) !important;
   border: 1px solid rgba(255, 255, 255, .72) !important;
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   box-shadow: 0 18px 48px rgba(11, 31, 51, .10), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
@@ -46679,7 +46679,7 @@ html body #root .dp-splash-page.dp-fixed-story-page .dp-fixed-map-actions a {
   }
 }
 
-/* Legends residential drawer regression cleanup: image-only hero, quiet controls, mobile-readable text. */
+/* Legends real estate drawer regression cleanup: image-only hero, quiet controls, mobile-readable text. */
 /* Story opener typography and rail alignment lock: Inter display, navy/gold only, centered controls. */
 html body #root .dp-splash-page.dp-fixed-story-page {
   background: #FFFFFF !important;
@@ -47189,7 +47189,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-map-drawer-shell, .dp-map-drawe
   -webkit-text-fill-color: #0B1F33 !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
   border-bottom: 0 !important;
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   box-shadow: 0 18px 48px rgba(11, 31, 51, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -53202,4 +53202,3 @@ html body #root .dp-map-page.dp-map-page .dp-legends-action-carousel > .dp-entit
     line-height: 1.15 !important;
   }
 }
-

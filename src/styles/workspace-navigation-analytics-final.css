@@ -356,3 +356,15 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-an
     bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+/* Map top navigation ownership: when Back moves beside search, suppress older duplicates. */
+html body:has(#root .dp-map-page[data-top-map-back="true"]) #root :is(
+  .dp-layout-back,
+  .dp-map-page .dp-panel-toolbar .dp-panel-back,
+  .dp-map-page .dp-panel-header .dp-panel-back-floating,
+  .dp-map-page .dp-drawer-back-icon,
+  .dp-map-page .dp-destination-back.dp-drawer-back,
+  .dp-map-page .dp-map-panel-header .dp-drawer-back
+) {
+  display: none !important;
+}

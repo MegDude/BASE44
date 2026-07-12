@@ -73,7 +73,7 @@ const PARTNER_TYPES = [
 const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES;
 
 const ACCESS_ROUTE_BY_TYPE = {
-  resident: "/app?mode=resident&tab=map&filter=All",
+  resident: "/map?mode=resident&tab=map&filter=All",
 };
 
 const TIMELINES = [

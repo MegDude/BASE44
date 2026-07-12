@@ -375,3 +375,86 @@ html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-p
     padding: 14px !important;
   }
 }
+
+/* Launch timeline: keep it as a quiet editorial sequence, not boxed cards or pills. */
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 clamp(18px, 3vw, 34px) !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline > li {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 14px 0 !important;
+  list-style: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline > li::before,
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline > li::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline b {
+  display: block !important;
+  margin: 1px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #9b7b39 !important;
+  -webkit-text-fill-color: #9b7b39 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.035em !important;
+  text-align: left !important;
+}
+
+html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline span {
+  display: block !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 560 !important;
+  line-height: 1.36 !important;
+  letter-spacing: -0.01em !important;
+  white-space: normal !important;
+  text-align: left !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  html body #root#root main.dp-partner-lifecycle-page-start.dp-partner-lifecycle-page-start .dp-partner-timeline > li {
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    padding: 11px 0 !important;
+  }
+}

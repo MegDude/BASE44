@@ -582,7 +582,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   min-width: 0 !important;
   max-width: var(--dp-panel-mobile-width) !important;
   margin-inline: auto !important;
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   contain: layout paint !important;
 }
 
@@ -855,7 +855,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     margin-left: auto !important;
     margin-right: auto !important;
     overflow-x: hidden !important;
-    border-radius: 20px 20px 0 0 !important;
+    border-radius: 10px 10px 0 0 !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(

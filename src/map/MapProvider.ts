@@ -11,8 +11,15 @@ export function createDowntownGoogleMap(
 ): any {
   return new maps.Map(container, {
     disableDefaultUI: true,
+    zoomControl: true,
     clickableIcons: false,
     gestureHandling: "greedy",
+    draggable: true,
+    scrollwheel: true,
+    keyboardShortcuts: true,
+    disableDoubleClickZoom: false,
+    draggableCursor: "grab",
+    draggingCursor: "grabbing",
     ...options,
   });
 }

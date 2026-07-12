@@ -10614,7 +10614,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-nav-activity-badge) {
     .dp-destination-drawer
   ) {
     max-width: 720px !important;
-    border-radius: 20px 20px 0 0 !important;
+    border-radius: 10px 10px 0 0 !important;
   }
 }
 
@@ -13291,7 +13291,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-directory-sheet.dp-ma
   }
 }
 
-/* Legends residential drawer polish: full-width white sections with clear brand ownership. */
+/* Legends real estate drawer polish: full-width white sections with clear brand ownership. */
 html body #root#root .dp-map-page.dp-map-page .dp-legends-residential-drawer {
   width: 100% !important;
   max-width: none !important;
@@ -15108,7 +15108,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
   color: #0B1F33 !important;
   border: 1px solid rgba(11, 31, 51, 0.07) !important;
   border-bottom: 0 !important;
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 10px 10px 0 0 !important;
   box-shadow: 0 -16px 44px rgba(11, 31, 51, 0.1) !important;
   backdrop-filter: blur(10px) saturate(1.08) !important;
   -webkit-text-fill-color: #0B1F33 !important;

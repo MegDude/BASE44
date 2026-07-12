@@ -1161,7 +1161,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
   const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
   const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
-  const isLegends = selectedOrganization?.id === "demo-org-legends-residential";
+  const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
   const metrics = isLegends

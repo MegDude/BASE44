@@ -79,6 +79,8 @@ import "@/styles/partner-campaigns-clean-final.css"
 import "@/styles/map-partner-campaigns-audience-final.css"
 import "@/styles/workspace-header-clean-final.css"
 import "@/styles/workspace-navigation-analytics-final.css"
+import "@/styles/resident-onboarding-final.css"
+import "@/styles/native-panel-surface-lock-final.css"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

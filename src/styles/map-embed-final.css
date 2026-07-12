@@ -68,3 +68,85 @@
     -webkit-backdrop-filter: none;
   }
 }
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-nav {
+  display: flex;
+  align-items: flex-start;
+  width: min(100%, 720px);
+  margin-inline: auto;
+  gap: 8px;
+  pointer-events: none;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-nav > * {
+  pointer-events: auto;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-nav .dp-search-intent-console-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-back {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 11px;
+  border: 1px solid rgba(11, 31, 51, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0b1f33;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.08);
+  backdrop-filter: blur(16px) saturate(1.04);
+  -webkit-backdrop-filter: blur(16px) saturate(1.04);
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-back:is(:hover, :focus-visible) {
+  border-color: rgba(11, 31, 51, 0.22);
+  background: #ffffff;
+  outline: none;
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-back:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(200, 169, 106, 0.38),
+    0 8px 24px rgba(11, 31, 51, 0.08);
+}
+
+html body #root .dp-map-page.dp-map-page .dp-map-top-back svg {
+  width: 15px;
+  height: 15px;
+}
+
+html body #root .dp-map-page.dp-map-page[data-top-map-back="true"] :is(
+  .dp-layout-back,
+  .dp-panel-toolbar .dp-panel-back,
+  .dp-panel-header .dp-panel-back-floating,
+  .dp-drawer-back-icon,
+  .dp-destination-back.dp-drawer-back,
+  .dp-map-panel-header .dp-drawer-back
+) {
+  display: none !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-map-page.dp-map-page .dp-map-top-nav {
+    gap: 6px;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-map-top-back {
+    padding-inline: 10px;
+  }
+
+  html body #root .dp-map-page.dp-map-page .dp-map-top-back span {
+    display: none;
+  }
+}

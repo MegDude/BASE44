@@ -1,6 +1,37 @@
 /* Light editorial resident home: no oversized dark surfaces. */
 html body #root#root .dp-resident-home {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
   background: #f7f8fb !important;
+}
+
+html body #root#root .dp-resident-home__panel,
+html body #root#root .dp-resident-saved-panel,
+html body #root#root .dp-resident-card-panel {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+html body #root#root .dp-resident-home__section,
+html body #root#root .dp-resident-directory-section,
+html body #root#root .dp-resident-panel-intro,
+html body #root#root .dp-resident-profile-section {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root .dp-resident-home {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-right: clamp(22px, 4vw, 52px) !important;
+    padding-left: clamp(22px, 4vw, 52px) !important;
+  }
 }
 
 html body #root#root .dp-resident-hero-card {

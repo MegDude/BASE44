@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import { buildResidentMapPath } from "@/lib/authReturnPath";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -17,6 +18,7 @@ const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
+const ResidentOnboardingFlow = lazy(() => import("./onboarding/ResidentOnboardingFlow"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerGateway = lazy(() => import("./pages/PartnerGateway"));
@@ -102,29 +104,26 @@ function HashScroll() {
   return null;
 }
 
-function normalizeMapLaunchPath(pathname, search) {
-  const params = new URLSearchParams(search || "");
-  if (!params.get("mode")) params.set("mode", "resident");
-  if (!params.get("tab")) params.set("tab", "map");
-  const targetPath = pathname === "/app/map" ? "/app/map" : pathname === "/app" ? "/app" : "/map";
-  const isAppLaunch = targetPath === "/app" || targetPath === "/app/map";
-  if (!params.get("filter") && !params.get("collection") && !params.get("layer")) params.set("filter", "All");
-  if (isAppLaunch) {
-    ["entityId", "listing", "listingId", "campaignId", "drawerClosed"].forEach((key) => params.delete(key));
-  }
-  return `${targetPath}?${params.toString()}`;
-}
-
 function SplashLaunchGate() {
   const location = useLocation();
-  const residentMapHref = normalizeMapLaunchPath("/app/map", location.search);
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+  const residentReturnTo = buildResidentMapPath(location.search, "/map");
+  const guestParams = new URLSearchParams(residentReturnTo.split("?")[1] || "");
+  guestParams.set("guest", "true");
+  const residentGuestHref = `/map?${guestParams.toString()}`;
+
+  if (isLoadingAuth) return <MarketingFallback />;
+  if (isAuthenticated) {
+    return <Navigate to={residentReturnTo} replace />;
+  }
 
   return (
     <Suspense fallback={<MarketingFallback />}>
       <SplashPage
-        residentMapHref={residentMapHref}
+        residentSignInHref={`/sign-in?returnTo=${encodeURIComponent(residentReturnTo)}`}
+        residentCreateHref={`/resident-sign-up?returnTo=${encodeURIComponent(residentReturnTo)}`}
+        residentGuestHref={residentGuestHref}
         partnerMapHref="/map?mode=partner&tab=map&filter=All"
-        replayOpening
       />
     </Suspense>
   );
@@ -132,9 +131,32 @@ function SplashLaunchGate() {
 
 function MapLaunchGate() {
   const location = useLocation();
+  const { isAuthenticated, isLoadingAuth } = useAuth();
+  const params = new URLSearchParams(location.search);
+  const mode = params.get("mode") || "resident";
+  const isEmbed = params.get("embed") === "true";
+  const isGuest = params.get("guest") === "true";
+  const isMapEntryRoute = location.pathname === "/map" || location.pathname === "/app" || location.pathname === "/app/map";
+
   if (location.pathname === "/app" && !location.search) {
     return <SplashLaunchGate />;
   }
+
+  if (isMapEntryRoute && !isEmbed && !isGuest) {
+    if (isLoadingAuth) return <MarketingFallback />;
+    if (isAuthenticated && location.pathname !== "/map") {
+      return <Navigate to={buildResidentMapPath(location.search, "/map")} replace />;
+    }
+    if (!isAuthenticated) {
+      const returnTo = buildResidentMapPath(location.search, "/map");
+      const target =
+        mode === "partner"
+          ? `/partners/sign-in?returnTo=${encodeURIComponent(returnTo)}`
+          : `/sign-in?returnTo=${encodeURIComponent(returnTo)}`;
+      return <Navigate to={target} replace />;
+    }
+  }
+
   return <MapPage />;
 }
 
@@ -151,6 +173,8 @@ function ProductRoutes() {
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<MapLaunchGate />} />
           <Route path="/map" element={<MapLaunchGate />} />
+          <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
+          <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />
           <Route
             path="/ask-map"
@@ -171,20 +195,20 @@ function ProductRoutes() {
           <Route path="/admin-studio/partner-intelligence" element={<AdminMarketingStudio />} />
           <Route path="/admin-studio/residents" element={<AdminMarketingStudio />} />
           <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
-          <Route path="/residents" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
-          <Route path="/explore" element={<Navigate to="/app?mode=resident&tab=map&filter=All" replace />} />
-          <Route path="/events" element={<Navigate to="/app?mode=resident&tab=map&filter=Events" replace />} />
-          <Route path="/perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
-          <Route path="/properties" element={<Navigate to="/app?mode=resident&tab=map&filter=Properties" replace />} />
-          <Route path="/hotels" element={<Navigate to="/app?mode=resident&tab=map&filter=Hotels" replace />} />
+          <Route path="/residents" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="/explore" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="/events" element={<Navigate to="/map?mode=resident&tab=map&filter=Events" replace />} />
+          <Route path="/perks" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/properties" element={<Navigate to="/map?mode=resident&tab=map&filter=Properties" replace />} />
+          <Route path="/hotels" element={<Navigate to="/map?mode=resident&tab=map&filter=Hotels" replace />} />
           <Route path="/card" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
           <Route path="/sign-in" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
           <Route path="/auth/callback" element={<Suspense fallback={<MarketingFallback />}><AuthCallbackPage /></Suspense>} />
           <Route path="/about" element={<Suspense fallback={<MarketingFallback />}><AboutPage /></Suspense>} />
           <Route path="/resident-sign-up" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
           <Route path="/resident-access" element={<Navigate to="/card" replace />} />
-          <Route path="/downtown-perks" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
-          <Route path="/downtown-perks/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/downtown-perks" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/downtown-perks/*" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
 
           {/* Partner landing, onboarding, and public marketing routes. */}
           <Route path="/partners" element={<PartnerLifecycle />} />
@@ -249,8 +273,8 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route path="/brands" element={<Navigate to="/app?mode=resident&tab=map&filter=Brands" replace />} />
-          <Route path="/brands/*" element={<Navigate to="/app?mode=resident&tab=map&filter=Brands" replace />} />
+          <Route path="/brands" element={<Navigate to="/map?mode=resident&tab=map&filter=Brands" replace />} />
+          <Route path="/brands/*" element={<Navigate to="/map?mode=resident&tab=map&filter=Brands" replace />} />
           <Route path="/partners/inkind" element={<Navigate to="/app?mode=partner&tab=map&filter=Perks&query=inKind" replace />} />
           <Route path="/partners/:role" element={<Navigate to="/partners/sign-up" replace />} />
           <Route path="/partners/reports" element={<Navigate to="/partner-workspace/reports" replace />} />
@@ -332,7 +356,7 @@ function ProductRoutes() {
           <Route path="/marketing/home" element={<Navigate to="/" replace />} />
           <Route path="/marketing/pricing" element={<RedirectWithSearch to="/pricing" />} />
           <Route path="/marketing/contact" element={<Navigate to="/partners/sign-up" replace />} />
-          <Route path="/marketing/downtown" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="/marketing/downtown" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/marketing/for-buildings" element={<Navigate to="/partners/sign-up?type=property" replace />} />
           <Route path="/marketing/partners" element={<Navigate to="/partners/sign-up" replace />} />
           <Route path="/marketing/partners/venues" element={<Navigate to="/partners/sign-up?type=venue" replace />} />
@@ -349,7 +373,7 @@ function ProductRoutes() {
           <Route path="/splash" element={<SplashLaunchGate />} />
 
           {/* Catch-all → production app route */}
-          <Route path="*" element={<Navigate to="/app?mode=resident&tab=map&filter=Perks" replace />} />
+          <Route path="*" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
           </Route>
         </Routes>
       </Suspense>

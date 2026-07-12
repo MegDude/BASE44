@@ -37,7 +37,7 @@ export default function ResidentSignIn() {
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
           <p className="dp-resident-signin-eyebrow">Resident access</p>
           <h1 id="resident-signin-title">Sign into<br />your downtown.</h1>
-          <p>Access your resident card, saved places, active perks, RSVPs, and building benefits.</p>
+          <p>Sign in to access your Downtown Perks Card, saved places, resident-only perks, event RSVPs, and benefits available through your building and local partners.</p>
           <form onSubmit={submit}>
             <label htmlFor="resident-email">Email address</label>
             <input id="resident-email" name="email" type="email" autoComplete="email" inputMode="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" />

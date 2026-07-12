@@ -262,7 +262,7 @@ function attachedLegendsPropertyPlace(item) {
     markerType: "property",
     detailDrawerType: "property",
     pinKey: "legends",
-    category: "Legends Residential / Grouped Listings",
+    category: "Legends Real Estate / Grouped Listings",
     category_key: ["legends", "residential property", "grouped listings", item.name, item.address, ...(item.categoryKeys || [])]
       .join(" ")
       .toLowerCase()
@@ -349,7 +349,7 @@ function rentalListingPlace(listing) {
     detailDrawerType: "rental",
     pinKey: "legends",
     brand: "Legends Real Estate",
-    category: "Legends Residential / Rental",
+    category: "Legends Real Estate / Rental",
     category_key: [
       "legends",
       "legends real estate",

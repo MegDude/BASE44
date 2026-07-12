@@ -1,4 +1,4 @@
-export const DEFAULT_RESIDENT_MAP_PATH = "/app/map?mode=resident&tab=map&filter=All";
+export const DEFAULT_RESIDENT_MAP_PATH = "/map?mode=resident&tab=map&filter=All";
 
 const PRESERVED_MAP_KEYS = [
   "mode",
@@ -6,14 +6,27 @@ const PRESERVED_MAP_KEYS = [
   "filter",
   "intent",
   "entityId",
+  "entityType",
   "perkId",
   "eventId",
+  "listing",
+  "listingId",
+  "campaign",
+  "campaignId",
+  "partner",
   "collectionId",
   "collection",
   "routeId",
   "district",
+  "buildingId",
   "query",
+  "q",
+  "prompt",
   "radius",
+  "panel",
+  "panelTab",
+  "source",
+  "guest",
 ] as const;
 
 export function isSafeFirstPartyPath(value?: string | null): value is string {

@@ -140,14 +140,14 @@ function getKind(entity: any): SearchResultKind {
 
 function getRoute(result: SearchResult, entity: any) {
   if (result.kind === "listing" && String(entity?.sourceType || entity?.kind || "").toLowerCase().includes("rental")) {
-    return `/app?layer=rentals&listing=${encodeURIComponent(result.id)}`;
+    return `/map?layer=rentals&listing=${encodeURIComponent(result.id)}`;
   }
 
   if (result.kind === "event") {
-    return `/app?mode=resident&tab=events&entityId=${encodeURIComponent(result.id)}`;
+    return `/map?mode=resident&tab=events&entityId=${encodeURIComponent(result.id)}`;
   }
 
-  return `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`;
+  return `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`;
 }
 
 function normalizeResult(entity: any): SearchResult | null {

@@ -70,9 +70,9 @@ export const workspaceStatusCopy: Record<WorkspaceStatus, { label: string; descr
 
 export const demoOrganizations: WorkspaceOrganization[] = [
   {
-    id: "demo-org-legends-residential",
-    name: "Legends Residential",
-    type: "property_group",
+    id: "demo-org-legends-real-estate",
+    name: "Legends Real Estate",
+    type: "real_estate",
     status: "active",
     plan: "enterprise",
     role: "owner",
@@ -108,9 +108,9 @@ export const demoOrganizations: WorkspaceOrganization[] = [
 ];
 
 export const demoEntityOwners: WorkspaceEntityOwnership[] = [
-  { id: "owner-the-shore", organization_id: "demo-org-legends-residential", entity_id: "property-the-shore", entity_type: "property", display_name: "The Shore" },
-  { id: "owner-the-quincy", organization_id: "demo-org-legends-residential", entity_id: "property-the-quincy", entity_type: "property", display_name: "The Quincy" },
-  { id: "owner-waterline", organization_id: "demo-org-legends-residential", entity_id: "property-waterline", entity_type: "property", display_name: "Waterline" },
+  { id: "owner-legends-real-estate", organization_id: "demo-org-legends-real-estate", entity_id: "legends-real-estate", entity_type: "brand", display_name: "Legends Real Estate", map_filter: "Legends", perk_summary: "Real estate workspace" },
+  { id: "owner-the-shore-4301", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-4301-5357248", entity_type: "listing", display_name: "The Shore #4301", map_filter: "All Listings", perk_summary: "Active listing · MLS 5357248" },
+  { id: "owner-the-shore-5003", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-5003-1682504", entity_type: "listing", display_name: "The Shore #5003", map_filter: "All Listings", perk_summary: "Active listing · MLS 1682504" },
   { id: "owner-atx-cocina", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-atx-cocina", entity_type: "venue", display_name: "ATX Cocina", map_filter: "Dining", perk_summary: "Masa Moment Passport Perk" },
   { id: "owner-j-carver", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-j-carvers", entity_type: "venue", display_name: "J. Carver's", map_filter: "Dining", perk_summary: "Chophouse Passport Perk" },
   { id: "owner-red-ash", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-red-ash", entity_type: "venue", display_name: "Red Ash", map_filter: "Dining", perk_summary: "Fire Cooking Passport Perk" },

@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
 const RESIDENT_LINKS = [
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
-  { to: "/app?mode=resident&tab=map&filter=Events", label: "Events", description: "See downtown events on the map" },
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks", description: "Find resident perks nearby" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
+  { to: "/map?mode=resident&tab=map&filter=Events", label: "Events", description: "See downtown events on the map" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks", description: "Find resident perks nearby" },
   { to: "/card", label: "Perks Card", description: "Get or verify resident access" },
 ];
 
@@ -22,9 +22,9 @@ const PARTNER_LINKS = [
 ];
 
 const HAMBURGER_RESIDENT_LINKS = [
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
-  { to: "/app?mode=resident&tab=map&filter=Events", label: "Events" },
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Perks" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
+  { to: "/map?mode=resident&tab=map&filter=Events", label: "Events" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks" },
   { to: "/card", label: "Perks Card" },
 ];
 
@@ -39,7 +39,7 @@ const HAMBURGER_PARTNER_LINKS = [
 ];
 
 const COMMERCE_LINKS = [
-  { to: "/app?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
+  { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/card", label: "Perks Card" },
   { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/pricing", label: "Pricing" },
@@ -224,7 +224,7 @@ export default function Navbar() {
   }
 
   function handleQuickSearchSelect(result) {
-    navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   return (
@@ -237,7 +237,7 @@ export default function Navbar() {
       }`}
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
-        <Link to="/app?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
+        <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
           <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
           <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
             Downtown Perks
@@ -263,7 +263,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
-                  to="/app?mode=resident&tab=map&filter=Perks"
+                  to="/map?mode=resident&tab=map&filter=Perks"
                   className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     residentMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"

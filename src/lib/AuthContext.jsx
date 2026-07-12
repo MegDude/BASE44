@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }) => {
 
     const partnerType = profile.partner_type || profile.account_type || "partner";
     const accessRole = partnerType === "resident" ? "resident" : "partner";
-    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/app?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
+    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/map?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
     const organizationName = profile.organization_name || profile.company || "Downtown Perks Account";
     const email = profile.email || profile.signup_email || "";
 

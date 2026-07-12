@@ -1,6 +1,6 @@
 export const legendsLuxuryPresenceSeoSnapshot = {
   id: "legends-luxury-presence-seo-2026-07-12",
-  organizationId: "demo-org-legends-residential",
+  organizationId: "demo-org-legends-real-estate",
   provider: "luxury_presence",
   source: "Luxury Presence reporting dashboard",
   capturedAt: "2026-07-12T00:00:00.000Z",
