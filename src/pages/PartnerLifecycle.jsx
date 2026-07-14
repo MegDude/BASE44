@@ -492,23 +492,69 @@ function formatPlanTotal(setup, fallback = "$99") {
 
 function LifecycleShell({ stage, children }) {
   const isTools = stage === "tools";
+  const heroCopy = isTools
+    ? {
+        eyebrow: "Partner platform",
+        title: "One clear workspace for your downtown presence.",
+        body: "Publish perks and events, preview your listing on the map, and understand what residents respond to without replacing the systems that already run your business.",
+        primary: "Open Partner Workspace",
+        primaryHref: "/partner-workspace/overview",
+        secondary: "View Membership",
+        secondaryHref: "/partners#partners",
+      }
+    : stage === "register"
+      ? {
+          eyebrow: "Partner registration",
+          title: "Create the workspace around your business.",
+          body: "Add the details Downtown Perks needs to prepare your profile, checkout handoff, launch materials, and partner workspace.",
+          primary: "Start the form",
+          primaryHref: "#partner-signup",
+          secondary: "View platform tools",
+          secondaryHref: "/partners/tools#platform-tools",
+        }
+      : stage === "checkout"
+        ? {
+            eyebrow: "Partner checkout",
+            title: "Confirm the plan before payment.",
+            body: "Review the selected membership, add-ons, workspace details, and checkout path before continuing.",
+            primary: "Review checkout",
+            primaryHref: "#partner-checkout",
+            secondary: "Back to registration",
+            secondaryHref: "/partners/register",
+          }
+        : stage === "provision"
+          ? {
+              eyebrow: "Workspace setup",
+              title: "Your partner workspace is being prepared.",
+              body: "Downtown Perks is connecting your profile, map visibility, publishing tools, reporting, and billing context.",
+              primary: "Open workspace",
+              primaryHref: "/partner-workspace/overview?provisioned=1",
+              secondary: "View platform tools",
+              secondaryHref: "/partners/tools#platform-tools",
+            }
+          : {
+              eyebrow: "Partner membership",
+              title: "Grow your business without replacing the tools you already use.",
+              body: "Connect with people already living, working, and staying downtown while keeping your existing software, rewards, and workflows.",
+              primary: "Become a Founding Partner",
+              primaryHref: "/partners/register",
+              secondary: "Explore the Platform",
+              secondaryHref: "/partners/tools#platform-tools",
+            };
+
   return (
     <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage}`}>
       <header className="dp-partner-lifecycle-hero">
         <div className="dp-partner-lifecycle-hero-copy">
-          <p>{isTools ? "Partner platform" : "Partner membership"}</p>
-          <h1>{isTools ? "One clear workspace for your downtown presence." : "Grow your business without replacing the tools you already use."}</h1>
-          <span>
-            {isTools
-              ? "Publish perks and events, preview your listing on the map, and understand what residents respond to—without replacing the systems that already run your business."
-              : "Connect with people already living, working, and staying downtown while keeping your existing software, rewards, and workflows."}
-          </span>
+          <p>{heroCopy.eyebrow}</p>
+          <h1>{heroCopy.title}</h1>
+          <span>{heroCopy.body}</span>
           <div className="dp-partner-lifecycle-hero-actions">
-            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
-              {isTools ? "Open Partner Workspace" : stage === "register" ? "Continue to signup" : "Become a Founding Partner"}
+            <Link to={heroCopy.primaryHref}>
+              {heroCopy.primary}
               <ArrowRight aria-hidden="true" />
             </Link>
-            <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View Membership" : "Explore the Platform"}</Link>
+            <Link to={heroCopy.secondaryHref}>{heroCopy.secondary}</Link>
             {!isTools ? <Link to="/partner-workspace/overview">Open Workspace</Link> : null}
           </div>
         </div>
@@ -1044,9 +1090,9 @@ function RegisterStage({ setup, setSetup }) {
   return (
     <section id="partner-signup" className="dp-partner-lifecycle-section dp-partner-register-intake">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Signup details</p>
-        <h2>Create the workspace around your business.</h2>
-        <span>Add the details your team needs for the public profile, launch tools, checkout handoff, and workspace setup.</span>
+        <p>Sign-up details</p>
+        <h2>Tell us what should appear on the map.</h2>
+        <span>Keep this practical: business identity, contact details, launch context, and anything your team wants ready before the workspace opens.</span>
       </div>
 
       <div className="dp-partner-register-layout">
@@ -1086,7 +1132,7 @@ function RegisterStage({ setup, setSetup }) {
 
         <aside className="dp-workspace-preview-card">
           <p>Workspace preview</p>
-          <h3>What you can do after signup.</h3>
+          <h3>What opens after sign-up.</h3>
           <div className="dp-workspace-preview-list">
             {workspacePreviewRows.map(([title, description]) => (
               <article key={title}>
@@ -1182,7 +1228,7 @@ function CheckoutStage({ setup, setSetup }) {
   return (
     <>
       <ProfessionalServicesSection />
-      <section className="dp-partner-lifecycle-section dp-partner-checkout-section">
+      <section id="partner-checkout" className="dp-partner-lifecycle-section dp-partner-checkout-section">
         <div className="dp-partner-lifecycle-section-head">
           <p>Checkout</p>
           <h2>Review your membership before payment.</h2>
