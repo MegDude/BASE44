@@ -1,0 +1,543 @@
+# BASE44 local worktree baseline
+
+Date: 2026-07-16
+Source: /Users/megdude/Downloads/BASE44 2
+
+## git status --short
+ M api/resident-access.js
+ M package.json
+ M scripts/test-first-party-auth.ts
+ M src/App.jsx
+ M src/api/base44Client.js
+ M src/components/Layout.jsx
+ M src/components/map/MapDetailDrawer.jsx
+ M src/components/map/mobileTabRegistry.ts
+ M src/components/map/mobileTabState.ts
+ M src/components/map/searchIntentRailConfig.ts
+ M src/components/map/unified/UnifiedFilterChips.jsx
+ M src/components/modals/QRCodeModal.jsx
+ M src/components/navigation/QuickSearchModal.tsx
+ M src/components/partner/PartnerMobileTabBar.tsx
+ M src/components/resident/ResidentMobileTabBar.tsx
+ M src/components/resident/tabs/ResidentCardTab.jsx
+ M src/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry.ts
+ M src/data/brandActivationIntelligence.js
+ M src/data/downtownPerksEntityImages.ts
+ M src/data/hospitalityContentLibrary.js
+ M src/data/imports/attachedMapInventory.js
+ M src/data/legendsGeneratedListings.js
+ M src/data/legendsListings.js
+ M src/data/legendsPropertyContent.js
+ M src/data/legendsPropertyContent.ts
+ M src/data/mapCollections.ts
+ M src/data/mapNativeCampaigns.js
+ M src/data/media/entityMediaManifest.ts
+ M src/data/production/districtHeroRegistry.ts
+ M src/data/production/index.ts
+ M src/data/residentialMixedUseContentLibrary.js
+ M src/data/supplementalMapEntities.js
+ M src/hooks/useMapEntityData.js
+ M src/hooks/useSearchDrivenMapEntities.js
+ M src/lib/AuthContext.jsx
+ M src/lib/authReturnPath.ts
+ M src/lib/googleMapsLoader.ts
+ M src/lib/map/entityImageResolver.ts
+ M src/lib/map/entityPanelArchetypes.js
+ M src/lib/map/entityPinResolver.ts
+ M src/lib/map/mapIconRegistry.ts
+ M src/lib/map/normalizeEntity.ts
+ M src/lib/map/perkImageRegistry.ts
+ M src/lib/map/rankMapEntities.ts
+ M src/lib/mapEntityAliases.js
+ M src/lib/mapSystemConstants.js
+ M src/lib/supabaseServer.js
+ M src/lib/useLocations.js
+ M src/main.jsx
+ M src/onboarding/ResidentOnboardingFlow.jsx
+ M src/onboarding/state/onboardingPersistence.js
+ M src/pages/AdminMarketingStudio.jsx
+ M src/pages/AuthCallbackPage.jsx
+ M src/pages/Home.jsx
+ M src/pages/Map.jsx
+ M src/pages/PartnerLifecycle.jsx
+ M src/pages/PartnerWorkspace.jsx
+ M src/pages/Pricing.jsx
+ D src/pages/PublicMapGateway.jsx
+ M src/pages/ResidentAccess.jsx
+ M src/pages/ResidentHome.tsx
+ M src/pages/ResidentSignIn.jsx
+ M src/pages/SplashPage.jsx
+ M src/pages/downtown-perks/Events.jsx
+ M src/pages/downtown-perks/PerksCard.jsx
+ M src/pages/partners/Access.jsx
+ M src/pages/partners/Brands.jsx
+ M src/pages/partners/Residential.jsx
+ M src/styles/partner-tools-polish-final.css
+ M src/styles/pricing-lead-polish-final.css
+ M src/styles/resident-card-polish-final.css
+ M src/styles/resident-home-light-editorial-final.css
+ M src/styles/resident-onboarding-final.css
+ M src/styles/resident-product-alignment-final.css
+ M src/styles/workspace-overview-operating-final.css
+ M vite.config.js
+?? api/resident-card/issue.js
+?? api/resident-card/verify.js
+?? docs/archive/
+?? docs/build-comparison-current-vs-deployed-2026-07-16.md
+?? docs/canonical-motion-component-instruction.md
+?? docs/current-base44-map-audit.md
+?? docs/current-partner-experience-audit.md
+?? docs/deployment-ownership.md
+?? docs/events-nearby-data-diagnosis.md
+?? docs/google-map-deployment-config.md
+?? docs/migration/
+?? docs/mobile-panel-accessibility-results.md
+?? docs/mobile-panel-performance-results.md
+?? docs/mobile-panel-regression-matrix.md
+?? docs/mobile-panel-visual-regression.md
+?? docs/mobile-sheet-architecture.md
+?? docs/native-map-regression-audit-template.md
+?? docs/panel-content-inventory.md
+?? docs/panel-drawer-audit.md
+?? docs/panel-journey-map.md
+?? docs/partner-accessibility-results.md
+?? docs/partner-entitlement-model.md
+?? docs/partner-experience-regression-matrix.md
+?? docs/partner-journey-map.md
+?? docs/partner-map-workspace-contract.md
+?? docs/partner-mobile-navigation-decision.md
+?? docs/partner-native-sheet-architecture.md
+?? docs/partner-performance-results.md
+?? docs/partner-preview-contract.md
+?? docs/partner-release-readiness.md
+?? docs/partner-route-decision.md
+?? docs/partner-status-model.md
+?? docs/platform-motion-os-architecture.md
+?? docs/platform-taxonomy-partner-workspace-audit.md
+?? docs/release-readiness-checklist.md
+?? docs/resident-bottom-navigation-decision.md
+?? docs/resident-dashboard-audit.md
+?? docs/resident-map-v1-freeze.md
+?? docs/resident-route-decision.md
+?? public/fonts/
+?? public/images/map-entities/hotels-nearby/
+?? public/images/map/panels/panel-detail/
+?? public/images/residential-content/shared-access-700-red-river.jpeg
+?? public/images/residential-content/shared-access-amenity.jpeg
+?? public/images/residential-content/shared-access-cesar-chavez.jpeg
+?? public/images/residential-content/shared-access-community.jpeg
+?? public/images/residential-content/shared-access-downtown-future.jpeg
+?? public/images/residential-content/shared-access-downtown-lake.jpeg
+?? public/images/residential-content/shared-access-jazz.jpeg
+?? public/images/residential-content/shared-access-waterloo.jpeg
+?? scripts/import-downtown-perks-google-list.ts
+?? scripts/test-onboarding-local-media.mjs
+?? src/components/ai-workbench/
+?? src/components/navigation/BottomActionBar.tsx
+?? src/components/navigation/ContextBackAction.tsx
+?? src/components/navigation/ContextHeader.tsx
+?? src/components/navigation/ContextNavigationProvider.tsx
+?? src/components/navigation/ContinueExploring.tsx
+?? src/components/navigation/SmartBreadcrumbs.tsx
+?? src/components/navigation/context-navigation.css
+?? src/components/navigation/navigation.types.ts
+?? src/components/navigation/navigation.utils.ts
+?? src/components/partner/engage/
+?? src/components/resident/dashboard/
+?? src/config/downtownPerksMapSource.ts
+?? src/content/downtownPerksMapCopy.ts
+?? src/data/downtownPerksCollections.seed.ts
+?? src/data/events/
+?? src/features/native-map/
+?? src/hooks/useContextNavigation.ts
+?? src/lib/ai-workbench/
+?? src/lib/engage/
+?? src/lib/map/canonicalTaxonomy.ts
+?? src/lib/maps/
+?? src/lib/navigation/
+?? src/lib/partner/
+?? src/lib/residentCard.js
+?? src/onboarding/onboardingMedia.js
+?? src/pages/AIWorkbenchPage.jsx
+?? src/pages/ResidentMap.jsx
+?? src/pages/legacyMapStyles.js
+?? src/styles/brand-fonts.css
+?? src/styles/map-card-pin-regression-lock-final.css
+?? src/styles/map-native-drawer-authority-final.css
+?? src/styles/map-panel-navigation-system-final.css
+?? src/styles/onboarding-layout-system-final.css
+?? src/styles/partner-lifecycle-headings-final.css
+?? src/styles/partner-signup-sharp-final.css
+?? src/styles/resident-auth-module-final.css
+?? src/styles/resident-dashboard-premium-final.css
+?? src/styles/resident-onboarding-design-lock.css
+?? src/styles/resident-onboarding-premium-sweep-final.css
+?? src/styles/resident-onboarding-typography-final.css
+?? src/styles/resident-onboarding-unified-final.css
+?? src/styles/search-console-audience-lock-final.css
+?? src/styles/top-navigation-consistency-lock.css
+?? src/types/downtownPerksImportedPlace.ts
+?? tests/e2e/native-map-foundation.spec.ts
+
+## git branch --show-current
+codex/native-map-sheet-consolidation-20260716
+
+## git rev-parse HEAD
+4d6f759aefc7e53368700bfbff52a1bfdb8b61b8
+
+## git remote -v
+base-build26	https://github.com/MegDude/BASE-BUILD26.git (fetch)
+base-build26	https://github.com/MegDude/BASE-BUILD26.git (push)
+dp-product	https://github.com/MegDude/DP-PRODUCT.git (fetch)
+dp-product	https://github.com/MegDude/DP-PRODUCT.git (push)
+origin	https://github.com/MegDude/BASE44.git (fetch)
+origin	https://github.com/MegDude/BASE44.git (push)
+
+## git log --oneline --decorate -30
+4d6f759 (HEAD -> codex/native-map-sheet-consolidation-20260716, origin/main, origin/HEAD, main) style(partners): align register flow with design system
+1fa9743 (origin/codex/session-019f53e0-integration, codex/session-019f53e0-integration) refactor(map): unify mobile bottom drawer shell
+9d56128 style(partner-tools): enforce compact platform styling
+3069636 fix(resident-access): restore account and card flows
+b4ffc09 (codex/session-019f53e0-pre-integration, codex/session-019f53aa-main-integration) fix(auth): restore first-party map route boundaries
+f813249 feat(platform): unify mobile map and first-party routes
+a8bf8d1 (session/019f53aa) feat(map): finalize resident and native map flows
+b7b7ed5 polish map and partner workspace release
+4b4496c style(partner-workspace): remove capsule UI
+b72699d style(partner-access): polish sign-in surface
+7fd90fc feat(resident-home): add curated downtown discovery
+1e316bb style(resident-home): replace dark hero with light editorial layout
+617ef01 feat(resident-home): add native saved and card panels
+c5f7972 feat(navigation): add back action across all routes
+692d9fa refactor(partner-register): simplify workspace preview copy
+8331f08 style(partner-register): unify form layout and typography
+758ece9 style(partner-tools): make integration matrix logo-first
+055273f style(partners): use sentence case for type details
+6d135ce style(partners): remove yellow fills and bento surfaces
+f02175c fix(pricing): tighten builder and require lead persistence
+379b40f feat(partner-access): add verified admin workspace switcher
+2626ca7 style(partner-tools): cap typography and control scale
+dec62c9 refactor(partner-tools): add compact pricing estimator
+761346b style(partner-tools): unify light integration matrix
+6892b4a style(resident-card): flatten access surface system
+be042e7 style(resident-card): simplify access and credential flow
+9823dcf fix(partners): restore complete integration catalog
+f89977a style(partners): animate compact launch timeline
+34b2b34 style(partners): refine growth and service programs
+f5e5168 feat(partners): add interactive integration matrix
+
+## git diff --stat
+ api/resident-access.js                             |   41 +-
+ package.json                                       |    1 +
+ scripts/test-first-party-auth.ts                   |   17 +-
+ src/App.jsx                                        |  146 ++-
+ src/api/base44Client.js                            |   15 +
+ src/components/Layout.jsx                          |   53 +-
+ src/components/map/MapDetailDrawer.jsx             |   31 +-
+ src/components/map/mobileTabRegistry.ts            |    8 +-
+ src/components/map/mobileTabState.ts               |    8 +-
+ src/components/map/searchIntentRailConfig.ts       |   10 +-
+ src/components/map/unified/UnifiedFilterChips.jsx  |   12 +-
+ src/components/modals/QRCodeModal.jsx              |   11 +-
+ src/components/navigation/QuickSearchModal.tsx     |    8 +-
+ src/components/partner/PartnerMobileTabBar.tsx     |    2 +-
+ src/components/resident/ResidentMobileTabBar.tsx   |    8 +-
+ src/components/resident/tabs/ResidentCardTab.jsx   |   19 +-
+ .../downtownPerksPartnerWorkspaceRegistry.ts       |   24 +
+ src/data/brandActivationIntelligence.js            |  202 ++--
+ src/data/downtownPerksEntityImages.ts              |  127 ++-
+ src/data/hospitalityContentLibrary.js              |   14 +-
+ src/data/imports/attachedMapInventory.js           |   27 -
+ src/data/legendsGeneratedListings.js               |    2 +-
+ src/data/legendsListings.js                        |    2 +-
+ src/data/legendsPropertyContent.js                 |    2 +-
+ src/data/legendsPropertyContent.ts                 |    2 +-
+ src/data/mapCollections.ts                         |   18 +
+ src/data/mapNativeCampaigns.js                     |   26 +-
+ src/data/media/entityMediaManifest.ts              |   61 +-
+ src/data/production/districtHeroRegistry.ts        |   10 +-
+ src/data/production/index.ts                       |    1 +
+ src/data/residentialMixedUseContentLibrary.js      |   12 +-
+ src/data/supplementalMapEntities.js                |  391 ++++++-
+ src/hooks/useMapEntityData.js                      |   66 +-
+ src/hooks/useSearchDrivenMapEntities.js            |    3 +-
+ src/lib/AuthContext.jsx                            |  165 ++-
+ src/lib/authReturnPath.ts                          |   50 +-
+ src/lib/googleMapsLoader.ts                        |    2 +
+ src/lib/map/entityImageResolver.ts                 |    2 +-
+ src/lib/map/entityPanelArchetypes.js               |   18 +-
+ src/lib/map/entityPinResolver.ts                   |   10 +-
+ src/lib/map/mapIconRegistry.ts                     |   76 +-
+ src/lib/map/normalizeEntity.ts                     |   96 +-
+ src/lib/map/perkImageRegistry.ts                   |    5 +
+ src/lib/map/rankMapEntities.ts                     |    1 +
+ src/lib/mapEntityAliases.js                        |   61 +-
+ src/lib/mapSystemConstants.js                      |    6 +-
+ src/lib/supabaseServer.js                          |    8 +-
+ src/lib/useLocations.js                            |   58 +-
+ src/main.jsx                                       |   38 +-
+ src/onboarding/ResidentOnboardingFlow.jsx          |  425 +++++--
+ src/onboarding/state/onboardingPersistence.js      |   33 +-
+ src/pages/AdminMarketingStudio.jsx                 |    2 +-
+ src/pages/AuthCallbackPage.jsx                     |    2 +-
+ src/pages/Home.jsx                                 |    2 +-
+ src/pages/Map.jsx                                  | 1120 +++++++++++++------
+ src/pages/PartnerLifecycle.jsx                     |  826 +++++++++++---
+ src/pages/PartnerWorkspace.jsx                     |   99 +-
+ src/pages/Pricing.jsx                              |  678 +++++------
+ src/pages/PublicMapGateway.jsx                     |   47 -
+ src/pages/ResidentAccess.jsx                       |  411 +++----
+ src/pages/ResidentHome.tsx                         |  309 +----
+ src/pages/ResidentSignIn.jsx                       |   44 +-
+ src/pages/SplashPage.jsx                           |   40 +-
+ src/pages/downtown-perks/Events.jsx                |    4 +-
+ src/pages/downtown-perks/PerksCard.jsx             |   36 +-
+ src/pages/partners/Access.jsx                      |    2 +-
+ src/pages/partners/Brands.jsx                      |    2 +-
+ src/pages/partners/Residential.jsx                 |   37 +-
+ src/styles/partner-tools-polish-final.css          |  683 ++++++++++++
+ src/styles/pricing-lead-polish-final.css           | 1177 +++++++++++++++++++-
+ src/styles/resident-card-polish-final.css          |  675 ++++++-----
+ src/styles/resident-home-light-editorial-final.css |   11 +-
+ src/styles/resident-onboarding-final.css           |  580 +++++++++-
+ src/styles/resident-product-alignment-final.css    |   22 +-
+ src/styles/workspace-overview-operating-final.css  |   56 +-
+ vite.config.js                                     |   23 +
+ 76 files changed, 6820 insertions(+), 2502 deletions(-)
+
+## git diff --name-status
+M	api/resident-access.js
+M	package.json
+M	scripts/test-first-party-auth.ts
+M	src/App.jsx
+M	src/api/base44Client.js
+M	src/components/Layout.jsx
+M	src/components/map/MapDetailDrawer.jsx
+M	src/components/map/mobileTabRegistry.ts
+M	src/components/map/mobileTabState.ts
+M	src/components/map/searchIntentRailConfig.ts
+M	src/components/map/unified/UnifiedFilterChips.jsx
+M	src/components/modals/QRCodeModal.jsx
+M	src/components/navigation/QuickSearchModal.tsx
+M	src/components/partner/PartnerMobileTabBar.tsx
+M	src/components/resident/ResidentMobileTabBar.tsx
+M	src/components/resident/tabs/ResidentCardTab.jsx
+M	src/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry.ts
+M	src/data/brandActivationIntelligence.js
+M	src/data/downtownPerksEntityImages.ts
+M	src/data/hospitalityContentLibrary.js
+M	src/data/imports/attachedMapInventory.js
+M	src/data/legendsGeneratedListings.js
+M	src/data/legendsListings.js
+M	src/data/legendsPropertyContent.js
+M	src/data/legendsPropertyContent.ts
+M	src/data/mapCollections.ts
+M	src/data/mapNativeCampaigns.js
+M	src/data/media/entityMediaManifest.ts
+M	src/data/production/districtHeroRegistry.ts
+M	src/data/production/index.ts
+M	src/data/residentialMixedUseContentLibrary.js
+M	src/data/supplementalMapEntities.js
+M	src/hooks/useMapEntityData.js
+M	src/hooks/useSearchDrivenMapEntities.js
+M	src/lib/AuthContext.jsx
+M	src/lib/authReturnPath.ts
+M	src/lib/googleMapsLoader.ts
+M	src/lib/map/entityImageResolver.ts
+M	src/lib/map/entityPanelArchetypes.js
+M	src/lib/map/entityPinResolver.ts
+M	src/lib/map/mapIconRegistry.ts
+M	src/lib/map/normalizeEntity.ts
+M	src/lib/map/perkImageRegistry.ts
+M	src/lib/map/rankMapEntities.ts
+M	src/lib/mapEntityAliases.js
+M	src/lib/mapSystemConstants.js
+M	src/lib/supabaseServer.js
+M	src/lib/useLocations.js
+M	src/main.jsx
+M	src/onboarding/ResidentOnboardingFlow.jsx
+M	src/onboarding/state/onboardingPersistence.js
+M	src/pages/AdminMarketingStudio.jsx
+M	src/pages/AuthCallbackPage.jsx
+M	src/pages/Home.jsx
+M	src/pages/Map.jsx
+M	src/pages/PartnerLifecycle.jsx
+M	src/pages/PartnerWorkspace.jsx
+M	src/pages/Pricing.jsx
+D	src/pages/PublicMapGateway.jsx
+M	src/pages/ResidentAccess.jsx
+M	src/pages/ResidentHome.tsx
+M	src/pages/ResidentSignIn.jsx
+M	src/pages/SplashPage.jsx
+M	src/pages/downtown-perks/Events.jsx
+M	src/pages/downtown-perks/PerksCard.jsx
+M	src/pages/partners/Access.jsx
+M	src/pages/partners/Brands.jsx
+M	src/pages/partners/Residential.jsx
+M	src/styles/partner-tools-polish-final.css
+M	src/styles/pricing-lead-polish-final.css
+M	src/styles/resident-card-polish-final.css
+M	src/styles/resident-home-light-editorial-final.css
+M	src/styles/resident-onboarding-final.css
+M	src/styles/resident-product-alignment-final.css
+M	src/styles/workspace-overview-operating-final.css
+M	vite.config.js
+
+## git ls-files --others --exclude-standard
+api/resident-card/issue.js
+api/resident-card/verify.js
+docs/archive/resident-map-v1/App-route-state-after-cutover.jsx
+docs/archive/resident-map-v1/Map.jsx
+docs/archive/resident-map-v1/README.md
+docs/build-comparison-current-vs-deployed-2026-07-16.md
+docs/canonical-motion-component-instruction.md
+docs/current-base44-map-audit.md
+docs/current-partner-experience-audit.md
+docs/deployment-ownership.md
+docs/events-nearby-data-diagnosis.md
+docs/google-map-deployment-config.md
+docs/migration/local-worktree-baseline.txt
+docs/mobile-panel-accessibility-results.md
+docs/mobile-panel-performance-results.md
+docs/mobile-panel-regression-matrix.md
+docs/mobile-panel-visual-regression.md
+docs/mobile-sheet-architecture.md
+docs/native-map-regression-audit-template.md
+docs/panel-content-inventory.md
+docs/panel-drawer-audit.md
+docs/panel-journey-map.md
+docs/partner-accessibility-results.md
+docs/partner-entitlement-model.md
+docs/partner-experience-regression-matrix.md
+docs/partner-journey-map.md
+docs/partner-map-workspace-contract.md
+docs/partner-mobile-navigation-decision.md
+docs/partner-native-sheet-architecture.md
+docs/partner-performance-results.md
+docs/partner-preview-contract.md
+docs/partner-release-readiness.md
+docs/partner-route-decision.md
+docs/partner-status-model.md
+docs/platform-motion-os-architecture.md
+docs/platform-taxonomy-partner-workspace-audit.md
+docs/release-readiness-checklist.md
+docs/resident-bottom-navigation-decision.md
+docs/resident-dashboard-audit.md
+docs/resident-map-v1-freeze.md
+docs/resident-route-decision.md
+public/fonts/canela/Canela-Regular-Trial.otf
+public/images/map-entities/hotels-nearby/hotel-van-zandt-lounge.webp
+public/images/map-entities/hotels-nearby/hvz-how-suite-it-is.jpg
+public/images/map-entities/hotels-nearby/hvz-stay-in-the-groove.webp
+public/images/map-entities/hotels-nearby/hvz-texas-resident-rate.jpg
+public/images/map-entities/hotels-nearby/hvz-texas-sized-savings.jpg
+public/images/map-entities/hotels-nearby/watr-rooftop.webp
+public/images/map/panels/panel-detail/congress-skyline.jpg
+public/images/map/panels/panel-detail/downtown-south-congress-walk.jpg
+public/images/map/panels/panel-detail/fairmont-pool.webp
+public/images/map/panels/panel-detail/fairmont-room-skyline.webp
+public/images/map/panels/panel-detail/happy-hour-table.jpg
+public/images/map/panels/panel-detail/lady-bird-bike-skyline.jpg
+public/images/map/panels/panel-detail/lake-wellness-route.jpg
+public/images/map/panels/panel-detail/rainey-date-night-walk.jpg
+public/images/map/panels/panel-detail/red-river-cultural-district.png
+public/images/map/panels/panel-detail/seaholm-district.jpg
+public/images/map/panels/panel-detail/second-street-district.jpg
+public/images/map/panels/panel-detail/waterline-red-river.avif
+public/images/residential-content/shared-access-700-red-river.jpeg
+public/images/residential-content/shared-access-amenity.jpeg
+public/images/residential-content/shared-access-cesar-chavez.jpeg
+public/images/residential-content/shared-access-community.jpeg
+public/images/residential-content/shared-access-downtown-future.jpeg
+public/images/residential-content/shared-access-downtown-lake.jpeg
+public/images/residential-content/shared-access-jazz.jpeg
+public/images/residential-content/shared-access-waterloo.jpeg
+scripts/import-downtown-perks-google-list.ts
+scripts/test-onboarding-local-media.mjs
+src/components/ai-workbench/AIWorkbench.jsx
+src/components/ai-workbench/ClarificationPanel.jsx
+src/components/ai-workbench/ExecutionActions.jsx
+src/components/ai-workbench/IdeaComposer.jsx
+src/components/ai-workbench/OutputSection.jsx
+src/components/ai-workbench/RefinementBar.jsx
+src/components/ai-workbench/WorkbenchOutput.jsx
+src/components/ai-workbench/WorkflowSelector.jsx
+src/components/ai-workbench/ai-workbench.css
+src/components/navigation/BottomActionBar.tsx
+src/components/navigation/ContextBackAction.tsx
+src/components/navigation/ContextHeader.tsx
+src/components/navigation/ContextNavigationProvider.tsx
+src/components/navigation/ContinueExploring.tsx
+src/components/navigation/SmartBreadcrumbs.tsx
+src/components/navigation/context-navigation.css
+src/components/navigation/navigation.types.ts
+src/components/navigation/navigation.utils.ts
+src/components/partner/engage/PartnerEngageModule.jsx
+src/components/partner/engage/partner-engage.css
+src/components/resident/dashboard/AIConcierge/AIConcierge.tsx
+src/components/resident/dashboard/ActivityFeed/ActivityFeed.tsx
+src/components/resident/dashboard/Buildings/BuildingSpotlight.tsx
+src/components/resident/dashboard/Community/CommunityUpdate.tsx
+src/components/resident/dashboard/DashboardGrid/DashboardTile.tsx
+src/components/resident/dashboard/DashboardGrid/TodaysDashboard.tsx
+src/components/resident/dashboard/DashboardPage.tsx
+src/components/resident/dashboard/DashboardSection.tsx
+src/components/resident/dashboard/Events/UpcomingEvents.tsx
+src/components/resident/dashboard/Greeting/DynamicGreeting.tsx
+src/components/resident/dashboard/QuickExplore/QuickExplore.tsx
+src/components/resident/dashboard/Recommendations/Recommendations.tsx
+src/components/resident/dashboard/ResidentCard/CardProfilePanel.tsx
+src/components/resident/dashboard/ResidentCard/ResidentCardModule.tsx
+src/components/resident/dashboard/Routes/WalkingRoutes.tsx
+src/components/resident/dashboard/Saved/SavedModule.tsx
+src/components/resident/dashboard/dashboardData.ts
+src/components/resident/dashboard/dashboardStorage.ts
+src/config/downtownPerksMapSource.ts
+src/content/downtownPerksMapCopy.ts
+src/data/downtownPerksCollections.seed.ts
+src/data/events/firstThursdayRainey.js
+src/features/native-map/EntitySheetRenderer.tsx
+src/features/native-map/MapBottomNavigation.tsx
+src/features/native-map/NativeBottomSheet.tsx
+src/features/native-map/NativeMapShell.tsx
+src/features/native-map/SearchCommandSurface.tsx
+src/features/native-map/entity-sheet.adapter.ts
+src/features/native-map/index.ts
+src/features/native-map/map-ui.machine.ts
+src/features/native-map/map-ui.store.ts
+src/features/native-map/native-map.css
+src/features/native-map/tokens.ts
+src/features/native-map/types.ts
+src/features/native-map/useMapViewportInsets.ts
+src/hooks/useContextNavigation.ts
+src/lib/ai-workbench/generateWorkbenchDraft.js
+src/lib/ai-workbench/workflows.js
+src/lib/engage/engageModel.js
+src/lib/engage/engageProviderAdapter.js
+src/lib/map/canonicalTaxonomy.ts
+src/lib/maps/downtownPerksMarkers.ts
+src/lib/maps/removeMapMarker.ts
+src/lib/navigation/route-context.ts
+src/lib/partner/canonicalPartnerWorkspace.ts
+src/lib/partner/liveMapOverview.js
+src/lib/residentCard.js
+src/onboarding/onboardingMedia.js
+src/pages/AIWorkbenchPage.jsx
+src/pages/ResidentMap.jsx
+src/pages/legacyMapStyles.js
+src/styles/brand-fonts.css
+src/styles/map-card-pin-regression-lock-final.css
+src/styles/map-native-drawer-authority-final.css
+src/styles/map-panel-navigation-system-final.css
+src/styles/onboarding-layout-system-final.css
+src/styles/partner-lifecycle-headings-final.css
+src/styles/partner-signup-sharp-final.css
+src/styles/resident-auth-module-final.css
+src/styles/resident-dashboard-premium-final.css
+src/styles/resident-onboarding-design-lock.css
+src/styles/resident-onboarding-premium-sweep-final.css
+src/styles/resident-onboarding-typography-final.css
+src/styles/resident-onboarding-unified-final.css
+src/styles/search-console-audience-lock-final.css
+src/styles/top-navigation-consistency-lock.css
+src/types/downtownPerksImportedPlace.ts
+tests/e2e/native-map-foundation.spec.ts
