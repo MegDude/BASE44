@@ -7,6 +7,8 @@ import { createMobileTabState, rememberTabScroll, transitionMobileTabState } fro
 const root = process.cwd();
 const mapSource = readFileSync(join(root, "src/pages/Map.jsx"), "utf8");
 const nativeDrawerStyles = readFileSync(join(root, "src/styles/map-native-ios-polish-final.css"), "utf8");
+const nativeDrawerAuthority = readFileSync(join(root, "src/styles/map-native-drawer-authority-final.css"), "utf8");
+const mapStyleEntry = readFileSync(join(root, "src/pages/legacyMapStyles.js"), "utf8");
 const intentStyles = readFileSync(join(root, "src/styles/search-intent-chip-expansion-final.css"), "utf8");
 const typographyStyles = readFileSync(join(root, "src/styles/typography-governance.css"), "utf8");
 const drawerContainmentStyles = readFileSync(join(root, "src/styles/map-drawer-containment-final.css"), "utf8");
@@ -39,5 +41,13 @@ assert.match(typographyStyles, /--dp-map-drawer-edge:\s*max\(0px/);
 assert.match(drawerContainmentStyles, /Release lock: legacy pill and oversized action rules cannot win the cascade/);
 assert.match(drawerContainmentStyles, /border-radius:\s*10px !important;/);
 assert.match(partnerToolsStyles, /\.dp-partner-lifecycle-hero-actions a \{[\s\S]*?min-height:\s*44px !important;[\s\S]*?border-radius:\s*10px !important;/);
+assert.match(nativeDrawerAuthority, /touch-action:\s*pan-y !important;/);
+assert.match(nativeDrawerAuthority, /\.dp-collection-route-panel__actions/);
+assert.match(nativeDrawerAuthority, /\.dp-partner-ask-rail/);
+assert.ok(
+  mapStyleEntry.lastIndexOf("map-native-drawer-authority-final.css") > mapStyleEntry.lastIndexOf("route-collection-product-final.css") &&
+    mapStyleEntry.lastIndexOf("map-native-drawer-authority-final.css") > mapStyleEntry.lastIndexOf("map-detail-panel-product-final.css"),
+  "native drawer authority must be the final map style import",
+);
 
 console.log(`mobile tab system: ${mobileTabsByMode.resident.length} resident tabs, ${mobileTabsByMode.partner.length} partner tabs`);

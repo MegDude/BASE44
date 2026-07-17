@@ -202,7 +202,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   padding: 0 0 10px !important;
   overflow: hidden !important;
   border: 1px solid var(--dp-detail-line) !important;
-  border-radius: 14px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   color: var(--dp-detail-ink) !important;
   -webkit-text-fill-color: var(--dp-detail-ink) !important;
@@ -241,12 +241,12 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   flex: 0 0 auto !important;
   width: auto !important;
   min-width: 0 !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
   padding: 0 13px !important;
   border: 1px solid #cfd7df !important;
-  border-radius: 999px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   color: var(--dp-detail-ink) !important;
   -webkit-text-fill-color: var(--dp-detail-ink) !important;
@@ -337,7 +337,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   min-height: var(--dp-panel-action-height, 44px) !important;
   padding: var(--dp-panel-action-padding, 0 14px) !important;
   border: 1px solid #cfd7df !important;
-  border-radius: 12px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   color: #0b1f33 !important;
   -webkit-text-fill-color: #0b1f33 !important;
@@ -355,7 +355,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer :is(.dp-nearby-image-card, .dp-related-place, .dp-property-nearby-card) {
   padding: 0 0 10px !important;
   border: 1px solid var(--dp-detail-line) !important;
-  border-radius: 14px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   text-align: left !important;
   justify-content: initial !important;
@@ -364,11 +364,11 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer .dp-ask-prompt-chip {
   width: auto !important;
   min-width: 0 !important;
-  height: 38px !important;
-  min-height: 38px !important;
+  height: 44px !important;
+  min-height: 44px !important;
   padding: 0 13px !important;
   border: 1px solid #cfd7df !important;
-  border-radius: 999px !important;
+  border-radius: 0 !important;
   background: #fff !important;
   text-align: center !important;
   justify-content: center !important;

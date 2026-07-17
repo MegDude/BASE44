@@ -566,9 +566,9 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-route-panel-control {
   width: auto !important;
   min-width: 0 !important;
-  height: 32px !important;
-  min-height: 32px !important;
-  padding: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 4px !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
