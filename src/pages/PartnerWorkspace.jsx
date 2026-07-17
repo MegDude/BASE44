@@ -20,6 +20,8 @@ import {
 } from "@/lib/productionGuards";
 import { canViewEverything } from "@/lib/auth/session";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
+import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
+import "@/styles/partner-analytics-decision-system.css";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -899,6 +901,8 @@ function WorkspaceAnalytics() {
       </motion.section>
     );
   }
+  return <PartnerAnalyticsExperience />;
+  /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
     ["1,284", "Residents reached", "People who can enter from buildings, QR links, campaigns, and the map."],
@@ -999,6 +1003,7 @@ function WorkspaceAnalytics() {
       </section>
     </motion.section>
   );
+  */
 }
 
 function WorkspaceLegendsSeoPanel({ report }) {
@@ -1310,16 +1315,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         </div>
       </section>
 
-      <section className="dp-featured-experience">
-        <div><p className="dp-workspace-eyebrow">Featured guide</p><h2>Downtown Austin Art & Parks Tour</h2><p>Afternoons are when people use this guide most.</p></div>
-        <dl><div><dt>Opens</dt><dd>4,820</dd></div><div><dt>Verified visits</dt><dd>1,148</dd></div><div><dt>Survey completions</dt><dd>641</dd></div><div><dt>Directions</dt><dd>1,376</dd></div></dl>
-        <div className="dp-featured-actions"><Link to="/partner-workspace/analytics/experiences/downtown-art-parks-tour">Open experience report</Link><Link to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
-      </section>
-
-      <section className="dp-operating-section dp-recent-activity" aria-labelledby="recent-activity-title">
-        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Recent activity</p><h2 id="recent-activity-title">Latest workspace changes.</h2></div></div>
-        <ol><li><span>Offer updated</span><time>Today, 9:42 AM</time></li><li><span>Campaign published</span><time>Yesterday</time></li><li><span>Report created</span><time>Jul 8</time></li><li><span>Team member invited</span><time>Jul 6</time></li></ol>
-      </section>
+      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={`/partner-workspace/analytics?workspace=${encodeURIComponent(selectedOrganizationId)}&range=30d&comparison=previous_period&view=overview`}>Open Analytics <ArrowRight aria-hidden="true" /></Link></section>
     </motion.div>
   );
 }
