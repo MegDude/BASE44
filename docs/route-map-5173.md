@@ -6,7 +6,7 @@ Verified from `src/App.jsx`.
 
 - `/`
 - `/app`
-- `/app/map`
+- `/app/map` (retired redirect-only alias to `/map`)
 - `/map`
 - `/ask-map`
 

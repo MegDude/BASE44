@@ -19,6 +19,8 @@ export type PartnerWorkspaceTab =
   | "broadcasts"
   | "sources"
   | "campaigns"
+  | "ai"
+  | "engage"
   | "audience"
   | "media"
   | "reports"
@@ -79,6 +81,8 @@ export const PARTNER_ROUTES = {
   workspaceBroadcasts: "/partner-workspace/broadcasts",
   workspaceSources: "/partner-workspace/sources",
   workspaceCampaigns: "/partner-workspace/campaigns",
+  workspaceAI: "/partner-workspace/ai",
+  workspaceEngage: "/partner-workspace/engage",
   workspaceAudience: "/partner-workspace/audience",
   workspaceMedia: "/partner-workspace/media",
   workspaceReports: "/partner-workspace/reports",
@@ -719,6 +723,8 @@ export const PARTNER_WORKSPACE_NAV: Array<{ id: PartnerWorkspaceTab; label: stri
   { id: "surveys", label: "Surveys", href: PARTNER_ROUTES.workspaceSurveys, helper: "Ask the right people." },
   { id: "sources", label: "Sources", href: PARTNER_ROUTES.workspaceSources, helper: "Where people enter from." },
   { id: "campaigns", label: "Campaigns", href: PARTNER_ROUTES.workspaceCampaigns, helper: "Campaigns tied to real places." },
+  { id: "ai", label: "AI Workbench", href: PARTNER_ROUTES.workspaceAI, helper: "Turn rough ideas into reviewable drafts." },
+  { id: "engage", label: "Engage", href: PARTNER_ROUTES.workspaceEngage, helper: "Email, SMS, segments, and follow-up." },
   { id: "broadcasts", label: "Broadcasts", href: PARTNER_ROUTES.workspaceBroadcasts, helper: "Send email and SMS campaigns." },
   { id: "audience", label: "People", href: PARTNER_ROUTES.workspaceAudience, helper: "Choose who should see it." },
   { id: "media", label: "Media", href: PARTNER_ROUTES.workspaceMedia, helper: "Assets ready to publish." },
@@ -803,6 +809,24 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     steps: ["Goal", "People", "Placement", "Offer or event", "Entry links", "Timing", "Budget/pricing", "Review"],
     success: "Campaign saved. Review placement, entry links, and timing before publishing.",
     emptyState: "No campaigns yet. Start with one clear reason for people to act.",
+  },
+  ai: {
+    route: PARTNER_ROUTES.workspaceAI,
+    headline: "Turn a rough idea into work your team can review.",
+    body: "Use one governed workspace for campaign drafts, event plans, resident messages, issue explainers, partner outreach, and developer briefs.",
+    kpis: ["Drafts", "Approvals", "Execution actions", "Time saved", "Reusable context", "Measurement plans"],
+    primaryCta: { label: "Start a draft", href: PARTNER_ROUTES.workspaceAI },
+    secondaryCta: { label: "Create campaign", href: "/partner-workspace/campaigns/new" },
+    emptyState: "Describe the outcome in plain language. The Workbench will add structure, context, assumptions, and review actions.",
+  },
+  engage: {
+    route: PARTNER_ROUTES.workspaceEngage,
+    headline: "Email, SMS, audiences, templates, and follow-up.",
+    body: "Build partner communications from Downtown Perks resident behavior, consent, map activity, events, benefits, QR interactions, and campaign context.",
+    kpis: ["Draft messages", "Saved segments", "Scheduled messages", "Automations", "Delivery readiness", "Conversion attribution"],
+    primaryCta: { label: "Create message", href: PARTNER_ROUTES.workspaceEngage },
+    secondaryCta: { label: "Build audience", href: PARTNER_ROUTES.workspaceAudience },
+    emptyState: "Set up senders, domains, consent, templates, and provider adapters before delivery is enabled.",
   },
   broadcasts: {
     route: PARTNER_ROUTES.workspaceBroadcasts,

@@ -110,6 +110,8 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
     (window as any).gm_authFailure = () => {
       previousAuthFailure?.();
       googleMapsPromise = null;
+      document.getElementById(GOOGLE_MAPS_SCRIPT_ID)?.remove();
+      delete (window as any)[GOOGLE_MAPS_CALLBACK_NAME];
       rejectOnce(new Error("authorization-failure"));
     };
 

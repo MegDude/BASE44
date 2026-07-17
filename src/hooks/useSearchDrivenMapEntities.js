@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCanonicalIntentForFilter, getEntityGovernance } from "@/lib/map/intentGovernance";
+import { isRemovedMapEntity } from "@/lib/mapEntityAliases";
 import { entityMatchesMapIntent, resolveSearchIntent } from "@/map/searchIntent/mapIntentRegistry";
 import { PIN_LOADING_LIMITS } from "@/platform";
 
@@ -485,7 +486,7 @@ async function loadRegistry() {
   const [{ buildLocations }] = await Promise.all([
     import("@/lib/useLocations"),
   ]);
-  return normalizeMapEntityData(buildLocations());
+  return normalizeMapEntityData(buildLocations()).filter((entity) => !isRemovedMapEntity(entity));
 }
 
 export function useSearchDrivenMapEntities() {

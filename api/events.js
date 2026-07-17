@@ -53,6 +53,14 @@ async function insertBestEffort(table, row) {
   }
 }
 
+function analyticsActionType(type) {
+  if (type === "event.rsvp") return "rsvp";
+  if (type === "event.checkin") return "check_in";
+  if (type === "qr.scanned") return "qr_scan";
+  if (type === "perk.redeemed") return "redemption";
+  return "open";
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -84,7 +92,7 @@ export default async function handler(req, res) {
   const writes = [];
   writes.push(await insertBestEffort("analytics_signals", {
     source_type: "map_discovery",
-    action_type: type === "event.rsvp" ? "rsvp" : type === "perk.redeemed" ? "redemption" : "open",
+    action_type: analyticsActionType(type),
     value: 1,
     session_token: event.sessionId,
     user_email: event.profileId || event.userId,

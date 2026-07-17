@@ -19,6 +19,14 @@ const HOTEL_DEFAULTS = {
   },
 };
 
+const MAP_ENTITY_ALIASES = {
+  "partner-hotel-van-zandt": ["hotel-van-zandt", "brand-hotel-van-zandt"],
+  "partner-fairmont-austin": ["brand-fairmont-austin"],
+  "partner-four-seasons": ["four-seasons-austin", "brand-four-seasons"],
+  "partner-austin-marriott-downtown": ["austin-marriott-downtown", "brand-austin-marriott-downtown"],
+  "partner-austin-proper": ["austin-proper"],
+};
+
 function parseCsv(text) {
   const rows = [];
   let row = [];
@@ -204,7 +212,11 @@ const updateBySlug = new Map(hospitalityCurrentEntityUpdates.filter((entity) => 
 export function getHospitalityCsvUpdate(item) {
   const id = String(item?.id || item?.raw?.id || "");
   const slug = String(item?.slug || item?.raw?.slug || "");
-  return updateById.get(id) || (slug ? updateBySlug.get(slug) : null) || null;
+  const aliases = [
+    ...(MAP_ENTITY_ALIASES[id] || []),
+    ...(slug && slug !== id ? MAP_ENTITY_ALIASES[slug] || [] : []),
+  ];
+  return updateById.get(id) || (slug ? updateBySlug.get(slug) : null) || aliases.map((alias) => updateById.get(alias) || updateBySlug.get(alias)).find(Boolean) || null;
 }
 
 export const hospitalityImportReport = {

@@ -26,24 +26,64 @@ function sourceTypeForEntity(entity) {
   return "venue";
 }
 
+function toFiniteNumber(value) {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "string") {
+    const parsed = Number(value.trim());
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+}
+
+function coordinatePairFrom(value) {
+  if (!value) return null;
+  if (Array.isArray(value)) {
+    const lat = toFiniteNumber(value[0]);
+    const lng = toFiniteNumber(value[1]);
+    return lat === null || lng === null ? null : { lat, lng };
+  }
+  const lat = toFiniteNumber(value.latitude ?? value.lat);
+  const lng = toFiniteNumber(value.longitude ?? value.lng);
+  return lat === null || lng === null ? null : { lat, lng };
+}
+
+function coordinatesForEntity(entity) {
+  const direct = coordinatePairFrom({ lat: entity?.lat, lng: entity?.lng });
+  if (direct) return direct;
+  const directNamed = coordinatePairFrom({ latitude: entity?.latitude, longitude: entity?.longitude });
+  if (directNamed) return directNamed;
+  return (
+    coordinatePairFrom(entity?.coords) ||
+    coordinatePairFrom(entity?.coordinates) ||
+    coordinatePairFrom(entity?.location) ||
+    coordinatePairFrom(entity?.geometry?.location)
+  );
+}
+
 export function useMapEntityData() {
   const locations = useLocations();
 
   return useMemo(
     () =>
-      locations.map((entity) => ({
-        ...entity,
-        sourceType: entity.sourceType || sourceTypeForEntity(entity),
-        lat: entity.lat ?? entity.latitude ?? entity.coords?.[0],
-        lng: entity.lng ?? entity.longitude ?? entity.coords?.[1],
-        tags: Array.isArray(entity.tags)
-          ? entity.tags
-          : [entity.category, entity.category_key, entity.type, entity.partnerType].filter(Boolean),
-        description: entity.description || entity.summary,
-        timing: entity.timing || entity.time || entity.date || entity.happyHour?.time,
-        metrics: entity.metrics || entity.analytics || entity.dashboardMetrics || {},
-        actions: Array.isArray(entity.actions) ? entity.actions : ["Open", "Save", "Get directions"],
-      })),
+      locations.map((entity) => {
+        const coordinates = coordinatesForEntity(entity);
+        return {
+          ...entity,
+          sourceType: entity.sourceType || sourceTypeForEntity(entity),
+          lat: coordinates?.lat,
+          lng: coordinates?.lng,
+          latitude: coordinates?.lat,
+          longitude: coordinates?.lng,
+          coords: coordinates ? [coordinates.lat, coordinates.lng] : entity.coords,
+          tags: Array.isArray(entity.tags)
+            ? entity.tags
+            : [entity.category, entity.category_key, entity.type, entity.partnerType].filter(Boolean),
+          description: entity.description || entity.summary,
+          timing: entity.timing || entity.time || entity.date || entity.happyHour?.time,
+          metrics: entity.metrics || entity.analytics || entity.dashboardMetrics || {},
+          actions: Array.isArray(entity.actions) ? entity.actions : ["Open", "Save", "Get directions"],
+        };
+      }),
     [locations],
   );
 }

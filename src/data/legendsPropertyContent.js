@@ -84,7 +84,7 @@ function imagePath(asset) {
 }
 
 function pinPath(asset) {
-  return "/pins/downtown-perks/legends-logo-gold.svg";
+  return "/pins/downtown-perks/legends-logo.png";
 }
 
 const parsedRows = parseCsv(legendsPropertyContentCsv);
