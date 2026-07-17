@@ -35,6 +35,82 @@ function entityText(place) {
   ].filter(Boolean).join(" "));
 }
 
+function entityType(place) {
+  return normalize(place?.entityType || place?.type || place?.partnerType || place?.category).split(" ")[0];
+}
+
+function hasPerk(place) {
+  return Boolean(
+    place?.hasActivePerk ||
+    place?.activePerk ||
+    place?.perk ||
+    place?.offer ||
+    place?.residentPerk ||
+    place?.raw?.hasActivePerk ||
+    place?.raw?.activePerk ||
+    place?.raw?.offer,
+  );
+}
+
+function matchesDynamicCollection(place, collection) {
+  const rule = collection?.dynamicRule || {};
+  const entityRules = collection?.entityRules || {};
+  const text = entityText(place);
+  const tokens = (rule.tokens || []).map(normalize).filter(Boolean);
+  const configuredTypes = rule.entityTypes || entityRules.entityTypes || (entityRules.entityType ? [entityRules.entityType] : []);
+  const types = configuredTypes.map(normalize).filter(Boolean);
+  const categories = (entityRules.categories || []).map(normalize).filter(Boolean);
+  const type = entityType(place);
+
+  if (types.length && !types.some((candidate) => type.includes(candidate) || text.includes(candidate))) return false;
+  if (categories.length && !categories.some((candidate) => text.includes(candidate))) return false;
+  if (rule.requireActivePerk || entityRules.hasActivePerk) {
+    if (!hasPerk(place)) return false;
+  }
+  if (tokens.length && !tokens.some((token) => text.includes(token))) return false;
+  if (!tokens.length && !types.length && !categories.length && !entityRules.hasActivePerk) {
+    const category = normalize(collection?.category);
+    if (category && category !== "featured" && !text.includes(category)) return false;
+  }
+  return true;
+}
+
+function dynamicCollectionScore(place, collection) {
+  const text = entityText(place);
+  const tokens = (collection?.dynamicRule?.tokens || []).map(normalize).filter(Boolean);
+  const tokenScore = tokens.reduce((score, token) => score + (text.includes(token) ? 4 : 0), 0);
+  return tokenScore
+    + (hasPerk(place) ? 5 : 0)
+    + (place?.featured || place?.launchPriority || place?.raw?.featured ? 4 : 0)
+    + (place?.image || place?.heroImage || place?.raw?.image ? 2 : 0)
+    + (place?.description || place?.summary ? 1 : 0);
+}
+
+function dynamicPlaceIdentity(place) {
+  const name = normalize(place?.name || place?.title)
+    .replace(/\bnearby pick\b/g, "")
+    .replace(/\bnearby recommendation\b/g, "")
+    .trim();
+  return name || normalize(place?.slug || place?.id);
+}
+
+function resolveDynamicStops(collection, places) {
+  const limit = Math.max(2, Math.min(12, Number(collection?.dynamicRule?.limit || collection?.limit || 8)));
+  const ranked = places
+    .filter((place) => place?.id && getCoords(place) && matchesDynamicCollection(place, collection))
+    .sort((a, b) => dynamicCollectionScore(b, collection) - dynamicCollectionScore(a, collection) || String(a.name || a.title).localeCompare(String(b.name || b.title)));
+
+  const unique = [];
+  const seenPlaces = new Set();
+  ranked.forEach((place) => {
+    const identity = dynamicPlaceIdentity(place);
+    if (!identity || seenPlaces.has(identity)) return;
+    seenPlaces.add(identity);
+    unique.push(place);
+  });
+  return unique.slice(0, limit);
+}
+
 function resolveStop(stopId, hint, places) {
   const idKey = normalize(stopId);
   const hintKey = normalize(hint || stopId);
@@ -53,7 +129,10 @@ export function resolveMapCollectionRoute(collection, places = []) {
   const seen = new Set();
   const stops = [];
 
-  (collection.stopIds || []).forEach((stopId, index) => {
+  const configuredStopIds = collection.stopIds || [];
+  const dynamicStops = configuredStopIds.length ? [] : resolveDynamicStops(collection, places);
+
+  configuredStopIds.forEach((stopId, index) => {
     const place = resolveStop(stopId, collection.stopHints?.[index], places);
     if (!place) {
       missingStopIds.push(stopId);
@@ -66,6 +145,14 @@ export function resolveMapCollectionRoute(collection, places = []) {
       missingCoordinates.push(place.id || stopId);
       return;
     }
+    stops.push({ ...place, lat: coords.lat, lng: coords.lng, routeStopNumber: stops.length + 1 });
+  });
+
+  dynamicStops.forEach((place) => {
+    if (seen.has(place.id)) return;
+    const coords = getCoords(place);
+    if (!coords) return;
+    seen.add(place.id);
     stops.push({ ...place, lat: coords.lat, lng: coords.lng, routeStopNumber: stops.length + 1 });
   });
 

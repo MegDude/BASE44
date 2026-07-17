@@ -1,5 +1,6 @@
 import { daaTourStops } from "./daaArtParksTour";
 import { downtownPerksCollectionSeeds } from "./downtownPerksCollections.seed";
+import { universalCollections } from "./universalCollections";
 import { waterlooParkInventory } from "./waterlooParkInventory";
 
 const daaArtWalkStopIds = daaTourStops.map((stop) => stop.id);
@@ -36,11 +37,19 @@ export const mapCollections = [
     ctaLabel: "Open collection",
     benefitTitle: "A focused shortlist built around one downtown need",
     benefitDescription: "Compare relevant places quickly, then open a stop for current access details, directions, and eligible perks.",
+    checkInEnabled: true,
+    badge: `${seed.residentLabel} Explorer`,
+    completionReward: `${seed.residentLabel} Explorer is added to the Resident Passport after every stop is verified.`,
+    accessibility: ["Live map", "Walking context", "Resident progress"],
+    stories: [{ title: `Why ${seed.residentLabel} matters`, body: seed.description }],
+    relatedCollectionIds: [],
+    aiHints: ["Start with the nearest relevant stop.", "Continue with an unvisited place that matches your current plan."],
     stopIds: [],
     stopHints: [],
     priority: seed.priority,
     entityRules: seed.entityRules,
   })),
+  ...universalCollections.map((collection) => ({ ...collection, checkInEnabled: true, stopIds: [], stopHints: [] })),
   {
     id: "daa-art-walk",
     title: "Downtown Art & Parks Walk",
@@ -171,13 +180,54 @@ export const mapCollections = [
 export function getMapCollectionById(collectionId) {
   const rawKey = String(collectionId || "").trim().toLowerCase();
   const key = rawKey === "daa-art-parks-tour" ? "daa-art-walk" : rawKey;
-  return mapCollections.find((collection) => collection.id === key) || null;
+  const collection = mapCollections.find((item) => item.id === key);
+  if (!collection) return null;
+  return {
+    checkInEnabled: true,
+    badge: `${collection.title} Explorer`,
+    accessibility: ["Live map", "Walking context", "Resident progress"],
+    stories: [{ title: `Why ${collection.title} exists`, body: collection.description }],
+    relatedCollectionIds: [],
+    aiHints: ["Start with the closest unvisited stop.", "Continue with a nearby place that fits the time you have."],
+    ...collection,
+  };
+}
+
+export function getRelatedMapCollections(collectionId, limit = 3) {
+  const active = getMapCollectionById(collectionId);
+  if (!active) return [];
+  const explicit = (active.relatedCollectionIds || []).map(getMapCollectionById).filter(Boolean);
+  const fallback = mapCollections
+    .filter((collection) => collection.id !== active.id && collection.category === active.category)
+    .map((collection) => getMapCollectionById(collection.id))
+    .filter(Boolean);
+  const seen = new Set();
+  return [...explicit, ...fallback]
+    .filter((collection) => {
+      if (!collection || seen.has(collection.id)) return false;
+      seen.add(collection.id);
+      return true;
+    })
+    .slice(0, limit);
 }
 
 export function getMapCollectionForQuery(query) {
   const text = String(query || "").toLowerCase();
   if (!text) return null;
   const hasRouteIntent = /\b(route|walk|crawl|loop|itinerary|stops|tour)\b/.test(text);
+  if (/\b(dog friendly|pet friendly|with my dog)\b/.test(text)) return getMapCollectionById("dog-friendly-downtown");
+  if (/\b(public art|art collection|murals|sculptures)\b/.test(text)) return getMapCollectionById("public-art-downtown");
+  if (/\b(architecture|buildings walk|historic buildings|skyline)\b/.test(text)) return getMapCollectionById("architecture-downtown");
+  if (/\b(live music|concerts|music tonight|shows tonight)\b/.test(text)) return getMapCollectionById("live-music-downtown");
+  if (/\b(family weekend|kids downtown|family friendly)\b/.test(text)) return getMapCollectionById("family-weekend");
+  if (/\b(wellness|fitness route|recovery|healthy downtown)\b/.test(text)) return getMapCollectionById("wellness-downtown");
+  if (/\b(date night|romantic|dinner date)\b/.test(text)) return getMapCollectionById("date-night-downtown");
+  if (/\b(luxury living|luxury residences|premium living)\b/.test(text)) return getMapCollectionById("luxury-living-downtown");
+  if (/\b(resident essentials|moving downtown|new resident)\b/.test(text)) return getMapCollectionById("resident-essentials");
+  if (/\b(coworking|coffee meeting|meeting space|work remotely)\b/.test(text)) return getMapCollectionById("coworking-and-meetings");
+  if (/\b(breakfast|brunch)\b/.test(text)) return getMapCollectionById("breakfast-downtown");
+  if (/\b(happy hour|cocktails after work|drinks after work)\b/.test(text) && !hasRouteIntent) return getMapCollectionById("happy-hour-downtown");
+  if (/\b(coffee collection|coffee downtown|coffee shops)\b/.test(text) && !hasRouteIntent) return getMapCollectionById("coffee-downtown");
   if (/\b(inkind dining market|dining market)\b/.test(text)) return getMapCollectionById("inkind-dining-market");
   if (hasRouteIntent && /\b(inkind|restaurant|dining)\b/.test(text)) return getMapCollectionById("inkind-dining-market");
   if (hasRouteIntent && /\b(happy hour|drinks after work)\b/.test(text)) return getMapCollectionById("warehouse-district-happy-hour");

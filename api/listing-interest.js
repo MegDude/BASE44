@@ -10,7 +10,18 @@ function cleanListing(value = {}) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
 
   return {
-    id: clean(value.id || value.listingId || value.entityId, 180),
+    id: clean(value.id || value.propertyId || value.listingId || value.entityId, 180),
+    propertyId: clean(value.propertyId || value.entityId || value.id, 180),
+    provider: clean(value.provider?.id || value.provider || value.providerType, 120),
+    providerListingId: clean(value.provider?.listingId || value.providerListingId || value.providerId, 180),
+    mlsNumber: clean(value.mlsNumber || value.mls_number || value.mls, 120),
+    agentId: clean(value.agentId || value.agent_id, 180),
+    workspaceId: clean(value.workspaceId || value.workspace_id, 180),
+    partnerId: clean(value.partnerId || value.partner_id, 180),
+    campaignId: clean(value.campaignId || value.campaign_id, 180),
+    collectionId: clean(value.collectionId || value.collection_id, 180),
+    routeId: clean(value.routeId || value.route_id, 180),
+    qrId: clean(value.qrId || value.qr_id, 180),
     name: clean(value.name || value.buildingName || value.title, 240),
     listingType: clean(value.listingType, 80),
     address: clean(value.address, 300),
@@ -21,7 +32,7 @@ function cleanListing(value = {}) {
     daysOnMarket: clean(value.daysOnMarket, 80),
     neighborhood: clean(value.neighborhood, 160),
     source: clean(value.source, 160),
-    brand: clean(value.brand, 160) || "Legends Real Estate",
+    brand: clean(value.brand || value.brokerage, 160) || "Real Estate Partner",
     contactEmail: clean(value.contactEmail || value.contact_email, 240),
   };
 }
@@ -65,7 +76,7 @@ function buildListingInterestEmail(interest) {
   ].filter(([, value]) => clean(value));
 
   return `
-    <h2>New Legends listing interest</h2>
+    <h2>New ${escapeHtml(interest.listing.brand)} listing interest</h2>
     <p>A resident submitted interest from the Downtown Perks map.</p>
     <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;">
       ${lines.map(([label, value]) => `<tr><td style="font-weight:700;vertical-align:top;">${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join("")}
@@ -87,7 +98,7 @@ async function notifyListingContact(interest) {
     body: JSON.stringify({
       from: process.env.LISTING_INTEREST_FROM_EMAIL || "Downtown Perks <notifications@downtownperks.local>",
       to: recipient,
-      subject: `New listing interest: ${interest.listing.address || interest.listing.name || "Legends listing"}`,
+      subject: `New listing interest: ${interest.listing.address || interest.listing.name || interest.listing.brand}`,
       html: buildListingInterestEmail(interest),
     }),
   });

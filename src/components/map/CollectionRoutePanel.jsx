@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check, MapPin, QrCode, X } from "lucide-react";
-import { getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
+import { Check, MapPin, Navigation, QrCode, X } from "lucide-react";
+import { getWorkflowProfileId, getWorkflowSessionId, fireWorkflow, postWorkflow } from "@/lib/backendWorkflows";
+import { getRelatedMapCollections } from "@/data/mapCollections";
+import { CollectionHero } from "@/components/map/collections/CollectionHero";
+import { CollectionTimeline } from "@/components/map/collections/CollectionTimeline";
+import { FeaturedStopCard } from "@/components/map/collections/FeaturedStopCard";
+import { CollectionEntityRail } from "@/components/map/collections/CollectionEntityRail";
+import { CollectionStoryRail } from "@/components/map/collections/CollectionStoryRail";
+import { CollectionProgressCard } from "@/components/map/collections/CollectionProgressCard";
+import { AIRecommendationCard } from "@/components/map/collections/AIRecommendationCard";
+import { NearbyCollections } from "@/components/map/collections/NearbyCollections";
 
 const CHECK_IN_STORAGE_KEY = "downtown-perks-route-check-ins:v1";
+const SAVED_COLLECTIONS_STORAGE_KEY = "downtown-perks-saved-collections:v1";
 const CHECK_IN_RADIUS_METERS = 250;
 
 function readCheckIns(routeId) {
@@ -23,6 +33,25 @@ function writeCheckIns(routeId, stopIds) {
     window.localStorage.setItem(CHECK_IN_STORAGE_KEY, JSON.stringify({ ...stored, [routeId]: stopIds }));
   } catch {
     // Device storage is a resilience layer; live event recording remains authoritative.
+  }
+}
+
+function readSavedCollectionIds() {
+  if (typeof window === "undefined") return [];
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(SAVED_COLLECTIONS_STORAGE_KEY) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSavedCollectionIds(collectionIds) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(SAVED_COLLECTIONS_STORAGE_KEY, JSON.stringify(collectionIds));
+  } catch {
+    // The live workflow remains authoritative when browser storage is unavailable.
   }
 }
 
@@ -81,9 +110,10 @@ function walkingDirectionsUrl(stops = []) {
   return `https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=${origin}&destination=${destination}${waypointParam}`;
 }
 
-export default function CollectionRoutePanel({ route, selectedStopId, onSelectStop, onStart, onViewStops, onExit }) {
+export default function CollectionRoutePanel({ route, mode = "resident", selectedStopId, onSelectStop, onStart, onViewStops, onOpenCollection, onExit }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [checkedInStopIds, setCheckedInStopIds] = useState(() => readCheckIns(route?.id));
+  const [savedCollectionIds, setSavedCollectionIds] = useState(readSavedCollectionIds);
   const [checkInStop, setCheckInStop] = useState(null);
   const [checkInState, setCheckInState] = useState("idle");
   const [checkInMessage, setCheckInMessage] = useState("");
@@ -92,11 +122,59 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
   const streamRef = useRef(null);
   const frameRef = useRef(null);
   const stopsRef = useRef(null);
+  const completionRecordedRef = useRef("");
 
   useEffect(() => setCheckedInStopIds(readCheckIns(route?.id)), [route?.id]);
   const checkedInSet = useMemo(() => new Set(checkedInStopIds), [checkedInStopIds]);
   const activeStop = route?.stops?.find((stop) => stop.id === selectedStopId) || route?.stops?.[0] || null;
   const routeComplete = Boolean(route?.stops?.length) && route.stops.every((stop) => checkedInSet.has(stop.id));
+  const isSaved = savedCollectionIds.includes(route?.id);
+  const offerStops = useMemo(
+    () => (route?.stops || []).filter((stop) => stop.offer || stop.perk || stop.residentPerk || stop.raw?.offer).slice(0, 6),
+    [route?.stops],
+  );
+  const eventStops = useMemo(
+    () => (route?.stops || []).filter((stop) => /event|concert|music|market|festival|performance/i.test([stop.type, stop.entityType, stop.category, stop.tags?.join?.(" ")].filter(Boolean).join(" "))).slice(0, 6),
+    [route?.stops],
+  );
+  const relatedCollections = useMemo(
+    () => getRelatedMapCollections(route?.id),
+    [route?.id],
+  );
+
+  useEffect(() => {
+    if (!route?.id) return;
+    fireWorkflow("/api/events", {
+      id: `collection-opened-${route.id}-${Date.now()}`,
+      type: "collection.opened",
+      timestamp: new Date().toISOString(),
+      profileId: getWorkflowProfileId(),
+      sessionId: getWorkflowSessionId(),
+      entityId: route.id,
+      entityType: "collection",
+      district: route.neighborhood,
+      source: "collection_experience_panel",
+      metadata: { title: route.title, stopCount: route.stops?.length || 0, mode },
+    });
+  }, [mode, route?.id, route?.neighborhood, route?.stops?.length, route?.title]);
+
+  useEffect(() => {
+    if (!routeComplete || completionRecordedRef.current === route.id) return;
+    completionRecordedRef.current = route.id;
+    fireWorkflow("/api/events", {
+      id: `passport-completed-${route.id}-${Date.now()}`,
+      type: "passport.completed",
+      timestamp: new Date().toISOString(),
+      profileId: getWorkflowProfileId(),
+      sessionId: getWorkflowSessionId(),
+      entityId: route.id,
+      entityType: "collection",
+      district: route.neighborhood,
+      source: "collection_experience_panel",
+      result: "completed",
+      metadata: { title: route.title, badge: route.badge, stopCount: route.stops.length },
+    });
+  }, [route, routeComplete]);
 
   const stopCamera = () => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
@@ -273,6 +351,77 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
     setCheckInMessage(checkedInSet.has(activeStop.id) ? `Already checked in at ${activeStop.name || activeStop.title}.` : "");
   };
 
+  const startCollection = () => {
+    const eventBase = {
+      timestamp: new Date().toISOString(),
+      profileId: getWorkflowProfileId(),
+      sessionId: getWorkflowSessionId(),
+      entityId: route.id,
+      entityType: "collection",
+      district: route.neighborhood,
+      source: "collection_experience_panel",
+      result: "started",
+      metadata: { title: route.title, stopCount: route.stops.length },
+    };
+    fireWorkflow("/api/events", { ...eventBase, id: `route-started-${route.id}-${Date.now()}`, type: "route.started" });
+    fireWorkflow("/api/events", { ...eventBase, id: `passport-started-${route.id}-${Date.now()}`, type: "passport.started" });
+    onStart?.();
+  };
+
+  const toggleSaved = () => {
+    const nextSaved = isSaved
+      ? savedCollectionIds.filter((id) => id !== route.id)
+      : [...savedCollectionIds, route.id];
+    setSavedCollectionIds(nextSaved);
+    writeSavedCollectionIds(nextSaved);
+    const action = isSaved ? "unsave" : "save";
+    fireWorkflow("/api/map-actions", {
+      id: `collection-${action}-${route.id}-${Date.now()}`,
+      action,
+      mode,
+      profileId: getWorkflowProfileId(),
+      sessionId: getWorkflowSessionId(),
+      source: "collection_experience_panel",
+      pageUrl: window.location.href,
+      collection: route.id,
+      entity: { id: route.id, name: route.title, type: "collection", category: route.category, district: route.neighborhood },
+      metadata: { stopCount: route.stops.length, badge: route.badge },
+    });
+    fireWorkflow("/api/events", {
+      id: `collection-${action}-${route.id}-${Date.now()}`,
+      type: isSaved ? "entity.dismissed" : "entity.saved",
+      timestamp: new Date().toISOString(),
+      profileId: getWorkflowProfileId(),
+      sessionId: getWorkflowSessionId(),
+      entityId: route.id,
+      entityType: "collection",
+      district: route.neighborhood,
+      source: "collection_experience_panel",
+      result: action,
+    });
+  };
+
+  const shareCollection = async () => {
+    const shareData = { title: route.title, text: route.description, url: window.location.href };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else await navigator.clipboard.writeText(window.location.href);
+      fireWorkflow("/api/events", {
+        id: `collection-shared-${route.id}-${Date.now()}`,
+        type: "entity.shared",
+        timestamp: new Date().toISOString(),
+        profileId: getWorkflowProfileId(),
+        sessionId: getWorkflowSessionId(),
+        entityId: route.id,
+        entityType: "collection",
+        district: route.neighborhood,
+        source: "collection_experience_panel",
+      });
+    } catch {
+      // Cancelling the native share sheet is not an error state.
+    }
+  };
+
   const viewStops = () => {
     onViewStops?.();
     window.requestAnimationFrame(() => {
@@ -323,14 +472,15 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
         </div>
       </header>
       <div className="dp-collection-route-panel__scroll">
-        <div className="dp-collection-route-panel__intro">
-          <h2 id={`dp-route-panel-title-${route.id}`}>{route.title}</h2>
-          <p className="dp-collection-route-panel__description">{route.description}</p>
-        </div>
-        <section className="dp-collection-route-panel__benefit" aria-label="What you get">
-          <p>What you get</p>
-          <strong>{route.benefitTitle || "A ready-to-use downtown route"}</strong>
-          <span>{route.benefitDescription || "Open each stop for current details, directions, and any eligible offer or access information."}</span>
+        <CollectionHero route={route} isSaved={isSaved} onSave={toggleSaved} onShare={shareCollection} onStart={startCollection} />
+        <section className="dp-collection-v3-section dp-collection-overview" aria-labelledby={`dp-collection-overview-${route.id}`}>
+          <div className="dp-collection-v3-heading"><p>Collection overview</p><h3 id={`dp-collection-overview-${route.id}`}>{route.benefitTitle || "A ready-to-use downtown experience"}</h3></div>
+          <p>{route.benefitDescription || "Open each stop for current details, directions, and eligible resident value."}</p>
+        </section>
+        <section className="dp-collection-live-map" aria-label="Live collection map status">
+          <span><MapPin aria-hidden="true" /></span>
+          <div><p>Live map active</p><strong>{activeStop?.name || activeStop?.title || route.title}</strong><small>Featured stops, progress, offers, and the walking line remain visible on the map.</small></div>
+          <button type="button" onClick={viewStops}>View map</button>
         </section>
         <div className="dp-collection-route-panel__meta" aria-label="Route details">
           <span>{route.stops.length} stops</span>
@@ -339,7 +489,7 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
           {route.checkInEnabled ? <span>{checkedInSet.size}/{route.stops.length} checked in</span> : null}
         </div>
         <div className="dp-collection-route-panel__actions">
-          <button type="button" className="dp-route-cta dp-route-cta--primary" onClick={onStart}>{route.ctaLabel || "Start route"}</button>
+          <button type="button" className="dp-route-cta dp-route-cta--primary" onClick={startCollection}>{route.ctaLabel || "Start route"}</button>
         {route.checkInEnabled ? (
           <button type="button" className="dp-route-cta dp-route-cta--check-in" onClick={openCheckIn}>
             <QrCode aria-hidden="true" />
@@ -353,12 +503,47 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
             <button type="button" className="dp-route-cta dp-route-cta--tertiary" onClick={viewStops}>View all stops</button>
           </div>
         </div>
+        <section className="dp-collection-v3-section" aria-labelledby={`dp-featured-stops-${route.id}`}>
+          <div className="dp-collection-v3-heading"><p>Start here</p><h3 id={`dp-featured-stops-${route.id}`}>Featured stops</h3></div>
+          <div className="dp-featured-stop-rail">
+            {route.stops.map((stop, index) => <FeaturedStopCard key={stop.id} stop={stop} index={index} checkedIn={checkedInSet.has(stop.id)} onSelect={onSelectStop} />)}
+          </div>
+        </section>
+        <CollectionEntityRail title="Offers in this collection" kind="offers" items={offerStops} onSelect={onSelectStop} />
+        <CollectionEntityRail title="Events in this collection" kind="events" items={eventStops} onSelect={onSelectStop} />
+        <section className="dp-collection-v3-section dp-collection-walking-card" aria-labelledby={`dp-walking-route-${route.id}`}>
+          <div className="dp-collection-v3-heading"><p>Walking route</p><h3 id={`dp-walking-route-${route.id}`}>Suggested order</h3></div>
+          <div className="dp-collection-walking-card__body">
+            <Navigation aria-hidden="true" />
+            <div><strong>{route.estimatedTime || "Self-guided"}</strong><span>{route.distanceLabel || "Downtown Austin"} · {route.stops.length} stops</span></div>
+            {directionsHref ? <a href={directionsHref} target="_blank" rel="noreferrer">Navigate</a> : null}
+          </div>
+        </section>
+        <CollectionTimeline route={route} activeStopId={activeStop?.id} checkedInSet={checkedInSet} onSelectStop={onSelectStop} />
+        <CollectionStoryRail stories={route.stories || []} />
+        {route.accessibility?.length ? (
+          <section className="dp-collection-v3-section" aria-labelledby={`dp-accessibility-${route.id}`}>
+            <div className="dp-collection-v3-heading"><p>Plan with confidence</p><h3 id={`dp-accessibility-${route.id}`}>Accessibility & comfort</h3></div>
+            <div className="dp-collection-accessibility">{route.accessibility.map((item) => <span key={item}>{item}</span>)}</div>
+          </section>
+        ) : null}
+        <CollectionProgressCard route={route} completed={checkedInSet.size} total={route.stops.length} />
+        <AIRecommendationCard route={route} activeStop={activeStop} completed={checkedInSet.size} />
+        <NearbyCollections collections={relatedCollections} onOpen={onOpenCollection} />
+        {mode === "partner" ? (
+          <section className="dp-collection-partner-card" aria-labelledby={`dp-partner-collection-${route.id}`}>
+            <p>Partner participation</p>
+            <h3 id={`dp-partner-collection-${route.id}`}>Join this collection through your workspace.</h3>
+            <span>Request inclusion, attach a current offer or event, sponsor the route, and review privacy-safe engagement from one partner workflow.</span>
+            <a href={`/partner-workspace/overview?collection=${encodeURIComponent(route.id)}`}>Open partner workspace</a>
+          </section>
+        ) : null}
         {routeComplete ? (
           <p className="dp-collection-route-panel__completion" role="status">
             <Check aria-hidden="true" /> {route.completionReward || "Route complete — every stop is saved to your activity."}
           </p>
         ) : null}
-        <section className="dp-collection-route-panel__stops-section" ref={stopsRef} aria-labelledby={`dp-route-stops-title-${route.id}`}>
+        <section className="dp-collection-route-panel__stops-section dp-collection-v3-stop-list" ref={stopsRef} aria-labelledby={`dp-route-stops-title-${route.id}`}>
           <div className="dp-collection-route-panel__stops-heading">
             <p id={`dp-route-stops-title-${route.id}`}>Route stops</p>
             <span>Select a stop to open its map detail and check-in.</span>

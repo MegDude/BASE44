@@ -67,3 +67,21 @@ export async function fetchLuxuryPresenceAgents(params = {}) {
 
   return luxuryPresenceRequest(`/agents${query}`);
 }
+
+export async function fetchLuxuryPresenceListings(params = {}) {
+  const query = buildQuery({
+    offset: params.offset,
+    limit: params.limit,
+    status: params.status,
+    updatedSince: params.updatedSince,
+    search: params.search,
+  });
+  const endpoint = process.env.LUXURY_PRESENCE_LISTINGS_ENDPOINT || "/listings";
+  return luxuryPresenceRequest(`${endpoint}${query}`);
+}
+
+export async function fetchLuxuryPresenceListing(listingId) {
+  if (!listingId) throw new LuxuryPresenceApiError("Luxury Presence listing ID is required", { status: 400 });
+  const endpoint = process.env.LUXURY_PRESENCE_LISTINGS_ENDPOINT || "/listings";
+  return luxuryPresenceRequest(`${endpoint}/${encodeURIComponent(listingId)}`);
+}

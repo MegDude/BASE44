@@ -17525,10 +17525,12 @@ export default function MapPage() {
       {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
         <CollectionRoutePanel
           route={activeCollectionRoute}
+          mode={urlState.mode}
           selectedStopId={selectedId}
           onSelectStop={selectCollectionStop}
           onStart={() => selectCollectionStop(activeCollectionRoute.stops[0])}
           onViewStops={() => setResultsExpanded(true)}
+          onOpenCollection={openCollectionRoute}
           onExit={exitCollectionRoute}
         />
       ) : null}

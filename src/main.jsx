@@ -87,6 +87,7 @@ import '@/styles/workspace-sharp-platform-final.css'
 import '@/styles/partner-signup-product-final.css'
 import '@/styles/partner-tools-polish-final.css'
 import '@/styles/map-action-system-final.css'
+import '@/styles/collection-platform-3.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
