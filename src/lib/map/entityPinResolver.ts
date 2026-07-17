@@ -59,8 +59,9 @@ const RESTORED_MASTER_PIN_KEYS: Record<string, MapIconKey> = {
   dana: "dana",
   "fine-eyewear": "fine-eyewear",
   "waterloo-greenway": "waterloo-greenway",
+  "stay-put": "stay-put",
   "topo-chico": "topo-chico",
-  yeti: "yeti",
+  yeti: "brand",
   rivian: "mobility",
   lululemon: "wellness",
   "four-seasons": "hotel",
@@ -74,6 +75,8 @@ const UPLOADED_BRAND_PIN_KEYS = new Set([
   "fine-eyewear",
   "fine-eyewear-logo",
   "fine-eyewear-pin",
+  "stay-put",
+  "stay-put-pin",
   "topo-chico",
   "topo-chico-pin",
   "yeti",
@@ -179,14 +182,11 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   const explicit = explicitPinKey(entity);
   if (explicit) {
     if (explicit === "legends" || explicit.includes("legends-logo") || explicit.includes("legends")) return getMapIcon("legends");
-    if (/\bstay[_\s-]*put\b/.test(`${explicit} ${textForPin}`) || /\bthe stay put\b/.test(textForPin)) {
-      return getMapIcon("nightlife");
-    }
     if (UPLOADED_BRAND_PIN_KEYS.has(explicit) || explicit.includes("/pins/brands/")) {
       if (/\b(dana|downtown austin neighborhood association)\b/.test(textForPin) || explicit.includes("dana")) return getMapIcon("dana");
       if (/\b(fine[_\s-]*eyewear|eyewear|vision partner)\b/.test(textForPin)) return getMapIcon("fine-eyewear");
       if (/\b(waterloo|greenway|trail)\b/.test(textForPin) || explicit.includes("waterloo")) return getMapIcon("waterloo-greenway");
-      if (/\b(yeti|hydration[_\s-]*station|refill)\b/.test(textForPin) || explicit === "yeti") return getMapIcon("yeti");
+      if (/\b(stay[_\s-]*put|the stay put)\b/.test(textForPin)) return getMapIcon("stay-put");
       if (/\b(topo[_\s-]*chico|topochico)\b/.test(textForPin)) return getMapIcon("topo-chico");
       if (/\b(rivian|mobility|ev|vehicle|charging)\b/.test(textForPin)) return getMapIcon("rivian");
       if (/\b(lululemon|wellness|fitness|run|yoga)\b/.test(textForPin)) return getMapIcon("lululemon");

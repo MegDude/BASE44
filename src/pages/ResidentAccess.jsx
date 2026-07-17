@@ -7,7 +7,7 @@ import {
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
-const APP_HREF = "/map?mode=resident&tab=map&filter=Perks";
+const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
 
 const INCLUDED = [
   "Perks Card",
@@ -20,13 +20,13 @@ const INCLUDED = [
 
 const BENEFITS = [
   { title: "Access", body: "Keep your resident identity and eligible benefits together.", icon: ShieldCheck, href: "#resident-card-access" },
-  { title: "Dining", body: "Open participating restaurant perks and nearby offers.", icon: Utensils, href: "/map?mode=resident&tab=map&filter=Dining&intent=dining" },
-  { title: "Hotels", body: "Explore downtown stays, experiences, and resident offers.", icon: Hotel, href: "/map?mode=resident&tab=map&filter=Hotels&intent=hotels" },
-  { title: "Events", body: "Find local events and keep resident moments close.", icon: CalendarDays, href: "/map?mode=resident&tab=events&filter=Events&intent=events" },
-  { title: "Buildings", body: "Connect building access with the neighborhood around you.", icon: Building2, href: "/map?mode=resident&tab=map&filter=Properties&intent=properties" },
-  { title: "Shopping", body: "Discover useful retail and local resident benefits.", icon: ShoppingBag, href: "/map?mode=resident&tab=map&filter=Shopping&intent=shopping" },
-  { title: "Wellness", body: "Find fitness, recovery, and everyday wellness nearby.", icon: HeartPulse, href: "/map?mode=resident&tab=map&filter=Wellness&intent=wellness" },
-  { title: "Community", body: "Move through downtown with local context and connection.", icon: Users, href: "/map?mode=resident&tab=map&filter=Civic&intent=civic" },
+  { title: "Dining", body: "Open participating restaurant perks and nearby offers.", icon: Utensils, href: "/app?mode=resident&tab=map&filter=Dining&intent=dining" },
+  { title: "Hotels", body: "Explore downtown stays, experiences, and resident offers.", icon: Hotel, href: "/app?mode=resident&tab=map&filter=Hotels&intent=hotels" },
+  { title: "Events", body: "Find local events and keep resident moments close.", icon: CalendarDays, href: "/app?mode=resident&tab=events&filter=Events&intent=events" },
+  { title: "Buildings", body: "Connect building access with the neighborhood around you.", icon: Building2, href: "/app?mode=resident&tab=map&filter=Properties&intent=properties" },
+  { title: "Shopping", body: "Discover useful retail and local resident benefits.", icon: ShoppingBag, href: "/app?mode=resident&tab=map&filter=Shopping&intent=shopping" },
+  { title: "Wellness", body: "Find fitness, recovery, and everyday wellness nearby.", icon: HeartPulse, href: "/app?mode=resident&tab=map&filter=Wellness&intent=wellness" },
+  { title: "Community", body: "Move through downtown with local context and connection.", icon: Users, href: "/app?mode=resident&tab=map&filter=Civic&intent=civic" },
 ];
 
 const PROCESS = [
@@ -37,9 +37,9 @@ const PROCESS = [
 ];
 
 const PLACES = [
-  { title: "Stay", name: "Hotel Van Zandt", body: "Explore hotel experiences and the Rainey neighborhood around them.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/map?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
-  { title: "Save", name: "Fairmont Austin", body: "Keep downtown hotel experiences and available perks within reach.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/map?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
-  { title: "Explore", name: "The Shore", body: "Connect where you live with resident benefits and nearby discoveries.", image: "/images/residential-content/the-shore.jpg", href: "/map?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
+  { title: "Stay", name: "Hotel Van Zandt", body: "Explore hotel experiences and the Rainey neighborhood around them.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
+  { title: "Save", name: "Fairmont Austin", body: "Keep downtown hotel experiences and available perks within reach.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
+  { title: "Explore", name: "The Shore", body: "Connect where you live with resident benefits and nearby discoveries.", image: "/images/residential-content/the-shore.jpg", href: "/app?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
 ];
 
 const BUILDINGS = [
@@ -97,7 +97,7 @@ function getResidentMapHref(record) {
   if (record?.id) params.set("residentId", record.id);
   if (record?.verificationStatus) params.set("access", record.verificationStatus);
 
-  return `/map?${params.toString()}`;
+  return `/app?${params.toString()}`;
 }
 
 function getResidentQrSrc(record) {
@@ -117,7 +117,7 @@ function toApp(record, extra = {}) {
     residentId: record.id,
     access: record.verificationStatus || "perks_card",
   });
-  window.location.href = `/map?${params.toString()}`;
+  window.location.href = `/app?${params.toString()}`;
 }
 
 export default function ResidentAccess() {

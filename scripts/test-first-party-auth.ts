@@ -21,23 +21,21 @@ function sourceFiles(directory: string): string[] {
 
 const statePath = buildResidentMapPath(
   "?mode=resident&tab=perks&filter=Dining&intent=eat_drink&entityId=comedor&perkId=perk-1&eventId=event-1&collectionId=collection-1&routeId=route-1&district=Congress&query=date+night&radius=1200",
-  "/map",
+  "/app/map",
 );
 
-for (const expected of ["mode=resident", "tab=perks", "filter=Dining", "intent=eat_drink", "entity=comedor", "perkId=perk-1", "eventId=event-1", "collectionId=collection-1", "routeId=route-1", "district=Congress", "query=date+night", "radius=1200"]) {
+for (const expected of ["mode=resident", "tab=perks", "filter=Dining", "intent=eat_drink", "entityId=comedor", "perkId=perk-1", "eventId=event-1", "collectionId=collection-1", "routeId=route-1", "district=Congress", "query=date+night", "radius=1200"]) {
   assert.ok(statePath.includes(expected), `missing preserved map state: ${expected}`);
 }
 
 assert.equal(isSafeFirstPartyPath("/app/map?filter=Dining"), true);
 assert.equal(isSafeFirstPartyPath("//attacker.example/path"), false);
 assert.equal(isSafeFirstPartyPath("https://attacker.example/path"), false);
-assert.equal(getSafeReturnPath("?returnTo=https%3A%2F%2Fattacker.example"), "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured");
-assert.equal(getSafeReturnPath("?returnTo=%2Fapp%2Fmap%3Ffilter%3DCoffee"), "/map?filter=Coffee");
+assert.equal(getSafeReturnPath("?returnTo=https%3A%2F%2Fattacker.example"), "/app/map?mode=resident&tab=map&filter=All");
+assert.equal(getSafeReturnPath("?returnTo=%2Fapp%2Fmap%3Ffilter%3DCoffee"), "/app/map?filter=Coffee");
 
-assert.match(appSource, /path="\/map" element=\{<MapPage/);
-assert.match(appSource, /path="\/app\/map" element=\{<RedirectWithSearch to="\/map"/);
-assert.doesNotMatch(appSource, /function AuthenticatedResidentMap/);
-assert.doesNotMatch(appSource, /PublicMapGateway/);
+assert.match(appSource, /path="\/map" element=\{<PublicMapGateway/);
+assert.match(appSource, /path="\/app\/map" element=\{<AuthenticatedResidentMap/);
 assert.match(appSource, /path="\/auth\/callback"/);
 assert.match(appSource, /path="\/sign-in"/);
 assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
@@ -53,7 +51,6 @@ assert.doesNotMatch(residentAccessSource, /dp-resident-access-topbar/);
 assert.match(residentAccessSource, /payload\.persisted/);
 assert.match(residentAccessSource, /href=\{href\}/);
 assert.match(residentAccessSource, /href=\{place\.href\}/);
-assert.doesNotMatch(residentAccessSource, /["`]\/app\?mode=resident/);
 assert.doesNotMatch(residentAccessApiSource, /hasBuildingMatch/);
 assert.match(residentAccessApiSource, /accepted_local/);
 assert.match(layoutSource, /pathname === "\/card" \|\|/);

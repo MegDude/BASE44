@@ -1,5 +1,3 @@
-import { getPlatformIconToken, type PlatformIconToken } from "@/lib/map/canonicalTaxonomy";
-
 export type MapIconKey =
   | "coffee"
   | "dining"
@@ -36,6 +34,7 @@ export type MapIconKey =
   | "dana"
   | "fine-eyewear"
   | "waterloo-greenway"
+  | "stay-put"
   | "topo-chico"
   | "yeti"
   | "rivian"
@@ -56,44 +55,8 @@ export type MapIconDefinition = {
   asset?: string;
 };
 
-export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo.png";
+export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo-gold.svg";
 export const INKIND_PIN_ASSET = "/pins/brands/inkind-logo.png";
-export const DANA_PIN_ASSET = "/pins/brands/dana-logo.png";
-export const FINE_EYEWEAR_PIN_ASSET = "/pins/brands/fine-eyewear-logo-gold.svg";
-export const WATERLOO_GREENWAY_PIN_ASSET = "/pins/brands/waterloo-greenway-logo-gold.svg";
-export const TOPO_CHICO_PIN_ASSET = "/pins/brands/topo-chico-pin.svg";
-
-const ICON_TOKEN_TO_MAP_ICON_KEY: Partial<Record<PlatformIconToken, MapIconKey>> = {
-  sunrise: "coffee",
-  coffee: "coffee",
-  utensils: "dining",
-  "chef-hat": "dining",
-  martini: "cocktail",
-  "calendar-days": "event",
-  hotel: "hotel",
-  "building-2": "building",
-  "house-key": "listing",
-  "shopping-bag": "retail",
-  "badge-check": "brand",
-  palette: "culture",
-  "music-2": "entertainment",
-  landmark: "civic",
-  "heart-pulse": "wellness",
-  dumbbell: "wellness",
-  "square-parking": "parking",
-  wrench: "service",
-  route: "trail",
-  "book-open": "journal",
-  "scan-line": "spark",
-  "wallet-cards": "offer",
-  badge: "spark",
-  "ticket-percent": "offer",
-  bookmark: "spark",
-  sparkles: "spark",
-  "map-pin": "default",
-  flame: "spark",
-  star: "spark",
-};
 
 function icon(paths: string) {
   return `<svg class="dp-pin-svg dp-map-icon-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
@@ -136,26 +99,11 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
     glyph: `<img class="dp-pin-logo dp-live-pin__inkind-logo" src="${INKIND_PIN_ASSET}" alt="" aria-hidden="true" />`,
     asset: INKIND_PIN_ASSET,
   },
-  dana: {
-    label: "DANA",
-    glyph: `<img class="dp-pin-logo dp-live-pin__dana-logo" src="${DANA_PIN_ASSET}" alt="" aria-hidden="true" />`,
-    asset: DANA_PIN_ASSET,
-  },
-  "fine-eyewear": {
-    label: "Fine Eyewear",
-    glyph: `<img class="dp-pin-logo dp-live-pin__fine-eyewear-logo" src="${FINE_EYEWEAR_PIN_ASSET}" alt="" aria-hidden="true" />`,
-    asset: FINE_EYEWEAR_PIN_ASSET,
-  },
-  "waterloo-greenway": {
-    label: "Waterloo Greenway",
-    glyph: `<img class="dp-pin-logo dp-live-pin__waterloo-logo" src="${WATERLOO_GREENWAY_PIN_ASSET}" alt="" aria-hidden="true" />`,
-    asset: WATERLOO_GREENWAY_PIN_ASSET,
-  },
-  "topo-chico": {
-    label: "Topo Chico",
-    glyph: `<img class="dp-pin-logo dp-live-pin__topo-chico-logo" src="${TOPO_CHICO_PIN_ASSET}" alt="" aria-hidden="true" />`,
-    asset: TOPO_CHICO_PIN_ASSET,
-  },
+  dana: { label: "DANA", glyph: icon('<path d="M3 10h18"/><path d="M5 10l7-6 7 6"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/><path d="M4 21h16"/>') },
+  "fine-eyewear": { label: "Fine Eyewear", glyph: icon('<circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/><path d="M12 12h0"/><path d="M4 12H2M22 12h-2"/><path d="M10.8 10.8c.8-.7 1.6-.7 2.4 0"/>') },
+  "waterloo-greenway": { label: "Waterloo Greenway", glyph: icon('<path d="M6 18c3-7 9-3 12-10"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M8 13h8"/><path d="M12 21v-8"/>') },
+  "stay-put": { label: "The Stay Put", glyph: icon('<path d="M3 11 12 4l9 7"/><path d="M5 10v11h14V10"/><path d="M9 21v-6h6v6"/>') },
+  "topo-chico": { label: "Topo Chico", glyph: icon('<path d="M9 2h6"/><path d="M10 2v4l-2 3v10a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3V9l-2-3V2"/><path d="M9 13h6"/><path d="M10 17h4"/>') },
   yeti: { label: "YETI", glyph: icon('<path d="M6 4h12l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 4Z"/><path d="M8 8h8"/><path d="M10 12h4"/>') },
   rivian: { label: "Rivian", glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>') },
   lululemon: { label: "Lululemon", glyph: icon('<path d="M4 14h4l2-8 4 14 2-6h4"/><path d="M7 20h10"/>') },
@@ -182,18 +130,10 @@ export function normalizeMapIconKey(pinKey: string | undefined) {
     .replace(/^-|-$/g, "");
 }
 
-export function getCanonicalMapIconKey(pinKey: string | undefined): MapIconKey {
-  const normalizedKey = normalizeMapIconKey(pinKey) as MapIconKey;
-  if (mapIconRegistry[normalizedKey]) return normalizedKey;
-  const platformToken = getPlatformIconToken(pinKey);
-  return ICON_TOKEN_TO_MAP_ICON_KEY[platformToken] || "default";
-}
-
 export function getMapIcon(pinKey: string | undefined): MapIconDefinition {
   const rawKey = String(pinKey || "default") as MapIconKey;
   const normalizedKey = normalizeMapIconKey(pinKey) as MapIconKey;
-  const canonicalKey = getCanonicalMapIconKey(pinKey);
-  const direct = mapIconRegistry[rawKey] || mapIconRegistry[normalizedKey] || mapIconRegistry[canonicalKey];
+  const direct = mapIconRegistry[rawKey] || mapIconRegistry[normalizedKey];
   const labelMatch = Object.values(mapIconRegistry).find((item) => normalizeMapIconKey(item.label) === normalizedKey);
 
   if (!direct && !labelMatch && import.meta.env.DEV) {

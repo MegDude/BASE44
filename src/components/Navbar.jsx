@@ -201,7 +201,7 @@ export default function Navbar({ showBackButton = false, onBack }) {
     location.pathname === "/card" ||
     location.pathname === "/ask-map" ||
     location.pathname === "/about" ||
-    ((location.pathname === "/app" || location.pathname === "/map") && !location.search.includes("mode=partner"));
+    ((location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map") && !location.search.includes("mode=partner"));
 
   const partnerActive =
     location.pathname.startsWith("/partners") ||
@@ -210,9 +210,9 @@ export default function Navbar({ showBackButton = false, onBack }) {
     location.pathname === "/reports" ||
     location.pathname === "/dashboard/partner" ||
     location.pathname === "/partner-dashboard" ||
-    ((location.pathname === "/app" || location.pathname === "/map") && location.search.includes("mode=partner"));
+    ((location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map") && location.search.includes("mode=partner"));
 
-  const isAppMapPath = location.pathname === "/app" || location.pathname === "/map";
+  const isAppMapPath = location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map";
   const residentMapActive = isAppMapPath && !location.search.includes("mode=partner");
   const partnerMapActive = isAppMapPath && location.search.includes("mode=partner");
   const isCommerceRoute = ["/pricing", "/partners/sign-in", "/partners/sign-up", "/card", "/resident-sign-up"].includes(location.pathname);

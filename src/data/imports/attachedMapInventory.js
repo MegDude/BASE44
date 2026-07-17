@@ -10683,6 +10683,33 @@ export const ATTACHED_FEATURED_BRANDS = [
     ]
   },
   {
+    "slug": "dottie-may",
+    "name": "Dottie May",
+    "category": "Launch Hospitality Brand",
+    "description": "Launch partner page for a social dining concept using map discovery, QR entry, and district-night activation.",
+    "tag": "Launch Partner · Hospitality",
+    "route": "/brands/dottie-may",
+    "type": "brand",
+    "address": "Downtown Austin, TX 78701",
+    "district": "rainey",
+    "latitude": 30.2608,
+    "longitude": -97.7391,
+    "iconType": "restaurant",
+    "markerVariant": "gold",
+    "searchKeywords": [
+      "Dottie May",
+      "launch hospitality",
+      "social dining",
+      "downtown activation"
+    ],
+    "askMapIntentTags": [
+      "hospitality",
+      "venue",
+      "launch",
+      "activation"
+    ]
+  },
+  {
     "slug": "topo-chico",
     "name": "Topo Chico",
     "category": "Launch Beverage Brand",

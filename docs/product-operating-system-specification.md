@@ -14,7 +14,7 @@ The resident should not feel like they are moving between disconnected pages. Th
 
 ### Working foundation
 
-- The canonical resident map surface is `/map`; `/app` remains the launch/guest entry and the retired `/app/map` alias redirects into `/map` without owning UI or data.
+- The canonical resident surface is already `/map`, `/app`, and `/app/map`, with redirects from resident marketing routes into map context.
 - The app has a working Vite/React build, lazy route loading, Vercel deployment, API routes under `api/`, database/schema modules under `src/db` and `src/lib/database`, and map-specific domain code under `src/lib/map`.
 - There are useful primitives already present: Radix UI, Vaul, Framer Motion, Zustand, TanStack Query, Leaflet, shared button components, query client, Supabase clients, and map registry build/QA scripts.
 - The product direction is already partly documented in existing map and platform architecture docs.
@@ -556,3 +556,4 @@ Every phase must include:
 3. Extract the smallest shared contracts first: tokens, sheet shell, entity schema, action schema.
 4. Migrate one entity kind behind the shared renderer before touching the broader UI.
 5. Continue shipping small, verifiable commits to `main` only when lint/build and route checks pass.
+

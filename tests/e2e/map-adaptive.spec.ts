@@ -12,7 +12,7 @@ test.describe("adaptive map surface", () => {
       await page.goto("/map?embed=true&mode=resident&district=Rainey&filter=Perks&source=e2e");
       await expect(page.locator(".dp-map-page-embedded")).toBeVisible();
       await expect(page.locator(".dp-embed-map-header")).toContainText("Downtown Perks");
-      await expect(page.getByRole("tablist", { name: "Map bottom navigation" })).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Map bottom navigation" })).toHaveCount(0);
 
       const layout = await page.evaluate(() => ({
         overflowX: document.documentElement.scrollWidth - window.innerWidth,
@@ -27,7 +27,7 @@ test.describe("adaptive map surface", () => {
   test("full resident map keeps bottom navigation visible", async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto("/map?mode=resident&tab=map&filter=Perks");
-    await expect(page.getByRole("tablist", { name: "Map bottom navigation" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Map bottom navigation" })).toBeVisible();
     await expect(page.locator(".dp-map-page-embedded")).toHaveCount(0);
   });
 });

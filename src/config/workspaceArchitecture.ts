@@ -15,7 +15,6 @@ export type EntitlementKey = (typeof entitlementKeys)[number];
 
 export type WorkspaceOrganization = {
   id: string;
-  slug?: string;
   name: string;
   type: "property_group" | "hospitality_group" | "venue_group" | "brand" | "civic" | "real_estate";
   status: WorkspaceStatus;
@@ -72,7 +71,6 @@ export const workspaceStatusCopy: Record<WorkspaceStatus, { label: string; descr
 export const demoOrganizations: WorkspaceOrganization[] = [
   {
     id: "demo-org-legends-real-estate",
-    slug: "legends-real-estate",
     name: "Legends Real Estate",
     type: "real_estate",
     status: "active",
@@ -82,7 +80,6 @@ export const demoOrganizations: WorkspaceOrganization[] = [
   },
   {
     id: "demo-org-larry-and-guy",
-    slug: "larry-and-guy",
     name: "Larry & Guy",
     type: "venue_group",
     status: "active",
@@ -92,7 +89,6 @@ export const demoOrganizations: WorkspaceOrganization[] = [
   },
   {
     id: "demo-org-hotel-van-zandt",
-    slug: "hotel-van-zandt",
     name: "Hotel Van Zandt",
     type: "hospitality_group",
     status: "trial",
@@ -102,7 +98,6 @@ export const demoOrganizations: WorkspaceOrganization[] = [
   },
   {
     id: "demo-org-yeti",
-    slug: "yeti",
     name: "YETI",
     type: "brand",
     status: "active",
@@ -143,37 +138,6 @@ export const publicDataRules = {
 
 export function getOrganizationEntities(organizationId: string) {
   return demoEntityOwners.filter((owner) => owner.organization_id === organizationId);
-}
-
-function normalizeWorkspaceLookup(value?: string | null) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-export function resolveWorkspaceOrganization(input: {
-  organizationId?: string | null;
-  organizationSlug?: string | null;
-  organizationName?: string | null;
-} = {}) {
-  const directId = String(input.organizationId || "").trim();
-  if (directId) {
-    const byId = demoOrganizations.find((organization) => organization.id === directId);
-    if (byId) return byId;
-  }
-
-  const candidates = [input.organizationSlug, input.organizationName]
-    .map(normalizeWorkspaceLookup)
-    .filter(Boolean);
-  if (!candidates.length) return null;
-
-  return demoOrganizations.find((organization) => {
-    const values = [organization.id, organization.slug, organization.name].map(normalizeWorkspaceLookup);
-    return candidates.some((candidate) => values.includes(candidate));
-  }) || null;
 }
 
 export function getWorkspaceEntitlements(plan: WorkspacePlan) {

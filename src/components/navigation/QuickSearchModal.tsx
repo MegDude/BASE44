@@ -302,7 +302,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     void runSearch({
       query: "downtown",
       intent: "eat_drink",
-      filter: "Featured",
+      filter: "All",
       audienceMode: "resident",
       currentBounds: null,
       zoom: 16,
@@ -320,7 +320,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     void runSearch({
       query: cleanQuery,
       intent: "",
-      filter: "Featured",
+      filter: "All",
       audienceMode: "resident",
       currentBounds: null,
       zoom: 16,
@@ -429,7 +429,9 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             <button type="button" onClick={() => setQuery("")} aria-label="Clear search">
               <X size={15} />
             </button>
-          ) : null}
+          ) : (
+            <span aria-hidden="true" />
+          )}
         </div>
 
         <div className="dp-quick-search-intents" aria-label="Explore by intent">

@@ -9,7 +9,7 @@
 - Drawer states and per-tab scroll persistence have pure state tests.
 - Empty states are tab-specific and include a useful action.
 - Partner Workspace remains protected by the existing auth contract.
-- `/map`, `/sign-in`, and `/auth/callback` are first-party routes in the same application; `/app/map` is redirect-only and no iframe exists in BASE44.
+- `/map`, `/app/map`, `/sign-in`, and `/auth/callback` are first-party routes in the same application; no iframe exists in BASE44.
 - Auth return paths reject absolute and protocol-relative destinations.
 - Search-intent transitions clear selected entities, scoped results, perks, events, routes, collections, listings, and campaigns.
 
