@@ -88,6 +88,7 @@ import '@/styles/partner-signup-product-final.css'
 import '@/styles/partner-tools-polish-final.css'
 import '@/styles/map-action-system-final.css'
 import '@/styles/collection-platform-3.css'
+import '@/styles/design-system-2.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

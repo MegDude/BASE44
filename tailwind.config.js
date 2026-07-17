@@ -10,9 +10,16 @@ module.exports = {
         serif: ['var(--font-heading)'],
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        'dp-xs': 'var(--dp-radius-xs)',
+        'dp-sm': 'var(--dp-radius-sm)',
+        'dp-md': 'var(--dp-radius-md)',
+        'dp-lg': 'var(--dp-radius-lg)',
+        'dp-xl': 'var(--dp-radius-xl)',
+        'dp-sheet': 'var(--dp-radius-sheet)',
+        'dp-native-sheet': 'var(--dp-radius-native-sheet)',
+        lg: 'var(--dp-radius-lg)',
+        md: 'var(--dp-radius-md)',
+        sm: 'var(--dp-radius-sm)'
       },
       letterSpacing: {
         tightest: '0',
@@ -21,18 +28,29 @@ module.exports = {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        dp: {
+          primary: 'var(--dp-color-primary)',
+          secondary: 'var(--dp-color-secondary)',
+          accent: 'var(--dp-color-accent)',
+          surface: 'var(--dp-surface-1)',
+          background: 'var(--dp-surface-0)',
+          border: 'var(--dp-border)',
+          success: 'var(--dp-success)',
+          warning: 'var(--dp-warning)',
+          error: 'var(--dp-error)',
+        },
         gold: {
-          DEFAULT: '#C8A96A',
-          light: '#C8A96A',
-          dark: '#C8A96A',
-          muted: '#C8A96A',
+          DEFAULT: 'var(--dp-gold-500)',
+          light: 'var(--dp-gold-100)',
+          dark: 'var(--dp-gold-500)',
+          muted: 'var(--dp-gold-100)',
         },
         navy: {
-          DEFAULT: '#0B1F33',
-          deep: 'hsl(218, 38%, 10%)',
-          light: 'hsl(218, 30%, 22%)',
-          mid: 'hsl(218, 20%, 38%)',
-          pale: '#F7F8FB',
+          DEFAULT: 'var(--dp-navy-900)',
+          deep: 'var(--dp-navy-900)',
+          light: 'var(--dp-navy-700)',
+          mid: 'var(--dp-navy-500)',
+          pale: 'var(--dp-neutral-50)',
         },
         card: {
           DEFAULT: 'hsl(var(--card))',
@@ -106,6 +124,11 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-up': 'fade-up 0.6s ease-out forwards',
         'pin-pulse': 'pin-pulse 2.4s ease-in-out infinite',
+      },
+      boxShadow: {
+        'dp-sm': 'var(--dp-shadow-sm)',
+        'dp': 'var(--dp-shadow-md)',
+        'dp-lg': 'var(--dp-shadow-lg)',
       }
     }
   },
