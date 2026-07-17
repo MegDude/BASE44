@@ -124,6 +124,10 @@ const SEO_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   year: "numeric",
 });
+const PERK_EXPIRY_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+});
 const LEGENDS_SEO_REPORT = normalizeLuxuryPresenceSeoSnapshot(legendsLuxuryPresenceSeoSnapshot);
 
 function formatSeoNumber(value, fallback = "—") {
@@ -142,6 +146,16 @@ function formatSeoDate(value) {
   if (!value) return "Snapshot date pending";
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "Snapshot date pending" : SEO_DATE_FORMATTER.format(date);
+}
+
+function getPerkExpiryLabel(offer, place) {
+  const raw = place?.raw || {};
+  const value = offer?.expiresAt || offer?.expires_at || offer?.validUntil || offer?.valid_until
+    || place?.expiresAt || place?.expires_at || raw.expiresAt || raw.expires_at || raw.validUntil || raw.valid_until;
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value).trim();
+  return `Expires ${PERK_EXPIRY_FORMATTER.format(date)}`;
 }
 
 const RAINEY_STREET_CENTER = [30.25855, -97.73835];
@@ -4530,8 +4544,13 @@ function getCanonicalResidentOffer(place) {
     const normalized = String(alias || "").trim().toLowerCase();
     const slug = normalized.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const exactIdentity = identities.some((identity) => identity === normalized);
-    const namedIdentity = identities.some((identity) => identity.includes(normalized));
-    const idIdentity = Boolean(slug && (id === slug || id.includes(`-${slug}`) || id.startsWith(`${slug}-`)));
+    const allowsBroadMatch = normalized.length >= 7;
+    const namedIdentity = allowsBroadMatch && identities.some((identity) => identity.includes(normalized));
+    const idIdentity = Boolean(slug && (
+      id === slug
+      || id.endsWith(`-${slug}`)
+      || (allowsBroadMatch && (id.includes(`-${slug}-`) || id.startsWith(`${slug}-`)))
+    ));
     const score = exactIdentity ? 300 + normalized.length : namedIdentity ? 200 + normalized.length : idIdentity ? 100 + normalized.length : 0;
     return { record, score };
   })).filter((match) => match.score > 0).sort((a, b) => b.score - a.score);
@@ -14104,6 +14123,7 @@ export default function MapPage() {
   const [selectedDrawerClosed, setSelectedDrawerClosed] = useState(false);
   const [selectedDrawerMinimized, setSelectedDrawerMinimized] = useState(false);
   const [nativeDrawerState, setNativeDrawerState] = useState(() => {
+    if (urlState.mode === "resident" && urlState.panelTab === "perks") return "medium";
     if (typeof window === "undefined") return "expanded";
     const stored = window.sessionStorage.getItem(MAP_DRAWER_STATE_STORAGE_KEY);
     return NATIVE_DRAWER_STATES.includes(stored) ? stored : "expanded";
@@ -14232,7 +14252,7 @@ export default function MapPage() {
   useEffect(() => {
     if (urlState.panelTab) {
       setActiveBottomTab(urlState.panelTab);
-      setNativeDrawerState("expanded");
+      setNativeDrawerState(urlState.mode === "resident" && urlState.panelTab === "perks" ? "medium" : "expanded");
       setConsoleCollapsed(true);
       setSelectedId("");
       setClusterDrawer(null);
@@ -14754,8 +14774,16 @@ export default function MapPage() {
   const isLegendsDirectoryFilter = activeFilter === "Legends" || activeFilter === "All Listings" || (urlState.mode === "partner" && activeFilter === "Living Here");
   const isLegendsDirectoryLayer = isLegendsDirectoryFilter && !hasSelectedMapDetail;
   const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
+  const isActivePerksDrawer = urlState.mode === "resident" && activeBottomTab === "perks";
+  const activePerkPlaces = isActivePerksDrawer
+    ? discoverDisplayPlaces.filter((place) => hasActivePerkData(place)).slice(0, 40)
+    : [];
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
-  const drawerPreviewPlaces = isResidentSavedDrawer ? savedDrawerPlaces : previewPlaces;
+  const drawerPreviewPlaces = isResidentSavedDrawer
+    ? savedDrawerPlaces
+    : isActivePerksDrawer
+      ? activePerkPlaces
+      : previewPlaces;
   const legendsDirectoryPlaces = isLegendsDirectoryFilter
     ? getLegendsDirectoryPlaces(discoverDisplayPlaces).slice(0, 80)
     : [];
@@ -16256,10 +16284,15 @@ export default function MapPage() {
       collection: urlState.collection,
       filter: activeFilter,
     });
+    const isResidentPerkSelection = urlState.mode === "resident" && hasActivePerkData(place);
     urlState.update(
       isRentalSelection
         ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: place.id, listingId: "" }
-        : { entityId: isPropertySelection ? publicPropertyId : place.id, listingId: publicListingId || "" },
+        : {
+            entityId: isPropertySelection ? publicPropertyId : place.id,
+            listingId: publicListingId || "",
+            perkId: isResidentPerkSelection ? place.id : "",
+          },
     );
     trackingEvents.markerClick(nextEntityId, workflowEntityType(place));
     trackingEvents.drawerOpen(nextEntityId);
@@ -17274,7 +17307,7 @@ export default function MapPage() {
         : urlState.panelTab === tab && activeBottomTab === tab;
 
     if (isActive && tab !== "map") {
-      setNativeDrawerState((current) => current === "collapsed" ? "expanded" : "collapsed");
+      setNativeDrawerState((current) => current === "collapsed" ? (tab === "perks" ? "medium" : "expanded") : "collapsed");
       setConsoleCollapsed(true);
       return;
     }
@@ -17283,7 +17316,7 @@ export default function MapPage() {
 
     clearOpenMapSelection();
     setActiveBottomTab(tab);
-    setNativeDrawerState(tab === "map" ? "collapsed" : "expanded");
+    setNativeDrawerState(tab === "map" ? "collapsed" : tab === "perks" ? "medium" : "expanded");
     if (filter) {
       beginSearchIntentTransition(filter);
       setActiveFilter(filter);
@@ -17878,14 +17911,28 @@ export default function MapPage() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
               ? "dp-map-directory-sheet dp-legends-directory-sheet dp-native-drawer-shell"
-              : `dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[10px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[10px]`}
+              : `dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${isActivePerksDrawer ? "dp-active-perks-sheet" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[10px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[10px]`}
             data-drawer-state={nativeDrawerState}
             style={MAP_DRAWER_SURFACE_STYLE}
             role="dialog"
             aria-modal="true"
-            aria-label={isLegendsDirectoryLayer ? "Legends Real Estate listings" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
+            aria-label={isLegendsDirectoryLayer ? "Legends Real Estate listings" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : isActivePerksDrawer ? "Active perks" : "Map results"}
           >
             <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
+            {isActivePerksDrawer ? (
+              <header className="dp-perks-sheet-header">
+                <div className="dp-perks-sheet-heading">
+                  <span className="dp-perks-sheet-eyebrow">Resident benefits</span>
+                  <div className="dp-perks-sheet-title-row">
+                    <h2>Active perks</h2>
+                    <span className="dp-perks-sheet-count" aria-live="polite">{activePerkPlaces.length} nearby</span>
+                  </div>
+                </div>
+                <button type="button" className="dp-perks-sheet-close" onClick={goBackToMap} aria-label="Close active perks">
+                  <X aria-hidden="true" />
+                </button>
+              </header>
+            ) : (
             <div
               className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}
               style={isLegendsDirectoryLayer ? MAP_DIRECTORY_TOOLBAR_STYLE : undefined}
@@ -17920,6 +17967,7 @@ export default function MapPage() {
                 </>
               )}
             </div>
+            )}
 
             {!isLegendsDirectoryLayer ? (
               <div
@@ -18028,7 +18076,7 @@ export default function MapPage() {
               </div>
             ) : urlState.mode !== "partner" ? (
             <div className="dp-resident-tab-panel min-h-0 flex-1 overflow-hidden">
-              {residentPanelCopy && (
+              {residentPanelCopy && !isActivePerksDrawer && (
                 <section className="dp-resident-tab-panel-header">
                   <p>{residentPanelCopy.eyebrow}</p>
                   <h2>{residentPanelCopy.title}</h2>
@@ -18037,7 +18085,7 @@ export default function MapPage() {
                 </section>
               )}
               <div
-                className="dp-resident-tab-panel-list min-h-0 flex-1 space-y-1.5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] md:space-y-2"
+                className={`dp-resident-tab-panel-list min-h-0 flex-1 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch] ${isActivePerksDrawer ? "dp-perks-list" : "space-y-1.5 pr-1 md:space-y-2"}`}
               >
               {drawerPreviewPlaces.map((place) => (
                 (() => {
@@ -18082,6 +18130,59 @@ export default function MapPage() {
                   const rowCategory = activeBottomTab === "events" && isEventEntity(place)
                     ? getEventRowCategoryLabel(place)
                     : offer?.category || place.category || "Downtown place";
+                  if (isPerkRow) {
+                    const expiryLabel = getPerkExpiryLabel(offer, place);
+                    const distanceLabel = placeDistanceLabel(place);
+                    const imageUrl = resolveEntityImage(place, "card");
+                    const initial = String(place.name || "P").trim().charAt(0).toUpperCase();
+                    return (
+                      <article key={place.id} className="dp-perk-row" data-perk-id={place.id} data-selected={place.id === selectedId ? "true" : "false"}>
+                        <button type="button" className="dp-perk-row-main" onClick={() => selectPlace(place)} aria-label={`View ${offerTitle || `${place.name} perk`}`}>
+                          <span className="dp-perk-row-media" aria-hidden="true">
+                            <span className="dp-perk-row-fallback">{initial}</span>
+                            {imageUrl ? (
+                              <img
+                                className="dp-perk-row-image"
+                                src={imageUrl}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                                onError={(event) => { event.currentTarget.hidden = true; }}
+                              />
+                            ) : null}
+                          </span>
+                          <span className="dp-perk-row-content">
+                            <span className="dp-perk-row-venue">{place.name}</span>
+                            <span className="dp-perk-row-title">{offerTitle || "Resident benefit available"}</span>
+                            <span className="dp-perk-row-meta">
+                              {expiryLabel ? <span>{expiryLabel}</span> : null}
+                              {expiryLabel && distanceLabel ? <span aria-hidden="true">·</span> : null}
+                              {distanceLabel ? <span>{distanceLabel}</span> : null}
+                            </span>
+                          </span>
+                        </button>
+                        <div className="dp-perk-row-actions" aria-label={`${place.name} perk actions`}>
+                          <button
+                            type="button"
+                            className="dp-perk-action-primary"
+                            onClick={() => openResidentQrModal(place, "use_perk", "resident_perks_panel")}
+                            disabled={perkRedeemed}
+                          >
+                            {perkRedeemed ? "Used" : "Redeem"}
+                          </button>
+                          <button
+                            type="button"
+                            className="dp-perk-icon-action"
+                            aria-label={`${savedIds.has(place.id) ? "Remove saved" : "Save"} offer from ${place.name}`}
+                            aria-pressed={savedIds.has(place.id)}
+                            onClick={() => toggleSaved(place)}
+                          >
+                            <Star aria-hidden="true" />
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  }
                   return (
                     <article
                       key={place.id}
@@ -18130,7 +18231,7 @@ export default function MapPage() {
                   Keeping nearby downtown places visible while your question sorts the best next options.
                 </div>
               )}
-              {(isResidentSavedDrawer ? residentSavedPlaces : discoverDisplayPlaces).length > 4 && (
+              {!isActivePerksDrawer && (isResidentSavedDrawer ? residentSavedPlaces : discoverDisplayPlaces).length > 4 && (
                 <button
                   type="button"
                   onClick={() => setResultsExpanded((value) => !value)}

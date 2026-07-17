@@ -42,6 +42,7 @@
     "audit:native-map": "tsx scripts/audit-native-google-map.ts",
     "audit:design-system": "node scripts/audit-design-system-2.mjs",
     "audit:design-system:all": "node scripts/audit-design-system-2.mjs --all",
+    "test:active-perks-sheet": "node scripts/test-active-perks-sheet.mjs",
     "assets:wikimedia": "python3 scripts/download_wikimedia_assets.py",
     "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs"
   },

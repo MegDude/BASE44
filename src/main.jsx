@@ -89,6 +89,7 @@ import '@/styles/partner-tools-polish-final.css'
 import '@/styles/map-action-system-final.css'
 import '@/styles/collection-platform-3.css'
 import '@/styles/design-system-2.css'
+import '@/styles/active-perks-sheet.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
