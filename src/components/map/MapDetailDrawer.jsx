@@ -17,6 +17,20 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
   const isSaved = history.saved.includes(entity.id);
   const pin = resolveEntityPin(entity);
+  const heroImage = [
+    entity?.primaryImage,
+    entity?.heroImage,
+    entity?.image,
+    entity?.thumbnail,
+    entity?.media?.image,
+    entity?.raw?.primaryImage,
+    entity?.raw?.heroImage,
+    entity?.raw?.image,
+    entity?.raw?.thumbnail,
+    Array.isArray(entity?.galleryImages) ? entity.galleryImages[0] : "",
+    Array.isArray(entity?.raw?.galleryImages) ? entity.raw.galleryImages[0] : "",
+  ].filter(Boolean)[0] || "";
+  const heroAlt = entity?.name ? `${entity.name} media` : "Downtown Perks map detail media";
 
   const handleSave = () => {
     if (isSaved) {
@@ -77,12 +91,17 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Hero placeholder — subtle gradient with centered monogram */}
-        <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#F0F3F7] via-[#F7F8FB] to-[#EEF1F6]">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(191,164,106,0.08),transparent_60%),radial-gradient(ellipse_at_80%_70%,rgba(11,31,51,0.05),transparent_50%)]" />
-          <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[10px] bg-[#0B1F33] text-base font-semibold text-[#BFA46A] shadow-[0_12px_32px_rgba(11,31,51,0.18),0_4px_12px_rgba(11,31,51,0.12),0_0_0_1px_rgba(255,255,255,0.15)]">
-            <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
-          </div>
+        <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden bg-[#F7F8FB]">
+          {heroImage ? (
+            <img src={heroImage} alt={heroAlt} className="h-full w-full object-cover" loading="eager" decoding="async" />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(191,164,106,0.08),transparent_60%),radial-gradient(ellipse_at_80%_70%,rgba(11,31,51,0.05),transparent_50%)]" />
+              <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[10px] bg-[#0B1F33] text-base font-semibold text-[#BFA46A] shadow-[0_12px_32px_rgba(11,31,51,0.18),0_4px_12px_rgba(11,31,51,0.12),0_0_0_1px_rgba(255,255,255,0.15)]">
+                <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
+              </div>
+            </>
+          )}
         </div>
 
         <div className="p-5 space-y-3.5">

@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
+import { createResidentCardProfile, getResidentCardQrImageSrc, writeStoredResidentCard } from '@/lib/residentCard';
 
 const RESIDENT_ACCESS_STORAGE_KEY = 'dp_resident_access:current';
 const PROFILE_STORAGE_KEY = 'dp_profile_id';
@@ -57,7 +58,9 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
   const perkValue = item.perk_value || item.offer || item.primaryAction || 'resident perk';
   const perkDescription = item.perk_description || item.description || item.summary || `${item.name} includes a resident perk through Downtown Perks, giving verified residents a specific local benefit tied to this pin.`;
   const qrPayload = useMemo(() => {
-    const cardUrl = new URL('/card', typeof window !== 'undefined' ? window.location.origin : 'https://base-44-h2iq.vercel.app');
+    const residentProfile = createResidentCardProfile({ id: residentUid, fullName: 'Resident access' }, { origin: typeof window !== 'undefined' ? window.location.origin : undefined });
+    writeStoredResidentCard(residentProfile);
+    const cardUrl = new URL(residentProfile.residentCard.qrValue);
     cardUrl.searchParams.set('residentUid', residentUid);
     cardUrl.searchParams.set('touchpoint', 'use_perk');
     cardUrl.searchParams.set('entityId', item.id);
@@ -71,6 +74,10 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
       venueName: item.name,
       perkValue,
       perkDescription,
+      residentCard: residentProfile.residentCard,
+      cardId: residentProfile.residentCard.cardId,
+      cardNumber: residentProfile.residentCard.cardNumber,
+      qrToken: residentProfile.residentCard.token,
       qrValue: cardUrl.toString(),
       timestamp: issuedAt,
     };
@@ -169,7 +176,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
               >
                 <div className="bg-white p-4 rounded-lg border-4 border-primary/20">
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrValue)}`}
+                    src={getResidentCardQrImageSrc(qrValue)}
                     alt="QR Code"
                     className="w-44 h-44"
                   />

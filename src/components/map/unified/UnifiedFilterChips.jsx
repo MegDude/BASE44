@@ -8,24 +8,24 @@ import { motion } from 'framer-motion';
 import { useUnifiedMapStore } from '@/store/unified-map-store';
 import { FILTER_CHIPS } from '@/lib/mapSystemConstants';
 import {
-  MapPin,
-  Calendar,
+  Compass,
+  CalendarDays,
   Gift,
   Building2,
   Clock,
-  Sparkles,
+  Route,
   TrendingUp,
   Star,
 } from 'lucide-react';
 import { useRef } from 'react';
 
 const ICON_MAP = {
-  MapPin,
-  Calendar,
+  Compass,
+  CalendarDays,
   Gift,
   Building2,
   Clock,
-  Sparkles,
+  Route,
   TrendingUp,
   Star,
 };

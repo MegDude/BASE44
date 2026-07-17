@@ -31,6 +31,8 @@ import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
 import { normalizeEntity } from "./map/normalizeEntity";
 import { getHospitalityCsvUpdate } from "../data/hospitalityContentLibrary";
 import { getResidentialMixedUseUpdate } from "../data/residentialMixedUseContentLibrary";
+import { getFirstThursdayRaineyMapEvent } from "../data/events/firstThursdayRainey";
+import { fetchPartnerMapContent } from "./partner/partnerMapContentClient";
 
 const FAIRMONT_HOTEL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
 const FAIRMONT_POOL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-rooftop-pool.webp";
@@ -61,6 +63,9 @@ function eventPlace({
     id: `event-${id}`,
     name,
     type: "event",
+    kind: "event",
+    entityType: "event",
+    status: rest.status || "upcoming",
     category: `Event / ${category}`,
     category_key: ["event", categoryKey || category, district, ...tags].join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "_"),
     markerType: "event",
@@ -71,14 +76,14 @@ function eventPlace({
     district,
     address,
     summary,
-    description: summary,
+    description: rest.description || summary,
     rsvp_count: rsvpCount,
     time,
     date,
     image,
     tags,
     partnerInsight,
-    source: "Downtown Perks event layer",
+    source: rest.source || "Downtown Perks event layer",
   };
 }
 
@@ -669,23 +674,7 @@ const eventPlaces = [
     included: ["Live DJs", "Drink specials", "Pool access", "Special activations", "Holiday atmosphere"],
     partnerInsight: "Strong for holiday-weekend demand, pool pass saves, group planning, and hotel guest conversion.",
   }),
-  eventPlace({
-    id: "hotel-van-zandt-first-thursday",
-    name: "Hotel Van Zandt First Thursday",
-    category: "Happy Hour",
-    categoryKey: "happy_hour hotel_van_zandt first_thursday",
-    latitude: 30.2588,
-    longitude: -97.7392,
-    district: "Rainey",
-    address: "605 Davis St, Austin, TX 78701",
-    time: "Thu 13 · 5:00 PM",
-    date: "2026-06-13T17:00:00-05:00",
-    image: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
-    rsvpCount: 68,
-    tags: ["Hotel Van Zandt", "Geraldine's", "First Thursday", "Rainey", "Happy Hour", "Live Music"],
-    summary: "A featured Rainey hotel moment connecting guests, residents, Geraldine's, happy hour, and nearby live music.",
-    partnerInsight: "Useful for seeing how hotel guests and residents respond to First Thursday timing, Geraldine's traffic, saves, and nearby follow-on plans.",
-  }),
+  eventPlace(getFirstThursdayRaineyMapEvent()),
   eventPlace({
     id: "geraldines-happy-hour-live-music",
     name: "Geraldine's Happy Hour + Live Music",
@@ -887,6 +876,7 @@ const eventPlaces = [
     name: "Monday Meetups at Stay Put",
     category: "Social",
     categoryKey: "social stay_put",
+    pinKey: "nightlife",
     latitude: 30.2589,
     longitude: -97.73805,
     district: "Rainey",
@@ -957,30 +947,31 @@ const brandPartnerPlaces = [
     source: "Downtown Perks brand partner layer",
   },
   {
-    id: "topo-chico-downtown-hydration-activation",
-    name: "Topo Chico Hydration Layer",
+    id: "yeti-downtown-hydration-station",
+    name: "YETI Hydration Station",
     type: "brand",
     partnerType: "brand",
-    brand: "Topo Chico",
-    category: "Brand / Hydration Activation",
-    category_key: "brand_activation topo_chico hydration waterloo wellness nightlife recovery rainey",
+    brand: "YETI",
+    pinKey: "yeti",
+    category: "Brand / Hydration Station",
+    category_key: "brand_activation yeti hydration_station refill waterloo wellness nightlife recovery rainey",
     latitude: 30.27348,
     longitude: -97.73602,
     district: "Waterloo",
     address: "Waterloo Park, Austin, TX 78701",
-    summary: "A downtown hydration launch tied to wellness events, nightlife recovery, hotel arrivals, and high-footfall partner stops.",
-    description: "Topo Chico appears where it is useful: event tables, venue bars, recovery stops, and map moments when people are choosing what to do next.",
-    deals_offers: "Hydration unlock at participating events and venues",
-    primaryAction: "Unlock Activation",
+    summary: "A downtown refill and cold-water station tied to wellness events, hotel arrivals, nightlife recovery, and high-footfall partner stops.",
+    description: "YETI appears where hydration is useful: event tables, lobby moments, trail routes, recovery stops, and map moments when people are choosing what to do next.",
+    deals_offers: "Cold-water refill station at participating events and venues",
+    primaryAction: "Save Station",
     secondaryAction: "View Partners",
-    campaignObjective: "Measure which event, venue, and corridor turns hydration intent into scans, saves, and product trial.",
+    campaignObjective: "Measure which event, venue, and corridor turns hydration intent into scans, saves, and station visits.",
     partnerInsight: "Strongest at Waterloo wellness events, Rainey nightlife windows, hotel welcome moments, and after-work outdoor programming.",
     audience: "Residents, eventgoers, runners, hotel guests, nightlife crowds, and wellness groups.",
-    image: "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg",
+    image: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
     related: ["event-waterloo-yoga", "waterloo-greenway-campaign-hub", "partner-hotel-van-zandt"],
-    mapLayer: "Topo Chico",
-    datasetLayer: "Topo Chico",
-    tags: ["Topo Chico", "Hydration", "Waterloo", "Rainey", "Wellness", "Nightlife", "QR"],
+    mapLayer: "YETI",
+    datasetLayer: "YETI",
+    tags: ["YETI", "Hydration Station", "Refill", "Waterloo", "Rainey", "Wellness", "Nightlife", "QR"],
     source: "Downtown Perks brand partner layer",
   },
   {
@@ -1160,7 +1151,7 @@ const brandPartnerPlaces = [
     campaignObjective: "Turn building and neighborhood interest into listing views, showing requests, and property-linked local discovery.",
     partnerInsight: "Best when prospects compare the building and the block together: nearby dining, events, perks, and daily utility.",
     audience: "Relocation prospects, downtown renters, buyers, residents, and hotel guests considering a move.",
-    image: "/pins/downtown-perks/legends-logo-gold.svg",
+    image: "/pins/downtown-perks/legends-logo.png",
     related: ["priority-the-waterline", "priority-the-independent", "priority-the-austonian", "property-the-shore"],
     mapLayer: "Legends",
     datasetLayer: "Legends",
@@ -1791,6 +1782,7 @@ export function buildLocations() {
 
 export function useLocations() {
   const [happyHoursVersion, setHappyHoursVersion] = useState(0);
+  const [platformContent, setPlatformContent] = useState([]);
 
   useEffect(() => {
     function updateHappyHours() {
@@ -1805,6 +1797,41 @@ export function useLocations() {
     };
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    const hydrate = () => {
+      fetchPartnerMapContent()
+        .then((items) => { if (active) setPlatformContent(items); })
+        .catch(() => { /* Bundled map data remains the offline fallback. */ });
+    };
+    hydrate();
+    window.addEventListener("downtown-perks:partner-content-updated", hydrate);
+    return () => {
+      active = false;
+      window.removeEventListener("downtown-perks:partner-content-updated", hydrate);
+    };
+  }, []);
+
   void happyHoursVersion;
-  return buildLocations();
+  const locations = buildLocations();
+  if (!platformContent.length) return locations;
+  const byKey = new Map();
+  platformContent.forEach((item) => {
+    [item.id, item.slug, item.ownerSlug].filter(Boolean).forEach((key) => byKey.set(String(key), item));
+  });
+  return locations.map((location) => {
+    const platform = [location.id, location.slug, location.ownerSlug, location.raw?.slug, location.raw?.ownerSlug]
+      .filter(Boolean)
+      .map((key) => byKey.get(String(key)))
+      .find(Boolean);
+    if (!platform) return location;
+    return {
+      ...location,
+      ...platform,
+      name: platform.title || location.name,
+      image: platform.heroImage || location.image,
+      images: platform.gallery?.length ? platform.gallery : location.images,
+      raw: { ...(location.raw || {}), ...platform, partnerPanel: platform.partnerPanel },
+    };
+  });
 }

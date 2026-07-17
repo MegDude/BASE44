@@ -14,9 +14,17 @@ const IMAGE_EXTENSIONS = {
   "the-quincy": "webp", paseo: "webp", "fifth-and-west": "jpeg", "austin-proper-residences": "jpeg", "the-monarch": "avif",
 };
 const BUILDING_GALLERIES = {
-  paseo: ["/images/residential-content/paseo-amenity.jpg"],
+  paseo: [
+    "/images/residential-content/paseo-amenity.jpg",
+    "/images/residential-content/shared-access-amenity.jpeg",
+    "/images/residential-content/shared-access-downtown-lake.jpeg",
+  ],
   "the-shore": ["/images/residential-content/the-shore-hospitality.webp"],
-  "700-river": ["/images/residential-content/700-river-shared-access.jpeg"],
+  "700-river": [
+    "/images/residential-content/shared-access-700-red-river.jpeg",
+    "/images/residential-content/700-river-shared-access.jpeg",
+    "/images/residential-content/shared-access-downtown-lake.jpeg",
+  ],
 };
 
 function parseCsv(text) {

@@ -10,10 +10,10 @@ type ResidentTab = {
 
 const RESIDENT_TABS = [
   { id: "home", label: "Home", href: "/resident/home", icon: House },
-  { id: "map", label: "Map", href: "/map?mode=resident&tab=map&filter=All", icon: MapPin },
-  { id: "perks", label: "Perks", href: "/map?mode=resident&tab=perks&filter=Perks", icon: Gift },
-  { id: "events", label: "Events", href: "/map?mode=resident&tab=events&filter=Events", icon: CalendarDays },
-  { id: "card", label: "Card", href: "/map?mode=resident&tab=pass", icon: CreditCard },
+  { id: "map", label: "Map", href: "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured", icon: MapPin },
+  { id: "perks", label: "Perks", href: "/map?mode=resident&tab=perks&filter=Perks&collection=resident-benefits", icon: Gift },
+  { id: "events", label: "Events", href: "/map?mode=resident&tab=events&filter=Events&collection=events-nearby", icon: CalendarDays },
+  { id: "card", label: "Card", href: "/map?mode=resident&tab=card", icon: CreditCard },
 ] as const satisfies readonly ResidentTab[];
 
 type ResidentMobileTabBarProps = {

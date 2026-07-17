@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -19,7 +20,6 @@ const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const ResidentOnboardingFlow = lazy(() => import("./onboarding/ResidentOnboardingFlow"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
-const PublicMapGateway = lazy(() => import("./pages/PublicMapGateway"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerGateway = lazy(() => import("./pages/PartnerGateway"));
 const PartnerAccess = lazy(() => import("./pages/partners/Access"));
@@ -56,7 +56,7 @@ function ProtectedRoute({ children }) {
   if (isLoadingAuth) return <MarketingFallback />;
   if (isAuthenticated) {
     const role = String(user?.role || "resident").toLowerCase();
-    if (role === "resident") return <Navigate to="/app/map?mode=resident&tab=map&filter=All" replace />;
+    if (role === "resident") return <Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />;
     return children;
   }
   if (canBootstrapWorkspace) return children;
@@ -68,20 +68,6 @@ function ProtectedRoute({ children }) {
       state={{ from: `${location.pathname}${location.search}${location.hash}` }}
     />
   );
-}
-
-function AuthenticatedResidentMap() {
-  const location = useLocation();
-  const { isAuthenticated, isLoadingAuth, user } = useAuth();
-  const returnTo = `${location.pathname}${location.search}${location.hash}`;
-
-  if (isLoadingAuth) return <MarketingFallback />;
-  if (!isAuthenticated) return <Navigate to={`/sign-in?returnTo=${encodeURIComponent(returnTo)}`} replace />;
-
-  const role = String(user?.role || "resident").toLowerCase();
-  if (role === "admin") return <Navigate to="/admin-studio/command-center" replace />;
-  if (role !== "resident") return <Navigate to="/partner-workspace/overview" replace />;
-  return <MapPage />;
 }
 
 function RedirectWithSearch({ to }) {
@@ -155,10 +141,10 @@ function ProductRoutes() {
           <Route element={<Layout />}>
 
           {/* ── PLATFORM ROUTES ─────────────────────────────────────────── */}
-          <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="/" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/app" element={<MapLaunchGate />} />
-          <Route path="/app/map" element={<AuthenticatedResidentMap />} />
-          <Route path="/map" element={<PublicMapGateway />} />
+          <Route path="/app/map" element={<RedirectWithSearch to="/map" />} />
+          <Route path="/map" element={<MapPage />} />
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />

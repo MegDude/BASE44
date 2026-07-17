@@ -1,4 +1,5 @@
 import { supabaseServer } from "../src/lib/supabaseServer.js";
+import { createResidentCardProfile, isUuid } from "../src/lib/residentCard.js";
 
 const APPROVED_BUILDING_DOMAINS = new Set([
   "springaustin.com",
@@ -22,7 +23,7 @@ function verificationStatus(record) {
   return "perks_card";
 }
 
-function normalizeResident(body = {}) {
+function normalizeResident(body = {}, origin) {
   const record = {
     id: clean(body.id, 180) || `resident-${Date.now()}`,
     fullName: clean(body.fullName || body.name),
@@ -37,10 +38,16 @@ function normalizeResident(body = {}) {
     createdAt: new Date().toISOString(),
   };
 
-  return {
+  return createResidentCardProfile({
     ...record,
     verificationStatus: verificationStatus(record),
-  };
+  }, { origin });
+}
+
+function requestOrigin(req) {
+  const protocol = req.headers["x-forwarded-proto"] || "https";
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  return host ? `${protocol}://${host}` : undefined;
 }
 
 async function storeResident(record) {
@@ -48,20 +55,34 @@ async function storeResident(record) {
     persisted: false,
   };
 
+  const userId = isUuid(record.userId || record.user_id || record.id) ? (record.userId || record.user_id || record.id) : null;
   const { error } = await supabaseServer.from("resident_profiles").insert({
-    user_id: record.id,
-    full_name: record.fullName,
-    email: record.email,
-    phone: record.phone,
-    verification_status: record.verificationStatus,
+    user_id: userId,
+    name: record.fullName || record.name || null,
+    email: record.email || null,
+    phone: record.phone || null,
+    membership_status: record.verificationStatus || "perks_card",
+    source: record.source || "resident_access",
+    status: "active",
     metadata: record,
   });
 
   if (error) throw error;
 
+  await supabaseServer.from("perk_cards").insert({
+    card_code: record.residentCard.cardNumber,
+    status: "active",
+    metadata: {
+      residentId: record.residentId,
+      token: record.residentCard.token,
+      issuedAt: record.residentCard.issuedAt,
+      source: "resident_access",
+    },
+  }).then(() => null).catch(() => null);
+
   if (record.buildingName || record.unitNumber) {
     await supabaseServer.from("resident_memberships").insert({
-      user_id: record.id,
+      user_id: userId,
       building_id: record.buildingName || "manual-review",
       unit_number: record.unitNumber || null,
       status: record.verificationStatus === "verified" ? "active" : "pending",
@@ -75,7 +96,7 @@ async function storeResident(record) {
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const record = normalizeResident(req.body || {});
+  const record = normalizeResident(req.body || {}, requestOrigin(req));
   if (!record.fullName) return res.status(400).json({ error: "Name is required" });
   if (!record.email) return res.status(400).json({ error: "Email is required" });
   if (record.accessPath === "building" && (!record.buildingName || !record.unitNumber)) {

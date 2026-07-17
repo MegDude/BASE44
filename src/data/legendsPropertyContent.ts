@@ -53,7 +53,7 @@ const property = (
   ctaPrimary: "View Nearby Perks",
   ctaSecondary: "Explore Neighborhood",
   imageAsset,
-  pinAsset: "/pins/downtown-perks/legends-logo-gold.svg",
+  pinAsset: "/pins/downtown-perks/legends-logo.png",
   entityAliases: [buildingName, address, id],
 });
 
