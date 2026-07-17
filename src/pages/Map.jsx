@@ -14066,7 +14066,11 @@ export default function MapPage() {
       const listingCandidate = urlState.listingId
         ? resolveListingEntityFromCollection(urlState.listingId, luxuryPresenceListingPlaces) || resolveListingEntityFromCollection(urlState.listingId, places)
         : null;
-      const candidate = listingCandidate || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      const candidateSource = listingCandidate || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      const residentialUpdate = resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities);
+      const candidate = candidateSource && residentialUpdate && isCanonicalResidentialMixedUseEntity(candidateSource)
+        ? { ...candidateSource, ...residentialUpdate, raw: { ...(candidateSource.raw || {}), ...(residentialUpdate.raw || {}) } }
+        : candidateSource;
       if (!candidate) return null;
       const isSelectedHospitalityEntity = isHospitalityNetworkEntity(candidate);
       if ((activeFilter !== "All" || urlState.collection || effectiveSearch) && !matchesFilter(candidate, activeFilter, savedIds) && !(isSelectedHospitalityEntity && ["Hotels", "Perks"].includes(activeFilter))) return null;
