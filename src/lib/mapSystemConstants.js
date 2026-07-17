@@ -42,12 +42,12 @@ export const DRAWER_STATES = {
 };
 
 export const FILTER_CHIPS = [
-  { id: 'places', label: 'Places', icon: 'Compass', active: true },
-  { id: 'events', label: 'Events', icon: 'CalendarDays', active: false },
+  { id: 'places', label: 'Places', icon: 'MapPin', active: true },
+  { id: 'events', label: 'Events', icon: 'Calendar', active: false },
   { id: 'perks', label: 'Perks', icon: 'Gift', active: false },
   { id: 'buildings', label: 'Buildings', icon: 'Building2', active: false },
   { id: 'open-now', label: 'Open now', icon: 'Clock', active: false },
-  { id: 'walkable-5', label: '5 min walk', icon: 'Route', active: false },
+  { id: 'walkable-5', label: '5 min walk', icon: 'Sparkles', active: false },
   { id: 'popular', label: 'Popular now', icon: 'TrendingUp', active: false },
   { id: 'new', label: 'New', icon: 'Star', active: false },
 ];

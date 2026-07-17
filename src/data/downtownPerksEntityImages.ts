@@ -11,29 +11,9 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /HOTEL VAN ZANDT /",
   },
   "hotel-van-zandt": {
-    src: "/images/map-entities/hotels-nearby/hotel-van-zandt-lounge.webp",
-    alt: "Hotel Van Zandt lounge and bar hospitality interior",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/HOSPITALITY/",
-  },
-  "hvz-texas-sized-savings-40": {
-    src: "/images/map-entities/hotels-nearby/hvz-texas-sized-savings.jpg",
-    alt: "Hotel Van Zandt rooftop pool summer stay offer",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/HOSPITALITY/",
-  },
-  "hvz-stay-in-the-groove": {
-    src: "/images/map-entities/hotels-nearby/hvz-stay-in-the-groove.webp",
-    alt: "Hotel Van Zandt music-inspired stay offer",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/HOSPITALITY/",
-  },
-  "hvz-texas-resident-rate": {
-    src: "/images/map-entities/hotels-nearby/hvz-texas-resident-rate.jpg",
-    alt: "Hotel Van Zandt cocktail lounge resident rate offer",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/HOSPITALITY/",
-  },
-  "hvz-how-suite-it-is": {
-    src: "/images/map-entities/hotels-nearby/hvz-how-suite-it-is.jpg",
-    alt: "Hotel Van Zandt rooftop cabana suite offer",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/HOSPITALITY/",
+    src: "/images/reports/hotel-van-zandt-entrance.jpg",
+    alt: "Hotel Van Zandt entrance on Rainey Street",
+    sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /HOTEL VAN ZANDT /",
   },
   "1-hotel-austin": {
     src: "/images/map-entities/1-hotel-austin/waterline-hotel.avif",
@@ -46,7 +26,7 @@ export const downtownPerksEntityImages = {
     sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
   },
   "1-hotel-austin-watr": {
-    src: "/images/map-entities/hotels-nearby/watr-rooftop.webp",
+    src: "/images/map-entities/1-hotel-austin/watr.webp",
     alt: "Watr rooftop restaurant inside 1 Hotel Austin",
     sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
   },
@@ -134,46 +114,6 @@ export const downtownPerksEntityImages = {
     src: "/images/map-entities/attached/properties/paseo/exterior-sunset.jpeg",
     alt: "Paseo residential tower on Rainey Street",
     sourceFolder: "/Users/megdude/Downloads/IMAGES NEW /3. reports page images/",
-  },
-  "shared-access-amenity": {
-    src: "/images/residential-content/shared-access-amenity.jpeg",
-    alt: "Shared resident amenity access for the Downtown Perks building network",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-700-red-river": {
-    src: "/images/residential-content/shared-access-700-red-river.jpeg",
-    alt: "700 River shared-access amenity for eligible Downtown Perks residents",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-waterloo": {
-    src: "/images/residential-content/shared-access-waterloo.jpeg",
-    alt: "Waterloo-area shared-access context for Downtown Perks residents",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-downtown-lake": {
-    src: "/images/residential-content/shared-access-downtown-lake.jpeg",
-    alt: "Downtown lake access near participating resident amenities",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-downtown-future": {
-    src: "/images/residential-content/shared-access-downtown-future.jpeg",
-    alt: "Downtown Austin shared-access and building-network context",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-cesar-chavez": {
-    src: "/images/residential-content/shared-access-cesar-chavez.jpeg",
-    alt: "Cesar Chavez downtown access context for residents",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-jazz": {
-    src: "/images/residential-content/shared-access-jazz.jpeg",
-    alt: "Downtown music and community access context for residents",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
-  },
-  "shared-access-community": {
-    src: "/images/residential-content/shared-access-community.jpeg",
-    alt: "Community shared-access context for Downtown Perks residents",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/SHARED ACCES PAGE/",
   },
   "the-waterline": {
     src: "/images/reports/waterline-building.jpg",
@@ -275,46 +215,6 @@ export const downtownPerksEntityImages = {
     alt: "Heritage Boots western retail detail",
     sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PINS STICKER STYLE/",
   },
-  "panel-rainey-date-night": {
-    src: "/images/map/panels/panel-detail/rainey-date-night-walk.jpg",
-    alt: "People walking together through the Rainey area in Austin.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-happy-hour": {
-    src: "/images/map/panels/panel-detail/happy-hour-table.jpg",
-    alt: "Friends raising drinks around a downtown Austin happy hour table.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-lady-bird-trail": {
-    src: "/images/map/panels/panel-detail/lady-bird-bike-skyline.jpg",
-    alt: "A cyclist on the Lady Bird Lake trail with the Austin skyline behind them.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-lake-wellness": {
-    src: "/images/map/panels/panel-detail/lake-wellness-route.jpg",
-    alt: "A runner stretching near Lady Bird Lake.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-second-street": {
-    src: "/images/map/panels/panel-detail/second-street-district.jpg",
-    alt: "People walking through the 2nd Street District in downtown Austin.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-red-river": {
-    src: "/images/map/panels/panel-detail/red-river-cultural-district.png",
-    alt: "Waterloo and Red River cultural district trail landscape at sunset.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-seaholm": {
-    src: "/images/map/panels/panel-detail/seaholm-district.jpg",
-    alt: "Seaholm District in downtown Austin.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
-  "panel-congress": {
-    src: "/images/map/panels/panel-detail/congress-skyline.jpg",
-    alt: "Austin skyline seen from the South Congress area.",
-    sourceFolder: "/Users/megdude/Downloads/PERKS MEDIA/IMAGES NEW /PANNEL DETAIL/",
-  },
 } as const satisfies Record<string, DowntownPerksEntityImage>;
 
 const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEntityImages; terms: string[] }> = [
@@ -322,10 +222,6 @@ const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEn
   { key: "1-hotel-austin-alteno", terms: ["1 hotel austin alteno", "alteno", "alteño"] },
   { key: "1-hotel-austin-watr", terms: ["1 hotel austin watr", "watr"] },
   { key: "1-hotel-austin-neighbors", terms: ["1-hotel-austin-neighbors", "1 hotel austin neighbors", "neighbors cafe"] },
-  { key: "hvz-texas-sized-savings-40", terms: ["texas-sized savings", "texas sized savings", "texas-sized summer savings", "get 40 off"] },
-  { key: "hvz-stay-in-the-groove", terms: ["stay in the groove"] },
-  { key: "hvz-texas-resident-rate", terms: ["texas resident rate", "exclusive texas resident rate"] },
-  { key: "hvz-how-suite-it-is", terms: ["how suite it is", "suite it is"] },
   { key: "hotel-van-zandt", terms: ["hotel van zandt", "van zandt"] },
   { key: "1-hotel-austin", terms: ["1 hotel austin", "one hotel austin"] },
   { key: "four-seasons", terms: ["four seasons hotel", "four seasons austin", "four seasons downtown", "four seasons"] },
@@ -344,13 +240,6 @@ const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEn
   { key: "frost-tower", terms: ["frost tower"] },
   { key: "6th-guadalupe", terms: ["6th guadalupe", "sixth guadalupe", "6th & guadalupe", "sixth & guadalupe"] },
   { key: "the-paseo", terms: ["the paseo", "paseo", "80 rainey", "90 rainey"] },
-  { key: "shared-access-amenity", terms: ["shared access", "shared amenity", "shared amenities", "building network", "building benefits", "resident amenities", "amenity network"] },
-  { key: "shared-access-700-red-river", terms: ["700 river shared access", "700 red river", "700 river amenity", "building network 700 river", "resident access 700 river"] },
-  { key: "shared-access-waterloo", terms: ["waterloo shared access", "waterloo amenity", "waterloo greenway access"] },
-  { key: "shared-access-downtown-lake", terms: ["downtown lake", "lake access", "lady bird lake access", "waterfront amenity"] },
-  { key: "shared-access-downtown-future", terms: ["downtown future", "downtown growth", "downtown building network"] },
-  { key: "shared-access-cesar-chavez", terms: ["cesar chavez", "downtown cesar chavez"] },
-  { key: "shared-access-jazz", terms: ["jazz", "music amenity", "community music"] },
   { key: "the-waterline", terms: ["the waterline", "waterline"] },
   { key: "70-rainey", terms: ["70 rainey"] },
   { key: "the-shore", terms: ["the shore", "603 davis", "603 davis street", "603 davis st", "610 davis"] },
@@ -371,14 +260,6 @@ const downtownPerksEntityImageAliases: Array<{ key: keyof typeof downtownPerksEn
   { key: "200-congress", terms: ["200 congress", "austonian"] },
   { key: "the-bowie", terms: ["the bowie", "bowie", "311 bowie"] },
   { key: "heritage-boots", terms: ["heritage boots", "western retail"] },
-  { key: "panel-rainey-date-night", terms: ["rainey date night", "date night", "first date", "rainey after work", "rainey weekend"] },
-  { key: "panel-happy-hour", terms: ["happy hour", "bangers", "beer garden", "after work drinks", "downtown drinks"] },
-  { key: "panel-lady-bird-trail", terms: ["lady bird trail", "walking route", "bike trail", "waterfront route", "trail map"] },
-  { key: "panel-lake-wellness", terms: ["wellness route", "fitness route", "lake wellness", "run route", "morning movement"] },
-  { key: "panel-second-street", terms: ["2nd street", "second street", "shopping district", "downtown shopping"] },
-  { key: "panel-red-river", terms: ["red river", "waterloo", "music map", "cultural district"] },
-  { key: "panel-seaholm", terms: ["seaholm", "seaholm district", "west ave"] },
-  { key: "panel-congress", terms: ["congress", "downtown core", "south congress", "austin skyline"] },
 ];
 
 function normalizeText(value: unknown) {

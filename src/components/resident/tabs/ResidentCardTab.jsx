@@ -1,19 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
-import { createResidentCardProfile, getResidentCardQrImageSrc, writeStoredResidentCard } from "@/lib/residentCard";
+
+const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
+
+function getQrUrl(cardCode) {
+  const cardUrl = `${LIVE_CARD_URL}?code=${encodeURIComponent(cardCode)}&source=resident-app`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(cardUrl)}`;
+}
 
 export default function ResidentCardTab({ user }) {
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const residentProfile = useMemo(() => createResidentCardProfile({ id: user?.id, fullName: user?.fullName || user?.full_name, email: user?.email }, { origin: typeof window !== "undefined" ? window.location.origin : undefined }), [user]);
-  const cardCode = residentProfile.residentCard.cardNumber;
-  const qrUrl = getResidentCardQrImageSrc(residentProfile.residentCard);
-
-  useEffect(() => {
-    writeStoredResidentCard(residentProfile);
-  }, [residentProfile]);
+  const cardCode = "DP-USER-" + (user?.id || "123456").slice(0, 8).toUpperCase();
+  const qrUrl = getQrUrl(cardCode);
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(cardCode);

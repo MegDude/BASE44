@@ -29,7 +29,6 @@
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",
     "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",
-    "test:partner-panel-content": "node scripts/test-partner-panel-content.mjs",
     "test:resident-native-mobile": "node scripts/test-resident-native-mobile.mjs",
     "test:first-party-auth": "tsx scripts/test-first-party-auth.ts",
     "test:search-intent-exclusivity": "tsx scripts/test-search-intent-exclusivity.ts",

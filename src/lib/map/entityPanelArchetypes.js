@@ -1,5 +1,3 @@
-import { resolvePartnerPanelCopy } from "../partner/partnerPanelContent.js";
-
 const PANEL_ARCHETYPES = {
   property: {
     id: "property",
@@ -115,7 +113,6 @@ function hasObjectSignal(entity = {}, keys = []) {
 
 function inferProductionType(entity = {}) {
   const text = archetypeText(entity);
-  const explicitId = String(entity.id || entity.raw?.id || "").toLowerCase();
   const explicitTypeText = [
     entity.id,
     entity.type,
@@ -134,25 +131,8 @@ function inferProductionType(entity = {}) {
     .join(" ")
     .toLowerCase();
 
-  const strongCivicIdentity = (
-    /^(civic|discovery|daa-stop)[-_]/.test(explicitId) ||
-    /(^|[\s_-])(civic|landmark|public[\s_-]*art|public[\s_-]*space|park|trail)([\s_-]|$)/.test(explicitTypeText) ||
-    String(entity.datasetLayer || entity.raw?.datasetLayer || "").toLowerCase() === "civic" ||
-    String(entity.pinKey || entity.raw?.pinKey || "").toLowerCase() === "civic"
-  ) && !/^(perk|offer|event|campaign)[-_]/.test(explicitId);
-
-  if (strongCivicIdentity) return "landmark-civic";
-
   if (/(^|[\s_-])(perk|offer|brand[\s_-]*activation[\s_-]*perk|happy[\s_-]*hour)([\s_-]|$)/.test(explicitTypeText) || /\bbrand perk\b/.test(text)) {
     return "perk";
-  }
-
-  if (
-    /(^|[\s_-])(campaign|brand[\s_-]*campaign|activation[\s_-]*layer|discovery[\s_-]*trail)([\s_-]|$)/.test(explicitTypeText) ||
-    hasObjectSignal(entity, ["campaignType", "campaignPins", "participatingEntities", "activationStops"]) ||
-    /\b(map-native campaign|discovery trail|see austin differently|local lens rate)\b/.test(text)
-  ) {
-    return "campaign";
   }
 
   if (/\b(retail|retail_business|shop|store|boutique|eyewear|frames|lens|lenses|optical|vision partner|fine eyewear)\b/.test(text)) {
@@ -227,13 +207,6 @@ function safePanelText(value, fallback = "") {
   const text = String(value ?? "").trim();
   if (!text || /^(undefined|null|nan|\[object object\])$/i.test(text)) return fallback;
   return text;
-}
-
-const PARTNER_ONLY_COPY = /\b(campaign strategy|audience targeting|conversion rate|partner reporting|partner dashboard|workspace|publish(?:ing)?|impressions|analytics|performance reporting|lead generation|operating opportunity|manage (?:campaign|content|visibility|programming))\b/i;
-
-function residentSafePanelText(value, fallback = "") {
-  const text = safePanelText(value, "");
-  return text && !PARTNER_ONLY_COPY.test(text) ? text : fallback;
 }
 
 function panelTitleFor(entity = {}) {
@@ -582,7 +555,7 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
   const type = panelEntityType(entity);
   const base = PANEL_CONTENT_BY_TYPE[type] || PANEL_CONTENT_BY_TYPE.venue;
   const isYeti = /\byeti\b/i.test(`${entity.id || ""} ${entity.name || ""} ${entity.brand || ""} ${raw.id || ""} ${raw.name || ""} ${raw.brand || ""}`);
-  const context = residentSafePanelText(
+  const context = safePanelText(
     raw.panelContext ||
       raw.downtown_perks_summary ||
       raw.context ||
@@ -611,50 +584,26 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
     askPrompts: [...(base.askPrompts || [])],
   };
 
-  if (mode === "partner") {
-    const partnerCopy = resolvePartnerPanelCopy(entity);
-    return {
-      ...content,
-      eyebrow: partnerCopy.category || "Partner opportunity",
-      subtitle: partnerCopy.value || content.subtitle,
-      context: partnerCopy.description || partnerCopy.audience,
-      primaryActionLabel: partnerCopy.action || "Manage partner content",
-      whyHeading: `${title} partner opportunity`,
-      whyBody: partnerCopy.value || partnerCopy.description,
-      bestFor: [partnerCopy.audience, partnerCopy.timing, partnerCopy.placement].filter(Boolean),
-      insight: partnerCopy.description || partnerCopy.terms,
-      perkTitle: "",
-      perkValue: "",
-      perkInstructions: "",
-      nearbyHeading: "Nearby demand and placement",
-      askPrompts: [
-        "Which audience is closest to acting?",
-        "What should we publish next?",
-        "Which nearby signals matter?",
-        "How should this be measured?",
-      ],
-    };
-  }
-
   const contextualWhy = buildContextualPanelWhy(entity, title, type);
   content.whyHeading = contextualWhy.heading || content.whyHeading;
   content.whyBody = contextualWhy.body || content.whyBody;
   content.insight = contextualWhy.insight || content.insight;
 
-  if (PARTNER_ONLY_COPY.test(content.whyBody)) content.whyBody = formatPanelTemplate(base.whyBody, title);
-  if (PARTNER_ONLY_COPY.test(content.insight)) content.insight = base.insight;
+  if (mode === "partner" && type !== "propertyOverview") {
+    content.context = content.context || "Use this pin to understand nearby demand, timing, and the next useful action.";
+  }
 
   if (isYeti) {
     content.primaryActionLabel = "Open Brand Guide";
     content.whyHeading = "Why it matters";
-    content.whyBody = "YETI fits the lake, trail, hotel, paddle, and event routines that already bring people through this part of downtown.";
+    content.whyBody = "YETI fits the lake, trail, hotel, and event routines that already bring people through this part of downtown.";
     content.context = content.whyBody;
     content.bestFor = [];
     content.insight = "";
-    content.perkTitle = content.perkTitle || "Resident refill stop and engraving window";
-    content.perkValue = content.perkValue || "Cold-water refill context plus YETI engraving access when active.";
-    content.perkInstructions = content.perkInstructions || "Show your Resident Pass at a participating YETI station or store window when the activation is live.";
-    content.nearbyHeading = "Trail and lake nearby";
+    content.perkTitle = "Resident perk";
+    content.perkValue = "Free custom engraving for verified residents.";
+    content.perkInstructions = "Free custom engraving for verified residents.";
+    content.nearbyHeading = "Nearby";
     content.askPrompts = ["Where does YETI show up nearby?", "What perk can I use?", "What should I pair with this?", "What is walkable from here?"];
   }
 

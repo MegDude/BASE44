@@ -1,4 +1,4 @@
-import { toFiniteNumber, validateCoordinate } from "./coordinateValidation";
+import { validateCoordinate } from "./coordinateValidation";
 import { assertImageMatchesEntityType, resolveEntityImage } from "./entityImageResolver";
 import { resolveEntityPin } from "./entityPinResolver";
 import { resolveEntityType } from "./entityTypeResolver";
@@ -53,82 +53,6 @@ export type NormalizedEntity = {
   brand?: string;
   raw?: Record<string, unknown>;
 };
-
-type CoordinateLike =
-  | [unknown, unknown]
-  | {
-      lat?: unknown;
-      lng?: unknown;
-      latitude?: unknown;
-      longitude?: unknown;
-    }
-  | null
-  | undefined;
-
-function readCoordinateLike(value: CoordinateLike): { latitude: unknown; longitude: unknown } | null {
-  if (!value) return null;
-  if (Array.isArray(value)) {
-    return { latitude: value[0], longitude: value[1] };
-  }
-  return {
-    latitude: value.latitude ?? value.lat,
-    longitude: value.longitude ?? value.lng,
-  };
-}
-
-function readEntityCoordinates(entity: Record<string, unknown>): { latitude: unknown; longitude: unknown } | null {
-  const direct = {
-    latitude: entity.latitude ?? entity.lat,
-    longitude: entity.longitude ?? entity.lng,
-  };
-  if (toFiniteNumber(direct.latitude) !== null && toFiniteNumber(direct.longitude) !== null) return direct;
-
-  const coordinates = readCoordinateLike(entity.coordinates as CoordinateLike);
-  if (coordinates && toFiniteNumber(coordinates.latitude) !== null && toFiniteNumber(coordinates.longitude) !== null) {
-    return coordinates;
-  }
-
-  const coords = readCoordinateLike(entity.coords as CoordinateLike);
-  if (coords && toFiniteNumber(coords.latitude) !== null && toFiniteNumber(coords.longitude) !== null) return coords;
-
-  const location = readCoordinateLike(entity.location as CoordinateLike);
-  if (location && toFiniteNumber(location.latitude) !== null && toFiniteNumber(location.longitude) !== null) return location;
-
-  const geometry = entity.geometry as { location?: CoordinateLike } | undefined;
-  const geometryLocation = readCoordinateLike(geometry?.location);
-  if (
-    geometryLocation &&
-    toFiniteNumber(geometryLocation.latitude) !== null &&
-    toFiniteNumber(geometryLocation.longitude) !== null
-  ) {
-    return geometryLocation;
-  }
-
-  return null;
-}
-
-function isSourceInventoryOnly(entity: Record<string, unknown>): boolean {
-  const text = [
-    entity.source,
-    entity.sourceType,
-    entity.datasetStatus,
-    entity.importStatus,
-    entity.visibilityMode,
-    entity.status,
-    Array.isArray(entity.tags) ? entity.tags.join(" ") : entity.tags,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  return (
-    text.includes("google_maps_list") ||
-    text.includes("browser_seed") ||
-    text.includes("needs-google-places-enrichment") ||
-    text.includes("source inventory") ||
-    text.includes("source_inventory")
-  );
-}
 
 function slug(value: unknown, fallback: string): string {
   const cleaned = String(value || fallback)
@@ -238,7 +162,7 @@ export function createFallbackEntity(entity: Record<string, unknown> = {}, index
   };
 }
 
-export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity | null {
+export function normalizeEntity(entity: Record<string, unknown>, index = 0): NormalizedEntity {
   if (entity.sourceType === "launch_map" && entity.hasExactMarker === false) {
     const type = String(entity.type || entity.kind || inferType(entity));
     const pin = resolveEntityPin({ ...entity, type });
@@ -269,15 +193,11 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
     };
   }
 
-  const rawCoordinate = readEntityCoordinates(entity);
-  if (!rawCoordinate) {
-    return isSourceInventoryOnly(entity) ? null : createFallbackEntity(entity, index);
-  }
-
-  const coordinate = validateCoordinate(rawCoordinate.latitude, rawCoordinate.longitude);
-  if (!coordinate) {
-    return isSourceInventoryOnly(entity) ? null : createFallbackEntity(entity, index);
-  }
+  const coordinate = validateCoordinate(
+    entity.latitude ?? entity.lat ?? (entity.coordinates as Record<string, unknown> | undefined)?.lat,
+    entity.longitude ?? entity.lng ?? (entity.coordinates as Record<string, unknown> | undefined)?.lng,
+  );
+  if (!coordinate) return createFallbackEntity(entity, index);
 
   let type: string;
   try {
@@ -327,5 +247,5 @@ export function normalizeEntity(entity: Record<string, unknown>, index = 0): Nor
 }
 
 export function normalizeEntities(entities: Array<Record<string, unknown>>): NormalizedEntity[] {
-  return entities.map((entity, index) => normalizeEntity(entity, index)).filter(Boolean) as NormalizedEntity[];
+  return entities.map((entity, index) => normalizeEntity(entity, index));
 }

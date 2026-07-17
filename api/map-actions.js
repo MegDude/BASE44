@@ -222,7 +222,7 @@ async function recordSupabaseAction(payload) {
     writes.push(await safeInsert("perk_redemptions", {
       perk_id: nullableUuid(payload.form.perkId || payload.entity.id),
       source: payload.source || "resident_card",
-      status: payload.action === "redeem" ? "ready" : payload.action === "add_wallet" ? "wallet_added" : "presented",
+      status: payload.action === "redeem" ? "redeemed" : payload.action === "add_wallet" ? "wallet_added" : "presented",
       metadata,
     }));
   }

@@ -12,4 +12,3 @@ export { districtNarrativeRegistry } from "./districtNarrativeRegistry";
 export { legendsMLSRegistry } from "./legendsMLSRegistry";
 export { searchIntentRegistry } from "./searchIntentRegistry";
 export { campaignAssetRegistry } from "./campaignAssetRegistry";
-export { firstThursdayRaineyBackendRecord, firstThursdayRaineyEvent, firstThursdayRaineyWorkspaceEvent } from "../events/firstThursdayRainey";

@@ -7,7 +7,6 @@ export function rankMapEntities(entities: RankInput[] = [], query = "") {
 
   return entities
     .map((entity, index) => normalizeEntity(entity, index))
-    .filter(Boolean)
     .map((entity) => {
       const haystack = [entity.title, entity.name, entity.kind, entity.category, entity.address, entity.district].join(" ").toLowerCase();
       const score = normalizedQuery && haystack.includes(normalizedQuery) ? 100 : entity.kind === "property" ? 20 : 40;

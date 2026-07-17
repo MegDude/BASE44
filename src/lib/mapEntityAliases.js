@@ -23,44 +23,6 @@ function slug(value) {
     .replace(/^-|-$/g, "");
 }
 
-const REMOVED_MAP_ENTITY_IDS = new Set([
-  ["dot", "tie-may"].join(""),
-  ["dot", "tie-may-venue"].join(""),
-  ["featured-", "dot", "tie-may"].join(""),
-]);
-
-const REMOVED_MAP_ENTITY_TERMS = [
-  ["dot", "tie may"].join(""),
-  ["dot", "tie-may"].join(""),
-  ["featured-", "dot", "tie-may"].join(""),
-];
-
-export function isRemovedMapEntityId(value) {
-  const id = String(value || "").trim().toLowerCase();
-  if (!id) return false;
-  return REMOVED_MAP_ENTITY_IDS.has(id) || REMOVED_MAP_ENTITY_IDS.has(normalizePropertyId(id));
-}
-
-export function isRemovedMapEntity(entity = {}) {
-  const haystack = [
-    entity?.id,
-    entity?.entityId,
-    entity?.slug,
-    entity?.name,
-    entity?.title,
-    entity?.raw?.id,
-    entity?.raw?.entityId,
-    entity?.raw?.slug,
-    entity?.raw?.name,
-    entity?.raw?.title,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
-  return REMOVED_MAP_ENTITY_TERMS.some((term) => haystack.includes(term));
-}
-
 function parseLegacyOsmEntityId(value) {
   const match = String(value || "").trim().toLowerCase().match(/^(.+)-(node|way|relation|osm)-([0-9]+)$/);
   if (!match) return null;
@@ -304,10 +266,6 @@ export const mapEntityAliases = {
   waterline: "priority-the-waterline",
   "hotel-van-zandt": "partner-hotel-van-zandt",
   "van-zandt": "partner-hotel-van-zandt",
-  "holiday-inn-town-lake": "map-475-holiday-inn-austin-town-lake",
-  "holiday-inn-austin-town-lake": "map-475-holiday-inn-austin-town-lake",
-  "holiday-inn-town-lake-way-134786196": "map-475-holiday-inn-austin-town-lake",
-  "holiday-inn-austin-town-lake-way-134786196": "map-475-holiday-inn-austin-town-lake",
   fairmont: "partner-fairmont-austin",
   "fairmont-austin": "partner-fairmont-austin",
   "fairmont-hotel": "partner-fairmont-austin",
@@ -333,14 +291,9 @@ export const mapEntityAliases = {
   "austin-proper-residences": "luxury-building-austin-proper-residences",
   "1212-guadalupe": "luxury-building-1212-guadalupe",
   "topo-chico": "partner-topo-chico",
-  "perk-topo-chico-downtown-hydration": "perk-yeti-downtown-hydration",
-  "topo-chico-hydration": "perk-yeti-downtown-hydration",
-  "topo-chico-hydration-activation": "perk-yeti-downtown-hydration",
-  "topo-chico-downtown-hydration-activation": "perk-yeti-downtown-hydration",
-  "yeti-hydration": "perk-yeti-downtown-hydration",
-  "yeti-hydration-station": "perk-yeti-downtown-hydration",
-  "yeti-downtown-hydration": "perk-yeti-downtown-hydration",
-  "yeti-downtown-hydration-station": "perk-yeti-downtown-hydration",
+  "topo-chico-hydration": "perk-topo-chico-downtown-hydration",
+  "topo-chico-hydration-activation": "perk-topo-chico-downtown-hydration",
+  "topo-chico-downtown-hydration-activation": "perk-topo-chico-downtown-hydration",
   "rivian-downtown-austin-activation": "campaign-rivian-downtown-experience-layer",
   "rivian-downtown-activation": "campaign-rivian-downtown-experience-layer",
   "rivian-downtown-experience-layer": "campaign-rivian-downtown-experience-layer",
@@ -353,13 +306,6 @@ export const mapEntityAliases = {
   "yeti-trail-day": "perk-yeti-trail-day",
   "lululemon-waterloo-run-club-activation": "perk-lululemon-run-club",
   "lululemon-run-club": "perk-lululemon-run-club",
-  "featured-fine-eyewear": "campaign-see-austin-differently-fine-eyewear",
-  "fine-eyewear-featured": "campaign-see-austin-differently-fine-eyewear",
-  "see-austin-differently": "campaign-see-austin-differently-fine-eyewear",
-  "see-austin-differently-fine-eyewear": "campaign-see-austin-differently-fine-eyewear",
-  "fine-eyewear-dana": "campaign-see-austin-differently-fine-eyewear",
-  "dana-fine-eyewear": "campaign-see-austin-differently-fine-eyewear",
-  "fine-eyewear": "partner-fine-eyewear",
   "fine-eyewear-style-stop": "perk-fine-eyewear-style-stop",
   "inspired-closets": "inspired-closets-austin",
   "inspired-closets-residential-services-activation": "inspired-closets-austin-residential-services-activation",
@@ -378,7 +324,6 @@ export const mapEntityAliases = {
 export function resolveMapEntityAlias(entityId) {
   const id = String(entityId || "").trim();
   if (!id) return "";
-  if (isRemovedMapEntityId(id)) return "";
   const hospitalityId = id.toLowerCase();
   if (/^(hvz-|fairmont-)/.test(hospitalityId) || HOSPITALITY_URL_ENTITY_IDS.has(hospitalityId) || RESIDENTIAL_CONTENT_URL_ENTITY_IDS.has(hospitalityId)) return hospitalityId;
   const propertyId = resolvePropertyEntityId(id);
