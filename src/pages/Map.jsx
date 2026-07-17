@@ -53,6 +53,7 @@ import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
 import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
+import { useMapPanelNavigation } from "@/hooks/useMapPanelNavigation";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { isRemovedMapEntityId, resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
@@ -206,6 +207,8 @@ const SINGLE_SELECT_SEARCH_INTENT_FILTERS = new Set([
 const MAP_VIEW_STORAGE_KEY = "downtown-perks-map-view-v1";
 const MAP_USER_NAVIGATED_STORAGE_KEY = "downtown-perks-map-user-navigated-v1";
 const MAP_USER_CONTEXT_STORAGE_KEY = "downtown-perks-map-user-context-v1";
+const MAP_DRAWER_STATE_STORAGE_KEY = "downtown-perks-map-drawer-state-v1";
+const MAP_DRAWER_SCROLL_STORAGE_KEY = "downtown-perks-map-drawer-scroll-v1";
 const MAP_PANEL_IMAGE_FALLBACK = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
 const STREET_LEVEL_ZOOM = 17.75;
 const DAA_CIVIC_VIDEOS = [
@@ -4266,7 +4269,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           transition={{ duration: 0.18, ease: "easeOut" }}
           onClick={(event) => event.stopPropagation()}
         >
-          <button type="button" className="dp-resident-qr-back" onClick={onBack || onClose} aria-label="Back to map">
+          <button type="button" className="dp-resident-qr-back" onClick={onBack || onClose} aria-label="Back">
             <ArrowLeft className="h-4 w-4" />
           </button>
           <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
@@ -6818,7 +6821,7 @@ function ResidentialMixedUseDrawer({ place, mode = "resident", savedIds, onSave,
   return (
     <div className="dp-entity-drawer dp-residential-system-drawer" role="document" data-residential-content-system={mode}>
       <div className="dp-drawer-control-row" aria-label="Drawer controls">
-        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back to map"><ArrowLeft aria-hidden="true" /></button>
+        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back"><ArrowLeft aria-hidden="true" /></button>
         <span className="dp-drawer-control-title">{place.name}</span>
         <button type="button" className="dp-drawer-icon-control dp-drawer-close" onClick={onClose} aria-label="Close panel"><X aria-hidden="true" /></button>
       </div>
@@ -8108,6 +8111,8 @@ function MapSheet({ variant, ariaLabel, onClose, onBack, drawerState = "expanded
     <motion.section
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 18, scale: 0.99 }}
+      transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
       className={`dp-map-sheet dp-native-drawer-shell dp-map-sheet--${variant} ${className}`.trim()}
       data-variant={variant}
       data-drawer-state={drawerState}
@@ -8194,7 +8199,7 @@ function NativeDrawerHandle({ state = "expanded", onStateChange }) {
 function MapSheetToolbar({ eyebrow, onBack, onClose }) {
   return (
     <div className="dp-map-sheet-toolbar" style={MAP_SHEET_TOOLBAR_STYLE}>
-      <MapPanelButton action="back" label="Back" ariaLabel="Return to map" variant="icon" onPress={onBack}>
+      <MapPanelButton action="back" label="Back" ariaLabel="Back" variant="icon" onPress={onBack}>
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
       </MapPanelButton>
       <span className="dp-map-sheet-toolbar-title">{eyebrow}</span>
@@ -11452,7 +11457,7 @@ function TheShoreResidentialEntityDrawer({
   return (
     <div className="dp-entity-drawer dp-shore-residential-drawer" role="document" data-shore-mode={isPartnerMode ? "partner" : "resident"}>
       <div className="dp-drawer-control-row" aria-label="Drawer controls">
-        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back to map">
+        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back">
           <ArrowLeft aria-hidden="true" />
         </button>
         <span className="dp-drawer-control-title">{building.name}</span>
@@ -11986,7 +11991,7 @@ function LegendsResidentialIntelligenceDrawer({
   return (
     <div className="dp-entity-drawer dp-legends-residential-drawer" role="document">
       <div className="dp-drawer-control-row" aria-label="Drawer controls">
-        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back to map">
+        <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back">
           <ArrowLeft aria-hidden="true" />
         </button>
         <span className="dp-drawer-control-title">{panelTitle}</span>
@@ -13835,6 +13840,7 @@ function useUrlMapState() {
 export default function MapPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const panelNavigation = useMapPanelNavigation({ location, navigate });
   const { user } = useAuth();
   const {
     places,
@@ -13871,7 +13877,7 @@ export default function MapPage() {
     });
 
     if (options.clearSelection) {
-      ["entityId", "entity", "entityType", "perkId", "eventId", "listing", "listingId", "drawerClosed"].forEach((key) => params.delete(key));
+      ["entityId", "entity", "entityType", "perkId", "eventId", "listing", "listingId", "stop", "drawerClosed"].forEach((key) => params.delete(key));
     }
 
     if (options.clearSearchContext) {
@@ -13979,6 +13985,10 @@ export default function MapPage() {
       });
       return;
     }
+    panelNavigation.pushPanel({
+      drawerState: "expanded",
+      scrollTop: document.getElementById("dp-active-map-drawer")?.scrollTop || 0,
+    });
     const qrPlace = place || RESIDENT_CARD_ENTITY;
     const payload = buildResidentQrPayload({ place: place || null, action, source });
     const mapAction = action === "use_perk" ? "redeem" : "show_card";
@@ -14014,7 +14024,7 @@ export default function MapPage() {
     recordResidentTouchpoint(payload);
     setPassPresented(true);
     setResidentQrModal({ ...payload, place: qrPlace, redemptionStatus: action === "use_perk" ? "ready" : "presented", expiresAt });
-  }, [buildMapActionPayload, isResidentPreview]);
+  }, [buildMapActionPayload, isResidentPreview, panelNavigation]);
   const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
     event?.preventDefault?.();
@@ -14093,9 +14103,44 @@ export default function MapPage() {
   const [entityAssistantLoading, setEntityAssistantLoading] = useState(false);
   const [selectedDrawerClosed, setSelectedDrawerClosed] = useState(false);
   const [selectedDrawerMinimized, setSelectedDrawerMinimized] = useState(false);
-  const [nativeDrawerState, setNativeDrawerState] = useState("expanded");
+  const [nativeDrawerState, setNativeDrawerState] = useState(() => {
+    if (typeof window === "undefined") return "expanded";
+    const stored = window.sessionStorage.getItem(MAP_DRAWER_STATE_STORAGE_KEY);
+    return NATIVE_DRAWER_STATES.includes(stored) ? stored : "expanded";
+  });
   const searchInputRef = useRef(null);
   const searchRollupRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem(MAP_DRAWER_STATE_STORAGE_KEY, nativeDrawerState);
+    } catch {
+      // Drawer state persistence is best-effort.
+    }
+  }, [nativeDrawerState]);
+
+  useEffect(() => {
+    if (!selectedId) return undefined;
+    const drawer = document.getElementById("dp-active-map-drawer");
+    if (!drawer) return undefined;
+    let positions = {};
+    try {
+      positions = JSON.parse(window.sessionStorage.getItem(MAP_DRAWER_SCROLL_STORAGE_KEY) || "{}");
+    } catch {
+      positions = {};
+    }
+    drawer.scrollTop = Number(positions[selectedId]) || 0;
+    const rememberScroll = () => {
+      positions[selectedId] = drawer.scrollTop;
+      try {
+        window.sessionStorage.setItem(MAP_DRAWER_SCROLL_STORAGE_KEY, JSON.stringify(positions));
+      } catch {
+        // Panel scrolling remains available when storage is unavailable.
+      }
+    };
+    drawer.addEventListener("scroll", rememberScroll, { passive: true });
+    return () => drawer.removeEventListener("scroll", rememberScroll);
+  }, [selectedId]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -14191,8 +14236,15 @@ export default function MapPage() {
       setConsoleCollapsed(true);
       setSelectedId("");
       setClusterDrawer(null);
+      return;
     }
-  }, [urlState.panelTab]);
+    if (urlState.tab === "map") {
+      const restoredResidentTab = ["Perks", "Events", "Saved"].includes(urlState.filter)
+        ? urlState.filter.toLowerCase()
+        : "map";
+      setActiveBottomTab(urlState.mode === "resident" ? restoredResidentTab : "map");
+    }
+  }, [urlState.filter, urlState.mode, urlState.panelTab, urlState.tab]);
 
   useEffect(() => {
     if (urlState.tab === "pass") setNativeDrawerState("expanded");
@@ -16128,6 +16180,13 @@ export default function MapPage() {
   useEffect(() => {
     function onKeyDown(event) {
       if (event.key === "Escape") {
+        if (panelNavigation.depth) {
+          const frame = panelNavigation.goBack();
+          setClusterDrawer(null);
+          setResidentQrModal(null);
+          if (frame) setNativeDrawerState(frame.drawerState || "expanded");
+          return;
+        }
         if (!consoleCollapsed && !selectedId && !clusterDrawer && !aboutOpen) {
           if (urlState.mode !== "resident") {
             setConsoleCollapsed(true);
@@ -16144,7 +16203,7 @@ export default function MapPage() {
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [aboutOpen, clusterDrawer, consoleCollapsed, selectedId, urlState]);
+  }, [aboutOpen, clusterDrawer, consoleCollapsed, panelNavigation, selectedId, urlState]);
 
   useEffect(() => {
     if (consoleCollapsed || urlState.tab !== "map") return undefined;
@@ -16162,6 +16221,12 @@ export default function MapPage() {
   }, [consoleCollapsed, consoleHasActiveWork, urlState.mode, urlState.tab]);
 
   function selectPlace(place) {
+    if (resolveMapEntityAlias(place.id) !== selectedId) {
+      panelNavigation.pushPanel({
+        drawerState: nativeDrawerState,
+        scrollTop: document.getElementById("dp-active-map-drawer")?.scrollTop || 0,
+      });
+    }
     if (!selectedId && typeof document !== "undefined") drawerTriggerRef.current = document.activeElement;
     triggerHaptic();
     const canonicalSelectedId = resolveMapEntityAlias(place.id);
@@ -16336,6 +16401,7 @@ export default function MapPage() {
   function openCollectionRoute(collectionId, displayQuery = "") {
     const collection = getMapCollectionById(collectionId);
     if (!collection) return;
+    panelNavigation.pushPanel({ drawerState: nativeDrawerState });
     const nextFilter = getCollectionFilter(collection.id) || activeFilter || "All";
     beginSearchIntentTransition(nextFilter, {
       query: displayQuery || collection.title,
@@ -16409,6 +16475,7 @@ export default function MapPage() {
   }
 
   function openClusterDrawer(cluster) {
+    panelNavigation.pushPanel({ drawerState: nativeDrawerState });
     setSelectedId("");
     setClusterDrawer(cluster);
     setNativeDrawerState("expanded");
@@ -17117,6 +17184,20 @@ export default function MapPage() {
   }
 
   const goBackToMap = useCallback(() => {
+    const frame = panelNavigation.goBack();
+    if (frame) {
+      const restoredParams = new URL(frame.url, window.location.origin).searchParams;
+      const restoredTab = restoredParams.get("tab") || "map";
+      setClusterDrawer(null);
+      setResidentQrModal(null);
+      setActiveBottomTab(restoredTab === "map" ? "map" : restoredTab);
+      setNativeDrawerState(frame.drawerState || "expanded");
+      window.setTimeout(() => {
+        const drawer = document.getElementById("dp-active-map-drawer");
+        if (drawer) drawer.scrollTop = frame.scrollTop || 0;
+      }, 0);
+      return;
+    }
     setSelectedId("");
     setSelectedPlaceOverride(null);
     setSelectedDrawerClosed(true);
@@ -17130,9 +17211,10 @@ export default function MapPage() {
       { mode: urlState.mode, tab: "map", filter: activeFilter || "All" },
       { clearSelection: true, replace: true }
     );
-  }, [activeFilter, navigateMapJourney, urlState.mode]);
+  }, [activeFilter, navigateMapJourney, panelNavigation, urlState.mode]);
 
   const closeDirectoryToMap = useCallback(() => {
+    panelNavigation.closePanel();
     beginSearchIntentTransition("All");
     setActiveBottomTab("map");
     setIntelOpen(false);
@@ -17141,9 +17223,10 @@ export default function MapPage() {
       { mode: urlState.mode, tab: "map", filter: "All" },
       { clearSelection: true, clearSearchContext: true }
     );
-  }, [navigateMapJourney, urlState.mode]);
+  }, [navigateMapJourney, panelNavigation, urlState.mode]);
 
   const closeSelectedMapDrawer = useCallback(() => {
+    panelNavigation.closePanel();
     inKindParentRef.current = null;
     setSelectedId("");
     setSelectedPlaceOverride(null);
@@ -17156,7 +17239,7 @@ export default function MapPage() {
       { mode: urlState.mode, tab: "map", filter: activeFilter || "All", collection: urlState.collection || "" },
       { clearSelection: true, replace: true }
     );
-  }, [activeFilter, navigateMapJourney, urlState.collection, urlState.mode]);
+  }, [activeFilter, navigateMapJourney, panelNavigation, urlState.collection, urlState.mode]);
 
   const dismissVisibleNativeDrawer = useCallback(() => {
     if (urlState.mode === "resident" && nativeDrawerState !== "collapsed") {
@@ -17195,6 +17278,8 @@ export default function MapPage() {
       setConsoleCollapsed(true);
       return;
     }
+
+    if (tab !== "map") panelNavigation.pushPanel({ drawerState: nativeDrawerState });
 
     clearOpenMapSelection();
     setActiveBottomTab(tab);
@@ -17244,6 +17329,7 @@ export default function MapPage() {
   }, [closeSelectedMapDrawer]);
 
   function openPartnerPanel(panel) {
+    panelNavigation.pushPanel({ drawerState: nativeDrawerState });
     clearOpenMapSelection();
     setConsoleCollapsed(true);
     setActiveBottomTab(panel);
@@ -17526,7 +17612,7 @@ export default function MapPage() {
           >
             <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <div className="dp-panel-header flex shrink-0 items-center justify-between gap-2 px-3 py-2 sm:px-4 md:py-2.5">
-              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
               <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">
@@ -17813,7 +17899,7 @@ export default function MapPage() {
                 </>
               ) : (
                 <>
-                  <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+                  <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   </button>
                   {urlState.mode === "resident" ? (
@@ -18075,7 +18161,7 @@ export default function MapPage() {
           >
             <NativeDrawerHandle state={nativeDrawerState} onStateChange={setNativeDrawerState} onDismiss={dismissVisibleNativeDrawer} />
             <div className="dp-panel-header shrink-0">
-              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
               <div className="dp-panel-header-copy">
@@ -18139,7 +18225,7 @@ export default function MapPage() {
             initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "100%" }}
-            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
             className={isInKindNetworkEntity(selected)
               ? "dp-inkind-partner-drawer dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell"
               : `dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell dp-native-drawer-shell ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
@@ -18162,11 +18248,11 @@ export default function MapPage() {
                     setActiveFilter("inKind");
                     urlState.update({ filter: "inKind", collection: "inkind-dining-market", entityId: parent.id, listingId: "" });
                   } else {
-                    closeSelectedMapDrawer();
+                    goBackToMap();
                   }
                 }}
                 className="dp-map-panel-icon-button dp-drawer-control dp-destination-back dp-drawer-back"
-                aria-label="Back to map"
+                aria-label="Back"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -18689,8 +18775,15 @@ export default function MapPage() {
       {residentQrModal && (
         <ResidentPerkRedemptionSheet
           data={residentQrModal}
-          onBack={() => setResidentQrModal(null)}
-          onClose={() => setResidentQrModal(null)}
+          onBack={() => {
+            const frame = panelNavigation.goBack();
+            if (frame) setNativeDrawerState(frame.drawerState || "expanded");
+            setResidentQrModal(null);
+          }}
+          onClose={() => {
+            panelNavigation.closePanel();
+            setResidentQrModal(null);
+          }}
         />
       )}
 

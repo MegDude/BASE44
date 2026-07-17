@@ -13,7 +13,7 @@ page.on("console", (message) => {
 await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
-const labels = await page.locator(".dp-resident-native-tabs a").allTextContents();
+const labels = await page.locator(".dp-resident-native-tabs :is(a, button)").allTextContents();
 if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
@@ -24,7 +24,7 @@ if (await page.locator("nav").filter({ hasNot: page.locator(".dp-resident-native
 }
 
 await page.getByRole("heading", { name: "Downtown Austin" }).waitFor();
-await page.getByRole("link", { name: /Live music downtown/ }).waitFor();
+await page.getByRole("link", { name: "Live music downtown Tonight", exact: true }).waitFor();
 
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);

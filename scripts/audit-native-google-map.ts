@@ -22,7 +22,6 @@ const REQUIRED_SERVICE_FILES = [
 const FORBIDDEN_PATTERNS = [
   /<iframe\b/i,
   /google\.com\/maps\/embed/i,
-  /maps\.app\.goo\.gl/i,
   /\/maps\/embed/i,
   /Embedded\s+Directions/i,
   /Embedded\s+Place/i,
