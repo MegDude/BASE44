@@ -189,8 +189,15 @@ html body #root#root .dp-is-page .dp-is-segmented-nav button:hover, html body #r
 .dp-is-feedback-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: var(--dp-navy); color: var(--dp-white); }
 .dp-is-feedback-panel > div { min-height: 300px; padding: 36px; border-right: 1px solid rgba(255,255,255,.14); }
 .dp-is-feedback-panel > div:last-child { border-right: 0; }
+.dp-is-feedback-panel .dp-is-feedback-panel__label { color: var(--dp-white); }
 .dp-is-feedback-panel h3 { margin: 13px 0 9px; font-size: 25px; letter-spacing: -.035em; }
-.dp-is-feedback-panel p { max-width: 470px; min-height: 66px; margin: 0 0 26px; color: rgba(255,255,255,.7); font-size: 12px; line-height: 1.7; }
+.dp-is-feedback-panel p { max-width: 470px; min-height: 66px; margin: 0 0 26px; color: var(--dp-white); font-size: 12px; line-height: 1.7; }
+.dp-is-feedback-panel .dp-is-button,
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button,
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--gold,
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--outline {
+  color: var(--dp-white) !important;
+}
 .dp-is-dropdown-trigger svg { width: 13px; transition: transform 120ms var(--dp-ease-standard); }
 .dp-is-dropdown-trigger[data-state="open"] svg { transform: rotate(180deg); }
 .dp-is-dropdown-content { min-width: 240px !important; padding: 6px !important; background: #fff !important; border: 1px solid rgba(11,31,51,.11) !important; border-radius: 2px !important; box-shadow: 0 16px 38px rgba(11,31,51,.16) !important; color: #526171 !important; }
