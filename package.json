@@ -38,7 +38,8 @@
     "test:media-reconciliation": "tsx scripts/test-media-reconciliation.ts",
     "audit:native-map": "tsx scripts/audit-native-google-map.ts",
     "assets:wikimedia": "python3 scripts/download_wikimedia_assets.py",
-    "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs"
+    "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs",
+    "test:legends-intelligence": "node scripts/test-legends-intelligence.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

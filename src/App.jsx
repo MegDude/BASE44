@@ -26,6 +26,7 @@ const PartnerAccess = lazy(() => import("./pages/partners/Access"));
 const PartnerCampaigns = lazy(() => import("./pages/partners/Campaigns"));
 const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
 const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
+const LegendsIntelligence = lazy(() => import("./pages/LegendsIntelligence"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
 const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
@@ -231,6 +232,14 @@ function ProductRoutes() {
           <Route path="/partners/directory" element={<Navigate to="/partners/sign-up?type=brand" replace />} />
           <Route path="/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
           <Route path="/partners/real-estate" element={<Navigate to="/partners/sign-up?type=real-estate" replace />} />
+          <Route
+            path="/partners/legends/intelligence"
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <LegendsIntelligence />
+              </Suspense>
+            }
+          />
           <Route path="/partners/legends" element={<Navigate to="/partners/sign-up?type=property" replace />} />
           <Route path="/partners/dashboard" element={<Navigate to="/partner-workspace/overview" replace />} />
           <Route path="/partners/dashboard/map" element={<Navigate to="/partner-workspace/map" replace />} />

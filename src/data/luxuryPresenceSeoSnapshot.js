@@ -3,6 +3,7 @@ export const legendsLuxuryPresenceSeoSnapshot = {
   organizationId: "demo-org-legends-real-estate",
   provider: "luxury_presence",
   source: "Luxury Presence reporting dashboard",
+  sourceReportUrl: null,
   capturedAt: "2026-07-12T00:00:00.000Z",
   periodLabel: "Current visible Luxury Presence dashboard period",
   accessMethod: {
