@@ -490,3 +490,214 @@ html body #root#root#root#root .dp-os-active-panel > button {
   height: 44px !important;
   min-height: 44px !important;
 }
+
+/* Horizontal discovery rails stay natively scrollable on touch and trackpads.
+ * Older route patches alternated between overflow: hidden and wrapping grids;
+ * this final lock restores one predictable interaction without changing cards.
+ */
+html body #root#root#root#root#root#root#root#root#root#root :is(
+  .dp-action-card-rail,
+  .dp-ask-prompt-rail,
+  .dp-brand-matrix-rail,
+  .dp-building-network-perks__rail,
+  .dp-campaign-action-rail,
+  .dp-campaign-example-rail,
+  .dp-campaign-type-rail,
+  .dp-campaign-visibility-rail,
+  .dp-card-rail,
+  .dp-civic-text-rail,
+  .dp-console-filter-rail,
+  .dp-console-rail,
+  .dp-daa-art-image-rail,
+  .dp-daa-next-rail,
+  .dp-daa-video-rail,
+  .dp-destination-rail-list,
+  .dp-discovery-image-rail,
+  .dp-district-chip-rail,
+  .dp-drawer-card-rail,
+  .dp-entity-text-rail,
+  .dp-event-fact-rail,
+  .dp-event-schedule-rail,
+  .dp-events-filter-rail,
+  .dp-full-filter-rail,
+  .dp-horizontal-entity-rail,
+  .dp-horizontal-rail,
+  .dp-inkind-related-rail,
+  .dp-legends-action-carousel,
+  .dp-local-service-rail,
+  .dp-map-campaign-draft-rail,
+  .dp-map-campaign-place-rail,
+  .dp-map-filter-rail,
+  .dp-matrix-related-rail,
+  .dp-matrix-selector-rail,
+  .dp-nearby-image-rail,
+  .dp-panel-action-rail,
+  .dp-panel-rail,
+  .dp-partner-ask-rail,
+  .dp-partner-intake-choice-rail,
+  .dp-partner-lifecycle-rail,
+  .dp-partner-metric-rail,
+  .dp-partner-nearby-rail,
+  .dp-partner-related-rail,
+  .dp-pass-image-rail,
+  .dp-pricing-addon-rail,
+  .dp-pricing-partner-rail,
+  .dp-pricing-rail,
+  .dp-product-shell-nav-rail,
+  .dp-property-building-rail,
+  .dp-property-chip-rail,
+  .dp-property-image-rail,
+  .dp-quick-search-intent-rail,
+  .dp-related-collection-rail,
+  .dp-related-rail,
+  .dp-report-rail,
+  .dp-resident-action-rail,
+  .dp-resident-category-rail,
+  .dp-saved-overview-rail,
+  .dp-search-filter-rail,
+  .dp-search-intent-category-rail,
+  .dp-search-intent-default-rail,
+  .dp-search-intent-filter-rail,
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-prompt-rail,
+  .dp-shore-home-rail,
+  .dp-similar-places-rail,
+  .dp-spring-text-rail
+) {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-inline: contain !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  touch-action: pan-x pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root :is(
+  .dp-action-card-rail,
+  .dp-brand-matrix-rail,
+  .dp-campaign-type-rail,
+  .dp-console-filter-rail,
+  .dp-district-chip-rail,
+  .dp-events-filter-rail,
+  .dp-full-filter-rail,
+  .dp-map-filter-rail,
+  .dp-matrix-selector-rail,
+  .dp-partner-intake-choice-rail,
+  .dp-pricing-addon-rail,
+  .dp-product-shell-nav-rail,
+  .dp-property-chip-rail,
+  .dp-quick-search-intent-rail,
+  .dp-resident-category-rail,
+  .dp-search-filter-rail,
+  .dp-search-intent-category-rail,
+  .dp-search-intent-default-rail,
+  .dp-search-intent-filter-rail,
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-prompt-rail
+) {
+  display: flex !important;
+  grid-auto-flow: unset !important;
+  grid-template-columns: none !important;
+  flex-wrap: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root :is(
+  .dp-action-card-rail,
+  .dp-brand-matrix-rail,
+  .dp-campaign-type-rail,
+  .dp-console-filter-rail,
+  .dp-district-chip-rail,
+  .dp-events-filter-rail,
+  .dp-full-filter-rail,
+  .dp-map-filter-rail,
+  .dp-matrix-selector-rail,
+  .dp-partner-intake-choice-rail,
+  .dp-pricing-addon-rail,
+  .dp-product-shell-nav-rail,
+  .dp-property-chip-rail,
+  .dp-quick-search-intent-rail,
+  .dp-resident-category-rail,
+  .dp-search-filter-rail,
+  .dp-search-intent-category-rail,
+  .dp-search-intent-default-rail,
+  .dp-search-intent-filter-rail,
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-prompt-rail
+) > * {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+html body #root :is(
+  .dp-action-card-rail,
+  .dp-ask-prompt-rail,
+  .dp-brand-matrix-rail,
+  .dp-building-network-perks__rail,
+  .dp-campaign-action-rail,
+  .dp-campaign-example-rail,
+  .dp-campaign-type-rail,
+  .dp-campaign-visibility-rail,
+  .dp-card-rail,
+  .dp-civic-text-rail,
+  .dp-console-filter-rail,
+  .dp-console-rail,
+  .dp-daa-art-image-rail,
+  .dp-daa-next-rail,
+  .dp-daa-video-rail,
+  .dp-destination-rail-list,
+  .dp-discovery-image-rail,
+  .dp-district-chip-rail,
+  .dp-drawer-card-rail,
+  .dp-entity-text-rail,
+  .dp-event-fact-rail,
+  .dp-event-schedule-rail,
+  .dp-events-filter-rail,
+  .dp-full-filter-rail,
+  .dp-horizontal-entity-rail,
+  .dp-horizontal-rail,
+  .dp-inkind-related-rail,
+  .dp-legends-action-carousel,
+  .dp-local-service-rail,
+  .dp-map-campaign-draft-rail,
+  .dp-map-campaign-place-rail,
+  .dp-map-filter-rail,
+  .dp-matrix-related-rail,
+  .dp-matrix-selector-rail,
+  .dp-nearby-image-rail,
+  .dp-panel-action-rail,
+  .dp-panel-rail,
+  .dp-partner-ask-rail,
+  .dp-partner-intake-choice-rail,
+  .dp-partner-lifecycle-rail,
+  .dp-partner-metric-rail,
+  .dp-partner-nearby-rail,
+  .dp-partner-related-rail,
+  .dp-pass-image-rail,
+  .dp-pricing-addon-rail,
+  .dp-pricing-partner-rail,
+  .dp-pricing-rail,
+  .dp-product-shell-nav-rail,
+  .dp-property-building-rail,
+  .dp-property-chip-rail,
+  .dp-property-image-rail,
+  .dp-quick-search-intent-rail,
+  .dp-related-collection-rail,
+  .dp-related-rail,
+  .dp-report-rail,
+  .dp-resident-action-rail,
+  .dp-resident-category-rail,
+  .dp-saved-overview-rail,
+  .dp-search-filter-rail,
+  .dp-search-intent-category-rail,
+  .dp-search-intent-default-rail,
+  .dp-search-intent-filter-rail,
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-prompt-rail,
+  .dp-shore-home-rail,
+  .dp-similar-places-rail,
+  .dp-spring-text-rail
+)::-webkit-scrollbar {
+  display: none !important;
+}
