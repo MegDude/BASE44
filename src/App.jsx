@@ -158,7 +158,7 @@ function ProductRoutes() {
           <Route path="/" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/app" element={<MapLaunchGate />} />
           <Route path="/app/map" element={<AuthenticatedResidentMap />} />
-          <Route path="/map" element={<PublicMapGateway />} />
+          <Route path="/map" element={<MapLaunchGate />} />
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />
