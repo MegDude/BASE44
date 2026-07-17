@@ -6625,6 +6625,12 @@ function ResidentialMixedUseDrawer({ place, mode = "resident", savedIds, onSave,
   const summary = isPartner ? (place.partnerSummary || raw.partnerSummary) : (place.residentSummary || raw.residentSummary || place.summary);
   const actions = (isPartner ? place.partnerActions : place.residentActions) || [];
   const labels = isPartner ? place.partnerContextLabels : place.residentContextLabels;
+  const overview = isPartner ? (place.partnerOverview || place.overview) : (place.residentOverview || place.overview);
+  const benefitCopy = isPartner ? (place.partnerValueNarrative || place.residentPerk) : (place.residentBenefits || place.residentPerk);
+  const differentiator = isPartner ? (place.partnerDifferentiator || place.secretSauce) : (place.residentDifferentiator || place.secretSauce);
+  const routines = isPartner ? (place.partnerActivationIdeas || place.hiddenGems || []) : (place.residentRoutines || place.hiddenGems || []);
+  const campaigns = isPartner ? (place.partnerCampaigns || place.campaignAlignment || []) : (place.residentGoodFor || place.campaignAlignment || []);
+  const disclosure = isPartner ? place.partnerDisclosure : place.residentDisclosure;
   const isSaved = savedIds?.has?.(place.id);
   const runAction = (action) => {
     if (action.type === "save") return onSave();
@@ -6635,14 +6641,14 @@ function ResidentialMixedUseDrawer({ place, mode = "resident", savedIds, onSave,
     if (action.type === "audience") return onFilter?.("Audience");
     if (action.type === "visibility") return onFilter?.("Activity");
     const target = action.label.toLowerCase();
-    const selector = target.includes("amenit") ? "[data-residential-section='amenities']" : target.includes("perk") || target.includes("benefit") ? "[data-residential-section='perks']" : "[data-residential-section='nearby']";
+    const selector = target.includes("amenit") ? "[data-residential-section='amenities']" : target.includes("perk") || target.includes("benefit") || target.includes("wellness") || target.includes("garden") ? "[data-residential-section='perks']" : "[data-residential-section='nearby']";
     document.querySelector(selector)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   return (
     <div className="dp-entity-drawer dp-residential-system-drawer" role="document" data-residential-content-system={mode}>
       <div className="dp-drawer-control-row" aria-label="Drawer controls">
         <button type="button" className="dp-drawer-control dp-drawer-back dp-drawer-back-icon" onClick={onBack} aria-label="Back to map"><ArrowLeft aria-hidden="true" /></button>
-        <span className="dp-drawer-control-title">{place.name}</span>
+        <span className="dp-drawer-control-title">Building details</span>
         <button type="button" className="dp-drawer-icon-control dp-drawer-close" onClick={onClose} aria-label="Close panel"><X aria-hidden="true" /></button>
       </div>
       <div className="dp-entity-handle" aria-hidden="true" />
@@ -6655,14 +6661,14 @@ function ResidentialMixedUseDrawer({ place, mode = "resident", savedIds, onSave,
         {actions.slice(0, 6).map((action, index) => <button key={`${action.label}-${index}`} type="button" className={`dp-entity-action${index === 0 ? " is-primary" : ""}`} onClick={() => runAction(action)}>{action.type === "save" && isSaved ? "Saved" : action.label}</button>)}
       </div>
       {!!labels?.length && <section className="dp-entity-section"><div className="dp-entity-text-rail">{labels.map((label) => <span key={label}>{label}</span>)}</div></section>}
-      <section className="dp-entity-section"><h3>{isPartner ? "Asset positioning" : "Living here"}</h3><p>{place.overview}</p></section>
+      <section className="dp-entity-section"><h3>{isPartner ? "Asset positioning" : "Living here"}</h3><p>{overview}</p></section>
       <section className="dp-entity-section" data-residential-section="amenities"><h3>Shared amenities</h3><div className="dp-entity-row-list">{(place.sharedAmenities || []).map((item) => <div className="dp-entity-row" key={item}><span><strong>{item}</strong></span></div>)}</div></section>
       {!!place.galleryImages?.length && <section className="dp-entity-section"><h3>Building spaces</h3><div className="dp-related-rail">{place.galleryImages.map((image) => <figure className="dp-related-place" key={image}><img src={image} alt={`${place.name} shared space`} loading="lazy" decoding="async" onError={handlePanelImageError} /></figure>)}</div></section>}
-      <section className="dp-entity-section" data-residential-section="perks"><h3>{isPartner ? "Resident value opportunity" : "Proposed resident benefits"}</h3><p>{place.residentPerk}</p><p className="dp-partner-disclosure">Access and benefit concepts require property approval before publication.</p></section>
-      <section className="dp-entity-section"><h3>{isPartner ? "Competitive differentiator" : "Why people choose it"}</h3><p>{place.secretSauce}</p></section>
-      <section className="dp-entity-section" data-residential-section="nearby"><h3>Hidden gems and routines</h3>{(place.hiddenGems || []).map((item) => <p key={item}>{item}</p>)}</section>
-      <section className="dp-entity-section"><h3>{isPartner ? "Recommended campaigns" : "Good for"}</h3><div className="dp-entity-text-rail">{(place.campaignAlignment || []).map((item) => <span key={item}>{item}</span>)}</div></section>
-      <section className="dp-entity-section"><h3>Source and access</h3><p>{place.verificationStatus}</p>{place.sourceUrl && <a className="dp-text-action" href={place.sourceUrl} target="_blank" rel="noreferrer">View source</a>}</section>
+      <section className="dp-entity-section" data-residential-section="perks"><h3>{isPartner ? "Resident value opportunity" : "Proposed resident benefits"}</h3><p>{benefitCopy}</p>{disclosure && <p className="dp-partner-disclosure">{disclosure}</p>}</section>
+      <section className="dp-entity-section"><h3>{isPartner ? "Competitive differentiator" : "Why people choose it"}</h3><p>{differentiator}</p></section>
+      <section className="dp-entity-section" data-residential-section="nearby"><h3>{isPartner ? "Activation ideas" : "Hidden gems and routines"}</h3>{routines.map((item) => <p key={item}>{item}</p>)}</section>
+      <section className="dp-entity-section"><h3>{isPartner ? "Recommended campaigns" : "Good for"}</h3><div className="dp-entity-text-rail">{campaigns.map((item) => <span key={item}>{item}</span>)}</div></section>
+      <section className="dp-entity-section"><h3>Source and access</h3><p>{place.verificationStatus}</p>{place.sourceUrl && <a className="dp-text-action" href={place.sourceUrl} target="_blank" rel="noreferrer">{place.sourceLabel || "View official source"}</a>}</section>
     </div>
   );
 }
