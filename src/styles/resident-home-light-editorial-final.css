@@ -1,10 +1,12 @@
 /* Light editorial resident home: no oversized dark surfaces. */
 html body #root#root .dp-resident-home {
   box-sizing: border-box !important;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  background: #f7f8fb !important;
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  margin: 0 auto !important;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 18px calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
 }
 
 html body #root#root .dp-resident-home__panel,
@@ -26,12 +28,88 @@ html body #root#root .dp-resident-profile-section {
 
 @media (min-width: 768px) {
   html body #root#root .dp-resident-home {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding-right: clamp(22px, 4vw, 52px) !important;
-    padding-left: clamp(22px, 4vw, 52px) !important;
+    width: min(100%, 720px) !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+    padding: 42px 28px 56px !important;
   }
+}
+
+html body #root#root .dp-resident-home__header {
+  min-height: 58px !important;
+  align-items: flex-end !important;
+  padding: 0 0 14px !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+}
+
+html body #root#root .dp-resident-home__header p {
+  margin: 0 0 4px !important;
+  color: rgba(11,31,51,.58) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: .01em !important;
+}
+
+html body #root#root .dp-resident-home__header h1 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: clamp(28px, 8vw, 34px) !important;
+  font-weight: 650 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.035em !important;
+}
+
+html body #root#root .dp-resident-home__header > :is(a,button) {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-search-entry {
+  min-height: 58px !important;
+  margin-top: 16px !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-search-entry svg { color: #b89452 !important; }
+html body #root#root .dp-resident-search-entry span { font-size: 14px !important; font-weight: 650 !important; }
+html body #root#root .dp-resident-search-entry small { color: rgba(11,31,51,.56) !important; font-size: 12px !important; }
+
+html body #root#root .dp-resident-home__section,
+html body #root#root .dp-resident-directory-section { margin-top: 30px !important; }
+html body #root#root .dp-resident-section-title { margin-bottom: 11px !important; }
+html body #root#root .dp-resident-section-title h2 {
+  color: #0b1f33 !important;
+  font-size: 19px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.02em !important;
+}
+
+html body #root#root .dp-resident-section-title :is(a,button) {
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11,31,51,.68) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
 }
 
 html body #root#root .dp-resident-hero-card {
@@ -43,6 +121,14 @@ html body #root#root .dp-resident-hero-card {
   border-radius: 0 !important;
   background: #fff !important;
   color: #0b1f33 !important;
+}
+
+html body #root#root .dp-resident-category-rail a {
+  min-height: 44px !important;
+  padding: 0 12px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 html body #root#root .dp-resident-hero-card::after {
@@ -99,3 +185,26 @@ html body #root#root .dp-resident-profile-section {
   color: #0b1f33 !important;
   box-shadow: none !important;
 }
+
+html body #root#root .dp-resident-native-tabs {
+  min-height: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 6px 4px env(safe-area-inset-bottom, 0px) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 0 !important;
+  background: rgba(255,255,255,.97) !important;
+  box-shadow: 0 -8px 24px rgba(11,31,51,.07) !important;
+  backdrop-filter: blur(20px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.08) !important;
+}
+
+html body #root#root .dp-resident-native-tabs :is(a,button) {
+  min-height: 56px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-native-tabs :is(a,button).is-active svg { color: #b89452 !important; }
+html body #root#root .dp-resident-home :is(a,button):focus-visible { outline: 2px solid #c8a96a !important; outline-offset: 2px !important; }
