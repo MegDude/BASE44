@@ -198,6 +198,19 @@ html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--gold,
 html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--outline {
   color: var(--dp-white) !important;
 }
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-feedback-panel__label,
+html body #root#root .dp-is-page .dp-is-feedback-panel h3,
+html body #root#root .dp-is-page .dp-is-feedback-panel p {
+  color: var(--dp-white) !important;
+}
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--outline {
+  background: transparent !important;
+  border-color: rgba(255,255,255,.46) !important;
+}
+html body #root#root .dp-is-page .dp-is-feedback-panel .dp-is-button--outline:hover {
+  background: rgba(255,255,255,.08) !important;
+  border-color: var(--dp-white) !important;
+}
 .dp-is-dropdown-trigger svg { width: 13px; transition: transform 120ms var(--dp-ease-standard); }
 .dp-is-dropdown-trigger[data-state="open"] svg { transform: rotate(180deg); }
 .dp-is-dropdown-content { min-width: 240px !important; padding: 6px !important; background: #fff !important; border: 1px solid rgba(11,31,51,.11) !important; border-radius: 2px !important; box-shadow: 0 16px 38px rgba(11,31,51,.16) !important; color: #526171 !important; }
