@@ -86,6 +86,7 @@ import '@/styles/map-native-ios-polish-final.css'
 import '@/styles/workspace-sharp-platform-final.css'
 import '@/styles/partner-signup-product-final.css'
 import '@/styles/partner-tools-polish-final.css'
+import '@/styles/ios-native-system-restoration.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
