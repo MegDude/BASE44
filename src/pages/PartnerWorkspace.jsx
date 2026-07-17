@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import "@/styles/workspace-profile-editor.css";
 import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
+import PartnerAnalyticsPage from "@/components/analytics/PartnerAnalyticsPage";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
@@ -20,6 +21,13 @@ import {
 } from "@/lib/productionGuards";
 import { canViewEverything } from "@/lib/auth/session";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
+import { loadWorkspaceAnalytics } from "@/lib/analytics/workspaceAnalytics";
+import {
+  buildWorkspacePerformanceReport,
+  copyPerformanceSummary,
+  downloadPerformanceCsv,
+  downloadPerformancePdf,
+} from "@/lib/performance/workspacePerformance";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
@@ -114,8 +122,7 @@ const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS sends when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
   { label: "People", href: "/partner-workspace/audience", description: "Choose districts, buildings, saved groups, and uploaded contacts." },
   { label: "Media", href: "/partner-workspace/media", description: "Keep logos, photos, videos, copy, and QR assets ready to publish." },
-  { label: "Reports", href: "/partner-workspace/reports", description: "See monthly results, saves, redemptions, activity, and suggested next steps." },
-  { label: "Results", href: "/partner-workspace/analytics", description: "See what people view, save, open, scan, and act on." },
+  { label: "Performance", href: "/app/workspace/reports", description: "See activity, decisions, exports, and the next recommended action." },
   { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace information current." },
   { label: "Team", href: "/partner-workspace/team", description: "Manage roles, permissions, and workspace access." },
   { label: "Billing", href: "/partner-workspace/billing", description: "Review plan access, invoices, subscriptions, and checkout status." },
@@ -143,19 +150,18 @@ const WORKSPACE_MODULE_GROUPS = [
   {
     label: "Customers",
     items: [
-      { label: "Audience", href: "/partner-workspace/analytics", description: "Read saves, scans, visits, and where people came from." },
-      { label: "Followers", href: "/partner-workspace/analytics", description: "Understand who keeps coming back." },
-      { label: "Saved", href: "/partner-workspace/reports", description: "Review saved places and offers." },
-      { label: "Reviews", href: "/partner-workspace/reports", description: "Summarize feedback and survey responses." },
+      { label: "Audience", href: "/app/workspace/reports", description: "Read saves, scans, visits, and where people came from." },
+      { label: "Followers", href: "/app/workspace/reports", description: "Understand who keeps coming back." },
+      { label: "Saved", href: "/app/workspace/reports", description: "Review saved places and offers." },
+      { label: "Reviews", href: "/app/workspace/reports", description: "Summarize feedback and survey responses." },
     ],
   },
   {
     label: "Analytics",
     items: [
-      { label: "Reports", href: "/partner-workspace/reports", description: "Summarize what changed and what to do next." },
-      { label: "Performance", href: "/partner-workspace/analytics", description: "Track views, directions, scans, and redemptions." },
-      { label: "Exports", href: "/partner-workspace/reports", description: "Prepare CSV, PDF, and email-ready reads." },
-      { label: "Growth", href: "/partner-workspace/analytics", description: "Find where to improve next." },
+      { label: "Performance", href: "/app/workspace/reports", description: "Summarize what changed and what to do next." },
+      { label: "Exports", href: "/app/workspace/reports", description: "Prepare CSV, PDF, and email-ready reads." },
+      { label: "Growth", href: "/app/workspace/reports", description: "Find where to improve next." },
     ],
   },
   {
@@ -175,6 +181,33 @@ const ROLE_LABELS = {
   admin: "Administrator",
   manager: "Workspace Manager",
   editor: "Marketing Lead",
+};
+
+const WORKSPACE_HOME_COPY = {
+  "demo-org-legends-real-estate": {
+    summary: "Manage downtown listings, map placement, showing requests, and the SEO Snapshot in one workspace.",
+    focus: "Listings, reports, and buyer interest",
+    nextStep: "Review the downtown listings that should appear on the map first.",
+    publicLabel: "View Legends on the map",
+  },
+  "demo-org-larry-and-guy": {
+    summary: "Manage restaurant listings, resident offers, campaign timing, and what guests see before they choose dinner.",
+    focus: "Dining offers and restaurant campaigns",
+    nextStep: "Keep each restaurant profile current, then publish one clear offer or event.",
+    publicLabel: "View restaurant group",
+  },
+  "demo-org-hotel-van-zandt": {
+    summary: "Manage the hotel profile, guest guide, local perks, and nearby experiences guests can use during their stay.",
+    focus: "Guest discovery and hotel perks",
+    nextStep: "Connect the guest guide to dining, music, wellness, and resident-access offers nearby.",
+    publicLabel: "View hotel profile",
+  },
+  "demo-org-yeti": {
+    summary: "Manage brand activations, campaign placement, partner locations, and resident-facing calls to action.",
+    focus: "Brand moments and downtown campaigns",
+    nextStep: "Choose the campaign location, then connect the activation to nearby routes and offers.",
+    publicLabel: "View brand placement",
+  },
 };
 
 function friendlyRoleLabel(role) {
@@ -498,6 +531,14 @@ export default function PartnerWorkspace() {
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const selectWorkspaceTab = (nextTab) => {
+    const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === nextTab);
+    if (activeItem?.href) {
+      navigate(activeItem.href);
+      return;
+    }
+    setTab(nextTab);
+  };
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -551,6 +592,7 @@ export default function PartnerWorkspace() {
     const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
     if (!activeItem || location.pathname === activeItem.href || location.pathname.startsWith(`${activeItem.href}/`)) return;
     if (!location.pathname.startsWith("/partner-workspace")) return;
+    if (getWorkspaceTabFromPath(location.pathname) !== tab) return;
     navigate(activeItem.href, { replace: true });
   }, [tab, location.pathname, navigate]);
 
@@ -629,7 +671,7 @@ export default function PartnerWorkspace() {
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
         <AnimatePresence mode="wait">
-          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
+          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={selectWorkspaceTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceRegistryPanel key="campaigns" tabId="campaigns" />}
           {tab === "offers" && <PerksManager key="offers" user={user} />}
@@ -639,8 +681,8 @@ export default function PartnerWorkspace() {
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
-          {tab === "reports" && <WorkspaceReports key="reports" />}
-          {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
+          {tab === "reports" && <WorkspaceReports key="reports" user={user} activation={activation} />}
+          {tab === "analytics" && <WorkspaceAnalytics key="analytics" user={user} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
@@ -741,150 +783,234 @@ function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
   );
 }
 
-function WorkspaceReports() {
-  const monthlyReports = [
-    {
-      section: "Executive Summary",
-      value: "42%",
-      headline: "After-work activity is leading the month.",
-      copy: "Dinner, events, and nearby offers are getting the most attention from residents.",
-      readout: [
-        ["What changed", "Weekday evenings are strongest for dining and live plans."],
-        ["What to try", "Lead with one after-work offer people can reach on foot."],
-        ["What to watch", "More saves, more directions, and a clearer read on what worked."],
-      ],
-      action: "View report",
-    },
-    {
-      section: "Trends",
-      value: "+18%",
-      headline: "Nearby choices are working better than broad reach.",
-      copy: "Rainey, Seaholm, Congress, and Waterloo show the cleanest activity patterns.",
-      readout: [
-        ["What changed", "People are more likely to act when the place is close by."],
-        ["What to try", "Keep placements near busy walking paths."],
-      ],
-      action: "Review trend",
-    },
-    {
-      section: "Campaign Results",
-      value: "6.8%",
-      headline: "Simple timed offers are easiest to act on.",
-      copy: "Campaigns with one clear save, RSVP, scan, or direction action perform best.",
-      readout: [
-        ["What changed", "One clear action is easier for residents to understand."],
-        ["What to try", "Use one call to action and a clear time window."],
-        ["What to watch", "More people completing the action without dropping off."],
-      ],
-      action: "Plan offer",
-    },
-    {
-      section: "Resident Behavior",
-      value: "312",
-      headline: "People save first, then decide.",
-      copy: "Saved places help people come back when they are ready to go.",
-      readout: [
-        ["What changed", "Saves often happen before directions or scans."],
-        ["What to try", "Give people who saved you a timely reason to return."],
-      ],
-      action: "Review behavior",
-    },
-    {
-      section: "Next Steps",
-      value: "3",
-      headline: "Run the next test near the busiest walk path.",
-      copy: "Anchor the next placement to movement that is already happening nearby.",
-      readout: [
-        ["What to try", "Start with Rainey, Seaholm, or Congress based on where people already walk."],
-        ["What to watch", "A cleaner read with less wasted reach."],
-      ],
-      action: "Open campaigns",
-    },
-    {
-      section: "Next Actions",
-      value: "4",
-      headline: "Turn the report into one clear update.",
-      copy: "Pick a place, time, group, and action from the monthly report.",
-      readout: [
-        ["What changed", "The next step is a practical update, not another report."],
-        ["What to try", "Publish one campaign and review it next week."],
-      ],
-      action: "Start next step",
-    },
-  ];
+const PERFORMANCE_PERIODS = [
+  ["30d", "30 days"],
+  ["60d", "60 days"],
+  ["90d", "90 days"],
+  ["custom", "Custom"],
+];
+
+function workspaceSlug(value) {
+  return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function WorkspaceReports({ user, activation }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const requestedSlug = params.get("workspace") || workspaceSlug(activation?.organizationName || user?.organization_name || user?.partner_name);
+  const requestedWorkspace = demoOrganizations.find((organization) => workspaceSlug(organization.name) === requestedSlug || organization.id === requestedSlug);
+  const claimedOrganizationId = user?.organizationId || user?.organization_id;
+  const claimedWorkspace = demoOrganizations.find((organization) => organization.id === claimedOrganizationId);
+  const activatedWorkspace = activation ? {
+    id: activation.organizationId || activation.workspaceId || activation.id,
+    name: activation.organizationName || user?.organization_name || user?.partner_name || "Partner workspace",
+    type: activation.partnerType || user?.partner_type || "partner",
+    status: activation.status || "active",
+    plan: activation.plan || "starter",
+    role: "owner",
+    is_demo: false,
+  } : null;
+  const selectedWorkspace = canViewEverything(user)
+    ? requestedWorkspace || claimedWorkspace || activatedWorkspace || demoOrganizations[0]
+    : claimedWorkspace || activatedWorkspace || {
+        id: claimedOrganizationId || `unlinked-${workspaceSlug(user?.email || "partner")}`,
+        name: user?.organization_name || user?.partner_name || "Partner workspace",
+        type: user?.partner_type || "partner",
+        status: "unlinked",
+        plan: "free",
+        role: "viewer",
+        is_demo: false,
+      };
+  const selectedWorkspaceSlug = workspaceSlug(selectedWorkspace.name);
+  const entities = selectedWorkspace.is_demo ? getOrganizationEntities(selectedWorkspace.id) : [];
+  const initialPeriod = params.get("from") && params.get("to")
+    ? "custom"
+    : PERFORMANCE_PERIODS.some(([value]) => value === params.get("period")) ? params.get("period") : "30d";
+  const [period, setPeriod] = useState(initialPeriod);
+  const [customFrom, setCustomFrom] = useState(params.get("from") || "");
+  const [customTo, setCustomTo] = useState(params.get("to") || "");
+  const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [selectedSignal, setSelectedSignal] = useState(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportStatus, setExportStatus] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
+  const signalCloseRef = useRef(null);
+  const signalDetailRef = useRef(null);
+  const signalTriggerRef = useRef(null);
+
+  const updateQuery = (nextPeriod, from = "", to = "") => {
+    const next = new URLSearchParams(location.search);
+    next.set("workspace", selectedWorkspaceSlug);
+    if (nextPeriod === "custom") {
+      next.delete("period");
+      if (from) next.set("from", from);
+      if (to) next.set("to", to);
+    } else {
+      next.set("period", nextPeriod);
+      next.delete("from");
+      next.delete("to");
+    }
+    navigate(`${location.pathname}?${next.toString()}`, { replace: true });
+  };
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError("");
+    loadWorkspaceAnalytics({
+      workspace: selectedWorkspace,
+      entities,
+      range: period === "custom" ? "30d" : period,
+      from: period === "custom" ? customFrom : null,
+      to: period === "custom" ? customTo : null,
+    }).then((result) => {
+      if (!active) return;
+      setAnalytics(result);
+      setLoading(false);
+    }).catch(() => {
+      if (!active) return;
+      setError("Performance could not be loaded.");
+      setLoading(false);
+    });
+    return () => { active = false; };
+  }, [selectedWorkspace.id, period, customFrom, customTo, retryCount]);
+
+  useEffect(() => {
+    if (!selectedSignal) return undefined;
+    signalCloseRef.current?.focus();
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setSelectedSignal(null);
+        signalTriggerRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = signalDetailRef.current?.querySelectorAll("a[href], button:not([disabled])");
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [selectedSignal]);
+
+  const report = analytics ? buildWorkspacePerformanceReport({
+    workspace: { ...selectedWorkspace, slug: selectedWorkspaceSlug },
+    analytics,
+  }) : null;
+
+  const choosePeriod = (nextPeriod) => {
+    setPeriod(nextPeriod);
+    if (nextPeriod !== "custom") updateQuery(nextPeriod);
+  };
+  const applyCustomRange = () => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(customFrom) || !/^\d{4}-\d{2}-\d{2}$/.test(customTo) || customFrom > customTo) {
+      setError("Choose a valid custom date range.");
+      return;
+    }
+    const dayCount = Math.floor((new Date(customTo) - new Date(customFrom)) / 86400000) + 1;
+    if (dayCount > 365) {
+      setError("Custom reports can cover up to 365 days.");
+      return;
+    }
+    setError("");
+    updateQuery("custom", customFrom, customTo);
+  };
+  const openSignal = (metric, event) => {
+    signalTriggerRef.current = event.currentTarget;
+    setSelectedSignal(metric);
+  };
+  const closeSignal = () => {
+    setSelectedSignal(null);
+    signalTriggerRef.current?.focus();
+  };
+  const handleExport = async (kind) => {
+    if (!report) return;
+    setExportStatus("Preparing export…");
+    try {
+      if (kind === "pdf") await downloadPerformancePdf(report);
+      if (kind === "csv") downloadPerformanceCsv(report);
+      if (kind === "copy") await copyPerformanceSummary(report);
+      setExportStatus(kind === "copy" ? "Summary copied." : "Export ready.");
+      setExportOpen(false);
+    } catch {
+      setExportStatus("Export could not be completed.");
+    }
+  };
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className="dp-workspace-reports"
-    >
-      <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]">
+    <motion.section initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="dp-performance-page">
+      <header className="dp-performance-header">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reports</span>
-          <h2 className="mt-2 font-body text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">See what people did, then choose what to do next.</h2>
-          <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
-            See what people viewed, saved, scanned, opened, asked directions for, redeemed, and came back to. Use that read to choose what to publish, improve, or repeat next.
-          </p>
+          <p className="dp-workspace-eyebrow">Performance</p>
+          <h1>Turn activity into next actions.</h1>
+          <p>See what residents viewed, saved, opened, and used—then decide what deserves another push.</p>
+          <dl aria-label="Workspace reporting context"><div><dt>Workspace</dt><dd>{selectedWorkspace.name}</dd></div><div><dt>Tier</dt><dd>{selectedWorkspace.plan}</dd></div></dl>
         </div>
-        <Link
-          to="/map?mode=partner&tab=reports"
-          className="dp-partner-workspace-button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33]/68 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/50 hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
-        >
-          Open map reports
-        </Link>
-      </div>
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          ["Views", "Map opens, listing views, and featured placement reach."],
-          ["Interest", "Saves, scans, RSVPs, event opens, and offer activity."],
-          ["Visits", "Directions, verified visits, redemptions, and repeat activity."],
-          ["Next step", "Suggested updates tied to campaigns, offers, events, and reports."],
-        ].map(([label, copy]) => (
-          <article key={label} className="rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-4 shadow-[0_1px_4px_rgba(11,31,51,0.04)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</p>
-            <p className="mt-2 text-[13px] leading-[1.55] text-[#0B1F33]/64">{copy}</p>
-          </article>
-        ))}
-      </div>
-      <div className="dp-workspace-report-grid grid gap-2.5">
-        {monthlyReports.map((item) => (
-          <article
-            key={item.section}
-            className="dp-workspace-report-card group grid gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:border-[rgba(191,164,106,0.28)] hover:shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)] md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
-          >
-            <div>
-              <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#BFA46A]">{item.section}</p>
-              <div className="dp-workspace-report-metric mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
+        <div className="dp-performance-export">
+          <button type="button" aria-expanded={exportOpen} onClick={() => setExportOpen((open) => !open)}>Export report <ChevronDown aria-hidden="true" /></button>
+          {exportOpen ? <div role="menu" aria-label="Export report"><button role="menuitem" type="button" onClick={() => handleExport("pdf")}>Download PDF</button><button role="menuitem" type="button" onClick={() => handleExport("csv")}>Download CSV</button><button role="menuitem" type="button" onClick={() => handleExport("copy")}>Copy summary</button></div> : null}
+          <span aria-live="polite">{exportStatus}</span>
+        </div>
+      </header>
+
+      <section className="dp-performance-period" aria-labelledby="performance-period-title">
+        <div><p className="dp-workspace-eyebrow">Reporting period</p><h2 id="performance-period-title">Use one period across the full report.</h2></div>
+        <div className="dp-performance-period-control" role="group" aria-label="Reporting period">
+          {PERFORMANCE_PERIODS.map(([value, label]) => <button key={value} type="button" aria-pressed={period === value} onClick={() => choosePeriod(value)}>{label}</button>)}
+        </div>
+        {period === "custom" ? <div className="dp-performance-custom-range"><label>From<input type="date" value={customFrom} onChange={(event) => setCustomFrom(event.target.value)} /></label><label>To<input type="date" value={customTo} onChange={(event) => setCustomTo(event.target.value)} /></label><button type="button" onClick={applyCustomRange}>Apply dates</button></div> : null}
+      </section>
+
+      <div aria-live="polite" className="dp-performance-live-state">
+        {loading ? <PerformanceSkeleton /> : null}
+        {!loading && error ? <PerformanceError message={error} onRetry={() => { setError(""); setRetryCount((count) => count + 1); }} /> : null}
+        {!loading && !error && report ? <>
+          {report.partialData ? <p className="dp-performance-partial">Hosted activity is temporarily unavailable. Available workspace signals are shown below.</p> : null}
+          <section className="dp-performance-summary" aria-labelledby="performance-summary-heading">
+            <div><p className="dp-workspace-eyebrow">Current read</p><h2 id="performance-summary-heading">What happened in this period.</h2></div>
+            <div className="dp-performance-signal-list">
+              {report.metrics.map((metric) => <button key={metric.key} type="button" aria-expanded={selectedSignal?.key === metric.key} onClick={(event) => openSignal(metric, event)}>
+                <span><strong>{metric.label}</strong><small>{metric.statusLabel}</small></span>
+                <b>{metric.currentValue ? metric.currentValue.toLocaleString() : metric.key === "qr_activity" ? "No scans yet" : "No activity yet"}</b>
+                <p>{metric.explanation}</p>
+                <em>{metric.changePercent === null ? "There is not enough activity yet to compare periods." : `${metric.changePercent > 0 ? "+" : ""}${metric.changePercent}% from the previous period.`}</em>
+                <i>Next action: {metric.recommendation.title}</i>
+              </button>)}
             </div>
-            <div>
-              <h3 className="font-body text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
-              <p className="mt-1.5 text-[13px] leading-[1.6] text-[#0B1F33]/60">{item.copy}</p>
-              <dl className="dp-workspace-report-readout mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
-                {item.readout.map(([label, detail]) => (
-                  <div key={`${item.section}-${label}`} className="p-2.5 rounded-[6px] bg-[#F7F8FB]">
-                    <dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">{label}</dt>
-                    <dd className="text-[#0B1F33]/70 mt-0.5">{detail}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            <Link
-              to="/map?mode=partner&tab=reports"
-              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]/60 underline decoration-[#BFA46A]/50 underline-offset-4 transition-colors hover:text-[#0B1F33] hover:decoration-[#BFA46A]"
-            >
-              {item.action}
-            </Link>
-          </article>
-        ))}
+          </section>
+
+          {!report.launchReadiness.ready ? <section className="dp-performance-launch-readiness"><p className="dp-workspace-eyebrow">Launch readiness</p><h2>Your reporting starts when something goes live.</h2><p>Views, saves, QR activity, and redemptions will appear here after {selectedWorkspace.name} is shared through the map, a QR code, an offer, an event, or a partner message.</p><strong>Recommended first move</strong><p>Use “View {selectedWorkspace.name}” as the first resident prompt, share it once, and use the next report to see what people opened, saved, or answered.</p></section> : null}
+
+          <section className="dp-performance-recommendation" aria-labelledby="performance-recommendation-heading"><div><p className="dp-workspace-eyebrow">Recommended next step</p><h2 id="performance-recommendation-heading">{report.primaryRecommendation.title}</h2><p>{report.primaryRecommendation.rationale}</p></div><div><Link to={report.primaryRecommendation.primaryAction.href}>{report.primaryRecommendation.primaryAction.label}</Link>{report.primaryRecommendation.secondaryAction ? <Link to={report.primaryRecommendation.secondaryAction.href}>{report.primaryRecommendation.secondaryAction.label}</Link> : null}</div></section>
+
+          <section className="dp-performance-interpretation" aria-labelledby="performance-interpretation-heading"><p className="dp-workspace-eyebrow">Interpretation</p><h2 id="performance-interpretation-heading">What people did, and what to try next</h2><ul>{report.interpretation.map((insight) => <li key={insight}>{insight}</li>)}</ul></section>
+
+          {report.sources.some((source) => source.actions > 0) ? <section className="dp-performance-sources" aria-labelledby="performance-sources-heading"><p className="dp-workspace-eyebrow">Activity sources</p><h2 id="performance-sources-heading">Where activity began.</h2><div role="table" aria-label="Performance source breakdown"><div role="row"><span role="columnheader">Source</span><span role="columnheader">Discovery</span><span role="columnheader">Actions</span><span role="columnheader">Share</span></div>{report.sources.map((source) => <div role="row" key={source.id}><strong role="cell">{source.label}</strong><span role="cell">{source.entries}</span><span role="cell">{source.actions}</span><span role="cell">{report.launchReadiness.sourceActionTotal ? `${Math.round((source.actions / report.launchReadiness.sourceActionTotal) * 100)}%` : "Not enough activity"}</span></div>)}</div></section> : null}
+
+          {report.items.length ? <section className="dp-performance-drivers" aria-labelledby="performance-drivers-heading"><p className="dp-workspace-eyebrow">Active work</p><h2 id="performance-drivers-heading">What is driving activity</h2><ul>{report.items.slice(0, 8).map((item) => <li key={`${item.type}-${item.id}`}><span><strong>{item.label}</strong><small>{item.type}</small></span><b>{item.actions} actions</b><em>{item.actions < 10 ? "Not enough activity to calculate" : "Continue collecting"}</em></li>)}</ul></section> : null}
+        </> : null}
       </div>
+
+      {selectedSignal ? <div className="dp-performance-detail-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) closeSignal(); }}><aside ref={signalDetailRef} className="dp-performance-detail" role="dialog" aria-modal="true" aria-labelledby="performance-detail-title"><header><div><p className="dp-workspace-eyebrow">Signal detail</p><h2 id="performance-detail-title">{selectedSignal.label}</h2></div><button ref={signalCloseRef} type="button" onClick={closeSignal} aria-label="Close signal detail"><X aria-hidden="true" /></button></header><dl><div><dt>Period total</dt><dd>{selectedSignal.currentValue.toLocaleString()}</dd></div><div><dt>Status</dt><dd>{selectedSignal.statusLabel}</dd></div><div><dt>Trend</dt><dd>{selectedSignal.changePercent === null ? "Not enough activity to compare" : `${selectedSignal.changePercent > 0 ? "+" : ""}${selectedSignal.changePercent}%`}</dd></div></dl><section><h3>What this measures</h3><p>{selectedSignal.explanation}</p></section>{report.sources[0]?.actions > 0 ? <section><h3>Strongest recorded source</h3><strong>{report.sources[0].label}</strong><p>{report.sources[0].actions.toLocaleString()} recorded actions began from this source during the selected period.</p></section> : null}<section><h3>Recommended next action</h3><strong>{selectedSignal.recommendation.title}</strong><p>{selectedSignal.recommendation.rationale}</p><Link to={selectedSignal.recommendation.primaryAction.href}>{selectedSignal.recommendation.primaryAction.label}</Link></section></aside></div> : null}
     </motion.section>
   );
 }
 
-function WorkspaceAnalytics() {
+function PerformanceSkeleton() {
+  return <div className="dp-performance-skeleton" aria-label="Loading performance report"><span /><span /><span /><span /></div>;
+}
+
+function PerformanceError({ message, onRetry }) {
+  return <section className="dp-performance-error" role="alert"><h2>{message}</h2><p>Your workspace is still available. Try the report again, or return to Overview.</p><div><button type="button" onClick={onRetry}>Try again</button><Link to="/partner-workspace/overview">Return to Overview</Link></div></section>;
+}
+
+function WorkspaceAnalytics({ user, activation = null, hasPrivilegedAccess = false }) {
   const location = useLocation();
   if (location.pathname.includes("/analytics/experiences/downtown-art-parks-tour")) {
     return (
@@ -893,111 +1019,55 @@ function WorkspaceAnalytics() {
           <p className="dp-workspace-eyebrow">Experience report</p>
           <h1>Downtown Austin Art & Parks Tour</h1>
           <p>A clear read on visits, survey answers, directions, and the downtown areas people used most.</p>
-          <Link to="/partner-workspace/overview">Back to overview</Link>
+          <Link to="/app/workspace/reports">Back to Performance</Link>
         </header>
         <DaaApprovedExperienceReport />
       </motion.section>
     );
   }
-  const launchMetrics = [
-    ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
-    ["1,284", "Residents reached", "People who can enter from buildings, QR links, campaigns, and the map."],
-    ["81,904", "Views", "Views across the map, campaigns, events, and partner pages."],
-    ["31,511", "Actions taken", "Searches, saves, directions, scans, RSVPs, and offer opens."],
-  ];
 
-  const reportStreams = [
-    ["Monthly report", "Views, saves, directions, redemptions, and campaign activity in one place.", "/partner-workspace/reports"],
-    ["Map report", "See the same read from the live downtown map.", "/map?mode=partner&tab=reports"],
-    ["Campaign report", "See what changed by place, time, and nearby activity.", "/partners/campaigns"],
-  ];
+  const params = new URLSearchParams(location.search);
+  const requestedWorkspaceId = params.get("workspace") || params.get("organizationId");
+  const profileWorkspaceId = user?.organization_id || user?.organizationId || user?.workspace_id || null;
+  const activationWorkspace = activation
+    ? {
+        id: activation.organizationId || activation.workspaceId || activation.id,
+        name: activation.organizationName || user?.organization_name || user?.partner_name || "Partner workspace",
+        type: activation.partnerType || user?.partner_type || "partner",
+        status: activation.status || "active",
+        plan: activation.plan || "starter",
+        role: "owner",
+        is_demo: false,
+      }
+    : null;
+  const profileDemoWorkspace = demoOrganizations.find((organization) => organization.id === profileWorkspaceId);
+  const requestedDemoWorkspace = demoOrganizations.find((organization) => organization.id === requestedWorkspaceId);
+  const isPublicDemoSession = user?.email === PUBLIC_PARTNER_USER.email && !activation;
 
-  const onboardingTargets = [
-    ["Venues", "Bars, restaurants, coffee, live music, happy hours, and event-friendly places."],
-    ["Hotels", "Lobby QR, guest guides, concierge prompts, and nearby suggestions."],
-    ["Residential", "Resident welcome links, building links, lobby QR, and neighborhood guides."],
-    ["Civic and parks", "Waterloo, trails, public spaces, art, events, and ways to take part downtown."],
-  ];
+  let workspace = activationWorkspace;
+  if (hasPrivilegedAccess) {
+    workspace = requestedDemoWorkspace || profileDemoWorkspace || activationWorkspace || demoOrganizations[0];
+  } else if (!workspace && profileDemoWorkspace) {
+    workspace = profileDemoWorkspace;
+  } else if (!workspace && isPublicDemoSession) {
+    workspace = requestedDemoWorkspace || demoOrganizations[0];
+  } else if (!workspace) {
+    workspace = {
+      id: profileWorkspaceId || `unlinked-${String(user?.email || "partner").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      name: user?.organization_name || user?.partner_name || "Partner workspace",
+      type: user?.partner_type || "partner",
+      status: "unlinked",
+      plan: "free",
+      role: "viewer",
+      is_demo: false,
+    };
+  }
 
-  const launchTasks = [
-    ["Reviewer link", "Share the latest app link and this page so the team can review the flow."],
-    ["Report access", "Keep reports easy to find from the workspace and the partner map."],
-    ["Venue inputs", "Add bars and Sixth Street candidates once names, offers, images, and event hooks are ready."],
-    ["Photo queue", "Attach current, approved images before sharing partner campaigns more widely."],
-  ];
-
+  const entities = workspace?.is_demo ? getOrganizationEntities(workspace.id) : [];
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className="dp-workspace-analytics"
-    >
-      <header className="dp-workspace-analytics-header">
-        <span>Results</span>
-        <h2>See what is working from one place.</h2>
-        <p>
-          Use this page to review the app link, read the reports, and see which partners, links, and campaigns need attention before the next release.
-        </p>
-        <div className="dp-workspace-analytics-actions">
-          <Link to="/partner-workspace/reports">View reports</Link>
-          <Link to="/map?mode=partner&tab=reports">Open map reports</Link>
-        </div>
-      </header>
-
-      <div className="dp-workspace-analytics-metrics" aria-label="Workspace results snapshot">
-        {launchMetrics.map(([value, label, detail]) => (
-          <article key={label}>
-            <strong>{value}</strong>
-            <span>{label}</span>
-            <p>{detail}</p>
-          </article>
-        ))}
-      </div>
-
-      <div className="dp-workspace-analytics-grid">
-        <section>
-          <p className="dp-workspace-analytics-kicker">Reports</p>
-          <h3>Reports stay close to the work.</h3>
-          <div className="dp-workspace-analytics-list">
-            {reportStreams.map(([label, detail, href]) => (
-              <Link key={label} to={href}>
-                <strong>{label}</strong>
-                <span>{detail}</span>
-                <ArrowRight aria-hidden="true" />
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <p className="dp-workspace-analytics-kicker">Onboarding</p>
-          <h3>Focus the next three months on places people already ask about.</h3>
-          <div className="dp-workspace-analytics-list is-static">
-            {onboardingTargets.map(([label, detail]) => (
-              <article key={label}>
-                <strong>{label}</strong>
-                <span>{detail}</span>
-              </article>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      <section className="dp-workspace-analytics-next">
-        <p className="dp-workspace-analytics-kicker">Follow-up</p>
-        <h3>Keep the review tied to the work that matters.</h3>
-        <div>
-          {launchTasks.map(([label, detail]) => (
-            <article key={label}>
-              <strong>{label}</strong>
-              <span>{detail}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-    </motion.section>
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <PartnerAnalyticsPage workspace={workspace} entities={entities} />
+    </motion.div>
   );
 }
 
@@ -1141,6 +1211,7 @@ function WorkspaceAnalyticsSnapshotGraphs({ report }) {
 }
 
 function WorkspaceOverview({ user, setTab, activation = null }) {
+  const navigate = useNavigate();
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(() => {
@@ -1161,6 +1232,12 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
   const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
   const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
+  const workspaceHomeCopy = WORKSPACE_HOME_COPY[selectedOrganization?.id] || {
+    summary: "Manage your downtown presence, publishing, people, and reports from one focused workspace.",
+    focus: "Workspace setup and publishing",
+    nextStep: "Choose what should be published first.",
+    publicLabel: "View public listing",
+  };
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
@@ -1173,15 +1250,17 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         ["Tracked keyword clicks", formatWorkspaceNumber(legendsSeoReport.summary.organicClicks)],
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
-    : [
-        ["Map views", "3,240"],
-        ["Saves", "486"],
-        ["Directions", "318"],
-        ["Verified actions", "142"],
-        ["Active campaigns", "1"],
-      ];
+    : [];
   const activePerks = perks.filter((perk) => perk.status === "active");
   const upcomingEvents = events.filter((event) => event.status === "upcoming" || event.status === "live");
+  const operatingMetrics = isLegends
+    ? metrics
+    : [
+        ["Linked entities", formatWorkspaceNumber(ownedEntities.length)],
+        ["Active offers", formatWorkspaceNumber(activePerks.length)],
+        ["Upcoming events", formatWorkspaceNumber(upcomingEvents.length)],
+        ["Live campaigns", formatWorkspaceNumber(isLarryAndGuy ? 1 : 0)],
+      ];
   const createActions = [
     ["Create offer", "/partner-workspace/offers"],
     ["Create event", "/partner-workspace/events"],
@@ -1189,6 +1268,17 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
     ["Send broadcast", "/partner-workspace/broadcasts"],
     ["Create survey", "/partner-workspace/surveys"],
   ];
+  const handleOrganizationSelect = (organizationId) => {
+    setSelectedOrganizationId(organizationId);
+    setWorkspaceMenuOpen(false);
+    setWorkspaceSearch("");
+    const params = new URLSearchParams(window.location.search);
+    params.set("organizationId", organizationId);
+    navigate(`/partner-workspace/overview?${params.toString()}`, { replace: true });
+  };
+  const selectedEntityHref = ownedEntities[0]
+    ? `/map?mode=partner&tab=map&filter=${encodeURIComponent(ownedEntities[0].map_filter || "All")}&entityId=${encodeURIComponent(ownedEntities[0].entity_id)}`
+    : "/map?mode=partner&tab=map&filter=All";
 
   return (
     <motion.div className="dp-operating-overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
@@ -1196,12 +1286,12 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         <div>
           <p className="dp-workspace-eyebrow">Overview</p>
           <h1>{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</h1>
-          <p>
-            {ownedEntities.length > 1
-              ? `Manage offers, events, campaigns, people, and reports across ${ownedEntities.map((entity) => entity.display_name).join(", ")}.`
-              : "Manage your downtown presence, publishing, people, and reports from one focused workspace."}
-          </p>
-          <span className="dp-operating-status"><i aria-hidden="true" />Workspace active — {selectedOrganization?.plan || activation?.plan || "Enterprise"} plan</span>
+          <p>{workspaceHomeCopy.summary}</p>
+          <dl className="dp-operating-status-line" aria-label="Workspace status">
+            <div><dt>Role</dt><dd>{friendlyRoleLabel(selectedOrganization?.role)}</dd></div>
+            <div><dt>Plan</dt><dd>{selectedOrganization?.plan || activation?.plan || "Enterprise"}</dd></div>
+            <div><dt>Status</dt><dd>{friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</dd></div>
+          </dl>
         </div>
         <div className="dp-operating-header-actions">
           <div className="dp-create-menu-wrap">
@@ -1214,54 +1304,72 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
               </div>
             ) : null}
           </div>
-          <Link className="dp-button-secondary" to="/map?mode=partner&tab=map&filter=All">View public listing</Link>
+          <Link className="dp-button-secondary" to={selectedEntityHref}>{workspaceHomeCopy.publicLabel}</Link>
         </div>
       </section>
 
-      <section className="dp-workspace-context" aria-labelledby="workspace-context-title">
-        <div className="dp-workspace-switcher-compact">
-          <span id="workspace-context-title">Workspace</span>
+      <section className="dp-workspace-home-switcher" aria-labelledby="workspace-context-title">
+        <header className="dp-workspace-home-switcher-head">
+          <div>
+            <p className="dp-workspace-eyebrow">Workspace</p>
+            <h2 id="workspace-context-title">Choose the workspace you want to review.</h2>
+            <p>Switch between partner accounts without leaving the app. The home view updates to match the selected workspace.</p>
+          </div>
           <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen}>
-            <strong>{selectedOrganization?.name}</strong>
-            <small>{friendlyRoleLabel(selectedOrganization?.role)} — {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
-            <ChevronDown aria-hidden="true" />
+            {workspaceMenuOpen ? "Hide search" : "Search workspaces"}
           </button>
-          {workspaceMenuOpen ? (
-            <div className="dp-workspace-switcher-menu">
-              <label>
-                <Search aria-hidden="true" />
-                <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" />
-              </label>
-              <div>
-                {filteredOrganizations.map((organization) => (
-                  <button
-                    key={organization.id}
-                    type="button"
-                    aria-current={organization.id === selectedOrganizationId ? "true" : undefined}
-                    onClick={() => { setSelectedOrganizationId(organization.id); setWorkspaceMenuOpen(false); setWorkspaceSearch(""); }}
-                  >
-                    <span><strong>{organization.name}</strong><small>{friendlyRoleLabel(organization.role)}</small></span>
-                    {organization.id === selectedOrganizationId ? <em>Current</em> : null}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
+        </header>
+
+        {workspaceMenuOpen ? (
+          <label className="dp-workspace-search-row">
+            <Search aria-hidden="true" />
+            <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Search workspaces" aria-label="Search workspaces" />
+          </label>
+        ) : null}
+
+        <div className="dp-workspace-choice-list" role="listbox" aria-label="Available partner workspaces">
+          {filteredOrganizations.map((organization) => {
+            const isSelected = organization.id === selectedOrganizationId;
+            const organizationCopy = WORKSPACE_HOME_COPY[organization.id] || workspaceHomeCopy;
+            const entityCount = getOrganizationEntities(organization.id).length;
+            return (
+              <button
+                key={organization.id}
+                type="button"
+                className={isSelected ? "is-active" : ""}
+                role="option"
+                aria-selected={isSelected}
+                onClick={() => handleOrganizationSelect(organization.id)}
+              >
+                <span>
+                  <strong>{organization.name}</strong>
+                  <small>{friendlyRoleLabel(organization.role)} · {entityCount} {entityCount === 1 ? "linked place" : "linked places"}</small>
+                </span>
+                <em>{organizationCopy.focus}</em>
+                {isSelected ? <b>Selected</b> : null}
+              </button>
+            );
+          })}
         </div>
-        <div className="dp-workspace-entities-compact">
-          <span>Entities</span>
+
+        <div className="dp-workspace-linked-entities">
+          <div>
+            <p className="dp-workspace-eyebrow">Linked to this workspace</p>
+            <h3>{selectedOrganization?.name}</h3>
+            <p>{workspaceHomeCopy.nextStep}</p>
+          </div>
           <div>
             {ownedEntities.map((entity) => (
               <Link key={entity.id} to={`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`}>
-                <strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small><ArrowRight aria-hidden="true" />
+                <span>
+                  <strong>{entity.display_name}</strong>
+                  <small>{entity.perk_summary || entity.entity_type}</small>
+                </span>
+                <ArrowRight aria-hidden="true" />
               </Link>
             ))}
-            {!ownedEntities.length ? <p>No linked entities. Add a listing from the Map workspace.</p> : null}
+            {!ownedEntities.length ? <p>No linked places yet. Add one from the Map workspace.</p> : null}
           </div>
-        </div>
-        <div className="dp-workspace-context-actions">
-          <button type="button" onClick={() => setWorkspaceMenuOpen(true)}>Switch workspace</button>
-          <button type="button" onClick={() => setTab("profile")}>Manage workspace</button>
         </div>
       </section>
 
@@ -1275,7 +1383,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           )}
         </div>
         <div className="dp-metric-grid">
-          {metrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
+          {operatingMetrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
         </div>
         {isLegends ? <WorkspaceAnalyticsSnapshotGraphs report={legendsSeoReport} /> : null}
       </section>

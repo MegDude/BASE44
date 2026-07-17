@@ -306,12 +306,14 @@ const PRIMARY_SEARCH_INTENT_IDS = [
   "breakfast",
   "coffee",
   "lunch",
-  "dinner",
   "dining",
   "drinks",
   "happy_hour",
   "events",
-  "legends",
+  "perks",
+  "hotels",
+  "properties",
+  "near_me",
 ] as const;
 
 const SECONDARY_SEARCH_INTENT_IDS = [
@@ -321,9 +323,8 @@ const SECONDARY_SEARCH_INTENT_IDS = [
   "waterloo_walk",
   "stories_walk",
   "inkind",
-  "hotels",
-  "properties",
   "legends",
+  "dinner",
   "arts",
   "live_music",
   "civic",

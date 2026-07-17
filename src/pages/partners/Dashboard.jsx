@@ -39,7 +39,7 @@ const operatingAreas = [
     title: "Reporting & Analytics",
     eyebrow: "Reporting",
     copy: "Track visibility, saves, scans, directions, RSVPs, redemptions, and participation. Understand what is working and where to focus next.",
-    href: "/partner-workspace/reports",
+    href: "/app/workspace/reports",
     cta: "View Reports",
     icon: BarChart3,
   },

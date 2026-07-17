@@ -18,6 +18,7 @@ import { daaTourStops } from "../data/daaArtParksTour";
 import { legendsListingPlaces } from "../data/legendsListings";
 import { rentalListings } from "../data/rentalListings";
 import { mapNativeCampaigns } from "../data/mapNativeCampaigns";
+import { buildingAmenityNetworkEntities } from "../data/buildingAmenityNetwork";
 import { larryAndGuyRestaurantLayer } from "../data/larryAndGuyRestaurantLayer";
 import { applyLaunchMapCuration } from "../data/raineyLaunchCuration";
 import { civicDiscoveryEntities } from "../data/civicDiscoveryNetwork";
@@ -1518,7 +1519,7 @@ export function buildLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...buildingAmenityNetworkEntities, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => item.launchMapPin || isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {

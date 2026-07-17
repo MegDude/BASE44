@@ -91,7 +91,7 @@
     background: rgba(255, 255, 255, .98);
   }
 
-  .dp-partner-native-tabs a {
+  .dp-partner-native-tabs :is(a, button) {
     display: flex;
     min-width: 0;
     min-height: 54px;
@@ -105,8 +105,8 @@
   }
 
   .dp-partner-native-tabs svg { width: 21px; height: 21px; stroke-width: 1.8; }
-  .dp-partner-native-tabs a.is-active { color: #0b1f33; }
-  .dp-partner-native-tabs a.is-active svg { color: #c8a96a; stroke-width: 2.2; }
+  .dp-partner-native-tabs :is(a, button).is-active { color: #0b1f33; }
+  .dp-partner-native-tabs :is(a, button).is-active svg { color: #c8a96a; stroke-width: 2.2; }
 
   .dp-native-publisher {
     margin: -4px -16px 20px;

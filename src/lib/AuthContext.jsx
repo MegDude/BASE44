@@ -214,6 +214,40 @@ export const AuthProvider = ({ children }) => {
     return nextSession;
   };
 
+  const signInPartnerWithPassword = async (credentials = {}) => {
+    if (!canUseProductionAccountAccess() || !supabaseClient) {
+      setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
+      return { type: "error", code: "auth_unavailable", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    }
+
+    const email = String(credentials.email || "").trim().toLowerCase();
+    const password = String(credentials.password || "");
+    if (!email || !password) {
+      const message = "Enter both your email and password.";
+      setAuthError(message);
+      return { type: "error", code: "missing_credentials", message };
+    }
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) {
+      const normalizedError = `${error.code || ""} ${error.message || ""}`.toLowerCase();
+      const message = normalizedError.includes("email_not_confirmed") || normalizedError.includes("email not confirmed")
+        ? "Confirm your email before signing in with a password."
+        : normalizedError.includes("invalid_credentials") || normalizedError.includes("invalid login credentials")
+          ? "Email or password is incorrect."
+          : error.message || "Password sign-in could not be completed.";
+      setAuthError(message);
+      return { type: "error", code: error.code || "sign_in_failed", message };
+    }
+
+    applySupabaseSession(data?.session);
+    return {
+      type: "supabase_password",
+      user: data?.user || null,
+      session: data?.session || null,
+    };
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -225,6 +259,7 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings,
       logout,
       signInPartner,
+      signInPartnerWithPassword,
       navigateToLogin,
       checkAppState
     }}>

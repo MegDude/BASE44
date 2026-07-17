@@ -70,6 +70,15 @@ export const workspaceStatusCopy: Record<WorkspaceStatus, { label: string; descr
 
 export const demoOrganizations: WorkspaceOrganization[] = [
   {
+    id: "demo-org-waterloo-greenway",
+    name: "Waterloo Greenway",
+    type: "civic",
+    status: "active",
+    plan: "enterprise",
+    role: "owner",
+    is_demo: true,
+  },
+  {
     id: "demo-org-legends-real-estate",
     name: "Legends Real Estate",
     type: "real_estate",
@@ -108,6 +117,7 @@ export const demoOrganizations: WorkspaceOrganization[] = [
 ];
 
 export const demoEntityOwners: WorkspaceEntityOwnership[] = [
+  { id: "owner-waterloo-greenway", organization_id: "demo-org-waterloo-greenway", entity_id: "civic-waterloo-greenway", entity_type: "civic", display_name: "Waterloo Greenway", map_filter: "Civic", perk_summary: "Parks, events, trails, and public programming" },
   { id: "owner-legends-real-estate", organization_id: "demo-org-legends-real-estate", entity_id: "legends-real-estate", entity_type: "brand", display_name: "Legends Real Estate", map_filter: "Legends", perk_summary: "Real estate workspace" },
   { id: "owner-the-shore-4301", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-4301-5357248", entity_type: "listing", display_name: "The Shore #4301", map_filter: "All Listings", perk_summary: "Active listing · MLS 5357248" },
   { id: "owner-the-shore-5003", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-5003-1682504", entity_type: "listing", display_name: "The Shore #5003", map_filter: "All Listings", perk_summary: "Active listing · MLS 1682504" },

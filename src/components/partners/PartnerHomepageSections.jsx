@@ -457,7 +457,7 @@ export function PartnerWorkspaceBridge() {
       <div className="grid gap-4 md:grid-cols-3">
         {[
           { title: "Map", body: "Open the partner map and review places, offers, events, and nearby context.", href: "/map?mode=partner&tab=map" },
-          { title: "Reports", body: "See what people opened, saved, scanned, and requested.", href: "/partner-workspace/reports" },
+          { title: "Performance", body: "See what people opened, saved, scanned, and requested—then choose the next action.", href: "/app/workspace/reports" },
           { title: "Workspace", body: "Manage campaigns, reports, and partner follow-up after login.", href: "/partner-workspace/overview" },
         ].map((item) => {
           return (

@@ -6,7 +6,7 @@ Use a single circular pin system for every Downtown Perks map entity, with categ
 ## What was reviewed
 - Source file: `downtown-perks-map-entities.csv`
 - Entities reviewed: **127**
-- Legends residential listings: **45**
+- Legends real estate listings: **45**
 - Current unique pin assets in source: **17**
 - New/generated icon assets in this pack: **19**
 - Pin updates recommended: **17**

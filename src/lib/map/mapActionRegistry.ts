@@ -112,10 +112,10 @@ export const panelActionRoutes = {
 
 export const workspaceActionRoutes = {
   LAUNCH_CAMPAIGN: "/partner-workspace/campaigns",
-  GENERATE_REPORT: "/partner-workspace/reports",
+  GENERATE_REPORT: "/app/workspace/reports",
   OPEN_DASHBOARD: "/partner-workspace/overview",
-  OPEN_VISIBILITY: "/partner-workspace/analytics",
-  OPEN_REPORTS: "/partner-workspace/reports",
+  OPEN_VISIBILITY: "/app/workspace/reports",
+  OPEN_REPORTS: "/app/workspace/reports",
   OPEN_ENGAGEMENT: "/partner-workspace/engagement",
   OPEN_EVENTS: "/partner-workspace/events",
   OPEN_BUILDINGS: "/partner-workspace/buildings",

@@ -178,7 +178,7 @@ export const partnerStates = [
       "Event views, RSVPs, saves, public resource opens, nearby business opens, and repeat participation.",
     intakeTargeting: "Event visibility + district participation + RSVP tracking.",
     campaignType: "District participation + RSVP tracking.",
-    workspaceHref: "/partner-workspace/reports",
+    workspaceHref: "/app/workspace/reports",
   },
 ];
 

@@ -30,6 +30,35 @@ function normalizeGoogleMapsEnv(mode) {
   return { googleMapsApiKey, googleMapsMapId };
 }
 
+function normalizeSupabaseEnv(mode) {
+  const env = loadEnv(mode, process.cwd(), "");
+  const supabaseUrl =
+    process.env.VITE_SUPABASE_URL ||
+    env.VITE_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    env.SUPABASE_URL ||
+    "";
+  const supabasePublishableKey =
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    env.VITE_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    env.SUPABASE_ANON_KEY ||
+    "";
+
+  process.env.VITE_SUPABASE_URL = supabaseUrl;
+  process.env.VITE_SUPABASE_PUBLISHABLE_KEY = supabasePublishableKey;
+  process.env.VITE_SUPABASE_ANON_KEY ||= supabasePublishableKey;
+  return { supabaseUrl, supabasePublishableKey };
+}
+
 function localApiRoutes() {
   async function runLocalHandler(req, res, handlerPath, logger, errorMessage) {
     let rawBody = "";
@@ -229,6 +258,7 @@ function localApiRoutes() {
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const { googleMapsApiKey, googleMapsMapId } = normalizeGoogleMapsEnv(mode);
+  const { supabaseUrl, supabasePublishableKey } = normalizeSupabaseEnv(mode);
 
   return {
   logLevel: 'error', // Suppress warnings, only show errors
@@ -236,6 +266,9 @@ export default defineConfig(({ mode }) => {
     "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
     "import.meta.env.VITE_GOOGLE_MAP_ID": JSON.stringify(googleMapsMapId),
     "import.meta.env.VITE_GOOGLE_MAPS_MAP_ID": JSON.stringify(googleMapsMapId),
+    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(supabaseUrl),
+    "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(supabasePublishableKey),
+    "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(supabasePublishableKey),
   },
   plugins: [
     localApiRoutes(),

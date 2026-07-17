@@ -3153,6 +3153,50 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-state span {
   line-height: 1.45 !important;
 }
 
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-card {
+  display: grid !important;
+  width: min(360px, calc(100vw - 40px)) !important;
+  gap: 8px !important;
+  justify-items: center !important;
+  padding: 22px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 20px 60px rgba(11, 31, 51, 0.12) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-card small {
+  color: rgba(11, 31, 51, 0.54) !important;
+  font: 500 0.72rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions :is(button, a) {
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #0B1F33 !important;
+  font: 650 0.78rem/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions :is(button, a):first-child {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #fff !important;
+}
+
 html body #root#root .dp-map-page.dp-map-page .dp-google-map-marker-shell,
 html body #root#root .dp-map-page.dp-map-page .dp-google-map-marker-shell * {
   box-sizing: border-box !important;

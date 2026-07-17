@@ -177,7 +177,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user, signInPartner } = useAuth();
+  const { isAuthenticated, user, signInPartner, signInPartnerWithPassword } = useAuth();
   const searchParams = new URLSearchParams(location.search);
   const initialType = normalizePartnerType(
     searchParams.get("type")
@@ -214,6 +214,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState("idle");
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
+  const [signInMethod, setSignInMethod] = useState("password");
   const [signInType, setSignInType] = useState(initialType || "property");
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
@@ -398,15 +400,35 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       setSubmissionMessage(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
       return;
     }
-    if (!signInEmail && !user?.email) {
+    const email = signInEmail || user?.email || "";
+    if (!email) {
       setSubmissionState("error");
-      setSubmissionMessage("Enter the email for this account before requesting sign-in access.");
+      setSubmissionMessage("Enter the email for this account.");
+      return;
+    }
+    if (signInMethod === "password" && !signInPassword) {
+      setSubmissionState("error");
+      setSubmissionMessage("Enter your password.");
       return;
     }
     setSubmissionState("submitting");
     setSubmissionMessage("");
+    if (signInMethod === "password") {
+      const session = await signInPartnerWithPassword({
+        email,
+        password: signInPassword,
+      });
+      if (session?.type === "supabase_password") {
+        setSubmissionState("success");
+        setSubmissionMessage("Signed in. Opening your account.");
+        return;
+      }
+      setSubmissionState("error");
+      setSubmissionMessage(session?.message || "Password sign-in could not be completed.");
+      return;
+    }
     const session = await startPartnerSignIn(navigate, signInPartner, {
-      email: signInEmail || user?.email || "account@downtownperks.local",
+      email,
       accountType: signInType,
     });
     if (session?.type === "partner") return;
@@ -626,14 +648,46 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </button>
               </form>
             ) : (
-              <div className="dp-partner-access-signin">
+              <form
+                className="dp-partner-access-signin"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void handleSignIn();
+                }}
+              >
                 <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Account access</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Select the account type first. The secure link will return you to the right workspace or resident experience.
+                  Select the account type, then sign in with your password or request a secure email link.
                 </p>
+                <div className="mt-5 flex gap-5 border-b border-[#0B1F33]/10" role="tablist" aria-label="Sign-in method">
+                  {[
+                    { value: "password", label: "Password" },
+                    { value: "email_link", label: "Email link" },
+                  ].map((method) => {
+                    const isActive = signInMethod === method.value;
+                    return (
+                      <button
+                        key={method.value}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        onClick={() => {
+                          setSignInMethod(method.value);
+                          setSubmissionState("idle");
+                          setSubmissionMessage("");
+                        }}
+                        className={`min-h-11 border-b-2 px-0 text-[12px] font-semibold uppercase tracking-[0.08em] transition ${
+                          isActive ? "border-[#BFA46A] text-[#0B1F33]" : "border-transparent text-[#0B1F33]/50 hover:text-[#0B1F33]"
+                        }`}
+                      >
+                        {method.label}
+                      </button>
+                    );
+                  })}
+                </div>
                 <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
                   <div className="dp-partner-type-section-head">
                     <p className="dp-partner-access-label">Access type</p>
@@ -669,8 +723,19 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   placeholder="name@organization.com"
                   value={signInEmail}
                   onChange={setSignInEmail}
+                  autoComplete="email"
                   required={accountAccessEnabled}
                 />
+                {signInMethod === "password" ? (
+                  <PartnerAccessField
+                    label="Password"
+                    type="password"
+                    value={signInPassword}
+                    onChange={setSignInPassword}
+                    autoComplete="current-password"
+                    required={accountAccessEnabled}
+                  />
+                ) : null}
                 {submissionMessage ? (
                   <p
                     className={`text-[12px] leading-5 ${
@@ -683,13 +748,16 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 ) : null}
                 <div className="dp-partner-access-actions mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
-                    type="button"
-                    onClick={handleSignIn}
+                    type="submit"
                     disabled={!accountAccessEnabled || submissionState === "submitting"}
                     className={accessActionClass}
                   >
                     <LogIn className="h-4 w-4 text-[#BFA46A]" />
-                    {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
+                    {submissionState === "submitting"
+                      ? signInMethod === "password" ? "Signing in" : "Sending link"
+                      : accountAccessEnabled
+                        ? signInMethod === "password" ? "Sign in" : "Send sign-in link"
+                        : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
@@ -705,7 +773,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     Request team access
                   </Link>
                 </div>
-              </div>
+              </form>
             )}
           </div>
         </section>
@@ -775,7 +843,7 @@ function formatSetupText(value) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function PartnerAccessField({ label, value, onChange, type = "text", required = false, placeholder = "" }) {
+function PartnerAccessField({ label, value, onChange, type = "text", required = false, placeholder = "", autoComplete }) {
   return (
     <div>
       <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">{label}</label>
@@ -783,6 +851,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         type={type}
         value={value}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         onChange={(event) => onChange(event.target.value)}
         required={required}
         className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"

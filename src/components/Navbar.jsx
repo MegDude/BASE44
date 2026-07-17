@@ -16,7 +16,7 @@ const PARTNER_LINKS = [
   { to: "/partner-workspace/overview", label: "Platform", description: "Open the partner operating workspace" },
   { to: "/partners/campaigns", label: "Campaigns", description: "Create a local offer or event placement" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Manage reports, campaigns, and team access" },
-  { to: "/partner-workspace/reports", label: "Reports", description: "Review partner results" },
+  { to: "/app/workspace/reports", label: "Performance", description: "Review partner activity and next actions" },
   { to: "/pricing", label: "Pricing", description: "Partner plans by category" },
   { to: "/partners/sign-up", label: "Sign Up", description: "Create a partner workspace" },
 ];
@@ -33,7 +33,7 @@ const HAMBURGER_PARTNER_LINKS = [
   { to: "/partner-workspace/overview", label: "Platform" },
   { to: "/partners/campaigns", label: "Campaigns" },
   { to: "/partner-workspace/overview", label: "Workspace" },
-  { to: "/partner-workspace/reports", label: "Reports" },
+  { to: "/app/workspace/reports", label: "Performance" },
   { to: "/pricing", label: "Pricing" },
   { to: "/partners/sign-up", label: "Sign Up" },
 ];
