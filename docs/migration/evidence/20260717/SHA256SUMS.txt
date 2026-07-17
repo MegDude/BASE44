@@ -1,0 +1,4 @@
+623290098bc02d0bf594bbb70734c3e61bfd25d539f84a730b39e517790a4dd7  /Users/megdude/Downloads/BASE44 migration backup 20260717/tracked-working-tree.patch
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  /Users/megdude/Downloads/BASE44 migration backup 20260717/staged-working-tree.patch
+22da846c6d55de7f6a290d47eb1e215deed515bad8ded6bc90fd17bd829b75f7  /Users/megdude/Downloads/BASE44 migration backup 20260717/untracked-files.txt
+c5ee460116b6aab5df91b28fa8cacc8c39b76df4b2a5d5a81d78449314d9d66a  /Users/megdude/Downloads/BASE44 migration backup 20260717/untracked-files.tgz

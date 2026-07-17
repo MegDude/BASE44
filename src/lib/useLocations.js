@@ -31,6 +31,7 @@ import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
 import { normalizeEntity } from "./map/normalizeEntity";
 import { getHospitalityCsvUpdate } from "../data/hospitalityContentLibrary";
 import { getResidentialMixedUseUpdate } from "../data/residentialMixedUseContentLibrary";
+import { getFirstThursdayRaineyMapEvent } from "../data/events/firstThursdayRainey";
 
 const FAIRMONT_HOTEL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
 const FAIRMONT_POOL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-rooftop-pool.webp";
@@ -61,6 +62,9 @@ function eventPlace({
     id: `event-${id}`,
     name,
     type: "event",
+    kind: "event",
+    entityType: "event",
+    status: rest.status || "upcoming",
     category: `Event / ${category}`,
     category_key: ["event", categoryKey || category, district, ...tags].join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "_"),
     markerType: "event",
@@ -71,14 +75,14 @@ function eventPlace({
     district,
     address,
     summary,
-    description: summary,
+    description: rest.description || summary,
     rsvp_count: rsvpCount,
     time,
     date,
     image,
     tags,
     partnerInsight,
-    source: "Downtown Perks event layer",
+    source: rest.source || "Downtown Perks event layer",
   };
 }
 
@@ -669,23 +673,7 @@ const eventPlaces = [
     included: ["Live DJs", "Drink specials", "Pool access", "Special activations", "Holiday atmosphere"],
     partnerInsight: "Strong for holiday-weekend demand, pool pass saves, group planning, and hotel guest conversion.",
   }),
-  eventPlace({
-    id: "hotel-van-zandt-first-thursday",
-    name: "Hotel Van Zandt First Thursday",
-    category: "Happy Hour",
-    categoryKey: "happy_hour hotel_van_zandt first_thursday",
-    latitude: 30.2588,
-    longitude: -97.7392,
-    district: "Rainey",
-    address: "605 Davis St, Austin, TX 78701",
-    time: "Thu 13 · 5:00 PM",
-    date: "2026-06-13T17:00:00-05:00",
-    image: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
-    rsvpCount: 68,
-    tags: ["Hotel Van Zandt", "Geraldine's", "First Thursday", "Rainey", "Happy Hour", "Live Music"],
-    summary: "A featured Rainey hotel moment connecting guests, residents, Geraldine's, happy hour, and nearby live music.",
-    partnerInsight: "Useful for seeing how hotel guests and residents respond to First Thursday timing, Geraldine's traffic, saves, and nearby follow-on plans.",
-  }),
+  eventPlace(getFirstThursdayRaineyMapEvent()),
   eventPlace({
     id: "geraldines-happy-hour-live-music",
     name: "Geraldine's Happy Hour + Live Music",
