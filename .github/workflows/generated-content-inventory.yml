@@ -1,0 +1,55 @@
+name: Generated content inventory
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "scripts/generate-partner-content-inventory.mjs"
+      - "package.json"
+      - "inventory/**"
+      - ".github/workflows/generated-content-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DP_CANONICAL_BASE_URL: https://base-44-h2iq.vercel.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate source-backed inventory
+        run: npm run inventory:partner-content:ci
+
+      - name: Validate required outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s inventory/generated/partner-app-pages.csv
+          test -s inventory/generated/entity-content-register.csv
+          test -s inventory/generated/relationship-matrix.csv
+          test -s inventory/generated/content-inventory.json
+          test -s inventory/generated/inventory-metadata.json
+          node -e 'const fs=require("fs"); const x=JSON.parse(fs.readFileSync("inventory/generated/inventory-metadata.json","utf8")); if(!x.routeCount) throw new Error("No routes generated"); if(!x.entityCount) throw new Error("No source entities generated"); console.log(x);'
+
+      - name: Upload generated inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: downtown-perks-content-inventory
+          path: inventory/generated/
+          if-no-files-found: error
+          retention-days: 30
