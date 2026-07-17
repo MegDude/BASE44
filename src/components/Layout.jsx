@@ -64,6 +64,7 @@ export default function Layout() {
   const isProductRoute =
     pathname === "/app" ||
     pathname === "/app/map" ||
+    pathname === "/interaction-system" ||
     pathname === "/about" ||
     pathname === "/map" ||
     pathname === "/partner-map" ||
@@ -118,8 +119,8 @@ export default function Layout() {
     pathname.startsWith("/resident-app");
 
   const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
-  const showNavbar = !["/", "/map", "/app", "/app/map", "/sign-in", "/auth/callback"].includes(pathname);
-  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const showNavbar = !["/", "/map", "/app", "/app/map", "/sign-in", "/auth/callback", "/interaction-system"].includes(pathname);
+  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/interaction-system";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {

@@ -29,6 +29,7 @@ const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
 const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
+const InteractionSystemPreview = lazy(() => import("./pages/InteractionSystemPreview"));
 const ROUTER_FUTURE_FLAGS = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
@@ -162,6 +163,7 @@ function ProductRoutes() {
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />
+          <Route path="/interaction-system" element={<InteractionSystemPreview />} />
           <Route
             path="/ask-map"
             element={
