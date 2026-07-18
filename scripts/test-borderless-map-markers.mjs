@@ -22,9 +22,13 @@ const legacyMarkerSource = mapSource.slice(
 assert.doesNotMatch(legacyMarkerSource, /<circle\b/, "legacy listing pins must not restore a circular plate or number badge");
 assert.match(legacyMarkerSource, /pin\.asset/, "legacy markers must render canonical uploaded pin artwork");
 assert.match(iconRegistry, /INKIND_PIN_ASSET = `\$\{PARTNER_PIN_ROOT\}\/inkind\.png`/, "all map adapters must share the approved inKind pin artwork");
-assert.match(iconRegistry, /COFFEE_PIN_ASSET/, "coffee entities must use the uploaded coffee pin artwork");
-assert.match(iconRegistry, /BEER_PIN_ASSET/, "drinks entities must use the uploaded beer pin artwork");
-assert.match(iconRegistry, /CONDO_BUILDING_PIN_ASSET/, "residential entities must use the uploaded building pin artwork");
+assert.doesNotMatch(iconRegistry, /coffee:\s*artwork\(/, "ordinary coffee places must use the canonical map glyph, not campaign artwork");
+assert.doesNotMatch(iconRegistry, /nightlife:\s*artwork\(/, "ordinary drinks places must use the canonical map glyph, not campaign artwork");
+assert.doesNotMatch(iconRegistry, /property:\s*artwork\(/, "ordinary properties must use the canonical map glyph, not campaign artwork");
+assert.doesNotMatch(iconRegistry, /retail:\s*artwork\(/, "ordinary retail places must use the canonical map glyph, not campaign artwork");
+assert.match(iconRegistry, /inkind:\s*artwork\(/, "approved inKind campaign entities must retain their supplied artwork");
+assert.match(iconRegistry, /dana:\s*artwork\(/, "approved DANA campaign entities must retain their supplied artwork");
+assert.match(iconRegistry, /"fine-eyewear":\s*artwork\(/, "approved Fine Eyewear campaign entities must retain their supplied artwork");
 assert.match(iconRegistry, /RIVIAN_PIN_ASSET/, "Rivian entities must use the uploaded Rivian pin artwork");
 assert.doesNotMatch(pinResolver, /Math\.random|crypto\.getRandomValues|randomUUID/, "map icon selection must never be random");
 assert.match(pinResolver, /\(fallbackByType\.includes\("civic"\) \? "civic" : ""\) \|\|\s*"default";/, "unknown entities must use the neutral canonical map pin");

@@ -36,7 +36,6 @@ import {
   ScanLine,
   Search,
   Send,
-  Share2,
   Sparkles,
   Star,
   TicketPercent,
@@ -6899,22 +6898,12 @@ function getMapDetailContextLabel(place, hasPerkContext = false) {
   return "Place";
 }
 
-function MapDetailHeader({ place, canGoBack, onBack, onClose, onShare, panelState = "medium", onPanelStateChange }) {
+function MapDetailHeader({ place, canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
   const pointerStartRef = useRef(null);
   const stateOrder = ["peek", "medium", "full"];
   const movePanel = (direction) => {
     const currentIndex = Math.max(0, stateOrder.indexOf(panelState));
     onPanelStateChange?.(stateOrder[Math.max(0, Math.min(stateOrder.length - 1, currentIndex + direction))]);
-  };
-  const sharePlace = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    try {
-      if (navigator.share) await navigator.share({ title: place?.name || "Downtown Perks", url });
-      else await navigator.clipboard?.writeText?.(url);
-      onShare?.();
-    } catch {
-      // Sharing remains optional when the host browser blocks the native sheet.
-    }
   };
   return (
     <header className="dp-map-panel-header dp-map-detail-header" aria-label="Detail navigation">
@@ -6940,9 +6929,6 @@ function MapDetailHeader({ place, canGoBack, onBack, onClose, onShare, panelStat
           </button>
         ) : <span className="dp-map-detail-header-spacer" aria-hidden="true" />}
         <span className="dp-map-detail-navigation-title">{place?.name || "Details"}</span>
-        <button type="button" onClick={sharePlace} className="dp-map-detail-share" aria-label={`Share ${place?.name || "details"}`}>
-          <Share2 aria-hidden="true" />
-        </button>
         <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
           <X aria-hidden="true" />
         </button>
@@ -18438,9 +18424,6 @@ export default function MapPage() {
               place={selected}
               panelState={detailDrawerState}
               onPanelStateChange={updateDetailDrawerState}
-              onShare={() => fireWorkflow("/api/map-actions", buildMapActionPayload(selected, "entity_shared", "map_detail_header", {
-                metadata: { entityType: getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)), panelState: detailDrawerState },
-              }))}
               canGoBack={Boolean((isInKindEntity(selected) && !isInKindNetworkEntity(selected) && inKindParentRef.current) || peekPanelState())}
               onBack={() => {
                     const parent = inKindParentRef.current;

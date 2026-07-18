@@ -51100,6 +51100,16 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   order: 5 !important;
 }
 
+/* inKind venue drawers already use the canonical DOM order. Do not let the
+   legacy generic drawer sorter pull actions or legal copy above the hero. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  aside.dp-detail-drawer.dp-destination-drawer,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-map-drawer-shell
+) .dp-inkind-resident-drawer > * {
+  order: initial !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   aside.dp-detail-drawer.dp-destination-drawer,
   aside.dp-detail-drawer.dp-map-drawer-shell,
