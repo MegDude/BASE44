@@ -3789,11 +3789,6 @@ function getMarkerDataKind(place) {
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
-const LEGENDS_LOGO_SVG_PATHS = `
-  <path d="M60 75 48.6 50.4 28 68.8 17.5 42.2 4 30.8 24.1 8.2 51.6 23.8 60 12.6l8.4 11.2L95.9 8.2 116 30.8l-13.5 11.4L92 68.8 71.4 50.4 60 75Z" fill="none" stroke="#C8A96A" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M24.1 8.2 28 68.8M51.6 23.8 28 68.8M51.6 23.8 48.6 50.4M68.4 23.8 71.4 50.4M95.9 8.2 92 68.8M68.4 23.8 92 68.8M60 12.6v62.4M48.6 50.4h22.8" fill="none" stroke="#C8A96A" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
-`;
-
 function mapIconSvgInner(glyph) {
   return String(glyph || "").match(/<svg[^>]*>([\s\S]*?)<\/svg>/i)?.[1] || "";
 }
@@ -3851,32 +3846,26 @@ function svgMarkerDataUrl(svg) {
 
 function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
+  const isInKind = isInKindEntity(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
-  if (isLegends) {
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 120 120">
-        <g transform="translate(0 16)">${LEGENDS_LOGO_SVG_PATHS}</g>
-        ${stopNumber ? `<circle cx="108" cy="14" r="10" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.6"/><text x="108" y="15" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
-      </svg>`;
+  if (isLegends || isInKind) {
+    const markerWidth = isInKind ? Math.round(size * 1.5) : size;
+    const markerHeight = isInKind ? Math.round(size * 1.12) : size;
     return {
-      url: svgMarkerDataUrl(svg),
-      scaledSize: new maps.Size(size, size),
-      anchor: new maps.Point(size / 2, size / 2),
+      url: isInKind ? "/pins/brands/inkind-map-logo.png" : LEGENDS_PIN_LOGO,
+      scaledSize: new maps.Size(markerWidth, markerHeight),
+      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
     };
   }
-  const fill = "#0B1F33";
-  const stroke = "#C8A96A";
-  const iconColor = "#C8A96A";
   const pin = resolveEntityPin(place);
   const paths = mapIconSvgInner(pin.glyph);
-  const iconSize = Math.max(18, Math.round(size * 0.5));
-  const iconScale = Math.max(0.75, size / 48);
+  const iconColor = selected ? "#B8963E" : "#0B1F33";
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="${selected ? stroke : fill}" stroke="${selected ? fill : stroke}" stroke-width="1.35"/>
-      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${selected ? fill : iconColor}" fill="none" stroke="${selected ? fill : iconColor}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
-      ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <g transform="translate(4 4)" color="#FFFFFF" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      <g transform="translate(4 4)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      ${stopNumber ? `<text x="28" y="8" dominant-baseline="middle" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
     url: svgMarkerDataUrl(svg),
@@ -3892,7 +3881,7 @@ function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33" stroke="#C8A96A" stroke-width="1.35"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33"/>
       <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#FFFFFF">${label}</text>
     </svg>`;
   return {
@@ -3934,8 +3923,10 @@ function getZoomRouteMetrics(zoom) {
 }
 
 function getClusterCellSize(zoom) {
-  if (zoom >= 17.5) return 0;
-  if (zoom >= 16.5) return 0;
+  if (zoom >= 19) return 0.00006;
+  if (zoom >= 18) return 0.0001;
+  if (zoom >= 17) return 0.00016;
+  if (zoom >= 16.5) return 0.00024;
   if (zoom >= 16) return 0.0012;
   if (zoom >= 15) return 0.003;
   if (zoom >= 14) return 0.0055;
@@ -12896,7 +12887,7 @@ function GoogleMapCanvas({
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
-    const updateMarker = (marker, { position, content, title, icon }) => {
+    const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
       if (canUseAdvancedMarkers && "content" in marker) {
         marker.position = position;
         // Keep the provider-owned marker root stable. Replacing AdvancedMarker
@@ -12904,12 +12895,14 @@ function GoogleMapCanvas({
         // projected element while Google Maps is moving it.
         if (marker.content !== content) marker.content = content;
         marker.title = title;
+        marker.zIndex = zIndex;
         marker.map = map;
         return;
       }
       marker.setPosition?.(position);
       marker.setTitle?.(title);
       marker.setIcon?.(icon);
+      marker.setZIndex?.(zIndex);
       marker.setMap?.(map);
     };
 
@@ -12945,6 +12938,7 @@ function GoogleMapCanvas({
           content: element,
           title: `${item.count} places nearby`,
           icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
+          zIndex: 500,
         };
         if (existing) {
           existing.currentItem = item;
@@ -12980,7 +12974,7 @@ function GoogleMapCanvas({
         ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
-        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
+        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
@@ -13002,6 +12996,11 @@ function GoogleMapCanvas({
         content: wrapper,
         title: place.name,
         icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
+        zIndex: place.id === selectedId
+          ? 1000
+          : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
+            ? 750
+            : 1,
       };
       if (existing) {
         existing.currentPlace = place;
@@ -14786,28 +14785,12 @@ export default function MapPage() {
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
     [discoverDisplayPlaces],
   );
-  const shouldShowListingPins = activeFilter === "Legends" || activeFilter === "Listings" || /\b(legends|listing|mls|condo|for sale|for rent)\b/i.test(effectiveSearch || "");
-  const shouldShowFocusedIntentPins = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch);
   const stableClusterZoom = getStableMarkerZoom(mapZoom);
-  const shouldShowIndividualPins = shouldShowFocusedIntentPins || shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
-  const topLegendsMapPlaces = useMemo(
-    () => dedupeMapPinPlaces(mappablePlaces).filter((place) => isLegendsTopListingPlace(place)),
-    [mappablePlaces],
-  );
-  const nonTopLegendsMapPlaces = useMemo(
-    () => mappablePlaces.filter((place) => !isLegendsTopListingPlace(place)),
-    [mappablePlaces],
-  );
   const clusteredMapItems = useMemo(
     () => activeCollectionRoute?.stops?.length
-      ? activeCollectionRoute.stops.map((place) => ({ id: place.id, type: "place", place }))
-      : shouldShowIndividualPins
-      ? mappablePlaces.map((place) => ({ id: place.id, type: "place", place }))
-      : [
-        ...clusterPlaces(nonTopLegendsMapPlaces, stableClusterZoom, selectedId),
-        ...topLegendsMapPlaces.map((place) => ({ id: place.id, type: "place", place })),
-      ],
-    [activeCollectionRoute, mappablePlaces, nonTopLegendsMapPlaces, selectedId, shouldShowIndividualPins, stableClusterZoom, topLegendsMapPlaces],
+      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
+      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
+    [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom],
   );
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {

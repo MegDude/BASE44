@@ -1,0 +1,148 @@
+/* Canonical map markers: direct glyphs and approved brand marks only. */
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-marker-shell {
+  display: grid !important;
+  width: 44px !important;
+  height: 44px !important;
+  place-items: center !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-stop .dp-map-pin,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(:hover, :focus-visible, .is-selected, .is-active, .is-pulsing, [data-active="true"]) {
+  position: relative !important;
+  display: grid !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+  appearance: none !important;
+  filter: none !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin::before,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin::after,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin.is-pulsing::before,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin.is-saved::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin__icon {
+  display: grid !important;
+  width: 24px !important;
+  height: 24px !important;
+  place-items: center !important;
+  color: currentColor !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+  transition: color 160ms ease, transform 160ms ease, filter 160ms ease !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin__icon svg,
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin__icon .dp-pin-svg {
+  display: block !important;
+  width: 22px !important;
+  height: 22px !important;
+  max-width: 22px !important;
+  max-height: 22px !important;
+  color: #0B1F33 !important;
+  fill: none !important;
+  stroke: #0B1F33 !important;
+  stroke-width: 2.25 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 1)) drop-shadow(0 2px 3px rgba(11, 31, 51, 0.22)) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]) .dp-map-pin__icon {
+  color: #B8963E !important;
+  transform: scale(1.14) translateY(-1px) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]) .dp-map-pin__icon svg {
+  color: #B8963E !important;
+  stroke: #B8963E !important;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 1)) drop-shadow(0 2px 4px rgba(11, 31, 51, 0.3)) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(.dp-live-pin--legends-logo, .dp-live-pin--inkind-logo, [data-kind="inkind"]),
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(.dp-live-pin--legends-logo, .dp-live-pin--inkind-logo, [data-kind="inkind"]):is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(.dp-live-pin--legends-logo, .dp-live-pin--inkind-logo, [data-kind="inkind"]) .dp-map-pin__icon {
+  width: auto !important;
+  height: auto !important;
+  transform: none !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin.dp-live-pin--legends-logo :is(.dp-pin-logo, .dp-live-pin__legends-logo) {
+  display: block !important;
+  width: 30px !important;
+  height: 30px !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 3px 5px rgba(11, 31, 51, 0.22)) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(.dp-live-pin--inkind-logo, [data-kind="inkind"]) :is(.dp-pin-logo, .dp-live-pin__inkind-logo) {
+  display: block !important;
+  width: 42px !important;
+  height: 32px !important;
+  max-width: 42px !important;
+  max-height: 32px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 3px 5px rgba(11, 31, 51, 0.22)) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin:is(.dp-live-pin--legends-logo, .dp-live-pin--inkind-logo, [data-kind="inkind"]):is(:hover, :focus-visible, .is-selected, .is-active, [data-active="true"]) .dp-map-pin__icon {
+  transform: scale(1.08) translateY(-1px) !important;
+  filter: drop-shadow(0 0 3px rgba(184, 150, 62, 0.4)) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-cluster, .dp-google-map-cluster) {
+  border: 0 !important;
+  box-shadow: 0 5px 12px rgba(11, 31, 51, 0.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin__icon {
+    transition: none !important;
+  }
+}
