@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run inventory:partner-content",
     "dev": "vite",
+    "prebuild": "npm run inventory:partner-content",
     "build": "vite build",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
+    "pretypecheck": "npm run inventory:partner-content",
     "typecheck": "tsc -p ./jsconfig.json",
     "preview": "vite preview",
     "pretest:e2e": "node scripts/ensure-local-playwright.cjs",
@@ -46,7 +49,10 @@
     "test:media-reconciliation": "tsx scripts/test-media-reconciliation.ts",
     "audit:native-map": "tsx scripts/audit-native-google-map.ts",
     "assets:wikimedia": "python3 scripts/download_wikimedia_assets.py",
-    "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs"
+    "inventory:luxury-presence": "node scripts/export_luxury_presence_inventory.mjs",
+    "inventory:partner-content": "node scripts/generate-partner-content-inventory.mjs",
+    "inventory:partner-content:ci": "DP_CANONICAL_BASE_URL=${DP_CANONICAL_BASE_URL:-https://base-44-downtown-perks-live.vercel.app} node scripts/generate-partner-content-inventory.mjs",
+    "test:partner-content-inventory": "node scripts/test-partner-content-inventory.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

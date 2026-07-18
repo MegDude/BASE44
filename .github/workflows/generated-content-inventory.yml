@@ -1,0 +1,47 @@
+name: Generated content inventory
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "scripts/generate-partner-content-inventory.mjs"
+      - "package.json"
+      - "inventory/**"
+      - ".github/workflows/generated-content-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DP_CANONICAL_BASE_URL: https://base-44-downtown-perks-live.vercel.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate source-backed inventory
+        run: npm run inventory:partner-content:ci
+
+      - name: Validate required outputs
+        run: npm run test:partner-content-inventory
+
+      - name: Upload generated inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: downtown-perks-content-inventory
+          path: inventory/generated/
+          if-no-files-found: error
+          retention-days: 30

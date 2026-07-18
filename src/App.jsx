@@ -34,6 +34,7 @@ const MicrositeDirectory = lazy(() => import("./components/microsites/MicrositeD
 const PartnerMicrositePage = lazy(() => import("./components/microsites/PartnerMicrositePage"));
 const MicrositeAdminRegistry = lazy(() => import("./components/microsites/MicrositeAdminRegistry"));
 const PartnerJourneyResource = lazy(() => import("./components/admin/PartnerJourneyResource"));
+const AdminContentIndex = lazy(() => import("./pages/AdminContentIndex"));
 const ROUTER_FUTURE_FLAGS = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
@@ -202,6 +203,7 @@ function ProductRoutes() {
             path="/admin/resources/partner-journey"
             element={<AdminProtectedRoute><PartnerJourneyResource /></AdminProtectedRoute>}
           />
+          <Route path="/admin/content-index" element={<AdminProtectedRoute><AdminContentIndex /></AdminProtectedRoute>} />
           <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
           <Route path="/residents" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/explore" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
