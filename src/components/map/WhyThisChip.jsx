@@ -50,7 +50,7 @@ export default function WhyThisChip({ reason, distance, variant = 'inline' }) {
 
   if (variant === 'inline') {
     return (
-      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-medium ${config.color}`}>
+      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] border text-[11px] font-medium ${config.color}`}>
         <Icon className="w-3 h-3" />
         {label}
       </span>

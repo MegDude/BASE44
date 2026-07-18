@@ -29,7 +29,7 @@ export default function UnifiedResultsPanel({ items = [] }) {
             {query && ` for "${query}"`}
           </h2>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium bg-secondary text-muted-foreground px-2.5 py-1 rounded-full">
+            <span className="text-xs font-medium bg-secondary text-muted-foreground px-2.5 py-1 rounded-[8px]">
               {items.length}
             </span>
             <button

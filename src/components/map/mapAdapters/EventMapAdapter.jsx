@@ -60,12 +60,12 @@ export function EventCard({ event, active, onClick }) {
           <Calendar className="h-8 w-8 text-[#BFA46A]" />
         </div>
         <div
-          className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md ${STATUS_STYLE[event.status] || STATUS_STYLE.upcoming}`}
+          className={`absolute top-3 left-3 px-2.5 py-1 rounded-[8px] text-[11px] font-semibold ${STATUS_STYLE[event.status] || STATUS_STYLE.upcoming}`}
         >
           {event.status === "live" ? "● Live now" : event.status === "upcoming" ? "Upcoming" : event.status}
         </div>
         {event.is_members_only && (
-          <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 text-[11px] font-semibold text-[#0B1F33] backdrop-blur-md">
+          <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-[8px] bg-white/95 text-[11px] font-semibold text-[#0B1F33]">
             <Star className="w-3 h-3" /> Members
           </div>
         )}
@@ -95,17 +95,17 @@ export function EventCard({ event, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {event.venue_name && (
-            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               📍 {event.venue_name}
             </span>
           )}
           {date && (
-            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               🕐 {date.format("h:mm A")}
             </span>
           )}
           {event.rsvp_count > 0 && (
-            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               👥 {event.rsvp_count} going
             </span>
           )}

@@ -1,0 +1,312 @@
+.dp-active-perks-sheet {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--dp-map-native-bottom-nav-height) + var(--dp-safe-bottom));
+  left: 0;
+  z-index: var(--z-drawer);
+  display: grid;
+  grid-template-rows: 28px minmax(68px, auto) minmax(0, 1fr);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--dp-border);
+  border-bottom: 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--dp-surface);
+  box-shadow: var(--dp-sheet-shadow);
+  color: var(--dp-navy);
+}
+
+.dp-active-perks-handle {
+  display: grid;
+  width: 100%;
+  min-height: 28px;
+  place-items: center;
+  border: 0;
+  background: var(--dp-surface);
+}
+
+.dp-active-perks-handle > span {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--dp-handle);
+}
+
+.dp-active-perks-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 44px;
+  align-items: center;
+  min-height: 68px;
+  padding: 8px 12px 10px 20px;
+  border-bottom: 1px solid var(--dp-border);
+  background: var(--dp-surface);
+}
+
+.dp-active-perks-header p,
+.dp-active-perks-header h2 {
+  margin: 0;
+}
+
+.dp-active-perks-header p {
+  color: var(--dp-muted);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.dp-active-perks-header h2 {
+  margin-top: 2px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.dp-active-perks-header > strong {
+  padding-right: 8px;
+  color: var(--dp-muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dp-active-perks-close,
+.dp-active-perk-actions button,
+.dp-active-perks-empty button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--dp-border);
+  border-radius: 8px;
+  background: var(--dp-surface);
+  color: var(--dp-navy);
+  font: 600 12px/1 var(--dp-font-ui);
+}
+
+.dp-active-perks-close {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border-color: transparent;
+}
+
+.dp-active-perks-close svg,
+.dp-active-perk-save svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2;
+}
+
+.dp-active-perks-list {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  background: var(--dp-surface);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dp-active-perks-list::-webkit-scrollbar {
+  display: none;
+}
+
+.dp-active-perk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 88px;
+  margin: 0 20px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--dp-border);
+}
+
+.dp-active-perk-main {
+  display: block;
+  align-items: center;
+  min-width: 0;
+  min-height: 72px;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dp-navy);
+  text-align: left;
+}
+
+.dp-active-perk-main.has-media {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.dp-active-perk-media {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dp-active-perk-hero {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  box-shadow: none;
+}
+
+.dp-active-perk-hero.is-logo-fallback {
+  object-fit: contain;
+}
+
+.dp-active-perk-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.dp-active-perk-copy strong {
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dp-active-perk-copy > span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--dp-navy-secondary);
+  font-size: 13px;
+  line-height: 1.28;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.dp-active-perk-copy small {
+  color: var(--dp-muted);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.dp-active-perk-actions {
+  display: grid;
+  grid-template-columns: auto 44px;
+  align-content: center;
+  gap: 6px;
+  padding-left: 10px;
+}
+
+.dp-active-perk-actions > button:first-child {
+  padding: 0 12px;
+  border-color: var(--dp-navy);
+  background: var(--dp-navy);
+  color: var(--dp-surface);
+}
+
+.dp-active-perk-actions button:disabled {
+  border-color: var(--dp-border);
+  background: var(--dp-soft-neutral);
+  color: var(--dp-muted);
+}
+
+.dp-active-perk-save {
+  display: grid;
+  width: 44px;
+  padding: 0;
+  place-items: center;
+}
+
+.dp-active-perk-save[aria-pressed="true"] {
+  border-color: var(--dp-gold);
+  background: var(--dp-gold-tint);
+  color: var(--dp-gold);
+}
+
+.dp-active-perks-empty {
+  display: grid;
+  max-width: 420px;
+  gap: 8px;
+  padding: 28px 20px;
+  color: var(--dp-muted);
+}
+
+.dp-active-perks-empty strong {
+  color: var(--dp-navy);
+}
+
+.dp-active-perks-empty button {
+  width: fit-content;
+  margin-top: 8px;
+  padding: 0 14px;
+}
+
+.dp-active-perks-sheet :is(button, [href]):focus-visible {
+  outline: 2px solid var(--dp-gold);
+  outline-offset: 2px;
+}
+
+.dp-active-perks-sheet.is-collapsed {
+  grid-template-rows: 28px minmax(68px, 1fr);
+}
+
+.dp-active-perks-sheet.is-medium {
+  height: 50dvh;
+}
+
+@media (max-width: 370px) {
+  .dp-active-perk-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dp-active-perk-main.has-media {
+    grid-template-columns: 68px minmax(0, 1fr);
+  }
+
+  .dp-active-perk-media {
+    width: 68px;
+    height: 68px;
+  }
+
+  .dp-active-perk-actions {
+    grid-template-columns: minmax(88px, auto) 44px;
+    justify-content: start;
+    margin-left: 80px;
+    padding: 6px 0 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .dp-active-perks-sheet {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .dp-active-perk-main.has-media {
+    grid-template-columns: 88px minmax(0, 1fr);
+  }
+
+  .dp-active-perk-media {
+    width: 88px;
+    height: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-active-perks-sheet,
+  .dp-active-perks-sheet * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

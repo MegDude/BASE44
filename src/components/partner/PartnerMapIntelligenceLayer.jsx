@@ -178,7 +178,7 @@ export default function PartnerMapIntelligenceLayer({
           className="absolute bottom-[5.35rem] left-5 right-5 z-20 max-w-xl sm:left-6 sm:right-auto sm:w-[min(32rem,calc(100%-3rem))]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="bg-white/76 p-4 text-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.09),inset_0_1px_0_rgba(255,255,255,0.74)] backdrop-blur-[18px]">
             <div className="flex items-start gap-3">

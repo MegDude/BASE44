@@ -4,14 +4,14 @@
     max-width: 100vw !important;
     border: 1px solid rgba(11, 31, 51, 0.08) !important;
     border-bottom: 0 !important;
-    border-radius: 10px 10px 0 0 !important;
+    border-radius: 18px 18px 0 0 !important;
     background: #ffffff !important;
-    box-shadow: 0 -10px 28px rgba(11, 31, 51, 0.08) !important;
+    box-shadow: 0 -4px 18px rgba(11, 31, 51, 0.08) !important;
     color: #0b1f33 !important;
   }
 
   html body #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer {
-    border-radius: 10px 10px 0 0 !important;
+    border-radius: 18px 18px 0 0 !important;
   }
 
   html body #root .dp-map-page :is(
@@ -33,9 +33,9 @@
     max-width: 100vw !important;
     border: 1px solid rgba(11, 31, 51, 0.08) !important;
     border-bottom: 0 !important;
-    border-radius: 10px 10px 0 0 !important;
+    border-radius: 18px 18px 0 0 !important;
     background: #ffffff !important;
-    box-shadow: 0 -10px 28px rgba(11, 31, 51, 0.08) !important;
+    box-shadow: 0 -4px 18px rgba(11, 31, 51, 0.08) !important;
     color: #0b1f33 !important;
   }
 

@@ -50190,7 +50190,6 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-p
   .dp-daa-next-rail,
   .dp-entity-text-rail,
   .dp-shore-home-rail,
-  .dp-entity-row-list,
   .dp-legends-nearby-grid,
   .dp-map-directory-list,
   .dp-resident-tab-panel-list
@@ -50227,7 +50226,6 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-p
   .dp-daa-next-rail,
   .dp-entity-text-rail,
   .dp-shore-home-rail,
-  .dp-entity-row-list,
   .dp-legends-nearby-grid,
   .dp-map-directory-list,
   .dp-resident-tab-panel-list
@@ -50248,9 +50246,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-p
   .dp-local-service-chip,
   .dp-inkind-related-card,
   .dp-partner-nearby-card,
-  .dp-entity-row,
   .dp-legends-nearby-card,
-  .dp-shore-home-card,
   .dp-directory-result-row,
   .dp-legends-result-row,
   .dp-rental-list-row,
@@ -50285,7 +50281,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-p
   aside.dp-map-drawer-shell,
   .dp-map-directory-sheet,
   .dp-legends-directory-sheet
-) :is(.dp-property-nearby-card, .dp-related-place, .dp-shore-home-card, .dp-legends-nearby-card) img {
+) :is(.dp-property-nearby-card, .dp-related-place, .dp-legends-nearby-card) img {
   display: block !important;
   width: 100% !important;
   height: 112px !important;
@@ -50375,9 +50371,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-p
     .dp-local-service-chip,
     .dp-inkind-related-card,
     .dp-partner-nearby-card,
-    .dp-entity-row,
     .dp-legends-nearby-card,
-    .dp-shore-home-card,
     .dp-directory-result-row,
     .dp-legends-result-row,
     .dp-rental-list-row,

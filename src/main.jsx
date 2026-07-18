@@ -89,6 +89,8 @@ import '@/styles/workspace-polish-sweep-final.css'
 import '@/styles/microsite-system.css'
 import '@/styles/admin-resource-system.css'
 import '@/styles/map-action-system-final.css'
+import "@/styles/active-perks-sheet.css"
+import "@/styles/canonical-surface-system.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

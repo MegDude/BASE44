@@ -97,7 +97,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           ) : (
             <>
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(191,164,106,0.08),transparent_60%),radial-gradient(ellipse_at_80%_70%,rgba(11,31,51,0.05),transparent_50%)]" />
-              <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[10px] bg-[#0B1F33] text-base font-semibold text-[#BFA46A] shadow-[0_12px_32px_rgba(11,31,51,0.18),0_4px_12px_rgba(11,31,51,0.12),0_0_0_1px_rgba(255,255,255,0.15)]">
+              <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-[10px] bg-[#0B1F33] text-base font-semibold text-[#BFA46A] shadow-[0_4px_14px_rgba(11,31,51,0.14)]">
                 <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
               </div>
             </>
@@ -107,7 +107,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="p-5 space-y-3.5">
           {/* Context chip */}
           {reason && (
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(191,164,106,0.24)] bg-[rgba(191,164,106,0.08)] px-3 py-1">
+            <div className="inline-flex items-center gap-1.5 rounded-[8px] border border-[rgba(191,164,106,0.24)] bg-[rgba(191,164,106,0.08)] px-3 py-1">
               <span className="h-1.5 w-1.5 rounded-full bg-[#BFA46A]" />
               <span className="text-[11.5px] font-semibold text-[#8B6B2F]">
                 {reason === 'nearby' && `${distance || '0'} min walk`}
@@ -166,7 +166,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {entity.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {entity.tags.slice(0, 4).map((tag, i) => (
-                <span key={i} className="rounded-full border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.04)] px-2.5 py-0.5 text-[10.5px] font-medium tracking-wide text-[#0B1F33]/54">
+                <span key={i} className="rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.04)] px-2.5 py-0.5 text-[10.5px] font-medium tracking-wide text-[#0B1F33]/54">
                   {tag}
                 </span>
               ))}

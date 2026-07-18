@@ -49,10 +49,12 @@ import {
 } from "lucide-react";
 import AboutDowntownPerksModal from "@/components/modals/AboutDowntownPerksModal";
 import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
+import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
 import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
+import { useMapPanelNavigation } from "@/hooks/useMapPanelNavigation";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { isRemovedMapEntityId, resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
@@ -4573,6 +4575,18 @@ function hasActivePerkData(place) {
     return true;
   }
   return Boolean(isInKindPartner(place) || isHappyHourEntity(place) || isParkingEntity(place));
+}
+
+function getCanonicalResidentPerkId(place) {
+  const raw = place?.raw || {};
+  return String(place?.perk_id || raw.perk_id || place?.perkId || raw.perkId || place?.id || raw.id || "");
+}
+
+function getResidentPerkExpiry(place) {
+  const raw = place?.raw || {};
+  const embeddedPerk = place?.perk || raw.perk || {};
+  const firstPerk = place?.perks?.[0] || raw.perks?.[0] || {};
+  return embeddedPerk.endsAt || embeddedPerk.expiresAt || firstPerk.endsAt || firstPerk.expiresAt || raw.valid_until || raw.expires || "";
 }
 
 function isInKindPartner(place) {
@@ -11683,9 +11697,9 @@ function TheShoreResidentialEntityDrawer({
           <section className="dp-entity-section">
             <h3>{building.cta.headline}</h3>
             <p>{building.cta.body}</p>
-            <div className="dp-entity-action-row">
-              <button type="button" className="dp-entity-action is-primary" onClick={viewAvailableHomes}>{building.cta.primary}</button>
-              <button type="button" className="dp-entity-action" onClick={openContact} aria-controls={contactFormId}>{building.cta.secondary}</button>
+            <div className="dp-entity-inline-links">
+              <button type="button" onClick={viewAvailableHomes}>{building.cta.primary}</button>
+              <button type="button" onClick={openContact} aria-controls={contactFormId}>{building.cta.secondary}</button>
             </div>
             <p className="dp-shore-disclaimer">{building.cta.footer}</p>
           </section>
@@ -13823,6 +13837,7 @@ function useUrlMapState() {
   const intent = searchParams.get("intent") || "";
   const entityType = searchParams.get("entityType") || "";
   const campaignId = searchParams.get("campaignId") || searchParams.get("campaign") || "";
+  const perkId = searchParams.get("perkId") || "";
   const partnerId = searchParams.get("partner") || "";
   const previewFor = searchParams.get("previewFor") || "";
   const returnTo = searchParams.get("returnTo") || "";
@@ -13839,12 +13854,13 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { pushPanelState, popPanelState, peekPanelState, clearPanelStack } = useMapPanelNavigation();
   const { user } = useAuth();
   const {
     places,
@@ -14059,6 +14075,24 @@ export default function MapPage() {
         ? urlState.filter.toLowerCase()
         : "map"
   ));
+  const [activePerksDrawerState, setActivePerksDrawerState] = useState(() => {
+    if (typeof window === "undefined") return "medium";
+    try {
+      const savedState = window.sessionStorage.getItem("dp-active-perks-drawer-state");
+      return ["collapsed", "medium", "expanded"].includes(savedState) ? savedState : "medium";
+    } catch {
+      return "medium";
+    }
+  });
+  const updateActivePerksDrawerState = useCallback((nextState) => {
+    const safeState = ["collapsed", "medium", "expanded"].includes(nextState) ? nextState : "medium";
+    setActivePerksDrawerState(safeState);
+    try {
+      window.sessionStorage.setItem("dp-active-perks-drawer-state", safeState);
+    } catch {
+      // URL state remains canonical when session storage is unavailable.
+    }
+  }, []);
   const [activeCampaignStep, setActiveCampaignStep] = useState(urlState.campaignId || "campaign-after-work-dining");
   const [clusterDrawer, setClusterDrawer] = useState(null);
   const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
@@ -14579,6 +14613,24 @@ export default function MapPage() {
     () => effectiveSearch ? sortSearchPlaces(displayPlaces, effectiveSearch) : sortDiscoverPlaces(displayPlaces),
     [displayPlaces, effectiveSearch],
   );
+  const activePerkItems = useMemo(() => discoverDisplayPlaces
+    .filter((place) => hasActivePerkData(place))
+    .slice(0, 40)
+    .map((place) => {
+      const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+      return {
+        id: place.id,
+        focusKey: String(place.id).replace(/[^a-z0-9_-]/gi, "-"),
+        name: place.name,
+        offerTitle: offer?.title || offer?.offer || offer?.value || "Resident perk",
+        expiresAt: getResidentPerkExpiry(place),
+        distance: placeDistanceLabel(place),
+        image: resolveEntityImage(place, "card"),
+        pin: resolveEntityPin(place),
+        perkId: getCanonicalResidentPerkId(place),
+        place,
+      };
+    }), [discoverDisplayPlaces]);
   const visiblePlaces = discoverDisplayPlaces;
   const activeCollection = useMemo(
     () => getMapCollectionById(urlState.collection),
@@ -16171,7 +16223,7 @@ export default function MapPage() {
     return () => document.removeEventListener("pointerdown", handlePointerDown, true);
   }, [consoleCollapsed, consoleHasActiveWork, urlState.mode, urlState.tab]);
 
-  function selectPlace(place) {
+  function selectPlace(place, selection = {}) {
     if (!selectedId && typeof document !== "undefined") drawerTriggerRef.current = document.activeElement;
     triggerHaptic();
     const canonicalSelectedId = resolveMapEntityAlias(place.id);
@@ -16181,6 +16233,7 @@ export default function MapPage() {
     const publicPropertyId = isPropertySelection ? resolvePropertyUrlEntityId(place.id) : "";
     const publicListingId = isListingSelection ? resolvePropertyListingUrlId(place.id) : "";
     const nextEntityId = canonicalSelectedId;
+    const nextPerkId = selection.perkId || "";
     setActiveBottomTab("map");
     setClusterDrawer(null);
     setConsoleCollapsed(true);
@@ -16203,8 +16256,8 @@ export default function MapPage() {
     });
     urlState.update(
       isRentalSelection
-        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: place.id, listingId: "" }
-        : { entityId: isPropertySelection ? publicPropertyId : place.id, listingId: publicListingId || "" },
+        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: place.id, listingId: "", perkId: "" }
+        : { tab: "map", entityId: isPropertySelection ? publicPropertyId : place.id, listingId: publicListingId || "", perkId: nextPerkId },
     );
     trackingEvents.markerClick(nextEntityId, workflowEntityType(place));
     trackingEvents.drawerOpen(nextEntityId);
@@ -16215,6 +16268,24 @@ export default function MapPage() {
       lat: place.latitude || place.coords?.[0] || AUSTIN_CENTER[0],
       lng: place.longitude || place.coords?.[1] || AUSTIN_CENTER[1],
     });
+  }
+
+  function openActivePerkItem(item, event) {
+    const list = event?.currentTarget?.closest?.(".dp-active-perks-sheet")?.querySelector?.("[data-active-perks-scroll='true']");
+    pushPanelState({
+      url: `${location.pathname}${location.search}`,
+      drawerState: activePerksDrawerState,
+      scrollTop: list?.scrollTop || 0,
+      focusId: event?.currentTarget?.id || "",
+    });
+    selectPlace(item.place, { perkId: item.perkId });
+  }
+
+  function closeActivePerksSheet() {
+    clearPanelStack();
+    setActiveBottomTab("map");
+    setConsoleCollapsed(false);
+    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "Perks")}`, { replace: true });
   }
 
   useEffect(() => {
@@ -17142,6 +17213,27 @@ export default function MapPage() {
     );
   }, [activeFilter, navigateMapJourney, urlState.mode]);
 
+  const restorePreviousMapPanel = useCallback(() => {
+    const previous = popPanelState();
+    if (!previous) {
+      goBackToMap();
+      return;
+    }
+    setSelectedId("");
+    setSelectedPlaceOverride(null);
+    setSelectedDrawerClosed(true);
+    setSelectedDrawerMinimized(false);
+    setClusterDrawer(null);
+    setMapAnswer(null);
+    updateActivePerksDrawerState(previous.drawerState);
+    navigate(previous.url, { replace: true });
+    window.setTimeout(() => {
+      const list = document.querySelector("[data-active-perks-scroll='true']");
+      if (list) list.scrollTop = previous.scrollTop || 0;
+      if (previous.focusId) document.getElementById(previous.focusId)?.focus?.({ preventScroll: true });
+    }, 0);
+  }, [goBackToMap, navigate, popPanelState, updateActivePerksDrawerState]);
+
   const closeDirectoryToMap = useCallback(() => {
     beginSearchIntentTransition("All");
     setActiveBottomTab("map");
@@ -17154,6 +17246,7 @@ export default function MapPage() {
   }, [navigateMapJourney, urlState.mode]);
 
   const closeSelectedMapDrawer = useCallback(() => {
+    clearPanelStack();
     inKindParentRef.current = null;
     setSelectedId("");
     setSelectedPlaceOverride(null);
@@ -17166,7 +17259,7 @@ export default function MapPage() {
       { mode: urlState.mode, tab: "map", filter: activeFilter || "All", collection: urlState.collection || "" },
       { clearSelection: true, replace: true }
     );
-  }, [activeFilter, navigateMapJourney, urlState.collection, urlState.mode]);
+  }, [activeFilter, clearPanelStack, navigateMapJourney, urlState.collection, urlState.mode]);
 
   const dismissVisibleNativeDrawer = useCallback(() => {
     if (urlState.mode === "resident" && nativeDrawerState !== "collapsed") {
@@ -17788,11 +17881,28 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
+        {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
+          <ActivePerksSheet
+            items={activePerkItems}
+            drawerState={activePerksDrawerState}
+            savedIds={savedIds}
+            redeemedIds={redeemedPerkIds}
+            initialScrollTop={peekPanelState()?.scrollTop || 0}
+            onDrawerStateChange={updateActivePerksDrawerState}
+            onClose={closeActivePerksSheet}
+            onOpen={openActivePerkItem}
+            onRedeem={(item) => openResidentQrModal(item.place, "use_perk", "active_perks_sheet")}
+            onSave={(item) => toggleSaved(item.place)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
             : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isRentalLayer || isLegendsDirectoryLayer
-        ) && (!selected || selectedDrawerClosed || activePartnerPanel) && (
+        ) && !(urlState.mode === "resident" && activeBottomTab === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
             initial={{ opacity: 0, y: 44 }}
             animate={{ opacity: 1, y: 0 }}
@@ -18149,7 +18259,7 @@ export default function MapPage() {
             initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "100%" }}
-            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isInKindNetworkEntity(selected)
               ? "dp-inkind-partner-drawer dp-panel-shell dp-map-drawer-shell dp-native-drawer-shell"
               : `dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-map-drawer-shell dp-native-drawer-shell ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""}`}
@@ -18172,7 +18282,7 @@ export default function MapPage() {
                     setActiveFilter("inKind");
                     urlState.update({ filter: "inKind", collection: "inkind-dining-market", entityId: parent.id, listingId: "" });
                   } else {
-                    closeSelectedMapDrawer();
+                    restorePreviousMapPanel();
                   }
                 }}
                 className="dp-map-panel-icon-button dp-drawer-control dp-destination-back dp-drawer-back"
@@ -18180,7 +18290,7 @@ export default function MapPage() {
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
-              <span id={`destination-drawer-title-${selected.id}`} className="dp-map-panel-title dp-drawer-control-title">{isInKindNetworkEntity(selected) ? "Partner details" : getEntityIdentity(selected, urlState.mode).displayTitle || selected.name}</span>
+              <span id={`destination-drawer-title-${selected.id}`} className="dp-map-panel-title dp-drawer-control-title dp-map-detail-navigation-title">{isInKindNetworkEntity(selected) ? "Partner details" : getEntityIdentity(selected, urlState.mode).displayTitle || selected.name}</span>
               <button
                 type="button"
                 onClick={closeSelectedMapDrawer}

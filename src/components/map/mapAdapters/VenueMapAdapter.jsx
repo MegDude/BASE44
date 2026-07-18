@@ -46,11 +46,11 @@ export function VenueSideCard({ venue, active, onClick }) {
         <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33]">
           <MapPin className="h-7 w-7 text-[#BFA46A]" />
         </div>
-        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md capitalize">
+        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-[8px] bg-[#0B1F33]/88 text-white text-[11px] font-semibold capitalize">
           {venue.category}
         </div>
         {venue.perk_value && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/92 text-[#0B1F33] text-[11px] font-bold backdrop-blur-md">
+          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-[8px] bg-white/95 text-[#0B1F33] text-[11px] font-bold">
             {venue.perk_value}
           </div>
         )}
@@ -62,12 +62,12 @@ export function VenueSideCard({ venue, active, onClick }) {
         {venue.address && <p className="text-[13px] text-[#6f6b65] mb-3 truncate">{venue.address}</p>}
         <div className="flex flex-wrap gap-2">
           {venue.perk_description && (
-            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium max-w-full truncate">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium max-w-full truncate">
               <Tag className="w-3 h-3 text-[#0B1F33]/58 shrink-0" /> {venue.perk_description}
             </span>
           )}
           {venue.hours && (
-            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="flex items-center gap-1.5 bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               <Clock className="w-3 h-3 text-[#0B1F33]/58" /> {venue.hours}
             </span>
           )}
@@ -95,11 +95,11 @@ export function BuildingSideCard({ building, active, onClick }) {
         <div className="flex h-16 w-16 items-center justify-center rounded-md border border-[#BFA46A]/50 bg-[#0B1F33]">
           <Building2 className="h-8 w-8 text-[#BFA46A]" />
         </div>
-        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 text-white text-[11px] font-semibold backdrop-blur-md">
+        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-[8px] bg-[#0B1F33]/88 text-white text-[11px] font-semibold">
           Building
         </div>
         {building.unit_count && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/92 text-[#0B1F33] text-[11px] font-bold backdrop-blur-md">
+          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-[8px] bg-white/95 text-[#0B1F33] text-[11px] font-bold">
             {building.unit_count} units
           </div>
         )}
@@ -113,12 +113,12 @@ export function BuildingSideCard({ building, active, onClick }) {
         )}
         <div className="flex flex-wrap gap-2">
           {building.developer && (
-            <span className="bg-white border border-[#0B1F33]/8 rounded-full px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
+            <span className="bg-white border border-[#0B1F33]/8 rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#0B1F33]/70 font-medium">
               {building.developer}
             </span>
           )}
           <span
-            className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium border ${
+            className={`px-2.5 py-1.5 rounded-[8px] text-[11px] font-medium border ${
               building.status === "active"
                 ? "bg-white/35 border-[#BFA46A]/30 text-[#0B1F33]"
                 : building.status === "pilot"

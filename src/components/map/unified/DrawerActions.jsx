@@ -77,7 +77,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="w-12 h-10 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4"
+                className="w-12 h-10 rounded-[10px] bg-primary/20 flex items-center justify-center mx-auto mb-4"
               >
                 <CheckCircle className="w-6 h-6 text-primary" />
               </motion.div>

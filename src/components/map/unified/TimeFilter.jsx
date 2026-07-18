@@ -20,7 +20,7 @@ export default function TimeFilter() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center gap-2 bg-white/95 backdrop-blur-xl border border-border rounded-full shadow-sm px-2 py-1.5"
+      className="flex items-center gap-2 bg-white border border-border rounded-[10px] shadow-none px-2 py-1.5"
     >
       <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0 ml-2" />
 
@@ -28,7 +28,7 @@ export default function TimeFilter() {
         <button
           key={opt.id}
           onClick={() => setTimeFilter(opt.id)}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+          className={`px-3 py-1.5 rounded-[8px] text-xs font-medium transition-all ${
             timeFilter === opt.id
               ? 'bg-foreground text-background'
               : 'bg-transparent text-muted-foreground hover:text-foreground'

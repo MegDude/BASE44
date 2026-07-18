@@ -48,7 +48,7 @@ export default function MapExplorer({
         )}
 
         {/* Map */}
-        <div className={`${height} overflow-hidden rounded-[28px] border border-[#0B1F33]/8 bg-white shadow-[0_24px_80px_rgba(11,31,51,0.08)]`}>
+        <div className={`${height} overflow-hidden rounded-[18px] border border-[#0B1F33]/8 bg-white shadow-[0_8px_24px_rgba(11,31,51,0.08)]`}>
           <MapShell
             items={items}
             selected={selected}
