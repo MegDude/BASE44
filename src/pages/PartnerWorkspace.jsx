@@ -29,10 +29,7 @@ import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyt
 import { queryAgent } from "@/services/agent/agentClient";
 import "@/styles/partner-analytics-decision-system.css";
 
-const WORKSPACE_MEDIA_TABS = [
-  "map", "offers", "events", "surveys", "broadcasts", "audience",
-  "media", "sources", "campaigns", "profile",
-];
+const WORKSPACE_MEDIA_TABS = ["media"];
 
 const WORKSPACE_MEDIA = [
   {
@@ -283,7 +280,9 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
   if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
   if (pathname.includes("/media")) return "media";
-  if (pathname.includes("/properties") || pathname.includes("/hotels") || pathname.includes("/venues") || pathname.includes("/brands") || pathname.includes("/civic") || pathname.includes("/real-estate") || pathname.includes("/sources") || pathname.includes("/residents") || pathname.includes("/buildings")) return "sources";
+  if (pathname.includes("/residents")) return "residents";
+  if (pathname.includes("/buildings")) return "buildings";
+  if (pathname.includes("/properties") || pathname.includes("/hotels") || pathname.includes("/venues") || pathname.includes("/brands") || pathname.includes("/civic") || pathname.includes("/real-estate") || pathname.includes("/sources")) return "sources";
   if (pathname.includes("/reports")) return "reports";
   if (pathname.includes("/analytics")) return "analytics";
   if (pathname.includes("/profile")) return "profile";
@@ -709,7 +708,6 @@ function PartnerWorkspaceContent() {
 
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
-        {WORKSPACE_MEDIA_TABS.includes(tab) ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
@@ -724,6 +722,8 @@ function PartnerWorkspaceContent() {
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
+          {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
+          {tab === "residents" && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
@@ -732,6 +732,7 @@ function PartnerWorkspaceContent() {
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
+        {WORKSPACE_MEDIA_TABS.includes(tab) ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
           </div>
         </main>
       </div>
@@ -768,11 +769,10 @@ function WorkspaceMediaRail({ tabId, organizationId }) {
     <section className="dp-workspace-media-rail" aria-labelledby="workspace-media-title">
       <header>
         <div>
-          <p className="dp-workspace-eyebrow">Media ready to use</p>
-          <h2 id="workspace-media-title">Images connected to this work</h2>
-          <p>{organization?.name || "This workspace"} can use these approved images in listings, campaigns, and reports.</p>
+          <p className="dp-workspace-eyebrow">Ready to use</p>
+          <h2 id="workspace-media-title">Approved media</h2>
+          <p>Images available to {organization?.name || "this workspace"} for listings, campaigns, and reports.</p>
         </div>
-        <Link to={`/partner-workspace/media?organizationId=${encodeURIComponent(organizationId || "")}`}>Manage media</Link>
       </header>
       <div>
         {media.map((item) => (
@@ -786,11 +786,28 @@ function WorkspaceMediaRail({ tabId, organizationId }) {
   );
 }
 
+const WORKSPACE_DETAIL_OVERRIDES = {
+  buildings: {
+    headline: "Places connected to this workspace.",
+    body: "Review the buildings, venues, listings, and map records your team manages.",
+    items: ["Buildings", "Venues", "Listings", "Map records"],
+    primaryCta: { label: "Open partner map", href: "/map?mode=partner&tab=map&filter=All" },
+    rowDescription: "Open the map to review current records and visibility.",
+  },
+  residents: {
+    headline: "People connected to this work.",
+    body: "Review aggregate resident, guest, attendee, and lead activity without exposing personal data.",
+    items: ["Residents", "Guests", "Attendees", "Leads"],
+    primaryCta: { label: "Open audience", href: "/partner-workspace/audience" },
+    rowDescription: "Review current activity and the next useful follow-up.",
+  },
+};
+
 function WorkspaceRegistryPanel({ tabId }) {
-  const copy = PARTNER_WORKSPACE_COPY[tabId] || PARTNER_WORKSPACE_COPY.overview;
-  const items = getWorkspacePanelItems(copy);
+  const copy = WORKSPACE_DETAIL_OVERRIDES[tabId] || PARTNER_WORKSPACE_COPY[tabId] || PARTNER_WORKSPACE_COPY.overview;
+  const items = copy.items || getWorkspacePanelItems(copy);
   const primaryLabel = copy.createCta || copy.primaryCta?.label || copy.actions?.[0] || copy.ctas?.[0] || "Open map view";
-  const primaryHref = copy.primaryCta?.href || (tabId === "map" ? "/map?mode=partner&tab=map&filter=All" : "/map?mode=partner&tab=map&filter=All");
+  const primaryHref = copy.primaryCta?.href || "/map?mode=partner&tab=map&filter=All";
 
   return (
     <motion.section
@@ -806,7 +823,6 @@ function WorkspaceRegistryPanel({ tabId }) {
         <p>{copy.body || copy.emptyState}</p>
         <div className="dp-workspace-panel-actions">
           <Link to={primaryHref}>{primaryLabel}</Link>
-          <Link to="/map?mode=partner&tab=map&filter=All">Open map</Link>
         </div>
       </header>
 
@@ -815,7 +831,7 @@ function WorkspaceRegistryPanel({ tabId }) {
           {items.map((item) => (
             <article key={item} className="dp-workspace-row">
               <strong>{item}</strong>
-              <small>{copy.emptyState || "Use this when people nearby are deciding what to do next."}</small>
+              <small>{copy.rowDescription || copy.emptyState || "Review this workspace item."}</small>
             </article>
           ))}
         </div>
@@ -2598,9 +2614,9 @@ function PerksManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button type="button" onClick={handleAdd} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        {!loading && perks.length > 0 && !showForm ? <button type="button" onClick={handleAdd} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add perk
-        </button>
+        </button> : null}
       </div>
 
       {showForm && (
@@ -2612,7 +2628,7 @@ function PerksManager({ user }) {
           <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-[8px] animate-spin" />
         </div>
       ) : perks.length === 0 ? (
-        <EmptyState icon={Star} headline="No offers yet" body="Create your first offer and it will appear on the Downtown Perks map." action="Create Offer" onAction={handleAdd} />
+        <EmptyState icon={Star} headline="No offers yet" body="Create one useful reason for someone nearby to choose you." action="Create offer" onAction={handleAdd} />
       ) : (
         <div className="space-y-3">
           {perks.map(p => (
@@ -2758,9 +2774,9 @@ function EventsManager({ user }) {
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP details.</p>
         </div>
-        <button type="button" onClick={() => { setEditing(null); setShowForm(true); }} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        {!loading && events.length > 0 && !showForm ? <button type="button" onClick={() => { setEditing(null); setShowForm(true); }} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add event
-        </button>
+        </button> : null}
       </div>
 
       {showForm && (
@@ -2772,7 +2788,7 @@ function EventsManager({ user }) {
           <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-[8px] animate-spin" />
         </div>
       ) : events.length === 0 ? (
-        <EmptyState icon={Calendar} headline="No events yet" body="Add your first event and it will appear on the downtown map with RSVP support." action="Add an event" onAction={() => { setEditing(null); setShowForm(true); }} />
+        <EmptyState icon={Calendar} headline="No events yet" body="Publish your next event when the date and place are ready." action="Create event" onAction={() => { setEditing(null); setShowForm(true); }} />
       ) : (
         <div className="space-y-3">
           {events.map(e => (
