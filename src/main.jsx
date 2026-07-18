@@ -110,6 +110,7 @@ import "@/styles/search-intent-console-regression-lock.css"
 import "@/styles/accessibility-pin-art-final.css"
 import "@/styles/partner-workspace-deep-polish-final.css"
 import "@/styles/interface-density-regression-lock.css"
+import "@/styles/legends-seo-snapshot-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
