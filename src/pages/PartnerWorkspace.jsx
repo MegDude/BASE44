@@ -557,8 +557,8 @@ export default function PartnerWorkspace() {
     const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
     if (!activeItem || location.pathname === activeItem.href || location.pathname.startsWith(`${activeItem.href}/`)) return;
     if (!location.pathname.startsWith("/partner-workspace")) return;
-    navigate(activeItem.href, { replace: true });
-  }, [tab, location.pathname, navigate]);
+    navigate(`${activeItem.href}${location.search}${location.hash}`, { replace: true });
+  }, [tab, location.pathname, location.search, location.hash, navigate]);
 
   function handleSignIn() {
     if (!accountAccessEnabled) return;

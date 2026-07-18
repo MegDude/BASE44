@@ -23,6 +23,8 @@ const legacyWorkspaceRoutes = [
   ["/app/workspace/analytics", "/partner-workspace/analytics"],
   ["/app/workspace/assistant", "/partner-workspace/assistant"],
   ["/app/workspace/profile", "/partner-workspace/profile"],
+  ["/workspace/assistant", "/partner-workspace/assistant"],
+  ["/partners/dashboard", "/partner-workspace/overview"],
 ];
 
 for (const [legacy, canonical] of legacyWorkspaceRoutes) {
@@ -31,6 +33,16 @@ for (const [legacy, canonical] of legacyWorkspaceRoutes) {
     `${legacy} must preserve its query string and enter ${canonical}`,
   );
 }
+
+assert.match(
+  appSource,
+  /path="\/partner-workspace\/assistant" element=\{<ProtectedRoute><PartnerWorkspace \/><\/ProtectedRoute>\}/,
+  "Ask the Map must have a canonical protected workspace route",
+);
+
+const canonicalRouteMatches = [...appSource.matchAll(/<Route path="(\/partner-workspace\/[^"]+)"/g)].map((match) => match[1]);
+const duplicateCanonicalRoutes = canonicalRouteMatches.filter((route, index) => canonicalRouteMatches.indexOf(route) !== index);
+assert.deepEqual(duplicateCanonicalRoutes, [], `duplicate canonical workspace routes: ${duplicateCanonicalRoutes.join(", ")}`);
 
 for (const file of sourceFiles(join(root, "src"))) {
   const source = readFileSync(file, "utf8");
