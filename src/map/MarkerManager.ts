@@ -6,6 +6,7 @@ export type MarkerAdapterInput = {
   title: string;
   icon?: any;
   preferAdvanced?: boolean;
+  zIndex?: number;
 };
 
 export function createDowntownMarker({
@@ -16,6 +17,7 @@ export function createDowntownMarker({
   title,
   icon,
   preferAdvanced = true,
+  zIndex = 1,
 }: MarkerAdapterInput): any {
   const canUseAdvancedMarkers = Boolean(preferAdvanced && maps.marker?.AdvancedMarkerElement && content);
   if (canUseAdvancedMarkers) {
@@ -28,6 +30,7 @@ export function createDowntownMarker({
       anchorLeft: "-50%",
       anchorTop: "-50%",
       gmpDraggable: false,
+      zIndex,
       ...(collisionBehavior ? { collisionBehavior } : {}),
     });
   }
@@ -40,5 +43,6 @@ export function createDowntownMarker({
     draggable: false,
     clickable: true,
     crossOnDrag: false,
+    zIndex,
   });
 }

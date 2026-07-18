@@ -3934,8 +3934,10 @@ function getZoomRouteMetrics(zoom) {
 }
 
 function getClusterCellSize(zoom) {
-  if (zoom >= 17.5) return 0;
-  if (zoom >= 16.5) return 0;
+  if (zoom >= 19) return 0.00006;
+  if (zoom >= 18) return 0.0001;
+  if (zoom >= 17) return 0.00016;
+  if (zoom >= 16.5) return 0.00024;
   if (zoom >= 16) return 0.0012;
   if (zoom >= 15) return 0.003;
   if (zoom >= 14) return 0.0055;
@@ -12896,7 +12898,7 @@ function GoogleMapCanvas({
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
-    const updateMarker = (marker, { position, content, title, icon }) => {
+    const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
       if (canUseAdvancedMarkers && "content" in marker) {
         marker.position = position;
         // Keep the provider-owned marker root stable. Replacing AdvancedMarker
@@ -12904,12 +12906,14 @@ function GoogleMapCanvas({
         // projected element while Google Maps is moving it.
         if (marker.content !== content) marker.content = content;
         marker.title = title;
+        marker.zIndex = zIndex;
         marker.map = map;
         return;
       }
       marker.setPosition?.(position);
       marker.setTitle?.(title);
       marker.setIcon?.(icon);
+      marker.setZIndex?.(zIndex);
       marker.setMap?.(map);
     };
 
@@ -12945,6 +12949,7 @@ function GoogleMapCanvas({
           content: element,
           title: `${item.count} places nearby`,
           icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
+          zIndex: 500,
         };
         if (existing) {
           existing.currentItem = item;
@@ -12980,7 +12985,7 @@ function GoogleMapCanvas({
         ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
-        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
+        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
@@ -13002,6 +13007,11 @@ function GoogleMapCanvas({
         content: wrapper,
         title: place.name,
         icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
+        zIndex: place.id === selectedId
+          ? 1000
+          : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
+            ? 750
+            : 1,
       };
       if (existing) {
         existing.currentPlace = place;
@@ -14786,28 +14796,12 @@ export default function MapPage() {
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
     [discoverDisplayPlaces],
   );
-  const shouldShowListingPins = activeFilter === "Legends" || activeFilter === "Listings" || /\b(legends|listing|mls|condo|for sale|for rent)\b/i.test(effectiveSearch || "");
-  const shouldShowFocusedIntentPins = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch);
   const stableClusterZoom = getStableMarkerZoom(mapZoom);
-  const shouldShowIndividualPins = shouldShowFocusedIntentPins || shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
-  const topLegendsMapPlaces = useMemo(
-    () => dedupeMapPinPlaces(mappablePlaces).filter((place) => isLegendsTopListingPlace(place)),
-    [mappablePlaces],
-  );
-  const nonTopLegendsMapPlaces = useMemo(
-    () => mappablePlaces.filter((place) => !isLegendsTopListingPlace(place)),
-    [mappablePlaces],
-  );
   const clusteredMapItems = useMemo(
     () => activeCollectionRoute?.stops?.length
-      ? activeCollectionRoute.stops.map((place) => ({ id: place.id, type: "place", place }))
-      : shouldShowIndividualPins
-      ? mappablePlaces.map((place) => ({ id: place.id, type: "place", place }))
-      : [
-        ...clusterPlaces(nonTopLegendsMapPlaces, stableClusterZoom, selectedId),
-        ...topLegendsMapPlaces.map((place) => ({ id: place.id, type: "place", place })),
-      ],
-    [activeCollectionRoute, mappablePlaces, nonTopLegendsMapPlaces, selectedId, shouldShowIndividualPins, stableClusterZoom, topLegendsMapPlaces],
+      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
+      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
+    [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom],
   );
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {
