@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      DP_CANONICAL_BASE_URL: https://base-44-h2iq.vercel.app
+      DP_CANONICAL_BASE_URL: https://base-44-downtown-perks-live.vercel.app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,15 +36,7 @@ jobs:
         run: npm run inventory:partner-content:ci
 
       - name: Validate required outputs
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s inventory/generated/partner-app-pages.csv
-          test -s inventory/generated/entity-content-register.csv
-          test -s inventory/generated/relationship-matrix.csv
-          test -s inventory/generated/content-inventory.json
-          test -s inventory/generated/inventory-metadata.json
-          node -e 'const fs=require("fs"); const x=JSON.parse(fs.readFileSync("inventory/generated/inventory-metadata.json","utf8")); if(!x.routeCount) throw new Error("No routes generated"); if(!x.entityCount) throw new Error("No source entities generated"); console.log(x);'
+        run: npm run test:partner-content-inventory
 
       - name: Upload generated inventory
         uses: actions/upload-artifact@v4

@@ -14,14 +14,28 @@ The generator reads:
 - Canonical source registries under `src/content`, `src/data`, `src/config`, `src/pages`, and `src/components`
 - Canonical Supabase tables when the required environment variables are available
 
-It writes:
+It writes the complete normalized register set:
 
 ```text
 inventory/generated/partner-app-pages.csv
 inventory/generated/entity-content-register.csv
 inventory/generated/relationship-matrix.csv
+inventory/generated/copy-link-register.csv
+inventory/generated/seo-ai-search-index.csv
+inventory/generated/routes-and-collections.csv
+inventory/generated/perks-and-events.csv
+inventory/generated/campaign-register.csv
+inventory/generated/workspace-register.csv
+inventory/generated/map-layer-register.csv
+inventory/generated/media-register.csv
+inventory/generated/redirect-register.csv
 inventory/generated/content-inventory.json
 inventory/generated/inventory-metadata.json
+inventory/generated/inventory-summary.md
+inventory/generated/inventory-errors.json
+inventory/generated/orphan-report.csv
+inventory/generated/duplicate-report.csv
+inventory/generated/broken-links.csv
 ```
 
 ## Environment
@@ -35,12 +49,12 @@ VITE_SUPABASE_URL or SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
 ```
 
-The anon key is supported as a fallback, but Row Level Security may prevent a complete administrative inventory. CI should use a protected service-role secret only in trusted workflows. Never expose the service-role value to Vite or browser code.
+Database joins require a protected service-role key and are skipped when it is unavailable. The generator never falls back to a browser key for an administrative export. CI may use a protected service-role secret only in a trusted workflow. Never expose the service-role value to Vite, browser code, logs, or generated files.
 
 Optional:
 
 ```text
-DP_CANONICAL_BASE_URL=https://base-44-h2iq.vercel.app
+DP_CANONICAL_BASE_URL=https://base-44-downtown-perks-live.vercel.app
 ```
 
 ## Quality gates
@@ -60,14 +74,22 @@ The generated inventory is designed to enforce these rules:
 
 The XLSX workbook should be built from these generated CSV/JSON files. Do not manually re-key routes or entities into the spreadsheet.
 
-Recommended sheets:
+Required sheets:
 
 - Dashboard
 - Partner App Pages
 - Entity Content Register
+- Workspace Register
+- Map Layer Register
+- Perks & Events
+- Campaign Register
+- Routes & Collections
 - Relationship Matrix
 - Copy & Link Register
 - SEO AI Search Index
-- Codex Audit Instructions
+- Media Register
+- Redirect Register
+- Quality Gates
+- Codex Instructions
 
-The generated JSON should also back the future admin content index so the workbook, CI checks, and admin UI reconcile to the same records.
+The generated JSON backs `/admin/content-index`, so the workbook, CI checks, and admin UI reconcile to the same records.
