@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const [destinationSource, workspaceSource, styles, main] = await Promise.all([
+const [destinationSource, workspaceSource, analyticsSource, styles, main] = await Promise.all([
   readFile(new URL("../src/components/partner/workspace/WorkspaceDestinationRoot.jsx", import.meta.url), "utf8"),
   readFile(new URL("../src/pages/PartnerWorkspace.jsx", import.meta.url), "utf8"),
+  readFile(new URL("../src/components/analytics/PartnerAnalyticsExperience.jsx", import.meta.url), "utf8"),
   readFile(new URL("../src/styles/partner-workspace-deep-polish-final.css", import.meta.url), "utf8"),
   readFile(new URL("../src/main.jsx", import.meta.url), "utf8"),
 ]);
@@ -19,6 +20,15 @@ assert.match(workspaceSource, /return "buildings"/, "Buildings route must have a
 assert.match(workspaceSource, /tab === "residents"/, "People detail must render");
 assert.match(workspaceSource, /tab === "buildings"/, "Buildings detail must render");
 assert.doesNotMatch(workspaceSource, /<Link to="\/map\?mode=partner&tab=map&filter=All">Open map<\/Link>/, "registry headers must not repeat the map action");
+assert.match(workspaceSource, /POTENTIAL_REACH_SOURCES/, "potential reach must name its source records");
+assert.match(workspaceSource, /DANA.*The Shore.*Legends/s, "potential reach must use DANA, The Shore, and Legends");
+assert.match(workspaceSource, /Verified audience totals are not connected yet/, "missing audience totals must be disclosed");
+assert.doesNotMatch(workspaceSource, /Residents reached today/, "unverified reach must never be presented as measured");
+assert.doesNotMatch(workspaceSource, /Residents who saved a dining perk were 38% more likely/, "unsupported behavioral claims must not render");
+assert.doesNotMatch(workspaceSource, /\["426", "Map views"/, "fixture map activity must not render as current workspace data");
+assert.doesNotMatch(analyticsSource, /buildFixture|function seed\(/, "analytics must not generate fixture performance");
+assert.match(analyticsSource, /No generated performance data/, "analytics must disclose its source-safe state");
+assert.match(analyticsSource, /DANA, The Shore, and Legends/, "analytics must identify potential reach sources");
 
 assert.match(styles, /white-space:\s*normal\s*!important/, "mobile row descriptions must wrap");
 assert.match(styles, /overflow-wrap:\s*anywhere\s*!important/, "long workspace copy must remain readable");

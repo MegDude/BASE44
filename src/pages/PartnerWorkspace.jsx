@@ -1244,7 +1244,7 @@ function WorkspaceAnalytics() {
   /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
-    ["1,284", "Residents reached", "People who can enter from buildings, QR links, campaigns, and the map."],
+    ["—", "Potential audience", "No verified audience total is connected."],
     ["81,904", "Views", "Views across the map, campaigns, events, and partner pages."],
     ["31,511", "Actions taken", "Searches, saves, directions, scans, RSVPs, and offer opens."],
   ];
@@ -1484,6 +1484,25 @@ function WorkspaceAnalyticsSnapshotGraphs({ report }) {
   );
 }
 
+const POTENTIAL_REACH_SOURCES = [
+  { id: "dana", label: "DANA", verifiedAudienceCount: null, note: "Member total not connected" },
+  { id: "the-shore", label: "The Shore", verifiedAudienceCount: null, note: "Resident total not connected" },
+  { id: "legends", label: "Legends", verifiedAudienceCount: null, note: "Contact total not connected" },
+];
+
+function getPotentialReachSummary(sources = POTENTIAL_REACH_SOURCES) {
+  const verifiedSources = sources.filter((source) => Number.isFinite(source.verifiedAudienceCount));
+  return {
+    total: verifiedSources.length === sources.length
+      ? verifiedSources.reduce((sum, source) => sum + Number(source.verifiedAudienceCount), 0)
+      : null,
+    labels: sources.map((source) => source.label).join(" · "),
+    note: verifiedSources.length === sources.length
+      ? "Combined verified audience records"
+      : "Verified audience totals are not connected yet",
+  };
+}
+
 function NativeMobileWorkspaceDashboard({
   organization,
   organizationId,
@@ -1503,36 +1522,28 @@ function NativeMobileWorkspaceDashboard({
   heroMedia,
 }) {
   const workspaceHref = (path) => `${path}?organizationId=${encodeURIComponent(organizationId)}`;
-  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : isLarryAndGuy ? "128" : "142";
-  const heroLabel = isLegends ? "Search visits this month" : "Residents reached today";
+  const potentialReach = getPotentialReachSummary();
+  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : potentialReach.total === null ? "—" : formatWorkspaceNumber(potentialReach.total);
+  const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
+  const heroSource = isLegends
+    ? "Source: SEO Snapshot"
+    : `${potentialReach.labels} · ${potentialReach.note}`;
   const kpis = isLegends
     ? [
-        [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "+12%"],
-        [formatWorkspaceNumber(report.summary.organicClicks), "Search visits", "+8%"],
-        [formatWorkspaceNumber(report.summary.nonBrandedTop10KeywordCount), "Top results", "+3%"],
+        [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "SEO Snapshot"],
+        [formatWorkspaceNumber(report.summary.organicClicks), "Search visits", "SEO Snapshot"],
+        [formatWorkspaceNumber(report.summary.nonBrandedTop10KeywordCount), "Top results", "SEO Snapshot"],
       ]
     : [
-        ["426", "Map views", "+12%"],
-        ["67", "QR scans", "+8%"],
-        ["19", "Redemptions", "+3%"],
+        [formatWorkspaceNumber(ownedEntities.length), "Connected places", "Current workspace"],
+        [formatWorkspaceNumber(activePerks.length), "Live offers", "Current workspace"],
+        [formatWorkspaceNumber(upcomingEvents.length), "Upcoming events", "Current workspace"],
       ];
-  const activity = isLarryAndGuy
-    ? [
-        [MapPin, "ATX Cocina", "Listing opened from the dining route", "5 min ago"],
-        [Check, "Dining passport", "Campaign media approved", "17 min ago"],
-        [Star, "Restaurant François", "Perk saved by a resident", "Today"],
-      ]
-    : isLegends
-      ? [
-          [MapPin, "The Shore", "Property comparison opened", "12 min ago"],
-          [LayoutDashboard, "Search report", "195 visits recorded", "Today"],
-          [Navigation, "Relocation guide", "Recommended as the next content action", "Today"],
-        ]
-      : [
-          [MapPin, organization?.name || "Workspace", "Map listing viewed", "12 min ago"],
-          [Star, "Resident offer", "Saved from the map", "Today"],
-          [LayoutDashboard, "Monthly report", "Ready to review", "Today"],
-        ];
+  const activity = [
+    ...ownedEntities.slice(0, 3).map((entity) => [MapPin, entity.display_name, `${entity.entity_type} record connected to this workspace`, "Connected"]),
+    ...activePerks.slice(0, Math.max(0, 3 - ownedEntities.length)).map((perk) => [Star, perk.title, "Active offer", "Live"]),
+    ...upcomingEvents.slice(0, Math.max(0, 3 - ownedEntities.length - activePerks.length)).map((event) => [Calendar, event.title, "Upcoming event", "Scheduled"]),
+  ];
   const quickActions = [
     [Plus, "Campaign", "/partner-workspace/campaigns"],
     [MapPin, "Map", "/partner-workspace/map"],
@@ -1545,22 +1556,24 @@ function NativeMobileWorkspaceDashboard({
     ? {
         image: "/images/workspace-media/dining-passport.avif",
         alt: "Friends sharing dinner during a downtown dining passport outing.",
-        title: "Larry & Guy dining passport",
-        status: "Ready to launch",
-        metrics: [["Views", "426"], ["QR", "67"], ["Redeemed", "19"]],
+        title: larryAndGuyWorkspaceCampaign.title,
+        status: larryAndGuyWorkspaceCampaign.status,
+        metrics: [["Places", ownedEntities.length], ["Offers", activePerks.length], ["Events", upcomingEvents.length]],
       }
     : {
         image: "/images/workspace-media/listing-preview.avif",
         alt: "Downtown Austin residential listing prepared for a map preview.",
         title: isLegends ? "Downtown property comparison" : `${organization?.name || "Partner"} map campaign`,
         status: isLegends ? "Recommended" : "Live",
-        metrics: [["Views", isLegends ? "4,349" : "426"], ["Visits", isLegends ? "195" : "67"], ["Saved", isLegends ? "34" : "19"]],
+        metrics: isLegends
+          ? [["Search views", report.summary.organicImpressions], ["Search visits", report.summary.organicClicks], ["Listings", ownedEntities.filter((entity) => entity.entity_type === "listing").length]]
+          : [["Places", ownedEntities.length], ["Offers", activePerks.length], ["Events", upcomingEvents.length]],
       };
   const insight = isLarryAndGuy
-    ? "Residents who saved a dining perk were 38% more likely to open another restaurant later that evening."
+    ? `${ownedEntities.length} restaurant records are connected. Publish the shared reward before describing campaign performance.`
     : isLegends
       ? "Non-branded searches are already finding Legends listings. A side-by-side property guide is the clearest next step."
-      : "The strongest map activity is coming from people who open a place and then ask for directions within the same visit.";
+      : "No verified user activity is connected yet. Use DANA, The Shore, and Legends as potential distribution sources, not measured reach.";
 
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
@@ -1593,17 +1606,18 @@ function NativeMobileWorkspaceDashboard({
         </figure>
         <p className="dp-native-mobile-kicker">Good morning</p>
         <h1>{organization?.name || "Partner workspace"}</h1>
-        <div className="dp-native-mobile-meta"><span>Updated 2 min ago</span><span>Austin · Downtown</span></div>
+        <div className="dp-native-mobile-meta"><span>Current workspace</span><span>Austin · Downtown</span></div>
         <strong className="dp-native-mobile-hero-value">{heroMetric}</strong>
         <span className="dp-native-mobile-hero-label">{heroLabel}</span>
+        <small className="dp-native-mobile-hero-source">{heroSource}</small>
         <Link className="dp-native-mobile-primary" to={workspaceHref("/partner-workspace/campaigns")}>Create campaign</Link>
         <Link className="dp-native-mobile-secondary" to={workspaceHref("/partner-workspace/analytics")}>View analytics</Link>
       </section>
 
       <section className="dp-native-mobile-section" aria-labelledby="mobile-results-title">
-        <header><h2 id="mobile-results-title">Today’s results</h2><span>Swipe to review</span></header>
+        <header><h2 id="mobile-results-title">Workspace status</h2><span>Current records</span></header>
         <div className="dp-native-mobile-kpi-rail">
-          {kpis.map(([value, label, change]) => <article key={label}><strong>{value}</strong><span>{label}</span><em>{change}</em></article>)}
+          {kpis.map(([value, label, source]) => <article key={label}><strong>{value}</strong><span>{label}</span><em>{source}</em></article>)}
         </div>
       </section>
 
@@ -1614,18 +1628,15 @@ function NativeMobileWorkspaceDashboard({
         <Link to={workspaceHref(nextAction.href)}>{nextAction.label}<ArrowRight aria-hidden="true" /></Link>
       </section>
 
-      <section className="dp-native-mobile-section" aria-labelledby="mobile-activity-title">
-        <header><h2 id="mobile-activity-title">What happened</h2></header>
+      {activity.length ? <section className="dp-native-mobile-section" aria-labelledby="mobile-activity-title">
+        <header><h2 id="mobile-activity-title">Connected now</h2></header>
         <div className="dp-native-mobile-activity">
-          {activity.map(([Icon, title, description, time]) => <article key={`${title}-${description}`}><Icon aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{time}</time></div></article>)}
+          {activity.map(([Icon, title, description, status]) => <article key={`${title}-${description}`}><Icon aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{status}</time></div></article>)}
         </div>
-      </section>
+      </section> : null}
 
       <section className="dp-native-mobile-analytics" aria-labelledby="mobile-analytics-title">
-        <div><p>Visitors</p><strong id="mobile-analytics-title">{isLegends ? "2,487" : "426"}</strong><span>Last 30 days</span></div>
-        <div className="dp-native-mobile-sparkline" role="img" aria-label="Visitor activity increased over the last 30 days">
-          {[34, 48, 42, 67, 58, 76, 72, 88, 81, 100].map((height, index) => <i key={index} style={{ "--dp-bar-height": `${height}%` }} />)}
-        </div>
+        <div><p>{isLegends ? "Search visits" : "Verified users"}</p><strong id="mobile-analytics-title">{isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : "—"}</strong><span>{isLegends ? "Source: SEO Snapshot" : "No audience count connected"}</span></div>
       </section>
 
       <section className="dp-native-mobile-section" aria-labelledby="mobile-actions-title">
@@ -1692,6 +1703,8 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
+  const activePerks = perks.filter((perk) => perk.status === "active");
+  const upcomingEvents = events.filter((event) => event.status === "upcoming" || event.status === "live");
   const metrics = isLegends
     ? [
         ["Branded avg position", formatWorkspaceNumber(legendsSeoReport.summary.brandedAveragePosition)],
@@ -1702,14 +1715,11 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
-        ["Map views", "3,240"],
-        ["Saves", "486"],
-        ["Directions", "318"],
-        ["Verified actions", "142"],
-        ["Active campaigns", "1"],
+        ["Connected places", formatWorkspaceNumber(ownedEntities.length)],
+        ["Live offers", formatWorkspaceNumber(activePerks.length)],
+        ["Upcoming events", formatWorkspaceNumber(upcomingEvents.length)],
+        ["Potential audience", "Not connected"],
       ];
-  const activePerks = perks.filter((perk) => perk.status === "active");
-  const upcomingEvents = events.filter((event) => event.status === "upcoming" || event.status === "live");
   const nextAction = isLarryAndGuy
     ? {
         eyebrow: "Recommended next step",
