@@ -4,32 +4,32 @@
  */
 
 :root {
-  --dp-surface-canvas: #f7f8fb;
+  --dp-surface-canvas: #ffffff;
   --dp-surface-primary: #ffffff;
   --dp-surface-raised: #ffffff;
-  --dp-surface-muted: #f4f6f8;
-  --dp-surface-selected: #f8f3e8;
-  --dp-surface-border: rgba(11, 31, 51, 0.09);
-  --dp-surface-border-strong: rgba(11, 31, 51, 0.16);
+  --dp-surface-muted: #ffffff;
+  --dp-surface-selected: #ffffff;
+  --dp-surface-border: transparent;
+  --dp-surface-border-strong: rgba(11, 31, 51, 0.18);
   --dp-surface-text: #0b1f33;
   --dp-surface-text-secondary: rgba(11, 31, 51, 0.68);
   --dp-surface-text-muted: rgba(11, 31, 51, 0.52);
   --dp-surface-gold: #c8a96a;
   --dp-surface-emerald: #2f7357;
-  --dp-radius-control: 10px;
-  --dp-radius-card: 16px;
-  --dp-radius-panel: 18px;
-  --dp-radius-media: 16px;
-  --dp-shadow-panel: 0 -1px 0 rgba(11, 31, 51, 0.05), 0 18px 48px rgba(11, 31, 51, 0.1);
-  --dp-shadow-card: 0 1px 2px rgba(11, 31, 51, 0.035);
+  --dp-radius-control: 0px;
+  --dp-radius-card: 0px;
+  --dp-radius-panel: 0px;
+  --dp-radius-media: 0px;
+  --dp-shadow-panel: none;
+  --dp-shadow-card: none;
   --dp-motion-fast: 180ms;
   --dp-motion-standard: 240ms;
   --dp-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dp-map-system-surface: rgba(255, 255, 255, 0.97);
-  --dp-map-system-border: rgba(11, 31, 51, 0.09);
-  --dp-map-system-shadow: 0 -10px 30px rgba(11, 31, 51, 0.1);
-  --dp-map-system-blur: blur(14px) saturate(120%);
-  --dp-map-system-radius: 16px;
+  --dp-map-system-surface: #ffffff;
+  --dp-map-system-border: transparent;
+  --dp-map-system-shadow: none;
+  --dp-map-system-blur: none;
+  --dp-map-system-radius: 0px;
   --dp-map-system-nav-height: calc(64px + env(safe-area-inset-bottom, 0px));
   --dp-map-system-panel-overlap: 10px;
 }
@@ -745,21 +745,21 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
-  box-shadow: inset 0 2px 0 transparent !important;
+  box-shadow: none !important;
   color: rgba(11, 31, 51, 0.56) !important;
   -webkit-text-fill-color: currentColor !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > button:is([aria-pressed="true"], [aria-selected="true"], [data-active="true"]) {
   background: transparent !important;
-  box-shadow: inset 0 2px 0 var(--dp-surface-gold) !important;
-  color: var(--dp-surface-text) !important;
+  box-shadow: none !important;
+  color: var(--dp-surface-gold) !important;
   -webkit-text-fill-color: currentColor !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > button svg {
-  width: 18px !important;
-  height: 18px !important;
+  width: 23px !important;
+  height: 23px !important;
   color: currentColor !important;
 }
 
@@ -1037,4 +1037,93 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partn
   border-radius: 0 !important;
   background: #fff !important;
   box-shadow: none !important;
+}
+
+/* Release authority: bright, continuous product planes with icon-only mobile navigation. */
+html body,
+html body #root,
+html body #root :is(.dp-partner-workspace-page, .dp-resident-home) {
+  background: #ffffff !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="tile"],
+  [class*="metric"],
+  [class*="summary"],
+  [class*="surface"]
+) {
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(h1, .dp-operating-header h1) {
+  font-size: clamp(26px, 7vw, 34px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(h2, h3) {
+  font-size: clamp(18px, 5vw, 24px) !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.022em !important;
+}
+
+html body #root .dp-native-tab-label {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 767px) {
+  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs),
+  html body #root .dp-map-page .dp-map-bottom-nav-shell {
+    min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button),
+  html body #root .dp-map-page nav.dp-map-bottom-nav > button {
+    display: grid !important;
+    min-width: 44px !important;
+    min-height: 54px !important;
+    place-items: center !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: rgba(11, 31, 51, 0.5) !important;
+  }
+
+  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button) svg,
+  html body #root .dp-map-page nav.dp-map-bottom-nav > button svg {
+    width: 23px !important;
+    height: 23px !important;
+    stroke-width: 1.8 !important;
+  }
+
+  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button).is-active,
+  html body #root .dp-map-page nav.dp-map-bottom-nav > button:is([aria-pressed="true"], [aria-selected="true"]) {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--dp-surface-gold) !important;
+  }
 }

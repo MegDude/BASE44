@@ -735,7 +735,7 @@ function PartnerWorkspaceContent() {
           </div>
         </main>
       </div>
-      <PartnerMobileTabBar activeTab={tab === "launch" ? "overview" : tab} />
+      <PartnerMobileTabBar activeTab={tab === "launch" ? "overview" : tab} organizationId={activeOrganizationId} />
     </div>
   );
 }
