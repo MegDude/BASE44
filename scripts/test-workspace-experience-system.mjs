@@ -36,7 +36,8 @@ async function open(route) {
   await sheet.waitFor({ state: "visible" });
   if (await sheet.locator(".dp-experience-builder > nav li").count() !== 10) throw new Error("Experience builder does not expose the canonical ten steps");
   if (await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)) throw new Error("Experience builder introduces horizontal overflow");
-  await page.locator(".dp-workspace-sheet-header button").click();
+  if (await page.getByRole("button", { name: /Go back from/ }).count() < 1) throw new Error("Experience sheet does not expose Back");
+  await page.getByRole("button", { name: /Close New listing launch/ }).click();
   await page.close();
 }
 

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ChevronLeft, ChevronRight, MoveDown, MoveUp } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, MoveDown, MoveUp, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MapSurveyPrompt } from "@/components/map/MapSurveyModule";
 import { useWorkspaceSheet } from "@/components/partner/workspace/WorkspaceSheetSystem";
@@ -36,6 +36,7 @@ function BuilderChoiceList({ legend, options, selected, onToggle, single = false
 }
 
 function ExperienceBuilder({ template, organizationId }) {
+  const { closeSheet } = useWorkspaceSheet();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState(() => createExperienceDraft(template, organizationId));
   const [publishState, setPublishState] = useState("idle");
@@ -79,7 +80,7 @@ function ExperienceBuilder({ template, organizationId }) {
   if (step === 8) content = template.type === "survey" ? <MapSurveyPrompt preview survey={{ id: template.id, eyebrow: "Optional question", title: draft.title, question: { id: "preview-question", label: "What would make this experience more useful?", options: ["Better nearby choices", "Clearer directions", "A resident perk", "More event details"] } }} /> : <section className="dp-experience-preview"><p>Map preview</p><h3>{draft.title}</h3><span>{template.description}</span><dl><div><dt>Audience</dt><dd>{draft.audience.join(", ") || "Not selected"}</dd></div><div><dt>Placements</dt><dd>{draft.placements.length}</dd></div><div><dt>Primary result</dt><dd>{draft.primaryResult.replaceAll("_", " ")}</dd></div></dl></section>;
   if (step === 9) content = <section className="dp-experience-publish"><p>Ready to publish</p><h3>{draft.title}</h3><ul><li><span>Goal</span><strong>{draft.goal.replaceAll("_", " ")}</strong></li><li><span>Content</span><strong>{draft.content.length} modules</strong></li><li><span>Placements</span><strong>{draft.placements.length}</strong></li><li><span>Primary result</span><strong>{draft.primaryResult.replaceAll("_", " ")}</strong></li></ul><button type="button" onClick={publish} disabled={publishState === "publishing"}>{publishState === "publishing" ? "Publishing…" : "Publish experience"}</button>{publishMessage ? <p role="status" className={`dp-experience-publish__status is-${publishState}`}>{publishMessage}</p> : null}</section>;
 
-  return <div className="dp-experience-builder"><nav aria-label="Experience builder progress"><ol>{EXPERIENCE_BUILDER_STEPS.map((label, index) => <li key={label} aria-current={index === step ? "step" : undefined} data-complete={index < step ? "true" : "false"}><button type="button" onClick={() => setStep(index)}><span>{index < step ? <Check aria-hidden="true" /> : index + 1}</span><strong>{label}</strong></button></li>)}</ol></nav><div className="dp-experience-builder__stage"><header><p>Step {step + 1} of {EXPERIENCE_BUILDER_STEPS.length}</p><h2>{EXPERIENCE_BUILDER_STEPS[step]}</h2></header>{content}<footer><button type="button" onClick={() => setStep((current) => Math.max(0, current - 1))} disabled={step === 0}><ChevronLeft aria-hidden="true" />Back</button>{step < EXPERIENCE_BUILDER_STEPS.length - 1 ? <button type="button" onClick={() => setStep((current) => Math.min(EXPERIENCE_BUILDER_STEPS.length - 1, current + 1))}>Next<ChevronRight aria-hidden="true" /></button> : null}</footer></div></div>;
+  return <div className="dp-experience-builder"><nav aria-label="Experience builder progress"><ol>{EXPERIENCE_BUILDER_STEPS.map((label, index) => <li key={label} aria-current={index === step ? "step" : undefined} data-complete={index < step ? "true" : "false"}><button type="button" onClick={() => setStep(index)}><span>{index < step ? <Check aria-hidden="true" /> : index + 1}</span><strong>{label}</strong></button></li>)}</ol></nav><div className="dp-experience-builder__stage"><header><p>Step {step + 1} of {EXPERIENCE_BUILDER_STEPS.length}</p><h2>{EXPERIENCE_BUILDER_STEPS[step]}</h2></header>{content}<footer><button type="button" onClick={() => step > 0 ? setStep((current) => current - 1) : closeSheet()}><ChevronLeft aria-hidden="true" />Back</button><button type="button" onClick={closeSheet} aria-label="Close experience builder"><X aria-hidden="true" />Close</button>{step < EXPERIENCE_BUILDER_STEPS.length - 1 ? <button type="button" onClick={() => setStep((current) => Math.min(EXPERIENCE_BUILDER_STEPS.length - 1, current + 1))}>Next<ChevronRight aria-hidden="true" /></button> : null}</footer></div></div>;
 }
 
 export function WorkspaceExperienceSystem({ organizationId, view = "campaigns" }) {

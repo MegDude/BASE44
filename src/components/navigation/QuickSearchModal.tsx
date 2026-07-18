@@ -4,6 +4,7 @@ import {
   Activity,
   Building2,
   CalendarDays,
+  ChevronLeft,
   ChevronRight,
   Coffee,
   Music,
@@ -398,9 +399,14 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             <h2 id="dp-quick-search-title">Search downtown</h2>
             <p className="dp-quick-search-support">Find places, events, perks, buildings, coffee, music, rooftops, and more.</p>
           </div>
-          <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
-            <X size={18} />
-          </button>
+          <div className="dp-quick-search-actions" aria-label="Search controls">
+            <button type="button" className="dp-quick-search-back" onClick={onClose} aria-label="Go back from search">
+              <ChevronLeft size={18} aria-hidden="true" /><span>Back</span>
+            </button>
+            <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
+              <X size={18} aria-hidden="true" /><span>Close</span>
+            </button>
+          </div>
         </div>
 
         <div className="dp-quick-search-input-wrap">

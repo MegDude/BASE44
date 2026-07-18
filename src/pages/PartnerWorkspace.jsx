@@ -661,6 +661,24 @@ function PartnerWorkspaceContent() {
     navigate("/partner-workspace/profile?section=account");
   }
 
+  function handleWorkspaceBack() {
+    if (window.history.state?.idx > 0) {
+      navigate(-1);
+      return;
+    }
+
+    if (tab !== "overview") {
+      navigate(`/partner-workspace/overview${location.search}`);
+      return;
+    }
+
+    navigate("/map?mode=partner&tab=map&filter=All");
+  }
+
+  function handleWorkspaceClose() {
+    navigate("/map?mode=partner&tab=map&filter=All");
+  }
+
   return (
     <div data-workspace-view={tab} className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
       <header className="dp-partner-workspace-header">
@@ -668,6 +686,16 @@ function PartnerWorkspaceContent() {
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
             <Menu aria-hidden="true" />
           </button>
+          <nav className="dp-workspace-history-controls" aria-label="Page controls">
+            <button type="button" onClick={handleWorkspaceBack} aria-label="Go back">
+              <ChevronLeft aria-hidden="true" />
+              <span>Back</span>
+            </button>
+            <button type="button" onClick={handleWorkspaceClose} aria-label="Close workspace">
+              <X aria-hidden="true" />
+              <span>Close</span>
+            </button>
+          </nav>
           <Link className="dp-partner-workspace-brand" to="/partner-workspace/overview" aria-label="Downtown Perks workspace overview">
             <strong>Downtown Perks</strong>
             <span>Workspace</span>
@@ -689,7 +717,10 @@ function PartnerWorkspaceContent() {
         <aside className="dp-workspace-sidebar" data-open={mobileNavOpen ? "true" : "false"}>
           <div className="dp-workspace-sidebar-head">
             <span>Workspace</span>
-            <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /></button>
+            <div className="dp-workspace-surface-controls">
+              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Go back from workspace navigation"><ChevronLeft aria-hidden="true" /><span>Back</span></button>
+              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /><span>Close</span></button>
+            </div>
           </div>
           <nav aria-label="Workspace navigation">
             {WORKSPACE_NAV_GROUPS.map((group) => (
@@ -1582,7 +1613,7 @@ function NativeMobileWorkspaceDashboard({
         </button>
         {workspaceMenuOpen ? (
           <div className="dp-native-mobile-workspace-menu" role="dialog" aria-label="Switch workspace">
-            <header><strong>Switch workspace</strong><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /></button></header>
+            <header><strong>Switch workspace</strong><div className="dp-workspace-surface-controls"><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Go back from Switch workspace"><ChevronLeft aria-hidden="true" /><span>Back</span></button><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /><span>Close</span></button></div></header>
             <label><Search aria-hidden="true" /><input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" /></label>
             <div>{filteredOrganizations.map((item) => <button key={item.id} type="button" aria-current={item.id === organizationId ? "true" : undefined} onClick={() => selectWorkspace(item.id)}><span><strong>{item.name}</strong><small>{friendlyRoleLabel(item.role)}</small></span>{item.id === organizationId ? <Check aria-hidden="true" /> : null}</button>)}</div>
           </div>
@@ -1822,7 +1853,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
             <div className="dp-workspace-switcher-menu" role="dialog" aria-label="Switch workspace">
               <div className="dp-workspace-menu-head">
                 <strong>Choose workspace</strong>
-                <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /></button>
+                <div className="dp-workspace-surface-controls"><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Go back from Switch workspace"><ChevronLeft aria-hidden="true" /><span>Back</span></button><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /><span>Close</span></button></div>
               </div>
               <label>
                 <Search aria-hidden="true" />
@@ -2238,9 +2269,10 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
             aria-labelledby="workspace-upgrade-title"
             onClick={(event) => event.stopPropagation()}
           >
-            <button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}>
-              <X aria-hidden="true" />
-            </button>
+            <div className="dp-workspace-surface-controls dp-workspace-upgrade-controls">
+              <button type="button" aria-label="Go back from upgrade prompt" onClick={() => setUpgradePrompt(null)}><ChevronLeft aria-hidden="true" /><span>Back</span></button>
+              <button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}><X aria-hidden="true" /><span>Close</span></button>
+            </div>
             <p className="dp-workspace-eyebrow">Add-on</p>
             <h2 id="workspace-upgrade-title">Add {upgradePrompt.label}</h2>
             <p>
@@ -2769,7 +2801,7 @@ function PerkForm({ user, perk, onClose, onSave }) {
           <PublisherSelect label="Publish" value={form.status} onChange={value => setForm(f => ({ ...f, status: value }))} options={[{ value: "active", label: "Publish now" }, { value: "paused", label: "Save as draft" }]} />
         </> : null}
         <div className="dp-native-publisher__actions pt-2">
-          {step > 1 ? <button type="button" onClick={() => setStep((current) => current - 1)} className="dp-native-publisher__back"><ChevronLeft aria-hidden="true" /> Back</button> : <button type="button" onClick={onClose} className="dp-native-publisher__back">Cancel</button>}
+          {step > 1 ? <button type="button" onClick={() => setStep((current) => current - 1)} className="dp-native-publisher__back"><ChevronLeft aria-hidden="true" /> Back</button> : <button type="button" onClick={onClose} className="dp-native-publisher__back"><ChevronLeft aria-hidden="true" /> Back</button>}
           <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             {saving ? "Publishing…" : step < 4 ? "Continue" : perk ? "Save changes" : "Publish perk"}
           </button>
@@ -2930,8 +2962,8 @@ function EventForm({ user, event, onClose, onSave }) {
           <button type="submit" disabled={saving} className="inline-flex items-center justify-center px-5 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
             {saving ? "Saving…" : event ? "Save changes" : "Create event"}
           </button>
-          <button type="button" onClick={onClose} className="inline-flex items-center justify-center px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
-            Cancel
+          <button type="button" onClick={onClose} className="inline-flex items-center justify-center gap-1 px-4 h-9 rounded-[7px] border border-[rgba(11,31,51,0.10)] bg-white text-[12.5px] font-semibold text-[#0B1F33]/62 transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.16)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.06)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
           </button>
         </div>
       </form>

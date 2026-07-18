@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 
 const WorkspaceSheetContext = createContext(null);
 
@@ -65,6 +65,10 @@ export function WorkspaceSheetHost() {
 
   if (!sheet || typeof document === "undefined") return null;
   const titleId = "dp-workspace-sheet-title";
+  const goBack = () => {
+    if (typeof sheet.onBack === "function") sheet.onBack();
+    else context.closeSheet();
+  };
   return createPortal(
     <div className="dp-workspace-sheet-layer" data-state={sheet.state || "summary"}>
       <button className="dp-workspace-sheet-backdrop" type="button" aria-label="Close sheet" onClick={context.closeSheet} />
@@ -75,7 +79,10 @@ export function WorkspaceSheetHost() {
             {sheet.eyebrow ? <p>{sheet.eyebrow}</p> : null}
             <h2 id={titleId}>{sheet.title}</h2>
           </div>
-          <button ref={closeButtonRef} type="button" onClick={context.closeSheet} aria-label={`Close ${sheet.title}`}><X aria-hidden="true" /></button>
+          <div className="dp-workspace-surface-controls">
+            <button type="button" onClick={goBack} aria-label={`Go back from ${sheet.title}`}><ChevronLeft aria-hidden="true" /><span>Back</span></button>
+            <button ref={closeButtonRef} type="button" onClick={context.closeSheet} aria-label={`Close ${sheet.title}`}><X aria-hidden="true" /><span>Close</span></button>
+          </div>
         </header>
         <div className="dp-workspace-sheet-body">{sheet.content}</div>
         {sheet.footer ? <footer className="dp-workspace-sheet-footer">{sheet.footer}</footer> : null}
