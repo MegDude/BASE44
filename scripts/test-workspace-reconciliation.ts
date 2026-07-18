@@ -66,6 +66,15 @@ assert.match(workspaceSource, /className="dp-workspace-reports dp-report-system"
 assert.match(workspaceSource, /See what is working and what to do next\./);
 assert.match(workspaceSource, /function WorkspaceMediaRail/);
 assert.match(workspaceSource, /Media ready to use/);
+assert.match(workspaceSource, /See what needs attention and what is working\./);
+assert.match(workspaceSource, /Publish the dining passport offer\./);
+assert.match(workspaceSource, /className="dp-os-summary-strip"/);
+assert.match(workspaceSource, /WORKSPACE_MEDIA_TABS\.includes\(tab\)/);
+assert.doesNotMatch(
+  workspaceSource.match(/const WORKSPACE_MEDIA_TABS = \[[\s\S]*?\];/)?.[0] || "",
+  /"reports"|"analytics"|"assistant"/,
+  "evidence-first report, analytics, and assistant screens must not be displaced by a media rail",
+);
 assert.doesNotMatch(
   workspaceStyles,
   /\.dp-partner-workspace-page :is\(section, article, aside, header, footer, div, nav, form\)\s*\{\s*background-image:\s*none !important;/,
@@ -73,6 +82,9 @@ assert.doesNotMatch(
 );
 assert.match(compactMediaStyles, /\.dp-workspace-media-rail/);
 assert.match(compactMediaStyles, /max-width:\s*1120px !important/);
+assert.match(compactMediaStyles, /\.dp-os-next-action/);
+assert.match(compactMediaStyles, /\.dp-os-summary-strip/);
+assert.match(compactMediaStyles, /\.dp-os-entity-rail/);
 
 for (const asset of [
   "atx-cocina-interior.webp",

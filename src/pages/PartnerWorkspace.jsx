@@ -26,8 +26,8 @@ import { queryAgent } from "@/services/agent/agentClient";
 import "@/styles/partner-analytics-decision-system.css";
 
 const WORKSPACE_MEDIA_TABS = [
-  "assistant", "map", "offers", "events", "surveys", "broadcasts", "audience",
-  "media", "sources", "campaigns", "reports", "analytics", "profile", "team", "billing",
+  "map", "offers", "events", "surveys", "broadcasts", "audience",
+  "media", "sources", "campaigns", "profile",
 ];
 
 const WORKSPACE_MEDIA = [
@@ -698,7 +698,7 @@ export default function PartnerWorkspace() {
 
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
-        {tab !== "overview" ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
+        {WORKSPACE_MEDIA_TABS.includes(tab) ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
@@ -1453,6 +1453,7 @@ function WorkspaceAnalyticsSnapshotGraphs({ report }) {
 }
 
 function WorkspaceOverview({ user, setTab, activation = null }) {
+  const navigate = useNavigate();
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState(() => {
@@ -1463,13 +1464,11 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   });
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [workspaceSearch, setWorkspaceSearch] = useState("");
-  const [createMenuOpen, setCreateMenuOpen] = useState(false);
 
   useEffect(() => {
     function closeWorkspaceMenus(event) {
       if (event.key !== "Escape") return;
       setWorkspaceMenuOpen(false);
-      setCreateMenuOpen(false);
     }
 
     window.addEventListener("keydown", closeWorkspaceMenus);
@@ -1505,47 +1504,67 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
       ];
   const activePerks = perks.filter((perk) => perk.status === "active");
   const upcomingEvents = events.filter((event) => event.status === "upcoming" || event.status === "live");
-  const createActions = [
-    ["Create offer", "/partner-workspace/offers"],
-    ["Create event", "/partner-workspace/events"],
-    ["Create campaign", "/partner-workspace/campaigns"],
-    ["Send broadcast", "/partner-workspace/broadcasts"],
-    ["Create survey", "/partner-workspace/surveys"],
+  const nextAction = isLarryAndGuy
+    ? {
+        eyebrow: "Recommended next step",
+        title: "Publish the dining passport offer.",
+        description: "Five restaurant listings are ready. Add the shared reward so residents can understand what they earn before the campaign goes live.",
+        label: "Create offer",
+        href: "/partner-workspace/offers",
+      }
+    : isLegends
+      ? {
+          eyebrow: "Most important next step",
+          title: "Turn search demand into a property comparison.",
+          description: "The report shows strong non-branded visibility. Publish a clear comparison that helps renters move from search results to the right downtown listing.",
+          label: "Open reports",
+          href: "/partner-workspace/reports",
+        }
+      : {
+          eyebrow: "Recommended next step",
+          title: "Publish one clear reason to visit.",
+          description: "Add an active offer to the places already connected to this workspace, then review what residents save and open on the map.",
+          label: "Create offer",
+          href: "/partner-workspace/offers",
+        };
+
+  const summaryMetrics = [
+    ["Places", ownedEntities.length],
+    ["Offers", activePerks.length],
+    ["Events", upcomingEvents.length],
+    ["Status", "Active"],
   ];
+
+  function selectWorkspace(organizationId) {
+    setSelectedOrganizationId(organizationId);
+    setWorkspaceMenuOpen(false);
+    setWorkspaceSearch("");
+    const params = new URLSearchParams(window.location.search);
+    params.set("organizationId", organizationId);
+    navigate({ pathname: "/partner-workspace/overview", search: `?${params.toString()}` }, { replace: true });
+  }
 
   return (
     <motion.div className="dp-operating-overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
-      <section className="dp-operating-header">
+      <section className="dp-operating-header dp-os-header">
         <div>
-          <p className="dp-workspace-eyebrow">Overview</p>
-          <h1>{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</h1>
-          <p>
-            {ownedEntities.length > 1
-              ? `Manage offers, events, campaigns, people, and reports across ${ownedEntities.map((entity) => entity.display_name).join(", ")}.`
-              : "Manage your downtown presence, publishing, people, and reports from one focused workspace."}
-          </p>
-          <span className="dp-operating-status"><i aria-hidden="true" />Workspace active — {selectedOrganization?.plan || activation?.plan || "Enterprise"} plan</span>
+          <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
+          <h1>See what needs attention and what is working.</h1>
+          <p>Review the places connected to this workspace, publish the next useful update, and see the results that should guide the next decision.</p>
         </div>
-        <div className="dp-operating-header-actions">
-          <div className="dp-create-menu-wrap">
-            <button className="dp-button-primary" type="button" onClick={() => setCreateMenuOpen((open) => !open)} aria-expanded={createMenuOpen}>
-              Create <ChevronDown aria-hidden="true" />
-            </button>
-            {createMenuOpen ? (
-              <div className="dp-create-menu" role="menu">
-                <div className="dp-workspace-menu-head" role="none">
-                  <strong>Create</strong>
-                  <button type="button" onClick={() => setCreateMenuOpen(false)} aria-label="Close create menu"><X aria-hidden="true" /></button>
-                </div>
-                {createActions.map(([label, href]) => <Link key={label} to={href} role="menuitem">{label}</Link>)}
-              </div>
-            ) : null}
-          </div>
-          <Link className="dp-button-secondary" to="/map?mode=partner&tab=map&filter=All">View public listing</Link>
-        </div>
+        <span className="dp-operating-status"><i aria-hidden="true" />Workspace active · {selectedOrganization?.plan || activation?.plan || "Enterprise"}</span>
       </section>
 
-      <section className="dp-workspace-context" aria-labelledby="workspace-context-title">
+      <section className="dp-os-next-action" aria-labelledby="workspace-next-action-title">
+        <div>
+          <p className="dp-workspace-eyebrow">{nextAction.eyebrow}</p>
+          <h2 id="workspace-next-action-title">{nextAction.title}</h2>
+          <p>{nextAction.description}</p>
+        </div>
+        <Link to={`${nextAction.href}?organizationId=${encodeURIComponent(selectedOrganizationId)}`}>{nextAction.label}<ArrowRight aria-hidden="true" /></Link>
+      </section>
+
+      <section className="dp-workspace-context dp-os-workspace-context" aria-labelledby="workspace-context-title">
         <div className="dp-workspace-switcher-compact">
           <span id="workspace-context-title">Workspace</span>
           <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen}>
@@ -1569,7 +1588,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
                     key={organization.id}
                     type="button"
                     aria-current={organization.id === selectedOrganizationId ? "true" : undefined}
-                    onClick={() => { setSelectedOrganizationId(organization.id); setWorkspaceMenuOpen(false); setWorkspaceSearch(""); }}
+                    onClick={() => selectWorkspace(organization.id)}
                   >
                     <span><strong>{organization.name}</strong><small>{friendlyRoleLabel(organization.role)}</small></span>
                     {organization.id === selectedOrganizationId ? <em>Current</em> : null}
@@ -1579,12 +1598,12 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
             </div>
           ) : null}
         </div>
-        <div className="dp-workspace-entities-compact">
+        <div className="dp-workspace-entities-compact dp-os-entity-rail">
           <span>Your places</span>
           <div>
             {ownedEntities.map((entity) => (
               <Link key={entity.id} to={`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`}>
-                {entity.media ? <img src={entity.media.src} alt={entity.media.alt} loading="lazy" decoding="async" /> : null}
+                {entity.media ? <img src={entity.media.src} alt={entity.media.alt} loading="lazy" decoding="async" /> : <span className="dp-os-entity-fallback" aria-hidden="true">{entity.display_name?.slice(0, 1)}</span>}
                 <span><strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small></span>
                 <ArrowRight aria-hidden="true" />
               </Link>
@@ -1596,6 +1615,10 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           <button type="button" onClick={() => setWorkspaceMenuOpen(true)}>Switch workspace</button>
           <button type="button" onClick={() => setTab("profile")}>Manage workspace</button>
         </div>
+      </section>
+
+      <section className="dp-os-summary-strip" aria-label="Workspace status">
+        {summaryMetrics.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}
       </section>
 
       <section className="dp-operating-section" aria-labelledby="performance-summary-title">

@@ -252,3 +252,249 @@ html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figcapt
     height: 78px !important;
   }
 }
+
+/* Canonical overview: the report hierarchy with the compact live-workspace flow. */
+html body #root#root .dp-partner-workspace-page .dp-operating-overview {
+  display: grid !important;
+  gap: var(--dp-workspace-section-gap) !important;
+  width: 100% !important;
+  max-width: 1120px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-header {
+  display: flex !important;
+  align-items: end !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  margin: 0 !important;
+  padding: 0 0 20px !important;
+  border-bottom: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-header > div {
+  max-width: 720px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-header h1 {
+  margin: 5px 0 0 !important;
+  max-width: 660px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-header > div > p:last-child {
+  max-width: 650px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-header .dp-operating-status {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-next-action {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 24px !important;
+  padding: 18px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-workspace-border) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-next-action h2 {
+  margin: 4px 0 0 !important;
+  font-size: clamp(20px, 2.2vw, 26px) !important;
+  line-height: 1.18 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-next-action p:last-child {
+  max-width: 700px !important;
+  margin: 7px 0 0 !important;
+  color: var(--dp-workspace-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-next-action > a {
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 15px !important;
+  border: 1px solid var(--dp-workspace-ink) !important;
+  border-radius: 0 !important;
+  background: var(--dp-workspace-ink) !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-next-action > a svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-workspace-context {
+  display: grid !important;
+  grid-template-columns: minmax(220px, .7fr) minmax(0, 2fr) auto !important;
+  align-items: start !important;
+  gap: 20px !important;
+  margin: 0 !important;
+  padding: 0 0 20px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-workspace-border) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-workspace-context :is(button, a) {
+  border-radius: 0 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-workspace-context .dp-workspace-switcher-compact > button {
+  min-height: 58px !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-workspace-context .dp-workspace-switcher-menu {
+  max-height: min(520px, calc(100dvh - 150px)) !important;
+  overflow-y: auto !important;
+  border-radius: 0 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-rail > div {
+  display: flex !important;
+  gap: 10px !important;
+  overflow-x: auto !important;
+  padding-bottom: 2px !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-rail > div::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-rail > div > a {
+  width: min(285px, 72vw) !important;
+  min-height: 70px !important;
+  flex: 0 0 auto !important;
+  grid-template-columns: 74px minmax(0, 1fr) 18px !important;
+  padding: 0 10px 0 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-rail img,
+html body #root#root .dp-partner-workspace-page .dp-os-entity-fallback {
+  width: 74px !important;
+  height: 70px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-rail img {
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-entity-fallback {
+  display: grid !important;
+  place-items: center !important;
+  background: #f5f2eb !important;
+  color: var(--dp-workspace-gold) !important;
+  font: 700 22px/1 var(--dp-font-sans, Inter, sans-serif) !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-summary-strip {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  border: 1px solid var(--dp-workspace-border) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-summary-strip > div {
+  display: grid !important;
+  gap: 4px !important;
+  padding: 14px 16px !important;
+  border-right: 1px solid var(--dp-workspace-border) !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-summary-strip > div:last-child {
+  border-right: 0 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-summary-strip span {
+  color: var(--dp-workspace-muted) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-os-summary-strip strong {
+  color: var(--dp-workspace-ink) !important;
+  font-size: 20px !important;
+  line-height: 1.1 !important;
+}
+
+@media (max-width: 860px) {
+  html body #root#root .dp-partner-workspace-page .dp-os-workspace-context {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-workspace-context .dp-workspace-context-actions {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-partner-workspace-page .dp-os-header {
+    display: grid !important;
+    gap: 10px !important;
+    padding-bottom: 14px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-header .dp-operating-status {
+    white-space: normal !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-next-action {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 14px 0 !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-next-action > a {
+    width: 100% !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-summary-strip {
+    display: flex !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-summary-strip::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-summary-strip > div {
+    min-width: 104px !important;
+    flex: 1 0 104px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-os-entity-rail > div > a {
+    width: min(270px, 82vw) !important;
+  }
+}
