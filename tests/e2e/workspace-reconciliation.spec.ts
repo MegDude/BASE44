@@ -9,9 +9,10 @@ test("legacy reports route enters the canonical workspace without UI regressions
   await expect(page.locator('[data-workspace-view="reports"]')).toBeVisible();
   await expect(page.getByRole("heading", { name: "See what is working and what to do next." })).toBeVisible();
   await expect(page.getByRole("button", { name: "Search workspace" })).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "Go back" })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Back" })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Back" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Go back" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Close workspace" })).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Back", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Back", exact: true })).toHaveCount(0);
 
   const layout = await page.evaluate(() => {
     const isVisible = (element: Element) => {
