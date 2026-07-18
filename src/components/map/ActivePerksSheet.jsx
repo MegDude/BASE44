@@ -120,6 +120,7 @@ export default function ActivePerksSheet({
     <motion.aside
       ref={sheetRef}
       className={`dp-active-perks-sheet is-${drawerState}`}
+      data-drawer-state={drawerState}
       role="dialog"
       aria-modal="true"
       aria-label="Active perks"

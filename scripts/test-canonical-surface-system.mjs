@@ -8,6 +8,7 @@ const activePerks = read("src/components/map/ActivePerksSheet.jsx");
 const nativePanelLock = read("src/styles/native-panel-surface-lock-final.css");
 const premiumDrawer = read("src/styles/map-drawer-premium-regression-final.css");
 const recovery = read("src/styles/dp-recovery-final.css");
+const legendsSeoSnapshot = read("src/styles/legends-seo-snapshot-final.css");
 
 const requiredTokens = [
   "--dp-surface-primary",
@@ -31,6 +32,7 @@ const governedPostCanonicalLocks = [
   'import "@/styles/accessibility-pin-art-final.css"',
   'import "@/styles/partner-workspace-deep-polish-final.css"',
   'import "@/styles/interface-density-regression-lock.css"',
+  'import "@/styles/legends-seo-snapshot-final.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);
@@ -68,6 +70,11 @@ if (premiumDrawer.includes(".dp-entity-action-row > .dp-entity-action.is-primary
 }
 if (/\.dp-shore-home-rail,\s*\n\s*\.dp-entity-row-list/.test(recovery)) {
   throw new Error("Entity lists are still forced into the shared media-rail layout");
+}
+for (const protectedMapSelector of [".dp-map-page", ".dp-panel-shell", ".dp-detail-drawer", ".dp-active-perks-sheet"]) {
+  if (legendsSeoSnapshot.includes(protectedMapSelector)) {
+    throw new Error(`Legends SEO Snapshot styling leaks into the map panel system: ${protectedMapSelector}`);
+  }
 }
 
 console.log("canonical surface system: tokens, import order, panel geometry, action hierarchy, and motion verified");
