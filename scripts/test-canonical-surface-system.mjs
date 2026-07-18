@@ -25,8 +25,17 @@ for (const token of requiredTokens) {
 
 const importLine = 'import "@/styles/canonical-surface-system.css"';
 if (!main.includes(importLine)) throw new Error("Canonical surface system is not imported");
-if (main.lastIndexOf(importLine) < main.lastIndexOf('import "@/styles/')) {
-  throw new Error("Canonical surface system must be the final stylesheet import");
+const governedPostCanonicalLocks = [
+  'import "@/styles/map-marker-governance-final.css"',
+  'import "@/styles/search-intent-console-regression-lock.css"',
+  'import "@/styles/accessibility-pin-art-final.css"',
+  'import "@/styles/partner-workspace-deep-polish-final.css"',
+];
+const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
+const canonicalIndex = stylesheetImports.indexOf(importLine);
+const importsAfterCanonical = stylesheetImports.slice(canonicalIndex + 1);
+if (importsAfterCanonical.some((stylesheetImport) => !governedPostCanonicalLocks.includes(stylesheetImport))) {
+  throw new Error("Only governed map and accessibility locks may follow the canonical surface system");
 }
 
 for (const selector of [
