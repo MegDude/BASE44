@@ -82,4 +82,101 @@ html body #root :is(.dp-create-menu,.dp-workspace-switcher-menu,.dp-persistent-w
     overflow-y:auto!important;
     overscroll-behavior:contain!important;
   }
+
+  html body #root .dp-map-page :is(
+    .dp-detail-drawer,
+    .dp-panel-shell,
+    .dp-route-experience-sheet,
+    .dp-collection-route-panel,
+    .dp-destination-drawer,
+    .dp-map-list-drawer,
+    .dp-cluster-drawer,
+    .dp-partner-activity-drawer,
+    .dp-native-sheet,
+    .dp-bottom-sheet,
+    .dp-active-perks-sheet
+  ):not([data-drawer-state="full"]):not([data-drawer-state="expanded"]) {
+    max-height:calc(100dvh - var(--dp-map-native-bottom-nav-height,64px) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;
+  }
+
+  html body #root .dp-map-page :is(
+    .dp-detail-drawer,
+    .dp-panel-shell,
+    .dp-route-experience-sheet,
+    .dp-collection-route-panel,
+    .dp-destination-drawer,
+    .dp-map-list-drawer,
+    .dp-cluster-drawer,
+    .dp-partner-activity-drawer,
+    .dp-native-sheet,
+    .dp-bottom-sheet,
+    .dp-active-perks-sheet
+  ):is([data-drawer-state="full"],[data-drawer-state="expanded"]) {
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:100dvw!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+  }
+
+  html body #root :is(
+    .dp-workspace-sheet,
+    .dp-workspace-search-sheet,
+    .dp-quick-search-modal,
+    .dp-workspace-upgrade-modal,
+    .dp-native-mobile-workspace-menu,
+    .dp-workspace-switcher-menu
+  ) {
+    box-sizing:border-box!important;
+    max-width:100dvw!important;
+    max-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 16px)!important;
+    overflow:hidden!important;
+    overscroll-behavior:contain!important;
+  }
+}
+
+html body #root :is(
+  .dp-panel-shell,
+  .dp-detail-drawer,
+  .dp-route-experience-sheet,
+  .dp-collection-route-panel,
+  .dp-destination-drawer,
+  .dp-map-list-drawer,
+  .dp-cluster-drawer,
+  .dp-partner-activity-drawer,
+  .dp-native-sheet,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-workspace-sheet,
+  .dp-workspace-search-sheet,
+  .dp-quick-search-modal,
+  .dp-workspace-upgrade-modal
+) > :is(
+  header,
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-drawer-control-row,
+  .dp-map-directory-toolbar,
+  .dp-workspace-sheet-header
+) {
+  position:sticky!important;
+  top:0!important;
+  z-index:20!important;
+  flex:0 0 auto!important;
+}
+
+html body #root :is(
+  .dp-workspace-sheet-body,
+  .dp-workspace-search-sheet > main,
+  .dp-quick-search-body,
+  .dp-workspace-upgrade-modal > main
+) {
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
 }
