@@ -3673,13 +3673,13 @@ function getZoomScaledMarkerSize(zoom, baseSize) {
 }
 
 function getZoomMarkerMetrics(zoom, { selected = false, clusterCount = 0 } = {}) {
-  const pinSize = getZoomScaledMarkerSize(zoom, selected ? 32 : 28);
+  const pinSize = 32;
   const clusterBase = clusterCount > 49 ? 42 : clusterCount > 9 ? 36 : 30;
   const clusterSize = getZoomScaledMarkerSize(zoom, clusterBase);
   return {
     pinSize,
-    pinIconSize: Math.max(13, Math.round(pinSize * 0.48)),
-    legendsLogoSize: Math.max(17, Math.round(pinSize * 0.66)),
+    pinIconSize: 15,
+    legendsLogoSize: 28,
     stopNumberSize: Math.max(14, Math.round(pinSize * 0.43)),
     clusterSize,
     largeClusterSize: getZoomScaledMarkerSize(zoom, 46),
@@ -3850,17 +3850,12 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const stopNumber = Number(place?.routeStopNumber || 0);
   const pin = resolveEntityPin(place);
   if (pin.asset) {
-    const isPremiumPinArt = pin.asset.includes("/pins/downtown-perks/partners/");
-    const markerWidth = isPremiumPinArt
-      ? Math.max(selected ? 48 : 42, Math.round(size * 1.2))
-      : size;
-    const markerHeight = isPremiumPinArt
-      ? Math.round(markerWidth * 1.32)
-      : size;
+    const markerWidth = size;
+    const markerHeight = size;
     return {
       url: isLegends ? LEGENDS_PIN_LOGO : pin.asset,
       scaledSize: new maps.Size(markerWidth, markerHeight),
-      anchor: new maps.Point(markerWidth / 2, isPremiumPinArt ? markerHeight : markerHeight / 2),
+      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
     };
   }
   const paths = mapIconSvgInner(pin.glyph);

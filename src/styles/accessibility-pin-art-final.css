@@ -58,10 +58,12 @@ html body #root#root .dp-partner-workspace-page {
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-google-map-marker-shell:has(.dp-live-pin__premium-art),
 html body #root#root#root#root .dp-map-page.dp-map-page .leaflet-marker-icon:has(.dp-live-pin__premium-art),
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art) {
-  width: var(--dp-premium-pin-width, 44px) !important;
-  min-width: var(--dp-premium-pin-width, 44px) !important;
-  height: var(--dp-premium-pin-height, 58px) !important;
-  min-height: var(--dp-premium-pin-height, 58px) !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
   overflow: visible !important;
   padding: 0 !important;
   border: 0 !important;
@@ -73,8 +75,8 @@ html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:h
 
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art) .dp-map-pin__icon,
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-live-pin__core:has(.dp-live-pin__premium-art) {
-  width: var(--dp-premium-pin-width, 44px) !important;
-  height: var(--dp-premium-pin-height, 58px) !important;
+  width: 32px !important;
+  height: 32px !important;
   overflow: visible !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -86,12 +88,12 @@ html body #root#root#root#root .dp-map-page.dp-map-page img.dp-live-pin__premium
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin img.dp-live-pin__premium-art,
 .dp-leaflet-premium-pin img.dp-live-pin__premium-art {
   display: block !important;
-  width: var(--dp-premium-pin-width, 44px) !important;
-  min-width: var(--dp-premium-pin-width, 44px) !important;
-  height: var(--dp-premium-pin-height, 58px) !important;
-  min-height: var(--dp-premium-pin-height, 58px) !important;
-  max-width: none !important;
-  max-height: none !important;
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
   object-fit: contain !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -101,9 +103,9 @@ html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin i
 }
 
 html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art):is(.is-selected, .is-active, [data-active="true"]) {
-  --dp-premium-pin-width: 50px;
-  --dp-premium-pin-height: 66px;
-  transform: translateY(-2px) !important;
+  width: 32px !important;
+  height: 32px !important;
+  transform: none !important;
 }
 
 .dp-leaflet-premium-pin,
