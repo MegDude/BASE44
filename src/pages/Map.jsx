@@ -3789,11 +3789,6 @@ function getMarkerDataKind(place) {
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
-const LEGENDS_LOGO_SVG_PATHS = `
-  <path d="M60 75 48.6 50.4 28 68.8 17.5 42.2 4 30.8 24.1 8.2 51.6 23.8 60 12.6l8.4 11.2L95.9 8.2 116 30.8l-13.5 11.4L92 68.8 71.4 50.4 60 75Z" fill="none" stroke="#C8A96A" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M24.1 8.2 28 68.8M51.6 23.8 28 68.8M51.6 23.8 48.6 50.4M68.4 23.8 71.4 50.4M95.9 8.2 92 68.8M68.4 23.8 92 68.8M60 12.6v62.4M48.6 50.4h22.8" fill="none" stroke="#C8A96A" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
-`;
-
 function mapIconSvgInner(glyph) {
   return String(glyph || "").match(/<svg[^>]*>([\s\S]*?)<\/svg>/i)?.[1] || "";
 }
@@ -3851,32 +3846,26 @@ function svgMarkerDataUrl(svg) {
 
 function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
+  const isInKind = isInKindEntity(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
-  if (isLegends) {
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 120 120">
-        <g transform="translate(0 16)">${LEGENDS_LOGO_SVG_PATHS}</g>
-        ${stopNumber ? `<circle cx="108" cy="14" r="10" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.6"/><text x="108" y="15" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
-      </svg>`;
+  if (isLegends || isInKind) {
+    const markerWidth = isInKind ? Math.round(size * 1.5) : size;
+    const markerHeight = isInKind ? Math.round(size * 1.12) : size;
     return {
-      url: svgMarkerDataUrl(svg),
-      scaledSize: new maps.Size(size, size),
-      anchor: new maps.Point(size / 2, size / 2),
+      url: isInKind ? "/pins/brands/inkind-map-logo.png" : LEGENDS_PIN_LOGO,
+      scaledSize: new maps.Size(markerWidth, markerHeight),
+      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
     };
   }
-  const fill = "#0B1F33";
-  const stroke = "#C8A96A";
-  const iconColor = "#C8A96A";
   const pin = resolveEntityPin(place);
   const paths = mapIconSvgInner(pin.glyph);
-  const iconSize = Math.max(18, Math.round(size * 0.5));
-  const iconScale = Math.max(0.75, size / 48);
+  const iconColor = selected ? "#B8963E" : "#0B1F33";
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="${selected ? stroke : fill}" stroke="${selected ? fill : stroke}" stroke-width="1.35"/>
-      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${selected ? fill : iconColor}" fill="none" stroke="${selected ? fill : iconColor}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
-      ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <g transform="translate(4 4)" color="#FFFFFF" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      <g transform="translate(4 4)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      ${stopNumber ? `<text x="28" y="8" dominant-baseline="middle" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
     url: svgMarkerDataUrl(svg),
@@ -3892,7 +3881,7 @@ function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33" stroke="#C8A96A" stroke-width="1.35"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33"/>
       <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#FFFFFF">${label}</text>
     </svg>`;
   return {

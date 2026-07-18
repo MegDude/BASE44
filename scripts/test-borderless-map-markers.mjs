@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
 const markerSource = await readFile(new URL("../src/map/MarkerManager.ts", import.meta.url), "utf8");
 const markerCss = await readFile(new URL("../src/styles/map-marker-governance-final.css", import.meta.url), "utf8");
+const iconRegistry = await readFile(new URL("../src/lib/map/mapIconRegistry.ts", import.meta.url), "utf8");
 
 assert.match(mapSource, /clusterPlaces\(activeCollectionRoute\.stops, stableClusterZoom, selectedId\)/, "route stops must use collision-safe clustering");
 assert.match(mapSource, /clusterPlaces\(mappablePlaces, stableClusterZoom, selectedId\)/, "focused results must use collision-safe clustering");
@@ -13,5 +14,12 @@ assert.match(markerSource, /zIndex/, "selected and approved brand markers must h
 assert.match(markerCss, /\.dp-map-pin[\s\S]*?border:\s*0\s*!important;[\s\S]*?background:\s*transparent\s*!important;/, "marker buttons must be borderless and transparent");
 assert.match(markerCss, /dp-live-pin--inkind-logo/, "inKind must use the approved direct logo treatment");
 assert.match(markerCss, /dp-live-pin--legends-logo/, "Legends must retain its approved direct logo treatment");
+const legacyMarkerSource = mapSource.slice(
+  mapSource.indexOf("function legacyDowntownMarkerIcon"),
+  mapSource.indexOf("function legacyDowntownClusterIcon"),
+);
+assert.doesNotMatch(legacyMarkerSource, /<circle\b/, "legacy listing pins must not restore a circular plate or number badge");
+assert.match(legacyMarkerSource, /inkind-map-logo\.png/, "legacy inKind markers must render the approved direct logo asset");
+assert.match(iconRegistry, /INKIND_PIN_ASSET = "\/pins\/brands\/inkind-map-logo\.png"/, "all map adapters must share the polished inKind logo asset");
 
 console.log("Borderless map marker checks passed.");

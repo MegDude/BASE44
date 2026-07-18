@@ -56,7 +56,7 @@ export type MapIconDefinition = {
 };
 
 export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo.png";
-export const INKIND_PIN_ASSET = "/pins/brands/inkind-logo.png";
+export const INKIND_PIN_ASSET = "/pins/brands/inkind-map-logo.png";
 
 function icon(paths: string) {
   return `<svg class="dp-pin-svg dp-map-icon-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
