@@ -591,19 +591,29 @@ async function loadRegistry() {
   return registryPromise;
 }
 
-async function resolveCatalogState(query, signal, mode = "resident") {
+function emptyCatalogState() {
+  return {
+    status: "idle",
+    query: "",
+    results: [],
+    groups: [],
+    entitiesById: {},
+    total: 0,
+  };
+}
+
+function resolveCatalogState(query, entities = [], mode = "resident") {
   const normalizedQuery = String(query || "").trim();
   if (!normalizedQuery) return null;
-  const registry = await loadRegistry();
-  if (signal?.aborted) throw new DOMException("Platform search aborted", "AbortError");
-  const catalog = buildPlatformSearchCatalog(registry);
+  const boundedEntities = Array.isArray(entities) ? entities.filter(Boolean) : [];
+  const catalog = buildPlatformSearchCatalog(boundedEntities);
   const results = searchPlatformCatalog(catalog, normalizedQuery, {
     limit: typeof window !== "undefined" && window.innerWidth >= 768 ? 40 : 24,
     mode,
   });
-  const registryById = Object.fromEntries(registry.map((entity) => [String(entity.id), entity]));
+  const entitiesByCanonicalId = Object.fromEntries(boundedEntities.map((entity) => [String(entity.id), entity]));
   const entitiesById = Object.fromEntries(results.map((document) => {
-    const entity = registryById[document.entityId] || registryById[document.linkedEntityId] || null;
+    const entity = entitiesByCanonicalId[document.entityId] || entitiesByCanonicalId[document.linkedEntityId] || null;
     return [document.id, entity];
   }).filter(([, entity]) => Boolean(entity)));
   return {
@@ -635,14 +645,7 @@ export function useSearchDrivenMapEntities() {
   });
   const [requestStatus, setRequestStatus] = useState("idle");
   const [lastTrigger, setLastTrigger] = useState("");
-  const [catalogState, setCatalogState] = useState({
-    status: "idle",
-    query: "",
-    results: [],
-    groups: [],
-    entitiesById: {},
-    total: 0,
-  });
+  const [catalogState, setCatalogState] = useState(emptyCatalogState);
   const [metrics, setMetrics] = useState({
     initialEntityRequestCount: 0,
     searchRequestCount: 0,
@@ -668,8 +671,9 @@ export function useSearchDrivenMapEntities() {
     const queryKey = buildQueryKey({ ...normalizedScope, resultLimit: resolverRequest.limit });
     const cached = getCache(cacheRef, queryKey);
     if (cached) {
-      const cachedCatalog = await resolveCatalogState(normalizedScope.query, undefined, normalizedScope.audienceMode);
-      if (cachedCatalog) setCatalogState(cachedCatalog);
+      const cachedEntities = cached.resultIds.map((id) => cached.entitiesById[id]).filter(Boolean);
+      const cachedCatalog = resolveCatalogState(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
+      setCatalogState(cachedCatalog || emptyCatalogState());
       setResultState(cached);
       setLastTrigger(trigger);
       setRequestStatus("success");
@@ -693,12 +697,7 @@ export function useSearchDrivenMapEntities() {
     const startedAt = performance.now();
 
     try {
-      const catalogPromise = resolveCatalogState(normalizedScope.query, controller.signal, normalizedScope.audienceMode);
-      const [backendResponse, catalogResult] = await Promise.all([
-        searchOperationalMap(resolverRequest, controller.signal),
-        catalogPromise,
-      ]);
-      if (catalogResult && activeRequestRef.current.id === requestId) setCatalogState(catalogResult);
+      const backendResponse = await searchOperationalMap(resolverRequest, controller.signal);
       let result;
       let usedLocalFallback = false;
       if (backendResponse) {
@@ -735,6 +734,9 @@ export function useSearchDrivenMapEntities() {
         return null;
       }
       putCache(cacheRef, result.queryKey, result);
+      const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
+      const catalogResult = resolveCatalogState(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
+      setCatalogState(catalogResult || emptyCatalogState());
       setResultState(result);
       setRequestStatus("success");
       setMetrics((current) => ({
@@ -759,6 +761,9 @@ export function useSearchDrivenMapEntities() {
           queryId: `local-${requestId}`,
         };
         putCache(cacheRef, result.queryKey, result);
+        const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
+        const catalogResult = resolveCatalogState(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
+        setCatalogState(catalogResult || emptyCatalogState());
         setResultState(result);
         setRequestStatus("success");
         setMetrics((current) => ({
@@ -783,7 +788,7 @@ export function useSearchDrivenMapEntities() {
     activeRequestRef.current = { id: activeRequestRef.current.id + 1, key: "" };
     setRequestStatus("idle");
     setLastTrigger("");
-    setCatalogState({ status: "idle", query: "", results: [], groups: [], entitiesById: {}, total: 0 });
+    setCatalogState(emptyCatalogState());
     setResultState({
       queryKey: "",
       resultIds: [],
