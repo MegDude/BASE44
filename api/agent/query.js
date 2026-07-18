@@ -119,7 +119,15 @@ export default async function handler(req, res) {
 
   try {
     const result = await proxyAgentQuery(req.body || {});
-    return res.status(result.status).json(result.body);
+    if (result.status < 400 && result.body?.answer) {
+      return res.status(result.status).json(result.body);
+    }
+
+    const { buildFallbackMapResponse } = await import("../ask-map.js");
+    return res.status(200).json({
+      ...buildFallbackMapResponse(req.body || {}),
+      providerError: "Provider rejected the request; current map context used.",
+    });
   } catch (error) {
     const { buildFallbackMapResponse } = await import("../ask-map.js");
     return res.status(200).json({
