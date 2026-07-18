@@ -1,0 +1,85 @@
+/* Last-line viewport containment for app-owned overlays, rails, and panels. */
+:root { --dp-visible-height:100dvh; --dp-visible-width:100vw; }
+html,body,#root { max-width:100%; }
+html,body { overflow-x:clip; }
+
+html body #root :is(.dp-detail-drawer,.dp-panel-shell,.dp-route-experience-sheet,.dp-collection-route-panel,.dp-destination-drawer,.dp-map-popup,.dp-map-popup-card,.dp-map-list-drawer,.dp-cluster-drawer,.dp-partner-activity-drawer,.dp-native-sheet,.dp-bottom-sheet,[role="dialog"],[role="menu"]) {
+  max-width:min(100vw,100%)!important;
+  max-height:100dvh!important;
+  box-sizing:border-box!important;
+}
+
+html body #root :is(.dp-detail-drawer,.dp-panel-shell,.dp-route-experience-sheet,.dp-destination-drawer,.dp-map-list-drawer,.dp-cluster-drawer,.dp-partner-activity-drawer,.dp-native-sheet,.dp-bottom-sheet) {
+  overflow:hidden!important;
+  overscroll-behavior:contain!important;
+}
+
+html body #root [role="dialog"] { overflow-y:auto!important; overflow-x:hidden!important; overscroll-behavior:contain!important; }
+
+html body #root :is(.dp-detail-drawer-body,.dp-panel-body,.dp-route-sheet-scroll,.dp-destination-drawer-content,.dp-map-list-drawer-content,.dp-cluster-drawer-content,.dp-partner-activity-drawer-content,.dp-native-sheet-content,.dp-bottom-sheet-content) {
+  min-width:0!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+html body #root :is(.dp-workspace-main,.dp-workspace-content,.dp-map-page,.dp-map-page > *,.dp-analytics-page,.dp-analytics-page > *,main,section,article) { min-width:0; }
+html body #root :is(img,video,canvas) { max-width:100%; height:auto; }
+html body #root :is(p,dd,li,a,button,label,span,strong) { overflow-wrap:anywhere; }
+
+html body #root :is(.dp-primary-action-row,.dp-editorial-hero-actions,.dp-panel-actions,.dp-drawer-actions,.dp-sheet-actions,.dp-modal-actions) {
+  max-width:100%!important;
+  flex-wrap:wrap!important;
+}
+html body #root :is(.dp-primary-action-row,.dp-editorial-hero-actions,.dp-panel-actions,.dp-drawer-actions,.dp-sheet-actions,.dp-modal-actions) > * {
+  max-width:100%!important;
+  min-width:0!important;
+}
+
+html body #root .dp-contained-action-grid {
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,112px),1fr))!important;
+  gap:8px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+html body #root .dp-contained-action-grid > * {
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  justify-content:center!important;
+}
+
+html body #root :is(.dp-partner-native-tabs,.dp-analytics-view-nav,.dp-search-intent-primary-rail,.dp-search-intent-secondary-track,[role="tablist"]) {
+  max-width:100vw!important;
+  overscroll-behavior-inline:contain!important;
+}
+
+html body #root :is(.dp-create-menu,.dp-workspace-switcher-menu,.dp-persistent-workspace-switcher-menu,.dp-route-overflow-menu,[role="menu"]) {
+  width:min(360px,calc(100vw - 24px))!important;
+  max-height:min(70dvh,560px)!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+
+@media (max-width:767px) {
+  html body #root :is(.dp-detail-drawer,.dp-panel-shell,.dp-route-experience-sheet,.dp-destination-drawer,.dp-map-list-drawer,.dp-cluster-drawer,.dp-partner-activity-drawer,.dp-native-sheet,.dp-bottom-sheet,[role="dialog"]) {
+    right:0!important;
+    left:0!important;
+    width:100vw!important;
+    max-height:calc(100dvh - env(safe-area-inset-top,0px))!important;
+  }
+  html body #root :is(.dp-map-popup,.dp-map-popup-card) { max-width:calc(100vw - 24px)!important; }
+  html body #root :is(.dp-workspace-sidebar,.dp-mobile-menu,.dp-navigation-drawer) {
+    width:min(88vw,360px)!important;
+    max-width:calc(100vw - 20px)!important;
+    max-height:100dvh!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+  }
+}

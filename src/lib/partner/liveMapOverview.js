@@ -43,7 +43,7 @@ export const LIVE_MAP_OVERVIEW_JOURNEY = [
 ];
 
 export const LIVE_MAP_OVERVIEW_VALUE_CARDS = [
-  { label: "Discover", body: "Map visibility" },
+  { label: "Get found nearby", body: "Map visibility" },
   { label: "Engage", body: "Events, benefits, and QR" },
   { label: "Visit", body: "Directions and real-world actions" },
   { label: "Measure", body: "Reports and recommendations" },

@@ -28,6 +28,19 @@ export interface TrackingEvent {
   entityType?: 'venue' | 'event' | 'building' | 'perk' | string;
   campaign?: string;
   value?: any;
+  pinId?: string;
+  source?: string;
+  tenantId?: string | null;
+  workspaceId?: string | null;
+  partnerId?: string | null;
+  propertyId?: string | null;
+  buildingId?: string | null;
+  perkId?: string | null;
+  eventId?: string | null;
+  queryId?: string;
+  searchQuery?: string;
+  interpretedIntent?: string;
+  resultRank?: number;
 }
 
 export function track(event: TrackingEvent) {
@@ -39,6 +52,14 @@ export function track(event: TrackingEvent) {
     redeem: platformEventTypes.PERK_REDEEMED,
     rsvp: platformEventTypes.EVENT_RSVP,
     search_submit: platformEventTypes.SEARCH_COMPLETED,
+  };
+  const auditEventName: Partial<Record<EventType, string>> = {
+    marker_click: 'pin_selected',
+    drawer_open: 'drawer_opened',
+    save: 'save_clicked',
+    directions: 'directions_clicked',
+    redeem: 'perk_redeemed',
+    rsvp: 'event_rsvp',
   };
 
   void publishPlatformEvent({
@@ -55,17 +76,35 @@ export function track(event: TrackingEvent) {
 
   fireWorkflow('/api/track', {
     ...event,
+    event_name: auditEventName[event.type] || event.type,
+    pin_id: event.pinId || event.entityId,
+    entity_id: event.entityId,
+    entity_type: event.entityType,
+    tenant_id: event.tenantId ?? null,
+    workspace_id: event.workspaceId ?? null,
+    partner_id: event.partnerId ?? null,
+    property_id: event.propertyId ?? null,
+    building_id: event.buildingId ?? null,
+    campaign_id: event.campaign || null,
+    perk_id: event.perkId ?? null,
+    event_id: event.eventId ?? null,
+    query_id: event.queryId,
+    search_query: event.searchQuery,
+    interpreted_intent: event.interpretedIntent,
+    result_rank: event.resultRank,
+    occurred_at: new Date().toISOString(),
     sessionId: getWorkflowSessionId(),
     profileId: getWorkflowProfileId(),
+    source: event.source || 'direct-search',
     sourceType: 'map_discovery',
   });
 }
 
 export const trackingEvents = {
-  markerClick: (entityId: string, entityType: string) =>
-    track({ type: 'marker_click', entityId, entityType }),
+  markerClick: (entityId: string, entityType: string, context: Partial<TrackingEvent> = {}) =>
+    track({ ...context, type: 'marker_click', entityId, entityType }),
 
-  drawerOpen: (entityId: string) => track({ type: 'drawer_open', entityId }),
+  drawerOpen: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'drawer_open', entityId }),
 
   drawerClose: (entityId: string) => track({ type: 'drawer_close', entityId }),
 

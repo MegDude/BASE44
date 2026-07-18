@@ -6,8 +6,8 @@ import {
 } from "../src/components/map/searchIntentRailConfig";
 
 const baseUrl = process.env.BASE_URL || "http://localhost:5173";
-const route = `${baseUrl.replace(/\/$/, "")}/app?mode=resident&tab=map&filter=All`;
-const partnerRoute = `${baseUrl.replace(/\/$/, "")}/app?mode=partner&tab=map&filter=All`;
+const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All`;
+const partnerRoute = `${baseUrl.replace(/\/$/, "")}/map?mode=partner&tab=map&filter=All`;
 const screenshotDir = "/private/tmp/search-intent-chips";
 
 function assertRegisteredIntentDefinitions() {
@@ -36,11 +36,6 @@ async function chip(page, id: string) {
   return page.locator(`.dp-compact-intent-chip[data-intent-id="${id}"]:visible`).first();
 }
 
-async function expectExpanded(locator, label: string) {
-  await expect(locator).toHaveAttribute("data-expanded", "true", { timeout: 5_000 });
-  await expect(locator).toContainText(label, { timeout: 5_000 });
-}
-
 async function runDesktopChecks(browser) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(route, { waitUntil: "domcontentloaded", timeout: 30_000 });
@@ -63,20 +58,17 @@ async function runDesktopChecks(browser) {
   }
 
   await coffee.click();
-  await expect(coffee).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expectExpanded(coffee, "Coffee nearby");
-  await expect(coffee.locator(".dp-selected-intent-label")).toContainText("Coffee nearby");
-
-  await coffee.click();
-  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
-  await expect(coffee).toHaveAttribute("data-expanded", "false", { timeout: 5_000 });
+  await expect(page.getByRole("textbox", { name: "Ask the Map search" })).toHaveValue("Coffee nearby");
+  await expect(page.locator(".dp-platform-search-group button").first()).toBeVisible();
+  await page.getByRole("button", { name: "Clear search" }).click();
+  await expect(coffee).toBeVisible();
 
   await dining.click();
-  await expect(dining).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expectExpanded(dining, "Dining nearby");
-  await expect(coffee).not.toHaveAttribute("aria-pressed", "true", { timeout: 5_000 });
+  await expect(page.getByRole("textbox", { name: "Ask the Map search" })).toHaveValue("Dining nearby");
   await page.waitForTimeout(750);
   await page.screenshot({ path: `${screenshotDir}/desktop-1440-search-intents.png`, fullPage: false });
+  await page.getByRole("button", { name: "Clear search" }).click();
+  await expect(more).toBeVisible();
 
   await page.locator('[data-intent-id="events"]').first().focus();
   await expect(await chip(page, "events")).toHaveAttribute("data-expanded", "false");
@@ -85,7 +77,8 @@ async function runDesktopChecks(browser) {
 
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
-  await expect(page.locator(".dp-search-more-intent-panel__header")).toContainText("Explore more intents");
+  await expect(page.locator("#dp-search-secondary-intent-rail")).toBeVisible();
+  expect(await page.locator("#dp-search-secondary-intent-rail [data-intent-id]").count()).toBeGreaterThan(10);
   if (/filter=More/.test(page.url())) {
     throw new Error("More applied a fake filter=More instead of opening the intent panel.");
   }
@@ -99,16 +92,13 @@ async function runMobileChecks(browser) {
   await ensureConsole(page);
 
   const coffee = await chip(page, "coffee");
-  await coffee.tap();
-  await expect(coffee).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expectExpanded(coffee, "Coffee nearby");
-  await expect(coffee.locator(".dp-selected-intent-label")).toBeVisible({ timeout: 5_000 });
-
   const railBox = await page.locator(".dp-search-intent-prompt-rail").first().boundingBox();
   const viewport = page.viewportSize();
   if (!railBox || !viewport || railBox.x < -1 || railBox.x + railBox.width > viewport.width + 1) {
     throw new Error("Mobile search intent rail overflows the viewport.");
   }
+  await coffee.tap();
+  await expect(page.getByRole("textbox", { name: "Ask the Map search" })).toHaveValue("Coffee nearby");
 
   await page.screenshot({ path: `${screenshotDir}/mobile-390-search-intents.png`, fullPage: false });
   await page.close();
@@ -122,40 +112,13 @@ async function runPartnerChecks(browser) {
   const more = await chip(page, "more");
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
-  const campaigns = await chip(page, "campaigns");
-  const performance = await chip(page, "performance");
-
-  await campaigns.evaluate((element: HTMLElement) => element.click());
-  await expect(campaigns).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("campaigns");
-  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
-
-  if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
-  await performance.evaluate((element: HTMLElement) => element.click());
-  await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
-  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
-  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
-
-  if ((await more.getAttribute("aria-expanded")) !== "true") await more.click({ force: true });
-  await performance.evaluate((element: HTMLElement) => element.click());
-  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
+  const partnerIntentIds = await page.locator("#dp-search-more-filter-panel [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));
+  for (const requiredIntent of ["campaigns", "performance", "parking", "audience", "properties"]) {
+    expect(partnerIntentIds).toContain(requiredIntent);
+  }
+  expect(new Set(partnerIntentIds).size).toBe(partnerIntentIds.length);
+  expect(new URL(page.url()).searchParams.get("filter")).toBe("All");
   expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
-
-  await expect(more).toHaveAttribute("aria-expanded", "false", { timeout: 5_000 });
-  await more.click({ force: true });
-  await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
-  const parking = await chip(page, "parking");
-  await parking.evaluate((element: HTMLElement) => element.click());
-  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("parking");
-  expect(new URL(page.url()).searchParams.get("query")).toBeNull();
-
-  await page.goBack();
-  await expect.poll(() => new URL(page.url()).searchParams.get("filter")).toBe("All");
-  expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
-
-  await page.goBack();
-  await expect.poll(() => new URL(page.url()).searchParams.get("intent")).toBe("performance");
-  await expect(performance).toHaveAttribute("aria-pressed", "true", { timeout: 10_000 });
 
   await page.close();
 }

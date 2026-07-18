@@ -30,6 +30,15 @@ function normalizeGoogleMapsEnv(mode) {
   return { googleMapsApiKey, googleMapsMapId };
 }
 
+function assertProductionGoogleMapsEnv(mode, googleMapsApiKey) {
+  if (mode !== "production") return;
+  if (!/^AIza[0-9A-Za-z_-]{30,}$/.test(String(googleMapsApiKey || "").trim())) {
+    throw new Error(
+      "Production map build blocked: configure a valid VITE_GOOGLE_MAPS_API_KEY or GOOGLE_MAPS_API_KEY.",
+    );
+  }
+}
+
 function localApiRoutes() {
   async function runLocalHandler(req, res, handlerPath, logger, errorMessage) {
     let rawBody = "";
@@ -229,9 +238,11 @@ function localApiRoutes() {
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const { googleMapsApiKey, googleMapsMapId } = normalizeGoogleMapsEnv(mode);
+  assertProductionGoogleMapsEnv(mode, googleMapsApiKey);
 
   return {
   logLevel: 'error', // Suppress warnings, only show errors
+  publicDir: process.env.DP_SKIP_PUBLIC_COPY === "true" ? false : undefined,
   define: {
     "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
     "import.meta.env.VITE_GOOGLE_MAP_ID": JSON.stringify(googleMapsMapId),

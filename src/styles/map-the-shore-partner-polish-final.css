@@ -72,7 +72,7 @@ html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mo
 html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mode="partner"] .dp-shore-partner-actions .dp-entity-action {
   min-height: 44px;
   justify-content: space-between;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid var(--shore-border);
   background: #fff;
   box-shadow: none;
@@ -83,9 +83,9 @@ html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mo
 }
 
 html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mode="partner"] .dp-shore-partner-actions .dp-entity-action.is-primary {
-  border-color: rgba(200, 169, 106, 0.62);
-  background: #fff;
-  color: var(--shore-ink);
+  border-color: var(--shore-ink);
+  background: var(--shore-ink);
+  color: #fff;
 }
 
 html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mode="partner"] .dp-entity-section {

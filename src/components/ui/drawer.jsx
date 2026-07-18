@@ -23,7 +23,7 @@ const DrawerClose = DrawerPrimitive.Close
 const DrawerOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-[#0B1F33]/34 backdrop-blur-[6px]", className)}
+    className={cn("fixed inset-0 z-50 bg-[#0B1F33]/24", className)}
     {...props} />
 ))
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
@@ -34,13 +34,13 @@ const DrawerContent = React.forwardRef(({ className, children, ...props }, ref) 
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "dp-surface fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[var(--dp-radius-md)]",
+        "dp-surface fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[18px] border border-b-0 border-[#0B1F33]/10 bg-white shadow-[0_4px_12px_rgba(11,31,51,0.06),0_22px_56px_rgba(11,31,51,0.10)]",
         className
       )}
       {...props}>
       <div className="mx-auto mt-4 h-1 w-12 rounded-full bg-[#0B1F33]/14" />
       <DrawerPrimitive.Close
-        className="absolute right-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+        className="absolute right-3 top-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-[14px] bg-transparent text-[#0B1F33]/58 transition hover:bg-[#F2F4F7] hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
         aria-label="Close drawer"
       >
         <X className="h-4 w-4" />

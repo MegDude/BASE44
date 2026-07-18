@@ -232,7 +232,7 @@ export default function ResidentialPartner() {
       <PartnerCTASection
         headline="Ready for residents to use it?"
         description="Let's connect your building to Downtown Perks."
-        primaryCTA="Get started"
+        primaryCTA="Connect building"
         primaryHref="#form"
         secondaryLink={{ label: 'View other partners', href: '/partners' }}
       />

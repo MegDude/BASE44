@@ -607,7 +607,6 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page img.dp-active-per
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page img.dp-active-perk-hero.is-logo-fallback {
   object-fit: contain !important;
 }
-
 /* Forms and tabs use the same calm control system. */
 html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-modal, .dp-dialog) :is(input, select, textarea) {
   min-height: 44px !important;
@@ -1016,4 +1015,18 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
     text-decoration-color: rgba(200, 169, 106, 0.72) !important;
     text-underline-offset: 4px !important;
   }
+}
+/* Reports stay on the shared sharp, bright-white workspace surface. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-reports,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-reports :is(
+  section,
+  article,
+  [role="dialog"],
+  [class*="panel"],
+  [class*="drawer"],
+  [class*="card"]
+) {
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
 }

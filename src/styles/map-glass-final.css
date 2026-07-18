@@ -6471,8 +6471,8 @@ body :is(.dp-partner-page, [class*="dashboard"], [class*="Dashboard"], [class*="
   left: 0 !important;
   right: 0 !important;
   bottom: max(8px, env(safe-area-inset-bottom)) !important;
-  width: min(760px, 100vw) !important;
-  max-width: min(760px, 100vw) !important;
+  width: min(760px, calc(100vw - 16px)) !important;
+  max-width: min(760px, calc(100vw - 16px)) !important;
   margin-inline: auto !important;
   height: min(88dvh, calc(100dvh - 18px)) !important;
   max-height: min(88dvh, calc(100dvh - 18px)) !important;

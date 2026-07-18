@@ -1,0 +1,578 @@
+/* Partner Info opening page: one compact, native operating surface. */
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  color: var(--dp-navy) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel .dp-tab-stack {
+  display: grid !important;
+  align-content: start !important;
+  gap: 0 !important;
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 0 18px max(104px, calc(80px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 8px 0 20px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero > div:first-child {
+  display: grid !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero .dp-tab-eyebrow {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.5) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero h2 {
+  max-width: 21ch !important;
+  margin: 0 !important;
+  color: var(--dp-navy) !important;
+  -webkit-text-fill-color: var(--dp-navy) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: clamp(25px, 6.5vw, 32px) !important;
+  font-weight: 700 !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.025em !important;
+  text-wrap: balance !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero > div:first-child > p:not(.dp-tab-eyebrow) {
+  max-width: 54ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.64) !important;
+  font-size: 14px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-media {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  width: fit-content !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-media svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--dp-gold) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 2px !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--dp-navy) !important;
+  -webkit-text-fill-color: var(--dp-navy) !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions .dp-tab-primary-action {
+  border-color: var(--dp-navy) !important;
+  background: var(--dp-navy) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-interactive-matrix {
+  display: grid !important;
+  gap: 14px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-interactive-matrix-header {
+  display: grid !important;
+  gap: 5px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-interactive-matrix-header :is(h3, p) {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-interactive-matrix-header h3 {
+  max-width: 32ch !important;
+  color: var(--dp-navy) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.22 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-interactive-matrix-copy {
+  max-width: 62ch !important;
+  color: rgba(11, 31, 51, 0.6) !important;
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-layout {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail {
+  display: flex !important;
+  gap: 18px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button {
+  flex: 0 0 auto !important;
+  display: grid !important;
+  align-content: center !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 4px 0 9px !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button[aria-selected="true"] {
+  border-bottom-color: var(--dp-gold) !important;
+  color: var(--dp-navy) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button span {
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button small {
+  color: rgba(11, 31, 51, 0.47) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-detail-panel {
+  display: grid !important;
+  gap: 9px !important;
+  width: 100% !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-detail-panel :is(h4, p) {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-detail-panel h4 {
+  color: var(--dp-navy) !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-meta-row,
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-meta-row span {
+  color: rgba(11, 31, 51, 0.5) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row button {
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--dp-navy) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row .dp-matrix-action-primary {
+  border-color: var(--dp-navy) !important;
+  background: var(--dp-navy) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel :is(
+  .dp-partner-info-steps,
+  .dp-info-guide-list,
+  .dp-info-guide-tips,
+  .dp-info-guide-faq,
+  .dp-info-guide-help
+) {
+  display: grid !important;
+  gap: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel :is(.dp-partner-info-steps, .dp-info-guide-list, .dp-info-guide-tips, .dp-info-guide-faq) > .dp-tab-eyebrow {
+  margin: 0 0 8px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-partner-info-steps > div,
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-list .dp-tab-row,
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-faq details {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.075) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-partner-info-steps > div {
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-partner-info-steps > div > span {
+  display: grid !important;
+  width: 28px !important;
+  height: 28px !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--dp-gold-tint) !important;
+  color: var(--dp-navy) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-list .dp-partner-feed-main {
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-list .dp-tab-row-icon {
+  display: grid !important;
+  width: 32px !important;
+  height: 32px !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  background: var(--dp-soft-neutral) !important;
+  color: var(--dp-navy) !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-tips > div {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-tips span {
+  width: 100% !important;
+  padding: 11px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.075) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.7) !important;
+  font-size: 13px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-faq summary {
+  min-height: 44px !important;
+  color: var(--dp-navy) !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.3 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-help {
+  gap: 12px !important;
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-help > div {
+  display: grid !important;
+  gap: 3px !important;
+}
+
+html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-help button {
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--dp-navy) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel .dp-tab-stack {
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-layout {
+    grid-template-columns: 176px minmax(0, 1fr) !important;
+    align-items: start !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail {
+    display: grid !important;
+    gap: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button {
+    width: 100% !important;
+    padding: 8px 10px !important;
+    border-bottom: 0 !important;
+    border-left: 2px solid transparent !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button[aria-selected="true"] {
+    border-left-color: var(--dp-gold) !important;
+    background: var(--dp-soft-neutral) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel .dp-tab-stack {
+    padding-right: 14px !important;
+    padding-left: 14px !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Terminal specificity lock: later recovery sheets intentionally use repeated root IDs. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel .dp-tab-stack {
+  gap: 0 !important;
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 0 18px max(104px, calc(80px + env(safe-area-inset-bottom, 0px))) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero {
+  gap: 10px !important;
+  padding: 8px 0 20px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-hero h2 {
+  max-width: 21ch !important;
+  margin: 0 !important;
+  color: var(--dp-navy) !important;
+  -webkit-text-fill-color: var(--dp-navy) !important;
+  font-size: clamp(25px, 6.5vw, 32px) !important;
+  font-weight: 700 !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-media {
+  display: inline-flex !important;
+  width: fit-content !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 2px !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions > button {
+  display: inline-flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--dp-navy) !important;
+  -webkit-text-fill-color: var(--dp-navy) !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions > .dp-tab-primary-action {
+  border-color: var(--dp-navy) !important;
+  background: var(--dp-navy) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-interactive-matrix {
+  gap: 14px !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button {
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 4px 0 9px !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-selector-rail button[aria-selected="true"] {
+  border-bottom-color: var(--dp-gold) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-detail-panel {
+  gap: 9px !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-shared-info-panel .dp-tab-eyebrow {
+  color: rgba(11, 31, 51, 0.5) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row > button {
+  min-width: 0 !important;
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  color: var(--dp-navy) !important;
+  -webkit-text-fill-color: var(--dp-navy) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-matrix-action-row > .dp-matrix-action-primary {
+  border-color: var(--dp-navy) !important;
+  background: var(--dp-navy) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+@media (max-width: 370px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page-partner .dp-map-drawer-shell .dp-info-guide-actions {
+    grid-template-columns: 1fr !important;
+  }
+}

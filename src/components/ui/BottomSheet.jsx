@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 /**
- * BottomSheet — Mobile gesture-driven drawer with three states
+ * BottomSheet — Mobile gesture-driven drawer with four native states
  * 
- * States: collapsed (preview) → mid (results) → full (detail with CTAs)
+ * States: dismissed → peek → medium → expanded
  * - Tap pin → mid state opens
  * - Swipe up → expands to full
  * - Swipe down → collapses back
@@ -27,27 +27,32 @@ export default function BottomSheet({
   const sheetRef = useRef(null);
   const startYRef = useRef(0);
   const startStateRef = useRef(state);
+  const [viewportHeight, setViewportHeight] = useState(() => window.innerHeight);
 
   const HEIGHTS = {
     collapsed: 80,
-    mid: Math.min(window.innerHeight * 0.5, 450),
-    full: window.innerHeight,
+    peek: Math.min(viewportHeight * 0.28, 240),
+    mid: Math.min(viewportHeight * 0.54, 480),
+    medium: Math.min(viewportHeight * 0.54, 480),
+    expanded: Math.min(viewportHeight * 0.88, 820),
+    full: Math.min(viewportHeight * 0.88, 820),
   };
 
-  const STATE_ORDER = ['collapsed', 'mid', 'full'];
-  const currentIndex = STATE_ORDER.indexOf(state);
+  const STATE_ORDER = ['collapsed', 'peek', 'medium', 'expanded'];
+  const normalizedState = state === 'mid' ? 'medium' : state === 'full' ? 'expanded' : state;
+  const currentIndex = Math.max(0, STATE_ORDER.indexOf(normalizedState));
 
   // Handle drag gesture
   const handleMouseDown = (e) => {
     if (!isDraggable) return;
     startYRef.current = e.clientY;
-    startStateRef.current = state;
+    startStateRef.current = normalizedState;
   };
 
   const handleTouchStart = (e) => {
     if (!isDraggable) return;
     startYRef.current = e.touches[0].clientY;
-    startStateRef.current = state;
+    startStateRef.current = normalizedState;
   };
 
   const handleMouseUp = (e) => {
@@ -112,21 +117,27 @@ export default function BottomSheet({
     }
   }, [state]);
 
-  const height = HEIGHTS[state];
+  useEffect(() => {
+    const updateViewportHeight = () => setViewportHeight(window.innerHeight);
+    window.addEventListener('resize', updateViewportHeight);
+    return () => window.removeEventListener('resize', updateViewportHeight);
+  }, []);
+
+  const height = HEIGHTS[normalizedState] || HEIGHTS.medium;
   const bottomSafeArea = 'env(safe-area-inset-bottom)';
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      {state !== 'collapsed' && (
+      {normalizedState !== 'collapsed' && (
         <>
           {/* Backdrop (only on full) */}
-          {state === 'full' && (
+          {normalizedState === 'expanded' && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => onStateChange?.('mid')}
-              className="fixed inset-0 bg-black/20 z-[29]"
+              onClick={() => onStateChange?.('medium')}
+              className="fixed inset-0 bg-[#0B1F33]/20 z-[29]"
             />
           )}
 
@@ -134,14 +145,14 @@ export default function BottomSheet({
           <motion.div
             ref={sheetRef}
             initial={{ y: HEIGHTS.collapsed }}
-            animate={{ y: window.innerHeight - height }}
-            exit={{ y: window.innerHeight }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            animate={{ y: viewportHeight - height }}
+            exit={{ y: viewportHeight }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="fixed inset-x-0 bottom-0 z-30 bg-white rounded-t-3xl shadow-2xl overflow-hidden flex flex-col"
+            className="fixed inset-x-0 bottom-0 z-30 overflow-hidden rounded-t-[18px] border border-b-0 border-[#0B1F33]/10 bg-white shadow-[0_4px_12px_rgba(11,31,51,0.06),0_22px_56px_rgba(11,31,51,0.10)] flex flex-col"
             style={{
               height,
               paddingBottom: `calc(${bottomSafeArea})`,
@@ -156,10 +167,12 @@ export default function BottomSheet({
                 onTouchStart={handleTouchStart}
               >
                 <div className="w-12 h-1 rounded-full bg-[#0B1F33]/8" />
-                {state === 'full' && (
+                {normalizedState === 'expanded' && (
                   <button
-                    onClick={() => onStateChange?.('mid')}
-                    className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-white transition-colors"
+                    type="button"
+                    aria-label="Collapse sheet"
+                    onClick={() => onStateChange?.('medium')}
+                    className="w-11 h-11 rounded-[14px] bg-white flex items-center justify-center hover:bg-[#F2F4F7] transition-colors"
                   >
                     <X className="w-4 h-4 text-[#0B1F33]" />
                   </button>
@@ -170,7 +183,7 @@ export default function BottomSheet({
             {/* Content container */}
             <div
               className={`w-full ${
-                state === 'full'
+                normalizedState === 'expanded'
                   ? 'flex-1 overflow-y-auto'
                   : 'max-h-[calc(100%-44px)] overflow-y-auto'
               }`}

@@ -181,7 +181,7 @@ function premiumFourSeasonsExperience(input) {
       href: "https://www.fourseasons.com/austin/",
     },
     actions: [cta, "Get Directions", "Save", "Share"].filter(Boolean),
-    tags: ["premium experience", "four seasons", ...searchTags],
+    tags: ["hotel experience", "four seasons", ...searchTags],
     searchKeywords: [title, category, shortDescription, ...perfectFor, ...includes, ...searchTags],
     relatedEntityIds: ["four-seasons-austin", ...relatedEntityIds],
     pinKey: pinKey || "experience",
@@ -569,9 +569,9 @@ export const FOUR_SEASONS_WEEK_CAMPAIGN = {
   secondaryAction: "Get Directions",
   rewardLabel: "Dining, spa, water, music, shopping, and hotel-service experiences",
   stats: ["Wine tasting", "Afternoon tea", "Pool daybeds", "Waterfront adventure", "Spa"],
-  tags: ["Campaigns", "Four Seasons", "Premium experiences", "Dining", "Spa", "Waterfront", "Luxury shopping"],
+  tags: ["Campaigns", "Four Seasons", "Hotel experiences", "Dining", "Spa", "Waterfront", "Shopping"],
   searchKeywords: ["four seasons experiences", "four seasons austin", "wine tasting", "afternoon tea", "pool daybeds", "kayak", "paddleboarding", "boat cruise", "agave tasting", "honey rose ritual"],
-  residentSearchIntents: ["Four Seasons", "Premium Experiences", "Wellness", "Dining", "Waterfront", "Luxury Shopping"],
+  residentSearchIntents: ["Four Seasons", "Hotel Experiences", "Wellness", "Dining", "Waterfront", "Shopping"],
   source: "Downtown Perks Four Seasons Austin experience cluster",
 };
 

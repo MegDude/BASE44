@@ -41,7 +41,7 @@ export default function TheWaterline() {
       <BrandHero
         eyebrow="Premium Residential · Downtown Austin"
         headline={<>The Waterline doesn't just<br /><span className="text-primary">overlook downtown. It runs it.</span></>}
-        support="Downtown Perks becomes a live extension of The Waterline — delivering neighborhood intelligence, exclusive access, and real-time local context directly to residents."
+        support="Residents can find nearby places, building perks, and current neighborhood updates."
         ctaLabel="Explore the Partnership"
         ctaHref="mailto:partners@downtownperks.com"
         demoPanel={demo}
@@ -69,7 +69,7 @@ export default function TheWaterline() {
               { icon: Crown, label: "Prestige positioning", desc: "The Waterline appears first on the premium map layer — anchoring the district." },
               { icon: Globe, label: "Neighborhood intelligence", desc: "Residents receive curated local context — not a generic city feed." },
               { icon: Eye, label: "Arrival experience", desc: "New residents step into a connected neighborhood on day one." },
-              { icon: Star, label: "Exclusive access", desc: "Members-only events and first-to-know perks tied to residency." },
+              { icon: Star, label: "Resident access", desc: "Resident events and building perks." },
             ].map((item, i) => (
               <motion.div
                 key={i}

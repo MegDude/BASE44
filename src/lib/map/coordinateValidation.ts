@@ -24,8 +24,7 @@ export function validateCoordinate(latitude: unknown, longitude: unknown): Coord
   const lng = toFiniteNumber(longitude);
 
   if (lat === null || lng === null || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-    const coordinateWasProvided = latitude !== undefined || longitude !== undefined;
-    if (import.meta.env.DEV && coordinateWasProvided) {
+    if (import.meta.env.DEV) {
       console.warn("[CoordinateValidation] Invalid coordinate", { latitude, longitude });
     }
     return null;

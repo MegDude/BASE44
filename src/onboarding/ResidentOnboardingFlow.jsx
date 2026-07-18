@@ -171,7 +171,7 @@ function OnboardingShell({ step, state, children, onBack, onSkip }) {
   );
 }
 
-function ActionBar({ label = "Continue", onContinue, disabled = false, description }) {
+function ActionBar({ label = "Next", onContinue, disabled = false, description }) {
   return (
     <div className="dp-onboarding-actionbar">
       {description ? <p role="status">{description}</p> : null}

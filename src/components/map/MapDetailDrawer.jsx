@@ -17,20 +17,6 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
   const isSaved = history.saved.includes(entity.id);
   const pin = resolveEntityPin(entity);
-  const heroImage = [
-    entity?.primaryImage,
-    entity?.heroImage,
-    entity?.image,
-    entity?.thumbnail,
-    entity?.media?.image,
-    entity?.raw?.primaryImage,
-    entity?.raw?.heroImage,
-    entity?.raw?.image,
-    entity?.raw?.thumbnail,
-    Array.isArray(entity?.galleryImages) ? entity.galleryImages[0] : "",
-    Array.isArray(entity?.raw?.galleryImages) ? entity.raw.galleryImages[0] : "",
-  ].filter(Boolean)[0] || "";
-  const heroAlt = entity?.name ? `${entity.name} media` : "Downtown Perks map detail media";
 
   const handleSave = () => {
     if (isSaved) {

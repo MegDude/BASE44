@@ -2811,9 +2811,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "aris",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/aris/aris_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/aris/aris_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/aris/aris_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "West 6th",
@@ -2980,9 +2982,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "atx-cocina",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/atx-cocina/atx-cocina_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/atx-cocina/atx-cocina_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/atx-cocina/atx-cocina_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Downtown Core",
@@ -10479,9 +10483,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "las-perlas",
-    "heroImage": "/images/fallbacks/drinks.jpg",
-    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/las-perlas/las-perlas_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/las-perlas/las-perlas_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/las-perlas/las-perlas_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/drinks.jpg",
     "inheritance": {
       "district": "Downtown Core",
@@ -10492,9 +10498,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "las-perlas",
-    "heroImage": "/images/fallbacks/drinks.jpg",
-    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/las-perlas/las-perlas_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/las-perlas/las-perlas_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/las-perlas/las-perlas_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/drinks.jpg",
     "inheritance": {
       "district": "Red River",
@@ -12983,9 +12991,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "pelon-s",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/pelons/pelons_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/pelons/pelons_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/pelons/pelons_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Red River",
@@ -12996,9 +13006,11 @@ export const heroImageRegistry = [
   },
   {
     "slug": "pelons-tex-mex",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
+    "heroImage": "/images/map-listing-actual/pelons/pelons_hero_clean_1600x900.png",
+    "thumbnail": "/images/map-listing-actual/pelons/pelons_map_thumb_512x512.png",
+    "gallery": [
+      "/images/map-listing-actual/pelons/pelons_listing_card_1600x900.png"
+    ],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Red River",

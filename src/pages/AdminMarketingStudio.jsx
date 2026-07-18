@@ -9,7 +9,6 @@ import {
   DOWNTOWN_PERKS_OS_AREAS,
   STUDIO_STATUS_CARDS,
 } from "@/content/downtown-perks/downtownPerksOSBlueprint";
-import { ADMIN_RESOURCES } from "@/config/adminResources";
 
 function getActiveStudioRoute(pathname) {
   return ADMIN_STUDIO_ROUTES.find((route) => pathname.includes(route.id)) || ADMIN_STUDIO_ROUTES[0];
@@ -258,22 +257,6 @@ export default function AdminMarketingStudio() {
               {rule}
             </span>
           ))}
-        </section>
-
-        <section className="dp-admin-resource-dashboard" aria-labelledby="admin-resources-heading">
-          <div>
-            <span>Resources</span>
-            <h2 id="admin-resources-heading">Open the routes your team uses most.</h2>
-          </div>
-          <div>
-            {ADMIN_RESOURCES.map((resource) => (
-              <Link key={resource.id} to={resource.href}>
-                <strong>{resource.label}</strong>
-                <p>{resource.description}</p>
-                <span>Open resource</span>
-              </Link>
-            ))}
-          </div>
         </section>
       </main>
       <MobileStudioNav activeRoute={activeRoute} />

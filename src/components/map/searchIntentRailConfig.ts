@@ -9,6 +9,7 @@ import {
   Car,
   Clock,
   Coffee,
+  CreditCard,
   Dumbbell,
   Gift,
   HeartPulse,
@@ -28,6 +29,7 @@ import {
   ShoppingBag,
   Sandwich,
   CookingPot,
+  Sparkles,
   Star,
   Utensils,
   Wine,
@@ -38,17 +40,17 @@ import { resolveSearchIntent } from "../../map/searchIntent/mapIntentRegistry";
 const SEARCH_INTENT_COPY = {
   breakfast: {
     fullLabel: "Breakfast nearby",
-    description: "Morning cafes, breakfast counters and walkable brunch starts",
+    description: "Coffee, breakfast, and brunch within walking distance.",
   },
   coffee: {
     fullLabel: "Coffee nearby",
-    description: "Coffee shops, cafes, active perks and curated coffee routes",
+    description: "Nearby coffee, cafés, and active perks.",
     includesRoutes: true,
     includesPerks: true,
   },
   lunch: {
     fullLabel: "Lunch nearby",
-    description: "Fast lunches, food halls, restaurants and midday perks",
+    description: "Quick lunches, restaurants, and midday perks.",
     includesPerks: true,
   },
   dinner: {
@@ -58,30 +60,30 @@ const SEARCH_INTENT_COPY = {
   },
   dining: {
     fullLabel: "Dining nearby",
-    description: "Restaurants, food halls, dining perks and curated collections",
+    description: "Restaurants, food halls, and places worth booking.",
     includesCollections: true,
     includesPerks: true,
   },
   drinks: {
     fullLabel: "Drinks nearby",
-    description: "Bars, patios, nightlife stops and drink-friendly routes",
+    description: "Bars, patios, and places for a drink nearby.",
     includesRoutes: true,
   },
   happy_hour: {
     fullLabel: "Happy Hour now",
-    description: "Active offers, participating venues and happy-hour routes",
+    description: "Happy hours and offers available now.",
     includesRoutes: true,
     includesPerks: true,
   },
   events: {
     fullLabel: "Events nearby",
-    description: "Upcoming events, venues, campaigns and event collections",
+    description: "Events happening today and coming up.",
     includesCampaigns: true,
     includesCollections: true,
   },
   more: {
     fullLabel: "Explore more intents",
-    description: "Hotels, properties, nightlife, wellness, shopping and civic places",
+    description: "More ways to explore downtown.",
   },
   happy_hour_route: {
     fullLabel: "Happy Hour route",
@@ -120,12 +122,12 @@ const SEARCH_INTENT_COPY = {
   },
   hotels: {
     fullLabel: "Hotels nearby",
-    description: "Hotels, guest-ready routes and nearby downtown anchors",
+    description: "Hotels and useful places nearby.",
     includesRoutes: true,
   },
   properties: {
     fullLabel: "Properties nearby",
-    description: "Residential buildings, listings and nearby district context",
+    description: "Buildings, homes, and listings downtown.",
   },
   legends: {
     fullLabel: "Legends listings",
@@ -183,12 +185,12 @@ const SEARCH_INTENT_COPY = {
   },
   perks: {
     fullLabel: "Perks nearby",
-    description: "Active offers, redemptions and participating places",
+    description: "Perks available at participating places.",
     includesPerks: true,
   },
   near_me: {
     fullLabel: "Nearby now",
-    description: "Closest places, perks and useful map results around you",
+    description: "The closest useful places and offers.",
     includesPerks: true,
   },
   open_now: {
@@ -253,7 +255,7 @@ export const SEARCH_INTENT_RAIL = [
   { id: "coffee", label: "Coffee", filter: "Coffee", prompt: "Coffee nearby", icon: Coffee, defaultVisible: true },
   { id: "lunch", label: "Lunch", filter: "Lunch", prompt: "Lunch nearby", icon: Sandwich, defaultVisible: true },
   { id: "dinner", label: "Dinner", filter: "Dinner", prompt: "Dinner nearby", icon: CookingPot, defaultVisible: true },
-  { id: "dining", label: "Dining", filter: "Dining", prompt: "Dining nearby", icon: Utensils, defaultVisible: true },
+  { id: "dining", label: "Dining", filter: "Dining", prompt: "Dining nearby", icon: Sparkles, defaultVisible: true },
   { id: "drinks", label: "Drinks", filter: "Drinks", prompt: "Drinks nearby", icon: Wine, defaultVisible: true },
   { id: "happy_hour", label: "Happy Hour", filter: "Happy Hour", prompt: "Happy Hour nearby", icon: BadgePercent, defaultVisible: true },
   { id: "events", label: "Events", filter: "Events", prompt: "Events nearby", icon: CalendarDays, defaultVisible: true },
@@ -262,7 +264,7 @@ export const SEARCH_INTENT_RAIL = [
   { id: "daa_art_walk", label: "DAA Art Walk", filter: "Civic", collection: "daa-art-walk", prompt: "DAA Art Walk walking route", icon: Route, defaultVisible: true },
   { id: "waterloo_walk", label: "Waterloo Walk", filter: "Civic", collection: "waterloo-greenway", prompt: "Waterloo Greenway discovery walk", icon: Route, defaultVisible: true },
   { id: "stories_walk", label: "Stories Walk", filter: "Civic", collection: "downtown-stories-walk", prompt: "Downtown stories walk", icon: Route, defaultVisible: true },
-  { id: "inkind", label: "inKind", filter: "inKind", prompt: "inKind offers", icon: BadgePercent, defaultVisible: true },
+  { id: "inkind", label: "inKind", filter: "inKind", prompt: "inKind offers", icon: CreditCard, defaultVisible: true },
   { id: "hotels", label: "Hotels", filter: "Hotels", prompt: "Hotels nearby", icon: Hotel, defaultVisible: true },
   { id: "properties", label: "Properties", filter: "Properties", prompt: "Properties nearby", icon: Building2, defaultVisible: true },
   { id: "legends", label: "Legends", filter: "Legends", prompt: "Legends listings", icon: Star, defaultVisible: true },
@@ -275,7 +277,7 @@ export const SEARCH_INTENT_RAIL = [
   { id: "wellness", label: "Wellness", filter: "Wellness", prompt: "Wellness nearby", icon: HeartPulse, defaultVisible: true },
   { id: "retail", label: "Retail", filter: "Retail", prompt: "Retail nearby", icon: ShoppingBag, defaultVisible: true },
   { id: "parking", label: "Parking", filter: "Parking", prompt: "Parking nearby", icon: Car, defaultVisible: false },
-  { id: "utilities", label: "Utilities", filter: "Services", prompt: "Utilities nearby", icon: Info, defaultVisible: false },
+  { id: "utilities", label: "Utilities", filter: "Services", prompt: "Utilities nearby", icon: Sparkles, defaultVisible: false },
   { id: "perks", label: "Perks", filter: "Perks", prompt: "Perks I can use", icon: Gift, defaultVisible: false },
   { id: "near_me", label: "Nearby", filter: "Nearby", prompt: "Nearby", icon: Navigation, defaultVisible: false },
   { id: "open_now", label: "Open Now", filter: "Open Now", prompt: "Open now nearby", icon: Clock, defaultVisible: false },
@@ -291,7 +293,7 @@ export const SEARCH_INTENT_RAIL = [
   { id: "visitor_info", label: "Visitor Info", filter: "Visitor Info", prompt: "Visitor info nearby", icon: Info, defaultVisible: false },
   { id: "cleaning", label: "Cleaners", filter: "Cleaners", prompt: "Cleaners nearby", icon: Shirt, defaultVisible: false },
   { id: "shipping", label: "Shipping", filter: "Shipping", prompt: "Shipping nearby", icon: Package, defaultVisible: false },
-  { id: "services", label: "Services", filter: "Services", prompt: "Services nearby", icon: Info, defaultVisible: false },
+  { id: "services", label: "Services", filter: "Services", prompt: "Services nearby", icon: Sparkles, defaultVisible: false },
 ] as const;
 
 export const SEARCH_INTENT_RAIL_WITH_CANONICAL_INTENTS = SEARCH_INTENT_RAIL.map((item) => ({
@@ -304,12 +306,14 @@ const PRIMARY_SEARCH_INTENT_IDS = [
   "breakfast",
   "coffee",
   "lunch",
-  "dinner",
   "dining",
   "drinks",
   "happy_hour",
   "events",
-  "legends",
+  "perks",
+  "hotels",
+  "properties",
+  "near_me",
 ] as const;
 
 const SECONDARY_SEARCH_INTENT_IDS = [
@@ -319,9 +323,8 @@ const SECONDARY_SEARCH_INTENT_IDS = [
   "waterloo_walk",
   "stories_walk",
   "inkind",
-  "hotels",
-  "properties",
   "legends",
+  "dinner",
   "arts",
   "live_music",
   "civic",

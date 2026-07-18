@@ -7,6 +7,7 @@ const panelNavigationSource = await readFile(new URL("../src/hooks/useMapPanelNa
 const sheetCss = await readFile(new URL("../src/styles/active-perks-sheet.css", import.meta.url), "utf8");
 const mainSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 
+assert.match(mapSource, /"Featured"/, "Featured must remain a canonical resident filter");
 assert.match(mapSource, /discoverDisplayPlaces\s*\.filter\(\(place\) => hasActivePerkData\(place\)\)\s*\.slice\(0,\s*40\)/s, "active perks must be derived from canonical map data and capped at 40");
 assert.match(mapSource, /getCanonicalResidentPerkId/, "perk selection must use the canonical perk resolver");
 assert.match(mapSource, /tab: "map", entityId:[^\n]+perkId: nextPerkId/, "perk rows must write entity and perk context into the canonical map URL");

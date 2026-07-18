@@ -1,0 +1,117 @@
+/* Keep the map command surface readable and anchored independently of map motion. */
+html body #root .dp-map-page .dp-map-search-anchor {
+  position: fixed !important;
+  top: calc(68px + env(safe-area-inset-top, 0px)) !important;
+  right: auto !important;
+  left: 50% !important;
+  width: min(760px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 910 !important;
+}
+
+html body #root .dp-map-page .dp-map-search-anchor .dp-map-top-nav,
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+}
+
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-console,
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-rollup {
+  border-color: rgba(11, 31, 51, 0.14) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 8px 28px rgba(11, 31, 51, 0.14) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: #0b1f33 !important;
+  opacity: 1 !important;
+}
+
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-input-row,
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-console-header,
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-prompt-rail {
+  background: #fff !important;
+}
+
+html body #root .dp-map-page .dp-map-search-anchor .dp-search-intent-rollup {
+  min-height: 48px !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page .dp-map-search-anchor {
+    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+}
+
+html body #dp-map-search-console-lock#dp-map-search-console-lock#dp-map-search-console-lock#dp-map-search-console-lock {
+  position: fixed !important;
+  top: calc(68px + env(safe-area-inset-top, 0px)) !important;
+  right: auto !important;
+  left: 50% !important;
+  width: min(520px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 1320 !important;
+}
+
+@media (max-width: 767px) {
+  html body #dp-map-search-console-lock#dp-map-search-console-lock#dp-map-search-console-lock#dp-map-search-console-lock {
+    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
+@media (max-width: 375px) {
+  html body #root .dp-map-page .dp-map-search-anchor {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+}
+
+/* Final specificity lock against legacy recovery bundles. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+  position: fixed !important;
+  top: calc(68px + env(safe-area-inset-top, 0px)) !important;
+  right: auto !important;
+  left: 50% !important;
+  width: min(760px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 1320 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-search-anchor :is(.dp-search-intent-console.dp-search-intent-console,.dp-search-intent-rollup.dp-search-intent-rollup) {
+  border-color: rgba(11, 31, 51, 0.14) !important;
+  background: #fff !important;
+  box-shadow: 0 8px 28px rgba(11, 31, 51, 0.14) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+  position: fixed !important;
+  top: calc(68px + env(safe-area-inset-top, 0px)) !important;
+  left: 50% !important;
+  width: min(520px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-search-anchor.dp-map-search-anchor {
+    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-search-anchor .dp-search-intent-console-wrap.dp-search-intent-console-wrap {
+    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+  }
+}

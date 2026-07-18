@@ -99,7 +99,7 @@ export default function ResidentBuildingsTab({ user }) {
                       {building.units} units
                     </p>
                     <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                      Learn more
+                      View building
                     </span>
                   </div>
                 </div>

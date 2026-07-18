@@ -13,4 +13,8 @@ for (const row of rows) {
   if (!media.some((file) => file.startsWith(`${row.entity_id}.`))) throw new Error(`${row.entity_id} is missing local media`);
 }
 
+const rainey = rows.find((row) => row.entity_id === "70-rainey");
+if (!rainey) throw new Error("70-rainey canonical residential record is missing");
+if (!rainey.resident_actions.includes("Save") || !rainey.partner_actions.includes("View reports")) throw new Error("70-rainey is missing audience actions");
+
 console.log(JSON.stringify({ buildings: rows.length, uniqueIds: new Set(ids).size, mediaAssets: media.length, status: "passed" }, null, 2));

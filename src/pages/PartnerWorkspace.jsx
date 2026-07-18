@@ -6,6 +6,10 @@ import { base44 } from "@/api/base44Client";
 import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import "@/styles/workspace-profile-editor.css";
 import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
+import { WorkspaceSheetProvider } from "@/components/partner/workspace/WorkspaceSheetSystem";
+import { WorkspaceDestinationRoot } from "@/components/partner/workspace/WorkspaceDestinationRoot";
+import { WorkspaceExperienceSystem } from "@/components/partner/workspace/WorkspaceExperienceSystem";
+import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunchBrief";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
@@ -100,14 +104,16 @@ const WORKSPACE_MEDIA = [
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
 
+const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Launch", href: "/partner-workspace/launch", helper: "Decisions, relationships, and proof." };
+
 const WORKSPACE_NAV_GROUPS = [
-  { label: "Workspace", ids: ["overview", "assistant", "map", "profile"] },
+  { label: "Workspace", ids: ["overview", "launch", "assistant", "map", "profile"] },
   { label: "Publish", ids: ["offers", "events", "campaigns", "broadcasts"] },
   { label: "Review", ids: ["audience", "surveys", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
 ].map((group) => ({
   ...group,
-  items: group.ids.map((id) => PARTNER_WORKSPACE_NAV.find((item) => item.id === id)).filter(Boolean),
+  items: group.ids.map((id) => id === "launch" ? LAUNCH_WORKSPACE_NAV_ITEM : PARTNER_WORKSPACE_NAV.find((item) => item.id === id)).filter(Boolean),
 }));
 
 const PERK_CATEGORIES = ["discount", "free_item", "priority_access", "members_rate", "experience", "class_pass"];
@@ -264,6 +270,10 @@ function friendlyWorkspaceStatus(status) {
 const WORKSPACE_STORAGE_PREFIX = "dp_partner_workspace";
 
 function getWorkspaceTabFromPath(pathname) {
+  if (pathname.includes("/partner-workspace/launch")) return "launch";
+  if (pathname.includes("/partner-workspace/publish")) return "publish";
+  if (pathname.includes("/partner-workspace/performance")) return "performance";
+  if (pathname.includes("/partner-workspace/workspace")) return "workspace";
   if (pathname.includes("/assistant") || pathname.includes("/ask-map")) return "assistant";
   if (pathname.includes("/map")) return "map";
   if (pathname.includes("/offers") || pathname.includes("/perks")) return "offers";
@@ -564,6 +574,14 @@ async function deleteWorkspaceItem(entityName, kind, email, id) {
 }
 
 export default function PartnerWorkspace() {
+  return (
+    <WorkspaceSheetProvider>
+      <PartnerWorkspaceContent />
+    </WorkspaceSheetProvider>
+  );
+}
+
+function PartnerWorkspaceContent() {
   const location = useLocation();
   const [user, setUser] = useState(() => ({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) }));
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
@@ -701,11 +719,15 @@ export default function PartnerWorkspace() {
         {WORKSPACE_MEDIA_TABS.includes(tab) ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
+          {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
+          {tab === "publish" && <WorkspaceDestinationRoot key="publish" destination="publish" organizationId={activeOrganizationId} />}
+          {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" organizationId={activeOrganizationId} />}
+          {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" organizationId={activeOrganizationId} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
-          {tab === "campaigns" && <WorkspaceRegistryPanel key="campaigns" tabId="campaigns" />}
+          {tab === "campaigns" && <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />}
           {tab === "offers" && <PerksManager key="offers" user={user} />}
           {tab === "events" && <EventsManager key="events" user={user} />}
-          {tab === "surveys" && <WorkspaceRegistryPanel key="surveys" tabId="surveys" />}
+          {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
@@ -720,7 +742,7 @@ export default function PartnerWorkspace() {
           </div>
         </main>
       </div>
-      <PartnerMobileTabBar activeTab={tab} />
+      <PartnerMobileTabBar activeTab={tab === "launch" ? "overview" : tab} />
     </div>
   );
 }
@@ -1567,16 +1589,16 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
       <section className="dp-workspace-context dp-os-workspace-context" aria-labelledby="workspace-context-title">
         <div className="dp-workspace-switcher-compact">
           <span id="workspace-context-title">Workspace</span>
-          <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen}>
+          <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen} aria-label={`Switch workspace. Current workspace: ${selectedOrganization?.name || "Partner workspace"}`}>
             <strong>{selectedOrganization?.name}</strong>
             <small>{friendlyRoleLabel(selectedOrganization?.role)} — {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
             <ChevronDown aria-hidden="true" />
           </button>
           {workspaceMenuOpen ? (
-            <div className="dp-workspace-switcher-menu" role="dialog" aria-label="Choose workspace">
+            <div className="dp-workspace-switcher-menu" role="dialog" aria-label="Switch workspace">
               <div className="dp-workspace-menu-head">
                 <strong>Choose workspace</strong>
-                <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close workspace chooser"><X aria-hidden="true" /></button>
+                <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /></button>
               </div>
               <label>
                 <Search aria-hidden="true" />
@@ -1625,7 +1647,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         <div className="dp-operating-section-header">
           <div><p className="dp-workspace-eyebrow">Results for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
           {isLegends ? (
-            <span className="dp-seo-period-note">Analytics Snapshot · {formatWorkspaceDate(legendsSeoReport.capturedAt)}</span>
+            <span className="dp-seo-period-note">Search results captured · {formatWorkspaceDate(legendsSeoReport.capturedAt)}</span>
           ) : (
             <label className="dp-period-select">Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
           )}
@@ -1660,9 +1682,9 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
       <section className="dp-operating-section" aria-labelledby="current-work-title">
         <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Current activity</p><h2 id="current-work-title">Work that is live now.</h2></div></div>
         <div className="dp-current-work-grid">
-          <WorkspaceActivityPanel title="Active offers" items={activePerks} empty="No active offers" emptyAction="Create an offer to begin tracking resident use." href="/partner-workspace/offers" />
-          <WorkspaceActivityPanel title="Upcoming events" items={upcomingEvents} empty="No upcoming events" emptyAction="Publish an event when the date and location are ready." href="/partner-workspace/events" />
-          <WorkspaceActivityPanel title="Live campaigns" items={isLarryAndGuy ? [larryAndGuyWorkspaceCampaign] : []} empty="No live campaigns" emptyAction="Publish a campaign around one clear action." href="/partner-workspace/campaigns" />
+          <WorkspaceActivityPanel title="Active offers" items={activePerks} empty="No active offers" emptyAction="Create an offer to begin tracking resident use." actionLabel="Create offer" href="/partner-workspace/offers" />
+          <WorkspaceActivityPanel title="Upcoming events" items={upcomingEvents} empty="No upcoming events" emptyAction="Publish an event when the date and location are ready." actionLabel="Publish event" href="/partner-workspace/events" />
+          <WorkspaceActivityPanel title="Live campaigns" items={isLarryAndGuy ? [larryAndGuyWorkspaceCampaign] : []} empty="No live campaigns" emptyAction="Publish a campaign around one clear action." actionLabel="Create campaign" href="/partner-workspace/campaigns" />
         </div>
       </section>
 
@@ -1671,11 +1693,11 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   );
 }
 
-function WorkspaceActivityPanel({ title, items, empty, emptyAction, href }) {
+function WorkspaceActivityPanel({ title, items, empty, emptyAction, actionLabel, href }) {
   return (
     <article className="dp-work-activity-panel">
       <header><h3>{title}</h3><Link to={href}>View all</Link></header>
-      {items.length ? <ul>{items.slice(0, 3).map((item) => <li key={item.id}><strong>{item.title}</strong><span>{item.status}</span></li>)}</ul> : <div className="dp-work-empty"><strong>{empty}</strong><p>{emptyAction}</p><Link to={href}>Get started</Link></div>}
+      {items.length ? <ul>{items.slice(0, 3).map((item) => <li key={item.id}><strong>{item.title}</strong><span>{item.status}</span></li>)}</ul> : <div className="dp-work-empty"><strong>{empty}</strong><p>{emptyAction}</p><Link to={href}>{actionLabel}</Link></div>}
     </article>
   );
 }
@@ -2229,7 +2251,7 @@ function DaaCivicWorkspacePanel() {
       support: "Places where people want more history, detail, or visitor information.",
       items: learningStops.map((label) => ({
         label,
-        meta: "Learn more",
+        meta: "Visitor context",
         detail: `${label} is a good place for richer copy, better QR prompts, and nearby tour details.`,
         href: stopHref(label),
       })),

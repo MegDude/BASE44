@@ -17,7 +17,7 @@ const SheetPortal = SheetPrimitive.Portal
 const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-[#0B1F33]/34 backdrop-blur-[6px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-[#0B1F33]/24 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -26,7 +26,7 @@ const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-white/94 p-6 shadow-[0_24px_80px_rgba(11,31,51,0.13),0_0_44px_rgba(191,164,106,0.05)] backdrop-blur-[20px] transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "dp-native-sheet-surface fixed z-50 gap-4 border border-[#0B1F33]/10 bg-white p-6 shadow-[0_4px_12px_rgba(11,31,51,0.06),0_22px_56px_rgba(11,31,51,0.10)] transition ease-out data-[state=open]:animate-in data-[state=closed]:animate-out",
   {
     variants: {
       side: {
@@ -49,7 +49,7 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
     <SheetOverlay />
     <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
       <SheetPrimitive.Close
-        className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/58 transition hover:text-[#0B1F33] focus:outline-none focus:ring-2 focus:ring-[#BFA46A] disabled:pointer-events-none">
+        className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-[14px] bg-transparent text-[#0B1F33]/58 transition hover:bg-[#F2F4F7] hover:text-[#0B1F33] focus:outline-none focus:ring-2 focus:ring-[#BFA46A] disabled:pointer-events-none">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>

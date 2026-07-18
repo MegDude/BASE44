@@ -47,7 +47,7 @@ const sections: Array<{ id: string; title: string; copy: string; icon: typeof St
   { id: "partners", title: "Featured partners and brands", copy: "Open a specific partner context on the existing map.", icon: Flag, items: featuredPartners },
   { id: "buildings", title: "Buildings and properties", copy: "Review residential and mixed-use map surfaces.", icon: Building2, items: buildings },
   { id: "campaigns", title: "Campaigns", copy: "Open active campaign records without changing campaign routing.", icon: Megaphone, items: mapNativeCampaigns.slice(0, 8).map((campaign) => ({ title: campaign.title, detail: campaign.summary || campaign.description, meta: campaign.sponsorName || "Campaign", href: `/map?mode=partner&tab=map&filter=Campaigns&entityId=${encodeURIComponent(campaign.id)}` })) },
-  { id: "routes", title: "Routes and collections", copy: "Launch ordered walks and curated downtown experiences.", icon: Route, items: mapCollections.map((collection) => ({ title: collection.title, detail: collection.description, meta: `${collection.estimatedTime} · ${collection.distanceLabel}`, href: `/map?mode=partner&tab=map&collection=${encodeURIComponent(collection.id)}` })) },
+  { id: "routes", title: "Routes and collections", copy: "Launch ordered walks and curated downtown experiences.", icon: Route, items: mapCollections.map((route) => ({ title: route.title, detail: route.summary, meta: [route.estimatedTime, route.distanceLabel].filter(Boolean).join(" · ") || `${route.stopIds.length} stops`, href: `/map?mode=partner&tab=map&routeId=${encodeURIComponent(route.id)}` })) },
   { id: "features", title: "Map features", copy: "Open a controlled functional layer for later gateway configuration.", icon: Map, items: features },
 ];
 

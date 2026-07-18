@@ -15,16 +15,59 @@ const IMAGE_EXTENSIONS = {
 };
 const BUILDING_GALLERIES = {
   paseo: [
+    "/images/map-entities/attached/properties/paseo/daydreamer-lobby.jpeg",
+    "/images/map-entities/attached/properties/paseo/rooftop-pool.jpeg",
+    "/images/map-entities/attached/properties/paseo/exterior-sunset.jpeg",
+    "/images/reports/paseo-deck.jpeg",
+    "/images/reports/paseo-gym.webp",
+    "/images/reports/paseo-pool.webp",
     "/images/residential-content/paseo-amenity.jpg",
-    "/images/residential-content/shared-access-amenity.jpeg",
-    "/images/residential-content/shared-access-downtown-lake.jpeg",
   ],
   "the-shore": ["/images/residential-content/the-shore-hospitality.webp"],
-  "700-river": [
-    "/images/residential-content/shared-access-700-red-river.jpeg",
-    "/images/residential-content/700-river-shared-access.jpeg",
-    "/images/residential-content/shared-access-downtown-lake.jpeg",
-  ],
+  "700-river": ["/images/residential-content/700-river-shared-access.jpeg"],
+};
+
+const AUDIENCE_EDITORIAL_OVERRIDES = {
+  "70-rainey": {
+    residentSummary: "Step out of Rainey’s energy into a garden-led residential retreat with pools, dedicated wellness spaces, pet-friendly amenities, and the lake close by.",
+    partnerSummary: "Use 70 Rainey’s wellness, landscape, and private-amenity strengths to create selective resident programs that add value without disrupting the building’s sense of retreat.",
+    residentOverview: "70 Rainey pairs a private condominium setting with rooftop gardens, extensive wellness amenities, concierge service, and an easy walk to Rainey Street, the MACC, and Lady Bird Lake.",
+    partnerOverview: "A premium Rainey condominium community whose strongest positioning is calm, wellness-led living in the center of an active downtown district.",
+    residentBenefits: "When available, resident perks may include wellness, recovery, private dining, pet care, and easier access to selected Rainey reservations.",
+    partnerValueNarrative: "Build an approval-led resident program around recovery, private dining, pet services, and low-friction reservations. Keep every activation useful, quiet, and consistent with the property’s premium residential experience.",
+    residentDifferentiator: "Layered gardens and wellness spaces create a genuine sense of retreat, while Rainey Street and the lake remain only a short walk away.",
+    partnerDifferentiator: "70 Rainey can offer residents downtown access without making nightlife the center of the experience—a distinctive platform for thoughtful wellness and hospitality partnerships.",
+    residentRoutines: [
+      "Start the day on the east-facing yoga terrace.",
+      "Choose the secluded plunge pool for a quieter reset.",
+      "Pair herb-garden programming with seasonal food and wellness experiences.",
+      "Take the quieter route toward the MACC and Lady Bird Lake.",
+    ],
+    partnerActivationIdeas: [
+      "Morning movement and recovery sessions designed for residents.",
+      "Seasonal garden programming with approved culinary partners.",
+      "Private dining and reservation support for low-friction evenings.",
+      "Pet-wellness partnerships connected to the building’s pet amenities.",
+    ],
+    residentGoodFor: ["Quiet wellness routines", "Pool and garden days", "Easy lake access", "Pet-friendly living", "Rainey on your terms"],
+    partnerCampaigns: ["Resident recovery series", "Garden season", "Private dining access", "Pet wellness partners", "Quiet luxury downtown"],
+    residentActions: [
+      { label: "Explore wellness and gardens", type: "section" },
+      { label: "View shared amenities", type: "section" },
+      { label: "Explore nearby", type: "section" },
+      { label: "Save", type: "save" },
+      { label: "Contact property", type: "contact" },
+    ],
+    partnerActions: [
+      { label: "Plan a wellness campaign", type: "campaign" },
+      { label: "Shape amenity programming", type: "section" },
+      { label: "Review audience", type: "audience" },
+      { label: "Open reports", type: "reports" },
+    ],
+    residentDisclosure: "Building perks appear here only when they are active and confirmed.",
+    partnerDisclosure: "Campaigns, access, and benefit claims must be approved by 70 Rainey before publication.",
+    sourceLabel: "Visit the official 70 Rainey website",
+  },
 };
 
 function parseCsv(text) {
@@ -48,6 +91,7 @@ const actionList = (value) => list(value).map((label) => ({ label, type: /save/i
 function transform(row) {
   const [latitude, longitude] = BUILDING_COORDINATES[row.entity_id] || [];
   const extension = IMAGE_EXTENSIONS[row.entity_id] || "jpg";
+  const editorialOverride = AUDIENCE_EDITORIAL_OVERRIDES[row.entity_id] || {};
   return {
     id: row.entity_id,
     slug: row.entity_id,
@@ -72,21 +116,35 @@ function transform(row) {
     summary: row.resident_panel_copy,
     residentSummary: row.resident_panel_copy,
     partnerSummary: row.partner_panel_copy,
+    residentOverview: row.listing_brand_property_business_overview,
+    partnerOverview: row.partner_panel_copy,
     sharedAmenities: list(row.shared_amenities),
     residentPerk: row.resident_perk,
+    residentBenefits: row.resident_perk,
+    partnerValueNarrative: row.resident_perk,
     secretSauce: row.secret_sauce,
+    residentDifferentiator: row.secret_sauce,
+    partnerDifferentiator: row.secret_sauce,
     hiddenGems: list(row.hidden_gem),
+    residentRoutines: list(row.hidden_gem),
+    partnerActivationIdeas: list(row.hidden_gem),
     campaignAlignment: list(row.campaign_alignment),
+    residentGoodFor: list(row.campaign_alignment),
+    partnerCampaigns: list(row.campaign_alignment),
     residentActions: actionList(row.resident_actions),
     partnerActions: actionList(row.partner_actions),
     residentContextLabels: list(row.resident_context_labels),
     partnerContextLabels: list(row.partner_context_labels),
     searchKeywords: list(row.search_tags),
     sourceUrl: row.source_url,
+    sourceLabel: "View official source",
     verificationStatus: row.verification_status,
+    residentDisclosure: "Building perks appear here only when they are active and confirmed.",
+    partnerDisclosure: "Campaigns, access, and benefit claims require property approval before publication.",
     residentialContentSystem: "canonical-residential-mixed-use",
     source: "Downtown Perks canonical residential mixed-use CSV",
     rawCsvRow: row,
+    ...editorialOverride,
   };
 }
 

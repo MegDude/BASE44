@@ -36,7 +36,7 @@ export default function Daa() {
         <div className="grid gap-4 md:grid-cols-2">
           <FlowCard step="01" title="Campaign poster" desc="DAA campaign imagery can appear in buildings, venues, newsletters, and local guide moments." delay={0} />
           <FlowCard step="02" title="Neighborhood context" desc="Updates are tied to the places, events, and districts people already recognize." delay={0.1} />
-          <FlowCard step="03" title="Clear ways to participate" desc="People can RSVP, save, submit feedback, or learn more from one local entry point." delay={0.2} />
+          <FlowCard step="03" title="Ways to participate" desc="People can RSVP, save, or send feedback from one local entry point." delay={0.2} />
           <FlowCard step="04" title="What people responded to" desc="DAA can see which updates, events, and initiatives drew attention or action." delay={0.3} />
         </div>
       </BrandSection>

@@ -48,9 +48,11 @@ function InteractionFeedback() {
 
 export default function Layout() {
   const location = useLocation();
-  const { pathname } = location;
+  const { pathname, search } = location;
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+  const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
+  const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up";
 
   useEffect(() => {
     function handleOpenQuickSearch() {
@@ -65,10 +67,10 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/resident/home" ||
-    pathname === "/interaction-system" ||
-    pathname.startsWith("/admin-studio") ||
+    isResidentAccessRoute ||
     pathname === "/about" ||
     pathname === "/map" ||
+    pathname === "/resident/home" ||
     pathname === "/partner-map" ||
     pathname.startsWith("/partner-workspace") ||
     pathname.startsWith("/partners") ||
@@ -96,9 +98,10 @@ export default function Layout() {
   const noFooter =
     pathname === "/" ||
     isProductRoute ||
-    pathname === "/card" ||
     pathname === "/app" ||
+    pathname === "/app/map" ||
     pathname === "/map" ||
+    isResidentAccessRoute ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
     pathname === "/residents/map" ||
@@ -107,18 +110,16 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const showNavbar = !pathname.startsWith("/partner-workspace") &&
-    !pathname.startsWith("/admin-studio") &&
-    !["/", "/map", "/app", "/app/map", "/resident/home", "/sign-in", "/auth/callback", "/interaction-system"].includes(pathname);
-  const showProductSearchButton =
-    !showNavbar &&
-    !pathname.startsWith("/partner-workspace") &&
-    !pathname.startsWith("/admin-studio") &&
+  const showNavbar =
     pathname !== "/" &&
     pathname !== "/app" &&
     pathname !== "/app/map" &&
     pathname !== "/map" &&
-    pathname !== "/interaction-system";
+    pathname !== "/resident/home" &&
+    !isEmbeddedMap &&
+    !isResidentAccessRoute &&
+    !pathname.startsWith("/partner-workspace");
+  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {
@@ -128,7 +129,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks" data-route={pathname}>
+    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
       <ScrollToTop />
       <InteractionFeedback />
       {showNavbar && <Navbar />}

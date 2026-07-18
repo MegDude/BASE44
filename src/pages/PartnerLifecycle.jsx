@@ -122,14 +122,7 @@ const partnerTypes = [
   },
 ];
 
-const worksWithGroups = [
-  ["Hospitality", ["Toast", "SevenRooms", "OpenTable"], "Keep service and reservation workflows connected."],
-  ["Property", ["BuildingLink", "Entrata", "Yardi"], "Extend resident systems into neighborhood discovery."],
-  ["Marketing", ["HubSpot", "Salesforce", "Mailchimp"], "Carry local engagement into existing customer workflows."],
-  ["Commerce", ["Shopify", "Square", "Clover"], "Support offers without replacing commerce tools."],
-  ["Payments", ["Stripe", "Square"], "Connect checkout and campaign value securely."],
-  ["Google", ["Business Profile", "Maps", "Calendar"], "Keep identity, location, and events useful across surfaces."],
-];
+const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
 
 const impactGroups = [
   {
@@ -338,17 +331,17 @@ const timelineSteps = [
   "Create your workspace",
   "Connect your existing software",
   "Publish your first offer or event",
-  "Residents begin discovering your business",
-  "Track visits, engagement, and results",
+  "Reach nearby residents",
+  "Track visits and results",
 ];
 
 const faqItems = [
-  ["Can I connect Toast?", "Yes. Downtown Perks can sit alongside Toast and related hospitality tools so offers and QR moments support the systems your team already uses."],
-  ["Can residents keep existing rewards?", "Yes. Existing loyalty and rewards programs stay where they are. Downtown Perks helps people discover and use them at the right moment."],
-  ["Do I need an app?", "No. Residents can use QR, map, and card experiences without forcing a new download before they understand the value."],
-  ["Can I cancel?", "Yes. Standard memberships can be reviewed before renewal, and custom programs are scoped with clear terms before launch."],
-  ["Can multiple locations share one account?", "Yes. Portfolio and multi-location setups can share a workspace while keeping location-level visibility and reporting."],
-  ["Can buildings invite residents automatically?", "Yes. Property teams can use QR, resident welcome paths, and connected communication tools to make adoption simpler."],
+  ["Can I connect Toast?", "Yes. Downtown Perks works alongside Toast and related hospitality tools."],
+  ["Can residents keep existing rewards?", "Yes. Existing loyalty programs stay in place while Downtown Perks helps residents find and use them."],
+  ["Do residents need an app?", "No. Residents can use the map, QR codes, and their card without downloading another app."],
+  ["Can I cancel?", "Yes. Review standard memberships before renewal. Custom programs include clear terms before launch."],
+  ["Can multiple locations share one account?", "Yes. One workspace can manage multiple locations while keeping each location's results clear."],
+  ["Can buildings invite residents automatically?", "Yes. Property teams can use welcome links, QR codes, and connected communication tools."],
 ];
 
 const setupModules = [
@@ -492,96 +485,36 @@ function formatPlanTotal(setup, fallback = "$99") {
 
 function LifecycleShell({ stage, children }) {
   const isTools = stage === "tools";
-  const heroCopy = isTools
-    ? {
-        eyebrow: "Partner platform",
-        title: "One clear workspace for your downtown presence.",
-        body: "Publish perks and events, preview your listing on the map, and understand what residents respond to without replacing the systems that already run your business.",
-        primary: "Open Partner Workspace",
-        primaryHref: "/partner-workspace/overview",
-        secondary: "View Membership",
-        secondaryHref: "/partners#partners",
-      }
-    : stage === "register"
-      ? {
-          eyebrow: "Partner registration",
-          title: "Create the workspace around your business.",
-          body: "Add the details Downtown Perks needs to prepare your profile, checkout handoff, launch materials, and partner workspace.",
-          primary: "Start the form",
-          primaryHref: "#partner-signup",
-          secondary: "View platform tools",
-          secondaryHref: "/partners/tools#platform-tools",
-        }
-      : stage === "checkout"
-        ? {
-            eyebrow: "Partner checkout",
-            title: "Confirm the plan before payment.",
-            body: "Review the selected membership, add-ons, workspace details, and checkout path before continuing.",
-            primary: "Review checkout",
-            primaryHref: "#partner-checkout",
-            secondary: "Back to registration",
-            secondaryHref: "/partners/register",
-          }
-        : stage === "provision"
-          ? {
-              eyebrow: "Workspace setup",
-              title: "Your partner workspace is being prepared.",
-              body: "Downtown Perks is connecting your profile, map visibility, publishing tools, reporting, and billing context.",
-              primary: "Open workspace",
-              primaryHref: "/partner-workspace/overview?provisioned=1",
-              secondary: "View platform tools",
-              secondaryHref: "/partners/tools#platform-tools",
-            }
-          : {
-              eyebrow: "Partner membership",
-              title: "Grow your business without replacing the tools you already use.",
-              body: "Connect with people already living, working, and staying downtown while keeping your existing software, rewards, and workflows.",
-              primary: "Become a Founding Partner",
-              primaryHref: "/partners/register",
-              secondary: "Explore the Platform",
-              secondaryHref: "/partners/tools#platform-tools",
-            };
-
   return (
-    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage}`}>
+    <main className={`dp-partner-lifecycle-page dp-partner-lifecycle-page-${stage} ${isTools ? "dp-partner-lifecycle-page-start" : ""}`}>
       <header className="dp-partner-lifecycle-hero">
-        <div className="dp-partner-lifecycle-hero-copy">
-          <p>{heroCopy.eyebrow}</p>
-          <h1>{heroCopy.title}</h1>
-          <span>{heroCopy.body}</span>
+        <div>
+          <p>{isTools ? "Partner platform" : "For partners"}</p>
+          <h1>{isTools ? "One clear workspace for your downtown presence." : "Turn residents into regulars."}</h1>
+          <span>
+            {isTools
+              ? "Publish perks and events, preview your listing on the map, and understand what residents respond to—without replacing the systems that already run your business."
+              : "Publish offers and events, appear on the map, and see what people use."}
+          </span>
           <div className="dp-partner-lifecycle-hero-actions">
-            <Link to={heroCopy.primaryHref}>
-              {heroCopy.primary}
+            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
+              {isTools ? "Open workspace" : stage === "register" ? "Continue to signup" : "Join Downtown Perks"}
               <ArrowRight aria-hidden="true" />
             </Link>
-            <Link to={heroCopy.secondaryHref}>{heroCopy.secondary}</Link>
-            {!isTools ? <Link to="/partner-workspace/overview">Open Workspace</Link> : null}
+            <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View membership" : "View partner tools"}</Link>
           </div>
         </div>
-        {isTools ? (
-          <Link className="dp-partner-lifecycle-utility-link" to="/partners/register">
-            Create partner account
-            <ArrowRight aria-hidden="true" />
-          </Link>
-        ) : (
-          <figure className="dp-partner-lifecycle-hero-media">
-            <img src="/images/partners/pricing/rail/resident-map-phone.jpg" alt="Downtown Perks mobile map connecting residents with downtown partners" />
-          </figure>
-        )}
+        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/register" : "/partner-workspace/overview"}>
+          {isTools ? "Create partner account" : "Partner sign in"}
+          <ArrowRight aria-hidden="true" />
+        </Link>
       </header>
 
       {!isTools ? (
-        <section className="dp-partner-trust-strip" aria-labelledby="works-with-title">
-          <div className="dp-partner-trust-heading"><span>Works with</span><h2 id="works-with-title">Keep the tools that run your business.</h2></div>
-          <div className="dp-partner-trust-groups">
-            {worksWithGroups.map(([category, tools, description]) => (
-              <article key={category}>
-                <strong>{category}</strong>
-                <div>{tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-                <p>{description}</p>
-                <Link to="/partners/tools#integrations">View integrations</Link>
-              </article>
-            ))}
+        <section className="dp-partner-trust-strip" aria-label="Connected tools">
+          <span>Works with</span>
+          <div>
+            {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
           </div>
         </section>
       ) : null}
@@ -611,9 +544,8 @@ function ChooseBusinessSection({ setup, setSetup }) {
   return (
     <section id="partners" className="dp-partner-lifecycle-section dp-partner-business-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Choose your business</p>
-        <h2>Start with the outcome you need.</h2>
-        <span>Select the closest match so the membership recommendation, workspace tools, and checkout context stay aligned.</span>
+        <h2>Choose your business</h2>
+        <span>Choose the closest match. We’ll recommend the right membership.</span>
       </div>
       <div className="dp-partner-lifestyle-grid">
         {partnerTypes.slice(0, 7).map((type) => {
@@ -649,9 +581,8 @@ function RecommendedMembership({ setup }) {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-recommendation-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Recommended for your business</p>
-        <h2>{selectedType.plan}</h2>
-        <span>{selectedType.overview}</span>
+        <h2>Your membership</h2>
+        <span>Based on your selected business type.</span>
       </div>
       <div className="dp-partner-recommendation-grid">
         <article className="dp-partner-recommended-plan">
@@ -665,7 +596,7 @@ function RecommendedMembership({ setup }) {
             ))}
           </div>
           <Link to={pricingHref}>
-            Choose {selectedType.plan}
+            Choose plan
             <ArrowRight aria-hidden="true" />
           </Link>
         </article>
@@ -825,30 +756,6 @@ function ProfessionalServicesSection() {
   );
 }
 
-function LivePricingSummary({ setup }) {
-  const selectedType = getSelectedPartnerType(setup);
-  const modules = Array.isArray(setup.moduleLabels) && setup.moduleLabels.length ? setup.moduleLabels : ["None"];
-  const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
-
-  return (
-    <aside className="dp-partner-plan-summary" aria-label="Live pricing summary">
-      <p>Your plan</p>
-      <dl>
-        <div><dt>Business</dt><dd>{selectedType.label}</dd></div>
-        <div><dt>Membership</dt><dd>{setup.plan || selectedType.plan}</dd></div>
-        <div><dt>Annual</dt><dd>{total}</dd></div>
-        <div><dt>Campaigns</dt><dd>{modules.slice(0, 2).join(", ")}{modules.length > 2 ? ` +${modules.length - 2}` : ""}</dd></div>
-        <div><dt>Professional services</dt><dd>Optional</dd></div>
-        <div><dt>Today's total</dt><dd>{total}</dd></div>
-      </dl>
-      <Link to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
-        Continue
-        <ArrowRight aria-hidden="true" />
-      </Link>
-    </aside>
-  );
-}
-
 function IntegrationsSection() {
   const [activeCategory, setActiveCategory] = useState(integrationCatalog[0].category);
   const [selectedTool, setSelectedTool] = useState(integrationCatalog[0].tools[0]);
@@ -933,9 +840,8 @@ function TimelineSection() {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-timeline-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Launch timeline</p>
-        <h2>Most partners launch within a few days.</h2>
-        <span>A clear path from membership selection to workspace, publishing, and measurable downtown activity.</span>
+        <h2>How launch works</h2>
+        <span>Most partners can publish within a few days.</span>
       </div>
       <ol className="dp-partner-timeline" aria-label="Partner launch timeline">
         {timelineSteps.map((step, index) => (
@@ -953,8 +859,7 @@ function FaqSection() {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-faq-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>FAQ</p>
-        <h2>Common questions before launch.</h2>
+        <h2>Questions</h2>
       </div>
       <div className="dp-partner-faq-list">
         {faqItems.map(([question, answer]) => (
@@ -971,38 +876,24 @@ function FaqSection() {
 function FinalCtaSection() {
   return (
     <section className="dp-partner-lifecycle-section dp-partner-final-cta">
-      <p>Partner membership</p>
-      <h2>Become part of downtown.</h2>
-      <span>Give residents, guests, and visitors a clear path to discover and choose your business.</span>
+      <h2>Ready to join?</h2>
+      <span>Choose a membership and bring your business into the downtown map.</span>
       <div>
-        <Link to="/partners/register">Become a Founding Partner</Link>
-        <Link to="/contact">Book a Demo</Link>
+        <Link to="/partners/register">Join Downtown Perks</Link>
+        <Link to="/contact">Contact us</Link>
       </div>
     </section>
   );
 }
 
 function StartStage({ setup, setSetup }) {
-  const selectedType = getSelectedPartnerType(setup);
   return (
     <>
       <ChooseBusinessSection setup={setup} setSetup={setSetup} />
-      <div className="dp-partner-purchase-grid">
-        <div>
-          <RecommendedMembership setup={setup} />
-          <GrowthProgramsSection />
-          <ProfessionalServicesSection />
-          <IntegrationsSection />
-          <TimelineSection />
-        </div>
-        <LivePricingSummary setup={setup} />
-      </div>
-      <FaqSection />
+      <RecommendedMembership setup={setup} />
+      <TimelineSection />
       <FinalCtaSection />
-      <Link className="dp-partner-mobile-sticky-cta" to={`/partners/register?partnerType=${encodeURIComponent(selectedType.id)}`}>
-        Continue with {setup.plan || selectedType.plan}
-        <ArrowRight aria-hidden="true" />
-      </Link>
+      <FaqSection />
     </>
   );
 }
@@ -1090,9 +981,9 @@ function RegisterStage({ setup, setSetup }) {
   return (
     <section id="partner-signup" className="dp-partner-lifecycle-section dp-partner-register-intake">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Sign-up details</p>
-        <h2>Tell us what should appear on the map.</h2>
-        <span>Keep this practical: business identity, contact details, launch context, and anything your team wants ready before the workspace opens.</span>
+        <p>Signup details</p>
+        <h2>Create the workspace around your business.</h2>
+        <span>Add the details your team needs for the public profile, launch tools, checkout handoff, and workspace setup.</span>
       </div>
 
       <div className="dp-partner-register-layout">
@@ -1132,7 +1023,7 @@ function RegisterStage({ setup, setSetup }) {
 
         <aside className="dp-workspace-preview-card">
           <p>Workspace preview</p>
-          <h3>What opens after sign-up.</h3>
+          <h3>What you can do after signup.</h3>
           <div className="dp-workspace-preview-list">
             {workspacePreviewRows.map(([title, description]) => (
               <article key={title}>
@@ -1228,7 +1119,7 @@ function CheckoutStage({ setup, setSetup }) {
   return (
     <>
       <ProfessionalServicesSection />
-      <section id="partner-checkout" className="dp-partner-lifecycle-section dp-partner-checkout-section">
+      <section className="dp-partner-lifecycle-section dp-partner-checkout-section">
         <div className="dp-partner-lifecycle-section-head">
           <p>Checkout</p>
           <h2>Review your membership before payment.</h2>

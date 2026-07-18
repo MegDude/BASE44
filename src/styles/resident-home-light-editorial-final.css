@@ -24,6 +24,72 @@ html body #root#root .dp-resident-profile-section {
   max-width: none !important;
 }
 
+html body #root#root .dp-resident-home-visual-hero {
+  position: relative !important;
+  display: grid !important;
+  min-height: clamp(238px, 62vw, 330px) !important;
+  margin: 18px calc(-1 * clamp(16px, 4vw, 24px)) 0 !important;
+  overflow: hidden !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(247,248,251,.1) 0%, rgba(247,248,251,.48) 52%, rgba(247,248,251,.94) 100%) !important;
+  pointer-events: none !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero > div {
+  position: relative !important;
+  z-index: 1 !important;
+  align-self: end !important;
+  display: grid !important;
+  gap: 5px !important;
+  padding: 0 clamp(20px, 5vw, 34px) 22px !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero p,
+html body #root#root .dp-resident-home-visual-hero h2,
+html body #root#root .dp-resident-home-visual-hero span {
+  margin: 0 !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero p {
+  color: rgba(11,31,51,.62) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  letter-spacing: .03em !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero h2 {
+  max-width: 10ch !important;
+  color: #0b1f33 !important;
+  font-size: clamp(32px, 10vw, 42px) !important;
+  font-weight: 650 !important;
+  line-height: .98 !important;
+  letter-spacing: -.045em !important;
+}
+
+html body #root#root .dp-resident-home-visual-hero span {
+  max-width: 24ch !important;
+  color: rgba(11,31,51,.68) !important;
+  font-size: 15px !important;
+  line-height: 1.35 !important;
+}
+
 @media (min-width: 768px) {
   html body #root#root .dp-resident-home {
     width: 100% !important;
@@ -98,4 +164,75 @@ html body #root#root .dp-resident-profile-section {
   background: transparent !important;
   color: #0b1f33 !important;
   box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home__continue :is(a, button) {
+  appearance: none !important;
+  display: flex !important;
+  min-height: 68px !important;
+  width: 100% !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-resident-home__continue :is(a, button):first-child {
+  border-top: 0 !important;
+}
+
+html body #root#root .dp-resident-home__continue :is(a, button) > svg:first-child {
+  width: 20px !important;
+  min-width: 20px !important;
+  color: #c8a96a !important;
+}
+
+html body #root#root .dp-resident-card-qr-action {
+  display: grid !important;
+  grid-template-columns: 118px 1fr !important;
+  gap: 16px !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+  padding: 18px 0 !important;
+  border-top: 1px solid rgba(11,31,51,.1) !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root .dp-resident-card-qr-action img {
+  display: block !important;
+  width: 118px !important;
+  height: 118px !important;
+  object-fit: contain !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-resident-card-qr-action h3,
+html body #root#root .dp-resident-card-qr-action p {
+  margin: 0 !important;
+}
+
+html body #root#root .dp-resident-card-qr-action h3 {
+  color: #0b1f33 !important;
+  font-size: 18px !important;
+  font-weight: 650 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -.02em !important;
+}
+
+html body #root#root .dp-resident-card-qr-action p {
+  margin-top: 7px !important;
+  color: rgba(11,31,51,.64) !important;
+  font-size: 14px !important;
+  line-height: 1.42 !important;
 }

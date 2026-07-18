@@ -1,37 +1,34 @@
-import { House, MapPin, Megaphone, Sparkles, Settings, type LucideIcon } from "lucide-react";
-import { Link } from "react-router-dom";
-
-type PartnerMobileTab = {
-  id: string;
-  label: string;
-  href: string;
-  icon: LucideIcon;
-  matches: readonly string[];
-};
-
-const PARTNER_MOBILE_TABS = [
-  { id: "home", label: "Home", href: "/partner-workspace/overview", icon: House, matches: ["overview"] },
-  { id: "publish", label: "Publish", href: "/partner-workspace/offers", icon: Megaphone, matches: ["offers", "events", "campaigns", "surveys", "broadcasts"] },
-  { id: "map", label: "Map", href: "/map?mode=partner&tab=map&filter=All", icon: MapPin, matches: ["map"] },
-  { id: "insights", label: "Ask", href: "/partner-workspace/assistant", icon: Sparkles, matches: ["assistant", "analytics", "reports", "audience"] },
-  { id: "workspace", label: "Workspace", href: "/partner-workspace/profile", icon: Settings, matches: ["profile", "team", "billing", "media", "sources"] },
-] as const satisfies readonly PartnerMobileTab[];
+import { useLocation, useNavigate } from "react-router-dom";
+import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import { workspacePrimaryNavigation } from "@/config/workspaceModuleRegistry";
 
 type PartnerMobileTabBarProps = {
   activeTab: string;
 };
 
 export function PartnerMobileTabBar({ activeTab }: PartnerMobileTabBarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const organizationId = readPartnerWorkspaceOrganizationId(location.search);
+
   return (
     <nav className="dp-partner-native-tabs" aria-label="Partner workspace" role="tablist">
-      {PARTNER_MOBILE_TABS.map((item) => {
+      {workspacePrimaryNavigation.map((item) => {
         const Icon = item.icon;
         const active = item.matches.some((match) => match === activeTab);
         return (
-          <Link key={item.id} to={item.href} role="tab" aria-selected={active} className={active ? "is-active" : ""}>
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            aria-current={active ? "page" : undefined}
+            className={active ? "is-active" : ""}
+            onClick={() => navigate(withPartnerWorkspaceContext(item.href, organizationId))}
+          >
             <Icon aria-hidden="true" />
             <span>{item.label}</span>
-          </Link>
+          </button>
         );
       })}
     </nav>

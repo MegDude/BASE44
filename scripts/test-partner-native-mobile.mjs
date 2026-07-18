@@ -1,12 +1,7 @@
 import { chromium } from "playwright";
-import { existsSync } from "node:fs";
 
 const baseUrl = process.env.BASE_URL || "http://127.0.0.1:4173";
-const localChrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const browser = await chromium.launch({
-  headless: true,
-  ...(existsSync(localChrome) ? { executablePath: localChrome } : {}),
-});
+const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 393, height: 852 }, isMobile: true, hasTouch: true });
 const errors = [];
 
@@ -30,17 +25,24 @@ await page.addInitScript(() => {
 await page.goto(`${baseUrl}/partner-workspace/overview?provisioned=1`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForSelector(".dp-partner-native-tabs", { state: "visible", timeout: 15_000 });
 
-const labels = await page.locator(".dp-partner-native-tabs a").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Publish|Map|Ask|Workspace") {
+const labels = await page.locator(".dp-partner-native-tabs :is(a, button)").allTextContents();
+if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Publish|Performance|Workspace") {
   throw new Error(`Unexpected partner tabs: ${labels.join(", ")}`);
 }
+
+const workspaceSwitcher = page.getByRole("button", { name: /Switch workspace\. Current workspace:/ });
+await workspaceSwitcher.waitFor({ state: "visible" });
+await workspaceSwitcher.tap();
+await page.getByRole("dialog", { name: "Switch workspace" }).waitFor({ state: "visible" });
+await page.getByRole("button", { name: "Close Switch workspace" }).tap();
 
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
 if (!viewport || bodyWidth > viewport.width) throw new Error(`Horizontal overflow: ${bodyWidth}px for ${viewport?.width}px viewport`);
 
 await page.getByRole("tab", { name: "Publish" }).tap();
-await page.waitForURL(/partner-workspace\/offers/);
+await page.waitForURL(/partner-workspace\/(publish|offers)/, { waitUntil: "domcontentloaded" });
+await page.getByRole("button", { name: /Switch workspace\. Current workspace:/ }).first().waitFor({ state: "visible" });
 await page.goto(`${baseUrl}/partner-workspace/offers?intent=new`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForSelector(".dp-native-publisher", { state: "visible", timeout: 10_000 });
 await page.getByLabel("Perk title").fill("Friday resident dinner");
@@ -57,5 +59,5 @@ const tabBox = await page.locator(".dp-partner-native-tabs").boundingBox();
 if (!tabBox || !viewport || tabBox.y + tabBox.height > viewport.height + 1) throw new Error("Partner tab bar exceeds the mobile viewport.");
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
 
-console.log("partner native mobile: five tabs, no overflow, perk flow reaches resident preview");
+console.log("partner native mobile: five tabs, persistent workspace switcher, no overflow, perk flow reaches resident preview");
 await browser.close();

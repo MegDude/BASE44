@@ -116,7 +116,7 @@ export default function PricingSection() {
                   <div className="text-[11px] text-foreground/60 leading-relaxed mb-2">{tier.note}</div>
                   <div className="text-[11px] text-foreground/45 italic leading-relaxed mb-3">{tier.detail}</div>
                   <Link to={tier.href} className="mt-auto text-[11px] text-primary font-medium hover:underline underline-offset-4">
-                    Learn more →
+                    Compare plan →
                   </Link>
                 </motion.div>
               </CarouselItem>

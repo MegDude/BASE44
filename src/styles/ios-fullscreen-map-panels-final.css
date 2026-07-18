@@ -1,0 +1,172 @@
+/* Shared map-panel contract: one compact navigation rail and one scroll owner. */
+
+.dp-map-page {
+  --dp-ios-panel-nav-height: 56px;
+  --dp-ios-bottom-nav-height: 64px;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"]::before {
+  content: none !important;
+}
+
+.dp-map-page .dp-map-bottom-nav-shell,
+.dp-map-page .dp-map-bottom-nav {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100dvw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.dp-map-page :is(
+  .dp-panel-handle,
+  .dp-native-drawer-handle,
+  .dp-native-drawer-grip,
+  .dp-native-drawer-handle-toggle,
+  .dp-entity-handle
+) {
+  display: none !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] > :is(
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-map-directory-toolbar
+) {
+  position: relative !important;
+  z-index: 8 !important;
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  padding: 6px 8px !important;
+  border: 0 !important;
+  border-bottom: 0.5px solid rgba(11, 31, 51, 0.1) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(
+  .dp-panel-toolbar-title,
+  .dp-drawer-control-title,
+  .dp-map-panel-title
+) {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: #0b1f33 !important;
+  font: 650 15px/1.2 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-drawer-back,
+  .dp-drawer-close,
+  .dp-destination-back,
+  .dp-destination-close
+) {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  transform: none !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(.dp-panel-back, .dp-drawer-back, .dp-destination-back) {
+  justify-self: start !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(.dp-panel-close, .dp-drawer-close, .dp-destination-close) {
+  justify-self: end !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-drawer-back,
+  .dp-drawer-close,
+  .dp-destination-back,
+  .dp-destination-close
+):is(:hover, :focus-visible) {
+  background: rgba(11, 31, 51, 0.055) !important;
+  outline: none !important;
+}
+
+.dp-map-page [data-mobile-panel-surface="true"] :is(
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-drawer-back,
+  .dp-drawer-close,
+  .dp-destination-back,
+  .dp-destination-close
+) svg {
+  width: 19px !important;
+  height: 19px !important;
+  stroke-width: 2 !important;
+}
+
+/* Entity components previously repeated navigation inside the scroll body. */
+.dp-map-page [data-mobile-panel-surface="true"] .dp-map-panel-scroll .dp-entity-drawer > :is(
+  .dp-drawer-control-row,
+  .dp-map-panel-header
+):first-child {
+  display: none !important;
+}
+
+@media (max-width: 899px) {
+  .dp-map-page [data-mobile-panel-surface="true"] {
+    background: #fff !important;
+    contain: layout paint !important;
+  }
+
+  .dp-map-page [data-mobile-panel-surface="true"] > :is(
+    .dp-panel-body,
+    .dp-panel-scroll,
+    .dp-map-panel-scroll,
+    .dp-grouped-list,
+    .dp-map-directory-content
+  ) {
+    overscroll-behavior-y: contain !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(28px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .dp-map-page [data-mobile-panel-surface="true"] > :is(
+    .dp-panel-body,
+    .dp-panel-scroll,
+    .dp-map-panel-scroll,
+    .dp-grouped-list,
+    .dp-map-directory-content
+  )::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-map-page [data-mobile-panel-surface="true"] {
+    scroll-behavior: auto !important;
+  }
+}

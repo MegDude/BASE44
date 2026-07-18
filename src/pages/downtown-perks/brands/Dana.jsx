@@ -35,7 +35,7 @@ export default function Dana() {
       <BrandSection label="Real World Placement" title="A civic campaign with practical next steps." className="bg-card/30 border-y border-border">
         <div className="grid gap-4 md:grid-cols-2">
           <FlowCard step="01" title="DANA campaign poster" desc="Use DANA campaign imagery across buildings, local venues, and neighborhood communications." delay={0} />
-          <FlowCard step="02" title="Local updates" desc="Share what is changing, what is planned, and where people can learn more." delay={0.1} />
+          <FlowCard step="02" title="Local updates" desc="Share what is changing, what is planned, and where to read the details." delay={0.1} />
           <FlowCard step="03" title="Participation prompts" desc="People can RSVP, respond to a survey, join a meeting, or support a local initiative." delay={0.2} />
           <FlowCard step="04" title="Community response" desc="DANA can see what people opened, saved, responded to, and attended." delay={0.3} />
         </div>

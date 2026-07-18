@@ -14,14 +14,14 @@
     --dp-surface: #FFFFFF;
     --dp-surface-alt: #F4F1EA;
     --dp-navy: #0B1F33;
-    --dp-navy-soft: #0B1F33;
-    --dp-gold: #BFA46A;
+    --dp-navy-soft: #17324D;
+    --dp-gold: #B8963E;
     --dp-muted: #4D5C6B;
     --dp-navy-secondary: var(--dp-navy-soft);
     --dp-navy-elevated: var(--dp-navy-soft);
     --dp-navy-muted: rgba(11, 31, 51, 0.42);
     --dp-gold-deep: var(--dp-gold);
-    --dp-gold-tint: #F8F6F1;
+    --dp-gold-tint: #F4EDDD;
     --dp-gold-muted: var(--dp-gold);
     --dp-border: rgba(11, 31, 51, 0.10);
     --dp-border-hover: rgba(191, 164, 106, 0.34);
@@ -59,6 +59,11 @@
     --dp-top-nav-h: 64px;
     --dp-safe-bottom: env(safe-area-inset-bottom);
     --dp-clearance: calc(var(--dp-bottom-nav-h) + var(--dp-safe-bottom));
+    --dp-map-native-bottom-nav-height: 64px;
+    --dp-soft-neutral: #F5F5F1;
+    --dp-success: #28584A;
+    --dp-handle: rgba(11, 31, 51, 0.20);
+    --dp-sheet-shadow: 0 -10px 28px rgba(11, 31, 51, 0.10);
     --dp-font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
     --dp-font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
 
@@ -7109,16 +7114,27 @@ body,
   color: #BFA46A !important;
 }
 
+.dp-map-page.dp-map-page .leaflet-marker-icon .dp-live-pin--legends .dp-live-pin__core,
+.dp-map-page.dp-map-page .dp-live-pin--legends .dp-live-pin__core {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  box-shadow: 0 6px 14px rgba(11, 31, 51, 0.2) !important;
+}
+
 .dp-map-page.dp-map-page .leaflet-marker-icon .dp-live-pin--legends .dp-pin-logo,
 .dp-map-page.dp-map-page .dp-live-pin--legends .dp-pin-logo {
-  width: 15px !important;
-  height: 15px !important;
+  width: 28px !important;
+  height: 28px !important;
   min-width: 0 !important;
   min-height: 0 !important;
-  max-width: 15px !important;
-  max-height: 15px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
   border: 0 !important;
-  border-radius: 0 !important;
+  border-radius: 7px !important;
   background: transparent !important;
   box-shadow: none !important;
   object-fit: contain !important;
@@ -9878,189 +9894,6 @@ html body #root .dp-map-page.dp-map-page .dp-collection-stop.is-current .dp-coll
   border-color: var(--dp-map-gold) !important;
   background: var(--dp-map-gold) !important;
   color: var(--dp-map-navy) !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel {
-  position: absolute !important;
-  left: 12px !important;
-  bottom: calc(82px + env(safe-area-inset-bottom)) !important;
-  z-index: 640 !important;
-  display: grid !important;
-  gap: 10px !important;
-  width: min(390px, calc(100vw - 24px)) !important;
-  max-height: min(52dvh, 520px) !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(191, 164, 106, 0.3) !important;
-  border-radius: 8px !important;
-  padding: 12px !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9)),
-    radial-gradient(circle at 12% 0%, rgba(191, 164, 106, 0.18), transparent 38%) !important;
-  color: var(--dp-map-navy) !important;
-  box-shadow: 0 18px 46px rgba(11, 31, 51, 0.18) !important;
-  backdrop-filter: blur(12px) saturate(1.12) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.12) !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header,
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta,
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions {
-  display: flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header {
-  justify-content: space-between !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header p {
-  margin: 0 !important;
-  color: var(--dp-map-green) !important;
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.13em !important;
-  line-height: 1 !important;
-  text-transform: uppercase !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel h2 {
-  margin: 0 !important;
-  color: var(--dp-map-navy) !important;
-  font-size: 20px !important;
-  font-weight: 760 !important;
-  letter-spacing: 0 !important;
-  line-height: 1.05 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__description {
-  margin: 0 !important;
-  color: rgba(11, 31, 51, 0.68) !important;
-  font-size: 12.5px !important;
-  font-weight: 500 !important;
-  line-height: 1.38 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta {
-  flex-wrap: wrap !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__meta span {
-  display: inline-flex !important;
-  min-height: 24px !important;
-  align-items: center !important;
-  border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
-  padding: 0 8px !important;
-  background: rgba(255, 255, 255, 0.72) !important;
-  color: rgba(11, 31, 51, 0.72) !important;
-  font-size: 10.5px !important;
-  font-weight: 720 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel button,
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel a {
-  border-radius: 8px !important;
-  font-family: Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__header button {
-  min-height: 28px !important;
-  border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  padding: 0 9px !important;
-  background: rgba(255, 255, 255, 0.72) !important;
-  color: var(--dp-map-navy) !important;
-  font-size: 11px !important;
-  font-weight: 720 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions :is(button, a) {
-  display: inline-flex !important;
-  min-height: 38px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid rgba(191, 164, 106, 0.34) !important;
-  padding: 0 10px !important;
-  background: var(--dp-map-navy) !important;
-  color: var(--dp-map-gold) !important;
-  font-size: 12px !important;
-  font-weight: 780 !important;
-  text-decoration: none !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions :is(button, a):nth-child(2) {
-  background: var(--dp-map-gold) !important;
-  color: var(--dp-map-navy) !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops {
-  display: grid !important;
-  gap: 6px !important;
-  min-height: 0 !important;
-  overflow: auto !important;
-  padding-right: 2px !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button {
-  display: grid !important;
-  grid-template-columns: 26px minmax(0, 1fr) !important;
-  align-items: center !important;
-  gap: 8px !important;
-  min-height: 36px !important;
-  border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  padding: 5px 8px !important;
-  background: rgba(255, 255, 255, 0.72) !important;
-  color: var(--dp-map-navy) !important;
-  text-align: left !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button span {
-  display: grid !important;
-  place-items: center !important;
-  width: 22px !important;
-  height: 22px !important;
-  border: 1px solid var(--dp-map-gold) !important;
-  border-radius: 999px !important;
-  background: var(--dp-map-navy) !important;
-  color: var(--dp-map-gold) !important;
-  font-size: 10px !important;
-  font-weight: 800 !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button strong {
-  min-width: 0 !important;
-  overflow: hidden !important;
-  color: inherit !important;
-  font-size: 12px !important;
-  font-weight: 720 !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops button.is-active {
-  border-color: rgba(191, 164, 106, 0.52) !important;
-  background: rgba(191, 164, 106, 0.14) !important;
-  box-shadow: inset 3px 0 0 var(--dp-map-green) !important;
-}
-
-@media (max-width: 720px) {
-  html body #root .dp-map-page.dp-map-page .dp-collection-route-panel {
-    right: 10px !important;
-    left: 10px !important;
-    bottom: calc(70px + env(safe-area-inset-bottom)) !important;
-    width: auto !important;
-    max-height: 42dvh !important;
-  }
-
-  html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions {
-    grid-template-columns: 1fr 1fr !important;
-  }
 }
 
 html body #root .dp-map-page.dp-map-page .dp-perk-action-row {

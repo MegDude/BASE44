@@ -1,0 +1,423 @@
+/* Shared partner destination drawer. The map shell owns geometry. */
+
+html body #root .dp-map-page .dp-partner-destination-sheet,
+html body #root .dp-map-page .dp-partner-destination-detail {
+  --dp-partner-divider: rgba(11, 31, 51, 0.09);
+  background: var(--dp-white, #fff) !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font-family: Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 20px calc(30px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-panel-detail-hero {
+  width: calc(100% + 40px) !important;
+  max-width: none !important;
+  margin: 0 -20px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--dp-white, #fff) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-destination-hero-media {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  max-height: 250px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: var(--dp-white, #fff) !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-destination-hero-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-identity {
+  margin: 0 !important;
+  padding: 22px 0 18px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-meta {
+  margin: 0 0 7px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font: 600 12px/1.3 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-title {
+  margin: 0 !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 650 25px/1.12 Inter, system-ui, sans-serif !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-subtitle {
+  margin: 9px 0 0 !important;
+  color: var(--dp-success, #28584a) !important;
+  font: 600 13px/1.35 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-context {
+  max-width: 38rem !important;
+  margin: 11px 0 0 !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font: 400 15px/1.5 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-actions {
+  margin: 0 !important;
+  padding: 0 0 22px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-primary-row {
+  display: block !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-primary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--dp-navy, #0b1f33) !important;
+  border-radius: 9px !important;
+  background: var(--dp-navy, #0b1f33) !important;
+  color: var(--dp-white, #fff) !important;
+  font: 650 13px/1 Inter, system-ui, sans-serif !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-secondary {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  margin: 7px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-secondary > :is(a, button),
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 5px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 600 12px/1.2 Inter, system-ui, sans-serif !important;
+  text-align: center !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions {
+  position: relative !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > summary {
+  list-style: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > summary svg {
+  width: 15px !important;
+  height: 15px !important;
+  transition: transform 180ms ease-out !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions[open] > summary svg {
+  transform: rotate(180deg) !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > div {
+  position: absolute !important;
+  right: 0 !important;
+  z-index: 12 !important;
+  display: grid !important;
+  width: min(220px, calc(100vw - 40px)) !important;
+  padding: 6px !important;
+  border: 1px solid var(--dp-partner-divider) !important;
+  border-radius: 10px !important;
+  background: var(--dp-white, #fff) !important;
+  box-shadow: 0 12px 28px rgba(11, 31, 51, 0.14) !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > div > :is(a, button) {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 500 14px/1.3 Inter, system-ui, sans-serif !important;
+  text-align: left !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-section,
+html body #root .dp-map-page .dp-partner-destination-detail .dp-map-native-campaign-detail,
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-intelligence-section {
+  margin: 0 !important;
+  padding: 25px 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--dp-partner-divider) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-section > h3 {
+  margin: 0 0 13px !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 650 16px/1.25 Inter, system-ui, sans-serif !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-section > strong {
+  display: block !important;
+  margin: 0 0 6px !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 650 17px/1.3 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-destination-section > p {
+  max-width: 38rem !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.7) !important;
+  font: 400 14px/1.5 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-inline-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-height: 44px !important;
+  margin: 9px 0 -8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 650 13px/1.2 Inter, system-ui, sans-serif !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-inline-action svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list > div {
+  min-width: 0 !important;
+  padding: 0 12px !important;
+  border-left: 1px solid var(--dp-partner-divider) !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list > div:first-child {
+  padding-left: 0 !important;
+  border-left: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list dt {
+  margin: 0 0 5px !important;
+  color: rgba(11, 31, 51, 0.57) !important;
+  font: 500 11px/1.3 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list dd {
+  margin: 0 !important;
+  overflow-wrap: anywhere !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  font: 650 14px/1.3 Inter, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list li + li {
+  border-top: 1px solid var(--dp-partner-divider) !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list button {
+  display: grid !important;
+  grid-template-columns: 64px minmax(0, 1fr) 20px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 76px !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-navy, #0b1f33) !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list img {
+  width: 64px !important;
+  height: 54px !important;
+  border-radius: 7px !important;
+  object-fit: cover !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list span {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list strong {
+  overflow: hidden !important;
+  font: 600 14px/1.25 Inter, system-ui, sans-serif !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list small {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: rgba(11, 31, 51, 0.6) !important;
+  font: 400 12px/1.3 Inter, system-ui, sans-serif !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list svg {
+  width: 17px !important;
+  height: 17px !important;
+  color: rgba(11, 31, 51, 0.45) !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail :is(a, button, summary):focus-visible {
+  outline: 2px solid var(--dp-gold, #b8963e) !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 370px) {
+  html body #root .dp-map-page .dp-partner-destination-detail {
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  html body #root .dp-map-page .dp-partner-destination-detail .dp-panel-detail-hero {
+    width: calc(100% + 32px) !important;
+    margin-right: -16px !important;
+    margin-left: -16px !important;
+  }
+
+  html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performance-list > div {
+    padding: 9px 0 !important;
+    border-top: 1px solid var(--dp-partner-divider) !important;
+    border-left: 0 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page .dp-partner-destination-sheet {
+    left: 20px !important;
+    width: min(430px, calc(100vw - 40px)) !important;
+    max-width: 430px !important;
+    border-radius: 14px 14px 0 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-more-actions > summary svg {
+    transition: none !important;
+  }
+}
+
+/* Isolate this new system from legacy partner-drawer ordering and action rules.
+   The repeated root only wins against the existing migration lock selectors. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-map-detail-content {
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-partner-destination-detail {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 0 calc(30px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-partner-destination-detail > .dp-panel-detail-hero {
+  width: calc(100% + 40px) !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 -20px !important;
+  aspect-ratio: auto !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-partner-destination-detail > .dp-panel-detail-hero .dp-destination-hero-media {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 250px !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-partner-destination-primary {
+  display: flex !important;
+  min-height: 48px !important;
+  border: 1px solid var(--dp-navy, #0b1f33) !important;
+  border-radius: 9px !important;
+  background: var(--dp-navy, #0b1f33) !important;
+  color: var(--dp-white, #fff) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside.dp-partner-destination-sheet .dp-partner-destination-primary span {
+  color: var(--dp-white, #fff) !important;
+}

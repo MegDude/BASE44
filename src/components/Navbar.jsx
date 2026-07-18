@@ -12,7 +12,7 @@ const RESIDENT_LINKS = [
 ];
 
 const PARTNER_LINKS = [
-  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
+  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map", description: "Open the partner map layer" },
   { to: "/partner-workspace/overview", label: "Platform", description: "Open the partner operating workspace" },
   { to: "/partners/campaigns", label: "Campaigns", description: "Create a local offer or event placement" },
   { to: "/partner-workspace/overview", label: "Workspace", description: "Manage reports, campaigns, and team access" },
@@ -29,7 +29,7 @@ const HAMBURGER_RESIDENT_LINKS = [
 ];
 
 const HAMBURGER_PARTNER_LINKS = [
-  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map" },
+  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/partner-workspace/overview", label: "Platform" },
   { to: "/partners/campaigns", label: "Campaigns" },
   { to: "/partner-workspace/overview", label: "Workspace" },
@@ -41,7 +41,7 @@ const HAMBURGER_PARTNER_LINKS = [
 const COMMERCE_LINKS = [
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/card", label: "Perks Card" },
-  { to: "/map?mode=partner&tab=map&filter=All", label: "Partner Map" },
+  { to: "/app?mode=partner&tab=map&filter=All", label: "Partner Map" },
   { to: "/pricing", label: "Pricing" },
   { to: "/partners/sign-up", label: "Sign Up" },
 ];
@@ -201,7 +201,7 @@ export default function Navbar() {
     location.pathname === "/card" ||
     location.pathname === "/ask-map" ||
     location.pathname === "/about" ||
-    ((location.pathname === "/app" || location.pathname === "/map") && !location.search.includes("mode=partner"));
+    ((location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map") && !location.search.includes("mode=partner"));
 
   const partnerActive =
     location.pathname.startsWith("/partners") ||
@@ -210,9 +210,9 @@ export default function Navbar() {
     location.pathname === "/reports" ||
     location.pathname === "/dashboard/partner" ||
     location.pathname === "/partner-dashboard" ||
-    ((location.pathname === "/app" || location.pathname === "/map") && location.search.includes("mode=partner"));
+    ((location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map") && location.search.includes("mode=partner"));
 
-  const isAppMapPath = location.pathname === "/app" || location.pathname === "/map";
+  const isAppMapPath = location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map";
   const residentMapActive = isAppMapPath && !location.search.includes("mode=partner");
   const partnerMapActive = isAppMapPath && location.search.includes("mode=partner");
   const isCommerceRoute = ["/pricing", "/partners/sign-in", "/partners/sign-up", "/card", "/resident-sign-up"].includes(location.pathname);
@@ -237,14 +237,12 @@ export default function Navbar() {
       }`}
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex min-w-0 shrink items-center gap-2" aria-label="Downtown Perks app">
-            <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
-            <span className="truncate text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
-              Downtown Perks
-            </span>
-          </Link>
-        </div>
+        <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex shrink-0 items-center gap-2" aria-label="Downtown Perks app">
+          <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
+          <span className="text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">
+            Downtown Perks
+          </span>
+        </Link>
 
         {!open && (
           <div className="hidden items-center gap-4 transition-all duration-200">
@@ -275,7 +273,7 @@ export default function Navbar() {
                   Resident Map
                 </Link>
                 <Link
-                  to="/map?mode=partner&tab=map&filter=All"
+                  to="/app?mode=partner&tab=map&filter=All"
                   className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     partnerMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
@@ -330,7 +328,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            className="dp-global-nav-toggle inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/40 hover:bg-white hover:text-[#BFA46A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/40 hover:bg-white hover:text-[#BFA46A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>

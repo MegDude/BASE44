@@ -474,7 +474,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Get started</span>
+            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Contact</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>

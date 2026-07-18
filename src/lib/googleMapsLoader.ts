@@ -1,14 +1,5 @@
 const GOOGLE_MAPS_SCRIPT_ID = "downtown-perks-google-maps-js";
 const GOOGLE_MAPS_CALLBACK_NAME = "__downtownPerksGoogleMapsReady";
-const GOOGLE_MAPS_BROWSER_KEY_ENV_KEYS = [
-  "VITE_GOOGLE_MAPS_API_KEY",
-  "VITE_GOOGLE_MAPS_BROWSER_KEY",
-  "VITE_GOOGLE_MAP_API_KEY",
-] as const;
-const GOOGLE_MAPS_MAP_ID_ENV_KEYS = [
-  "VITE_GOOGLE_MAP_ID",
-  "VITE_GOOGLE_MAPS_MAP_ID",
-] as const;
 
 declare global {
   interface Window {
@@ -21,22 +12,10 @@ declare global {
 let googleMapsPromise: Promise<any> | null = null;
 let googleMapsLoadAttempts = 0;
 
-function readEnvValue(keys: readonly string[]) {
-  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
-  const key = keys.find((candidate) => String(env[candidate] || "").trim());
-  const rawValue = key ? env[key] || "" : "";
-  return {
-    key: key || "",
-    value: String(rawValue).trim().replace(/^['"]|['"]$/g, ""),
-  };
-}
-
 function readGoogleMapsApiKey() {
-  return readEnvValue(GOOGLE_MAPS_BROWSER_KEY_ENV_KEYS).value;
-}
-
-export function getGoogleMapsMapId() {
-  return readEnvValue(GOOGLE_MAPS_MAP_ID_ENV_KEYS).value;
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
+  const rawKey = env.VITE_GOOGLE_MAPS_API_KEY || "";
+  return String(rawKey).trim().replace(/^['"]|['"]$/g, "");
 }
 
 function isPlausibleGoogleMapsApiKey(apiKey: string) {
@@ -71,25 +50,6 @@ export function getGoogleMapsConfigError() {
   return isPlausibleGoogleMapsApiKey(apiKey) ? "" : "invalid-api-key";
 }
 
-export function getGoogleMapsDiagnostics() {
-  const browserKey = readEnvValue(GOOGLE_MAPS_BROWSER_KEY_ENV_KEYS);
-  const mapId = readEnvValue(GOOGLE_MAPS_MAP_ID_ENV_KEYS);
-  const scriptCount = typeof document === "undefined"
-    ? 0
-    : document.querySelectorAll(`#${GOOGLE_MAPS_SCRIPT_ID}, script[src*="maps.googleapis.com/maps/api/js"]`).length;
-
-  return {
-    browserKeyPresent: Boolean(browserKey.value),
-    browserKeyEnvName: browserKey.key,
-    browserKeyLooksValid: browserKey.value ? isPlausibleGoogleMapsApiKey(browserKey.value) : false,
-    mapIdPresent: Boolean(mapId.value),
-    mapIdEnvName: mapId.key,
-    scriptId: GOOGLE_MAPS_SCRIPT_ID,
-    scriptCount,
-    hasGoogleMapsGlobal: Boolean(typeof window !== "undefined" && window.google?.maps?.Map),
-  };
-}
-
 export function resetGoogleMapsLoaderForRetry() {
   googleMapsPromise = null;
   const existingScript = typeof document !== "undefined" ? document.getElementById(GOOGLE_MAPS_SCRIPT_ID) : null;
@@ -112,10 +72,12 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
 
   const apiKey = readGoogleMapsApiKey();
   if (!apiKey) {
-    return Promise.reject(new Error("missing-api-key"));
+    googleMapsPromise = Promise.reject(new Error("missing-api-key"));
+    return googleMapsPromise;
   }
   if (!isPlausibleGoogleMapsApiKey(apiKey)) {
-    return Promise.reject(new Error("invalid-api-key"));
+    googleMapsPromise = Promise.reject(new Error("invalid-api-key"));
+    return googleMapsPromise;
   }
 
   const requestedLibraries = normalizeLibraries(options.libraries || ["geometry", "marker", "places"]);
@@ -129,7 +91,6 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
           if (settled) return;
           settled = true;
           googleMapsLoadAttempts = 0;
-          delete (window as any)[GOOGLE_MAPS_CALLBACK_NAME];
           resolve(maps);
         },
         (error) => {
@@ -149,8 +110,6 @@ export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean 
     (window as any).gm_authFailure = () => {
       previousAuthFailure?.();
       googleMapsPromise = null;
-      document.getElementById(GOOGLE_MAPS_SCRIPT_ID)?.remove();
-      delete (window as any)[GOOGLE_MAPS_CALLBACK_NAME];
       rejectOnce(new Error("authorization-failure"));
     };
 

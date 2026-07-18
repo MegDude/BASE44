@@ -83,7 +83,7 @@ export default function InteractionSystemPreview() {
               <DPButton variant="primary" icon={Navigation} onClick={() => showToast("Directions opened.")}>Get directions</DPButton>
               <DPButton variant="gold" icon={Bookmark} onClick={() => showToast("Place saved.")}>Save place</DPButton>
               <DPButton variant="outline" icon={MapPin} onClick={() => showToast("Place opened on the map.")}>View on map</DPButton>
-              <DPButton variant="quiet" onClick={() => showToast("Secondary action selected.")}>Learn more</DPButton>
+              <DPButton variant="quiet" onClick={() => showToast("Button guidance opened.")}>Compare button styles</DPButton>
             </div>
             <div className="dp-is-icon-row">
               <span>Compact actions</span>

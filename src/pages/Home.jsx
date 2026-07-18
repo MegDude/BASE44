@@ -513,7 +513,7 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(11,31,51,0.08),transparent)]" aria-hidden="true" />
         <div className="dp-layout-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <span className="dp-label mb-3 block">{isPartner ? "Get started" : "Ready When You Are"}</span>
+            <span className="dp-label mb-3 block">{isPartner ? "Partner access" : "Resident access"}</span>
             <h2 className="font-heading text-3xl font-medium">
               {isPartner ? "Tell us what you want to activate" : "Check if your building is part of Downtown Perks."}
             </h2>

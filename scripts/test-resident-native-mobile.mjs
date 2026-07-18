@@ -13,8 +13,8 @@ page.on("console", (message) => {
 await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
-const labels = await page.locator(".dp-resident-native-tabs :is(a, button)").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+const labels = await page.locator(".dp-resident-native-tabs :is(a,button)").allTextContents();
+if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Saved") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
 
@@ -23,8 +23,8 @@ if (await page.locator("nav").filter({ hasNot: page.locator(".dp-resident-native
   if (visibleForeignNav) throw new Error("Resident Home shows non-native website navigation.");
 }
 
-await page.getByRole("heading", { name: "Downtown Austin" }).waitFor();
-await page.getByRole("link", { name: /Live music downtown/ }).first().waitFor();
+await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+await page.getByRole("heading", { name: "Live activity", exact: true }).waitFor();
 
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -38,7 +38,9 @@ if (tabGeometry.position !== "fixed" || tabGeometry.bottom !== "0px" || tabGeome
   throw new Error(`Resident tab bar is not safely anchored: ${JSON.stringify(tabGeometry)}`);
 }
 
-await page.getByRole("link", { name: "Coffee", exact: true }).tap();
+const coffeeHref = await page.getByRole("link", { name: "Coffee", exact: true }).getAttribute("href");
+if (coffeeHref !== "/map?mode=resident&tab=map&filter=Coffee") throw new Error(`Unexpected Coffee route: ${coffeeHref}`);
+await page.goto(`${baseUrl}${coffeeHref}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("filter") === "Coffee", { timeout: 15_000 });
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);

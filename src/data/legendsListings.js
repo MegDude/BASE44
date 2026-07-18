@@ -156,6 +156,10 @@ const SALES = [
   ["800 W 5th St #1001", "Austin", "TX", "78703", "$895,000", 2, 2, 1506, 113],
 ];
 
+const LEGENDS_TOP_LISTING_ADDRESSES = new Map(
+  SALES.slice(0, 5).map((row, index) => [row[0], index + 1]),
+);
+
 function slug(value) {
   return String(value)
     .toLowerCase()
@@ -226,6 +230,14 @@ function toListing(row, type) {
   const buildingName = generated?.buildingName || "";
   const neighborhood = generated?.neighborhood || "Downtown";
   const displayName = buildingName ? `${buildingName} ${generated?.unit ? `#${generated.unit}` : address}` : address;
+  const topListingRank = type === "sale" ? LEGENDS_TOP_LISTING_ADDRESSES.get(address) || null : null;
+  const isTopListing = Boolean(topListingRank);
+  const residentPanelCopy = isTopListing
+    ? `A current Legends Real Estate listing in downtown Austin. Save it, compare what is nearby, or request a showing when you are ready.`
+    : panelCopy;
+  const partnerPanelCopy = isTopListing
+    ? `Featured Legends listing on the map. Review saves, directions, and showing interest alongside nearby dining, hotels, events, and resident benefits.`
+    : panelCopy;
 
   return {
     id,
@@ -237,8 +249,33 @@ function toListing(row, type) {
     logo: LEGENDS_PIN_ASSET,
     pinKey: "legends",
     pinAsset: LEGENDS_PIN_ASSET,
-    category: "Residential Property",
-    category_key: `legends_${type}_listing ${generated?.panelMetadata || ""} ${generated?.propertyType || ""} ${generated?.style || ""}`,
+    isLegendsListing: true,
+    isFeatured: isTopListing,
+    legendsTopListing: isTopListing,
+    topListingRank,
+    priorityTier: isTopListing ? 1 : 3,
+    category: isTopListing ? "Legends Top Listing" : "Residential Property",
+    category_key: `legends_${type}_listing ${isTopListing ? "legends_top_listing top_5_listing featured_listing downtown_listing" : ""} ${generated?.panelMetadata || ""} ${generated?.propertyType || ""} ${generated?.style || ""}`,
+    tags: [
+      "Legends Real Estate",
+      "Downtown Austin",
+      listingTypeLabel,
+      isTopListing ? "Top 5 listing" : "Residential listing",
+      buildingName,
+      neighborhood,
+    ].filter(Boolean),
+    searchKeywords: [
+      "legends",
+      "legends real estate",
+      "downtown austin listings",
+      "downtown homes",
+      "condos for sale",
+      "residential property",
+      address,
+      buildingName,
+      neighborhood,
+      isTopListing ? "top listing" : "",
+    ].filter(Boolean),
     latitude: coords[0],
     longitude: coords[1],
     image: gallery[0],
@@ -246,16 +283,18 @@ function toListing(row, type) {
     district: zip === "78705" ? "West Campus" : neighborhood || "Downtown Austin",
     buildingName,
     address: `${address}, ${city}, ${state} ${zip}`,
-    summary: generated?.summary || panelCopy,
-    description: generated?.interestCopy || panelCopy,
-    deals_offers: "Exclusive resident property discovery through Legends Real Estate",
-    specials: `${listingTypeLabel} with resident access to availability and showing options`,
+    summary: isTopListing ? residentPanelCopy : generated?.summary || panelCopy,
+    description: isTopListing ? residentPanelCopy : generated?.interestCopy || panelCopy,
+    deals_offers: isTopListing ? "Featured downtown listing from Legends Real Estate" : "Exclusive resident property discovery through Legends Real Estate",
+    specials: `${listingTypeLabel} with Legends listing details and showing options`,
     source: "Legends Real Estate verified listing layer",
     website: "",
     contact_phone: "",
     contact_email: "",
     legendsListing: {
       id,
+      isTopListing,
+      topListingRank,
       brand: "Legends Real Estate",
       brandLogo: LEGENDS_PIN_ASSET,
       logo: LEGENDS_PIN_ASSET,
@@ -281,6 +320,8 @@ function toListing(row, type) {
       image: gallery[0],
       gallery,
       panelCopy,
+      residentPanelCopy,
+      partnerPanelCopy,
       panelTitle: generated?.panelTitle || buildingName || address,
       panelSubtitle: generated?.panelSubtitle || `${address}, ${city}, ${state} ${zip}`,
       panelMetadata: generated?.panelMetadata || "",
@@ -297,8 +338,8 @@ function toListing(row, type) {
       goodToKnow: generated?.goodToKnow || [],
       listingFacts: generated?.listingFacts || "",
       interestCopy: generated?.interestCopy || "",
-      ctaPrimary: generated?.ctaPrimary || "Explore Neighborhood",
-      ctaSecondary: generated?.ctaSecondary || "View Listing",
+      ctaPrimary: isTopListing ? "Request showing" : generated?.ctaPrimary || "Explore Neighborhood",
+      ctaSecondary: isTopListing ? "Compare nearby" : generated?.ctaSecondary || "View Listing",
       ctaTour: generated?.ctaTour || "Schedule Tour",
       ctaContact: generated?.ctaContact || "Contact Legends Real Estate",
       pinAsset: LEGENDS_PIN_ASSET,
@@ -314,3 +355,7 @@ export const legendsListingPlaces = [
   ...RENTALS.map((row) => toListing(row, "rent")),
   ...SALES.map((row) => toListing(row, "sale")),
 ];
+
+export const legendsTopListingPlaces = legendsListingPlaces
+  .filter((place) => place.legendsTopListing)
+  .sort((a, b) => (a.topListingRank || 99) - (b.topListingRank || 99));

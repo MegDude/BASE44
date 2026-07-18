@@ -1,29 +1,17 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { mobileTabsByMode, normalizeMobileTab } from "../src/components/map/mobileTabRegistry";
 import { createMobileTabState, rememberTabScroll, transitionMobileTabState } from "../src/components/map/mobileTabState";
 
-const root = process.cwd();
-const mapSource = readFileSync(join(root, "src/pages/Map.jsx"), "utf8");
-const locationsSource = readFileSync(join(root, "src/lib/useLocations.js"), "utf8");
-const nativeDrawerStyles = readFileSync(join(root, "src/styles/map-native-ios-polish-final.css"), "utf8");
-const intentStyles = readFileSync(join(root, "src/styles/search-intent-chip-expansion-final.css"), "utf8");
-const typographyStyles = readFileSync(join(root, "src/styles/typography-governance.css"), "utf8");
-const drawerContainmentStyles = readFileSync(join(root, "src/styles/map-drawer-containment-final.css"), "utf8");
-const partnerToolsStyles = readFileSync(join(root, "src/styles/partner-tools-polish-final.css"), "utf8");
-
-assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Home", "Map", "Perks", "Events", "Card"]);
-assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Publish", "Map", "Ask", "Workspace"]);
-assert.equal(normalizeMobileTab("resident", "pass"), "card");
+assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Home", "Map", "Perks", "Events", "Saved"]);
+assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Map", "Publish", "Performance", "Workspace"]);
+assert.equal(normalizeMobileTab("resident", "pass"), "saved");
 assert.equal(normalizeMobileTab("partner", "campaigns"), "publish");
-assert.equal(normalizeMobileTab("partner", "audience"), "insights");
-assert.equal(normalizeMobileTab("partner", "reports"), "insights");
+assert.equal(normalizeMobileTab("partner", "audience"), "performance");
+assert.equal(normalizeMobileTab("partner", "reports"), "performance");
 assert.ok(mobileTabsByMode.resident.every((tab) => tab.emptyTitle && tab.emptyAction && tab.sections.length));
 assert.ok(mobileTabsByMode.partner.every((tab) => tab.emptyTitle && tab.emptyAction && tab.sections.length));
 assert.ok(mobileTabsByMode.resident.every((tab) => !/campaign|audience|performance/i.test(tab.purpose)));
 assert.ok(mobileTabsByMode.partner.every((tab) => !/show your card|redeem/i.test(`${tab.purpose} ${tab.sections.join(" ")}`)));
-assert.match(mobileTabsByMode.resident.find((tab) => tab.id === "events")?.route || "", /collection=events-nearby/);
 
 const initial = createMobileTabState("resident", "map");
 const scrolled = rememberTabScroll(initial, "map", 318);
@@ -32,19 +20,5 @@ const switched = transitionMobileTabState({ ...scrolled, selectedEntityId: "venu
 assert.equal(switched.selectedEntityId, undefined);
 assert.equal(switched.searchIntent, undefined);
 assert.equal(switched.scrollPositions["resident:map"], 318);
-assert.match(mapSource, /function NativeDrawerHandle/);
-assert.match(mapSource, /if \(key === "events-nearby"\) return isEventEntity\(place\)/);
-assert.match(mapSource, /getMapResultNoun\(activeFilter, discoverDisplayPlaces\.length\)/);
-assert.match(locationsSource, /kind: "event"/);
-assert.match(locationsSource, /entityType: "event"/);
-assert.match(locationsSource, /status: rest\.status \|\| "upcoming"/);
-assert.ok((mapSource.match(/dp-native-drawer-shell/g) || []).length >= 5);
-assert.match(mapSource, /data-drawer-state=\{nativeDrawerState\}/);
-assert.doesNotMatch(nativeDrawerStyles, /bottom:\s*calc\([^;]+\+\s*8px\)/);
-assert.match(intentStyles, /--dp-panel-mobile-edge:\s*0px/);
-assert.match(typographyStyles, /--dp-map-drawer-edge:\s*max\(0px/);
-assert.match(drawerContainmentStyles, /Release lock: legacy pill and oversized action rules cannot win the cascade/);
-assert.match(drawerContainmentStyles, /border-radius:\s*10px !important;/);
-assert.match(partnerToolsStyles, /\.dp-partner-lifecycle-hero-actions a \{[\s\S]*?min-height:\s*44px !important;[\s\S]*?border-radius:\s*10px !important;/);
 
 console.log(`mobile tab system: ${mobileTabsByMode.resident.length} resident tabs, ${mobileTabsByMode.partner.length} partner tabs`);

@@ -18,6 +18,7 @@ import { daaTourStops } from "../data/daaArtParksTour";
 import { legendsListingPlaces } from "../data/legendsListings";
 import { rentalListings } from "../data/rentalListings";
 import { mapNativeCampaigns } from "../data/mapNativeCampaigns";
+import { buildingAmenityNetworkEntities } from "../data/buildingAmenityNetwork";
 import { larryAndGuyRestaurantLayer } from "../data/larryAndGuyRestaurantLayer";
 import { applyLaunchMapCuration } from "../data/raineyLaunchCuration";
 import { civicDiscoveryEntities } from "../data/civicDiscoveryNetwork";
@@ -31,8 +32,8 @@ import { isDowntownAustin78701Entity } from "./map/downtownAustinScope";
 import { normalizeEntity } from "./map/normalizeEntity";
 import { getHospitalityCsvUpdate } from "../data/hospitalityContentLibrary";
 import { getResidentialMixedUseUpdate } from "../data/residentialMixedUseContentLibrary";
-import { getFirstThursdayRaineyMapEvent } from "../data/events/firstThursdayRainey";
-import { fetchPartnerMapContent } from "./partner/partnerMapContentClient";
+import { applyDunlapPortfolioGovernance, dunlapPortfolioEntities } from "../data/dunlapPortfolio";
+import { applyHospitalityOperatorGovernance, hospitalityOperatorPortfolioEntities } from "../data/hospitalityOperatorPortfolios";
 
 const FAIRMONT_HOTEL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
 const FAIRMONT_POOL_IMAGE = "/images/map-entities/fairmont-austin/fairmont-rooftop-pool.webp";
@@ -63,9 +64,6 @@ function eventPlace({
     id: `event-${id}`,
     name,
     type: "event",
-    kind: "event",
-    entityType: "event",
-    status: rest.status || "upcoming",
     category: `Event / ${category}`,
     category_key: ["event", categoryKey || category, district, ...tags].join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "_"),
     markerType: "event",
@@ -76,14 +74,14 @@ function eventPlace({
     district,
     address,
     summary,
-    description: rest.description || summary,
+    description: summary,
     rsvp_count: rsvpCount,
     time,
     date,
     image,
     tags,
     partnerInsight,
-    source: rest.source || "Downtown Perks event layer",
+    source: "Downtown Perks event layer",
   };
 }
 
@@ -674,7 +672,23 @@ const eventPlaces = [
     included: ["Live DJs", "Drink specials", "Pool access", "Special activations", "Holiday atmosphere"],
     partnerInsight: "Strong for holiday-weekend demand, pool pass saves, group planning, and hotel guest conversion.",
   }),
-  eventPlace(getFirstThursdayRaineyMapEvent()),
+  eventPlace({
+    id: "hotel-van-zandt-first-thursday",
+    name: "Hotel Van Zandt First Thursday",
+    category: "Happy Hour",
+    categoryKey: "happy_hour hotel_van_zandt first_thursday",
+    latitude: 30.2588,
+    longitude: -97.7392,
+    district: "Rainey",
+    address: "605 Davis St, Austin, TX 78701",
+    time: "Thu 13 · 5:00 PM",
+    date: "2026-06-13T17:00:00-05:00",
+    image: "/images/imported/perks/hotel-van-zandt-entrance.jpg",
+    rsvpCount: 68,
+    tags: ["Hotel Van Zandt", "Geraldine's", "First Thursday", "Rainey", "Happy Hour", "Live Music"],
+    summary: "A featured Rainey hotel moment connecting guests, residents, Geraldine's, happy hour, and nearby live music.",
+    partnerInsight: "Useful for seeing how hotel guests and residents respond to First Thursday timing, Geraldine's traffic, saves, and nearby follow-on plans.",
+  }),
   eventPlace({
     id: "geraldines-happy-hour-live-music",
     name: "Geraldine's Happy Hour + Live Music",
@@ -826,6 +840,28 @@ const eventPlaces = [
   eventPlace({
     id: "sunday-brunch-card",
     name: "Sunday Brunch Card Perk",
+    detailEntityType: "perk",
+    detailMediaApproved: false,
+    perk: {
+      title: "Sunday Brunch Card",
+      detailMediaApproved: false,
+      summary: "Unlock resident brunch benefits at participating downtown restaurants each Sunday.",
+      benefit: "Brunch benefits at participating downtown restaurants every Sunday.",
+      eligibility: ["Active Downtown Perks Resident Card", "Participating locations", "Available Sundays"],
+      redemptionMethod: "show-card",
+      redemptionInstructions: ["Choose a participating restaurant.", "Open your Resident Card before ordering.", "Show the card when you ask for the resident benefit."],
+      recurringSchedule: "Available Sundays during participating brunch hours.",
+      status: "live",
+      participatingEntityIds: ["happy-hour-caroline", "happy-hour-moonshine-comfort-cocktails", "event-geraldines-happy-hour-live-music"],
+      participatingEntityNames: ["Caroline", "Moonshine Comfort & Cocktails", "Geraldine's Happy Hour + Live Music"],
+      participatingEntities: [
+        { id: "happy-hour-caroline", name: "Caroline", type: "venue", category: "Dining", district: "Congress", latitude: 30.268727, longitude: -97.742332, benefit: "Sunday resident brunch benefit" },
+        { id: "happy-hour-moonshine-comfort-cocktails", name: "Moonshine Comfort & Cocktails", type: "venue", category: "Dining", district: "Red River", latitude: 30.263779, longitude: -97.738029, benefit: "Sunday resident brunch benefit" },
+        { id: "event-geraldines-happy-hour-live-music", name: "Geraldine's", type: "venue", category: "Dining", district: "Rainey", latitude: 30.2587, longitude: -97.7392, image: "/images/map-entities/attached/venues/geraldines-stage.jpeg", benefit: "Sunday resident brunch benefit" },
+      ],
+      terms: ["One resident benefit per participating visit.", "Availability and restaurant hours may change.", "A valid Resident Card is required."],
+      analyticsEventName: "sunday_brunch_card_used",
+    },
     category: "Perk",
     categoryKey: "perk brunch card",
     latitude: 30.26458,
@@ -876,7 +912,6 @@ const eventPlaces = [
     name: "Monday Meetups at Stay Put",
     category: "Social",
     categoryKey: "social stay_put",
-    pinKey: "nightlife",
     latitude: 30.2589,
     longitude: -97.73805,
     district: "Rainey",
@@ -947,31 +982,30 @@ const brandPartnerPlaces = [
     source: "Downtown Perks brand partner layer",
   },
   {
-    id: "yeti-downtown-hydration-station",
-    name: "YETI Hydration Station",
+    id: "topo-chico-downtown-hydration-activation",
+    name: "Topo Chico Hydration Layer",
     type: "brand",
     partnerType: "brand",
-    brand: "YETI",
-    pinKey: "yeti",
-    category: "Brand / Hydration Station",
-    category_key: "brand_activation yeti hydration_station refill waterloo wellness nightlife recovery rainey",
+    brand: "Topo Chico",
+    category: "Brand / Hydration Activation",
+    category_key: "brand_activation topo_chico hydration waterloo wellness nightlife recovery rainey",
     latitude: 30.27348,
     longitude: -97.73602,
     district: "Waterloo",
     address: "Waterloo Park, Austin, TX 78701",
-    summary: "A downtown refill and cold-water station tied to wellness events, hotel arrivals, nightlife recovery, and high-footfall partner stops.",
-    description: "YETI appears where hydration is useful: event tables, lobby moments, trail routes, recovery stops, and map moments when people are choosing what to do next.",
-    deals_offers: "Cold-water refill station at participating events and venues",
-    primaryAction: "Save Station",
+    summary: "A downtown hydration launch tied to wellness events, nightlife recovery, hotel arrivals, and high-footfall partner stops.",
+    description: "Topo Chico appears where it is useful: event tables, venue bars, recovery stops, and map moments when people are choosing what to do next.",
+    deals_offers: "Hydration unlock at participating events and venues",
+    primaryAction: "Unlock Activation",
     secondaryAction: "View Partners",
-    campaignObjective: "Measure which event, venue, and corridor turns hydration intent into scans, saves, and station visits.",
+    campaignObjective: "Measure which event, venue, and corridor turns hydration intent into scans, saves, and product trial.",
     partnerInsight: "Strongest at Waterloo wellness events, Rainey nightlife windows, hotel welcome moments, and after-work outdoor programming.",
     audience: "Residents, eventgoers, runners, hotel guests, nightlife crowds, and wellness groups.",
-    image: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
+    image: "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg",
     related: ["event-waterloo-yoga", "waterloo-greenway-campaign-hub", "partner-hotel-van-zandt"],
-    mapLayer: "YETI",
-    datasetLayer: "YETI",
-    tags: ["YETI", "Hydration Station", "Refill", "Waterloo", "Rainey", "Wellness", "Nightlife", "QR"],
+    mapLayer: "Topo Chico",
+    datasetLayer: "Topo Chico",
+    tags: ["Topo Chico", "Hydration", "Waterloo", "Rainey", "Wellness", "Nightlife", "QR"],
     source: "Downtown Perks brand partner layer",
   },
   {
@@ -1464,7 +1498,7 @@ function dedupeNormalizedLocations(entities) {
   entities.forEach((entity) => {
     const nameKey = normalizedLocationKey(entity.name);
     const isDaaArtParksStop = String(entity.id || "").startsWith("daa-stop-") || Boolean(entity.isDaaArtParksTour || entity.daaTourStop);
-    const exactKey = [
+    const exactKey = entity.portfolioEntityId || [
       nameKey,
       Number(entity.latitude).toFixed(5),
       Number(entity.longitude).toFixed(5),
@@ -1509,7 +1543,7 @@ export function buildLocations() {
 
   const coreOpenMapLocations = data.filter((item) => isCoreMapLocation(item) && !isExcludedMapLocation(item));
 
-  const normalizedLocations = [...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
+  const normalizedLocations = [...dunlapPortfolioEntities, ...hospitalityOperatorPortfolioEntities, ...larryAndGuyRestaurantLayer, ...coreOpenMapLocations, ...eventPlaces, ...mapNativeCampaigns, ...buildingAmenityNetworkEntities, ...brandPartnerPlaces, ...attachedFeaturedBrandPlaces, ...launchMapPinPlaces, ...civicDiscoveryEntities, ...civicLayerPlaces, ...luxuryPresenceBuildingPlaces, ...legendsListingPlaces, ...attachedLegendsPropertyPlaces, ...rentalPlaces, ...supplementalMapEntities, ...attachedSupplementalPlaces, ...attachedRailMigratedPlaces, ...canonicalGoogleRegistryPlaces, ...republicAustinPlaces, ...parkingPlaces, ...happyHourPlaces, ...attachedHappyHourPerkPlaces, ...waterlooPlaces, ...daaPlaces]
     .filter((item) => !isExcludedMapLocation(item))
     .filter((item) => item.launchMapPin || isDowntownAustin78701Entity(item) || item.source === "User-provided rail card migration" || item.isDaaArtParksTour || item.partnerType === "civic" || item.partnerType === "services" || item.pinKey === "civic")
     .map((item, i) => {
@@ -1599,7 +1633,8 @@ export function buildLocations() {
         ...(downtownCoreRestaurantUpdate || {}),
         ...(fourSeasonsExperienceUpdate || {}),
       };
-      const curatedItem = applyLaunchMapCuration(normalizedItem);
+      const governedItem = applyHospitalityOperatorGovernance(applyDunlapPortfolioGovernance(normalizedItem));
+      const curatedItem = applyLaunchMapCuration(governedItem);
       const entity = normalizeEntity(enrichWithArchiveLocationContext(curatedItem), i);
 
       if (!entity) return null;
@@ -1637,17 +1672,30 @@ export function buildLocations() {
               overview: curatedItem.overview,
               residentSummary: curatedItem.residentSummary,
               partnerSummary: curatedItem.partnerSummary,
+              residentOverview: curatedItem.residentOverview,
+              partnerOverview: curatedItem.partnerOverview,
               sharedAmenities: curatedItem.sharedAmenities,
               residentPerk: curatedItem.residentPerk,
+              residentBenefits: curatedItem.residentBenefits,
+              partnerValueNarrative: curatedItem.partnerValueNarrative,
               secretSauce: curatedItem.secretSauce,
+              residentDifferentiator: curatedItem.residentDifferentiator,
+              partnerDifferentiator: curatedItem.partnerDifferentiator,
               hiddenGems: curatedItem.hiddenGems,
+              residentRoutines: curatedItem.residentRoutines,
+              partnerActivationIdeas: curatedItem.partnerActivationIdeas,
               campaignAlignment: curatedItem.campaignAlignment,
+              residentGoodFor: curatedItem.residentGoodFor,
+              partnerCampaigns: curatedItem.partnerCampaigns,
               residentActions: curatedItem.residentActions,
               partnerActions: curatedItem.partnerActions,
               residentContextLabels: curatedItem.residentContextLabels,
               partnerContextLabels: curatedItem.partnerContextLabels,
               sourceUrl: curatedItem.sourceUrl,
+              sourceLabel: curatedItem.sourceLabel,
               verificationStatus: curatedItem.verificationStatus,
+              residentDisclosure: curatedItem.residentDisclosure,
+              partnerDisclosure: curatedItem.partnerDisclosure,
               operatingStatus: curatedItem.operatingStatus,
               pinAssetPath: curatedItem.pinAssetPath,
               image: curatedItem.image,
@@ -1733,6 +1781,13 @@ export function buildLocations() {
               sourceType: curatedItem.sourceType,
               markerType: curatedItem.markerType,
               detailDrawerType: curatedItem.detailDrawerType,
+              detailEntityType: curatedItem.detailEntityType,
+              portfolioId: curatedItem.portfolioId,
+              portfolio: curatedItem.portfolio,
+              operatingStatus: curatedItem.operatingStatus,
+              verificationStatus: curatedItem.verificationStatus,
+              publicationStatus: curatedItem.publicationStatus,
+              mapVisibility: curatedItem.mapVisibility,
               pinKey: curatedItem.pinKey,
               partnerType: curatedItem.partnerType,
               category: curatedItem.category,
@@ -1775,14 +1830,15 @@ export function buildLocations() {
         category_key: curatedItem.category_key,
       };
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((entity) => applyHospitalityOperatorGovernance(applyDunlapPortfolioGovernance(entity)))
+    .filter((entity) => entity.portfolioId !== "dunlap-atx" || entity.kind === "portfolio" || entity.publicationStatus === "published");
 
   return dedupeNormalizedLocations(normalizedLocations);
 }
 
 export function useLocations() {
   const [happyHoursVersion, setHappyHoursVersion] = useState(0);
-  const [platformContent, setPlatformContent] = useState([]);
 
   useEffect(() => {
     function updateHappyHours() {
@@ -1797,41 +1853,6 @@ export function useLocations() {
     };
   }, []);
 
-  useEffect(() => {
-    let active = true;
-    const hydrate = () => {
-      fetchPartnerMapContent()
-        .then((items) => { if (active) setPlatformContent(items); })
-        .catch(() => { /* Bundled map data remains the offline fallback. */ });
-    };
-    hydrate();
-    window.addEventListener("downtown-perks:partner-content-updated", hydrate);
-    return () => {
-      active = false;
-      window.removeEventListener("downtown-perks:partner-content-updated", hydrate);
-    };
-  }, []);
-
   void happyHoursVersion;
-  const locations = buildLocations();
-  if (!platformContent.length) return locations;
-  const byKey = new Map();
-  platformContent.forEach((item) => {
-    [item.id, item.slug, item.ownerSlug].filter(Boolean).forEach((key) => byKey.set(String(key), item));
-  });
-  return locations.map((location) => {
-    const platform = [location.id, location.slug, location.ownerSlug, location.raw?.slug, location.raw?.ownerSlug]
-      .filter(Boolean)
-      .map((key) => byKey.get(String(key)))
-      .find(Boolean);
-    if (!platform) return location;
-    return {
-      ...location,
-      ...platform,
-      name: platform.title || location.name,
-      image: platform.heroImage || location.image,
-      images: platform.gallery?.length ? platform.gallery : location.images,
-      raw: { ...(location.raw || {}), ...platform, partnerPanel: platform.partnerPanel },
-    };
-  });
+  return buildLocations();
 }

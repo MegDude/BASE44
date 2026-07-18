@@ -1,18 +1,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getCanonicalIntentForFilter, getEntityGovernance } from "@/lib/map/intentGovernance";
-import { isRemovedMapEntity } from "@/lib/mapEntityAliases";
 import { entityMatchesMapIntent, resolveSearchIntent } from "@/map/searchIntent/mapIntentRegistry";
-import { PIN_LOADING_LIMITS } from "@/platform";
+import {
+  MAP_DISCOVERY_LIMITS,
+  backendPinToMapEntity,
+  getDiscoveryLimit,
+  isExplicitMapSearch,
+  searchOperationalMap,
+  sourceFromTrigger,
+} from "@/lib/map/mapDiscovery";
+import { buildPlatformSearchCatalog, groupPlatformSearchResults, searchPlatformCatalog } from "@/lib/search/platformSearchCatalog";
 
-const QUERY_CACHE_MAX = 40;
+const QUERY_CACHE_MAX = MAP_DISCOVERY_LIMITS.cacheEntries;
 const SEARCH_RESULT_LIMITS = Object.freeze({
-  text: PIN_LOADING_LIMITS.standard,
-  intent: PIN_LOADING_LIMITS.standard,
-  mobile: PIN_LOADING_LIMITS.standard,
-  desktop: PIN_LOADING_LIMITS.maxUnclustered,
-  entity: 9,
-  route: PIN_LOADING_LIMITS.maxUnclustered,
-  nearby: 12,
+  text: MAP_DISCOVERY_LIMITS.mobile,
+  intent: MAP_DISCOVERY_LIMITS.mobile,
+  mobile: MAP_DISCOVERY_LIMITS.mobile,
+  desktop: MAP_DISCOVERY_LIMITS.desktop,
+  entity: MAP_DISCOVERY_LIMITS.deepLink,
+  route: MAP_DISCOVERY_LIMITS.maxVisibleDesktop,
+  nearby: 8,
 });
 
 const PUBLIC_RAW_FIELD_ALLOWLIST = new Set([
@@ -29,6 +36,13 @@ const PUBLIC_RAW_FIELD_ALLOWLIST = new Set([
   "entityType",
   "markerType",
   "detailDrawerType",
+  "detailEntityType",
+  "portfolioId",
+  "portfolio",
+  "operatingStatus",
+  "verificationStatus",
+  "publicationStatus",
+  "mapVisibility",
   "destinationKind",
   "district",
   "neighborhood",
@@ -98,6 +112,11 @@ const PUBLIC_RAW_FIELD_ALLOWLIST = new Set([
   "nearbyBuildings",
   "nearbyPlaces",
   "nearby",
+  "partnerSummary",
+  "partnerOfferDescription",
+  "partnerRecommendation",
+  "partnerPerformance",
+  "nearbyPriority",
   "linkedBusinesses",
   "linkedBuildings",
   "notableBuildings",
@@ -149,8 +168,34 @@ function toPublicMapEntity(entity = {}) {
     ...publicEntity
   } = entity;
 
+  const id = String(publicEntity.id || publicEntity.entity_id || "");
+  const title = String(publicEntity.name || publicEntity.title || id);
+  const lat = Number(publicEntity.lat ?? publicEntity.latitude ?? publicEntity.coords?.[0]);
+  const lng = Number(publicEntity.lng ?? publicEntity.longitude ?? publicEntity.coords?.[1]);
+  const entityType = String(publicEntity.entity_type || publicEntity.entityType || publicEntity.sourceType || sourceTypeForEntity(publicEntity));
   return {
     ...publicEntity,
+    id,
+    entity_id: String(publicEntity.entity_id || id),
+    entity_type: entityType,
+    title,
+    name: title,
+    lat,
+    lng,
+    latitude: lat,
+    longitude: lng,
+    status: String(publicEntity.status || "active"),
+    visibility: String(publicEntity.visibility || "public"),
+    tenant_id: publicEntity.tenant_id || publicEntity.tenantId || null,
+    workspace_id: publicEntity.workspace_id || publicEntity.workspaceId || null,
+    partner_id: publicEntity.partner_id || publicEntity.partnerId || null,
+    property_id: publicEntity.property_id || publicEntity.propertyId || null,
+    building_id: publicEntity.building_id || publicEntity.buildingId || null,
+    campaign_id: publicEntity.campaign_id || publicEntity.campaignId || null,
+    perk_id: publicEntity.perk_id || publicEntity.perkId || null,
+    event_id: publicEntity.event_id || publicEntity.eventId || null,
+    analytics_summary: publicEntity.analytics_summary || null,
+    last_updated: String(publicEntity.last_updated || publicEntity.updatedAt || publicEntity.updated_at || ""),
     raw: publicRaw,
     source: undefined,
     metrics: undefined,
@@ -228,7 +273,7 @@ function textForEntity(entity = {}) {
 function clampLimit(limit, fallback = SEARCH_RESULT_LIMITS.intent) {
   const next = Number(limit || fallback);
   if (!Number.isFinite(next)) return fallback;
-  return Math.max(1, Math.min(PIN_LOADING_LIMITS.maxUnclustered, Math.round(next)));
+  return Math.max(1, Math.min(MAP_DISCOVERY_LIMITS.maxVisibleDesktop, Math.round(next)));
 }
 
 function compactBounds(bounds) {
@@ -382,6 +427,48 @@ function normalizeScope(scope = {}) {
   };
 }
 
+function radiusToMeters(radius) {
+  const value = Number.parseFloat(String(radius || ""));
+  if (!Number.isFinite(value)) return undefined;
+  if (/mi|mile/i.test(String(radius))) return Math.round(value * 1609.34);
+  if (/min/i.test(String(radius))) return Math.round(value * 80);
+  return Math.round(value);
+}
+
+export function buildResolverRequest(scope = {}, trigger = "search") {
+  const normalized = normalizeScope(scope);
+  const source = sourceFromTrigger(trigger);
+  const viewportWidth = typeof window === "undefined" ? 1024 : window.innerWidth;
+  const routeStopCount = Array.isArray(normalized.routeIds) ? normalized.routeIds.length : 0;
+  const boundedLimit = getDiscoveryLimit({ viewportWidth, source, routeStopCount });
+  const filter = String(normalized.filter || "").trim();
+  const genericIntent = ["", "all", "eat_drink"].includes(String(normalized.intent || "").toLowerCase());
+  return {
+    query: normalized.query || undefined,
+    intent: genericIntent ? undefined : normalized.intent,
+    source,
+    mode: normalized.audienceMode || "resident",
+    categories: filter && filter !== "All" ? [filter] : undefined,
+    district: normalized.district || undefined,
+    radius_meters: radiusToMeters(normalized.radius),
+    center: normalized.mapCenter || undefined,
+    bounds: normalized.currentBounds ? {
+      north: Number(normalized.currentBounds.north),
+      south: Number(normalized.currentBounds.south),
+      east: Number(normalized.currentBounds.east),
+      west: Number(normalized.currentBounds.west),
+    } : undefined,
+    selected_entity_id: normalized.activeEntityId || undefined,
+    partner_id: normalized.partnerId || undefined,
+    campaign_id: normalized.campaignId || undefined,
+    perk_id: normalized.perkId || undefined,
+    event_id: normalized.eventId || undefined,
+    route_id: normalized.routeId || undefined,
+    cursor: normalized.cursor || undefined,
+    limit: Math.min(clampLimit(normalized.resultLimit, boundedLimit), boundedLimit),
+  };
+}
+
 function putCache(cacheRef, key, value) {
   const cache = cacheRef.current;
   if (cache.has(key)) cache.delete(key);
@@ -396,17 +483,22 @@ function getCache(cacheRef, key) {
   const cache = cacheRef.current;
   if (!cache.has(key)) return null;
   const value = cache.get(key);
+  if (Date.now() - Number(value.fetchedAt || 0) > MAP_DISCOVERY_LIMITS.cacheTtlMs) {
+    cache.delete(key);
+    return null;
+  }
   cache.delete(key);
   cache.set(key, value);
   return value;
 }
 
-function selectScopedEntities(allEntities, scope) {
+export function selectScopedEntities(allEntities, scope) {
   const normalizedScope = normalizeScope(scope);
   const query = normalizedScope.query.toLowerCase();
   const intent = normalizedScope.intent;
   const limit = normalizedScope.resultLimit;
   const activeEntityId = scope.activeEntityId || "";
+  const savedEntityIds = new Set((scope.savedEntityIds || []).map(String));
   const activeEntity = activeEntityId ? allEntities.find((entity) => String(entity.id) === String(activeEntityId)) : null;
   const relatedLimit = activeEntity ? Math.max(0, limit - 1) : limit;
 
@@ -442,6 +534,9 @@ function selectScopedEntities(allEntities, scope) {
       fetchedAt: Date.now(),
       intent,
       limit,
+      status: results.length ? "resolved" : "empty",
+      resultTitle: activeEntity.name || activeEntity.title || "Downtown result",
+      resultSubtitle: relatedCandidates.length ? `${relatedCandidates.length} related places` : "",
     };
   }
 
@@ -451,6 +546,7 @@ function selectScopedEntities(allEntities, scope) {
     if (scope.audienceMode !== "partner" && (isPrivatePartnerEntity(entity) || !governance.isResidentVisible)) return false;
     if (scope.district && scope.district !== "All Downtown" && entity.district !== scope.district) return false;
     if (scope.hasPerk && !hasActivePerk(entity)) return false;
+    if (scope.filter === "Saved" && !savedEntityIds.has(String(entity.id))) return false;
     if (!activeEntity && !withinBounds(entity, scope.currentBounds)) return false;
     if (!matchesIntent(entity, intent, scope.filter, scope.audienceMode)) return false;
     if (query && !textForEntity(entity).includes(query)) {
@@ -479,18 +575,48 @@ function selectScopedEntities(allEntities, scope) {
     fetchedAt: Date.now(),
     intent,
     limit,
+    status: results.length ? "resolved" : "empty",
+    resultTitle: query || scope.filter || "Downtown results",
+    resultSubtitle: candidates.length > results.length ? `${candidates.length} available` : "",
   };
 }
 
+let registryPromise;
 async function loadRegistry() {
+  if (registryPromise) return registryPromise;
   const [{ buildLocations }] = await Promise.all([
     import("@/lib/useLocations"),
   ]);
-  return normalizeMapEntityData(buildLocations()).filter((entity) => !isRemovedMapEntity(entity));
+  registryPromise = Promise.resolve(normalizeMapEntityData(buildLocations()));
+  return registryPromise;
+}
+
+async function resolveCatalogState(query, signal, mode = "resident") {
+  const normalizedQuery = String(query || "").trim();
+  if (!normalizedQuery) return null;
+  const registry = await loadRegistry();
+  if (signal?.aborted) throw new DOMException("Platform search aborted", "AbortError");
+  const catalog = buildPlatformSearchCatalog(registry);
+  const results = searchPlatformCatalog(catalog, normalizedQuery, {
+    limit: typeof window !== "undefined" && window.innerWidth >= 768 ? 40 : 24,
+    mode,
+  });
+  const registryById = Object.fromEntries(registry.map((entity) => [String(entity.id), entity]));
+  const entitiesById = Object.fromEntries(results.map((document) => {
+    const entity = registryById[document.entityId] || registryById[document.linkedEntityId] || null;
+    return [document.id, entity];
+  }).filter(([, entity]) => Boolean(entity)));
+  return {
+    status: results.length ? "resolved" : "empty",
+    query: normalizedQuery,
+    results,
+    groups: groupPlatformSearchResults(results),
+    entitiesById,
+    total: results.length,
+  };
 }
 
 export function useSearchDrivenMapEntities() {
-  const [loadedRegistry, setLoadedRegistry] = useState([]);
   const [resultState, setResultState] = useState({
     queryKey: "",
     resultIds: [],
@@ -501,9 +627,22 @@ export function useSearchDrivenMapEntities() {
     fetchedAt: 0,
     intent: "",
     limit: 0,
+    status: "idle",
+    source: "",
+    queryId: "",
+    resultTitle: null,
+    resultSubtitle: null,
   });
   const [requestStatus, setRequestStatus] = useState("idle");
   const [lastTrigger, setLastTrigger] = useState("");
+  const [catalogState, setCatalogState] = useState({
+    status: "idle",
+    query: "",
+    results: [],
+    groups: [],
+    entitiesById: {},
+    total: 0,
+  });
   const [metrics, setMetrics] = useState({
     initialEntityRequestCount: 0,
     searchRequestCount: 0,
@@ -511,58 +650,26 @@ export function useSearchDrivenMapEntities() {
     staleCancellationCount: 0,
     duplicateRequestCount: 0,
     lastDurationMs: 0,
-    loadedRegistryCount: 0,
+    localFallbackCount: 0,
   });
-  const registryPromiseRef = useRef(null);
   const abortRef = useRef(null);
   const activeRequestRef = useRef({ id: 0, key: "" });
   const cacheRef = useRef(new Map());
-  const loadedRegistryRef = useRef([]);
   const requestStatusRef = useRef("idle");
-
-  useEffect(() => {
-    loadedRegistryRef.current = loadedRegistry;
-  }, [loadedRegistry]);
 
   useEffect(() => {
     requestStatusRef.current = requestStatus;
   }, [requestStatus]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    if (!registryPromiseRef.current) {
-      registryPromiseRef.current = loadRegistry();
-    }
-
-    registryPromiseRef.current
-      .then((entities) => {
-        if (cancelled) return;
-        loadedRegistryRef.current = entities;
-        setLoadedRegistry(entities);
-        setMetrics((current) => ({
-          ...current,
-          initialEntityRequestCount: current.initialEntityRequestCount || 1,
-          loadedRegistryCount: entities.length,
-        }));
-      })
-      .catch((error) => {
-        if (cancelled) return;
-        registryPromiseRef.current = null;
-        console.warn("Map registry could not be loaded.", error);
-        setRequestStatus((current) => current === "idle" ? "error" : current);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const runSearch = useCallback(async (scope = {}, trigger = "search") => {
     const normalizedScope = normalizeScope(scope);
-    const queryKey = buildQueryKey(normalizedScope);
+    const resolverRequest = buildResolverRequest(normalizedScope, trigger);
+    if (!isExplicitMapSearch(resolverRequest)) return null;
+    const queryKey = buildQueryKey({ ...normalizedScope, resultLimit: resolverRequest.limit });
     const cached = getCache(cacheRef, queryKey);
     if (cached) {
+      const cachedCatalog = await resolveCatalogState(normalizedScope.query, undefined, normalizedScope.audienceMode);
+      if (cachedCatalog) setCatalogState(cachedCatalog);
       setResultState(cached);
       setLastTrigger(trigger);
       setRequestStatus("success");
@@ -582,20 +689,47 @@ export function useSearchDrivenMapEntities() {
     activeRequestRef.current = { id: requestId, key: queryKey };
     setRequestStatus("loading");
     setLastTrigger(trigger);
+    setResultState((current) => ({ ...current, status: "resolving", source: resolverRequest.source }));
     const startedAt = performance.now();
 
     try {
-      let entities = loadedRegistryRef.current;
-      if (!entities.length) {
-        if (!registryPromiseRef.current) {
-          registryPromiseRef.current = loadRegistry();
-        }
-        entities = await registryPromiseRef.current;
+      const catalogPromise = resolveCatalogState(normalizedScope.query, controller.signal, normalizedScope.audienceMode);
+      const [backendResponse, catalogResult] = await Promise.all([
+        searchOperationalMap(resolverRequest, controller.signal),
+        catalogPromise,
+      ]);
+      if (catalogResult && activeRequestRef.current.id === requestId) setCatalogState(catalogResult);
+      let result;
+      let usedLocalFallback = false;
+      if (backendResponse) {
+        const entities = backendResponse.pins.map(backendPinToMapEntity);
+        result = {
+          queryKey,
+          resultIds: entities.map((entity) => entity.id),
+          entitiesById: Object.fromEntries(entities.map((entity) => [entity.id, entity])),
+          total: backendResponse.total_available,
+          cursor: backendResponse.next_cursor || "",
+          bounds: compactBounds(normalizedScope.currentBounds),
+          fetchedAt: Date.now(),
+          intent: backendResponse.interpreted_intent || normalizedScope.intent,
+          limit: resolverRequest.limit,
+          status: entities.length ? "resolved" : "empty",
+          source: resolverRequest.source,
+          queryId: backendResponse.query_id,
+          resultTitle: backendResponse.result_context.title,
+          resultSubtitle: backendResponse.result_context.subtitle || null,
+        };
+      } else {
+        const entities = await loadRegistry();
         if (controller.signal.aborted) throw new DOMException("Map search aborted", "AbortError");
-        setLoadedRegistry(entities);
+        result = {
+          ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
+          queryKey,
+          source: resolverRequest.source,
+          queryId: `local-${requestId}`,
+        };
+        usedLocalFallback = true;
       }
-
-      const result = selectScopedEntities(entities, normalizedScope);
       if (activeRequestRef.current.id !== requestId) {
         setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
         return null;
@@ -607,18 +741,40 @@ export function useSearchDrivenMapEntities() {
         ...current,
         searchRequestCount: current.searchRequestCount + 1,
         lastDurationMs: Math.round(performance.now() - startedAt),
-        loadedRegistryCount: entities.length,
+        localFallbackCount: current.localFallbackCount + (usedLocalFallback ? 1 : 0),
       }));
       return result;
     } catch (error) {
-      if (!loadedRegistryRef.current.length) registryPromiseRef.current = null;
       if (error?.name === "AbortError") {
         setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
         return null;
       }
-      console.warn("Map results could not be loaded.", error);
-      setRequestStatus("error");
-      return null;
+      try {
+        const entities = await loadRegistry();
+        if (controller.signal.aborted || activeRequestRef.current.id !== requestId) return null;
+        const result = {
+          ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
+          queryKey,
+          source: resolverRequest.source,
+          queryId: `local-${requestId}`,
+        };
+        putCache(cacheRef, result.queryKey, result);
+        setResultState(result);
+        setRequestStatus("success");
+        setMetrics((current) => ({
+          ...current,
+          searchRequestCount: current.searchRequestCount + 1,
+          lastDurationMs: Math.round(performance.now() - startedAt),
+          localFallbackCount: current.localFallbackCount + 1,
+        }));
+        return result;
+      } catch (fallbackError) {
+        if (fallbackError?.name === "AbortError") return null;
+        console.warn("Map results could not be loaded.", fallbackError);
+        setRequestStatus("error");
+        setResultState((current) => ({ ...current, status: "error" }));
+        return null;
+      }
     }
   }, []);
 
@@ -627,6 +783,7 @@ export function useSearchDrivenMapEntities() {
     activeRequestRef.current = { id: activeRequestRef.current.id + 1, key: "" };
     setRequestStatus("idle");
     setLastTrigger("");
+    setCatalogState({ status: "idle", query: "", results: [], groups: [], entitiesById: {}, total: 0 });
     setResultState({
       queryKey: "",
       resultIds: [],
@@ -637,6 +794,11 @@ export function useSearchDrivenMapEntities() {
       fetchedAt: 0,
       intent: "",
       limit: 0,
+      status: "idle",
+      source: "",
+      queryId: "",
+      resultTitle: null,
+      resultSubtitle: null,
     });
   }, []);
 
@@ -645,16 +807,13 @@ export function useSearchDrivenMapEntities() {
     [resultState],
   );
 
-  const places = useMemo(() => {
-    const hasScopedRequest = Boolean(lastTrigger || resultState.queryKey || resultState.fetchedAt);
-    return hasScopedRequest ? resultPlaces : loadedRegistry;
-  }, [lastTrigger, loadedRegistry, resultPlaces, resultState.fetchedAt, resultState.queryKey]);
+  const places = resultPlaces;
 
   useEffect(() => {
     if (typeof window === "undefined" || import.meta.env.PROD) return;
     window.__DP_MAP_SEARCH_METRICS__ = {
       ...metrics,
-      initialMarkerCount: places.length ? places.length : 0,
+      initialMarkerCount: lastTrigger ? places.length : 0,
       mountedMarkerCount: places.length,
       resultTotal: resultState.total,
       requestStatus,
@@ -667,9 +826,10 @@ export function useSearchDrivenMapEntities() {
 
   return {
     places,
-    allLoadedPlaces: loadedRegistry,
+    allLoadedPlaces: places,
     entitiesById: resultState.entitiesById,
     resultState,
+    catalogState,
     requestStatus,
     lastTrigger,
     metrics,

@@ -22,7 +22,7 @@ const CATEGORIES = [
 ];
 
 const INTENT_MODES = [
-  { id: 'explore', label: 'Explore', description: 'All nearby' },
+  { id: 'explore', label: 'Nearby', description: 'All nearby' },
   { id: 'now', label: 'Now', description: 'Open right now' },
   { id: 'plan', label: 'Plan', description: 'Coming up' },
   { id: 'perks', label: 'Perks', description: 'Deals & offers' },

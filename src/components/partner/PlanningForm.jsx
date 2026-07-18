@@ -84,7 +84,7 @@ export default function PlanningForm({ partnerType, onSubmit }) {
               type="submit"
               className="w-full h-10 rounded-xl bg-[#0B1F33] text-white font-semibold text-[14px] hover:bg-[#0B1F33] transition-colors flex items-center justify-center gap-2"
             >
-              Get started
+              Send request
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>

@@ -274,7 +274,7 @@ export default function ResidentAccess() {
         <section className="dp-resident-editorial-section" aria-labelledby="places-title">
           <header><p className="dp-resident-access-eyebrow">Start nearby</p><h2 id="places-title">A few places to explore.</h2><p>Open a place on the resident map to see what is nearby and whether a card benefit is available.</p></header>
           <div className="dp-resident-place-grid">
-            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Explore <ArrowRight aria-hidden="true" /></a></article>)}
+            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Open place <ArrowRight aria-hidden="true" /></a></article>)}
           </div>
         </section>
 

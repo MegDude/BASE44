@@ -220,7 +220,7 @@ export const partnerFaqs = [
   {
     question: "How do campaigns work?",
     answer:
-      "Campaigns are tied to who should see it, where it appears, when it runs, and one clear next step such as a save, RSVP, directions tap, card open, scan, or redemption.",
+      "Choose one place, one audience, and one action. Publish it to the map, then review saves, scans, opens, directions, and redemptions.",
   },
   {
     question: "How does onboarding work?",

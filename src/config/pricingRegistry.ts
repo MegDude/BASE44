@@ -161,7 +161,7 @@ export const PRICING_REGISTRY = {
       annualPrice: 199,
       summary: "Campaign support for brands showing up inside local moments.",
       checkoutKey: "brandCampaignsAnnual",
-      includes: ["Everything in Access", "Campaign support"],
+      includes: ["Everything in Access", "Campaign Support", "Reporting"],
       bestFor: "Always-on sponsorship",
       billing: "Annual subscription",
     },

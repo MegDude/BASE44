@@ -176,11 +176,11 @@ const CATEGORY_STANDARD = {
   },
   civic: {
     label: "Civic",
-    verb: "Explore",
+    verb: "View",
     eyebrow: "Civic guide",
     promise: "Turn the stop into a walkable civic route with nearby context.",
     primaryAction: "explore",
-    primaryLabel: "Explore",
+    primaryLabel: "View guide",
     intent: "guide",
     routeLabel: "Directions",
     metrics: ["Routeable", "Public", "Guide-ready"],

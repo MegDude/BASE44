@@ -20,7 +20,7 @@
 /* Last word map panel cleanup: panel is the only container; sections are just content. */
 html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-panel-native-top-clearance: max(132px, calc(env(safe-area-inset-top, 0px) + 118px));
-  --dp-panel-native-edge: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-panel-native-edge: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-panel-native-copy: rgba(11, 31, 51, 0.66);
 }
 
@@ -425,7 +425,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-native-panel-top-gap: max(150px, calc(env(safe-area-inset-top, 0px) + 132px));
   --dp-native-panel-bottom-gap: max(12px, env(safe-area-inset-bottom, 0px));
-  --dp-native-panel-x-gap: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-native-panel-x-gap: max(8px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-native-panel-line: rgba(11, 31, 51, 0.08);
   --dp-native-panel-copy: rgba(11, 31, 51, 0.66);
 }
@@ -938,7 +938,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-camp
 @media (max-width: 430px) {
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     --dp-native-panel-top-gap: max(154px, calc(env(safe-area-inset-top, 0px) + 138px));
-    --dp-native-panel-x-gap: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+    --dp-native-panel-x-gap: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -3151,6 +3151,50 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-state span {
   font-size: 0.82rem !important;
   font-weight: 650 !important;
   line-height: 1.45 !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-card {
+  display: grid !important;
+  width: min(360px, calc(100vw - 40px)) !important;
+  gap: 8px !important;
+  justify-items: center !important;
+  padding: 22px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 20px 60px rgba(11, 31, 51, 0.12) !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-card small {
+  color: rgba(11, 31, 51, 0.54) !important;
+  font: 500 0.72rem/1.45 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  gap: 8px !important;
+  margin-top: 6px !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions :is(button, a) {
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #0B1F33 !important;
+  font: 650 0.78rem/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-map-page.dp-map-page .dp-google-map-state-actions :is(button, a):first-child {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #fff !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-google-map-marker-shell,
@@ -16592,7 +16636,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-search-intent-console,
   .dp-product-shell-menu
 ) {
-  max-width: calc(100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) !important;
+  max-width: calc(100vw - max(16px, env(safe-area-inset-left) + env(safe-area-inset-right) + 16px)) !important;
   max-height: calc(100dvh - max(16px, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 16px)) !important;
   overflow-x: hidden !important;
 }
@@ -21208,10 +21252,10 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-form-
 
 /* Final map drawer viewport lock: keep every bottom-tab panel usable edge to edge. */
 html body #root#root .dp-map-page.dp-map-page.dp-map-page {
-  --dp-map-panel-safe-x: max(0px, env(safe-area-inset-left, 0px));
-  --dp-map-panel-safe-r: max(0px, env(safe-area-inset-right, 0px));
+  --dp-map-panel-safe-x: max(8px, env(safe-area-inset-left, 0px));
+  --dp-map-panel-safe-r: max(8px, env(safe-area-inset-right, 0px));
   --dp-map-panel-top-space: max(84px, env(safe-area-inset-top, 0px) + 64px);
-  --dp-map-panel-bottom-space: calc(var(--dp-map-bottom-dock-h, 66px) + env(safe-area-inset-bottom, 0px));
+  --dp-map-panel-bottom-space: calc(var(--dp-map-bottom-dock-h, 66px) + max(10px, env(safe-area-inset-bottom, 0px)));
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22127,7 +22171,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
 /* True final map panel cleanup: no cards, bento boxes, or bordered sections inside drawers. */
 html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   --dp-map-drawer-clear-top: max(132px, calc(env(safe-area-inset-top, 0px) + 118px));
-  --dp-map-drawer-edge: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --dp-map-drawer-edge: max(6px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --dp-map-panel-copy-final: rgba(11, 31, 51, 0.66);
 }
 
@@ -22149,7 +22193,7 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :i
   min-height: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 10px 10px 0 0 !important;
+  border-radius: 14px 14px 0 0 !important;
   background: #FFFFFF !important;
   background-image: none !important;
   box-shadow: 0 -12px 28px rgba(11, 31, 51, 0.12) !important;

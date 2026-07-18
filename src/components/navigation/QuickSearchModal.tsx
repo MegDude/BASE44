@@ -297,21 +297,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   }, [isOpen, query]);
 
   useEffect(() => {
-    if (!isOpen) return undefined;
-    setSubmittedQuery("");
-    void runSearch({
-      query: "downtown",
-      intent: "eat_drink",
-      filter: "Featured",
-      audienceMode: "resident",
-      currentBounds: null,
-      zoom: 16,
-      radius: "5 min walk",
-      activeEntityId: "",
-      resultLimit: 24,
-    }, "quick_search_open");
-    return undefined;
-  }, [isOpen, runSearch]);
+    if (isOpen) setSubmittedQuery("");
+  }, [isOpen]);
 
   const executeQuickSearch = useCallback((nextQuery = query) => {
     const cleanQuery = nextQuery.trim();
@@ -320,13 +307,13 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     void runSearch({
       query: cleanQuery,
       intent: "",
-      filter: "Featured",
+      filter: "All",
       audienceMode: "resident",
       currentBounds: null,
       zoom: 16,
       radius: "5 min walk",
       activeEntityId: "",
-      resultLimit: 30,
+      resultLimit: 8,
     }, "quick_search_submit");
   }, [query, runSearch]);
 
@@ -429,7 +416,9 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             <button type="button" onClick={() => setQuery("")} aria-label="Clear search">
               <X size={15} />
             </button>
-          ) : null}
+          ) : (
+            <span aria-hidden="true" />
+          )}
         </div>
 
         <div className="dp-quick-search-intents" aria-label="Explore by intent">

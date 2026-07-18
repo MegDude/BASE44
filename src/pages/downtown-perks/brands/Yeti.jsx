@@ -26,7 +26,7 @@ const demo = (
     </div>
     <QRDemoPanel
       headline="YETI × Downtown Perks"
-      sub="Scan to claim your member activation — limited gear, exclusive access, and one night you'll actually talk about."
+      sub="Scan for limited gear and event access."
       action="Claim Member Access"
     />
   </div>
@@ -115,7 +115,7 @@ export default function Yeti() {
           <UseCaseCard tag="Run Club Tie-In" title="YETI hydration station on trail" detail="Saturday morning run club departs the lobby of The Waterline. YETI-branded hydration station at the midpoint. Scan at station for exclusive offer." delay={0.1} />
           <UseCaseCard tag="Live Music" title="YETI × late night at Bangers" detail="YETI co-hosts a live music night. Member-only early entry. Custom cooler setup. Perk unlocked via member card scan at the door." delay={0.2} />
           <UseCaseCard tag="Seasonal Campaign" title="Summer cold chain moment" detail="YETI launches a summer campaign in the member event feed — tied to pool season, lake days, and outdoor activity. QR-led offer unlocked by local behavior." delay={0.3} />
-          <UseCaseCard tag="Building Placement" title="Lobby-to-product moment" detail="YETI product display placed in The Waterline lobby. Residents scan to learn more or claim offer. Building-native product discovery." delay={0.4} />
+          <UseCaseCard tag="Building placement" title="Lobby display" detail="Residents scan The Waterline lobby display to view or claim the offer." delay={0.4} />
         </div>
       </BrandSection>
 

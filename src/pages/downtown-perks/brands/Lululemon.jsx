@@ -67,7 +67,7 @@ export default function Lululemon() {
         <div className="grid md:grid-cols-2 gap-4">
           <FlowCard step="01" title="Run club distribution" desc="Saturday morning run club appears in the member event feed. lululemon branding, gear giveaway, hydration station." delay={0} />
           <FlowCard step="02" title="Studio co-activation" desc="Ambassador-led classes in The Waterline gym or a partner studio. RSVP-gated. Members-first access." delay={0.1} />
-          <FlowCard step="03" title="In-store member moments" desc="Exclusive access windows for members — new arrivals preview, private styling session, class credit redemption." delay={0.2} />
+          <FlowCard step="03" title="Member visits" desc="Preview new arrivals, book a styling session, or use a class credit." delay={0.2} />
           <FlowCard step="04" title="Building placement" desc="lululemon appears as a featured partner in resident feeds near their nearest retail location." delay={0.3} />
           <FlowCard step="05" title="QR-activated product moments" desc="In-store or at events, QR unlocks a member-exclusive offer. Tracked to the Downtown Perks layer." delay={0.4} />
           <FlowCard step="06" title="Seasonal campaign surfaces" desc="Fall gear drops, spring run series, and studio launch events all get distributed through the member feed." delay={0.5} />

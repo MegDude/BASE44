@@ -22,7 +22,7 @@ export function generatePulseSignal(input: PulseInput = {}) {
     partnerHeadline: responseRate > 0 ? `${district} response is ${responseRate}%` : `${district} demand signal nearby`,
     demandSignal: actions >= 10 ? "Demand rising nearby" : "Demand signal nearby",
     coverageSignal: responseRate < 8 ? "Coverage gap nearby" : "Coverage holding",
-    campaignSignal: input.campaignClicks ? "Campaign clicks active" : "Campaign opportunity nearby",
+    campaignSignal: input.campaignClicks ? "Campaign clicks active" : "Opportunity nearby",
     responseRate,
     updatedAt: new Date().toISOString(),
   };

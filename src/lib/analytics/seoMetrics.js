@@ -194,6 +194,7 @@ export function normalizeLuxuryPresenceSeoSnapshot(snapshot) {
       .filter((metric) => metric.opportunityPriority !== "Low")
       .sort((a, b) => b.opportunityScore - a.opportunityScore),
     accessMethod: snapshot.accessMethod,
+    source: snapshot.source,
     rawSnapshotId: snapshot.id,
     capturedAt: snapshot.capturedAt,
     periodLabel: snapshot.periodLabel,
