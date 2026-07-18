@@ -25,9 +25,9 @@ function InteractionFeedback() {
 
     function markInteraction(event) {
       const target = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
-      if (!target || target.classList.contains("dp-action-activated")) return;
-      target.classList.add("dp-action-activated");
-      window.setTimeout(() => target.classList.remove("dp-action-activated"), 430);
+      if (!target || target.classList.contains("dp-press-feedback")) return;
+      target.classList.add("dp-press-feedback");
+      window.setTimeout(() => target.classList.remove("dp-press-feedback"), 430);
     }
 
     function markKeyboardInteraction(event) {
