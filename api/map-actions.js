@@ -20,6 +20,8 @@ const ALLOWED_ACTIONS = new Set([
   "share",
   "explore",
   "add_wallet",
+  "detail_panel_opened",
+  "detail_panel_state_changed",
 ]);
 
 function clean(value, limit = 500) {

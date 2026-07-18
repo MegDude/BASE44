@@ -33,7 +33,29 @@ export default async function handler(req, res) {
   });
 
   if (error) {
-    return res.status(500).json({ error: error.message });
+    const { error: fallbackError } = await supabaseServer.from('analytics_signals').insert({
+      source_type: 'map_discovery',
+      action_type: 'open',
+      value: 1,
+      session_token: sessionId,
+      entity_type: entityType,
+      metadata: {
+        legacy_entity_id: entityId,
+        latitude,
+        longitude,
+        fallback_reason: error.message
+      }
+    });
+
+    if (fallbackError) {
+      return res.status(202).json({
+        ok: true,
+        status: 'accepted_without_persistence',
+        reason: fallbackError.message
+      });
+    }
+
+    return res.status(200).json({ ok: true, status: 'stored_in_analytics_signals' });
   }
 
   return res.status(200).json({ ok: true });
