@@ -244,7 +244,40 @@ html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a
 
 html body #root#root#root .dp-partner-workspace-page .dp-os-entity-rail a {
   min-height: 64px !important;
-  padding-block: 8px !important;
+  height: 64px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 18px !important;
+  align-items: center !important;
+  padding: 8px 10px 8px 0 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-entity-rail :is(img, .dp-os-entity-fallback) {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-entity-rail a > span:not(.dp-os-entity-fallback) {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-entity-rail a :is(strong, small) {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Workspace utilities are quiet square controls, never floating capsules. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root :is(
+  .dp-product-shell-search-button,
+  .dp-partner-workspace-page button,
+  .dp-partner-workspace-page select,
+  .dp-partner-workspace-page [role="button"]
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 html body #root#root#root .dp-resident-access-page :is(h1, .dp-resident-access-hero h1) {

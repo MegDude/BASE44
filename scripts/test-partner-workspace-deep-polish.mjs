@@ -36,5 +36,6 @@ assert.match(styles, /box-shadow:\s*none\s*!important/, "landing surfaces must r
 assert.match(styles, /min-height:\s*44px\s*!important/, "primary actions must retain accessible targets");
 assert.match(main, /partner-workspace-deep-polish-final\.css/, "the workspace surface contract must remain registered");
 assert.match(main, /interface-density-regression-lock\.css/, "the cross-product density lock must follow workspace polish");
+assert.doesNotMatch(workspaceSource, /import\s+["']@\/styles\//, "workspace styles must load through main before the final release locks");
 
 console.log("Partner workspace deep-polish regression checks passed.");

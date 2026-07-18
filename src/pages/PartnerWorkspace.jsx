@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { base44 } from "@/api/base44Client";
 import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
-import "@/styles/workspace-profile-editor.css";
 import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
 import { WorkspaceSheetProvider } from "@/components/partner/workspace/WorkspaceSheetSystem";
 import { WorkspaceDestinationRoot } from "@/components/partner/workspace/WorkspaceDestinationRoot";
@@ -28,7 +27,6 @@ import { canViewEverything } from "@/lib/auth/session";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
 import { queryAgent } from "@/services/agent/agentClient";
-import "@/styles/partner-analytics-decision-system.css";
 
 const WORKSPACE_MEDIA_TABS = ["media"];
 

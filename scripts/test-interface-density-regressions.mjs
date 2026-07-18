@@ -41,6 +41,8 @@ try {
         const quickActions = [...document.querySelectorAll(".dp-native-mobile-actions > a")].filter(visible);
         const pricingRows = [...document.querySelectorAll(".dp-pricing-upgrade-list > button")].filter(visible);
         const residentBenefitRows = [...document.querySelectorAll(".dp-resident-benefit-list > a")].filter(visible);
+        const workspaceEntityRows = [...document.querySelectorAll(".dp-workspace-entities-compact a")].filter(visible);
+        const workspaceUtilityControls = [...document.querySelectorAll(".dp-partner-workspace-header button, .dp-partner-workspace-header select, .dp-product-shell-search-button")].filter(visible);
         const visibleSheets = [...document.querySelectorAll(".dp-active-perks-sheet, .dp-panel-shell, .dp-map-detail-sheet")].filter(visible);
         return {
           overflow: document.documentElement.scrollWidth - innerWidth,
@@ -50,6 +52,8 @@ try {
           quickActionMaxHeight: Math.max(0, ...quickActions.map((element) => element.getBoundingClientRect().height)),
           pricingRowMaxHeight: Math.max(0, ...pricingRows.map((element) => element.getBoundingClientRect().height)),
           residentBenefitMaxHeight: Math.max(0, ...residentBenefitRows.map((element) => element.getBoundingClientRect().height)),
+          workspaceEntityRowMaxHeight: Math.max(0, ...workspaceEntityRows.map((element) => element.getBoundingClientRect().height)),
+          workspaceUtilityMaxRadius: Math.max(0, ...workspaceUtilityControls.map((element) => parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0)),
           sheetMaxRadius: Math.max(0, ...visibleSheets.map((element) => parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0)),
           sheetMaxHeight: Math.max(0, ...visibleSheets.map((element) => element.getBoundingClientRect().height)),
           viewportHeight: innerHeight,
@@ -64,6 +68,8 @@ try {
       assert.ok(result.quickActionMaxHeight <= 60, `${viewport.name} ${route} has ${result.quickActionMaxHeight}px quick actions`);
       assert.ok(result.pricingRowMaxHeight <= 64, `${viewport.name} ${route} has ${result.pricingRowMaxHeight}px pricing rows`);
       assert.ok(result.residentBenefitMaxHeight <= 64, `${viewport.name} ${route} has ${result.residentBenefitMaxHeight}px resident benefit rows`);
+      assert.ok(result.workspaceEntityRowMaxHeight <= 68, `${viewport.name} ${route} has ${result.workspaceEntityRowMaxHeight}px workspace place rows`);
+      assert.equal(result.workspaceUtilityMaxRadius, 0, `${viewport.name} ${route} retains ${result.workspaceUtilityMaxRadius}px workspace utility rounding`);
       assert.equal(result.sheetMaxRadius, 0, `${viewport.name} ${route} retains a ${result.sheetMaxRadius}px sheet radius`);
       if (viewport.name === "mobile") {
         assert.ok(
