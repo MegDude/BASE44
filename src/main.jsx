@@ -82,7 +82,6 @@ import "@/styles/resident-card-form-refinement-final.css"
 import "@/styles/workspace-context-native-final.css"
 import "@/styles/workspace-profile-save-final.css"
 import "@/styles/collection-route-panels-final.css"
-import "@/styles/surface-containment-final.css"
 import "@/styles/ios-fullscreen-map-panels-final.css"
 import "@/styles/active-perks-sheet.css"
 import "@/styles/partner-info-opening-final.css"
@@ -111,6 +110,7 @@ import "@/styles/accessibility-pin-art-final.css"
 import "@/styles/partner-workspace-deep-polish-final.css"
 import "@/styles/interface-density-regression-lock.css"
 import "@/styles/legends-seo-snapshot-final.css"
+import "@/styles/surface-containment-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
