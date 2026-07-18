@@ -12,6 +12,7 @@ export type DowntownPerksPartnerType =
 
 export type PartnerWorkspaceTab =
   | "overview"
+  | "assistant"
   | "map"
   | "offers"
   | "events"
@@ -72,6 +73,7 @@ export const PARTNER_ROUTES = {
   dashboardRealEstate: "/partners/dashboard/real-estate",
   workspace: "/partner-workspace",
   workspaceOverview: "/partner-workspace/overview",
+  workspaceAssistant: "/partner-workspace/assistant",
   workspaceMap: "/partner-workspace/map",
   workspaceOffers: "/partner-workspace/offers",
   workspaceEvents: "/partner-workspace/events",
@@ -713,6 +715,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
 
 export const PARTNER_WORKSPACE_NAV: Array<{ id: PartnerWorkspaceTab; label: string; href: string; helper: string }> = [
   { id: "overview", label: "Overview", href: PARTNER_ROUTES.workspaceOverview, helper: "What is working nearby." },
+  { id: "assistant", label: "Ask the Map", href: PARTNER_ROUTES.workspaceAssistant, helper: "Decide what to do next using live map context." },
   { id: "map", label: "Map", href: PARTNER_ROUTES.workspaceMap, helper: "Your place in the downtown map." },
   { id: "offers", label: "Offers", href: PARTNER_ROUTES.workspaceOffers, helper: "Perks people can use." },
   { id: "events", label: "Events", href: PARTNER_ROUTES.workspaceEvents, helper: "Plans worth showing up for." },
@@ -740,6 +743,19 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     primaryCta: { label: "Update an offer", href: PARTNER_ROUTES.workspaceOffers },
     secondaryCta: { label: "Open map view", href: PARTNER_ROUTES.workspaceMap },
     emptyState: "No activity yet. Publish an offer, event, or entry link to start seeing results.",
+  },
+  assistant: {
+    route: PARTNER_ROUTES.workspaceAssistant,
+    headline: "Ask what to do next.",
+    body: "Use your places, current map context, campaigns, and results to get one practical recommendation at a time.",
+    prompts: [
+      "What should we improve this week?",
+      "Which nearby audience should we focus on?",
+      "What campaign fits the current downtown context?",
+      "Which listing or offer needs attention first?",
+    ],
+    primaryCta: { label: "Ask a question", href: PARTNER_ROUTES.workspaceAssistant },
+    secondaryCta: { label: "Open partner map", href: "/map?mode=partner&tab=map&filter=All" },
   },
   map: {
     route: PARTNER_ROUTES.workspaceMap,

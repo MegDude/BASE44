@@ -1,4 +1,4 @@
-import { ChartNoAxesCombined, House, MapPin, Megaphone, Settings, type LucideIcon } from "lucide-react";
+import { House, MapPin, Megaphone, Sparkles, Settings, type LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type PartnerMobileTab = {
@@ -13,7 +13,7 @@ const PARTNER_MOBILE_TABS = [
   { id: "home", label: "Home", href: "/partner-workspace/overview", icon: House, matches: ["overview"] },
   { id: "publish", label: "Publish", href: "/partner-workspace/offers", icon: Megaphone, matches: ["offers", "events", "campaigns", "surveys", "broadcasts"] },
   { id: "map", label: "Map", href: "/map?mode=partner&tab=map&filter=All", icon: MapPin, matches: ["map"] },
-  { id: "insights", label: "Insights", href: "/partner-workspace/analytics", icon: ChartNoAxesCombined, matches: ["analytics", "reports", "audience"] },
+  { id: "insights", label: "Ask", href: "/partner-workspace/assistant", icon: Sparkles, matches: ["assistant", "analytics", "reports", "audience"] },
   { id: "workspace", label: "Workspace", href: "/partner-workspace/profile", icon: Settings, matches: ["profile", "team", "billing", "media", "sources"] },
 ] as const satisfies readonly PartnerMobileTab[];
 

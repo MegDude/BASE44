@@ -1,4 +1,4 @@
-const DEFAULT_AGENT_BASE_URL = "http://localhost:3014";
+const DEFAULT_AGENT_BASE_URL = "https://downtown-perks-live.base44.app";
 
 function getAgentBaseUrl() {
   return (
@@ -46,25 +46,29 @@ function normalizeCompatResponse(agentPayload, agentResponse) {
   const cards = Array.isArray(response?.cards) ? response.cards : [];
   const actions = Array.isArray(response?.actions) ? response.actions : [];
   const toolCalls = Array.isArray(response?.toolCalls) ? response.toolCalls : [];
-  const places =
-    cards.length
-      ? cards.map((card) => ({
-          id: String(card.id || card.entityId || card.name || card.title || ""),
-          name: card.name || card.title || "Downtown result",
-          reason: card.reason || card.summary || card.description || "",
-          mapQuery: card.mapQuery || card.name || card.title || "",
-          action: card.action || "Open on map",
-        }))
-      : toolCalls.flatMap((tool) => {
+  const contextEntities = Array.isArray(agentPayload?.context?.entities) ? agentPayload.context.entities : [];
+  const candidates = cards.length
+    ? cards
+    : toolCalls.flatMap((tool) => {
           const data = Array.isArray(tool?.data) ? tool.data : Array.isArray(tool?.data?.results) ? tool.data.results : [];
-          return data.slice(0, 5).map((item) => ({
-            id: String(item.id || item.name || ""),
-            name: item.name || item.title || "Downtown result",
-            reason: item.reason || item.summary || item.category || "",
-            mapQuery: item.name || item.title || "",
-            action: "Open on map",
-          }));
+          return data.slice(0, 8);
         });
+  const places = candidates.map((candidate) => {
+    const candidateId = String(candidate.id || candidate.entityId || "");
+    const candidateName = String(candidate.name || candidate.title || "").toLowerCase();
+    const matched = contextEntities.find((entity) => (
+      (candidateId && String(entity.id || entity.entityId || "") === candidateId) ||
+      (candidateName && String(entity.name || entity.title || "").toLowerCase() === candidateName)
+    ));
+    if (!matched) return null;
+    return {
+      id: String(matched.id || matched.entityId || matched.name || matched.title || ""),
+      name: matched.name || matched.title || "Downtown result",
+      reason: candidate.reason || candidate.summary || matched.summary || matched.description || "",
+      mapQuery: matched.name || matched.title || "",
+      action: "Open on map",
+    };
+  }).filter(Boolean);
 
   return {
     ...response,
@@ -117,9 +121,10 @@ export default async function handler(req, res) {
     const result = await proxyAgentQuery(req.body || {});
     return res.status(result.status).json(result.body);
   } catch (error) {
-    return res.status(502).json({
-      error: error?.message || "Backend agent gateway unavailable",
-      source: "agent-proxy",
+    const { buildFallbackMapResponse } = await import("../ask-map.js");
+    return res.status(200).json({
+      ...buildFallbackMapResponse(req.body || {}),
+      providerError: error?.message ? "Provider unavailable; current map context used." : undefined,
     });
   }
 }

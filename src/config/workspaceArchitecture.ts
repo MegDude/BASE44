@@ -31,6 +31,10 @@ export type WorkspaceEntityOwnership = {
   display_name: string;
   map_filter?: string;
   perk_summary?: string;
+  media?: {
+    src: string;
+    alt: string;
+  };
 };
 
 export const roleMatrix: Record<string, Partial<Record<WorkspaceRole, boolean>>> = {
@@ -108,16 +112,16 @@ export const demoOrganizations: WorkspaceOrganization[] = [
 ];
 
 export const demoEntityOwners: WorkspaceEntityOwnership[] = [
-  { id: "owner-legends-real-estate", organization_id: "demo-org-legends-real-estate", entity_id: "legends-real-estate", entity_type: "brand", display_name: "Legends Real Estate", map_filter: "Legends", perk_summary: "Real estate workspace" },
-  { id: "owner-the-shore-4301", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-4301-5357248", entity_type: "listing", display_name: "The Shore #4301", map_filter: "All Listings", perk_summary: "Active listing · MLS 5357248" },
-  { id: "owner-the-shore-5003", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-5003-1682504", entity_type: "listing", display_name: "The Shore #5003", map_filter: "All Listings", perk_summary: "Active listing · MLS 1682504" },
+  { id: "owner-legends-real-estate", organization_id: "demo-org-legends-real-estate", entity_id: "legends-real-estate", entity_type: "brand", display_name: "Legends Real Estate", map_filter: "Legends", perk_summary: "Real estate workspace", media: { src: "/pins/downtown-perks/legends-logo-gold.svg", alt: "Legends Real Estate" } },
+  { id: "owner-the-shore-4301", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-4301-5357248", entity_type: "listing", display_name: "The Shore #4301", map_filter: "All Listings", perk_summary: "Active listing · MLS 5357248", media: { src: "/images/map/panels/the-shore-austin.jpg", alt: "The Shore condominium tower in Rainey" } },
+  { id: "owner-the-shore-5003", organization_id: "demo-org-legends-real-estate", entity_id: "luxury-presence-610-davis-st-5003-1682504", entity_type: "listing", display_name: "The Shore #5003", map_filter: "All Listings", perk_summary: "Active listing · MLS 1682504", media: { src: "/images/map/panels/the-shore-austin.jpg", alt: "The Shore condominium tower in Rainey" } },
   { id: "owner-atx-cocina", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-atx-cocina", entity_type: "venue", display_name: "ATX Cocina", map_filter: "Dining", perk_summary: "Masa Moment Passport Perk" },
   { id: "owner-j-carver", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-j-carvers", entity_type: "venue", display_name: "J. Carver's", map_filter: "Dining", perk_summary: "Chophouse Passport Perk" },
   { id: "owner-red-ash", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-red-ash", entity_type: "venue", display_name: "Red Ash", map_filter: "Dining", perk_summary: "Fire Cooking Passport Perk" },
   { id: "owner-restaurant-francois", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-restaurant-francois", entity_type: "venue", display_name: "Restaurant François", map_filter: "Dining", perk_summary: "French Evening Passport Perk" },
   { id: "owner-roaring-fork", organization_id: "demo-org-larry-and-guy", entity_id: "larry-guy-roaring-fork", entity_type: "venue", display_name: "Roaring Fork", map_filter: "Dining", perk_summary: "Downtown Classic Passport Perk" },
-  { id: "owner-hotel-van-zandt", organization_id: "demo-org-hotel-van-zandt", entity_id: "hotel-van-zandt", entity_type: "hotel", display_name: "Hotel Van Zandt" },
-  { id: "owner-yeti-store", organization_id: "demo-org-yeti", entity_id: "brand-yeti", entity_type: "brand", display_name: "YETI" },
+  { id: "owner-hotel-van-zandt", organization_id: "demo-org-hotel-van-zandt", entity_id: "hotel-van-zandt", entity_type: "hotel", display_name: "Hotel Van Zandt", media: { src: "/images/residential-content/the-shore-hospitality.webp", alt: "Hotel Van Zandt in the Rainey District" } },
+  { id: "owner-yeti-store", organization_id: "demo-org-yeti", entity_id: "brand-yeti", entity_type: "brand", display_name: "YETI", media: { src: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg", alt: "YETI flagship store interior in downtown Austin" } },
 ];
 
 export const superAdminCapabilities = [

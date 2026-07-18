@@ -130,6 +130,13 @@ export default function AskMapAgent() {
   const context = useMemo(() => rankContext(places, query, district, filter), [places, query, district, filter]);
   const previewContext = context.slice(0, 4);
   const encodedQuery = useMemo(() => encodeURIComponent(query.trim() || prompts[0]), [query]);
+  const sourceLabel = answer?.source === "base44-agent"
+    ? "Downtown Perks agent conversation"
+    : answer?.source === "openai-ask-map"
+      ? "OpenAI map agent"
+      : answer?.source === "local-agent"
+        ? "Current Downtown Perks map context"
+        : "Downtown Perks map intelligence";
 
   async function submit(event) {
     event?.preventDefault();
@@ -314,8 +321,8 @@ export default function AskMapAgent() {
                 </Button>
               </div>
 
-              <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/42">
-                Source: Backend agent gateway
+              <div className="mt-4 text-[11px] font-semibold tracking-[0.08em] text-[#0B1F33]/42">
+                Source: {sourceLabel}{answer?.model ? ` · ${answer.model}` : ""}
               </div>
             </CardContent>
           </Card>
