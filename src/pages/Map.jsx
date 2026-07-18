@@ -12602,6 +12602,7 @@ function getStoredMapView() {
 function GoogleMapCanvas({
   center,
   zoom,
+  markerLayoutZoom,
   mapItems,
   collectionRoute,
   fitPlaces,
@@ -12632,8 +12633,10 @@ function GoogleMapCanvas({
   const interactionHandlersRef = useRef({ onUserNavigate, onViewportChange, onZoomChange });
   const [loadState, setLoadState] = useState(() => (getGoogleMapsConfigError() ? "error" : "loading"));
   const [loadError, setLoadError] = useState(() => getGoogleMapsConfigError());
-  const [mapZoom, setMapZoom] = useState(() => Number(zoom) || INITIAL_MAP_ZOOM);
-  const markerRenderZoom = useMemo(() => getStableMarkerZoom(mapZoom), [mapZoom]);
+  const markerRenderZoom = useMemo(
+    () => getStableMarkerZoom(markerLayoutZoom ?? zoom),
+    [markerLayoutZoom, zoom],
+  );
 
   useEffect(() => {
     if (!fitActiveKey || !fitEnabled) return;
@@ -12650,6 +12653,7 @@ function GoogleMapCanvas({
 
   const markUserNavigated = useCallback(() => {
     if (programmaticMoveRef.current) return;
+    if (userNavigatedRef.current) return;
     userNavigatedRef.current = true;
     try {
       window.sessionStorage.setItem(MAP_USER_NAVIGATED_STORAGE_KEY, "true");
@@ -12673,7 +12677,6 @@ function GoogleMapCanvas({
     const bounds = map.getBounds?.();
     const currentZoom = map.getZoom?.() || initialViewRef.current.zoom || INITIAL_MAP_ZOOM;
     const currentCenter = map.getCenter?.();
-    setMapZoom(currentZoom);
     interactionHandlersRef.current.onZoomChange?.(currentZoom);
     if (!bounds) return;
     interactionHandlersRef.current.onViewportChange?.({
@@ -14677,6 +14680,13 @@ export default function MapPage() {
     () => getCanonicalIntentForFilter(activeFilter, effectiveSearch),
     [activeFilter, effectiveSearch],
   );
+  const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
+  const markerLayoutContext = useMemo(() => ({
+    bounds: scopedResultState.bounds || viewportBoundsRef.current || null,
+    zoom: getStableMarkerZoom(
+      scopedResultState.bounds?.zoom || mapZoomRef.current || initialMapView.zoom,
+    ),
+  }), [mapResultBoundsKey, scopedResultState.queryKey]);
   const governedMarkerCandidates = useMemo(() => {
     const shouldPreserveListingPins = activeFilter === "Rentals" || activeFilter === "Legends" || activeFilter === "Listings" || activeFilter === "All Listings";
     const pinSourcePlaces = shouldPreserveListingPins
@@ -14707,12 +14717,12 @@ export default function MapPage() {
     return getViewportBoundedMarkerPlaces(pinSourcePlaces, {
       activeFilter,
       query: effectiveSearch,
-      viewportBounds,
-      zoom: mapZoom,
+      viewportBounds: markerLayoutContext.bounds,
+      zoom: markerLayoutContext.zoom,
       selectedId,
       mode: urlState.mode,
     });
-  }, [activeCanonicalIntentId, activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, mapZoom, selectedId, urlState.mode, viewportBounds]);
+  }, [activeCanonicalIntentId, activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, markerLayoutContext, selectedId, urlState.mode]);
   const mapPlaces = useMemo(() => {
     if (activeCollectionRoute?.stops?.length) return activeCollectionRoute.stops;
 
@@ -14727,7 +14737,7 @@ export default function MapPage() {
       effectiveSearch,
       intent: urlState.intent,
       mode: urlState.mode,
-      mapZoom,
+      mapZoom: markerLayoutContext.zoom,
       selectedId,
       savedIds,
       userHasNavigatedMap,
@@ -14753,7 +14763,7 @@ export default function MapPage() {
       : [];
 
     return dedupeMapPinPlaces([...legendsTopListingPins, ...selectedMarkerPlaces]);
-  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
+  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, markerLayoutContext.zoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
   const mappablePlaces = useMemo(
     () => mapPlaces.filter((place) => place?.hasExactMarker !== false || Boolean(getPlaceCoords(place))),
     [mapPlaces],
@@ -14793,12 +14803,11 @@ export default function MapPage() {
     }, 500);
     return () => window.clearTimeout(impressionTimer);
   }, [effectiveSearch, mappablePlaces, scopedLastTrigger, scopedRequestStatus, scopedResultState.intent, scopedResultState.queryId, scopedResultState.queryKey, scopedResultState.source]);
-  const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
     [discoverDisplayPlaces],
   );
-  const stableClusterZoom = getStableMarkerZoom(mapZoom);
+  const stableClusterZoom = markerLayoutContext.zoom;
   const clusteredMapItems = useMemo(
     () => activeCollectionRoute?.stops?.length
       ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
@@ -17645,6 +17654,7 @@ export default function MapPage() {
           <GoogleMapCanvas
             center={initialMapView.center}
             zoom={initialMapView.zoom}
+            markerLayoutZoom={markerLayoutContext.zoom}
             mapItems={clusteredMapItems}
             collectionRoute={activeCollectionRoute}
             fitPlaces={activeCollectionRoute?.stops?.length ? activeCollectionRoute.stops : discoverDisplayPlaces}

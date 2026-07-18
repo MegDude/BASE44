@@ -40,6 +40,7 @@
     "test:workspace-launch": "node scripts/test-workspace-launch-brief.mjs",
     "test:search-first-map": "tsx scripts/test-search-first-map.ts",
     "test:map-markers": "node scripts/test-borderless-map-markers.mjs",
+    "test:map-camera-stability": "node scripts/test-map-camera-stability.mjs",
     "test:platform-search": "tsx scripts/test-platform-search.ts",
     "audit:content:report": "tsx scripts/audit-content-governance.ts",
     "audit:content": "tsx scripts/audit-content-governance.ts",
