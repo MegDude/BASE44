@@ -74,6 +74,13 @@ assert.equal(firstKey, secondKey, "normalized searches must share a bounded cach
 const hookSource = await readFile(new URL("../src/hooks/useSearchDrivenMapEntities.js", import.meta.url), "utf8");
 assert.match(hookSource, /const places = resultPlaces;/, "idle places must come only from resolved results");
 assert.doesNotMatch(hookSource, /setLoadedRegistry|initialEntityRequestCount:\s*current\.initialEntityRequestCount\s*\|\|\s*1/, "the hook must not hydrate the registry on mount");
+const catalogResolverSource = hookSource.slice(
+  hookSource.indexOf("function resolveCatalogState"),
+  hookSource.indexOf("export function useSearchDrivenMapEntities"),
+);
+assert.doesNotMatch(catalogResolverSource, /loadRegistry\(/, "search result presentation must not hydrate the full registry");
+assert.doesNotMatch(hookSource, /const catalogPromise\s*=|Promise\.all\(\[\s*searchOperationalMap/, "bounded search must not run beside a full-catalog request");
+assert.match(hookSource, /resolveCatalogState\(normalizedScope\.query, resolvedEntities/, "catalog results must derive from the bounded pin response");
 
 const quickSearchSource = await readFile(new URL("../src/components/navigation/QuickSearchModal.tsx", import.meta.url), "utf8");
 assert.doesNotMatch(quickSearchSource, /quick_search_open/, "opening quick search must not fetch pins");
