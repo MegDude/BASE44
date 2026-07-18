@@ -964,7 +964,7 @@ function WorkspaceReports() {
     >
       <header className="dp-report-hero">
         <div>
-          <p className="dp-workspace-report-label">Reports</p>
+          <p className="dp-workspace-report-label">SEO Snapshot</p>
           <h1>See what is working and what to do next.</h1>
           <p>
             Results for {organization?.name || "this workspace"}, separated from broader downtown signals so every recommendation has a clear source.
