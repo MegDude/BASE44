@@ -6336,17 +6336,7 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
   const recommendations = getNearbyRecommendations({ selectedEntity: place, entities: places, radiusMeters: 900, fallbackRadiusMeters: 1600, limit: 10, mode: "resident" })
     .map((item) => ({ ...item, kind: getDestinationKind(item.entity) }))
     .filter((item) => ["dining", "nightlife", "hotel", "parking", "coffee"].includes(item.kind) && item.entity?.id !== place?.id)
-    .slice(0, 6);
-  const shareVenue = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    try {
-      if (navigator.share) await navigator.share({ title: venue.name, text: venue.residentView.summary, url });
-      else await navigator.clipboard?.writeText?.(url);
-    } catch {
-      // Sharing is best-effort.
-    }
-  };
-
+    .slice(0, 4);
   return (
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-inkind-governed-drawer dp-inkind-resident-drawer" data-inkind-renderer="resident">
       <DestinationHero place={place} mode="resident" />
@@ -6362,7 +6352,6 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
         {venue.reservationUrl && <a href={venue.reservationUrl} target="_blank" rel="noreferrer" className="dp-panel-action">Reserve</a>}
         <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">Directions</a>
         <button type="button" onClick={onSave} className="dp-panel-action">{isSaved ? "Saved" : "Save"}</button>
-        <button type="button" onClick={shareVenue} className="dp-panel-action">Share</button>
       </div>
 
       {activeBenefit && (
@@ -6374,19 +6363,16 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
       )}
 
       {activeBenefit && (
-        <DestinationSection title="How to redeem" className="dp-inkind-redemption-steps">
+        <DestinationSection title="Use the benefit" className="dp-inkind-redemption-steps">
           <ol className="dp-step-list">
-            <li><span>1</span><div><h3>Open the benefit</h3><p>Review the current offer in inKind before ordering.</p></div></li>
-            <li><span>2</span><div><h3>Visit the restaurant</h3><p>Make a reservation when appropriate and let staff know you are using the active benefit.</p></div></li>
-            <li><span>3</span><div><h3>Redeem through inKind</h3><p>Follow the current inKind instructions for the participating restaurant.</p></div></li>
+            <li><span>1</span><div><h3>Check the offer</h3><p>Review the active terms in inKind before ordering.</p></div></li>
+            <li><span>2</span><div><h3>Redeem in inKind</h3><p>Follow the participating restaurant’s current instructions.</p></div></li>
           </ol>
         </DestinationSection>
       )}
 
-      <DestinationSection title="Why people choose it">
+      <DestinationSection title="Good to know">
         <p>{getInKindDiscoveryProfile(place).why}</p>
-      </DestinationSection>
-      <DestinationSection title="Good for">
         <div className="dp-inkind-tag-row">{venue.residentView.bestFor.map((item) => <span key={item}>{item}</span>)}</div>
         <p className="dp-destination-section-note">{venue.residentView.beforeYouGo}</p>
       </DestinationSection>
@@ -6417,7 +6403,7 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
   const opportunityPlaces = getNearbyRecommendations({ selectedEntity: place, entities: places, radiusMeters: 1200, fallbackRadiusMeters: 2400, limit: 12, mode: "partner" })
     .map((item) => item.entity)
     .filter((entity) => entity?.id !== place?.id && ["property", "hotel", "event", "brand"].includes(getDestinationKind(entity)))
-    .slice(0, 6);
+    .slice(0, 4);
   const residentPreviewParams = new URLSearchParams(location.search);
   residentPreviewParams.set("mode", "resident");
   residentPreviewParams.set("tab", "map");
@@ -6425,18 +6411,9 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
   residentPreviewParams.set("entityId", place.id);
   residentPreviewParams.delete("intent");
   const residentPreview = `/map?${residentPreviewParams.toString()}`;
-  const shareVenue = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    try {
-      if (navigator.share) await navigator.share({ title: venue.name, text: venue.partnerView.partnerSummary, url });
-      else await navigator.clipboard?.writeText?.(url);
-    } catch {
-      // Sharing is best-effort.
-    }
-  };
-  const listSection = (title, items, className = "") => (
-    <DestinationSection title={title} className={className}><div className="dp-partner-context-list">{items.map((item) => <div key={item}><p>{item}</p></div>)}</div></DestinationSection>
-  );
+  const campaignFit = [...venue.partnerView.eligibleAudiences, ...venue.partnerView.campaignOccasions]
+    .filter((item, index, list) => item && list.indexOf(item) === index)
+    .slice(0, 5);
 
   return (
     <motion.div className="dp-map-panel-content dp-partner-detail-content dp-inkind-governed-drawer dp-inkind-partner-opportunity" data-inkind-renderer="partner">
@@ -6446,30 +6423,32 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
         <h2 className="dp-entity-title">{venue.name}</h2>
         <p className="dp-entity-dek">{venue.partnerView.partnerSummary}</p>
       </header>
-      <DestinationSection title="Resident benefit summary"><p>{venue.inKind.benefitTitle}</p><p className="dp-destination-section-note">{venue.inKind.eligibility}</p></DestinationSection>
       <div className="dp-primary-action-row dp-partner-action-row dp-inkind-governed-actions">
         <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">Build campaign</Link>
         <Link to={residentPreview} className="dp-panel-action">Preview resident view</Link>
         <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">View performance</Link>
-        <button type="button" onClick={shareVenue} className="dp-panel-action">Share</button>
       </div>
-      <DestinationSection title="Campaign opportunity"><p>Feature this benefit when nearby residents, hotel guests, office tenants, and event audiences are choosing where to dine.</p></DestinationSection>
-      {listSection("Recommended audiences", venue.partnerView.eligibleAudiences)}
-      {listSection("Recommended account types", venue.partnerView.recommendedAccountTypes)}
-      {listSection("Where it should appear", venue.partnerView.placements)}
-      {listSection("Campaign occasions", venue.partnerView.campaignOccasions)}
+      <DestinationSection title="Campaign fit">
+        <p>{venue.inKind.benefitTitle}</p>
+        <p className="dp-destination-section-note">Feature it when nearby residents, guests, and workers are deciding where to dine.</p>
+        <div className="dp-inkind-tag-row">{campaignFit.map((item) => <span key={item}>{item}</span>)}</div>
+      </DestinationSection>
+      <DestinationSection title="Recommended placement">
+        <div className="dp-partner-context-list">{venue.partnerView.placements.slice(0, 4).map((item) => <div key={item}><p>{item}</p></div>)}</div>
+      </DestinationSection>
       {!!opportunityPlaces.length && (
         <DestinationSection title="Participating account network">
           <div className="dp-related-rail">{opportunityPlaces.map((entity) => <button key={entity.id} type="button" className="dp-related-place" onClick={() => onSelect(entity)}><span><strong>{entity.name}</strong><em>{getNearbyKindLabel(entity, getDestinationKind(entity))} · {entity.district || "Downtown Austin"}</em></span></button>)}</div>
         </DestinationSection>
       )}
-      {listSection("Activation requirements", ["Verified active benefit", "Approved venue imagery", "Benefit deep link", "Eligible dining windows and terms", "Attribution-ready campaign link"])}
-      {listSection("Measurement model", venue.partnerView.measurementEvents)}
-      <DestinationSection title="How the partnership works"><p>inKind manages participating restaurant benefits, eligibility, and redemption. Downtown Perks manages local discovery, audience targeting, map placement, building and hotel distribution, campaign delivery, and performance reporting.</p></DestinationSection>
+      <DestinationSection title="Before launch">
+        <div className="dp-partner-context-list">{["Verify the active benefit and terms", "Use approved venue imagery", "Confirm the benefit deep link", "Enable campaign attribution"].map((item) => <div key={item}><p>{item}</p></div>)}</div>
+        <p className="dp-destination-section-note">inKind manages offer eligibility and redemption. Downtown Perks manages local discovery, placement, targeting, and reporting.</p>
+      </DestinationSection>
       {onAsk && (
         <DestinationSection title="Ask the Map" className="dp-entity-assistant">
           <div className="dp-ask-prompts dp-native-action-grid">
-            {["Which audiences should receive this?", "Where should this benefit appear?", "What campaign should we launch?", "How should success be measured?"].map((prompt) => (
+            {["Who should receive this?", "Where should it appear?", "What should we launch?"].map((prompt) => (
               <button key={prompt} type="button" className="dp-ask-prompt-chip" onClick={() => onAsk(prompt)} disabled={loading}>{prompt}</button>
             ))}
           </div>
@@ -6615,7 +6594,7 @@ function ResidentialMixedUseDrawer({ place, mode = "resident", savedIds, onSave,
         <button type="button" className="dp-drawer-icon-control dp-drawer-close" onClick={onClose} aria-label="Close panel"><X aria-hidden="true" /></button>
       </div>
       <div className="dp-entity-handle" aria-hidden="true" />
-      <figure className="dp-entity-hero dp-entity-hero-image"><img src={place.heroImage || place.image} alt={place.name} loading="lazy" decoding="async" onError={handlePanelImageError} /></figure>
+      <figure className="dp-entity-hero dp-entity-hero-image"><img src={getLifestyleImage(place, mode)} alt={place.name} loading="lazy" decoding="async" onError={handlePanelImageError} /></figure>
       <header className="dp-entity-summary">
         <p className="dp-entity-meta">{isPartner ? "Residential asset" : place.category || "Residential"} · {place.district}</p>
         <h2>{place.name}</h2><p>{summary}</p>
@@ -6643,39 +6622,32 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
     ...getInKindNearbyDining(place, places),
   ]
     .filter((candidate, index, list) => candidate?.id && list.findIndex((item) => item?.id === candidate.id) === index)
-    .slice(0, 6);
+    .slice(0, 4);
   const activeOfferVenue = participatingVenues.find((candidate) => candidate?.perk?.isActive !== false && (candidate?.perk?.title || candidate?.offer || candidate?.deals_offers));
   const activeOffer = activeOfferVenue ? getResidentPerkDetails(activeOfferVenue) : null;
   const externalUrl = place?.website || place?.url || place?.raw?.website || "https://inkind.com";
-  const relatedCollections = ["Happy hour nearby", "Date-night dining", "Rainey restaurants", "Hotel guest dining", "Weekend plans"];
-  const partnerContexts = [
-    ["Residential partners", "Resident welcome offers, neighborhood guides, and building dining campaigns."],
-    ["Hotel partners", "Guest maps, pre-arrival recommendations, convention routes, and walkable dinner options."],
-    ["Participating venues", "Relevant searches, district collections, nearby recommendations, and targeted dining campaigns."],
-    ["Brand and workplace partners", "Hosted dining, customer rewards, tenant events, and sponsored downtown routes."],
-  ];
+  const useCases = ["Dinner nearby", "Happy hour", "Group dining", "A new downtown restaurant"];
 
   return (
     <div className="dp-inkind-partner-detail" data-inkind-drawer="network">
       <header className="dp-partner-drawer-hero">
         <div className="dp-partner-drawer-media">
-          <img src="/images/partner/drop-in-images/inkind-table-spread.jpg" alt="Dining experiences available through inKind" onError={handlePanelImageError} />
+          <img src={resolveEntityImage(place, "drawerHeader")} alt="Dining experiences available through inKind" loading="lazy" decoding="async" onError={handlePanelImageError} />
         </div>
       </header>
 
       <section className="dp-drawer-section dp-partner-summary">
         <p className="dp-drawer-eyebrow">Downtown dining network</p>
-        <h1>inKind</h1>
-        <p className="dp-drawer-deck">Discover participating restaurants, activate dining offers, and connect downtown residents, hotel guests, workers, and visitors with places they can use now.</p>
-        <p className="dp-partner-context-line">Available through participating downtown venues and selected Downtown Perks campaigns.</p>
+        <h1>{place?.name || "inKind Downtown Dining Market"}</h1>
+        <p className="dp-drawer-deck">Find participating downtown restaurants and current dining offers in one place.</p>
+        <p className="dp-partner-context-line">Availability and terms vary by restaurant.</p>
         <div className="dp-drawer-meta-row" aria-label="Partner metadata">
-          <span>Multiple locations</span><span>Downtown Austin</span><span>Dining offers</span><span>Partner network</span>
+          <span>Multiple locations</span><span>Downtown Austin</span><span>Dining offers</span>
         </div>
       </section>
 
       <div className="dp-drawer-primary-actions" aria-label="inKind actions">
-        <button type="button" className="dp-button dp-button-primary" onClick={onShowVenues}>View participating restaurants</button>
-        <button type="button" className="dp-button dp-button-secondary" onClick={() => document.querySelector('.dp-inkind-active-offer')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See current dining offers</button>
+        <button type="button" className="dp-button dp-button-primary" onClick={onShowVenues}>See restaurants</button>
         <a className="dp-button dp-button-secondary" href={externalUrl} target="_blank" rel="noreferrer">Open inKind</a>
         <button type="button" className="dp-button dp-button-icon" onClick={onSave} aria-label={savedIds?.has(place.id) ? "Remove saved inKind network" : "Save inKind network"}>
           <Bookmark className="h-4 w-4" aria-hidden="true" />
@@ -6685,7 +6657,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
 
       {activeOffer && (
         <section className="dp-drawer-section dp-inkind-active-offer">
-          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow">Available now</p><h2>Current dining offers</h2></div></div>
+          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow">Available now</p><h2>Current offer</h2></div></div>
           <article className="dp-offer-card">
             <span className="dp-offer-status">Available now</span>
             <h3>{activeOffer.offer || "Dining credit at participating downtown restaurants"}</h3>
@@ -6712,29 +6684,10 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
         ) : <p className="dp-drawer-empty-state">Participating restaurant details are being added. Open inKind to see current availability.</p>}
       </section>
 
-      <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow">How it works</p><h2>How inKind works here</h2>
-        <p className="dp-drawer-intro">inKind brings the dining offer and restaurant network. Downtown Perks brings the local audience, map placement, building access, campaign targeting, and measurable resident action.</p>
-        <ol className="dp-step-list">
-          <li><span>01</span><div><h3>Restaurants provide the experience</h3><p>Participating restaurants supply the dining destination and any active inKind offer.</p></div></li>
-          <li><span>02</span><div><h3>Downtown Perks adds local context</h3><p>Restaurants appear when nearby residents, guests, workers, and event audiences are deciding where to go.</p></div></li>
-          <li><span>03</span><div><h3>Partner accounts extend the reach</h3><p>Buildings, hotels, venues, and brands can feature relevant restaurants in routes, recommendations, and campaigns.</p></div></li>
-        </ol>
-      </section>
-
-      <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow">Useful context</p><h2>Built for downtown partner accounts</h2>
-        <div className="dp-partner-context-list">{partnerContexts.map(([title, copy]) => <div key={title}><h3>{title}</h3><p>{copy}</p></div>)}</div>
-      </section>
-
-      <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow">Good for</p>
-        <ul className="dp-attribute-list"><li>Dinner nearby</li><li>Happy hour plans</li><li>Group dining</li><li>Trying a new downtown restaurant</li></ul>
-      </section>
-
-      <section className="dp-drawer-section dp-inkind-related-collections">
-        <p className="dp-drawer-eyebrow">Related content</p><h2>Explore more downtown dining</h2>
-        <div className="dp-inkind-grid-list dp-inkind-related-list">{relatedCollections.map((label) => <button type="button" key={label} onClick={onShowVenues}>{label}</button>)}</div>
+      <section className="dp-drawer-section dp-inkind-network-context">
+        <p className="dp-drawer-eyebrow">Downtown Perks context</p><h2>Useful when you are deciding where to go</h2>
+        <p className="dp-drawer-intro">inKind provides the restaurant network and offer. Downtown Perks adds nearby context, map access, and relevant partner campaigns.</p>
+        <div className="dp-inkind-tag-row">{useCases.map((item) => <span key={item}>{item}</span>)}</div>
       </section>
       <p className="dp-partner-disclosure">Offers, eligibility, activation, and redemption are managed through participating restaurants and inKind. Downtown Perks provides discovery, local context, and map access.</p>
     </div>

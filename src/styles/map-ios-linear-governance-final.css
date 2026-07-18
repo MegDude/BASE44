@@ -405,3 +405,205 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     max-height: min(67dvh, 570px) !important;
   }
 }
+
+/* The network drawer has a dedicated shell, so mirror the shared rules here. */
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer .dp-inkind-partner-detail h1 {
+  margin: 4px 0 7px !important;
+  font-size: clamp(21px, 5.8vw, 25px) !important;
+  font-weight: 620 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.025em !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer .dp-inkind-partner-detail .dp-drawer-section {
+  padding: 16px 20px !important;
+}
+
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer :is(.dp-drawer-eyebrow, .dp-offer-status) {
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11.5px !important;
+  font-weight: 560 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer :is(.dp-drawer-primary-actions, .dp-drawer-section) :is(button, a) {
+  text-transform: none !important;
+}
+
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer .dp-partner-drawer-media {
+  max-height: 205px !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+html body #root#root#root #dp-canonical-map aside.dp-inkind-partner-drawer .dp-partner-drawer-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map #dp-active-map-drawer#dp-active-map-drawer.dp-inkind-partner-drawer .dp-drawer-primary-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  padding: 1px !important;
+  background: var(--dp-map-line) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map #dp-active-map-drawer#dp-active-map-drawer.dp-inkind-partner-drawer .dp-drawer-primary-actions .dp-button {
+  grid-column: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 7px 5px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: var(--dp-map-ink) !important;
+  -webkit-text-fill-color: var(--dp-map-ink) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  text-transform: none !important;
+  white-space: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map #dp-active-map-drawer#dp-active-map-drawer.dp-inkind-partner-drawer .dp-drawer-primary-actions .dp-button-primary {
+  background: var(--dp-map-ink) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map #dp-active-map-drawer#dp-active-map-drawer.dp-inkind-partner-drawer .dp-place-card :is(small, em) {
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Drawer content governance: concise, legible, and consistent at iPhone width. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-entity-title,
+  .dp-destination-title,
+  .dp-detail-title,
+  .dp-partner-summary h1,
+  .dp-entity-summary > h2,
+  .dp-entity-panel-header > h2
+) {
+  margin: 4px 0 8px !important;
+  font-size: clamp(21px, 5.8vw, 26px) !important;
+  font-weight: 620 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.025em !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-drawer-section,
+  .dp-info-section,
+  .dp-map-panel-section
+) :is(h2, h3, h4) {
+  margin: 0 0 6px !important;
+  font-size: clamp(15px, 4vw, 17px) !important;
+  font-weight: 620 !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.012em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-entity-dek,
+  .dp-drawer-deck,
+  .dp-drawer-intro,
+  .dp-destination-section p,
+  .dp-entity-section p,
+  .dp-drawer-section p,
+  .dp-info-section p,
+  .dp-partner-disclosure,
+  .dp-partner-context-list p
+) {
+  font-size: 13.5px !important;
+  font-weight: 430 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-drawer-eyebrow,
+  .dp-entity-eyebrow,
+  .dp-entity-meta,
+  .dp-inkind-zone-meta
+) {
+  color: rgba(11, 31, 51, 0.62) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11.5px !important;
+  font-weight: 560 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-panel-detail-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-entity-hero,
+  .dp-partner-drawer-media
+) {
+  width: 100% !important;
+  max-height: 230px !important;
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-panel-detail-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-entity-hero,
+  .dp-partner-drawer-media
+) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell .dp-inkind-partner-detail .dp-drawer-section {
+  padding: 16px 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(.dp-inkind-tag-row, .dp-drawer-meta-row) {
+  gap: 6px 10px !important;
+  margin-top: 10px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(.dp-inkind-tag-row, .dp-drawer-meta-row) > * {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 12px !important;
+  font-weight: 520 !important;
+}
+
+@media (max-width: 520px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+    .dp-panel-detail-hero,
+    .dp-destination-hero,
+    .dp-destination-media,
+    .dp-polished-panel-hero,
+    .dp-entity-hero,
+    .dp-partner-drawer-media
+  ) {
+    max-height: 205px !important;
+  }
+}

@@ -318,6 +318,14 @@ const brandPerkImageOverrides: Array<{
   thumb?: string;
 }> = [
   {
+    // Approved PERKS MEDIA asset for the network-level inKind drawer. Venue
+    // drawers continue to resolve to their own restaurant photography below.
+    terms: ["inkind downtown dining market", "inkind dining market", "inkind-downtown-dining-market"],
+    hero: "/images/partner/drop-in-images/inkind-table-spread.jpg",
+    rail: "/images/partner/drop-in-images/inkind-plated-dinner.jpg",
+    card: "/images/partner/drop-in-images/inkind-table-spread.jpg",
+  },
+  {
     terms: ["lustre pearl", "happy-hour-lustre-pearl", "partner-lustre-pearl-rainey"],
     hero: "/images/imported/perks/brand-updates/lustre-pearl-happy-hour.png",
   },
