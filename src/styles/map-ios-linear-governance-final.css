@@ -1,0 +1,407 @@
+/* Canonical resident-map surface governance.
+   This boundary intentionally outranks legacy recovery locks until those files are retired. */
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map {
+  --dp-map-ink: #0b1f33;
+  --dp-map-muted: rgba(11, 31, 51, 0.62);
+  --dp-map-line: rgba(11, 31, 51, 0.12);
+  --dp-map-gold: #bfa46a;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-map-search-area-button,
+  .gm-style .gm-bundled-control,
+  .gm-style button[aria-label^="Zoom"]
+) {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-search-intent-console-header {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 36px !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map#dp-canonical-map#dp-canonical-map .dp-map-search-anchor {
+  right: auto !important;
+  left: 50% !important;
+  width: min(560px, calc(100vw - 24px)) !important;
+  max-width: min(560px, calc(100vw - 24px)) !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map#dp-canonical-map#dp-canonical-map :is(.dp-search-intent-console-wrap, .dp-search-intent-console) {
+  width: 100% !important;
+  max-width: 560px !important;
+  margin: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map#dp-canonical-map#dp-canonical-map .dp-search-intent-console {
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 12px 30px rgba(11, 31, 51, 0.12) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map#dp-canonical-map#dp-canonical-map .dp-search-intent-rolled-rail {
+  width: 100% !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.1) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map#dp-canonical-map#dp-canonical-map .dp-search-intent-rolled-rail :is(
+  .dp-search-intent-label,
+  .dp-search-brand-mark,
+  .dp-search-intent-collapse,
+  .dp-search-intent-collapse-icon
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-search-intent-label {
+  display: inline-flex !important;
+  grid-column: 1 !important;
+  width: auto !important;
+  min-width: max-content !important;
+  font-size: 12px !important;
+  font-weight: 620 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-search-intent-audience-tabs {
+  grid-column: 2 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-search-intent-top-actions {
+  grid-column: 3 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-collection-route-panel,
+  aside.dp-map-drawer-shell,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  aside.dp-detail-drawer.dp-map-drawer-shell,
+  aside.dp-destination-drawer.dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet
+) {
+  right: auto !important;
+  bottom: 18px !important;
+  left: 18px !important;
+  width: min(448px, calc(100vw - 36px)) !important;
+  max-width: 448px !important;
+  margin: 0 !important;
+  padding: 12px 16px 16px !important;
+  border: 1px solid var(--dp-map-line) !important;
+  border-radius: 10px 10px 0 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: 0 12px 34px rgba(11, 31, 51, 0.14) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-collection-route-panel,
+  aside.dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-map-sheet,
+  .dp-pass-panel
+)::before {
+  width: 38px !important;
+  height: 3px !important;
+  margin-bottom: 8px !important;
+  border-radius: 2px !important;
+  background: rgba(11, 31, 51, 0.2) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel {
+  gap: 8px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: min(68dvh, 580px) !important;
+  color: var(--dp-map-ink) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-route-mini-kicker,
+  .dp-collection-route-panel__header p,
+  .dp-daa-kicker
+) {
+  color: var(--dp-map-gold) !important;
+  -webkit-text-fill-color: var(--dp-map-gold) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-route-mini-main strong,
+  .dp-collection-route-panel h2,
+  aside.dp-map-drawer-shell h1,
+  aside.dp-map-drawer-shell h2,
+  aside.dp-map-drawer-shell h3
+) {
+  color: var(--dp-map-ink) !important;
+  -webkit-text-fill-color: var(--dp-map-ink) !important;
+  font-weight: 640 !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-collection-route-panel__description,
+  .dp-route-mini-main em,
+  .dp-collection-route-panel__meta span,
+  aside.dp-map-drawer-shell p,
+  aside.dp-map-drawer-shell li
+) {
+  font-weight: 430 !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__meta span {
+  padding: 0 9px !important;
+  border: 0 !important;
+  border-left: 1px solid var(--dp-map-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__meta span:first-child {
+  padding-left: 0 !important;
+  border-left: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  padding: 1px !important;
+  background: var(--dp-map-line) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__actions :is(a, button) {
+  min-height: 42px !important;
+  height: auto !important;
+  padding: 7px 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: var(--dp-map-ink) !important;
+  -webkit-text-fill-color: var(--dp-map-ink) !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__actions .dp-route-cta--primary {
+  background: var(--dp-map-ink) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__stops {
+  display: flex !important;
+  flex: 0 1 auto !important;
+  flex-flow: column nowrap !important;
+  gap: 0 !important;
+  max-height: min(28dvh, 220px) !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__stops > button {
+  display: grid !important;
+  grid-template-columns: 28px minmax(0, 1fr) !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 5px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-map-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel__stops > button > span {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-map-gold) !important;
+  -webkit-text-fill-color: var(--dp-map-gold) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+  .dp-route-panel-control,
+  .dp-route-mini-exit,
+  .dp-panel-back,
+  .dp-panel-close,
+  .dp-map-panel-icon-button,
+  .dp-drawer-control
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-entity-action-row,
+  .dp-destination-action-row,
+  .dp-partner-drawer-actions
+) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  width: 100% !important;
+  padding: 1px !important;
+  overflow: visible !important;
+  background: var(--dp-map-line) !important;
+  order: 3 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-primary-action-row,
+  .dp-secondary-action-row,
+  .dp-entity-action-row,
+  .dp-destination-action-row,
+  .dp-partner-drawer-actions
+) > :is(a, button, .dp-panel-action, .dp-panel-action-text) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-info-section,
+  .dp-map-panel-section,
+  .dp-panel-linked-grid,
+  .dp-partner-nearby-section,
+  .dp-nearby-section,
+  .dp-related-section,
+  .dp-contact-continuation,
+  .dp-perk-module,
+  .dp-happy-hour-section,
+  .dp-inkind-editorial-panel
+) {
+  order: 4 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-panel-detail-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-destination-media img,
+  .dp-panel-detail-hero img,
+  .dp-daa-next-card,
+  .dp-daa-story-block,
+  .dp-daa-stop-cta,
+  .dp-daa-action-panel,
+  .dp-daa-next-stops,
+  .dp-daa-inline-facts > *,
+  .dp-daa-good-for-list > *,
+  .dp-event-fact,
+  .dp-entity-discovery-card
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(.dp-entity-panel-header, .dp-entity-summary, .dp-event-summary) {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-panel-detail-hero,
+  .dp-destination-hero,
+  .dp-destination-media,
+  .dp-polished-panel-hero
+) :is(img, video, figure) {
+  border-radius: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
+  .dp-daa-story-block,
+  .dp-daa-stop-cta,
+  .dp-daa-action-panel,
+  .dp-daa-next-stops,
+  .dp-destination-section,
+  .dp-entity-section,
+  .dp-info-section
+) {
+  padding-top: 12px !important;
+  border-top: 1px solid var(--dp-map-line) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(.dp-map-panel-scroll, .dp-destination-scroll, .dp-drawer-scroll) {
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+@media (max-width: 520px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+    .dp-collection-route-panel,
+    aside.dp-map-drawer-shell,
+    aside.dp-panel-shell.dp-map-drawer-shell,
+    aside.dp-detail-drawer.dp-map-drawer-shell,
+    aside.dp-destination-drawer.dp-map-drawer-shell,
+    .dp-map-directory-sheet,
+    .dp-map-sheet,
+    .dp-pass-panel,
+    .dp-resident-card-sheet
+  ) {
+    right: 8px !important;
+    bottom: 0 !important;
+    left: 8px !important;
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    padding: 10px 14px max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map .dp-collection-route-panel {
+    max-height: min(67dvh, 570px) !important;
+  }
+}

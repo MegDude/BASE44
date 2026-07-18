@@ -25,7 +25,6 @@ import '@/styles/partner-activity-drawer-final.css'
 import '@/styles/pricing-polish-final.css'
 import '@/styles/map-drawer-containment-final.css'
 import '@/styles/partner-register-refactor-final.css'
-import '@/styles/search-intent-chip-expansion-final.css'
 import '@/styles/search-intent-two-rail-restore.css'
 import '@/styles/workspace-overview-operating-final.css'
 import '@/styles/workspace-platform-alignment-final.css'
@@ -83,6 +82,8 @@ import "@/styles/partner-analytics-operating-system.css"
 import "@/styles/resident-onboarding-final.css"
 import "@/styles/native-panel-surface-lock-final.css"
 import "@/styles/partner-performance-final.css"
+import "@/styles/search-intent-row-restore-final.css"
+import "@/styles/map-ios-linear-governance-final.css"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

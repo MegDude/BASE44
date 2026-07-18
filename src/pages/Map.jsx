@@ -79,7 +79,7 @@ import {
 import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
 import { getBrandActivationIntelligence, getBrandActivationRoutesForEntity } from "@/data/brandActivationIntelligence";
-import { DAA_TOUR_STOP_COUNT, daaArtWalkImages, getDaaTourStopById } from "@/data/daaArtParksTour";
+import { DAA_TOUR_STOP_COUNT, getDaaTourStopById } from "@/data/daaArtParksTour";
 import { hospitalityContentLibraryEntities } from "@/data/hospitalityContentLibrary";
 import { residentialMixedUseEntities } from "@/data/residentialMixedUseContentLibrary";
 import {
@@ -3685,43 +3685,6 @@ function getStableMarkerZoom(zoom = INITIAL_MAP_ZOOM) {
   const numericZoom = Number(zoom);
   if (!Number.isFinite(numericZoom)) return INITIAL_MAP_ZOOM;
   return Math.max(13, Math.min(MAP_MAX_ZOOM, Math.round(numericZoom * 2) / 2));
-}
-
-function getBoundsCenter(bounds = null) {
-  if (!bounds) return null;
-  if (bounds.center?.lat !== undefined && bounds.center?.lng !== undefined) return bounds.center;
-  const north = Number(bounds.north);
-  const south = Number(bounds.south);
-  const east = Number(bounds.east);
-  const west = Number(bounds.west);
-  if (![north, south, east, west].every(Number.isFinite)) return null;
-  return { lat: (north + south) / 2, lng: (east + west) / 2 };
-}
-
-function getBoundsOverlapRatio(previousBounds = null, nextBounds = null) {
-  if (!previousBounds || !nextBounds) return 1;
-  const west = Math.max(Number(previousBounds.west), Number(nextBounds.west));
-  const east = Math.min(Number(previousBounds.east), Number(nextBounds.east));
-  const south = Math.max(Number(previousBounds.south), Number(nextBounds.south));
-  const north = Math.min(Number(previousBounds.north), Number(nextBounds.north));
-  const intersection = Math.max(0, east - west) * Math.max(0, north - south);
-  const previousArea = Math.max(0, Number(previousBounds.east) - Number(previousBounds.west)) * Math.max(0, Number(previousBounds.north) - Number(previousBounds.south));
-  const nextArea = Math.max(0, Number(nextBounds.east) - Number(nextBounds.west)) * Math.max(0, Number(nextBounds.north) - Number(nextBounds.south));
-  const denominator = Math.min(previousArea, nextArea);
-  return denominator > 0 ? intersection / denominator : 1;
-}
-
-function hasMeaningfulBoundsChange(previousBounds = null, nextBounds = null) {
-  if (!previousBounds || !nextBounds) return false;
-  const previousCenter = getBoundsCenter(previousBounds);
-  const nextCenter = getBoundsCenter(nextBounds);
-  const latSpan = Math.max(0.00001, Math.abs(Number(previousBounds.north) - Number(previousBounds.south)));
-  const lngSpan = Math.max(0.00001, Math.abs(Number(previousBounds.east) - Number(previousBounds.west)));
-  const centerShiftRatio = previousCenter && nextCenter
-    ? Math.max(Math.abs(nextCenter.lat - previousCenter.lat) / latSpan, Math.abs(nextCenter.lng - previousCenter.lng) / lngSpan)
-    : 0;
-  const zoomDelta = Math.abs(Number(nextBounds.zoom || 0) - Number(previousBounds.zoom || 0));
-  return centerShiftRatio > 0.2 || zoomDelta >= 1 || getBoundsOverlapRatio(previousBounds, nextBounds) < 0.6;
 }
 
 function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, zoom = INITIAL_MAP_ZOOM }) {
@@ -9600,51 +9563,12 @@ function DaaCivicVideoRail({ place }) {
   );
 }
 
-function DaaArtWalkImageRail({ primaryImage }) {
-  const images = [
-    primaryImage
-      ? {
-          src: primaryImage,
-          title: "Current route stop",
-          label: "Selected Art Walk location",
-        }
-      : null,
-    ...daaArtWalkImages,
-  ]
-    .filter(Boolean)
-    .filter((image, index, list) => list.findIndex((item) => item.src === image.src) === index)
-    .slice(0, 5);
-
-  if (!images.length) return null;
-
-  return (
-    <section className="dp-destination-section dp-daa-art-image-section" aria-label="DAA Art Walk images">
-      <div className="dp-daa-video-section-head">
-        <p className="dp-daa-kicker">DAA Art Walk</p>
-        <h3>Images from the route.</h3>
-      </div>
-      <div className="dp-daa-art-image-rail">
-        {images.map((image) => (
-          <figure key={image.src} className="dp-daa-art-image-card">
-            <img src={image.src} alt={image.title} loading="lazy" />
-            <figcaption>
-              <strong>{image.title}</strong>
-              <span>{image.label}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function getDaaStopFromPlace(place) {
   return place?.raw?.daaTourStop || place?.daaTourStop || null;
 }
 
 function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   const stop = getDaaStopFromPlace(place);
-  const [isCivicReadMoreOpen, setIsCivicReadMoreOpen] = useState(false);
   const [checkInRecord, setCheckInRecord] = useState(() => (stop?.id ? getDaaCheckIn(stop.id) : null));
   useEffect(() => {
     setCheckInRecord(stop?.id ? getDaaCheckIn(stop.id) : null);
@@ -9654,20 +9578,15 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   const stopNumber = String(stop.stopNumber).padStart(2, "0");
   const stopTitle = stop.displayName || stop.name;
   const locationLabel = stop.locationLabel || place?.district || "Downtown Austin";
-  const stopImage = stop.imageUrl || place.image || resolveEntityImage(place, "card") || MAP_PANEL_IMAGE_FALLBACK;
   const introCopy = stop.daaIntro || "This stop is part of the Downtown Austin Alliance Art & Parks Tour.";
   const reasonCopy = stop.whyStopHere || `Use this stop as a small pause in ${locationLabel}, then keep moving toward nearby art, parks, food, and public places.`;
   const nearbyPlaces = (stop.nearbyStops || [])
     .map((stopId) => places.find((candidate) => candidate.id === stopId) || getDaaTourStopById(stopId))
     .filter(Boolean)
     .slice(0, 4);
-  const civicGoodFor = [
-    ["Short walk", "A quick place to notice, pause, and keep exploring nearby.", stopImage],
-    ["Visitors", "An easy way to understand this part of downtown without a formal tour.", "/images/map-entities/perks/downtown_art_walk_1779052670656.png"],
-    ["Build a route", "Start here, then add nearby art, parks, coffee, food, or resident perks.", "/images/imported/perks/downtown-dining-patio.png"],
-  ];
   const whyStopBullets = Array.isArray(stop.whyStopBullets) ? stop.whyStopBullets.filter(Boolean) : [];
   const goodForLabels = Array.isArray(stop.goodFor) ? stop.goodFor.filter(Boolean) : [];
+  const usefulFor = (goodForLabels.length ? goodForLabels : ["A short downtown pause", "Visitor orientation", "Building a walkable route"]).slice(0, 3);
   const shareUrl = `${window.location.origin}/map?mode=resident&tab=map&filter=Civic&entityId=${encodeURIComponent(place.id)}`;
   const handleCheckIn = async () => {
     if (checkInRecord) return;
@@ -9702,29 +9621,17 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       window.location.href = shareUrl;
     }
   };
-  const openCivicLayer = () => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    params.set("mode", "resident");
-    params.set("tab", "map");
-    params.set("filter", "Civic");
-    params.delete("entityId");
-    window.history.pushState({}, "", `${window.location.pathname}?${params.toString()}`);
-    window.dispatchEvent(new PopStateEvent("popstate"));
-  };
   return (
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
         <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
         <h3>{stop.detailHeadline || "Why stop here"}</h3>
-        <p>{introCopy}</p>
-        <p>{reasonCopy}</p>
+        <p>{reasonCopy || introCopy}</p>
         <dl className="dp-daa-inline-facts" aria-label={`${stopTitle} details`}>
           {[
             ["Location", locationLabel],
             ["Created", stop.year],
             ["Managed by", stop.artist || "City of Austin"],
-            ["Experience", "Art & Parks Tour"],
           ].map(([label, value]) => (
             <div key={label}>
               <dt>{label}</dt>
@@ -9734,30 +9641,17 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
         </dl>
         {whyStopBullets.length > 0 && (
           <ul className="dp-daa-clean-list" aria-label="Why stop here">
-            {whyStopBullets.map((item) => <li key={item}>{item}</li>)}
+            {whyStopBullets.slice(0, 3).map((item) => <li key={item}>{item}</li>)}
           </ul>
         )}
       </section>
 
       <section className="dp-civic-image-card-section" aria-label="What this stop is good for">
-        <p className="dp-daa-kicker">What It's Good For</p>
-        {goodForLabels.length > 0 ? (
-          <ul className="dp-daa-clean-list dp-daa-good-for-list" aria-label="Good for">
-            {goodForLabels.map((item) => <li key={item}>{item}</li>)}
-          </ul>
-        ) : (
-          <div className="dp-civic-text-rail">
-            {civicGoodFor.map(([title, body]) => (
-              <button key={title} type="button" onClick={openCivicLayer}>
-                <strong>{title}</strong>
-                <span>{body}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        <p className="dp-daa-kicker">Useful for</p>
+        <ul className="dp-daa-clean-list dp-daa-good-for-list" aria-label="Useful for">
+          {usefulFor.map((item) => <li key={item}>{item}</li>)}
+        </ul>
       </section>
-
-      <DaaArtWalkImageRail primaryImage={stopImage} />
 
       {stop.localTip && (
         <section className="dp-daa-story-block dp-daa-local-tip" aria-label="Local tip">
@@ -9767,38 +9661,10 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
         </section>
       )}
 
-      {stop.ctaHeadline && stop.ctaBody && (
-        <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks note">
-          <p className="dp-daa-kicker">Downtown Perks</p>
-          <h3>{stop.ctaHeadline}</h3>
-          <p>{stop.ctaBody}</p>
-        </section>
-      )}
-
-      <section className="dp-daa-read-more" aria-label="DAA and DANA civic integration">
-        <button
-          type="button"
-          className="dp-daa-read-more-toggle"
-          aria-expanded={isCivicReadMoreOpen}
-          aria-controls={`daa-civic-more-${stop.id}`}
-          onClick={() => setIsCivicReadMoreOpen((value) => !value)}
-        >
-          <span>Read more about the civic layer</span>
-          <ChevronDown aria-hidden="true" className={isCivicReadMoreOpen ? "is-open" : ""} />
-        </button>
-        {isCivicReadMoreOpen && (
-          <div id={`daa-civic-more-${stop.id}`} className="dp-daa-read-more-panel">
-            <p>
-              Downtown Perks brings civic stops, nearby events, local places, and resident benefits into the same map so
-              downtown is easier to explore one stop at a time.
-            </p>
-            <ul className="dp-daa-read-more-list">
-              <li>Find public art, parks, routes, and cultural stops without opening another list.</li>
-              <li>Add coffee, food, events, and perks around the route when they are nearby.</li>
-              <li>Save places you want to remember and come back to later.</li>
-            </ul>
-          </div>
-        )}
+      <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks context">
+        <p className="dp-daa-kicker">Downtown Perks</p>
+        <h3>{stop.ctaHeadline || "Keep exploring nearby."}</h3>
+        <p>{stop.ctaBody || "Save this stop, get directions, or continue to the next nearby place on the route."}</p>
       </section>
 
       <section className="dp-daa-action-panel" aria-label="DAA stop actions">
@@ -12479,6 +12345,7 @@ function GoogleMapCanvas({
               minZoom: 13,
               maxZoom: MAP_MAX_ZOOM,
               disableDefaultUI: true,
+              zoomControl: false,
               clickableIcons: false,
               gestureHandling: "greedy",
               ...(googleMapId ? { mapId: googleMapId } : { styles: getInlineGoogleMapStyles() }),
@@ -13302,38 +13169,47 @@ function SearchIntentConsole({
       className={`dp-search-intent-console-wrap ${isCollapsed ? "is-collapsed" : ""}`}
       style={topNavBackConsoleStyle}
     >
-      <button
-        type="button"
-        className="dp-search-intent-rollup"
-        aria-label="Expand search and filters"
-        aria-expanded={!isCollapsed}
-        onPointerDown={(event) => event.stopPropagation()}
-        onClick={onExpand}
-      >
-        <span className="dp-search-brand-mark">
-          <Sparkles className="dp-search-rollup-icon" aria-hidden="true" />
-          <span className="dp-search-rollup-main">Ask the Map</span>
-        </span>
-      </button>
-      <section
-        ref={consolePanelRef}
-        className="dp-search-intent-console pointer-events-auto"
-        style={topNavBackConsoleStyle}
-        role="region"
-        aria-label="Map command console"
-        aria-expanded={!isCollapsed}
-        aria-hidden={isCollapsed}
-        data-state={isCollapsed ? "collapsed" : "focused"}
-        onPointerDown={(event) => event.stopPropagation()}
-      >
+      {isCollapsed ? (
+        <div
+          className="dp-search-intent-console-header dp-search-intent-top-rail dp-search-intent-rolled-rail"
+          aria-label="Map search controls"
+          onPointerDown={(event) => event.stopPropagation()}
+        >
+          <div className="dp-search-intent-label">
+            <span className="dp-search-brand-mark">
+              <span>Ask the Map</span>
+            </span>
+          </div>
+          {renderModeSwitch()}
+          <div className="dp-search-intent-top-actions">
+            <button
+              type="button"
+              className="dp-search-intent-collapse dp-search-intent-collapse-icon"
+              aria-label="Expand map search console"
+              aria-expanded="false"
+              onClick={onExpand}
+            >
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <section
+          ref={consolePanelRef}
+          className="dp-search-intent-console pointer-events-auto"
+          style={topNavBackConsoleStyle}
+          role="region"
+          aria-label="Map command console"
+          aria-expanded="true"
+          data-state="focused"
+          onPointerDown={(event) => event.stopPropagation()}
+        >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail">
-          {!hasTopMapBack ? (
-            <div className="dp-search-intent-label">
-              <span className="dp-search-brand-mark">
-                <span>Ask the Map</span>
-              </span>
-            </div>
-          ) : null}
+          <div className="dp-search-intent-label">
+            <span className="dp-search-brand-mark">
+              <span>Ask the Map</span>
+            </span>
+          </div>
           {renderModeSwitch()}
           <div className="dp-search-intent-top-actions">
             <button
@@ -13419,6 +13295,7 @@ function SearchIntentConsole({
           </p>
         ) : null}
         </section>
+      )}
     </div>
   );
 }
@@ -13662,7 +13539,6 @@ export default function MapPage() {
   const mapZoomRef = useRef(initialMapView.zoom);
   const viewportBoundsRef = useRef(null);
   const recentScopedQueryRef = useRef("");
-  const [searchAreaDirty, setSearchAreaDirty] = useState(false);
   const [consoleCollapsed, setConsoleCollapsed] = useState(false);
   const [intelOpen, setIntelOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -13703,14 +13579,6 @@ export default function MapPage() {
   const searchRollupRef = useRef(null);
   const updateViewportBounds = useCallback((bounds) => {
     viewportBoundsRef.current = bounds;
-    if (
-      userHasNavigatedMap &&
-      scopedLastTrigger &&
-      scopedResultState.resultIds.length &&
-      hasMeaningfulBoundsChange(scopedResultState.bounds, bounds)
-    ) {
-      setSearchAreaDirty(true);
-    }
     setViewportBounds((current) => {
       if (
         current &&
@@ -13726,7 +13594,7 @@ export default function MapPage() {
       }
       return bounds;
     });
-  }, [scopedLastTrigger, scopedResultState.bounds, scopedResultState.resultIds.length, userHasNavigatedMap]);
+  }, []);
   useEffect(() => {
     mapZoomRef.current = mapZoom;
   }, [mapZoom]);
@@ -13910,7 +13778,6 @@ export default function MapPage() {
     recentScopedQueryRef.current = scope.query || "";
     const result = await runScopedMapSearch(scope, options.trigger || scope.trigger || "search");
     if (!result?.resultIds?.length) return [];
-    setSearchAreaDirty(false);
     return result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
   }, [buildScopedMapQuery, runScopedMapSearch]);
 
@@ -15820,7 +15687,6 @@ export default function MapPage() {
     setResidentQrModal(null);
     setPulsingPinId("");
     setResultsExpanded(false);
-    setSearchAreaDirty(false);
     setUserHasNavigatedMap(false);
     clearScopedMapResults();
     try {
@@ -16141,7 +16007,6 @@ export default function MapPage() {
     setSelectedDrawerMinimized(false);
     setClusterDrawer(null);
     setActiveBottomTab("map");
-    setSearchAreaDirty(false);
     setUserHasNavigatedMap(false);
     clearScopedMapResults();
     try {
@@ -16714,7 +16579,13 @@ export default function MapPage() {
   const primarySearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_SEARCH_FILTERS : RESIDENT_SEARCH_FILTERS);
   const advancedSearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS);
   const searchRollupLabel = `Ask the map · ${activeFilter === "All" ? (urlState.mode === "partner" ? "Partners" : "Residents") : activeFilter}`;
-  const hasOpenMapPanel = urlState.tab === "pass" || Boolean(selected) || Boolean(clusterDrawer) || Boolean(activePartnerPanel);
+  const hasOpenMapPanel =
+    urlState.tab === "pass" ||
+    activeBottomTab !== "map" ||
+    Boolean(activeCollection) ||
+    Boolean(selected) ||
+    Boolean(clusterDrawer) ||
+    Boolean(activePartnerPanel);
   const isCleanMapCommandView =
     urlState.tab === "map" &&
     activeBottomTab === "map" &&
@@ -16768,7 +16639,9 @@ export default function MapPage() {
 
   return (
     <div
+      id="dp-canonical-map"
       className={`dp-map-page relative h-screen overflow-hidden bg-white text-[#0B1F33] ${urlState.mode === "partner" ? "dp-map-page-partner" : "dp-map-page-resident"} ${urlState.embed ? "dp-map-page-embedded" : ""}`}
+      data-map-interface="linear-ios"
       data-map-zoom={mapZoom.toFixed(2)}
       data-top-map-back="false"
     >
@@ -16835,24 +16708,6 @@ export default function MapPage() {
           />
         </GoogleMapErrorBoundary>
       </div>
-
-      {searchAreaDirty && urlState.tab === "map" ? (
-        <button
-          type="button"
-          className="dp-map-search-area-button"
-          onClick={() => {
-            void requestScopedMapResults({
-              query: search || activeFilter,
-              filterOverride: activeFilter,
-              collectionId: urlState.collection,
-              activeEntityId: selectedId,
-              trigger: "search_this_area",
-            });
-          }}
-        >
-          Search this area
-        </button>
-      ) : null}
 
       {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
         <CollectionRoutePanel

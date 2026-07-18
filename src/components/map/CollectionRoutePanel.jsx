@@ -23,6 +23,11 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
   if (!route?.stops?.length) return null;
   const directionsHref = walkingDirectionsUrl(route.stops);
   const routeLabel = route.neighborhood || "Downtown Austin";
+  const selectedStop = route.stops.find((stop) => stop.id === selectedStopId);
+  const previewStops = [selectedStop, ...route.stops]
+    .filter(Boolean)
+    .filter((stop, index, stops) => stops.findIndex((item) => item.id === stop.id) === index)
+    .slice(0, 6);
 
   if (isMinimized) {
     return (
@@ -35,7 +40,7 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
         >
           <span className="dp-route-mini-kicker">{routeLabel}</span>
           <strong>{route.title}</strong>
-          <em>{route.stops.length} stops active · expand</em>
+          <em>{route.stops.length} stops · tap to expand</em>
         </button>
         <button type="button" className="dp-route-mini-exit" onClick={onExit} aria-label="Exit collection route">
           Exit
@@ -72,19 +77,19 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
       <div className="dp-collection-route-panel__actions">
         <button type="button" className="dp-route-cta dp-route-cta--primary" onClick={onStart}>{route.ctaLabel || "Start route"}</button>
         {directionsHref ? (
-          <a className="dp-route-cta dp-route-cta--secondary" href={directionsHref} target="_blank" rel="noreferrer">Walking guide</a>
+          <a className="dp-route-cta dp-route-cta--secondary" href={directionsHref} target="_blank" rel="noreferrer">Walking directions</a>
         ) : null}
-        <button type="button" className="dp-route-cta dp-route-cta--tertiary" onClick={onViewStops}>View stops</button>
+        <button type="button" className="dp-route-cta dp-route-cta--tertiary" onClick={onViewStops}>All {route.stops.length} stops</button>
       </div>
-      <div className="dp-collection-route-panel__stops" aria-label="Route stops">
-        {route.stops.map((stop, index) => (
+      <div className="dp-collection-route-panel__stops" aria-label="Route stop preview">
+        {previewStops.map((stop) => (
           <button
             key={stop.id}
             type="button"
             className={selectedStopId === stop.id ? "is-active" : ""}
             onClick={() => onSelectStop(stop)}
           >
-            <span>{index + 1}</span>
+            <span>{route.stops.findIndex((item) => item.id === stop.id) + 1}</span>
             <strong>{stop.name || stop.title}</strong>
           </button>
         ))}

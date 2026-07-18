@@ -1470,17 +1470,15 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer .dp-primary-action-row.dp-editorial-hero-actions.dp-event-primary-actions {
-  display: flex !important;
-  flex-flow: row nowrap !important;
-  grid-template-columns: none !important;
-  grid-template-rows: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   align-items: center !important;
-  gap: 8px !important;
-  min-height: 40px !important;
-  height: 40px !important;
-  max-height: 40px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
+  gap: 1px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: rgba(11, 31, 51, 0.12) !important;
   scrollbar-width: none !important;
 }
 
@@ -1496,23 +1494,23 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel.dp-map-drawer-shell .dp-event-detail-drawer.dp-event-detail-drawer .dp-primary-action-row.dp-editorial-hero-actions.dp-event-primary-actions > :is(a, button, .dp-panel-action) {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  min-width: auto !important;
-  max-width: none !important;
-  min-height: 38px !important;
-  height: 38px !important;
-  max-height: 38px !important;
-  padding: 0 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 44px !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 8px !important;
   border: 0 !important;
   border-radius: 0 !important;
-  background: transparent !important;
+  background: #FFFFFF !important;
   box-shadow: none !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
-  font-size: 13px !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  white-space: normal !important;
 }
 
 /* Connect the detail sheet surface to the fixed bottom navigation. The drawer
@@ -2451,15 +2449,15 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   .dp-collection-route-panel:not(.dp-collection-route-panel--minimized)
 ) {
   position: fixed !important;
-  inset: auto 0 0 0 !important;
+  inset: auto auto 18px 18px !important;
   top: auto !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  width: min(100%, 760px) !important;
-  max-width: 760px !important;
+  right: auto !important;
+  bottom: 18px !important;
+  left: 18px !important;
+  width: min(448px, calc(100vw - 36px)) !important;
+  max-width: 448px !important;
   max-height: min(88dvh, calc(100dvh - 72px)) !important;
-  margin: 0 auto !important;
+  margin: 0 !important;
   padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
   overflow: hidden !important;
   z-index: 730 !important;
@@ -3785,20 +3783,19 @@ html body #root:is(#root):is(#root):is(#root):is(#root):is(#root):is(#root):is(#
   aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
   aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell
 ) :is(.dp-primary-action-row, .dp-editorial-hero-actions, .dp-perk-action-row, .dp-destination-chip-row, .dp-ask-prompts) {
-  display: flex !important;
-  flex-flow: row nowrap !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 10px !important;
+  gap: 1px !important;
   width: 100% !important;
   min-width: 0 !important;
   min-height: 44px !important;
   height: auto !important;
   max-height: none !important;
-  padding: 0 0 2px !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scroll-snap-type: x proximity !important;
+  padding: 1px !important;
+  overflow: visible !important;
+  background: rgba(11, 31, 51, 0.12) !important;
+  scroll-snap-type: none !important;
   scrollbar-width: none !important;
 }
 
@@ -3806,15 +3803,16 @@ html body #root:is(#root):is(#root):is(#root):is(#root):is(#root):is(#root):is(#
   aside.dp-map-panel.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell,
   aside.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-shell
 ) :is(.dp-panel-action, .dp-perk-cta, .dp-destination-chip-row > button, .dp-ask-prompt-chip) {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  min-width: max-content !important;
+  width: 100% !important;
+  min-width: 0 !important;
   min-height: 44px !important;
-  height: 44px !important;
-  max-height: 44px !important;
-  padding: 0 16px !important;
-  border-radius: 999px !important;
-  white-space: nowrap !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 8px 10px !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  font-weight: 600 !important;
+  white-space: normal !important;
   text-decoration: none !important;
 }
 
