@@ -28,13 +28,14 @@ export function ResidentMobileTabBar({ activeTab, onTabChange }: ResidentMobileT
         const Icon = item.icon;
         const active = item.id === activeTab;
         const opensHomePanel = Boolean(onTabChange && item.id === "home");
-        const content = <><Icon aria-hidden="true" /><span>{item.label}</span></>;
+        const content = <><Icon aria-hidden="true" /><span className="dp-native-tab-label">{item.label}</span></>;
 
         return opensHomePanel ? (
           <button
             key={item.id}
             type="button"
             role="tab"
+            aria-label={item.label}
             aria-selected={active}
             className={active ? "is-active" : ""}
             onClick={() => onTabChange?.(item.id)}
@@ -42,7 +43,7 @@ export function ResidentMobileTabBar({ activeTab, onTabChange }: ResidentMobileT
             {content}
           </button>
         ) : (
-          <Link key={item.id} to={item.href} role="tab" aria-selected={active} className={active ? "is-active" : ""}>
+          <Link key={item.id} to={item.href} role="tab" aria-label={item.label} aria-selected={active} className={active ? "is-active" : ""}>
             {content}
           </Link>
         );

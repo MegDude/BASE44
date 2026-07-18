@@ -17426,7 +17426,12 @@ export default function MapPage() {
     });
     // Canonical map detail sheets are governed entirely by the shared
     // stylesheet and state attributes. Do not recreate their geometry inline.
-    if (node.classList.contains("dp-map-detail-sheet")) return;
+    if (node.classList.contains("dp-map-detail-sheet")) {
+      node.style.setProperty("border", "0", "important");
+      node.style.setProperty("border-radius", "0", "important");
+      node.style.setProperty("box-shadow", "none", "important");
+      return;
+    }
     const isDetailPanel = node.dataset.panelLayout === "detail";
     const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
     const detailHeight = "min(78dvh, calc(100dvh - 76px - env(safe-area-inset-bottom, 0px)))";
@@ -17449,9 +17454,9 @@ export default function MapPage() {
       margin: "0",
       padding: "0",
       overflow: "hidden",
-      border: isDetailPanel ? "1px solid rgba(11, 31, 51, 0.09)" : "0",
-      "border-radius": isDetailPanel ? (isCompactViewport ? "16px 16px 0 0" : "12px 12px 0 0") : "0",
-      "box-shadow": isDetailPanel ? "0 -10px 30px rgba(11, 31, 51, 0.10)" : "none",
+      border: "0",
+      "border-radius": "0",
+      "box-shadow": "none",
       "z-index": "1500",
     };
 
@@ -17477,8 +17482,8 @@ export default function MapPage() {
       margin: "0",
       padding: "calc(6px + env(safe-area-inset-top, 0px)) 8px 6px",
       border: "0",
-      "border-bottom": "1px solid rgba(11, 31, 51, 0.09)",
-      background: "rgba(255, 255, 255, 0.97)",
+      "border-bottom": "0",
+      background: "#ffffff",
       "box-shadow": "none",
     });
     const railButtons = panelRail ? Array.from(panelRail.querySelectorAll(":scope > button")) : [];
@@ -17542,7 +17547,7 @@ export default function MapPage() {
       padding: "0 0 env(safe-area-inset-bottom, 0px)",
       border: "0",
       "border-radius": "0",
-      background: "rgba(255, 255, 255, 0.97)",
+      background: "#ffffff",
       "box-shadow": "none",
       "box-sizing": "border-box",
       "backdrop-filter": "blur(14px) saturate(120%)",
@@ -17561,7 +17566,7 @@ export default function MapPage() {
       margin: "0",
       padding: "3px 0 2px",
       border: "0",
-      "border-top": "1px solid rgba(11, 31, 51, 0.09)",
+      "border-top": "0",
       "border-radius": "0",
       background: "transparent",
       "box-shadow": "none",
@@ -17899,13 +17904,14 @@ export default function MapPage() {
           >
             {urlState.mode === "resident" && (
               <>
-                <button type="button" role="tab" onClick={() => navigate("/resident/home")} aria-selected={false}>
+                <button type="button" role="tab" aria-label="Home" onClick={() => navigate("/resident/home")} aria-selected={false}>
                   <House className="h-4 w-4" />
-                  <span>Home</span>
+                  <span className="dp-native-tab-label">Home</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
                     setConsoleCollapsed(true);
@@ -17916,11 +17922,12 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "map" && activeFilter === "All"}
                 >
                   <MapPin className="h-4 w-4" />
-                  <span>Map</span>
+                  <span className="dp-native-tab-label">Map</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Perks"
                   onClick={() => {
                     if (activeBottomTab === "perks" && !selectedId) {
                       updateActivePerksDrawerState(activePerksDrawerState === "collapsed" ? "medium" : "collapsed");
@@ -17936,11 +17943,12 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "perks"}
                 >
                   <Gift className="h-4 w-4" />
-                  <span>Perks</span>
+                  <span className="dp-native-tab-label">Perks</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Events"
                   onClick={() => {
                     beginSearchIntentTransition("Events");
                     setConsoleCollapsed(true);
@@ -17951,11 +17959,12 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "events"}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span>Events</span>
+                  <span className="dp-native-tab-label">Events</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Saved"
                   onClick={() => {
                     beginSearchIntentTransition("Saved");
                     setConsoleCollapsed(true);
@@ -17966,7 +17975,7 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "saved"}
                 >
                   <Bookmark className="h-4 w-4" />
-                  <span>Saved</span>
+                  <span className="dp-native-tab-label">Saved</span>
                 </button>
               </>
             )}
@@ -17975,48 +17984,53 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Home"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/overview", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <BriefcaseBusiness className="h-4 w-4" />
-                  <span>Home</span>
+                  <span className="dp-native-tab-label">Home</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Map"
                   onClick={() => openPartnerMap("All")}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "map"}
                   aria-selected={urlState.tab === "map" && activeBottomTab === "map"}
                 >
                   <MapPin className="h-4 w-4" />
-                  <span>Map</span>
+                  <span className="dp-native-tab-label">Map</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Publish"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/publish", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <Megaphone className="h-4 w-4" />
-                  <span>Publish</span>
+                  <span className="dp-native-tab-label">Publish</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Performance"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/performance", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <Activity className="h-4 w-4" />
-                  <span>Performance</span>
+                  <span className="dp-native-tab-label">Performance</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Workspace"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/workspace", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <BriefcaseBusiness className="h-4 w-4" />
-                  <span>Workspace</span>
+                  <span className="dp-native-tab-label">Workspace</span>
                 </button>
               </>
             )}

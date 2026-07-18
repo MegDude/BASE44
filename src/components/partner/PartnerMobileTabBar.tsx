@@ -1,15 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import { useNavigate } from "react-router-dom";
+import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { workspacePrimaryNavigation } from "@/config/workspaceModuleRegistry";
 
 type PartnerMobileTabBarProps = {
   activeTab: string;
+  organizationId: string;
 };
 
-export function PartnerMobileTabBar({ activeTab }: PartnerMobileTabBarProps) {
+export function PartnerMobileTabBar({ activeTab, organizationId }: PartnerMobileTabBarProps) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const organizationId = readPartnerWorkspaceOrganizationId(location.search);
 
   return (
     <nav className="dp-partner-native-tabs" aria-label="Partner workspace" role="tablist">
@@ -21,13 +20,14 @@ export function PartnerMobileTabBar({ activeTab }: PartnerMobileTabBarProps) {
             key={item.id}
             type="button"
             role="tab"
+            aria-label={item.label}
             aria-selected={active}
             aria-current={active ? "page" : undefined}
             className={active ? "is-active" : ""}
             onClick={() => navigate(withPartnerWorkspaceContext(item.href, organizationId))}
           >
             <Icon aria-hidden="true" />
-            <span>{item.label}</span>
+            <span className="dp-native-tab-label">{item.label}</span>
           </button>
         );
       })}
