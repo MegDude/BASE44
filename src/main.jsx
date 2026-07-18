@@ -91,6 +91,7 @@ import '@/styles/admin-resource-system.css'
 import '@/styles/map-action-system-final.css'
 import "@/styles/active-perks-sheet.css"
 import "@/styles/canonical-surface-system.css"
+import '@/styles/workspace-compact-media-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

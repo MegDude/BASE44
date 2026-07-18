@@ -1,0 +1,254 @@
+/* Compact partner workspace: one density and media contract across every route. */
+html body #root#root .dp-partner-workspace-page {
+  --dp-workspace-gutter: clamp(14px, 2.4vw, 28px);
+  --dp-workspace-section-gap: clamp(14px, 2vw, 22px);
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-content {
+  width: min(100%, 1120px) !important;
+  max-width: 1120px !important;
+  padding: 24px var(--dp-workspace-gutter) 80px !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header,
+  .dp-workspace-reports-hero,
+  .dp-workspace-manager-header,
+  .dp-profile-editor__intro,
+  .dp-pa-header,
+  .dp-operating-header
+) {
+  margin-bottom: 18px !important;
+  padding-bottom: 16px !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header,
+  .dp-workspace-reports-hero,
+  .dp-profile-editor__intro,
+  .dp-pa-header,
+  .dp-operating-header
+) :is(h1, h2) {
+  max-width: 700px !important;
+  font-size: clamp(26px, 3vw, 34px) !important;
+  line-height: 1.08 !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-panel-header,
+  .dp-workspace-analytics-header,
+  .dp-workspace-experience-report-header,
+  .dp-workspace-reports-hero,
+  .dp-profile-editor__intro,
+  .dp-pa-header,
+  .dp-operating-header
+) p {
+  margin-top: 7px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-report-card,
+  .dp-workspace-analytics-grid > section,
+  .dp-workspace-analytics-next,
+  .dp-workspace-analytics-snapshot,
+  .dp-legends-workspace-seo,
+  .dp-experience-panel,
+  .dp-work-activity-panel,
+  .dp-operating-section,
+  .dp-performance-trend,
+  .dp-recommended-action,
+  .dp-overview-analytics-link,
+  .dp-native-publisher,
+  .dp-profile-editor,
+  .dp-profile-preview,
+  .dp-pa-panel,
+  .dp-pa-decision,
+  .dp-workspace-agent__ask,
+  .dp-workspace-agent__answer
+) {
+  padding: clamp(15px, 2vw, 20px) !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-row,
+  .dp-workspace-manager-row,
+  .dp-workspace-report-card
+) {
+  min-height: 60px !important;
+  padding: 11px 14px !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  .dp-workspace-report-grid,
+  .dp-workspace-analytics-grid,
+  .dp-current-work-grid,
+  .dp-operating-analysis,
+  .dp-pa-grid,
+  .dp-workspace-agent__layout
+) {
+  gap: 14px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail {
+  display: grid !important;
+  gap: 12px !important;
+  margin: 0 0 20px !important;
+  padding: 0 0 18px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header {
+  display: flex !important;
+  align-items: end !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header h2 {
+  margin: 3px 0 0 !important;
+  font-size: 19px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header p:last-child {
+  margin: 5px 0 0 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header > a {
+  flex: 0 0 auto !important;
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  border: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+  color: var(--dp-workspace-ink) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 38px !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > div {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figure {
+  display: grid !important;
+  min-width: 0 !important;
+  grid-template-columns: 108px minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+  border: 1px solid var(--dp-workspace-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail img {
+  width: 108px !important;
+  height: 86px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figcaption {
+  display: grid !important;
+  min-width: 0 !important;
+  align-content: center !important;
+  gap: 3px !important;
+  padding: 10px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figcaption strong {
+  overflow: hidden !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figcaption span {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: var(--dp-workspace-muted) !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+@media (max-width: 980px) {
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > div {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x proximity !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figure {
+    width: min(320px, 80vw) !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root .dp-partner-workspace-page .dp-workspace-content {
+    padding: 14px 12px calc(var(--dp-workspace-mobile-nav) + 16px) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page :is(
+    .dp-workspace-panel-header,
+    .dp-workspace-analytics-header,
+    .dp-workspace-experience-report-header,
+    .dp-workspace-reports-hero,
+    .dp-profile-editor__intro,
+    .dp-pa-header,
+    .dp-operating-header
+  ) :is(h1, h2) {
+    font-size: 26px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail {
+    margin-bottom: 16px !important;
+    padding-bottom: 14px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header {
+    align-items: start !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header p:last-child {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail > header > a {
+    min-height: 38px !important;
+    line-height: 36px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail figure {
+    width: min(286px, 84vw) !important;
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-media-rail img {
+    width: 96px !important;
+    height: 78px !important;
+  }
+}

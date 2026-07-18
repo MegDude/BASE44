@@ -25,6 +25,77 @@ import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyt
 import { queryAgent } from "@/services/agent/agentClient";
 import "@/styles/partner-analytics-decision-system.css";
 
+const WORKSPACE_MEDIA_TABS = [
+  "assistant", "map", "offers", "events", "surveys", "broadcasts", "audience",
+  "media", "sources", "campaigns", "reports", "analytics", "profile", "team", "billing",
+];
+
+const WORKSPACE_MEDIA = [
+  {
+    id: "atx-cocina",
+    src: "/images/workspace-media/atx-cocina-interior.webp",
+    alt: "The dining room at ATX Cocina in downtown Austin.",
+    title: "ATX Cocina",
+    detail: "Dining room image ready for the map and campaign previews.",
+    organizationIds: ["demo-org-larry-and-guy"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "red-ash",
+    src: "/images/workspace-media/red-ash.jpg",
+    alt: "Red Ash dining room in downtown Austin.",
+    title: "Red Ash",
+    detail: "Approved restaurant image for the active dining passport.",
+    organizationIds: ["demo-org-larry-and-guy"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "restaurant-francois",
+    src: "/images/workspace-media/restaurant-francois.webp",
+    alt: "Restaurant François dining room in downtown Austin.",
+    title: "Restaurant François",
+    detail: "Dining image connected to the French Evening passport perk.",
+    organizationIds: ["demo-org-larry-and-guy"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "dining-passport",
+    src: "/images/workspace-media/dining-passport.avif",
+    alt: "Friends sharing dinner during a downtown dining passport outing.",
+    title: "Dining passport",
+    detail: "Campaign image for the Larry & Guy restaurant group passport.",
+    organizationIds: ["demo-org-larry-and-guy"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "listing-preview",
+    src: "/images/workspace-media/listing-preview.avif",
+    alt: "Downtown Austin residential listing prepared for a map preview.",
+    title: "Listing preview",
+    detail: "Property media used in map and report previews.",
+    organizationIds: ["demo-org-legends-real-estate"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "hotel-van-zandt",
+    src: "/images/residential-content/the-shore-hospitality.webp",
+    alt: "Hotel Van Zandt hospitality space in the Rainey District.",
+    title: "Hotel Van Zandt",
+    detail: "Hospitality image connected to the hotel workspace.",
+    organizationIds: ["demo-org-hotel-van-zandt"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+  {
+    id: "yeti-flagship",
+    src: "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg",
+    alt: "YETI flagship store interior in downtown Austin.",
+    title: "YETI flagship",
+    detail: "Store image connected to the YETI brand workspace.",
+    organizationIds: ["demo-org-yeti"],
+    tabs: WORKSPACE_MEDIA_TABS,
+  },
+];
+
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
@@ -504,6 +575,10 @@ export default function PartnerWorkspace() {
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const requestedOrganizationId = new URLSearchParams(location.search).get("organizationId");
+  const activeOrganizationId = demoOrganizations.some((organization) => organization.id === requestedOrganizationId)
+    ? requestedOrganizationId
+    : demoOrganizations[0]?.id;
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -623,6 +698,7 @@ export default function PartnerWorkspace() {
 
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
+        {tab !== "overview" ? <WorkspaceMediaRail tabId={tab} organizationId={activeOrganizationId} /> : null}
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
@@ -663,6 +739,36 @@ function getWorkspacePanelItems(copy = {}) {
     ...(copy.ctas || []),
     ...(copy.roles || []),
   ].filter(Boolean).slice(0, 8);
+}
+
+function WorkspaceMediaRail({ tabId, organizationId }) {
+  const organization = demoOrganizations.find((item) => item.id === organizationId);
+  const media = WORKSPACE_MEDIA
+    .filter((item) => item.organizationIds.includes(organizationId) && item.tabs.includes(tabId))
+    .slice(0, 3);
+
+  if (!media.length) return null;
+
+  return (
+    <section className="dp-workspace-media-rail" aria-labelledby="workspace-media-title">
+      <header>
+        <div>
+          <p className="dp-workspace-eyebrow">Media ready to use</p>
+          <h2 id="workspace-media-title">Images connected to this work</h2>
+          <p>{organization?.name || "This workspace"} can use these approved images in listings, campaigns, and reports.</p>
+        </div>
+        <Link to={`/partner-workspace/media?organizationId=${encodeURIComponent(organizationId || "")}`}>Manage media</Link>
+      </header>
+      <div>
+        {media.map((item) => (
+          <figure key={item.id}>
+            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+            <figcaption><strong>{item.title}</strong><span>{item.detail}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function WorkspaceRegistryPanel({ tabId }) {

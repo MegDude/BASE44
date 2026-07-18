@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -8,6 +8,7 @@ const layoutSource = readFileSync(join(root, "src/components/Layout.jsx"), "utf8
 const workspaceSource = readFileSync(join(root, "src/pages/PartnerWorkspace.jsx"), "utf8");
 const workspaceStyles = readFileSync(join(root, "src/styles/workspace-polish-sweep-final.css"), "utf8");
 const workspaceNavigationStyles = readFileSync(join(root, "src/styles/workspace-navigation-analytics-final.css"), "utf8");
+const compactMediaStyles = readFileSync(join(root, "src/styles/workspace-compact-media-final.css"), "utf8");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
@@ -63,5 +64,24 @@ assert.match(workspaceStyles, /\.dp-report-chart/);
 assert.match(workspaceStyles, /\.dp-report-actions/);
 assert.match(workspaceSource, /className="dp-workspace-reports dp-report-system"/);
 assert.match(workspaceSource, /See what is working and what to do next\./);
+assert.match(workspaceSource, /function WorkspaceMediaRail/);
+assert.match(workspaceSource, /Media ready to use/);
+assert.doesNotMatch(
+  workspaceStyles,
+  /\.dp-partner-workspace-page :is\(section, article, aside, header, footer, div, nav, form\)\s*\{\s*background-image:\s*none !important;/,
+  "the workspace must not globally suppress valid panel media",
+);
+assert.match(compactMediaStyles, /\.dp-workspace-media-rail/);
+assert.match(compactMediaStyles, /max-width:\s*1120px !important/);
+
+for (const asset of [
+  "atx-cocina-interior.webp",
+  "red-ash.jpg",
+  "restaurant-francois.webp",
+  "dining-passport.avif",
+  "listing-preview.avif",
+]) {
+  assert.ok(existsSync(join(root, "public/images/workspace-media", asset)), `workspace media is missing: ${asset}`);
+}
 
 console.log("Canonical workspace routing and flat iOS surface contract: PASS");
