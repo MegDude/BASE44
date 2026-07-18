@@ -35,6 +35,10 @@ const PIN_SVG_STYLE_LG = `
   fill: none;
 `;
 
+function isPremiumPinAsset(asset = '') {
+  return asset.includes('/pins/downtown-perks/partners/');
+}
+
 /**
  * Inject inline style onto the SVG string returned by pinAssetRegistry.
  * The registry SVGs use currentColor; we set stroke directly for consistency.
@@ -42,9 +46,9 @@ const PIN_SVG_STYLE_LG = `
 function styledGlyph(pin, large = false) {
   if (!pin?.glyph) return '';
   if (pin.asset) {
-    const isInKind = pin.asset.includes('inkind-logo');
-    const logoClass = isInKind ? 'dp-live-pin__inkind-logo' : 'dp-live-pin__legends-logo';
-    return `<img class="dp-pin-logo ${logoClass}" src="${pin.asset}" alt="" aria-hidden="true" style="width:${isInKind ? (large ? 52 : 46) : (large ? 22 : 19)}px;height:${isInKind ? (large ? 40 : 36) : (large ? 22 : 19)}px;display:block;object-fit:contain;" />`;
+    const premium = isPremiumPinAsset(pin.asset);
+    const logoClass = premium ? 'dp-live-pin__premium-art' : 'dp-live-pin__legends-logo';
+    return `<img class="dp-pin-logo ${logoClass}" src="${pin.asset}" alt="" aria-hidden="true" style="width:${premium ? (large ? 50 : 44) : (large ? 22 : 19)}px;height:${premium ? (large ? 66 : 58) : (large ? 22 : 19)}px;display:block;object-fit:contain;" />`;
   }
 
   // Replace the opening <svg tag to add inline style
@@ -61,8 +65,7 @@ function styledGlyph(pin, large = false) {
  */
 export function createCompactMarker(entity) {
   const pin = resolveEntityPin(entity);
-  const isInKind = pin?.asset?.includes('inkind-logo');
-  if (isInKind) return createInKindMarker(pin, false);
+  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, false);
   const size = entity.markerType === 'building' ? SIZES.building : SIZES.default;
   const glyph = styledGlyph(pin);
 
@@ -101,8 +104,7 @@ export function createCompactMarker(entity) {
  */
 export function createSelectedMarker(entity) {
   const pin = resolveEntityPin(entity);
-  const isInKind = pin?.asset?.includes('inkind-logo');
-  if (isInKind) return createInKindMarker(pin, true);
+  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, true);
   const baseSize = entity.markerType === 'building' ? SIZES.building : SIZES.default;
   const size = Math.round(baseSize * SIZES.selected);
   const glyph = styledGlyph(pin, true);
@@ -149,7 +151,7 @@ export function createSelectedMarker(entity) {
  */
 export function createPillMarker(entity) {
   const pin = resolveEntityPin(entity);
-  if (pin?.asset?.includes('inkind-logo')) return createInKindMarker(pin, true);
+  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, true);
   const pillGlyph = pin.asset
     ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${pin.asset}" alt="" aria-hidden="true" style="width:16px;height:16px;display:block;object-fit:contain;" />`
     : pin.glyph.replace(
@@ -187,16 +189,16 @@ export function createPillMarker(entity) {
   });
 }
 
-function createInKindMarker(pin, selected) {
-  const width = selected ? 54 : 48;
-  const height = selected ? 42 : 38;
-  const html = `<div class="dp-marker-factory-pin dp-marker-factory-pin--inkind${selected ? ' is-selected' : ''}" style="width:${width}px;height:${height}px;display:grid;place-items:center;overflow:visible;cursor:pointer;${selected ? 'transform:translateY(-1px);' : ''}">${styledGlyph(pin, selected)}</div>`;
+function createArtworkMarker(pin, selected) {
+  const width = selected ? 50 : 44;
+  const height = selected ? 66 : 58;
+  const html = `<div class="dp-marker-factory-pin dp-marker-factory-pin--art${selected ? ' is-selected' : ''}" style="width:${width}px;height:${height}px;display:grid;place-items:center;overflow:visible;cursor:pointer;${selected ? 'transform:translateY(-1px);' : ''}">${styledGlyph(pin, selected)}</div>`;
 
   return L.divIcon({
-    className: 'dp-leaflet-inkind-pin',
+    className: 'dp-leaflet-premium-pin',
     html,
     iconSize: [width, height],
-    iconAnchor: [width / 2, height / 2],
+    iconAnchor: [width / 2, height],
     popupAnchor: [0, -(height / 2 + 4)],
   });
 }

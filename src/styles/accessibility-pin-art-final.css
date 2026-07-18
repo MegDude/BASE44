@@ -1,0 +1,115 @@
+/* Release tail: readable product copy and wrapper-free premium marker artwork. */
+html body #root#root .dp-partner-workspace-page {
+  --dp-workspace-ink: #0b1f33;
+  --dp-workspace-muted: #4f5b66;
+  color: var(--dp-workspace-ink) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-workspace-switcher > button small,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-section > header span,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-activity time,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-analytics span,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-campaign-metrics span {
+    color: #596570 !important;
+    -webkit-text-fill-color: #596570 !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-attention,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-attention h2 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-attention > p {
+    color: #e1c77f !important;
+    -webkit-text-fill-color: #e1c77f !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-attention > span {
+    color: rgba(255, 255, 255, 0.86) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.86) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-attention > a {
+    color: #0b1f33 !important;
+    -webkit-text-fill-color: #0b1f33 !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-activity article {
+    grid-template-columns: 22px minmax(0, 1fr) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-activity article > svg {
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: 1px !important;
+    color: #80652f !important;
+    stroke-width: 1.9 !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-insight > p,
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-campaign-copy > span {
+    color: #745b29 !important;
+    -webkit-text-fill-color: #745b29 !important;
+  }
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-google-map-marker-shell:has(.dp-live-pin__premium-art),
+html body #root#root#root#root .dp-map-page.dp-map-page .leaflet-marker-icon:has(.dp-live-pin__premium-art),
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art) {
+  width: var(--dp-premium-pin-width, 44px) !important;
+  min-width: var(--dp-premium-pin-width, 44px) !important;
+  height: var(--dp-premium-pin-height, 58px) !important;
+  min-height: var(--dp-premium-pin-height, 58px) !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art) .dp-map-pin__icon,
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-live-pin__core:has(.dp-live-pin__premium-art) {
+  width: var(--dp-premium-pin-width, 44px) !important;
+  height: var(--dp-premium-pin-height, 58px) !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page img.dp-live-pin__premium-art,
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin img.dp-live-pin__premium-art,
+.dp-leaflet-premium-pin img.dp-live-pin__premium-art {
+  display: block !important;
+  width: var(--dp-premium-pin-width, 44px) !important;
+  min-width: var(--dp-premium-pin-width, 44px) !important;
+  height: var(--dp-premium-pin-height, 58px) !important;
+  min-height: var(--dp-premium-pin-height, 58px) !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 3px 5px rgba(11, 31, 51, 0.18)) !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__premium-art):is(.is-selected, .is-active, [data-active="true"]) {
+  --dp-premium-pin-width: 50px;
+  --dp-premium-pin-height: 66px;
+  transform: translateY(-2px) !important;
+}
+
+.dp-leaflet-premium-pin,
+.dp-leaflet-premium-pin .dp-marker-factory-pin--art {
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}

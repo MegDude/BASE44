@@ -56,30 +56,46 @@ export type MapIconDefinition = {
 };
 
 export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo.png";
-export const INKIND_PIN_ASSET = "/pins/brands/inkind-map-logo.png";
+const PARTNER_PIN_ROOT = "/pins/downtown-perks/partners";
+export const INKIND_PIN_ASSET = `${PARTNER_PIN_ROOT}/inkind.png`;
+export const COFFEE_PIN_ASSET = `${PARTNER_PIN_ROOT}/coffee.png`;
+export const BEER_PIN_ASSET = `${PARTNER_PIN_ROOT}/beer.png`;
+export const BOOTS_PIN_ASSET = `${PARTNER_PIN_ROOT}/boots.png`;
+export const FINE_EYEWEAR_PIN_ASSET = `${PARTNER_PIN_ROOT}/fine-eyewear.png`;
+export const DANA_PIN_ASSET = `${PARTNER_PIN_ROOT}/dana.png`;
+export const CONDO_BUILDING_PIN_ASSET = `${PARTNER_PIN_ROOT}/condo-building.png`;
+export const RIVIAN_PIN_ASSET = `${PARTNER_PIN_ROOT}/rivian.png`;
 
 function icon(paths: string) {
   return `<svg class="dp-pin-svg dp-map-icon-svg" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 }
 
+function artwork(label: string, asset: string, className: string): MapIconDefinition {
+  return {
+    label,
+    asset,
+    glyph: `<img class="dp-pin-logo dp-live-pin__premium-art ${className}" src="${asset}" alt="" aria-hidden="true" />`,
+  };
+}
+
 export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
-  coffee: { label: "Coffee", glyph: icon('<path d="M5 8h10v5a5 5 0 0 1-10 0V8Z"/><path d="M15 9h2a3 3 0 0 1 0 6h-2"/><path d="M4 20h13"/><path d="M8 4v1M12 4v1"/>') },
+  coffee: artwork("Coffee", COFFEE_PIN_ASSET, "dp-live-pin__coffee-art"),
   dining: { label: "Dining", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
   restaurant: { label: "Restaurant", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
   venue: { label: "Venue", glyph: icon('<path d="M7 3v8"/><path d="M4 3v5a3 3 0 0 0 6 0V3"/><path d="M7 11v10"/><path d="M17 3v18"/><path d="M14 3h3a3 3 0 0 1 3 3v5h-6"/>') },
-  nightlife: { label: "Drinks", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/>') },
-  bar: { label: "Bar", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/>') },
+  nightlife: artwork("Drinks", BEER_PIN_ASSET, "dp-live-pin__beer-art"),
+  bar: artwork("Bar", BEER_PIN_ASSET, "dp-live-pin__beer-art"),
   cocktail: { label: "Cocktail", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/>') },
   wellness: { label: "Wellness", glyph: icon('<path d="M4 14h4l2-8 4 14 2-6h4"/><path d="M7 20h10"/>') },
-  property: { label: "Property", glyph: icon('<path d="M4 21h16"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/>') },
-  residential: { label: "Residential", glyph: icon('<path d="M3 11 12 4l9 7"/><path d="M5 10v11h14V10"/><path d="M9 21v-6h6v6"/>') },
-  building: { label: "Building", glyph: icon('<path d="M4 21h16"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/>') },
-  listing: { label: "Listing", glyph: icon('<path d="M4 21h16"/><path d="M7 21V5h10v16"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2"/><path d="M9 16h6"/>') },
+  property: artwork("Property", CONDO_BUILDING_PIN_ASSET, "dp-live-pin__building-art"),
+  residential: artwork("Residential", CONDO_BUILDING_PIN_ASSET, "dp-live-pin__building-art"),
+  building: artwork("Building", CONDO_BUILDING_PIN_ASSET, "dp-live-pin__building-art"),
+  listing: artwork("Listing", CONDO_BUILDING_PIN_ASSET, "dp-live-pin__building-art"),
   hotel: { label: "Hotel", glyph: icon('<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M7 11h10"/><path d="M7 16h10"/><path d="M9 7h.01M15 7h.01"/>') },
   event: { label: "Event", glyph: icon('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8 14h3M13 14h3M8 17h3"/>') },
-  "happy-hour": { label: "Happy Hour", glyph: icon('<path d="M6 3h12l-5 7v8"/><path d="M9 21h6"/><path d="M8 8h8"/><path d="M18 4l-3 4"/><path d="M4 5l1 2 2 .3-1.5 1.4.4 2.1L4 9.8l-1.9 1 .4-2.1L1 7.3 3 7l1-2Z"/>') },
+  "happy-hour": artwork("Happy Hour", BEER_PIN_ASSET, "dp-live-pin__beer-art"),
   civic: { label: "Civic", glyph: icon('<path d="M3 10h18"/><path d="M5 10l7-6 7 6"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/><path d="M4 21h16"/>') },
-  retail: { label: "Retail", glyph: icon('<path d="M6 8h12l-1 13H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/><path d="M8 13h8"/>') },
+  retail: artwork("Retail", BOOTS_PIN_ASSET, "dp-live-pin__retail-art"),
   parking: { label: "Parking", glyph: icon('<path d="M6 21V4h8a5 5 0 0 1 0 10H6"/><path d="M6 14h8"/><path d="M10 8h4"/>') },
   mobility: { label: "Mobility", glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>') },
   ev: { label: "EV Charging", glyph: icon('<path d="M7 21V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v16"/><path d="M9 8h5"/><path d="m18 7 2 2-2 2"/><path d="M20 9v7a2 2 0 0 1-2 2h-2"/><path d="m11 12-2 4h3l-1 3 4-5h-3l1-2Z"/>') },
@@ -94,18 +110,14 @@ export const mapIconRegistry: Record<MapIconKey, MapIconDefinition> = {
   campaign: { label: "Campaign", glyph: icon('<path d="M4 13V7l11-3v12L4 13Z"/><path d="M4 13l2 7h4l-2-6"/><path d="M18 8v4"/>') },
   analytics: { label: "Reports", glyph: icon('<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/>') },
   offer: { label: "Perk", glyph: icon('<path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5c0 1.5 1 2.5 1 2.5Z"/><path d="M12 7h3.5A2.5 2.5 0 1 0 13 4.5c0 1.5-1 2.5-1 2.5Z"/>') },
-  inkind: {
-    label: "inKind",
-    glyph: `<img class="dp-pin-logo dp-live-pin__inkind-logo" src="${INKIND_PIN_ASSET}" alt="" aria-hidden="true" />`,
-    asset: INKIND_PIN_ASSET,
-  },
-  dana: { label: "DANA", glyph: icon('<path d="M3 10h18"/><path d="M5 10l7-6 7 6"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/><path d="M4 21h16"/>') },
-  "fine-eyewear": { label: "Fine Eyewear", glyph: icon('<circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/><path d="M12 12h0"/><path d="M4 12H2M22 12h-2"/><path d="M10.8 10.8c.8-.7 1.6-.7 2.4 0"/>') },
+  inkind: artwork("inKind", INKIND_PIN_ASSET, "dp-live-pin__inkind-logo"),
+  dana: artwork("DANA", DANA_PIN_ASSET, "dp-live-pin__dana-logo"),
+  "fine-eyewear": artwork("Fine Eyewear", FINE_EYEWEAR_PIN_ASSET, "dp-live-pin__fine-eyewear-logo"),
   "waterloo-greenway": { label: "Waterloo Greenway", glyph: icon('<path d="M6 18c3-7 9-3 12-10"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M8 13h8"/><path d="M12 21v-8"/>') },
   "stay-put": { label: "The Stay Put", glyph: icon('<path d="M3 11 12 4l9 7"/><path d="M5 10v11h14V10"/><path d="M9 21v-6h6v6"/>') },
   "topo-chico": { label: "Topo Chico", glyph: icon('<path d="M9 2h6"/><path d="M10 2v4l-2 3v10a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3V9l-2-3V2"/><path d="M9 13h6"/><path d="M10 17h4"/>') },
   yeti: { label: "YETI", glyph: icon('<path d="M6 4h12l-1 15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 4Z"/><path d="M8 8h8"/><path d="M10 12h4"/>') },
-  rivian: { label: "Rivian", glyph: icon('<path d="M5 16h14"/><path d="M7 16l2-8h6l2 8"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M10 11h4"/>') },
+  rivian: artwork("Rivian", RIVIAN_PIN_ASSET, "dp-live-pin__rivian-logo"),
   lululemon: { label: "Lululemon", glyph: icon('<path d="M4 14h4l2-8 4 14 2-6h4"/><path d="M7 20h10"/>') },
   "four-seasons": { label: "Four Seasons", glyph: icon('<path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16"/><path d="M7 11h10"/><path d="M7 16h10"/><path d="M9 7h.01M15 7h.01"/>') },
   service: { label: "Service", glyph: icon('<path d="M4 21V9l8-5 8 5v12"/><path d="M8 21v-7h8v7"/><path d="M9 11h6"/>') },

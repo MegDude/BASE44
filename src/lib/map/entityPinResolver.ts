@@ -26,6 +26,7 @@ const PIN_MATCHERS: Array<[MapIconKey, string[]]> = [
   ["waterloo-greenway", ["waterloo greenway", "waterloo park", "waller creek", "moody amphitheater"]],
   ["dana", ["dana", "downtown austin neighborhood association"]],
   ["legends", ["legends", "legends real estate", "legends property", "legends property export"]],
+  ["rivian", ["rivian"]],
   ["coffee", ["coffee", "cafe", "espresso"]],
   ["dining", ["dining", "restaurant", "food", "lunch", "dinner", "kitchen", "grill", "taqueria", "pizza", "sushi", "bbq", "bistro", "bakery", "brewery"]],
   ["nightlife", ["bar", "nightlife", "rooftop", "music", "cocktail", "pub", "saloon", "club", "lounge", "speakeasy", "mezcal", "beer garden"]],
@@ -62,7 +63,7 @@ const RESTORED_MASTER_PIN_KEYS: Record<string, MapIconKey> = {
   "stay-put": "stay-put",
   "topo-chico": "topo-chico",
   yeti: "brand",
-  rivian: "mobility",
+  rivian: "rivian",
   lululemon: "wellness",
   "four-seasons": "hotel",
 };
