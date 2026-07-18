@@ -7743,8 +7743,8 @@ function MapPanelButton({
 function MapSheet({ variant, ariaLabel, onClose, onBack, children, className = "" }) {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 24, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: 0 }}
       className={`dp-map-sheet dp-map-sheet--${variant} ${className}`.trim()}
       data-variant={variant}
       role="dialog"
@@ -16743,8 +16743,8 @@ export default function MapPage() {
       {urlState.tab === "pass" && urlState.mode === "partner" && (
         <div className="pointer-events-none absolute inset-0 z-[540] flex items-end justify-center bg-[#0B1F33]/10 p-2 backdrop-blur-[2px] sm:p-4 md:items-center">
           <motion.section
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: "100%" }}
+            animate={{ opacity: 1, y: 0 }}
             className="dp-panel-shell dp-pass-panel pointer-events-auto flex max-h-[calc(100dvh-12px)] w-full max-w-xl flex-col overflow-hidden rounded-t-[12px] p-0 md:max-h-[calc(100dvh-2rem)] md:rounded-[12px]"
             role="dialog"
             aria-modal="true"
@@ -17021,9 +17021,9 @@ export default function MapPage() {
             : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isLegendsDirectoryLayer
         ) && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
-            initial={{ opacity: 0, y: 44 }}
+            initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 44 }}
+            exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
               ? "dp-map-directory-sheet dp-legends-directory-sheet"
@@ -17288,9 +17288,9 @@ export default function MapPage() {
       <AnimatePresence>
         {clusterDrawer && urlState.tab === "map" && (!selected || selectedDrawerClosed) && (
           <motion.aside
-            initial={{ opacity: 0, y: 44 }}
+            initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 44 }}
+            exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
             style={MAP_DRAWER_SURFACE_STYLE}

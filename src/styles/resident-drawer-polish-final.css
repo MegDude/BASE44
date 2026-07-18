@@ -2451,7 +2451,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   --dp-map-top-nav-clearance: max(72px, calc(env(safe-area-inset-top, 0px) + 72px));
   --dp-map-search-rollup-clearance: max(128px, calc(env(safe-area-inset-top, 0px) + 128px));
   --dp-map-search-expanded-clearance: max(232px, calc(env(safe-area-inset-top, 0px) + 232px));
-  --dp-map-bottom-nav-clearance: calc(76px + env(safe-area-inset-bottom, 0px));
+  --dp-map-bottom-nav-clearance: calc(80px + env(safe-area-inset-bottom, 0px));
   height: 100dvh !important;
   max-height: 100dvh !important;
   min-height: 100dvh !important;
@@ -2476,7 +2476,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   aside.dp-destination-drawer.dp-map-drawer-shell,
   .dp-resident-card-sheet
 ) {
-  top: var(--dp-map-search-rollup-clearance) !important;
+  top: auto !important;
   bottom: var(--dp-map-bottom-nav-clearance) !important;
   left: 0 !important;
   right: 0 !important;
@@ -2496,7 +2496,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   aside.dp-detail-drawer.dp-map-drawer-shell,
   aside.dp-destination-drawer.dp-map-drawer-shell
 ) {
-  top: var(--dp-map-search-expanded-clearance) !important;
+  top: auto !important;
   max-height: calc(100dvh - var(--dp-map-search-expanded-clearance) - var(--dp-map-bottom-nav-clearance) - 8px) !important;
 }
 
