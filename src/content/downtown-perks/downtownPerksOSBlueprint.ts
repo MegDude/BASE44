@@ -158,6 +158,26 @@ export const ADMIN_STUDIO_ROUTES = [
     priority: "Use signals to suggest offers, events, surveys, or upgraded placements.",
     cards: ["Health", "Activity", "Plan", "Audience fit", "Next move"],
   },
+  {
+    id: "microsites",
+    label: "Partner Pages",
+    path: "/admin-studio/microsites",
+    icon: Network,
+    purpose: "Review partner pages, source coverage, conflicts, media, and public approval.",
+    primaryCta: "Review partner pages",
+    priority: "Keep every draft private until its facts, copy, media, and route pass review.",
+    cards: ["Needs review", "Missing media", "Conflicts", "Blocked", "Public"],
+  },
+  {
+    id: "journey-links",
+    label: "Journey Links",
+    path: "/admin/resources/partner-journey",
+    icon: Network,
+    purpose: "Open the canonical partner, resident, admin, public, and review routes.",
+    primaryCta: "Open link hub",
+    priority: "Keep operational routes visible through navigation and dashboard changes.",
+    cards: ["Partner", "Resident", "Admin", "Public", "Review"],
+  },
 ] as const;
 
 export const CAMPAIGN_TYPES = [

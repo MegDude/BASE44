@@ -86,6 +86,8 @@ import '@/styles/partner-tools-polish-final.css'
 import '@/styles/ios-native-system-restoration.css'
 import '@/styles/pricing-builder-cleanup-final.css'
 import '@/styles/workspace-polish-sweep-final.css'
+import '@/styles/microsite-system.css'
+import '@/styles/admin-resource-system.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

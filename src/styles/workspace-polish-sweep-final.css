@@ -2,7 +2,7 @@
 html body #root#root .dp-partner-page.dp-partner-workspace-page {
   --dp-workspace-bg: #ffffff;
   --dp-workspace-surface: #ffffff;
-  --dp-workspace-soft: #f7f8fa;
+  --dp-workspace-soft: #ffffff;
   --dp-workspace-ink: #0b1f33;
   --dp-workspace-muted: rgba(11, 31, 51, 0.62);
   --dp-workspace-border: rgba(11, 31, 51, 0.1);
@@ -30,11 +30,44 @@ html body #root#root .dp-partner-workspace-page :is(section, article, aside, hea
 }
 
 html body #root#root .dp-partner-workspace-page :is(
+  main,
+  section,
+  article,
+  aside,
+  figure,
+  figcaption,
+  form
+) {
+  background-color: #ffffff !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  dl,
+  dt,
+  dd,
+  li
+) {
+  text-align: left !important;
+}
+
+html body #root#root .dp-partner-workspace-page :is(
   button,
   a,
   input,
   select,
   textarea,
+  header,
+  footer,
+  nav,
+  div,
   section,
   article,
   aside,
@@ -2268,5 +2301,95 @@ html body #root#root .dp-partner-workspace-page .dp-workspace-agent__followups b
 @media (prefers-reduced-motion: reduce) {
   html body #root#root .dp-partner-workspace-page .dp-workspace-agent__loading > span {
     animation: none !important;
+  }
+}
+
+/* Final cascade lock: legacy skins cannot restore rounded or shaded workspace UI. */
+html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  section,
+  article,
+  aside,
+  figure,
+  form,
+  [role="dialog"],
+  [aria-modal="true"],
+  [class*="panel"],
+  [class*="card"],
+  [class*="drawer"],
+  [class*="sheet"],
+  [class*="rounded"]
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+  main,
+  header,
+  footer,
+  nav,
+  section,
+  article,
+  aside,
+  figure,
+  figcaption,
+  form,
+  [class*="panel"],
+  [class*="card"],
+  [class*="surface"]
+) {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page :is(
+  [role="dialog"],
+  [aria-modal="true"],
+  [class*="drawer"],
+  [class*="sheet"]
+) {
+  max-height: calc(100dvh - var(--dp-workspace-overlay-top) - var(--dp-workspace-overlay-bottom)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-report-system {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-partner-workspace-header {
+    min-height: 57px !important;
+    padding: calc(env(safe-area-inset-top, 0px) + 6px) 12px 6px !important;
+  }
+
+  html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-partner-workspace-header-inner {
+    min-height: 44px !important;
+    grid-template-columns: 44px minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+  }
+
+  html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-partner-workspace-brand {
+    min-width: 0 !important;
+    justify-self: start !important;
+    white-space: nowrap !important;
+  }
+
+  html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-partner-workspace-header-tools {
+    width: auto !important;
+    min-width: 0 !important;
+    justify-self: end !important;
+  }
+
+  html body #root#root#root#root#root#root .dp-partner-workspace-page.dp-partner-workspace-page .dp-partner-workspace-header-tools button[aria-label="Notifications"] {
+    display: none !important;
   }
 }

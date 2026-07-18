@@ -14,7 +14,7 @@ const drawerContainmentStyles = readFileSync(join(root, "src/styles/map-drawer-c
 const partnerToolsStyles = readFileSync(join(root, "src/styles/partner-tools-polish-final.css"), "utf8");
 
 assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Home", "Map", "Perks", "Events", "Card"]);
-assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Publish", "Map", "Insights", "Workspace"]);
+assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Publish", "Map", "Ask", "Workspace"]);
 assert.equal(normalizeMobileTab("resident", "pass"), "card");
 assert.equal(normalizeMobileTab("partner", "campaigns"), "publish");
 assert.equal(normalizeMobileTab("partner", "audience"), "insights");

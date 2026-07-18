@@ -1,7 +1,12 @@
 import { chromium } from "playwright";
+import { existsSync } from "node:fs";
 
 const baseUrl = process.env.BASE_URL || "http://127.0.0.1:4173";
-const browser = await chromium.launch({ headless: true });
+const localChrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const browser = await chromium.launch({
+  headless: true,
+  ...(existsSync(localChrome) ? { executablePath: localChrome } : {}),
+});
 const page = await browser.newPage({ viewport: { width: 393, height: 852 }, isMobile: true, hasTouch: true });
 const errors = [];
 
@@ -26,7 +31,7 @@ await page.goto(`${baseUrl}/partner-workspace/overview?provisioned=1`, { waitUnt
 await page.waitForSelector(".dp-partner-native-tabs", { state: "visible", timeout: 15_000 });
 
 const labels = await page.locator(".dp-partner-native-tabs a").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Publish|Map|Insights|Workspace") {
+if (labels.map((label) => label.trim()).join("|") !== "Home|Publish|Map|Ask|Workspace") {
   throw new Error(`Unexpected partner tabs: ${labels.join(", ")}`);
 }
 

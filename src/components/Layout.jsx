@@ -111,7 +111,15 @@ export default function Layout() {
   const showNavbar = !pathname.startsWith("/partner-workspace") &&
     !pathname.startsWith("/admin-studio") &&
     !["/", "/map", "/app", "/app/map", "/resident/home", "/sign-in", "/auth/callback", "/interaction-system"].includes(pathname);
-  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/interaction-system";
+  const showProductSearchButton =
+    !showNavbar &&
+    !pathname.startsWith("/partner-workspace") &&
+    !pathname.startsWith("/admin-studio") &&
+    pathname !== "/" &&
+    pathname !== "/app" &&
+    pathname !== "/app/map" &&
+    pathname !== "/map" &&
+    pathname !== "/interaction-system";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {

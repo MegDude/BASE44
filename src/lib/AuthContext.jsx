@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
       full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Account",
       organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Account",
       partner_type: partnerType,
-      role: ["resident", "partner", "admin"].includes(role) ? role : "resident",
+      role: ["resident", "partner", "admin", "platform_admin", "super_admin"].includes(role) ? role : "resident",
       authProvider: "supabase",
     };
     setUser(profile);

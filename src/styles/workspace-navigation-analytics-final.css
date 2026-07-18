@@ -3,23 +3,6 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-work
   min-width: 0 !important;
 }
 
-html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-back {
-  gap: 4px !important;
-  min-width: 70px !important;
-  padding-inline: 10px !important;
-  color: #0b1f33 !important;
-  font-family: Inter, system-ui, sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 620 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-back svg {
-  width: 15px !important;
-  height: 15px !important;
-}
-
 html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-signin {
   color: #0b1f33 !important;
   text-transform: none !important;
@@ -224,15 +207,6 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-an
 
   html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools {
     border-left: 0 !important;
-  }
-
-  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-back {
-    min-width: 44px !important;
-    padding-inline: 0 !important;
-  }
-
-  html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-back span {
-    display: none !important;
   }
 
   html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools button[aria-label="Search workspace"],
