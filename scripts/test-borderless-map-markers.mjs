@@ -5,6 +5,7 @@ const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url
 const markerSource = await readFile(new URL("../src/map/MarkerManager.ts", import.meta.url), "utf8");
 const markerCss = await readFile(new URL("../src/styles/map-marker-governance-final.css", import.meta.url), "utf8");
 const iconRegistry = await readFile(new URL("../src/lib/map/mapIconRegistry.ts", import.meta.url), "utf8");
+const pinResolver = await readFile(new URL("../src/lib/map/entityPinResolver.ts", import.meta.url), "utf8");
 
 assert.match(mapSource, /clusterPlaces\(activeCollectionRoute\.stops, stableClusterZoom, selectedId\)/, "route stops must use collision-safe clustering");
 assert.match(mapSource, /clusterPlaces\(mappablePlaces, stableClusterZoom, selectedId\)/, "focused results must use collision-safe clustering");
@@ -25,5 +26,8 @@ assert.match(iconRegistry, /COFFEE_PIN_ASSET/, "coffee entities must use the upl
 assert.match(iconRegistry, /BEER_PIN_ASSET/, "drinks entities must use the uploaded beer pin artwork");
 assert.match(iconRegistry, /CONDO_BUILDING_PIN_ASSET/, "residential entities must use the uploaded building pin artwork");
 assert.match(iconRegistry, /RIVIAN_PIN_ASSET/, "Rivian entities must use the uploaded Rivian pin artwork");
+assert.doesNotMatch(pinResolver, /Math\.random|crypto\.getRandomValues|randomUUID/, "map icon selection must never be random");
+assert.match(pinResolver, /\(fallbackByType\.includes\("civic"\) \? "civic" : ""\) \|\|\s*"default";/, "unknown entities must use the neutral canonical map pin");
+assert.doesNotMatch(pinResolver, /\|\|\s*"guide";/, "unknown entities must not receive an unrelated guide icon");
 
 console.log("Borderless map marker checks passed.");

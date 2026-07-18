@@ -250,6 +250,6 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
     (fallbackByType.includes("offer") ? "offer" : "") ||
     (fallbackByType.includes("brand") ? "brand" : "") ||
     (fallbackByType.includes("civic") ? "civic" : "") ||
-    "guide";
+    "default";
   return getMapIcon(pinKey);
 }
