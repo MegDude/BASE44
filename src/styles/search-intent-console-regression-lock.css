@@ -1,0 +1,205 @@
+/* Canonical search-intent console ownership.
+   Keep one compact icon rail and reveal the secondary rail only through More. */
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-two-row-stack {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 2px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console > .dp-search-intent-console-header {
+  order: 0 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console > .dp-search-intent-form {
+  order: 1 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console > .dp-search-intent-two-row-stack {
+  order: 2 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console > .dp-search-intent-description-strip {
+  order: 3 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console > .dp-search-intent-status,
+html body #root .dp-map-page .dp-search-intent-console > .dp-platform-search-results {
+  order: 4 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-two-row-stack > .dp-search-intent-primary-rail {
+  order: 0 !important;
+  grid-row: 1 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-two-row-stack > #dp-search-more-filter-panel:not([hidden]) {
+  order: 1 !important;
+  grid-row: 2 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-primary-rail,
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-secondary-track {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center !important;
+  gap: 4px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scroll-snap-type: inline proximity !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console :is(
+  .dp-search-intent-primary-rail,
+  .dp-search-intent-secondary-track
+)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-more-panel:not([hidden]) {
+  position: static !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 40px !important;
+  margin: 2px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip,
+html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: auto !important;
+  min-width: 40px !important;
+  max-width: max-content !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 9px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  box-shadow: none !important;
+  font: 550 11px/1 Inter, system-ui, sans-serif !important;
+  white-space: nowrap !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip:is(.is-active, [aria-selected="true"]),
+html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle:is(.is-open, [aria-expanded="true"]) {
+  color: #0b1f33 !important;
+  background: rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console :is(
+  .dp-compact-intent-chip__icon,
+  .dp-expanding-intent-chip__icon,
+  .dp-search-intent-filter-icon
+) {
+  flex: 0 0 16px !important;
+  display: inline-grid !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  place-items: center !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-filter-icon {
+  stroke-width: 2 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console :is(
+  .dp-compact-intent-chip__label,
+  .dp-expanding-intent-chip__label
+) {
+  display: inline !important;
+  width: auto !important;
+  overflow: visible !important;
+  color: inherit !important;
+  font: inherit !important;
+  opacity: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console-wrap.is-collapsed {
+  position: fixed !important;
+  top: calc(8px + env(safe-area-inset-top, 0px)) !important;
+  right: auto !important;
+  left: 50% !important;
+  display: grid !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 24px) !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 1320 !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console-wrap.is-collapsed .dp-search-intent-rollup {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  color: #0b1f33 !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.11) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page .dp-search-intent-console.dp-ask-map-panel {
+    gap: 4px !important;
+    max-height: min(34dvh, 286px) !important;
+    padding: 8px 10px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-search-intent-console-wrap,
+  .dp-search-intent-console-wrap * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
