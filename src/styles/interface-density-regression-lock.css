@@ -1,0 +1,286 @@
+/* Release lock: calm scale, continuous white surfaces, and compact controls. */
+:root {
+  --dp-release-page-title: clamp(28px, 3.6vw, 42px);
+  --dp-release-section-title: clamp(20px, 2.4vw, 28px);
+  --dp-release-control-height: 44px;
+}
+
+html body,
+html body #root,
+html body #root :is(.dp-partner-workspace-page, .dp-resident-home, .dp-resident-access-page, .dp-pricing-page) {
+  background: #ffffff !important;
+}
+
+/* A parent surface owns its plane. Descendant content uses dividers, not boxes. */
+html body #root :is(
+  .dp-partner-workspace-page,
+  .dp-resident-home,
+  .dp-resident-access-page,
+  .dp-pricing-page,
+  .dp-panel-shell,
+  .dp-map-detail-sheet,
+  .dp-active-perks-sheet,
+  .dp-bottom-sheet,
+  .dp-mobile-tab-drawer
+) :is([class*="card"], [class*="panel"], [class*="surface"], [class*="tile"], [class*="summary"], [class*="metric"]) {
+  border-radius: 0 !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-active-perks-sheet, .dp-bottom-sheet, .dp-mobile-tab-drawer) :is(
+  [class*="card"], [class*="panel"], [class*="surface"], [class*="tile"], [class*="summary"], [class*="metric"]
+) {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  background: transparent !important;
+}
+
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  [data-mobile-panel-surface="true"]
+) {
+  max-height: min(84dvh, calc(100dvh - env(safe-area-inset-top, 0px) - 18px)) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-active-perks-sheet, .dp-mobile-tab-drawer, .dp-bottom-sheet) :is(h1, [role="heading"][aria-level="1"]) {
+  font-size: clamp(26px, 5vw, 34px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.032em !important;
+}
+
+html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-active-perks-sheet, .dp-mobile-tab-drawer, .dp-bottom-sheet) :is(h2, h3) {
+  font-size: clamp(18px, 4vw, 24px) !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-active-perks-sheet, .dp-mobile-tab-drawer, .dp-bottom-sheet) :is(
+  button, a[role="button"], .dp-panel-action, .dp-entity-action, .dp-map-panel-button
+) {
+  min-height: var(--dp-release-control-height) !important;
+  padding-block: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root :is([role="tablist"], .dp-workspace-experiences__tabs, .dp-filter-tabs, .dp-segmented-control) :is(
+  button, a[role="tab"], [role="tab"]
+) {
+  min-height: 44px !important;
+  height: auto !important;
+  padding-block: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  text-transform: none !important;
+}
+
+/* Partner home and destination pages share one restrained scale. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-content h1,
+  .dp-workspace-experiences__header h1,
+  .dp-operating-header h1,
+  .dp-workspace-destination-hero h1
+) {
+  max-width: 720px !important;
+  font-size: var(--dp-release-page-title) !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-content h2, .dp-workspace-content h3, .dp-native-mobile-section h2
+) {
+  font-size: var(--dp-release-section-title) !important;
+  line-height: 1.16 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-hero-value {
+  margin-top: 22px !important;
+  font-size: clamp(40px, 11vw, 46px) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.045em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.09) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-actions > a {
+  display: flex !important;
+  min-height: 58px !important;
+  height: 58px !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 6px 3px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-actions > a:nth-child(3n) {
+  border-right: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-actions svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Pricing is a continuous decision matrix, not stacked cards. */
+html body #root#root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-calculator,
+  .dp-pricing-calculator-controls,
+  .dp-pricing-summary,
+  .dp-pricing-selected-plan,
+  fieldset.dp-pricing-decision
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid > button {
+  min-height: 56px !important;
+  height: auto !important;
+  padding: 7px 24px 7px 0 !important;
+}
+
+html body #root#root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-plan-selector > button,
+  .dp-pricing-upgrade-groups > button,
+  .dp-pricing-upgrade-list > button,
+  .dp-pricing-plan-comparison > button
+) {
+  min-height: 52px !important;
+  height: auto !important;
+  padding-block: 7px !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-list > button strong {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-list > button small {
+  margin-top: 2px !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+
+html body #root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector {
+  padding: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+/* Resident home rows stay compact while retaining readable, 44px targets. */
+html body #root#root#root .dp-resident-access-page :is(
+  .dp-resident-benefit-list > a,
+  .dp-resident-process-list > li,
+  .dp-resident-access-paths > button
+) {
+  min-height: 58px !important;
+  padding-block: 6px !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a {
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) 18px !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a > svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a > span {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a strong {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root .dp-resident-access-page .dp-resident-benefit-list > a small {
+  margin-top: 2px !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-entity-rail a {
+  min-height: 64px !important;
+  padding-block: 8px !important;
+}
+
+html body #root#root#root .dp-resident-access-page :is(h1, .dp-resident-access-hero h1) {
+  font-size: var(--dp-release-page-title) !important;
+  line-height: 1.06 !important;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --dp-release-page-title: clamp(28px, 8.2vw, 34px);
+    --dp-release-section-title: clamp(19px, 5.6vw, 24px);
+  }
+
+  html body #root :is(
+    .dp-panel-shell,
+    .dp-map-drawer-shell,
+    .dp-map-detail-sheet,
+    .dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-mobile-tab-drawer,
+    .dp-bottom-sheet,
+    .dp-active-perks-sheet,
+    .dp-pass-panel,
+    [data-mobile-panel-surface="true"]
+  ) {
+    right: 0 !important;
+    left: 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    margin: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root :is(.dp-partner-workspace-page, .dp-resident-home, .dp-resident-access-page, .dp-pricing-page, .dp-map-page) * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

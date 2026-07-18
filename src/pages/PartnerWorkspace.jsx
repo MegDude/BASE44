@@ -1598,7 +1598,6 @@ function NativeMobileWorkspaceDashboard({
             width={heroMedia.width}
             height={heroMedia.height}
             loading="eager"
-            fetchPriority="high"
             decoding="async"
             style={{ "--dp-workspace-hero-position": heroMedia.position }}
           />
@@ -1797,7 +1796,6 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
             width={heroMedia.width}
             height={heroMedia.height}
             loading="eager"
-            fetchPriority="high"
             decoding="async"
             style={{ "--dp-workspace-hero-position": heroMedia.position }}
           />

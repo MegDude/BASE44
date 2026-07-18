@@ -30,6 +30,7 @@ const governedPostCanonicalLocks = [
   'import "@/styles/search-intent-console-regression-lock.css"',
   'import "@/styles/accessibility-pin-art-final.css"',
   'import "@/styles/partner-workspace-deep-polish-final.css"',
+  'import "@/styles/interface-density-regression-lock.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);

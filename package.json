@@ -67,7 +67,8 @@
     "inventory:partner-content": "node scripts/generate-partner-content-inventory.mjs",
     "inventory:partner-content:ci": "DP_CANONICAL_BASE_URL=${DP_CANONICAL_BASE_URL:-https://base-44-downtown-perks-live.vercel.app} node scripts/generate-partner-content-inventory.mjs",
     "test:partner-content-inventory": "node scripts/test-partner-content-inventory.mjs",
-    "test:workspace-deep-polish": "node scripts/test-partner-workspace-deep-polish.mjs"
+    "test:workspace-deep-polish": "node scripts/test-partner-workspace-deep-polish.mjs",
+    "test:interface-density": "node scripts/test-interface-density-regressions.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

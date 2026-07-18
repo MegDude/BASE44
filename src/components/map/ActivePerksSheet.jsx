@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { Star, X } from "lucide-react";
 
 const HEIGHT_BY_STATE = {
-  collapsed: "112px",
-  medium: "50dvh",
-  expanded: "calc(100dvh - var(--dp-map-native-bottom-nav-height) - var(--dp-safe-bottom) - 12px)",
+  collapsed: "104px",
+  medium: "46dvh",
+  expanded: "min(82dvh, calc(100dvh - var(--dp-map-native-bottom-nav-height) - var(--dp-safe-bottom) - 18px))",
 };
 
 function formatExpiry(value) {
@@ -107,7 +107,7 @@ export default function ActivePerksSheet({
         "max-width": isMobile ? "100dvw" : "760px",
         height: HEIGHT_BY_STATE[drawerState],
         margin: "0 auto",
-        "border-radius": isMobile ? "18px 18px 0 0" : "18px 18px 0 0",
+        "border-radius": "0",
       };
       Object.entries(properties).forEach(([property, value]) => node.style.setProperty(property, value, "important"));
     };

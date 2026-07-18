@@ -9,7 +9,7 @@ assert.match(css, /dp-native-mobile-attention h2[\s\S]*?-webkit-text-fill-color:
 assert.match(css, /dp-native-mobile-attention > span[\s\S]*?-webkit-text-fill-color:\s*rgba\(255, 255, 255, 0\.86\)/, "attention supporting copy must remain readable after global text rules");
 assert.match(css, /dp-live-pin__premium-art[\s\S]*?border:\s*0\s*!important[\s\S]*?background:\s*transparent\s*!important/, "uploaded marker artwork must render without a card, circle, or badge wrapper");
 assert.doesNotMatch(workspace, /activity\.map\([\s\S]{0,300}<i\b/, "activity rows must not use unexplained decorative dots");
-assert.match(workspace, /activity\.map\(\(\[Icon, title, description, time\]\)/, "activity rows must render meaningful icons");
+assert.match(workspace, /activity\.map\(\(\[Icon, title, description, (?:time|status)\]\)/, "activity rows must render meaningful icons");
 
 const assets = [
   "inkind.png",

@@ -107,6 +107,7 @@ import "@/styles/map-marker-governance-final.css"
 import "@/styles/search-intent-console-regression-lock.css"
 import "@/styles/accessibility-pin-art-final.css"
 import "@/styles/partner-workspace-deep-polish-final.css"
+import "@/styles/interface-density-regression-lock.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
