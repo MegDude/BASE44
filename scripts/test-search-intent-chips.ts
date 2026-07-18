@@ -105,11 +105,14 @@ async function runMobileChecks(browser) {
 }
 
 async function runPartnerChecks(browser) {
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   await page.goto(partnerRoute, { waitUntil: "domcontentloaded", timeout: 30_000 });
   await ensureConsole(page);
 
   const more = await chip(page, "more");
+  const partnerPrimaryOrder = await page.locator(".dp-search-intent-primary-rail [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));
+  expect(partnerPrimaryOrder.indexOf("more")).toBe(2);
+  await expect(more).toBeInViewport();
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
   const partnerIntentIds = await page.locator("#dp-search-more-filter-panel [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));

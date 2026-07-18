@@ -13322,7 +13322,12 @@ function MapSearchConsole({
     const state = active ? "Pressed" : "Not pressed";
     return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
   };
-  const moreToggleInsertIndex = intentRail.length - 1;
+  // Preserve the original partner console hierarchy from the migrated map:
+  // two immediate decisions, then the canonical More control that reveals the
+  // secondary rail. Resident discovery keeps the full primary rail order.
+  const moreToggleInsertIndex = mode === "partner"
+    ? Math.min(1, Math.max(0, intentRail.length - 1))
+    : intentRail.length - 1;
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
     window.dispatchEvent(new CustomEvent("dp:map-filter-rail", {
