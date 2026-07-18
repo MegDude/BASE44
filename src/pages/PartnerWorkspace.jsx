@@ -1500,20 +1500,20 @@ function NativeMobileWorkspaceDashboard({
       ];
   const activity = isLarryAndGuy
     ? [
-        ["ATX Cocina", "Listing opened from the dining route", "5 min ago"],
-        ["Dining passport", "Campaign media approved", "17 min ago"],
-        ["Restaurant François", "Perk saved by a resident", "Today"],
+        [MapPin, "ATX Cocina", "Listing opened from the dining route", "5 min ago"],
+        [Check, "Dining passport", "Campaign media approved", "17 min ago"],
+        [Star, "Restaurant François", "Perk saved by a resident", "Today"],
       ]
     : isLegends
       ? [
-          ["The Shore", "Property comparison opened", "12 min ago"],
-          ["Search report", "195 visits recorded", "Today"],
-          ["Relocation guide", "Recommended as the next content action", "Today"],
+          [MapPin, "The Shore", "Property comparison opened", "12 min ago"],
+          [LayoutDashboard, "Search report", "195 visits recorded", "Today"],
+          [Navigation, "Relocation guide", "Recommended as the next content action", "Today"],
         ]
       : [
-          [organization?.name || "Workspace", "Map listing viewed", "12 min ago"],
-          ["Resident offer", "Saved from the map", "Today"],
-          ["Monthly report", "Ready to review", "Today"],
+          [MapPin, organization?.name || "Workspace", "Map listing viewed", "12 min ago"],
+          [Star, "Resident offer", "Saved from the map", "Today"],
+          [LayoutDashboard, "Monthly report", "Ready to review", "Today"],
         ];
   const quickActions = [
     [Plus, "Campaign", "/partner-workspace/campaigns"],
@@ -1586,7 +1586,7 @@ function NativeMobileWorkspaceDashboard({
       <section className="dp-native-mobile-section" aria-labelledby="mobile-activity-title">
         <header><h2 id="mobile-activity-title">What happened</h2></header>
         <div className="dp-native-mobile-activity">
-          {activity.map(([title, description, time]) => <article key={`${title}-${description}`}><i aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{time}</time></div></article>)}
+          {activity.map(([Icon, title, description, time]) => <article key={`${title}-${description}`}><Icon aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{time}</time></div></article>)}
         </div>
       </section>
 

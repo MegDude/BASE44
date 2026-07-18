@@ -3846,19 +3846,23 @@ function svgMarkerDataUrl(svg) {
 
 function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
-  const isInKind = isInKindEntity(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
-  if (isLegends || isInKind) {
-    const markerWidth = isInKind ? Math.round(size * 1.5) : size;
-    const markerHeight = isInKind ? Math.round(size * 1.12) : size;
+  const pin = resolveEntityPin(place);
+  if (pin.asset) {
+    const isPremiumPinArt = pin.asset.includes("/pins/downtown-perks/partners/");
+    const markerWidth = isPremiumPinArt
+      ? Math.max(selected ? 48 : 42, Math.round(size * 1.2))
+      : size;
+    const markerHeight = isPremiumPinArt
+      ? Math.round(markerWidth * 1.32)
+      : size;
     return {
-      url: isInKind ? "/pins/brands/inkind-map-logo.png" : LEGENDS_PIN_LOGO,
+      url: isLegends ? LEGENDS_PIN_LOGO : pin.asset,
       scaledSize: new maps.Size(markerWidth, markerHeight),
-      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
+      anchor: new maps.Point(markerWidth / 2, isPremiumPinArt ? markerHeight : markerHeight / 2),
     };
   }
-  const pin = resolveEntityPin(place);
   const paths = mapIconSvgInner(pin.glyph);
   const iconColor = selected ? "#B8963E" : "#0B1F33";
   const svg = `

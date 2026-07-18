@@ -19,7 +19,11 @@ const legacyMarkerSource = mapSource.slice(
   mapSource.indexOf("function legacyDowntownClusterIcon"),
 );
 assert.doesNotMatch(legacyMarkerSource, /<circle\b/, "legacy listing pins must not restore a circular plate or number badge");
-assert.match(legacyMarkerSource, /inkind-map-logo\.png/, "legacy inKind markers must render the approved direct logo asset");
-assert.match(iconRegistry, /INKIND_PIN_ASSET = "\/pins\/brands\/inkind-map-logo\.png"/, "all map adapters must share the polished inKind logo asset");
+assert.match(legacyMarkerSource, /pin\.asset/, "legacy markers must render canonical uploaded pin artwork");
+assert.match(iconRegistry, /INKIND_PIN_ASSET = `\$\{PARTNER_PIN_ROOT\}\/inkind\.png`/, "all map adapters must share the approved inKind pin artwork");
+assert.match(iconRegistry, /COFFEE_PIN_ASSET/, "coffee entities must use the uploaded coffee pin artwork");
+assert.match(iconRegistry, /BEER_PIN_ASSET/, "drinks entities must use the uploaded beer pin artwork");
+assert.match(iconRegistry, /CONDO_BUILDING_PIN_ASSET/, "residential entities must use the uploaded building pin artwork");
+assert.match(iconRegistry, /RIVIAN_PIN_ASSET/, "Rivian entities must use the uploaded Rivian pin artwork");
 
 console.log("Borderless map marker checks passed.");
