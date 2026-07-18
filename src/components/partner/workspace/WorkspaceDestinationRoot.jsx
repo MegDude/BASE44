@@ -50,7 +50,7 @@ const DESTINATIONS = {
     next: { id: "analytics", title: "Review results", description: "See the latest activity and the next decision it supports." },
     groups: [
       { title: "Results", ids: ["reports", "audience"] },
-      { title: "Discovery", ids: ["seo", "map_activity"] },
+      { title: "Discovery", ids: ["research", "seo", "map_activity"] },
     ],
   },
   workspace: {
@@ -78,6 +78,7 @@ const MODULE_ICONS = {
   analytics: BarChart3,
   reports: FileText,
   audience: Users,
+  research: FileText,
   seo: Search,
   map_activity: MapPinned,
   profile: UserRound,

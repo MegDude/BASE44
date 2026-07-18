@@ -222,6 +222,17 @@ function localApiRoutes() {
 
       runLocalHandler(req, res, "./api/production-readiness.js", logger, "Local production readiness handler failed");
     });
+
+    middlewares.use("/api/research-intelligence/summary", async (req, res) => {
+      if (req.method !== "GET") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/research-intelligence/summary.js", logger, "Local research coverage request failed");
+    });
   };
 
   return {
