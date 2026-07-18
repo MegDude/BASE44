@@ -8,9 +8,9 @@ import L from 'leaflet';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 
 const SIZES = {
-  default: 34,
-  building: 36,
-  selected: 1.25, // scale multiplier
+  default: 32,
+  building: 32,
+  selected: 1,
 };
 
 /**
@@ -27,8 +27,8 @@ const PIN_SVG_STYLE = `
 `;
 
 const PIN_SVG_STYLE_LG = `
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   display: block;
   flex-shrink: 0;
   stroke: #BFA46A;
@@ -48,7 +48,7 @@ function styledGlyph(pin, large = false) {
   if (pin.asset) {
     const premium = isPremiumPinAsset(pin.asset);
     const logoClass = premium ? 'dp-live-pin__premium-art' : 'dp-live-pin__legends-logo';
-    return `<img class="dp-pin-logo ${logoClass}" src="${pin.asset}" alt="" aria-hidden="true" style="width:${premium ? (large ? 50 : 44) : (large ? 22 : 19)}px;height:${premium ? (large ? 66 : 58) : (large ? 22 : 19)}px;display:block;object-fit:contain;" />`;
+    return `<img class="dp-pin-logo ${logoClass}" src="${pin.asset}" alt="" aria-hidden="true" style="width:${premium ? 32 : (large ? 22 : 19)}px;height:${premium ? 32 : (large ? 22 : 19)}px;display:block;object-fit:contain;" />`;
   }
 
   // Replace the opening <svg tag to add inline style
@@ -121,19 +121,12 @@ export function createSelectedMarker(entity) {
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transform: translateY(-1px);
-      animation: dpPinSelect 0.2s cubic-bezier(0.22,1,0.36,1);
+      transform: none;
       overflow: hidden;
       color: #BFA46A;
     ">
       ${glyph}
     </div>
-    <style>
-      @keyframes dpPinSelect {
-        from { transform: scale(0.85) translateY(0); opacity: 0.6; }
-        to   { transform: scale(1) translateY(-1px); opacity: 1; }
-      }
-    </style>
   `;
 
   return L.divIcon({
@@ -190,15 +183,15 @@ export function createPillMarker(entity) {
 }
 
 function createArtworkMarker(pin, selected) {
-  const width = selected ? 50 : 44;
-  const height = selected ? 66 : 58;
-  const html = `<div class="dp-marker-factory-pin dp-marker-factory-pin--art${selected ? ' is-selected' : ''}" style="width:${width}px;height:${height}px;display:grid;place-items:center;overflow:visible;cursor:pointer;${selected ? 'transform:translateY(-1px);' : ''}">${styledGlyph(pin, selected)}</div>`;
+  const width = 32;
+  const height = 32;
+  const html = `<div class="dp-marker-factory-pin dp-marker-factory-pin--art${selected ? ' is-selected' : ''}" style="width:${width}px;height:${height}px;display:grid;place-items:center;overflow:visible;cursor:pointer;transform:none;">${styledGlyph(pin, selected)}</div>`;
 
   return L.divIcon({
     className: 'dp-leaflet-premium-pin',
     html,
     iconSize: [width, height],
-    iconAnchor: [width / 2, height],
+    iconAnchor: [width / 2, height / 2],
     popupAnchor: [0, -(height / 2 + 4)],
   });
 }

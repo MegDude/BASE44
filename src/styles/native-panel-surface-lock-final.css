@@ -314,11 +314,11 @@
 
 /* Final mobile map-pin contract: one clean border, readable icons, coordinate-stable markers. */
 html body #root#root .dp-map-page.dp-map-page.dp-map-page {
-  --dp-mobile-pin-size: 30px;
-  --dp-mobile-perk-pin-size: 28px;
-  --dp-mobile-selected-pin-size: 34px;
-  --dp-mobile-pin-icon-size: 14px;
-  --dp-mobile-perk-pin-icon-size: 13px;
+  --dp-mobile-pin-size: 32px;
+  --dp-mobile-perk-pin-size: 32px;
+  --dp-mobile-selected-pin-size: 32px;
+  --dp-mobile-pin-icon-size: 15px;
+  --dp-mobile-perk-pin-icon-size: 15px;
   --dp-mobile-pin-bg: #0B1F33;
   --dp-mobile-pin-fg: #C8A96A;
 }
@@ -618,11 +618,11 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 
 @media (max-width: 430px) {
   html body #root#root .dp-map-page.dp-map-page.dp-map-page {
-    --dp-mobile-pin-size: 29px;
-    --dp-mobile-perk-pin-size: 27px;
-    --dp-mobile-selected-pin-size: 33px;
-    --dp-mobile-pin-icon-size: 13px;
-    --dp-mobile-perk-pin-icon-size: 12px;
+    --dp-mobile-pin-size: 32px;
+    --dp-mobile-perk-pin-size: 32px;
+    --dp-mobile-selected-pin-size: 32px;
+    --dp-mobile-pin-icon-size: 15px;
+    --dp-mobile-perk-pin-icon-size: 15px;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page .dp-map-top-nav.has-back.has-back .dp-map-search-anchor.dp-map-search-anchor section.dp-search-intent-console.dp-search-intent-console {
