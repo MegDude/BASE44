@@ -646,13 +646,6 @@ function PartnerWorkspaceContent() {
     setMobileNavOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
-    if (!activeItem || location.pathname === activeItem.href || location.pathname.startsWith(`${activeItem.href}/`)) return;
-    if (!location.pathname.startsWith("/partner-workspace")) return;
-    navigate(`${activeItem.href}${location.search}${location.hash}`, { replace: true });
-  }, [tab, location.pathname, location.search, location.hash, navigate]);
-
   function handleSignIn() {
     if (!accountAccessEnabled) return;
     navigate("/partners/sign-in");
@@ -1474,6 +1467,165 @@ function WorkspaceAnalyticsSnapshotGraphs({ report }) {
   );
 }
 
+function NativeMobileWorkspaceDashboard({
+  organization,
+  organizationId,
+  ownedEntities,
+  activePerks,
+  upcomingEvents,
+  isLegends,
+  isLarryAndGuy,
+  nextAction,
+  report,
+  workspaceMenuOpen,
+  setWorkspaceMenuOpen,
+  workspaceSearch,
+  setWorkspaceSearch,
+  filteredOrganizations,
+  selectWorkspace,
+}) {
+  const workspaceHref = (path) => `${path}?organizationId=${encodeURIComponent(organizationId)}`;
+  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : isLarryAndGuy ? "128" : "142";
+  const heroLabel = isLegends ? "Search visits this month" : "Residents reached today";
+  const kpis = isLegends
+    ? [
+        [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "+12%"],
+        [formatWorkspaceNumber(report.summary.organicClicks), "Search visits", "+8%"],
+        [formatWorkspaceNumber(report.summary.nonBrandedTop10KeywordCount), "Top results", "+3%"],
+      ]
+    : [
+        ["426", "Map views", "+12%"],
+        ["67", "QR scans", "+8%"],
+        ["19", "Redemptions", "+3%"],
+      ];
+  const activity = isLarryAndGuy
+    ? [
+        ["ATX Cocina", "Listing opened from the dining route", "5 min ago"],
+        ["Dining passport", "Campaign media approved", "17 min ago"],
+        ["Restaurant François", "Perk saved by a resident", "Today"],
+      ]
+    : isLegends
+      ? [
+          ["The Shore", "Property comparison opened", "12 min ago"],
+          ["Search report", "195 visits recorded", "Today"],
+          ["Relocation guide", "Recommended as the next content action", "Today"],
+        ]
+      : [
+          [organization?.name || "Workspace", "Map listing viewed", "12 min ago"],
+          ["Resident offer", "Saved from the map", "Today"],
+          ["Monthly report", "Ready to review", "Today"],
+        ];
+  const quickActions = [
+    [Plus, "Campaign", "/partner-workspace/campaigns"],
+    [MapPin, "Map", "/partner-workspace/map"],
+    [Star, "Offer", "/partner-workspace/offers"],
+    [LayoutDashboard, "Report", "/partner-workspace/reports"],
+    [Users, "Audience", "/partner-workspace/audience"],
+    [Calendar, "Event", "/partner-workspace/events"],
+  ];
+  const campaign = isLarryAndGuy
+    ? {
+        image: "/images/workspace-media/dining-passport.avif",
+        alt: "Friends sharing dinner during a downtown dining passport outing.",
+        title: "Larry & Guy dining passport",
+        status: "Ready to launch",
+        metrics: [["Views", "426"], ["QR", "67"], ["Redeemed", "19"]],
+      }
+    : {
+        image: "/images/workspace-media/listing-preview.avif",
+        alt: "Downtown Austin residential listing prepared for a map preview.",
+        title: isLegends ? "Downtown property comparison" : `${organization?.name || "Partner"} map campaign`,
+        status: isLegends ? "Recommended" : "Live",
+        metrics: [["Views", isLegends ? "4,349" : "426"], ["Visits", isLegends ? "195" : "67"], ["Saved", isLegends ? "34" : "19"]],
+      };
+  const insight = isLarryAndGuy
+    ? "Residents who saved a dining perk were 38% more likely to open another restaurant later that evening."
+    : isLegends
+      ? "Non-branded searches are already finding Legends listings. A side-by-side property guide is the clearest next step."
+      : "The strongest map activity is coming from people who open a place and then ask for directions within the same visit.";
+
+  return (
+    <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
+      <div className="dp-native-mobile-workspace-switcher">
+        <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen} aria-label={`Switch workspace. Current workspace: ${organization?.name || "Partner workspace"}`}>
+          <span><small>Workspace</small><strong>{organization?.name || "Partner workspace"}</strong></span>
+          <ChevronDown aria-hidden="true" />
+        </button>
+        {workspaceMenuOpen ? (
+          <div className="dp-native-mobile-workspace-menu" role="dialog" aria-label="Switch workspace">
+            <header><strong>Switch workspace</strong><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /></button></header>
+            <label><Search aria-hidden="true" /><input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" /></label>
+            <div>{filteredOrganizations.map((item) => <button key={item.id} type="button" aria-current={item.id === organizationId ? "true" : undefined} onClick={() => selectWorkspace(item.id)}><span><strong>{item.name}</strong><small>{friendlyRoleLabel(item.role)}</small></span>{item.id === organizationId ? <Check aria-hidden="true" /> : null}</button>)}</div>
+          </div>
+        ) : null}
+      </div>
+      <section className="dp-native-mobile-hero">
+        <p className="dp-native-mobile-kicker">Good morning</p>
+        <h1>{organization?.name || "Partner workspace"}</h1>
+        <div className="dp-native-mobile-meta"><span>Updated 2 min ago</span><span>Austin · Downtown</span></div>
+        <strong className="dp-native-mobile-hero-value">{heroMetric}</strong>
+        <span className="dp-native-mobile-hero-label">{heroLabel}</span>
+        <Link className="dp-native-mobile-primary" to={workspaceHref("/partner-workspace/campaigns")}>Create campaign</Link>
+        <Link className="dp-native-mobile-secondary" to={workspaceHref("/partner-workspace/analytics")}>View analytics</Link>
+      </section>
+
+      <section className="dp-native-mobile-section" aria-labelledby="mobile-results-title">
+        <header><h2 id="mobile-results-title">Today’s results</h2><span>Swipe to review</span></header>
+        <div className="dp-native-mobile-kpi-rail">
+          {kpis.map(([value, label, change]) => <article key={label}><strong>{value}</strong><span>{label}</span><em>{change}</em></article>)}
+        </div>
+      </section>
+
+      <section className="dp-native-mobile-attention" aria-labelledby="mobile-attention-title">
+        <p>Needs attention</p>
+        <h2 id="mobile-attention-title">{nextAction.title}</h2>
+        <span>{nextAction.description}</span>
+        <Link to={workspaceHref(nextAction.href)}>{nextAction.label}<ArrowRight aria-hidden="true" /></Link>
+      </section>
+
+      <section className="dp-native-mobile-section" aria-labelledby="mobile-activity-title">
+        <header><h2 id="mobile-activity-title">What happened</h2></header>
+        <div className="dp-native-mobile-activity">
+          {activity.map(([title, description, time]) => <article key={`${title}-${description}`}><i aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{time}</time></div></article>)}
+        </div>
+      </section>
+
+      <section className="dp-native-mobile-analytics" aria-labelledby="mobile-analytics-title">
+        <div><p>Visitors</p><strong id="mobile-analytics-title">{isLegends ? "2,487" : "426"}</strong><span>Last 30 days</span></div>
+        <div className="dp-native-mobile-sparkline" role="img" aria-label="Visitor activity increased over the last 30 days">
+          {[34, 48, 42, 67, 58, 76, 72, 88, 81, 100].map((height, index) => <i key={index} style={{ "--dp-bar-height": `${height}%` }} />)}
+        </div>
+      </section>
+
+      <section className="dp-native-mobile-section" aria-labelledby="mobile-actions-title">
+        <header><h2 id="mobile-actions-title">What do you want to do?</h2></header>
+        <div className="dp-native-mobile-actions">
+          {quickActions.map(([Icon, label, href]) => <Link key={label} to={workspaceHref(href)}><Icon aria-hidden="true" /><span>{label}</span></Link>)}
+        </div>
+      </section>
+
+      <section className="dp-native-mobile-section" aria-labelledby="mobile-campaign-title">
+        <header><h2 id="mobile-campaign-title">Current campaign</h2></header>
+        <article className="dp-native-mobile-campaign">
+          <img src={campaign.image} alt={campaign.alt} loading="lazy" decoding="async" />
+          <div className="dp-native-mobile-campaign-copy"><span>{campaign.status}</span><h3>{campaign.title}</h3></div>
+          <div className="dp-native-mobile-campaign-metrics">{campaign.metrics.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
+        </article>
+      </section>
+
+      <section className="dp-native-mobile-insight" aria-labelledby="mobile-insight-title">
+        <p>Insight</p>
+        <h2 id="mobile-insight-title">{insight}</h2>
+        <Link to={workspaceHref("/partner-workspace/assistant")}>Ask the Map<ArrowRight aria-hidden="true" /></Link>
+      </section>
+
+      {!ownedEntities.length && !activePerks.length && !upcomingEvents.length ? (
+        <section className="dp-native-mobile-empty"><h2>Nothing is running yet.</h2><p>Publish one useful offer so residents have a clear reason to visit.</p><Link to={workspaceHref("/partner-workspace/offers")}>Create your first offer</Link></section>
+      ) : null}
+    </div>
+  );
+}
+
 function WorkspaceOverview({ user, setTab, activation = null }) {
   const navigate = useNavigate();
   const [perks, setPerks] = useState([]);
@@ -1568,6 +1720,24 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
 
   return (
     <motion.div className="dp-operating-overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
+      <NativeMobileWorkspaceDashboard
+        organization={selectedOrganization}
+        organizationId={selectedOrganizationId}
+        ownedEntities={ownedEntities}
+        activePerks={activePerks}
+        upcomingEvents={upcomingEvents}
+        isLegends={isLegends}
+        isLarryAndGuy={isLarryAndGuy}
+        nextAction={nextAction}
+        report={legendsSeoReport}
+        workspaceMenuOpen={workspaceMenuOpen}
+        setWorkspaceMenuOpen={setWorkspaceMenuOpen}
+        workspaceSearch={workspaceSearch}
+        setWorkspaceSearch={setWorkspaceSearch}
+        filteredOrganizations={filteredOrganizations}
+        selectWorkspace={selectWorkspace}
+      />
+      <div className="dp-standard-workspace-overview">
       <section className="dp-operating-header dp-os-header">
         <div>
           <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
@@ -1689,6 +1859,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
       </section>
 
       <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={`/partner-workspace/analytics?workspace=${encodeURIComponent(selectedOrganizationId)}&range=30d&comparison=previous_period&view=overview`}>Open Analytics <ArrowRight aria-hidden="true" /></Link></section>
+      </div>
     </motion.div>
   );
 }
