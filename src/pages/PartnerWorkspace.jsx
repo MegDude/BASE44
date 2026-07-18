@@ -13,6 +13,7 @@ import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunch
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
+import { getPartnerWorkspaceHeroMedia } from "@/data/partnerWorkspaceHeroMedia";
 import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry";
 import {
   demoOrganizations,
@@ -1499,6 +1500,7 @@ function NativeMobileWorkspaceDashboard({
   setWorkspaceSearch,
   filteredOrganizations,
   selectWorkspace,
+  heroMedia,
 }) {
   const workspaceHref = (path) => `${path}?organizationId=${encodeURIComponent(organizationId)}`;
   const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : isLarryAndGuy ? "128" : "142";
@@ -1576,6 +1578,19 @@ function NativeMobileWorkspaceDashboard({
         ) : null}
       </div>
       <section className="dp-native-mobile-hero">
+        <figure className="dp-workspace-home-hero-media">
+          <img
+            src={heroMedia.src}
+            alt={heroMedia.alt}
+            width={heroMedia.width}
+            height={heroMedia.height}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            style={{ "--dp-workspace-hero-position": heroMedia.position }}
+          />
+          <figcaption>{heroMedia.caption}</figcaption>
+        </figure>
         <p className="dp-native-mobile-kicker">Good morning</p>
         <h1>{organization?.name || "Partner workspace"}</h1>
         <div className="dp-native-mobile-meta"><span>Updated 2 min ago</span><span>Austin · Downtown</span></div>
@@ -1672,6 +1687,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
   const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
+  const heroMedia = getPartnerWorkspaceHeroMedia(selectedOrganization?.id);
   const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
@@ -1752,15 +1768,31 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         setWorkspaceSearch={setWorkspaceSearch}
         filteredOrganizations={filteredOrganizations}
         selectWorkspace={selectWorkspace}
+        heroMedia={heroMedia}
       />
       <div className="dp-standard-workspace-overview">
       <section className="dp-operating-header dp-os-header">
-        <div>
-          <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
-          <h1>See what needs attention and what is working.</h1>
-          <p>Review the places connected to this workspace, publish the next useful update, and see the results that should guide the next decision.</p>
+        <div className="dp-workspace-home-hero-copy">
+          <div>
+            <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
+            <h1>See what needs attention and what is working.</h1>
+            <p>Review the places connected to this workspace, publish the next useful update, and see the results that should guide the next decision.</p>
+          </div>
+          <span className="dp-operating-status"><i aria-hidden="true" />Workspace active · {selectedOrganization?.plan || activation?.plan || "Enterprise"}</span>
         </div>
-        <span className="dp-operating-status"><i aria-hidden="true" />Workspace active · {selectedOrganization?.plan || activation?.plan || "Enterprise"}</span>
+        <figure className="dp-workspace-home-hero-media">
+          <img
+            src={heroMedia.src}
+            alt={heroMedia.alt}
+            width={heroMedia.width}
+            height={heroMedia.height}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            style={{ "--dp-workspace-hero-position": heroMedia.position }}
+          />
+          <figcaption>{heroMedia.caption}</figcaption>
+        </figure>
       </section>
 
       <section className="dp-os-next-action" aria-labelledby="workspace-next-action-title">

@@ -1,0 +1,95 @@
+/* Partner home hero: contextual editorial media on every configured workspace. */
+html body #root#root#root .dp-partner-workspace-page .dp-os-header {
+  display: grid !important;
+  grid-template-columns: minmax(0, .92fr) minmax(360px, 1.08fr) !important;
+  align-items: stretch !important;
+  gap: clamp(24px, 4vw, 48px) !important;
+  padding: 0 0 28px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-header > .dp-workspace-home-hero-copy {
+  display: flex !important;
+  max-width: 620px !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 28px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-os-header .dp-workspace-home-hero-copy > div > p:last-child {
+  max-width: 590px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-workspace-home-hero-media {
+  display: grid !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-workspace-home-hero-media img {
+  display: block !important;
+  width: 100% !important;
+  height: clamp(280px, 31vw, 380px) !important;
+  object-fit: cover !important;
+  object-position: var(--dp-workspace-hero-position, center) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-workspace-home-hero-media figcaption {
+  margin: 0 !important;
+  padding: 8px 0 0 !important;
+  color: #68737e !important;
+  font-size: 12px !important;
+  font-weight: 560 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  text-align: left !important;
+  text-transform: none !important;
+}
+
+@media (max-width: 920px) {
+  html body #root#root#root .dp-partner-workspace-page .dp-os-header {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-os-header > .dp-workspace-home-hero-copy {
+    max-width: 720px !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-workspace-home-hero-media img {
+    height: clamp(260px, 48vw, 410px) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-hero {
+    padding: 0 6px 4px !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-hero > .dp-workspace-home-hero-media {
+    margin: 0 -6px 20px !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-hero > .dp-workspace-home-hero-media img {
+    height: clamp(190px, 58vw, 240px) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-native-mobile-hero > .dp-workspace-home-hero-media figcaption {
+    padding: 7px 6px 0 !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root#root .dp-partner-workspace-page .dp-workspace-home-hero-media img {
+    animation: none !important;
+    transition: none !important;
+  }
+}
