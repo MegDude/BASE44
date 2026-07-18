@@ -88,7 +88,7 @@ import {
   DPPricingRail,
   quickActionsByEntityType,
 } from "@/components/downtown-perks/primitives";
-import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader";
+import { getGoogleMapsConfigError, getGoogleMapsDiagnostics, getGoogleMapsMapId, loadGoogleMaps } from "@/lib/googleMapsLoader";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { clearGoogleMapArtifacts, createDowntownGoogleMap, removeGoogleMapMarker } from "@/map/MapProvider";
 import { createDowntownMarker } from "@/map/MarkerManager";
@@ -335,6 +335,7 @@ const MAP_NATIVE_RESIDENT_PANELS = ["info", "perks", "events", "saved"];
 const MAP_COLLECTION_FILTER_ALIASES = {
   legends: "Legends",
   inkind: "inKind",
+  "events-nearby": "Events",
   "daa-art-walk": "Civic",
   "waterloo-greenway": "Civic",
   rainey: "Rainey",
@@ -1802,12 +1803,28 @@ function getLayerFilter(layer) {
   return MAP_LAYER_FILTER_ALIASES[key] || "";
 }
 
+function getMapResultNoun(activeFilter = "All", count = 0) {
+  if (activeFilter === "Events") return count === 1 ? "event" : "events";
+  if (activeFilter === "Perks") return count === 1 ? "perk" : "perks";
+  if (activeFilter === "Routes" || activeFilter === "Discovery Trails") return count === 1 ? "route" : "routes";
+  if (activeFilter === "Hotels") return count === 1 ? "hotel" : "hotels";
+  if (activeFilter === "Properties" || activeFilter === "Rentals") return count === 1 ? "property" : "properties";
+  return count === 1 ? "place" : "places";
+}
+
+function getEventRowCategoryLabel(place) {
+  const category = String(place?.category || "").replace(/^Event\s*\/\s*/i, "").trim();
+  if (category && !/^(local|property|brand|perk|access)$/i.test(category)) return `Event / ${category}`;
+  return "Event";
+}
+
 function matchesCollection(place, collection) {
   const key = String(collection || "").trim().toLowerCase();
   if (!key) return true;
   const text = placeText(place);
   if (key === "legends") return isLegendsMapPlace(place) || Boolean(getLegendsListing(place) || getLegendsResidentialProfileForPlace(place)) || isPropertyEntity(place);
   if (key === "inkind") return isInKindEntity(place);
+  if (key === "events-nearby") return isEventEntity(place);
   if (key === "daa-art-walk") return Boolean(getDaaStopFromPlace(place)) || /\b(daa|art walk|public art)\b/i.test(text);
   if (key === "waterloo-greenway") return /\b(waterloo|waller creek|greenway|mood theater|symphony square)\b/i.test(text);
   if (key === "rainey" || key === "rainey-district") return /\brainey\b/i.test(text) || String(place?.district || "").toLowerCase().includes("rainey");
@@ -12492,7 +12509,7 @@ function GoogleMapCanvas({
         try {
           if (!mapRef.current) {
             const initialView = initialViewRef.current;
-            const googleMapId = import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined;
+            const googleMapId = getGoogleMapsMapId() || undefined;
             const mapOptions = {
               center: { lat: initialView.center[0], lng: initialView.center[1] },
               zoom: initialView.zoom,
@@ -12655,7 +12672,7 @@ function GoogleMapCanvas({
     markersRef.current = [];
     const canUseAdvancedMarkers = Boolean(
       maps.marker?.AdvancedMarkerElement &&
-      (import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID),
+      getGoogleMapsMapId(),
     );
 
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
@@ -12799,6 +12816,16 @@ function GoogleMapCanvas({
         <div className="dp-google-map-state dp-google-map-state-error" role="alert">
           <strong>{errorTitle}</strong>
           <span>{errorCopy}</span>
+          {import.meta.env.DEV ? (
+            <small>
+              {(() => {
+                const diagnostics = getGoogleMapsDiagnostics();
+                if (!diagnostics.browserKeyPresent) return "Developer diagnostics: missing Google Maps browser key.";
+                if (!diagnostics.browserKeyLooksValid) return "Developer diagnostics: the configured Google Maps browser key is malformed.";
+                return `Developer diagnostics: script count ${diagnostics.scriptCount}, map ID ${diagnostics.mapIdPresent ? "configured" : "not configured"}.`;
+              })()}
+            </small>
+          ) : null}
         </div>
       )}
     </div>
@@ -12901,7 +12928,7 @@ function SearchIntentConsole({
         ? `${resultCount} scoped result${resultCount === 1 ? "" : "s"}`
         : "";
   const selectedIntentAnnouncement = isSingleSelectSearchIntentFilter(activeFilter)
-    ? `${getCanonicalSearchIntentFilter(activeFilter)} selected. ${resultCount} ${resultCount === 1 ? "place" : "places"} shown.`
+    ? `${getCanonicalSearchIntentFilter(activeFilter)} selected. ${resultCount} ${getMapResultNoun(activeFilter, resultCount)} shown.`
     : "";
   const promptPlaceholders = ["Coffee nearby", "What's happening tonight?", "Walkable dinner spots", "Happy hour near me"];
   useEffect(() => {
@@ -13969,6 +13996,7 @@ export default function MapPage() {
       if (!shouldSurfaceHospitalityChild(place, activeFilter, query)) return false;
       if (isSingleSelectSearchIntentFilter(activeFilter)) {
         if (urlState.collection && getCollectionFilter(urlState.collection) !== activeFilter) return false;
+        if (String(urlState.collection || "").trim().toLowerCase() === "events-nearby" && !matchesCollection(place, urlState.collection)) return false;
       } else if (!matchesCollection(place, urlState.collection)) return false;
       if (!matchesFilter(place, activeFilter, savedIds)) return false;
       if (isCivicLayerIntent && (isCivicEntity(place) || getDaaStopFromPlace(place))) return true;
@@ -17283,7 +17311,7 @@ export default function MapPage() {
                   <p>{residentPanelCopy.eyebrow}</p>
                   <h2>{residentPanelCopy.title}</h2>
                   <span>{residentPanelCopy.body}</span>
-                  <strong>{discoverDisplayPlaces.length} places</strong>
+                  <strong>{discoverDisplayPlaces.length} {getMapResultNoun(activeFilter, discoverDisplayPlaces.length)}</strong>
                 </section>
               )}
               <div
@@ -17329,6 +17357,9 @@ export default function MapPage() {
                   const offerTitle = offer?.title || offer?.offer || place.perk?.offer || place.recommended_perk || place.partner_opportunity || "";
                   const isPerkRow = activeBottomTab === "perks" && hasActivePerkData(place);
                   const perkRedeemed = redeemedPerkIds.has(place.id);
+                  const rowCategory = activeBottomTab === "events" && isEventEntity(place)
+                    ? getEventRowCategoryLabel(place)
+                    : offer?.category || place.category || "Downtown place";
                   return (
                     <article
                       key={place.id}
@@ -17339,7 +17370,7 @@ export default function MapPage() {
                       <PinBadge place={place} selected={place.id === selectedId} />
                       <span className="min-w-0 dp-resident-native-row-body">
                         <button type="button" className="dp-resident-native-row-main" onClick={() => selectPlace(place)} aria-label={`Open ${place.name}`}>
-                          <span className="dp-directory-context block truncate">{offer?.category || place.category || "Downtown place"}</span>
+                          <span className="dp-directory-context block truncate">{rowCategory}</span>
                           <span className="dp-directory-story block truncate">{place.name}</span>
                           <span className="dp-directory-meaning mt-0.5 block">
                             {place.district ? `${place.district} · ` : ""}{offerTitle || "Explore what is useful nearby."}

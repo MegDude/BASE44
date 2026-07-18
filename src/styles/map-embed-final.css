@@ -127,7 +127,6 @@ html body #root .dp-map-page.dp-map-page .dp-map-top-back svg {
 }
 
 html body #root .dp-map-page.dp-map-page[data-top-map-back="true"] :is(
-  .dp-layout-back,
   .dp-panel-toolbar .dp-panel-back,
   .dp-panel-header .dp-panel-back-floating,
   .dp-drawer-back-icon,

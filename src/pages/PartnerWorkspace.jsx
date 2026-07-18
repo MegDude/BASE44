@@ -561,16 +561,6 @@ export default function PartnerWorkspace() {
     navigate("/partners/sign-in");
   }
 
-  function handleWorkspaceBack() {
-    const fallback = location.pathname === "/partner-workspace/overview" ? "/partners" : "/partner-workspace/overview";
-    const routerHistoryIndex = window.history.state?.idx;
-    if (Number.isInteger(routerHistoryIndex) && routerHistoryIndex > 0) {
-      navigate(-1);
-      return;
-    }
-    navigate(fallback);
-  }
-
   function handleWorkspaceSearch() {
     window.dispatchEvent(new Event("dp-open-quick-search"));
   }
@@ -584,7 +574,7 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+    <div data-workspace-view={tab} className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
       <header className="dp-partner-workspace-header">
         <div className="dp-partner-workspace-header-inner">
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
@@ -595,7 +585,6 @@ export default function PartnerWorkspace() {
             <span>Workspace</span>
           </Link>
           <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-            <button type="button" className="dp-partner-workspace-back" onClick={handleWorkspaceBack} aria-label="Go back"><ChevronLeft aria-hidden="true" /><span>Back</span></button>
             <button type="button" onClick={handleWorkspaceSearch} aria-label="Search workspace"><Search aria-hidden="true" /></button>
             {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
@@ -2048,13 +2037,13 @@ function PerksManager({ user }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="flex items-center justify-between mb-6">
+    <motion.div className="dp-workspace-manager dp-workspace-offers-manager" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="dp-workspace-manager-header flex items-center justify-between mb-6">
         <div>
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        <button type="button" onClick={handleAdd} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add perk
         </button>
       </div>
@@ -2072,7 +2061,7 @@ function PerksManager({ user }) {
       ) : (
         <div className="space-y-3">
           {perks.map(p => (
-            <div key={p.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+            <div key={p.id} className="dp-workspace-manager-row flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
               <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${p.status === "active" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : p.status === "paused" ? "bg-[#BFA46A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{p.title}</div>
@@ -2085,10 +2074,10 @@ function PerksManager({ user }) {
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{p.status}</span>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
+                <button type="button" aria-label={`Edit ${p.title}`} onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
-                <button onClick={() => handleDelete(p.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
+                <button type="button" aria-label={`Delete ${p.title}`} onClick={() => handleDelete(p.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -2208,13 +2197,13 @@ function EventsManager({ user }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="flex items-center justify-between mb-6">
+    <motion.div className="dp-workspace-manager dp-workspace-events-manager" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="dp-workspace-manager-header flex items-center justify-between mb-6">
         <div>
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP details.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        <button type="button" onClick={() => { setEditing(null); setShowForm(true); }} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add event
         </button>
       </div>
@@ -2232,7 +2221,7 @@ function EventsManager({ user }) {
       ) : (
         <div className="space-y-3">
           {events.map(e => (
-            <div key={e.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+            <div key={e.id} className="dp-workspace-manager-row flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
               <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${e.status === "live" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{e.title}</div>
@@ -2245,10 +2234,10 @@ function EventsManager({ user }) {
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{e.status}</span>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={() => { setEditing(e); setShowForm(true); }} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
+                <button type="button" aria-label={`Edit ${e.title}`} onClick={() => { setEditing(e); setShowForm(true); }} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
-                <button onClick={() => handleDelete(e.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
+                <button type="button" aria-label={`Delete ${e.title}`} onClick={() => handleDelete(e.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -2292,10 +2281,10 @@ function EventForm({ user, event, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-      className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
+      className="dp-native-publisher mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{event ? "Edit event" : "New event"}</h3>
-        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
+        <button type="button" onClick={onClose} aria-label="Close event editor" className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />

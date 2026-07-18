@@ -1,9 +1,4 @@
 /* Partner workspace shell: one polished top bar, one native bottom tab bar, one flat analytics surface. */
-html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-layout-back-row,
-html body #root#root .dp-partner-page.dp-partner-workspace-page ~ .dp-layout-back-row {
-  display: none !important;
-}
-
 html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-partner-workspace-header-tools {
   min-width: 0 !important;
 }
@@ -359,7 +354,6 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-an
 
 /* Map top navigation ownership: when Back moves beside search, suppress older duplicates. */
 html body:has(#root .dp-map-page[data-top-map-back="true"]) #root :is(
-  .dp-layout-back,
   .dp-map-page .dp-panel-toolbar .dp-panel-back,
   .dp-map-page .dp-panel-header .dp-panel-back-floating,
   .dp-map-page .dp-drawer-back-icon,

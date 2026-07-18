@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
+import { ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
@@ -135,7 +135,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
   );
 }
 
-export default function Navbar({ showBackButton = false, onBack }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -238,17 +238,6 @@ export default function Navbar({ showBackButton = false, onBack }) {
     >
       <div className="flex h-[64px] w-full max-w-none items-center justify-between px-5 md:px-6">
         <div className="flex min-w-0 items-center gap-3">
-          {showBackButton && (
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex h-11 shrink-0 items-center gap-1.5 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition-colors hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="h-4 w-4 text-[#BFA46A]" aria-hidden="true" />
-              <span className="hidden sm:inline">Back</span>
-            </button>
-          )}
           <Link to="/map?mode=resident&tab=map&filter=Perks" className="group flex min-w-0 shrink items-center gap-2" aria-label="Downtown Perks app">
             <MapPin className="h-[15px] w-[15px] shrink-0 text-[#BFA46A] transition-colors duration-150 group-hover:text-[#A98B4A]" />
             <span className="truncate text-[14.5px] font-semibold tracking-[-0.015em] text-[#0B1F33]">

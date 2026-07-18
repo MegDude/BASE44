@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, Building2, CalendarDays, CheckCircle2, ChevronDown, CreditCard, HeartPulse, Home, Hotel, MapPin, QrCode, ScanLine, ShieldCheck, ShoppingBag, Sparkles, Users, Utensils } from "lucide-react";
+import { ArrowRight, Building2, CalendarDays, CheckCircle2, ChevronDown, CreditCard, Home, MapPin, QrCode, ScanLine, ShieldCheck, Sparkles } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   markLocalRecord,
@@ -10,36 +10,30 @@ const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
 const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
 
 const INCLUDED = [
-  "Perks Card",
+  "Resident QR card",
+  "Eligible local offers",
   "Saved places",
-  "Local offers",
-  "Events",
-  "Map",
-  "Instant deals",
+  "Events and map",
 ];
 
 const BENEFITS = [
-  { title: "Access", body: "Keep your resident identity and eligible benefits together.", icon: ShieldCheck, href: "#resident-card-access" },
-  { title: "Dining", body: "Open participating restaurant perks and nearby offers.", icon: Utensils, href: "/app?mode=resident&tab=map&filter=Dining&intent=dining" },
-  { title: "Hotels", body: "Explore downtown stays, experiences, and resident offers.", icon: Hotel, href: "/app?mode=resident&tab=map&filter=Hotels&intent=hotels" },
-  { title: "Events", body: "Find local events and keep resident moments close.", icon: CalendarDays, href: "/app?mode=resident&tab=events&filter=Events&intent=events" },
-  { title: "Buildings", body: "Connect building access with the neighborhood around you.", icon: Building2, href: "/app?mode=resident&tab=map&filter=Properties&intent=properties" },
-  { title: "Shopping", body: "Discover useful retail and local resident benefits.", icon: ShoppingBag, href: "/app?mode=resident&tab=map&filter=Shopping&intent=shopping" },
-  { title: "Wellness", body: "Find fitness, recovery, and everyday wellness nearby.", icon: HeartPulse, href: "/app?mode=resident&tab=map&filter=Wellness&intent=wellness" },
-  { title: "Community", body: "Move through downtown with local context and connection.", icon: Users, href: "/app?mode=resident&tab=map&filter=Civic&intent=civic" },
+  { title: "Perks near you", body: "See the offers your active card can unlock at participating places.", icon: ShieldCheck, href: "/app?mode=resident&tab=map&filter=Perks" },
+  { title: "Events this week", body: "Find downtown events and add the ones you want to remember.", icon: CalendarDays, href: "/app?mode=resident&tab=events&filter=Events&intent=events" },
+  { title: "Places to save", body: "Keep restaurants, shops, hotels, and useful local stops close.", icon: MapPin, href: "/app?mode=resident&tab=saved&filter=All" },
+  { title: "Your building", body: "Connect where you live with nearby benefits and neighborhood updates.", icon: Building2, href: "/app?mode=resident&tab=map&filter=Properties&intent=properties" },
 ];
 
 const PROCESS = [
-  ["01", "Open Downtown Perks", "Open your resident card from the map whenever you need it."],
-  ["02", "Show Card", "Present the active resident QR at a participating partner."],
-  ["03", "Partner scans", "The partner confirms your current access or benefit."],
-  ["04", "Benefit unlocked", "Continue with the verified offer or resident experience."],
+  ["01", "Open your card", "Find your resident card from the map whenever you need it."],
+  ["02", "Show the QR", "Present the active card at a participating place."],
+  ["03", "Confirm the perk", "The partner scans your QR and confirms the available benefit."],
+  ["04", "Use your benefit", "Continue with the verified offer shown for that place."],
 ];
 
 const PLACES = [
-  { title: "Stay", name: "Hotel Van Zandt", body: "Explore hotel experiences and the Rainey neighborhood around them.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
-  { title: "Save", name: "Fairmont Austin", body: "Keep downtown hotel experiences and available perks within reach.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
-  { title: "Explore", name: "The Shore", body: "Connect where you live with resident benefits and nearby discoveries.", image: "/images/residential-content/the-shore.jpg", href: "/app?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
+  { title: "Rainey", name: "Hotel Van Zandt", body: "Find rooftop dining, live music, and hotel experiences near Rainey Street.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
+  { title: "Convention District", name: "Fairmont Austin", body: "Save the restaurants, wellness stops, and events connected to the Fairmont.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
+  { title: "Rainey Residential", name: "The Shore", body: "See resident access alongside the dining, trails, and events around your building.", image: "/images/residential-content/the-shore.jpg", href: "/app?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
 ];
 
 const BUILDINGS = [
@@ -141,6 +135,7 @@ export default function ResidentAccess() {
   const checkoutSucceeded = checkoutParams.get("checkout") === "success";
   const checkoutCancelled = checkoutParams.get("checkout") === "cancelled";
   const visibleCard = residentCard && (state === "success" || checkoutSucceeded);
+  const primaryCardHref = visibleCard ? getResidentMapHref(residentCard) : "#resident-card-access";
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -238,15 +233,15 @@ export default function ResidentAccess() {
         <section className="dp-resident-access-hero" aria-labelledby="resident-access-title">
           <div className="dp-resident-access-copy">
             <p className="dp-resident-access-eyebrow">Resident Card</p>
-            <h1 id="resident-access-title">One card.<br />Hundreds of places.<br />Everything downtown.</h1>
-            <p>Use one card to open local perks, saved places, events, the map, and instant deals. If your building is already part of Downtown Perks, verify your unit. If not, get individual access for $25/year.</p>
+            <h1 id="resident-access-title">Your resident card for downtown.</h1>
+            <p>Verify your building to activate the card and see eligible perks. If your building is not participating yet, choose individual access for $25 a year.</p>
             <div className="dp-resident-access-includes" aria-label="Included with resident access">
               {INCLUDED.map((item) => <span key={item}><CheckCircle2 aria-hidden="true" />{item}</span>)}
             </div>
             <div className="dp-resident-access-hero-actions">
-              <a href="#resident-card-access" className="is-primary">Show My Card</a>
-              <a href={APP_HREF}>Explore Perks</a>
-              <a href="#how-it-works" className="is-tertiary">How It Works</a>
+              <a href={primaryCardHref} className="is-primary">{visibleCard ? "Open my card" : "Activate my card"}</a>
+              <a href={APP_HREF}>Explore perks</a>
+              <a href="#how-it-works" className="is-tertiary">See how it works</a>
             </div>
           </div>
           <section className="dp-resident-card-preview" aria-label="Downtown Perks resident card preview">
@@ -258,38 +253,38 @@ export default function ResidentAccess() {
               <img src={visibleCard ? getResidentQrSrc(residentCard) : "/images/card/perks-card-qr.png"} alt={visibleCard ? `Downtown Perks QR card for ${getResidentCardCode(residentCard)}` : "Preview of the Downtown Perks resident QR card"} width="260" height="260" />
               <span><ScanLine aria-hidden="true" />{visibleCard ? getResidentCardCode(residentCard) : "Activate to use your card"}</span>
             </div>
-            <p>Your QR confirms active resident access and eligible benefits with participating partners.</p>
+            <p>Partners scan this QR to confirm that your card is active and show the benefit available at that place.</p>
           </section>
         </section>
 
         <section className="dp-resident-editorial-section" aria-labelledby="benefits-title">
-          <header><p className="dp-resident-access-eyebrow">Benefits</p><h2 id="benefits-title">Downtown, connected to your day.</h2><p>One resident layer for the places, moments, and benefits that make downtown easier to use.</p></header>
+          <header><p className="dp-resident-access-eyebrow">What you can do</p><h2 id="benefits-title">Keep downtown within reach.</h2><p>Use the card with the map to find eligible perks, save places, and see what is happening nearby.</p></header>
           <div className="dp-resident-benefit-list">
             {BENEFITS.map(({ title, body, icon: Icon, href }) => <a key={title} href={href}><Icon aria-hidden="true" /><span><strong>{title}</strong><small>{body}</small></span><ArrowRight aria-hidden="true" /></a>)}
           </div>
         </section>
 
         <section id="how-it-works" className="dp-resident-editorial-section" aria-labelledby="process-title">
-          <header><p className="dp-resident-access-eyebrow">How it works</p><h2 id="process-title">Four simple steps.</h2><p>Your resident card stays easy to find, easy to present, and clear at the moment of use.</p></header>
+          <header><p className="dp-resident-access-eyebrow">How it works</p><h2 id="process-title">Use it in four steps.</h2><p>Open the card, show the QR, confirm the perk, and continue with the available benefit.</p></header>
           <ol className="dp-resident-process-list">
             {PROCESS.map(([number, title, body]) => <li key={number}><span>{number}</span><div><strong>{title}</strong><p>{body}</p></div></li>)}
           </ol>
         </section>
 
         <section className="dp-resident-editorial-section" aria-labelledby="places-title">
-          <header><p className="dp-resident-access-eyebrow">Where you can use it</p><h2 id="places-title">Stay. Save. Explore.</h2><p>Move between hotels, residential buildings, local experiences, and participating partners without leaving the product.</p></header>
+          <header><p className="dp-resident-access-eyebrow">Start nearby</p><h2 id="places-title">A few places to explore.</h2><p>Open a place on the resident map to see what is nearby and whether a card benefit is available.</p></header>
           <div className="dp-resident-place-grid">
             {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Explore <ArrowRight aria-hidden="true" /></a></article>)}
           </div>
         </section>
 
         <form id="resident-card-access" className="dp-resident-access-panel" onSubmit={handleSubmit}>
-          <header className="dp-resident-access-form-header"><p className="dp-resident-access-eyebrow">Resident access</p><h2>Activate your card.</h2><p>Verify your building or choose individual access. Your existing access and checkout flow stay in one place.</p></header>
+          <header className="dp-resident-access-form-header"><p className="dp-resident-access-eyebrow">Resident access</p><h2>Choose how to activate.</h2><p>Start with building verification. If your building is not participating yet, you can continue with individual access.</p></header>
           <div className="dp-resident-access-plan">
             <div>
-              <p className="dp-resident-access-eyebrow">Perks Card</p>
-              <h2>$25/year</h2>
-              <span>Individual access when your building is not active yet.</span>
+              <p className="dp-resident-access-eyebrow">{isBuildingPath ? "Building access" : "Individual access"}</p>
+              <h2>{isBuildingPath ? "Included" : "$25 / year"}</h2>
+              <span>{isBuildingPath ? "Available when your building participates in Downtown Perks." : "Use the card even when your building is not participating yet."}</span>
             </div>
             <CreditCard aria-hidden="true" />
           </div>
@@ -330,7 +325,7 @@ export default function ResidentAccess() {
               <input type="email" value={form.email} onChange={(event) => updateField("email", event.target.value)} required autoComplete="email" />
             </label>
             <label>
-              <span>Phone</span>
+              <span>Phone <small>Optional</small></span>
               <input type="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} autoComplete="tel" />
             </label>
           </div>
@@ -364,7 +359,7 @@ export default function ResidentAccess() {
           ) : null}
 
           {message ? (
-            <div className={`dp-resident-access-message is-${state}`} role="status">
+            <div className={`dp-resident-access-message is-${state}`} role={state === "error" ? "alert" : "status"} aria-live="polite">
               {message}
               {state === "success" && isBuildingPath ? (
                 <button type="button" onClick={() => updateField("accessPath", "card")}>Use Perks Card path</button>
@@ -404,7 +399,7 @@ export default function ResidentAccess() {
 
           <div className="dp-resident-access-actions">
             <button type="submit" disabled={state === "loading"}>
-              {state === "loading" ? "Checking access" : isBuildingPath ? "Verify and Continue" : "Continue to Checkout"}
+              {state === "loading" ? "Checking access…" : isBuildingPath ? "Verify and continue" : "Continue to checkout"}
               <ArrowRight aria-hidden="true" />
             </button>
             <a href={APP_HREF}>
@@ -415,15 +410,15 @@ export default function ResidentAccess() {
         </form>
 
         <section className="dp-resident-editorial-section dp-resident-faq" aria-labelledby="faq-title">
-          <header><p className="dp-resident-access-eyebrow">FAQ</p><h2 id="faq-title">Resident card essentials.</h2><p>Clear answers before you activate or use the card.</p></header>
+          <header><p className="dp-resident-access-eyebrow">Before you activate</p><h2 id="faq-title">Resident card questions.</h2><p>What to expect from building verification, individual access, and partner scans.</p></header>
           <details><summary>How does building verification work?<ChevronDown aria-hidden="true" /></summary><p>Choose your building and provide your unit details. Active buildings may verify immediately; other requests move into review.</p></details>
           <details><summary>What happens when my building is not active?<ChevronDown aria-hidden="true" /></summary><p>You can continue with individual Perks Card access for $25 per year.</p></details>
           <details><summary>What does a partner see when scanning?<ChevronDown aria-hidden="true" /></summary><p>The QR confirms the card identifier and current access context needed for the participating benefit.</p></details>
         </section>
 
         <section className="dp-resident-card-final-cta" aria-label="Resident card call to action">
-          <p className="dp-resident-access-eyebrow">Resident Card</p><h2>Your downtown is ready.</h2><p>Activate your card or explore the resident map now.</p>
-          <div className="dp-resident-access-hero-actions"><a href="#resident-card-access" className="is-primary">Show My Card</a><a href={APP_HREF}>Explore Perks</a></div>
+          <p className="dp-resident-access-eyebrow">Resident Card</p><h2>{visibleCard ? "Your card is ready." : "Start with your building."}</h2><p>{visibleCard ? "Open your QR card or return to the resident map." : "Verify where you live to see whether resident access is already included."}</p>
+          <div className="dp-resident-access-hero-actions"><a href={primaryCardHref} className="is-primary">{visibleCard ? "Open my card" : "Verify my building"}</a><a href={APP_HREF}>Explore perks</a></div>
         </section>
         <footer className="dp-resident-access-footer"><span>Downtown Perks</span><nav aria-label="Resident card footer"><a href={APP_HREF}>Map</a><a href="#benefits-title">Benefits</a><a href="#faq-title">Support</a></nav></footer>
       </div>
