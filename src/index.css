@@ -7279,7 +7279,7 @@ body,
    ───────────────────────────────────────────────────────────────────────────── */
 
 /* ── Interaction feedback ─────────────────────────────────── */
-.dp-action-activated {
+.dp-press-feedback {
   transform: scale(0.975);
   opacity: 0.85;
   transition: transform 75ms ease-out, opacity 75ms ease-out !important;
