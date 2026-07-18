@@ -103,6 +103,7 @@ import "@/styles/workspace-launch-brief-final.css"
 import "@/styles/workspace-compact-media-final.css"
 import "@/styles/canonical-surface-system.css"
 import "@/styles/map-marker-governance-final.css"
+import "@/styles/search-intent-console-regression-lock.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

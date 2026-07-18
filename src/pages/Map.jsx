@@ -13602,9 +13602,11 @@ function MapSearchConsole({
     if (!node) return;
 
     const compactInset = viewportWidth <= 375 ? 16 : 24;
-    const consoleWidth = hasTopMapBack
-      ? topNavBackWidth
-      : `min(520px, calc(100vw - ${compactInset}px))`;
+    const consoleWidth = isCollapsed
+      ? "max-content"
+      : hasTopMapBack
+        ? topNavBackWidth
+        : `min(520px, calc(100vw - ${compactInset}px))`;
     const setLockedStyle = (property, value) => {
       node.style.setProperty(property, value, "important");
     };
@@ -13613,7 +13615,12 @@ function MapSearchConsole({
     // command surface centered with inline priority so it cannot drift with a
     // parent rail, drawer, or map-camera transition.
     setLockedStyle("position", "fixed");
-    setLockedStyle("top", `calc(${viewportWidth <= 767 ? 64 : 68}px + env(safe-area-inset-top, 0px))`);
+    setLockedStyle(
+      "top",
+      isCollapsed
+        ? "calc(8px + env(safe-area-inset-top, 0px))"
+        : `calc(${viewportWidth <= 767 ? 64 : 68}px + env(safe-area-inset-top, 0px))`,
+    );
     setLockedStyle("right", "auto");
     setLockedStyle("left", "50%");
     setLockedStyle("width", consoleWidth);
@@ -13695,22 +13702,28 @@ function MapSearchConsole({
           </div>
         </form>
 
-        {!showCatalogResults ? renderRail(
-            intentRail,
-            "dp-search-intent-prompt-rail dp-search-intent-primary-rail dp-map-intent-rail dp-ask-map-prompt-list",
-            "Primary intent shortcuts",
-            {
-              includeMoreToggle: true,
-              insertMoreAfterIndex: moreToggleInsertIndex,
-            },
-          ) : null}
-        {!showCatalogResults && moreOpen ? (
-          <div id="dp-search-more-filter-panel" className="dp-search-intent-more-panel" aria-label="More map shortcuts">
+        {!showCatalogResults ? (
+          <div className="dp-search-intent-two-row-stack">
             {renderRail(
-              moreFilterRail,
-              "dp-search-intent-secondary-track dp-map-intent-rail dp-ask-map-prompt-list",
-              "More intent, collection, and route shortcuts",
-              { id: "dp-search-secondary-intent-rail" },
+              intentRail,
+              "dp-search-intent-prompt-rail dp-search-intent-primary-rail dp-map-intent-rail dp-ask-map-prompt-list",
+              "Primary intent shortcuts",
+              {
+                includeMoreToggle: true,
+                insertMoreAfterIndex: moreToggleInsertIndex,
+              },
+            )}
+            {moreOpen ? (
+              <div id="dp-search-more-filter-panel" className="dp-search-intent-more-panel" aria-label="More map shortcuts">
+                {renderRail(
+                  moreFilterRail,
+                  "dp-search-intent-secondary-track dp-map-intent-rail dp-ask-map-prompt-list",
+                  "More intent, collection, and route shortcuts",
+                  { id: "dp-search-secondary-intent-rail" },
+                )}
+              </div>
+            ) : (
+              <div id="dp-search-more-filter-panel" hidden aria-hidden="true" />
             )}
           </div>
         ) : null}
