@@ -4,7 +4,7 @@
 
 - `/map` — public map gateway
 - `/app` — guest map
-- `/app/map` — authenticated resident map
+- `/app/map` — retired compatibility alias that preserves query state and redirects to `/map`
 - `/sign-in` — resident email-link and Google sign-in
 - `/auth/callback` — shared first-party Supabase callback
 - `/card` — resident card and access
@@ -48,4 +48,4 @@ The production Vercel project must expose:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY` or the project publishable key in that variable
 
-The existing Vercel SPA rewrite serves `/map`, `/app/map`, `/sign-in`, and `/auth/callback` from the same application. No cross-origin map rewrite or iframe is permitted.
+The existing Vercel SPA rewrite serves `/map`, `/sign-in`, and `/auth/callback` from the same application. The retired `/app/map` alias redirects immediately to `/map`; no cross-origin map rewrite or iframe is permitted.

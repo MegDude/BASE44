@@ -88,6 +88,7 @@ import '@/styles/pricing-builder-cleanup-final.css'
 import '@/styles/workspace-polish-sweep-final.css'
 import '@/styles/microsite-system.css'
 import '@/styles/admin-resource-system.css'
+import '@/styles/map-action-system-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

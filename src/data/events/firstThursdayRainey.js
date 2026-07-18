@@ -1,34 +1,42 @@
 const BASE_EVENT_ID = "hotel-van-zandt-first-thursday";
 const MAP_EVENT_ID = `event-${BASE_EVENT_ID}`;
 const NEXT_OCCURRENCE_ISO = "2026-08-06T18:00:00-05:00";
+const LAUNCH_OCCURRENCE_ISO = "2026-06-04T18:00:00-05:00";
 
 const eventCore = {
   baseId: BASE_EVENT_ID,
   mapEntityId: MAP_EVENT_ID,
+  workspaceEventId: "workspace-event-first-thursday-rainey",
   title: "First Thursday Moves to Rainey Street",
   venueName: "Hotel Van Zandt + Modern Bar",
   hostPartnerId: "partner-hotel-van-zandt",
+  organizationId: "demo-org-hotel-van-zandt",
   district: "Rainey",
   address: "605 Davis St, Austin, TX 78701",
   latitude: 30.2588,
   longitude: -97.7392,
   nextOccurrence: NEXT_OCCURRENCE_ISO,
+  launchOccurrence: LAUNCH_OCCURRENCE_ISO,
   scheduleLabel: "Every first Thursday · 6–10 PM",
   afterpartyLabel: "Modern Bar afterparty at 10 PM",
   category: "Live Music",
+  workspaceCategory: "nightlife",
   source: {
     publisher: "Explore ATX",
     author: "Nick Hayden",
-    publishedAt: "2026-05-29",
+    publishedAt: "2026-05-28",
+    sourceLabel: "Explore ATX article published May 28, 2026",
     url: "https://www.exploreatx.us/p/first-thursday",
   },
+  relatedVenues: ["Hotel Van Zandt", "Modern Bar", "Bungalow", "Augustine", "Lucille's", "Victory Lap"],
+  lineup: ["King Louie", "Ella Ella", "Big Vic", "Ashmar", "HexxxGF", "Who Izzy", "Flight by Nothing"],
 };
 
-const residentSummary = "First Thursday now anchors on Rainey Street with music at Hotel Van Zandt, an afterparty at Modern Bar, and nearby parties along the block.";
+const residentSummary = "First Thursday now anchors on Rainey Street with music at Hotel Van Zandt, an afterparty at Modern Bar, and nearby parties up and down the block.";
 
-const residentDescription = "The monthly First Thursday party moved from South Congress Hotel to Rainey Street after South Congress Hotel closed on May 31, 2026. Start at Hotel Van Zandt for two floors of local music, then continue next door to Modern Bar or visit nearby parties at Bungalow, Augustine, Lucille's, and Victory Lap.";
+const residentDescription = "The monthly First Thursday party moved from South Congress Hotel to Rainey Street after South Congress Hotel closed on May 31, 2026. Start at Hotel Van Zandt for two floors of local music, then continue next door to Modern Bar or walk to nearby Rainey parties at Bungalow, Augustine, Lucille's, and Victory Lap.";
 
-const partnerInsight = "Measure Rainey event demand, RSVP interest, free GA versus VIP intent, afterparty movement to Modern Bar, and visits from Hotel Van Zandt to nearby venues.";
+const partnerInsight = "Best for measuring Rainey event demand, RSVP interest, free GA versus VIP intent, afterparty movement to Modern Bar, and nearby bar-hopping from Hotel Van Zandt to Bungalow, Augustine, Lucille's, and Victory Lap.";
 
 export const firstThursdayRaineyEvent = Object.freeze({
   ...eventCore,
@@ -42,6 +50,10 @@ export function getFirstThursdayRaineyMapEvent() {
     id: eventCore.baseId,
     canonicalMapEntityId: eventCore.mapEntityId,
     map_entity_id: eventCore.mapEntityId,
+    workspaceEventId: eventCore.workspaceEventId,
+    workspace_event_id: eventCore.workspaceEventId,
+    organizationId: eventCore.organizationId,
+    organization_id: eventCore.organizationId,
     partnerId: eventCore.hostPartnerId,
     partner_id: eventCore.hostPartnerId,
     parentId: eventCore.hostPartnerId,
@@ -112,6 +124,49 @@ export function getFirstThursdayRaineyMapEvent() {
     partnerInsight,
     source: "Explore ATX / Downtown Perks event layer",
     sourceAttribution: eventCore.source,
+    backendSyncKey: "event:first-thursday-rainey:hotel-van-zandt",
     conversionActions: ["RSVP", "Directions", "Save", "VIP interest", "Afterparty click"],
   };
 }
+
+export const firstThursdayRaineyWorkspaceEvent = Object.freeze({
+  id: eventCore.workspaceEventId,
+  organization_id: eventCore.organizationId,
+  partner_id: eventCore.hostPartnerId,
+  entity_id: eventCore.mapEntityId,
+  title: eventCore.title,
+  venue_name: eventCore.venueName,
+  category: eventCore.workspaceCategory,
+  address: eventCore.address,
+  description: `${residentSummary} GA is free on arrival while capacity allows. VIP includes skip-the-line entry, lounge bites, a dedicated bar, and afterparty access at Modern Bar.`,
+  date: eventCore.nextOccurrence,
+  status: "upcoming",
+  is_members_only: false,
+  capacity: undefined,
+  rsvp_count: 126,
+  source: eventCore.source.sourceLabel,
+  source_publisher: eventCore.source.publisher,
+  source_author: eventCore.source.author,
+  source_published_at: eventCore.source.publishedAt,
+  launch_date: eventCore.launchOccurrence,
+  recurrence: "first_thursday_monthly",
+  audience: ["hotel guests", "downtown residents", "Rainey visitors", "VIP buyers"],
+  related_venues: eventCore.relatedVenues,
+  lineup: eventCore.lineup,
+  map_entity_id: eventCore.mapEntityId,
+  backend_sync_key: "event:first-thursday-rainey:hotel-van-zandt",
+  partner_insight: partnerInsight,
+});
+
+export const firstThursdayRaineyBackendRecord = Object.freeze({
+  entity: "Event",
+  sync_key: "event:first-thursday-rainey:hotel-van-zandt",
+  canonical_id: eventCore.mapEntityId,
+  workspace_id: eventCore.workspaceEventId,
+  partner_id: eventCore.hostPartnerId,
+  organization_id: eventCore.organizationId,
+  route: `/map?mode=resident&tab=map&filter=Events&entityId=${MAP_EVENT_ID}`,
+  status: "ready_for_backend_sync",
+  source: eventCore.source,
+  required_events: ["event_viewed", "event_rsvp_started", "event_rsvp_completed", "directions_opened", "save_created"],
+});

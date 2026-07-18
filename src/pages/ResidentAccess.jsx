@@ -7,7 +7,7 @@ import {
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 const RESIDENT_RECORDS_KEY = "dp_admin_resident_records";
-const APP_HREF = "/app?mode=resident&tab=map&filter=Perks";
+const APP_HREF = "/map?mode=resident&tab=map&filter=Perks";
 
 const INCLUDED = [
   "Resident QR card",
@@ -17,10 +17,10 @@ const INCLUDED = [
 ];
 
 const BENEFITS = [
-  { title: "Perks near you", body: "See the offers your active card can unlock at participating places.", icon: ShieldCheck, href: "/app?mode=resident&tab=map&filter=Perks" },
-  { title: "Events this week", body: "Find downtown events and add the ones you want to remember.", icon: CalendarDays, href: "/app?mode=resident&tab=events&filter=Events&intent=events" },
-  { title: "Places to save", body: "Keep restaurants, shops, hotels, and useful local stops close.", icon: MapPin, href: "/app?mode=resident&tab=saved&filter=All" },
-  { title: "Your building", body: "Connect where you live with nearby benefits and neighborhood updates.", icon: Building2, href: "/app?mode=resident&tab=map&filter=Properties&intent=properties" },
+  { title: "Perks near you", body: "See the offers your active card can unlock at participating places.", icon: ShieldCheck, href: "/map?mode=resident&tab=map&filter=Perks&collection=resident-benefits" },
+  { title: "Events this week", body: "Find downtown events and add the ones you want to remember.", icon: CalendarDays, href: "/map?mode=resident&tab=events&filter=Events&intent=events" },
+  { title: "Places to save", body: "Keep restaurants, shops, hotels, and useful local stops close.", icon: MapPin, href: "/map?mode=resident&tab=saved&filter=All" },
+  { title: "Your building", body: "Connect where you live with nearby benefits and neighborhood updates.", icon: Building2, href: "/map?mode=resident&tab=map&filter=Properties&intent=properties" },
 ];
 
 const PROCESS = [
@@ -31,9 +31,9 @@ const PROCESS = [
 ];
 
 const PLACES = [
-  { title: "Rainey", name: "Hotel Van Zandt", body: "Find rooftop dining, live music, and hotel experiences near Rainey Street.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
-  { title: "Convention District", name: "Fairmont Austin", body: "Save the restaurants, wellness stops, and events connected to the Fairmont.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/app?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
-  { title: "Rainey Residential", name: "The Shore", body: "See resident access alongside the dining, trails, and events around your building.", image: "/images/residential-content/the-shore.jpg", href: "/app?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
+  { title: "Rainey", name: "Hotel Van Zandt", body: "Find rooftop dining, live music, and hotel experiences near Rainey Street.", image: "/images/reports/hotel-van-zandt-rooftop-pool.jpg", href: "/map?mode=resident&tab=map&filter=Hotels&entityId=hotel-van-zandt" },
+  { title: "Convention District", name: "Fairmont Austin", body: "Save the restaurants, wellness stops, and events connected to the Fairmont.", image: "/images/map-pins/property/fairmont-austin.jpg", href: "/map?mode=resident&tab=map&filter=Hotels&entityId=brand-fairmont-austin" },
+  { title: "Rainey Residential", name: "The Shore", body: "See resident access alongside the dining, trails, and events around your building.", image: "/images/residential-content/the-shore.jpg", href: "/map?mode=resident&tab=map&filter=Properties&entityId=the-shore" },
 ];
 
 const BUILDINGS = [
@@ -91,7 +91,7 @@ function getResidentMapHref(record) {
   if (record?.id) params.set("residentId", record.id);
   if (record?.verificationStatus) params.set("access", record.verificationStatus);
 
-  return `/app?${params.toString()}`;
+  return `/map?${params.toString()}`;
 }
 
 function getResidentQrSrc(record) {
@@ -111,7 +111,7 @@ function toApp(record, extra = {}) {
     residentId: record.id,
     access: record.verificationStatus || "perks_card",
   });
-  window.location.href = `/app?${params.toString()}`;
+  window.location.href = `/map?${params.toString()}`;
 }
 
 export default function ResidentAccess() {

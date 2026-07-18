@@ -20,7 +20,13 @@ export const DRAWER_SNAP_HEIGHTS: Record<Exclude<DrawerSnapState, "dismissed">, 
 };
 
 export function createMobileTabState(mode: MapAudienceMode, activeTab = "map"): MobileTabState {
-  return { mode, activeTab, drawerState: "medium", scrollPositions: {}, filters: { filter: "All" } };
+  return {
+    mode,
+    activeTab,
+    drawerState: "medium",
+    scrollPositions: {},
+    filters: { filter: mode === "resident" ? "Featured" : "All" },
+  };
 }
 
 export function transitionMobileTabState(current: MobileTabState, next: Partial<MobileTabState>): MobileTabState {

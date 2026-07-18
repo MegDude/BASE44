@@ -8,7 +8,13 @@ if (!supabaseUrl || !supabaseServiceRoleKey) {
     !supabaseUrl ? 'SUPABASE_URL' : null,
     !supabaseServiceRoleKey ? 'SUPABASE_SERVICE_ROLE_KEY' : null
   ].filter(Boolean);
-  console.error(`Supabase server client not initialized. Missing: ${missingVars.join(', ')}`);
+  const shouldLogMissingSupabase =
+    process.env.NODE_ENV === 'production' ||
+    process.env.VITE_LOG_MISSING_SUPABASE === 'true';
+
+  if (shouldLogMissingSupabase) {
+    console.warn(`Supabase server client not initialized. Missing: ${missingVars.join(', ')}`);
+  }
 }
 
 export const supabaseServer =

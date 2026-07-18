@@ -10,6 +10,8 @@ const residentSignInSource = readFileSync(join(root, "src/pages/ResidentSignIn.j
 const residentAccessSource = readFileSync(join(root, "src/pages/ResidentAccess.jsx"), "utf8");
 const residentAccessApiSource = readFileSync(join(root, "api/resident-access.js"), "utf8");
 const layoutSource = readFileSync(join(root, "src/components/Layout.jsx"), "utf8");
+const supabaseClientSource = readFileSync(join(root, "src/lib/supabase/client.ts"), "utf8");
+const productionGuardSource = readFileSync(join(root, "src/lib/productionGuards.ts"), "utf8");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
@@ -21,24 +23,28 @@ function sourceFiles(directory: string): string[] {
 
 const statePath = buildResidentMapPath(
   "?mode=resident&tab=perks&filter=Dining&intent=eat_drink&entityId=comedor&perkId=perk-1&eventId=event-1&collectionId=collection-1&routeId=route-1&district=Congress&query=date+night&radius=1200",
-  "/app/map",
+  "/map",
 );
 
-for (const expected of ["mode=resident", "tab=perks", "filter=Dining", "intent=eat_drink", "entityId=comedor", "perkId=perk-1", "eventId=event-1", "collectionId=collection-1", "routeId=route-1", "district=Congress", "query=date+night", "radius=1200"]) {
+for (const expected of ["mode=resident", "tab=perks", "filter=Dining", "intent=eat_drink", "entity=comedor", "perkId=perk-1", "eventId=event-1", "collectionId=collection-1", "routeId=route-1", "district=Congress", "query=date+night", "radius=1200"]) {
   assert.ok(statePath.includes(expected), `missing preserved map state: ${expected}`);
 }
 
 assert.equal(isSafeFirstPartyPath("/app/map?filter=Dining"), true);
 assert.equal(isSafeFirstPartyPath("//attacker.example/path"), false);
 assert.equal(isSafeFirstPartyPath("https://attacker.example/path"), false);
-assert.equal(getSafeReturnPath("?returnTo=https%3A%2F%2Fattacker.example"), "/app/map?mode=resident&tab=map&filter=All");
-assert.equal(getSafeReturnPath("?returnTo=%2Fapp%2Fmap%3Ffilter%3DCoffee"), "/app/map?filter=Coffee");
+assert.equal(getSafeReturnPath("?returnTo=https%3A%2F%2Fattacker.example"), "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured");
+assert.equal(getSafeReturnPath("?returnTo=%2Fapp%2Fmap%3Ffilter%3DCoffee"), "/map?filter=Coffee");
 
-assert.match(appSource, /path="\/map" element=\{<PublicMapGateway/);
-assert.match(appSource, /path="\/app\/map" element=\{<AuthenticatedResidentMap/);
+assert.match(appSource, /path="\/map" element=\{<MapPage/);
+assert.match(appSource, /path="\/app\/map" element=\{<RedirectWithSearch to="\/map"/);
+assert.doesNotMatch(appSource, /function AuthenticatedResidentMap/);
+assert.doesNotMatch(appSource, /PublicMapGateway/);
 assert.match(appSource, /path="\/auth\/callback"/);
 assert.match(appSource, /path="\/sign-in"/);
 assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
+assert.match(supabaseClientSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
+assert.match(productionGuardSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(authSource, /auth\.signUp\(\{/);
 assert.match(authSource, /auth\.resend\(\{/);
 assert.match(authSource, /email_not_confirmed/);
@@ -51,6 +57,7 @@ assert.doesNotMatch(residentAccessSource, /dp-resident-access-topbar/);
 assert.match(residentAccessSource, /payload\.persisted/);
 assert.match(residentAccessSource, /href=\{href\}/);
 assert.match(residentAccessSource, /href=\{place\.href\}/);
+assert.doesNotMatch(residentAccessSource, /["`]\/app\?mode=resident/);
 assert.doesNotMatch(residentAccessApiSource, /hasBuildingMatch/);
 assert.match(residentAccessApiSource, /accepted_local/);
 assert.match(layoutSource, /pathname === "\/card" \|\|/);

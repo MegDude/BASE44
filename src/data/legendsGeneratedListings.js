@@ -63,7 +63,7 @@ function normalize(value) {
 
 function normalizeLegendsPinAsset(value) {
   const asset = String(value || "").trim();
-  if (!asset || /legends/i.test(asset)) return "/pins/downtown-perks/legends-logo-gold.svg";
+  if (!asset || /legends/i.test(asset)) return "/pins/downtown-perks/legends-logo.png";
   return asset.startsWith("/") ? asset : `/pins/${asset}`;
 }
 

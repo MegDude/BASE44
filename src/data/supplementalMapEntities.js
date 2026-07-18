@@ -16,14 +16,27 @@ const BURGER_BAR_IMAGE = "/images/map-listing-actual/burger-bar/burger-bar-congr
 const BRAND_IMAGE = "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg";
 const CIVIC_IMAGE = "/images/map-entities/perks/civic_republic_square_1779052838327.png";
 const ART_WALK_IMAGE = "/images/map-entities/perks/downtown_art_walk_1779052670656.png";
+const PANEL_DETAIL_BASE = "/images/map/panels/panel-detail";
+const PANEL_DOWNTOWN_WALK_IMAGE = `${PANEL_DETAIL_BASE}/downtown-south-congress-walk.jpg`;
+const PANEL_LADY_BIRD_BIKE_IMAGE = `${PANEL_DETAIL_BASE}/lady-bird-bike-skyline.jpg`;
+const PANEL_HAPPY_HOUR_TABLE_IMAGE = `${PANEL_DETAIL_BASE}/happy-hour-table.jpg`;
+const PANEL_LAKE_WELLNESS_IMAGE = `${PANEL_DETAIL_BASE}/lake-wellness-route.jpg`;
+const PANEL_RAINEY_DATE_NIGHT_IMAGE = `${PANEL_DETAIL_BASE}/rainey-date-night-walk.jpg`;
+const PANEL_SECOND_STREET_IMAGE = `${PANEL_DETAIL_BASE}/second-street-district.jpg`;
+const PANEL_RED_RIVER_IMAGE = `${PANEL_DETAIL_BASE}/red-river-cultural-district.png`;
+const PANEL_SEAHOLM_IMAGE = `${PANEL_DETAIL_BASE}/seaholm-district.jpg`;
+const PANEL_CONGRESS_SKYLINE_IMAGE = `${PANEL_DETAIL_BASE}/congress-skyline.jpg`;
+const PANEL_FAIRMONT_ROOM_IMAGE = `${PANEL_DETAIL_BASE}/fairmont-room-skyline.webp`;
+const PANEL_FAIRMONT_POOL_IMAGE = `${PANEL_DETAIL_BASE}/fairmont-pool.webp`;
+const PANEL_WATERLINE_IMAGE = `${PANEL_DETAIL_BASE}/waterline-red-river.avif`;
 const WATERLOO_CIVIC_IMAGE = "/images/imported/perks/03-waterloo-park.jpg";
 const WATERLOO_TRAIL_IMAGE = "/images/imported/perks/waterlook-trail.png";
 const WATERLOO_BRIDGE_IMAGE = "/images/imported/perks/waterlook-brifge.png";
 const WATERLOO_GREENWAY_IMAGE = "/images/imported/perks/waterlook-greenway.png";
-const WATERLINE_IMAGE = "/images/reports/waterline-building.jpg";
+const WATERLINE_IMAGE = PANEL_WATERLINE_IMAGE;
 const SHORE_IMAGE = "/images/reports/the-shore-austin.jpeg";
 const HOTEL_VAN_ZANDT_IMAGE = "/images/imported/perks/hotel-van-zandt-entrance.jpg";
-const FAIRMONT_AUSTIN_IMAGE = "/images/map-entities/fairmont-austin/fairmont-austin-skyline.jpg";
+const FAIRMONT_AUSTIN_IMAGE = PANEL_FAIRMONT_ROOM_IMAGE;
 const FOUR_SEASONS_IMAGE = "/images/reports/four-seasons-austin.jpg";
 const YETI_IMAGE = "/images/map-entities/brand-yeti/yeti-flagship-interior.jpg";
 const TOPO_CHICO_IMAGE = "/images/map-entities/brand-topo-chico/topo-chico-bottle-yellow.jpeg";
@@ -31,8 +44,8 @@ const RIVIAN_IMAGE = "/images/map-entities/brand-rivian/9JvnMPQ8kGuv11XCFhP4qI_0
 const LULULEMON_IMAGE = "/images/imported/perks/lululemon-yoga-leggings-64529a1e874e4.webp";
 const EQUINOX_IMAGE = "/images/brands/equinox-austin.png";
 const FINE_EYEWEAR_IMAGE = "/images/imported/perks/fine-eyewear.png";
-const RAINEY_CONTEXT_IMAGE = "/images/map-entities/rainey-bars/rainey-street.jpeg";
-const BANGERS_IMAGE = "/images/restaurants/bangers-bar.webp";
+const RAINEY_CONTEXT_IMAGE = PANEL_RAINEY_DATE_NIGHT_IMAGE;
+const BANGERS_IMAGE = PANEL_HAPPY_HOUR_TABLE_IMAGE;
 const STAY_PUT_IMAGE = "/images/imported/perks/stayput.png";
 const GERALDINES_IMAGE = "/images/map-entities/attached/venues/geraldines-stage.jpeg";
 const ANTHEM_IMAGE = "/images/map-entities/rainey-bars/anthem.jpg";
@@ -46,9 +59,22 @@ const ONE_HOTEL_ALTENO_IMAGE = "/images/map-entities/1-hotel-austin/alteno.webp"
 const ONE_HOTEL_WATR_IMAGE = "/images/map-entities/1-hotel-austin/watr.webp";
 const ONE_HOTEL_NEIGHBORS_IMAGE = "/images/map-entities/1-hotel-austin/neighbors.webp";
 const LOCAL_SERVICE_IMAGE = "/images/fallbacks/services.jpg";
-const SEAHOLM_DISTRICT_IMAGE = "/images/imported/perks/waterline-hero.webp";
-const SECOND_STREET_DISTRICT_IMAGE = "/images/imported/perks/acl-live.jpeg";
-const RED_RIVER_DISTRICT_IMAGE = "/images/map-entities/perks/moody_theater_live_music_1779052684229.png";
+const PASEO_DAYDREAMER_IMAGE = "/images/map-entities/attached/properties/paseo/daydreamer-lobby.jpeg";
+const PASEO_EXTERIOR_IMAGE = "/images/map-entities/attached/properties/paseo/exterior-sunset.jpeg";
+const PASEO_ROOFTOP_POOL_IMAGE = "/images/map-entities/attached/properties/paseo/rooftop-pool.jpeg";
+const PASEO_GYM_IMAGE = "/images/reports/paseo-gym.webp";
+const PASEO_AMENITY_IMAGE = "/images/residential-content/paseo-amenity.jpg";
+const SHARED_ACCESS_700_RED_RIVER_IMAGE = "/images/residential-content/shared-access-700-red-river.jpeg";
+const SHARED_ACCESS_AMENITY_IMAGE = "/images/residential-content/shared-access-amenity.jpeg";
+const SHARED_ACCESS_WATERLOO_IMAGE = "/images/residential-content/shared-access-waterloo.jpeg";
+const SHARED_ACCESS_DOWNTOWN_LAKE_IMAGE = "/images/residential-content/shared-access-downtown-lake.jpeg";
+const SHARED_ACCESS_DOWNTOWN_FUTURE_IMAGE = "/images/residential-content/shared-access-downtown-future.jpeg";
+const SHARED_ACCESS_CESAR_CHAVEZ_IMAGE = "/images/residential-content/shared-access-cesar-chavez.jpeg";
+const SHARED_ACCESS_JAZZ_IMAGE = "/images/residential-content/shared-access-jazz.jpeg";
+const SHARED_ACCESS_COMMUNITY_IMAGE = "/images/residential-content/shared-access-community.jpeg";
+const SEAHOLM_DISTRICT_IMAGE = PANEL_SEAHOLM_IMAGE;
+const SECOND_STREET_DISTRICT_IMAGE = PANEL_SECOND_STREET_IMAGE;
+const RED_RIVER_DISTRICT_IMAGE = PANEL_RED_RIVER_IMAGE;
 const AUSTIN_CIVIC_EVENT_IMAGE = "/images/fallbacks/events.jpg";
 const PALMER_EVENTS_CENTER_IMAGE = "/images/map-entities/events/palmer-events-center-grounds.webp";
 
@@ -102,50 +128,54 @@ function categoryKey(parts) {
 
 const BRAND_ACTIVATION_PERKS = [
   {
-    id: "perk-topo-chico-downtown-hydration",
-    parentId: "partner-topo-chico",
-    name: "Topo Chico Downtown Hydration Perk",
-    brand: "Topo Chico",
-    category: "Brand Perk / Hydration",
+    id: "perk-yeti-downtown-hydration",
+    parentId: "partner-yeti",
+    name: "YETI Downtown Hydration Station",
+    brand: "YETI",
+    category: "Brand Perk / Hydration Station",
     latitude: 30.2632,
     longitude: -97.7441,
     district: "Congress",
     address: "Downtown Austin, TX 78701",
-    summary: "A resident-facing hydration perk for park programming, hotel arrivals, late nights, and walkable event days.",
-    description: "The Topo Chico perk gives residents a complimentary mineral water refresh at participating downtown check-in moments tied to heat, movement, music, patios, and long walks through downtown.",
-    offer: "Complimentary mineral water at participating downtown check-in moments.",
-    campaignObjective: "Place Topo Chico where people already want something cold and useful: events, wellness mornings, hotels, and nightlife recovery.",
-    partnerInsight: "Best around event arrivals, outdoor plans, late-night recovery, and hotel guest welcome moments.",
+    summary: "A resident-facing refill and cold-water station for park programming, hotel arrivals, late nights, and walkable event days.",
+    description: "The YETI hydration station gives residents a practical refill point at participating downtown check-in moments tied to heat, movement, music, patios, and long walks through downtown.",
+    offer: "Refillable cold-water station access at participating downtown moments.",
+    campaignObjective: "Place YETI where people already need something cold and useful: events, wellness mornings, hotels, and nightlife recovery.",
+    partnerInsight: "Best around event arrivals, outdoor plans, late-night recovery, and hotel guest welcome moments without relying on bottled inventory.",
     audience: "Residents, visitors, hotel guests, runners, and eventgoers already moving through downtown.",
-    image: TOPO_CHICO_IMAGE,
-    pinKey: "topo-chico",
+    image: YETI_IMAGE,
+    pinKey: "yeti",
     primaryAction: "Save Perk",
     secondaryAction: "Find Nearby",
-    related: ["partner-topo-chico", "civic-waterloo-greenway", "partner-hotel-van-zandt"],
-    tags: ["brand activation", "hydration", "events", "wellness", "nightlife", "hotel guests"],
+    related: ["partner-yeti", "civic-waterloo-greenway", "partner-hotel-van-zandt"],
+    tags: ["brand activation", "hydration station", "refill", "events", "wellness", "nightlife", "hotel guests"],
   },
   {
     id: "perk-yeti-trail-day",
     parentId: "partner-yeti",
-    name: "YETI Trail Day Perk",
+    name: "YETI Lake Trail Refill",
     brand: "YETI",
-    category: "Brand Perk / Outdoor",
+    category: "Resident Perk / Trail + Lake",
     latitude: 30.258,
     longitude: -97.746,
     district: "Lady Bird Lake",
     address: "Lady Bird Lake, Austin, TX 78701",
-    summary: "A saveable outdoor gear moment for lake walks, event days, and downtown plans that move outside.",
-    description: "The YETI Trail Day perk gives residents engraving or event-day gear value at participating YETI moments near trails, hotels, outdoor events, and lake routines.",
-    offer: "Resident engraving or event-day gear benefit at participating YETI moments.",
-    campaignObjective: "Make YETI visible when downtown plans become outdoor, event-led, or hospitality-led.",
-    partnerInsight: "Strongest around trail movement, hotel guests, event arrivals, and outdoor weekend plans.",
-    audience: "Residents, visitors, hotel guests, and eventgoers with Austin outdoor intent.",
+    summary: "A resident refill and customization stop for lake walks, paddle plans, outdoor events, and downtown mornings that move outside.",
+    description: "YETI Lake Trail Refill gives residents one useful next step before or after the trail: find the refill moment, pair it with a nearby lake route, and use an engraving window when the activation is live.",
+    offer: "Resident refill stop and engraving window during published YETI trail-day activations.",
+    deals_offers: "Resident refill stop and engraving window",
+    perkValue: "Cold-water refill context plus YETI engraving access when active.",
+    perk_terms: "Show your Resident Pass at a participating YETI station or store window. Activation windows, inventory, and staff availability may vary.",
+    campaignObjective: "Make YETI useful when downtown plans become outdoor, event-led, lake-adjacent, or hospitality-led.",
+    partnerInsight: "Strongest around trail movement, hotel guests, paddle plans, event arrivals, and warm-weather weekend mornings.",
+    audience: "Residents, hotel guests, trail users, paddle groups, visitors, and eventgoers already moving around Lady Bird Lake.",
     image: YETI_IMAGE,
+    heroImage: PANEL_LADY_BIRD_BIKE_IMAGE,
     pinKey: "yeti",
-    primaryAction: "Save Perk",
-    secondaryAction: "View Route",
-    related: ["partner-yeti", "civic-waterloo-greenway", "partner-four-seasons"],
-    tags: ["brand activation", "outdoor", "trail", "events", "hotel guests"],
+    primaryAction: "Use Perk",
+    secondaryAction: "Find Trail Stops",
+    related: ["partner-yeti", "perk-yeti-downtown-hydration", "civic-waterloo-greenway", "partner-four-seasons"],
+    tags: ["resident perk", "YETI", "refill", "engraving", "trail", "lake", "paddle", "events", "hotel guests"],
   },
   {
     id: "perk-rivian-waterfront-drive",
@@ -164,6 +194,7 @@ const BRAND_ACTIVATION_PERKS = [
     partnerInsight: "Best around brunch, fitness, hotel arrivals, trail mornings, event routes, and residents already planning the next stop.",
     audience: "Downtown residents, hotel guests, wellness groups, trail users, brunch plans, and mobility-curious visitors.",
     image: RIVIAN_IMAGE,
+    heroImage: PANEL_LADY_BIRD_BIKE_IMAGE,
     pinKey: "rivian",
     primaryAction: "Request Test Drive",
     secondaryAction: "Save Perk",
@@ -219,22 +250,22 @@ const BRAND_ACTIVATION_PERKS = [
   {
     id: "perk-fine-eyewear-style-stop",
     parentId: "partner-fine-eyewear",
-    name: "Fine Eyewear - Style Stop",
+    name: "Fine Eyewear Local Lens Rate",
     brand: "Fine Eyewear",
-    category: "Brand Activation / Retail + Style",
+    category: "Campaign Perk / Vision + Discovery",
     latitude: 30.261,
     longitude: -97.741,
     district: "Congress",
     address: "Downtown Austin, TX 78701",
-    summary: "A downtown style stop for residents and visitors looking for a quick eyewear, accessory, or shopping moment near the route.",
-    description: "Fine Eyewear belongs in the Downtown Perks Brand Activations layer as a style-focused retail stop for resident shopping routes, hotel guest discovery paths, and measurable partner campaigns.",
-    offer: "Partner-approved style stop offer, accessory credit, eyewear consult, or Perks Card prompt.",
-    campaignObjective: "Feature Fine Eyewear inside the Brand Activations layer and connect it to retail, style, hotel guest, and resident discovery routes.",
-    partnerInsight: "Use Fine Eyewear as a style-oriented retail stop that can convert nearby residents, hotel guests, and downtown workers through a simple route-based shopping prompt.",
+    summary: "The Fine Eyewear offer connected to the See Austin Differently trail with DANA.",
+    description: "Residents and visitors can follow the See Austin Differently trail, then use their Downtown Perks Card for the Fine Eyewear Local Lens Rate, lens cleaning, styling guidance, and Golden Hour walk invitations.",
+    offer: "Local Lens Rate, complimentary lens cleaning, styling guidance, and Golden Hour walk invitations.",
+    campaignObjective: "Use DANA-connected downtown discovery to move residents from civic route interest into saves, trail starts, QR scans, directions, and Local Lens Rate redemptions.",
+    partnerInsight: "This works because the offer is tied to a real reason to walk: Waterloo, public-space storytelling, Golden Hour events, and a clear Fine Eyewear benefit at the end of the trail.",
     audience: "Downtown residents, visitors, hotel guests, downtown workers, shoppers, and brand activation audiences.",
     image: FINE_EYEWEAR_IMAGE,
     pinKey: "fine-eyewear",
-    primaryAction: "Open Offer",
+    primaryAction: "Use Local Lens Rate",
     secondaryAction: "Start Trail",
     related: ["partner-fine-eyewear", "campaign-see-austin-differently-fine-eyewear", "discovery-waterloo-reflection-point", "civic-waterloo-greenway"],
     tags: ["brand activation", "eyewear", "retail service", "styling", "see austin differently", "waterloo greenway", "discovery trail"],
@@ -620,7 +651,7 @@ const DOWNTOWN_NEIGHBORHOOD_ENTITIES = [
     description: "Downtown Austin is a collection of distinct places, each with its own pace, personality, and daily routine.",
     drawerHeadline: "Every block tells a different story.",
     drawerBody: "Use this guide to compare Rainey, Seaholm, 2nd Street, and Red River before choosing where to live, spend the afternoon, or build a campaign.",
-    image: RAINEY_CONTEXT_IMAGE,
+    image: PANEL_DOWNTOWN_WALK_IMAGE,
     tags: ["neighborhoods", "district guide", "residential", "walkability", "downtown living", "explore downtown"],
     searchKeywords: ["downtown neighborhoods", "rainey", "seaholm", "2nd street", "red river", "where to live downtown"],
     bestFor: ["Compare neighborhoods", "Find where to live", "Plan an afternoon", "Explore downtown"],
@@ -783,6 +814,254 @@ const DOWNTOWN_NEIGHBORHOOD_ENTITIES = [
     primaryAction: "See What's On",
     secondaryAction: "Save Neighborhood",
     actions: ["See What's On", "Save Neighborhood", "Directions", "Share"],
+  },
+];
+
+const PASEO_BUILDING_NETWORK_GALLERY = [
+  PASEO_DAYDREAMER_IMAGE,
+  PASEO_ROOFTOP_POOL_IMAGE,
+  PASEO_GYM_IMAGE,
+  PASEO_AMENITY_IMAGE,
+  SHARED_ACCESS_AMENITY_IMAGE,
+  SHARED_ACCESS_DOWNTOWN_LAKE_IMAGE,
+  SHARED_ACCESS_WATERLOO_IMAGE,
+  PASEO_EXTERIOR_IMAGE,
+];
+
+const SHARED_ACCESS_NETWORK_GALLERY = [
+  SHARED_ACCESS_700_RED_RIVER_IMAGE,
+  SHARED_ACCESS_AMENITY_IMAGE,
+  SHARED_ACCESS_DOWNTOWN_LAKE_IMAGE,
+  SHARED_ACCESS_WATERLOO_IMAGE,
+  SHARED_ACCESS_COMMUNITY_IMAGE,
+  SHARED_ACCESS_JAZZ_IMAGE,
+];
+
+const BUILDING_AMENITY_NETWORK_ENTITIES = [
+  {
+    id: "building-network-paseo-daydreamer-lobby",
+    name: "Daydreamer at Paseo",
+    type: "property",
+    kind: "shared_amenity",
+    entityType: "building_network_amenity",
+    partnerType: "properties",
+    category: "Building Network / Shared Amenity",
+    category_key: categoryKey([
+      "building network",
+      "shared amenity",
+      "resident access",
+      "paseo",
+      "daydreamer",
+      "coffee",
+      "lobby",
+      "workspace",
+      "perks",
+      "properties",
+      "rainey",
+    ]),
+    latitude: 30.2607,
+    longitude: -97.7387,
+    district: "Rainey",
+    address: "Paseo, Rainey Street District, Austin TX 78701",
+    image: PASEO_DAYDREAMER_IMAGE,
+    heroImage: PASEO_DAYDREAMER_IMAGE,
+    galleryImages: PASEO_BUILDING_NETWORK_GALLERY,
+    pinKey: "property",
+    overview: "A resident-facing building network stop anchored by Paseo’s lobby hospitality and neighborhood access.",
+    summary: "A calm lobby coffee and work moment for residents exploring building-to-building benefits.",
+    residentSummary: "Use this as a nearby resident access point for coffee, laptop time, and a softer start before exploring Rainey.",
+    partnerSummary: "Paseo can anchor a building-network benefit that introduces residents to lobby hospitality, local retail, and nearby places.",
+    sharedAmenities: ["Lobby coffee", "Soft seating", "Work-friendly tables", "Resident meet-up setting"],
+    residentPerk: "Building-network access is handled one participating property at a time. Residents should confirm eligibility from their Downtown Perks Card before visiting.",
+    secretSauce: "It turns a lobby into a useful neighborhood starting point instead of another closed-off building amenity.",
+    hiddenGems: ["Daydreamer coffee", "Rainey dinner nearby", "Trail walk afterward"],
+    campaignAlignment: ["Resident welcome", "Coffee before work", "Building-to-building amenity sharing"],
+    residentActions: [
+      { label: "Save", type: "save" },
+      { label: "Directions", type: "directions" },
+      { label: "View benefits", type: "section" },
+    ],
+    partnerActions: [
+      { label: "Build access plan", type: "campaign" },
+      { label: "Review audience", type: "audience" },
+      { label: "View report", type: "reports" },
+    ],
+    residentContextLabels: ["Coffee", "Workspace", "Resident access"],
+    partnerContextLabels: ["Building network", "Rainey", "Resident activation"],
+    searchKeywords: ["shared amenities", "building network", "daydreamer", "paseo", "resident coffee", "workspace", "rainey"],
+    sourceUrl: "/partners/building-network",
+    verificationStatus: "Building-network pilot. Access is published only for participating properties and eligible residents.",
+    residentialContentSystem: "canonical-residential-mixed-use",
+    datasetLayer: "Building Network Perks",
+    source: "Downtown Perks building network amenity layer",
+  },
+  {
+    id: "building-network-paseo-rooftop-pool",
+    name: "Paseo Rooftop Pool Access",
+    type: "property",
+    kind: "shared_amenity",
+    entityType: "building_network_amenity",
+    partnerType: "properties",
+    category: "Building Network / Pool Access",
+    category_key: categoryKey([
+      "building network",
+      "shared amenity",
+      "resident access",
+      "paseo",
+      "rooftop pool",
+      "pool",
+      "wellness",
+      "perks",
+      "properties",
+      "rainey",
+    ]),
+    latitude: 30.26078,
+    longitude: -97.73862,
+    district: "Rainey",
+    address: "Paseo, Rainey Street District, Austin TX 78701",
+    image: PASEO_ROOFTOP_POOL_IMAGE,
+    heroImage: PASEO_ROOFTOP_POOL_IMAGE,
+    galleryImages: [PASEO_ROOFTOP_POOL_IMAGE, SHARED_ACCESS_AMENITY_IMAGE, SHARED_ACCESS_DOWNTOWN_LAKE_IMAGE, PASEO_AMENITY_IMAGE, PASEO_EXTERIOR_IMAGE],
+    pinKey: "property",
+    overview: "A featured shared-amenity concept for residents when a building has approved pool access through Downtown Perks.",
+    summary: "A rooftop pool benefit designed for eligible residents when access is available.",
+    residentSummary: "Check your Downtown Perks Card before visiting. If your building is eligible, this is the monthly shared-amenity spotlight.",
+    partnerSummary: "A pool-access spotlight can show how one approved amenity drives resident saves, directions, QR views, and return visits.",
+    sharedAmenities: ["Rooftop pool", "Sun deck", "Skyline seating", "Resident access window"],
+    residentPerk: "Monthly shared-amenity access for eligible resident-card holders when Paseo and the resident’s home building approve the access window.",
+    secretSauce: "It gives residents one clear benefit to understand and use, instead of overwhelming them with every amenity at once.",
+    hiddenGems: ["Sunset pool window", "Rainey dinner after", "Trail walk before"],
+    campaignAlignment: ["Shared pool access", "Resident retention", "Summer wellness"],
+    residentActions: [
+      { label: "Save", type: "save" },
+      { label: "Directions", type: "directions" },
+      { label: "View benefits", type: "section" },
+    ],
+    partnerActions: [
+      { label: "Plan access", type: "campaign" },
+      { label: "Review audience", type: "audience" },
+      { label: "View report", type: "reports" },
+    ],
+    residentContextLabels: ["Pool", "Rooftop", "Eligible residents"],
+    partnerContextLabels: ["Amenity share", "Monthly access", "Resident value"],
+    searchKeywords: ["shared amenities", "pool access", "paseo pool", "resident pool", "building network", "rooftop", "rainey"],
+    sourceUrl: "/partners/building-network",
+    verificationStatus: "Building-network pilot. Pool access requires eligibility and participating-building approval.",
+    residentialContentSystem: "canonical-residential-mixed-use",
+    datasetLayer: "Building Network Perks",
+    source: "Downtown Perks building network amenity layer",
+  },
+  {
+    id: "building-network-paseo-fitness-recovery",
+    name: "Paseo Fitness and Recovery",
+    type: "property",
+    kind: "shared_amenity",
+    entityType: "building_network_amenity",
+    partnerType: "properties",
+    category: "Building Network / Fitness + Wellness",
+    category_key: categoryKey([
+      "building network",
+      "shared amenity",
+      "resident access",
+      "paseo",
+      "fitness",
+      "gym",
+      "wellness",
+      "recovery",
+      "perks",
+      "properties",
+      "rainey",
+    ]),
+    latitude: 30.26062,
+    longitude: -97.73878,
+    district: "Rainey",
+    address: "Paseo, Rainey Street District, Austin TX 78701",
+    image: PASEO_GYM_IMAGE,
+    heroImage: PASEO_GYM_IMAGE,
+    galleryImages: [PASEO_GYM_IMAGE, SHARED_ACCESS_WATERLOO_IMAGE, SHARED_ACCESS_AMENITY_IMAGE, PASEO_AMENITY_IMAGE, PASEO_ROOFTOP_POOL_IMAGE],
+    pinKey: "property",
+    overview: "A building-network wellness stop for residents looking for a practical fitness or recovery benefit nearby.",
+    summary: "Fitness and recovery access for eligible residents when a participating property opens an approved window.",
+    residentSummary: "A useful wellness benefit to save when you want a nearby gym, recovery, or low-key reset close to Rainey.",
+    partnerSummary: "Fitness and recovery access gives properties a practical resident benefit that can be measured through saves, directions, and card views.",
+    sharedAmenities: ["Fitness center", "Recovery lounge", "Wellness programming", "Resident access window"],
+    residentPerk: "Eligible resident-card holders can view available access windows when a participating property publishes them.",
+    secretSauce: "Wellness access is easy to understand, easy to save, and useful enough to bring residents back.",
+    hiddenGems: ["Morning workout", "Recovery before dinner", "Trail connection nearby"],
+    campaignAlignment: ["Wellness access", "Resident activation", "Building network launch"],
+    residentActions: [
+      { label: "Save", type: "save" },
+      { label: "Directions", type: "directions" },
+      { label: "View benefits", type: "section" },
+    ],
+    partnerActions: [
+      { label: "Plan wellness access", type: "campaign" },
+      { label: "Review audience", type: "audience" },
+      { label: "View report", type: "reports" },
+    ],
+    residentContextLabels: ["Fitness", "Wellness", "Resident access"],
+    partnerContextLabels: ["Wellness", "Amenity share", "Resident retention"],
+    searchKeywords: ["shared amenities", "fitness", "gym", "wellness", "recovery", "paseo", "building network", "resident access"],
+    sourceUrl: "/partners/building-network",
+    verificationStatus: "Building-network pilot. Access requires participating-building approval and resident eligibility.",
+    residentialContentSystem: "canonical-residential-mixed-use",
+    datasetLayer: "Building Network Perks",
+    source: "Downtown Perks building network amenity layer",
+  },
+  {
+    id: "building-network-700-river-shared-access",
+    name: "700 River Shared Access",
+    type: "property",
+    kind: "shared_amenity",
+    entityType: "building_network_amenity",
+    partnerType: "properties",
+    category: "Building Network / Shared Amenity",
+    category_key: categoryKey([
+      "building network",
+      "shared amenity",
+      "resident access",
+      "700 river",
+      "700 red river",
+      "rainey",
+      "lake access",
+      "amenities",
+      "properties",
+    ]),
+    latitude: 30.26,
+    longitude: -97.7382,
+    district: "Rainey",
+    address: "700 River St, Austin TX 78701",
+    image: SHARED_ACCESS_700_RED_RIVER_IMAGE,
+    heroImage: SHARED_ACCESS_700_RED_RIVER_IMAGE,
+    galleryImages: SHARED_ACCESS_NETWORK_GALLERY,
+    pinKey: "property",
+    overview: "A shared-access building-network stop for residents near Rainey and Lady Bird Lake.",
+    summary: "A resident amenity access point tied to 700 River and the downtown building network.",
+    residentSummary: "Save this if your Downtown Perks Card shows building-network eligibility for 700 River access.",
+    partnerSummary: "700 River can be presented as a focused shared-access stop for eligible residents, with clear saves, directions, and card views.",
+    sharedAmenities: ["Resident access window", "Downtown lake connection", "Rainey proximity", "Shared amenity network"],
+    residentPerk: "Shared-access availability depends on participating-building approval and the resident’s Downtown Perks Card eligibility.",
+    secretSauce: "It gives residents one useful reason to understand the building network without opening every amenity at once.",
+    hiddenGems: ["Lake walk before visiting", "Rainey dinner nearby", "Waterloo event afterward"],
+    campaignAlignment: ["Shared amenities", "Resident network access", "Rainey building benefits"],
+    residentActions: [
+      { label: "Save", type: "save" },
+      { label: "Directions", type: "directions" },
+      { label: "View benefits", type: "section" },
+    ],
+    partnerActions: [
+      { label: "Configure access", type: "campaign" },
+      { label: "Review audience", type: "audience" },
+      { label: "View report", type: "reports" },
+    ],
+    residentContextLabels: ["Shared access", "Rainey", "Eligible residents"],
+    partnerContextLabels: ["Building network", "Amenity access", "Resident value"],
+    searchKeywords: ["shared amenities", "700 river", "700 red river", "resident access", "building network", "rainey", "lake access"],
+    sourceUrl: "/partners/building-network",
+    verificationStatus: "Building-network pilot. Access requires participating-building approval and resident eligibility.",
+    residentialContentSystem: "canonical-residential-mixed-use",
+    datasetLayer: "Building Network Perks",
+    source: "Downtown Perks building network amenity layer",
   },
 ];
 
@@ -981,6 +1260,7 @@ export const supplementalMapEntities = [
   ...FOUR_SEASONS_EXPERIENCE_ENTITIES.map((record) => entity(record)),
   ...hospitalityContentLibraryEntities.map((record) => entity(record)),
   ...residentialMixedUseEntities.map((record) => entity(record)),
+  ...BUILDING_AMENITY_NETWORK_ENTITIES.map((record) => entity(record)),
   ...RIVIAN_CAMPAIGN_LAYERS.map((record) => entity(record)),
   ...LOCAL_SERVICE_ENTITIES,
   ...AUSTIN_CIVIC_EVENT_ENTITIES.map((record) => entity({
@@ -1323,7 +1603,7 @@ export const supplementalMapEntities = [
   entity({ id: "partner-comedor", name: "Comedor", type: "venue", partnerType: "venues", category: "Venue / Restaurant", category_key: "restaurant_food venue perk", latitude: 30.2676, longitude: -97.7424, district: "Congress", address: "501 Colorado St, Austin TX, 78701", summary: "Modern Mexican dining in the core of downtown.", offer: "Resident-Only Late Night Tequila Tasting", image: COMEDOR_IMAGE }),
   entity({ id: "partner-emmer-rye", name: "Emmer & Rye", type: "venue", partnerType: "venues", category: "Dining nearby", subcategory: "Seasonal dining nearby", residentLabel: "Seasonal dining nearby", category_key: "restaurant_food venue perk rainey_anchor seasonal_dining dining_nearby", latitude: 30.2591, longitude: -97.7386, district: "Rainey", address: "51 Rainey St, Austin TX, 78701", summary: "Seasonal Texas dining with a menu built around local ingredients and thoughtful hospitality.", description: "Seasonal Texas dining with a menu built around local ingredients and thoughtful hospitality.", offer: "Free appetizer with entree", image: EMMER_RYE_IMAGE, tier: "premium", tags: ["restaurant", "dining", "seasonal dining", "local ingredients", "premium", "rainey"], pin: "dining", datasetLayer: "Venues & Hospitality", annualFee: 499 }),
   entity({ id: "partner-bangers", name: "Banger's Sausage House & Beer Garden", title: "Banger's Sausage House & Beer Garden", type: "venue", partnerType: "venues", category: "Drinks nearby", subcategory: "Beer garden and live energy nearby", residentLabel: "Beer garden and live energy nearby", category_key: "bar_nightlife restaurant_food venue perk happy_hour rainey_anchor beer_garden live_music drinks_nearby", latitude: 30.2588, longitude: -97.7386, district: "Rainey", address: "79 Rainey St, Austin TX, 78701", summary: "A downtown favorite for beer, outdoor gatherings, and live music energy.", description: "A downtown favorite for beer, outdoor gatherings, and live music energy.", offer: "Free appetizer with entree", image: BANGERS_IMAGE, tier: "premium", tags: ["beer garden", "drinks nearby", "outdoor gatherings", "live music", "restaurant", "nightlife", "events", "rainey"], pin: "beer", datasetLayer: "Venues & Hospitality", annualFee: 499 }),
-  entity({ id: "partner-stay-put", name: "The Stay Put", type: "venue", partnerType: "venues", brand: "The Stay Put", category: "Venue / Live Music + Patio", category_key: "bar_nightlife venue perk happy_hour brewery rainey_anchor brand_activation stay_put live_music trivia afternoon_jazz pre_show late_night", latitude: 30.2592, longitude: -97.7382, district: "Rainey", address: "73 Rainey St, Austin TX, 78701", summary: "A Rainey stop for drinks, patio time, live programming, and easy plans before or after nearby events.", description: "The Stay Put layer shows real venue moments on the map: happy hour, afternoon jazz, trivia, sports, and late-night plans residents can actually use.", offer: "15% off Sunday-Thursday", campaignObjective: "Turn nearby intent into venue visits around Rainey moments.", partnerInsight: "Useful for after-work plans, event spillover, groups, and late-evening movement.", audience: "Residents, hotel guests, eventgoers, and groups already on Rainey.", image: "/images/map-entities/rainey-bars/stay-put-jazz.jpeg", tier: "core", tags: ["brewery", "sports-bar", "patio", "happy-hour", "rainey", "brand activation", "live music"], pin: "beer", pinKey: "stay-put", datasetLayer: "The Stay Put", suggestedModule: "Venue activation and offer report", primaryAction: "Save", secondaryAction: "Get Directions", related: ["event-monday-meetups-stay-put", "partner-hotel-van-zandt", "partner-half-step", "partner-bangers"], annualFee: 199 }),
+  entity({ id: "partner-stay-put", name: "The Stay Put", type: "venue", partnerType: "venues", brand: "The Stay Put", category: "Venue / Live Music + Patio", category_key: "bar_nightlife venue perk happy_hour brewery rainey_anchor brand_activation stay_put live_music trivia afternoon_jazz pre_show late_night", latitude: 30.2592, longitude: -97.7382, district: "Rainey", address: "73 Rainey St, Austin TX, 78701", summary: "A Rainey stop for drinks, patio time, live programming, and easy plans before or after nearby events.", description: "The Stay Put layer shows real venue moments on the map: happy hour, afternoon jazz, trivia, sports, and late-night plans residents can actually use.", offer: "15% off Sunday-Thursday", campaignObjective: "Turn nearby intent into venue visits around Rainey moments.", partnerInsight: "Useful for after-work plans, event spillover, groups, and late-evening movement.", audience: "Residents, hotel guests, eventgoers, and groups already on Rainey.", image: "/images/map-entities/rainey-bars/stay-put-jazz.jpeg", tier: "core", tags: ["brewery", "sports-bar", "patio", "happy-hour", "rainey", "brand activation", "live music"], pin: "beer", pinKey: "nightlife", datasetLayer: "The Stay Put", suggestedModule: "Venue activation and offer report", primaryAction: "Save", secondaryAction: "Get Directions", related: ["event-monday-meetups-stay-put", "partner-hotel-van-zandt", "partner-half-step", "partner-bangers"], annualFee: 199 }),
   entity({ id: "partner-lustre-pearl", name: "Lustre Pearl Rainey", type: "venue", partnerType: "venues", category: "Rainey Classic Patio Bar", category_key: "bar_nightlife venue perk happy_hour rainey_anchor", latitude: 30.2582, longitude: -97.7383, district: "Rainey", address: "94 Rainey St, Austin TX, 78701", summary: "Rainey classic patio bar with strong resident nightlife and group-plan context.", offer: "Happy hour pricing for verified residents", image: RAINEY_CONTEXT_IMAGE, tier: "core", tags: ["bar", "patio", "nightlife", "happy-hour", "rainey"], pin: "cocktail", datasetLayer: "Venues & Hospitality", annualFee: 199 }),
   entity({ id: "partner-half-step", name: "Half Step", type: "venue", partnerType: "venues", category: "Drinks nearby", subcategory: "Cocktails around the corner", residentLabel: "Cocktails around the corner", category_key: "bar_nightlife venue perk cocktail rainey_anchor drinks_nearby", latitude: 30.2586, longitude: -97.7384, district: "Rainey", address: "75 1/2 Rainey St, Austin TX, 78701", summary: "Craft cocktails and a relaxed Rainey Street atmosphere just a short walk away.", description: "Craft cocktails and a relaxed Rainey Street atmosphere just a short walk away.", offer: "Priority access for verified residents", image: HALF_STEP_IMAGE, tier: "core", tags: ["cocktails", "drinks nearby", "bar", "nightlife", "rainey"], pin: "cocktail", datasetLayer: "Venues & Hospitality", annualFee: 199 }),
   entity({ id: "partner-geraldines", name: "Geraldine's", type: "venue", partnerType: "venues", category: "Restaurant + Music", category_key: "restaurant_food live_music venue perk rainey_anchor", latitude: 30.2587, longitude: -97.7392, district: "Rainey", address: "605 Davis St, Austin TX, 78701", summary: "Upscale dining and live music destination inside Hotel Van Zandt.", offer: "Priority reservations and resident chef tasting", image: GERALDINES_IMAGE, tier: "premium", tags: ["restaurant", "music", "hotel", "premium", "rainey"], pin: "music", datasetLayer: "Venues & Hospitality", annualFee: 499 }),
@@ -1347,6 +1627,7 @@ export const supplementalMapEntities = [
     description: "Step away from the noise of the city and enter a space designed for restoration. BATHE blends traditional bathhouse culture with modern wellness practices through sauna, cold plunge, soaking pools, massage, sound immersion, and guided recovery experiences.",
     offer: "10% Off First Soak",
     image: BATHE_IMAGE,
+    heroImage: PANEL_LAKE_WELLNESS_IMAGE,
     pinKey: "wellness",
     website: "https://www.batheaustin.com",
     contact_phone: "(512) 275-6942",
@@ -1455,6 +1736,8 @@ export const supplementalMapEntities = [
     audience: "Residents, visitors, hotel guests, convention attendees, business travellers, and weekend groups.",
     image: FAIRMONT_AUSTIN_IMAGE,
     imageUrl: FAIRMONT_AUSTIN_IMAGE,
+    heroImage: FAIRMONT_AUSTIN_IMAGE,
+    galleryImages: [FAIRMONT_AUSTIN_IMAGE, PANEL_FAIRMONT_POOL_IMAGE],
     primaryAction: "View Events",
     secondaryAction: "Book Stay",
     actions: ["Save", "Directions", "Share", "Book Stay", "View Events", "Unlock Resident Offer"],
@@ -1483,7 +1766,7 @@ export const supplementalMapEntities = [
     residentSearchIntents: ["fairmont events", "rooftop pool", "live music hotel", "comedy downtown", "hotel pool day", "wellness class"],
   }),
   entity({ id: "partner-four-seasons", name: "Four Seasons", type: "hotel", partnerType: "hotels", category: "Hotel / Hospitality", category_key: "hotel_hospitality perk", latitude: 30.2607, longitude: -97.7414, district: "Congress", address: "98 San Jacinto Blvd, Austin TX, 78701", summary: "Downtown hotel partner connected to dining, spa, and resident perks.", offer: "Spa & dining resident perks", image: FOUR_SEASONS_IMAGE }),
-  entity({ id: "partner-yeti", name: "YETI", type: "brand", partnerType: "brands", brand: "YETI", category: "Brand / Austin Activation", category_key: "brand retail_business brand_activation yeti congress trail event_sponsorship hotel_guest_campaign qr product_participation", latitude: 30.258, longitude: -97.746, district: "Lady Bird Lake", address: "South Congress District, Austin TX, 78701", summary: "Outdoor gear, local movement, and everyday downtown routines.", description: "Outdoor gear, local movement, and everyday downtown routines.", offer: "Free custom engraving for verified residents", campaignObjective: "Make YETI visible when downtown plans become outdoor, event-led, or hospitality-led.", partnerInsight: "Strongest around event arrivals, trail movement, hotel guests, and district activations.", audience: "Residents, visitors, hotel guests, and eventgoers with Austin lifestyle intent.", image: YETI_IMAGE, pinKey: "yeti", datasetLayer: "YETI", primaryAction: "Open Brand Guide", secondaryAction: "View Campaign", related: ["waterloo-greenway-campaign-hub", "downtown-austin-alliance-civic-layer", "partner-four-seasons"] }),
+  entity({ id: "partner-yeti", name: "YETI", type: "brand", partnerType: "brands", brand: "YETI", category: "Brand / Austin Activation", category_key: "brand retail_business brand_activation yeti congress trail event_sponsorship hotel_guest_campaign qr product_participation", latitude: 30.258, longitude: -97.746, district: "Lady Bird Lake", address: "South Congress District, Austin TX, 78701", summary: "Outdoor gear, local movement, and everyday downtown routines.", description: "Outdoor gear, local movement, and everyday downtown routines.", offer: "Free custom engraving for verified residents", campaignObjective: "Make YETI visible when downtown plans become outdoor, event-led, or hospitality-led.", partnerInsight: "Strongest around event arrivals, trail movement, hotel guests, and district activations.", audience: "Residents, visitors, hotel guests, and eventgoers with Austin lifestyle intent.", image: YETI_IMAGE, heroImage: PANEL_LADY_BIRD_BIKE_IMAGE, pinKey: "yeti", datasetLayer: "YETI", primaryAction: "Open Brand Guide", secondaryAction: "View Campaign", related: ["waterloo-greenway-campaign-hub", "downtown-austin-alliance-civic-layer", "partner-four-seasons"] }),
   entity({ id: "partner-rivian", name: "Rivian", type: "brand", partnerType: "brands", brand: "Rivian", category: "Brand / Mobility + Experiential", category_key: "brand rivian mobility experiential ev test_drive ride_request downtown_routes", latitude: 30.26972, longitude: -97.75382, district: "Seaholm", address: "Downtown Austin, TX 78701", summary: "Rivian’s downtown brand home for test drives, event ride requests, trail mornings, hotel and residential partnerships, and live vehicle activations.", description: "Downtown Perks helps Rivian show up in everyday downtown life: coffee before the trail, workouts before brunch, dinner after a test drive, and weekend errands that become a longer plan.", offer: "Active Rivian campaign and test-drive perk nearby", campaignObjective: "Bring Rivian into real downtown routines instead of placing another ad in front of people.", partnerInsight: "Best when the vehicle is tied to a nearby reason to move: trail mornings, brunch, hotels, rooftops, concerts, wellness events, errands, and residential access.", audience: "Residents, hotel guests, eventgoers, wellness communities, visitors, and downtown workers already making plans.", image: RIVIAN_IMAGE, pinKey: "rivian", datasetLayer: "Rivian", primaryAction: "Open Campaign Layer", secondaryAction: "Request Test Drive", related: ["campaign-rivian-downtown-experience-layer", "perk-rivian-waterfront-drive", "civic-waterloo-greenway", "priority-the-waterline"] }),
   entity({ id: "partner-lululemon", name: "lululemon", type: "brand", partnerType: "brands", brand: "lululemon", category: "Brand / Wellness", category_key: "brand retail_business fitness", latitude: 30.265, longitude: -97.745, district: "2nd Street", address: "Downtown Austin, TX 78701", summary: "Wellness retail partner for resident run clubs and early access.", offer: "Private resident run club events & early access", campaignObjective: "Anchor downtown movement around a clear run-club meet-up, post-run recovery stop, and nearby resident routine.", partnerInsight: "Best around morning trail access, coffee-adjacent meetups, after-work movement, and building audiences.", audience: "Downtown residents, fitness communities, hotel guests, and wellness-minded visitors.", image: LULULEMON_IMAGE }),
   entity({ id: "partner-equinox", name: "Equinox", type: "brand", partnerType: "brands", brand: "Equinox", category: "Brand / Wellness", category_key: "brand wellness fitness", latitude: 30.2685, longitude: -97.7492, district: "Seaholm", address: "Downtown Austin, TX 78701", summary: "Premium wellness partner connected to resident movement and downtown routines.", offer: "Complimentary high-tier assessment & session", campaignObjective: "Own the after-work reset for residents and office users moving between Seaholm, towers, workouts, and recovery.", partnerInsight: "Best around class intent, assessment requests, recovery sessions, and premium wellness searches after 5 PM.", audience: "Downtown residents, office workers, hotel guests, and premium wellness users.", image: EQUINOX_IMAGE }),
@@ -1500,17 +1783,17 @@ export const supplementalMapEntities = [
     longitude: -97.741,
     district: "Congress",
     address: "Downtown Austin, TX 78701",
-    summary: "Official Vision & Discovery Partner for the See Austin Differently trail with Waterloo Greenway.",
-    description: "Fine Eyewear is positioned around how people experience downtown: design, architecture, nature, art, movement, and the details that make a walk feel worth noticing.",
-    offer: "Resident perk: 15% off frames, complimentary lens cleaning, free styling session, and Golden Hour event invitations.",
-    campaignObjective: "Make Fine Eyewear part of a permanent discovery experience rather than a one-off sunglasses sponsorship.",
-    partnerInsight: "Best placed around Waterloo Greenway, cultural routes, Golden Hour walks, photo moments, resident errands, and visitors exploring downtown.",
+    summary: "Fine Eyewear is the vision partner for See Austin Differently, a DANA-connected downtown discovery campaign.",
+    description: "Fine Eyewear becomes the practical reward at the end of a better downtown walk: residents notice Waterloo Greenway, follow DANA-connected discovery moments, and use their Downtown Perks Card for the Local Lens Rate.",
+    offer: "Resident perk: Local Lens Rate, complimentary lens cleaning, styling guidance, and Golden Hour walk invitations.",
+    campaignObjective: "Connect DANA civic discovery with measurable Fine Eyewear actions: saves, trail starts, QR scans, directions, card use, and repeat visits.",
+    partnerInsight: "Best placed around Waterloo Greenway, DANA civic storytelling, Golden Hour walks, photo moments, resident errands, and visitors exploring downtown.",
     audience: "Residents, visitors, design lovers, Waterloo eventgoers, hotel guests, and downtown workers who value style and local discovery.",
     image: FINE_EYEWEAR_IMAGE,
     pinKey: "fine-eyewear",
     website: "https://fineeyewear.net/",
     contact_phone: "+1 512-472-2020",
-    primaryAction: "Unlock Resident Perk",
+    primaryAction: "Use Local Lens Rate",
     secondaryAction: "Start Discovery Trail",
     related: ["campaign-see-austin-differently-fine-eyewear", "perk-fine-eyewear-style-stop", "civic-waterloo-greenway", "discovery-waterloo-reflection-point"],
     tags: ["Brand", "Fine Eyewear", "See Austin Differently", "Waterloo Greenway", "Discovery Trails", "Retail", "Eyewear", "Design"],
@@ -1518,8 +1801,8 @@ export const supplementalMapEntities = [
     resident_panel: {
       eyebrow: "Vision + discovery",
       title: "See Austin Differently",
-      description: "A downtown eyewear partner connected to Waterloo Greenway, Golden Hour walks, resident styling perks, and discovery markers across the park.",
-      bestFor: "Frames, lens cleaning, styling, Golden Hour events, discovery walks",
+      description: "A downtown eyewear partner connected to DANA, Waterloo Greenway, Golden Hour walks, resident perks, and discovery markers across the park.",
+      bestFor: "Local Lens Rate, lens cleaning, styling, Golden Hour events, discovery walks",
     },
   }),
   entity({
@@ -1545,7 +1828,7 @@ export const supplementalMapEntities = [
       bestFor: "Adjustments, lenses, styling",
     },
   }),
-  entity({ id: "partner-topo-chico", name: "Topo Chico", type: "brand", partnerType: "brands", brand: "Topo Chico", category: "Brand / Sparkling Mineral Water", category_key: "brand topo_chico sparkling_mineral_water hydration beverage downtown_austin", latitude: 30.2632, longitude: -97.7441, district: "Congress", address: "Downtown Austin, TX 78701", summary: "The Topo Chico brand listing for downtown hydration, events, hotel moments, and walkable Austin plans.", description: "The Topo Chico brand layer routes residents to active hydration perks, check-in moments, and campaign pins tied to downtown events, patios, hotels, wellness, and nightlife recovery.", offer: "Active hydration perks nearby", campaignObjective: "Keep Topo Chico discoverable as a brand while routing live offers to dedicated activation pins.", partnerInsight: "Best around outdoor events, hotels, patios, wellness mornings, and late-night recovery moments.", audience: "Residents, visitors, hotel guests, runners, and eventgoers moving through downtown.", image: TOPO_CHICO_IMAGE, pinKey: "topo-chico", datasetLayer: "Topo Chico", primaryAction: "View Active Perk", secondaryAction: "Save Brand", related: ["perk-topo-chico-downtown-hydration", "civic-waterloo-greenway", "event-waterloo-yoga", "partner-hotel-van-zandt"] }),
+  entity({ id: "partner-topo-chico", name: "Topo Chico", type: "brand", partnerType: "brands", brand: "Topo Chico", category: "Brand / Sparkling Mineral Water", category_key: "brand topo_chico sparkling_mineral_water beverage downtown_austin", latitude: 30.2632, longitude: -97.7441, district: "Congress", address: "Downtown Austin, TX 78701", summary: "A sparkling-water brand reference retained for beverage campaign context.", description: "Topo Chico remains available as a saved brand reference, while active hydration-station routing now points to the YETI refill experience.", offer: "No active hydration station", campaignObjective: "Keep historical beverage context separate from the current refill-station program.", partnerInsight: "Use only when a beverage-specific campaign is actually active and distributed.", audience: "Residents, visitors, hotel guests, runners, and eventgoers moving through downtown.", image: TOPO_CHICO_IMAGE, pinKey: "topo-chico", datasetLayer: "Topo Chico", primaryAction: "Save Brand", secondaryAction: "Explore Hydration Stations", related: ["perk-yeti-downtown-hydration", "civic-waterloo-greenway", "event-waterloo-yoga", "partner-hotel-van-zandt"] }),
 
   entity({ id: "inspired-closets-austin", name: "Inspired Closets Austin", type: "service", partnerType: "brands", brand: "Inspired Closets Austin", category: "Service / Home Organization", category_key: "service inspired_closets home_organization closet_systems residential_services downtown_living", latitude: 30.26472, longitude: -97.74456, district: "Congress", address: "Downtown Austin, TX 78701", summary: "Custom closet and home-organization service for Austin residents planning better storage, move-ins, or a home reset.", description: "This is the Inspired Closets Austin service listing. The resident consult campaign appears separately as its own perk pin so service discovery and activation performance stay clean.", offer: "Resident consult perk available", campaignObjective: "Keep the service listing clear while routing live resident offers to dedicated activation pins.", partnerInsight: "Best near residential towers, new resident onboarding, and home-organization moments.", audience: "Downtown residents, new movers, property teams, and homeowners comparing storage options.", image: PROPERTY_IMAGE, pinKey: "service", datasetLayer: "Inspired Closets Austin", primaryAction: "View Consult Perk", secondaryAction: "Save Service", related: ["perk-inspired-closets-move-in", "priority-the-waterline", "property-the-shore"] }),
 
@@ -1623,7 +1906,7 @@ export const supplementalMapEntities = [
       ],
     },
   }),
-  entity({ id: "civic-waterloo-greenway", name: "Waterloo Greenway", type: "civic", partnerType: "civic", category: "Civic / Public Space", category_key: "civic public space district waterloo greenway parks activations discovery_trail see_austin_differently", latitude: 30.2736, longitude: -97.7352, district: "Waterloo", address: "Waterloo Park, Austin TX, 78701", summary: "Urban greenway, public space, events, trails, and community programming in downtown Austin.", description: "Waterloo Greenway connects people to nature, culture, art, community, and downtown movement through a 1.5-mile park system and year-round programming.", offer: "Home of the See Austin Differently discovery trail with Fine Eyewear.", image: WATERLOO_CIVIC_IMAGE, pinKey: "waterloo-greenway", tags: ["Civic", "Events", "Parks", "Greenway", "Public Space", "Discovery Trails", "See Austin Differently"], datasetLayer: "civic", related: ["campaign-see-austin-differently-fine-eyewear", "partner-fine-eyewear", "discovery-waterloo-reflection-point"], primaryAction: "Start Discovery Trail", secondaryAction: "View Events" }),
+  entity({ id: "civic-waterloo-greenway", name: "Waterloo Greenway", type: "civic", partnerType: "civic", category: "Civic / Public Space", category_key: "civic public space district waterloo greenway parks activations discovery_trail see_austin_differently", latitude: 30.2736, longitude: -97.7352, district: "Waterloo", address: "Waterloo Park, Austin TX, 78701", summary: "Urban greenway, public space, events, trails, and community programming in downtown Austin.", description: "Waterloo Greenway connects people to nature, culture, art, community, and downtown movement through a 1.5-mile park system and year-round programming.", offer: "Home of the DANA-connected See Austin Differently discovery trail with Fine Eyewear.", image: WATERLOO_CIVIC_IMAGE, pinKey: "waterloo-greenway", tags: ["Civic", "Events", "Parks", "Greenway", "Public Space", "Discovery Trails", "See Austin Differently"], datasetLayer: "civic", related: ["campaign-see-austin-differently-fine-eyewear", "partner-fine-eyewear", "discovery-waterloo-reflection-point"], primaryAction: "Start Discovery Trail", secondaryAction: "View Events" }),
   entity({
     id: "discovery-waterloo-reflection-point",
     name: "Waterloo Reflection Point",

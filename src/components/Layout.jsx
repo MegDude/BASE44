@@ -98,7 +98,6 @@ export default function Layout() {
     isProductRoute ||
     pathname === "/card" ||
     pathname === "/app" ||
-    pathname === "/app/map" ||
     pathname === "/map" ||
     pathname === "/explore" ||
     pathname === "/downtown-perks/explore" ||
@@ -125,7 +124,7 @@ export default function Layout() {
     if (typeof window !== "undefined") {
       window.sessionStorage?.setItem("dp-opening-story-seen", "true");
     }
-    navigate(result.route?.replace(/^\/map(?=[?#]|$)/, "/app") || `/app?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
   return (
