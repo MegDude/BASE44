@@ -485,6 +485,77 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-transform: none !important;
 }
 
+/* Full-width iOS tab bar with a deeper, optically centered touch area. */
+@media (max-width: 767px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map {
+    --dp-bottom-nav-height: 80px;
+    --dp-map-bottom-nav-height: 80px;
+    --dp-map-bottom-nav-clearance: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map :is(
+    .dp-map-bottom-nav-shell,
+    .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav)
+  ) {
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map nav.dp-map-bottom-nav.dp-map-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 80px !important;
+    height: 80px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(11, 31, 51, 0.1) !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    box-shadow: 0 -6px 18px rgba(11, 31, 51, 0.045) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) {
+    display: grid !important;
+    grid-template-rows: 24px 16px !important;
+    place-content: center !important;
+    place-items: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 80px !important;
+    height: 80px !important;
+    margin: 0 !important;
+    padding: 10px 2px 12px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) :is(svg, .lucide) {
+    align-self: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map nav.dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) > span:not(.dp-nav-activity-badge) {
+    align-self: center !important;
+    margin: 0 !important;
+    line-height: 16px !important;
+  }
+}
+
 /* Drawer content governance: concise, legible, and consistent at iPhone width. */
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root #dp-canonical-map aside.dp-map-drawer-shell :is(
   .dp-entity-title,
