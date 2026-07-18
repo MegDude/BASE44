@@ -11,6 +11,17 @@ import {
 const AuthContext = createContext();
 const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
 
+function readSafeReturnPath() {
+  if (typeof window === "undefined") return "";
+  try {
+    const requestedPath = new URLSearchParams(window.location.search).get("returnTo") || "";
+    if (!requestedPath.startsWith("/") || requestedPath.startsWith("//")) return "";
+    return requestedPath;
+  } catch {
+    return "";
+  }
+}
+
 function readPartnerSession() {
   if (typeof window === "undefined") return null;
   if (!canUseProductionAccountAccess()) return null;
@@ -160,7 +171,7 @@ export const AuthProvider = ({ children }) => {
 
     const partnerType = profile.partner_type || profile.account_type || "partner";
     const accessRole = partnerType === "resident" ? "resident" : "partner";
-    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/map?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
+    const redirectPath = readSafeReturnPath() || profile.redirectPath || (partnerType === "resident" ? "/map?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
     const organizationName = profile.organization_name || profile.company || "Downtown Perks Account";
     const email = profile.email || profile.signup_email || "";
 
@@ -234,17 +245,20 @@ export const AuthProvider = ({ children }) => {
       const message = normalizedError.includes("email_not_confirmed") || normalizedError.includes("email not confirmed")
         ? "Confirm your email before signing in with a password."
         : normalizedError.includes("invalid_credentials") || normalizedError.includes("invalid login credentials")
-          ? "Email or password is incorrect."
+          ? "Email or password is incorrect. Use Email link if this account was created without a password."
           : error.message || "Password sign-in could not be completed.";
       setAuthError(message);
       return { type: "error", code: error.code || "sign_in_failed", message };
     }
 
     applySupabaseSession(data?.session);
+    const redirectPath = readSafeReturnPath() || credentials.redirectPath || "/partner-workspace/overview";
+    window.location.assign(redirectPath);
     return {
       type: "supabase_password",
       user: data?.user || null,
       session: data?.session || null,
+      redirectPath,
     };
   };
 
