@@ -10,6 +10,8 @@ const residentSignInSource = readFileSync(join(root, "src/pages/ResidentSignIn.j
 const residentAccessSource = readFileSync(join(root, "src/pages/ResidentAccess.jsx"), "utf8");
 const residentAccessApiSource = readFileSync(join(root, "api/resident-access.js"), "utf8");
 const layoutSource = readFileSync(join(root, "src/components/Layout.jsx"), "utf8");
+const supabaseClientSource = readFileSync(join(root, "src/lib/supabase/client.ts"), "utf8");
+const productionGuardSource = readFileSync(join(root, "src/lib/productionGuards.ts"), "utf8");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
@@ -41,6 +43,8 @@ assert.doesNotMatch(appSource, /PublicMapGateway/);
 assert.match(appSource, /path="\/auth\/callback"/);
 assert.match(appSource, /path="\/sign-in"/);
 assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
+assert.match(supabaseClientSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
+assert.match(productionGuardSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(authSource, /auth\.signUp\(\{/);
 assert.match(authSource, /auth\.resend\(\{/);
 assert.match(authSource, /email_not_confirmed/);

@@ -15,7 +15,10 @@ export function isProductionLike(env: ImportMetaEnv = import.meta.env): boolean 
 }
 
 export function hasFrontendSupabaseAuth(env: ImportMetaEnv = import.meta.env): boolean {
-  return hasValue(env.VITE_SUPABASE_URL) && hasValue(env.VITE_SUPABASE_ANON_KEY);
+  return hasValue(env.VITE_SUPABASE_URL) && (
+    hasValue(env.VITE_SUPABASE_PUBLISHABLE_KEY) ||
+    hasValue(env.VITE_SUPABASE_ANON_KEY)
+  );
 }
 
 export function getFrontendProductionGuard(env: ImportMetaEnv = import.meta.env) {

@@ -9901,11 +9901,11 @@ html body #root .dp-partner-page :is(.grid, [class*="grid-cols"]) {
   gap: clamp(10px, 3vw, 18px) !important;
 }
 
-html body #root .dp-partner-page :is(.dp-action-link, .dp-panel-back, .dp-layout-back, button, a) {
+html body #root .dp-partner-page :is(.dp-action-link, .dp-panel-back, button, a) {
   text-wrap: nowrap !important;
 }
 
-html body #root .dp-partner-page :is(.dp-panel-back, .dp-layout-back, [aria-label*="Back"], [aria-label*="Close"]) {
+html body #root .dp-partner-page :is(.dp-panel-back, [aria-label*="Back"], [aria-label*="Close"]) {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;

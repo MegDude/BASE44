@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { base44 } from "@/api/base44Client";
 import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import "@/styles/workspace-profile-editor.css";
@@ -20,13 +21,16 @@ import {
 } from "@/lib/productionGuards";
 import { canViewEverything } from "@/lib/auth/session";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
+import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
+import { queryAgent } from "@/services/agent/agentClient";
+import "@/styles/partner-analytics-decision-system.css";
 
 // ─── ENTITIES ─────────────────────────────────────────────────────────────────
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
 
 const WORKSPACE_NAV_GROUPS = [
-  { label: "Workspace", ids: ["overview", "map", "profile"] },
+  { label: "Workspace", ids: ["overview", "assistant", "map", "profile"] },
   { label: "Publish", ids: ["offers", "events", "campaigns", "broadcasts"] },
   { label: "Review", ids: ["audience", "surveys", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
@@ -106,6 +110,7 @@ const PARTNER_LIFECYCLE_LINKS = [
 ];
 
 const WORKSPACE_CAPABILITY_LINKS = [
+  { label: "Ask the Map", href: "/partner-workspace/assistant", description: "Use current places, campaigns, and results to decide what to do next." },
   { label: "Map Listing", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
   { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, approvals, and live offers." },
   { label: "Events", href: "/partner-workspace/events", description: "Publish events and see how people find them on the map." },
@@ -188,6 +193,7 @@ function friendlyWorkspaceStatus(status) {
 const WORKSPACE_STORAGE_PREFIX = "dp_partner_workspace";
 
 function getWorkspaceTabFromPath(pathname) {
+  if (pathname.includes("/assistant") || pathname.includes("/ask-map")) return "assistant";
   if (pathname.includes("/map")) return "map";
   if (pathname.includes("/offers") || pathname.includes("/perks")) return "offers";
   if (pathname.includes("/campaigns")) return "campaigns";
@@ -551,22 +557,12 @@ export default function PartnerWorkspace() {
     const activeItem = PARTNER_WORKSPACE_NAV.find((item) => item.id === tab);
     if (!activeItem || location.pathname === activeItem.href || location.pathname.startsWith(`${activeItem.href}/`)) return;
     if (!location.pathname.startsWith("/partner-workspace")) return;
-    navigate(activeItem.href, { replace: true });
-  }, [tab, location.pathname, navigate]);
+    navigate(`${activeItem.href}${location.search}${location.hash}`, { replace: true });
+  }, [tab, location.pathname, location.search, location.hash, navigate]);
 
   function handleSignIn() {
     if (!accountAccessEnabled) return;
     navigate("/partners/sign-in");
-  }
-
-  function handleWorkspaceBack() {
-    const fallback = location.pathname === "/partner-workspace/overview" ? "/partners" : "/partner-workspace/overview";
-    const routerHistoryIndex = window.history.state?.idx;
-    if (Number.isInteger(routerHistoryIndex) && routerHistoryIndex > 0) {
-      navigate(-1);
-      return;
-    }
-    navigate(fallback);
   }
 
   function handleWorkspaceSearch() {
@@ -582,7 +578,7 @@ export default function PartnerWorkspace() {
   }
 
   return (
-    <div className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+    <div data-workspace-view={tab} className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
       <header className="dp-partner-workspace-header">
         <div className="dp-partner-workspace-header-inner">
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
@@ -593,7 +589,6 @@ export default function PartnerWorkspace() {
             <span>Workspace</span>
           </Link>
           <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-            <button type="button" className="dp-partner-workspace-back" onClick={handleWorkspaceBack} aria-label="Go back"><ChevronLeft aria-hidden="true" /><span>Back</span></button>
             <button type="button" onClick={handleWorkspaceSearch} aria-label="Search workspace"><Search aria-hidden="true" /></button>
             {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
@@ -641,6 +636,7 @@ export default function PartnerWorkspace() {
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
+          {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
@@ -741,144 +737,351 @@ function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
   );
 }
 
+const DOWNTOWN_AUSTIN_REPORT_CONTEXT = [
+  {
+    value: "2,600+",
+    label: "homes under construction",
+    detail: "Downtown residential projects reported under construction at the end of Q1 2025.",
+    source: "Downtown Austin Alliance annual report",
+    href: "https://downtownaustin.com/annual-report-2025/",
+  },
+  {
+    value: "890+",
+    label: "hotel rooms in the pipeline",
+    detail: "Hotel rooms in downtown projects reported under construction at the end of Q1 2025.",
+    source: "Downtown Austin Alliance annual report",
+    href: "https://downtownaustin.com/annual-report-2025/",
+  },
+  {
+    value: "15,710",
+    label: "hospitality contacts",
+    detail: "Downtown Ambassador hospitality contacts recorded year to date through June 2026.",
+    source: "Downtown Austin Dashboard",
+    href: "https://downtownaustin.com/what-we-do/research/downtown-dashboard/",
+  },
+  {
+    value: "6.6M",
+    label: "square feet being built",
+    detail: "Thirteen downtown projects were reported under construction at the end of Q1 2025.",
+    source: "Downtown Austin Alliance annual report",
+    href: "https://downtownaustin.com/annual-report-2025/",
+  },
+];
+
 function WorkspaceReports() {
-  const monthlyReports = [
+  const location = useLocation();
+  const requestedOrganizationId = new URLSearchParams(location.search).get("organizationId");
+  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId) || demoOrganizations[0];
+  const hasVerifiedSearchSnapshot = organization?.id === "demo-org-legends-real-estate";
+  const report = hasVerifiedSearchSnapshot ? LEGENDS_WORKSPACE_SEO_REPORT : null;
+  const reportQuery = organization?.id ? `?organizationId=${encodeURIComponent(organization.id)}` : "";
+  const impressionRows = [...(report?.keywordMetrics || [])]
+    .filter((metric) => Number(metric.impressions || 0) > 0)
+    .sort((a, b) => Number(b.impressions || 0) - Number(a.impressions || 0))
+    .slice(0, 6);
+  const clickRows = [...(report?.keywordMetrics || [])]
+    .filter((metric) => Number(metric.clicks || 0) > 0)
+    .sort((a, b) => Number(b.clicks || 0) - Number(a.clicks || 0))
+    .slice(0, 6);
+  const maxImpressions = Math.max(...impressionRows.map((metric) => Number(metric.impressions || 0)), 1);
+  const maxClicks = Math.max(...clickRows.map((metric) => Number(metric.clicks || 0)), 1);
+  const resultMetrics = report ? [
+    [formatWorkspaceNumber(report.summary.organicImpressions), "Search impressions", "Visible keywords in the verified snapshot"],
+    [formatWorkspaceNumber(report.summary.organicClicks), "Search clicks", "Clicks recorded across the visible keyword set"],
+    [formatWorkspaceNumber(report.summary.brandedAveragePosition), "Branded position", "Average position for branded searches"],
+    [formatWorkspaceNumber(report.summary.nonBrandedTop10KeywordCount), "Non-branded top 10", "Search terms ranking in the first ten results"],
+  ] : [];
+  const tacticalActions = report ? [
     {
-      section: "Executive Summary",
-      value: "42%",
-      headline: "After-work activity is leading the month.",
-      copy: "Dinner, events, and nearby offers are getting the most attention from residents.",
-      readout: [
-        ["What changed", "Weekday evenings are strongest for dining and live plans."],
-        ["What to try", "Lead with one after-work offer people can reach on foot."],
-        ["What to watch", "More saves, more directions, and a clearer read on what worked."],
-      ],
-      action: "View report",
+      priority: "Do now",
+      title: "Make the two Shore listings easier to compare.",
+      evidence: "The workspace already connects The Shore #4301 and #5003, while Legends brand searches produced the strongest visible click volume.",
+      action: "Put price, floor plan, Rainey context, and showing options on one comparison path.",
+      href: `/map?mode=partner&tab=map&filter=All%20Listings&entityId=luxury-presence-610-davis-st-4301-5357248&organizationId=${encodeURIComponent(organization.id)}`,
+      label: "Open Shore listing",
     },
     {
-      section: "Trends",
-      value: "+18%",
-      headline: "Nearby choices are working better than broad reach.",
-      copy: "Rainey, Seaholm, Congress, and Waterloo show the cleanest activity patterns.",
-      readout: [
-        ["What changed", "People are more likely to act when the place is close by."],
-        ["What to try", "Keep placements near busy walking paths."],
-      ],
-      action: "Review trend",
+      priority: "Build next",
+      title: "Turn agent demand into a downtown showing path.",
+      evidence: "Nina Seely generated 774 visible impressions and at least 38 clicks across the current keyword snapshot.",
+      action: "Connect the agent page to active downtown listings, neighborhood proof, and a single showing request.",
+      href: `/partner-workspace/profile${reportQuery}`,
+      label: "Update profile",
     },
     {
-      section: "Campaign Results",
-      value: "6.8%",
-      headline: "Simple timed offers are easiest to act on.",
-      copy: "Campaigns with one clear save, RSVP, scan, or direction action perform best.",
-      readout: [
-        ["What changed", "One clear action is easier for residents to understand."],
-        ["What to try", "Use one call to action and a clear time window."],
-        ["What to watch", "More people completing the action without dropping off."],
-      ],
-      action: "Plan offer",
+      priority: "Test this month",
+      title: "Publish a relocation guide for new downtown supply.",
+      evidence: "Downtown sources report more than 2,600 homes and 890 hotel rooms under construction.",
+      action: "Pair active listings with nearby hotels, parks, dining, parking, and construction-aware arrival guidance.",
+      href: `/partner-workspace/campaigns${reportQuery}`,
+      label: "Create campaign",
     },
-    {
-      section: "Resident Behavior",
-      value: "312",
-      headline: "People save first, then decide.",
-      copy: "Saved places help people come back when they are ready to go.",
-      readout: [
-        ["What changed", "Saves often happen before directions or scans."],
-        ["What to try", "Give people who saved you a timely reason to return."],
-      ],
-      action: "Review behavior",
-    },
-    {
-      section: "Next Steps",
-      value: "3",
-      headline: "Run the next test near the busiest walk path.",
-      copy: "Anchor the next placement to movement that is already happening nearby.",
-      readout: [
-        ["What to try", "Start with Rainey, Seaholm, or Congress based on where people already walk."],
-        ["What to watch", "A cleaner read with less wasted reach."],
-      ],
-      action: "Open campaigns",
-    },
-    {
-      section: "Next Actions",
-      value: "4",
-      headline: "Turn the report into one clear update.",
-      copy: "Pick a place, time, group, and action from the monthly report.",
-      readout: [
-        ["What changed", "The next step is a practical update, not another report."],
-        ["What to try", "Publish one campaign and review it next week."],
-      ],
-      action: "Start next step",
-    },
-  ];
+  ] : [];
 
   return (
     <motion.section
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className="dp-workspace-reports"
+      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+      className="dp-workspace-reports dp-report-system"
     >
-      <div className="dp-workspace-reports-hero mb-6 flex flex-col gap-3 border border-[rgba(11,31,51,0.10)] bg-white p-6 md:flex-row md:items-end md:justify-between">
+      <header className="dp-report-hero">
         <div>
-          <span className="dp-workspace-report-label text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">Reporting & Analytics</span>
-          <h2 className="mt-2 text-[20px] font-semibold leading-tight tracking-[-0.005em] text-[#0B1F33]">Track visibility, participation, and follow-through.</h2>
-          <p className="mt-2 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/58">
-            See what people viewed, saved, scanned, opened, asked directions for, redeemed, and came back to. Use that read to choose what to publish, improve, or repeat next.
+          <p className="dp-workspace-report-label">Reports</p>
+          <h1>See what is working and what to do next.</h1>
+          <p>
+            Results for {organization?.name || "this workspace"}, separated from broader downtown signals so every recommendation has a clear source.
           </p>
         </div>
-        <Link
-          to="/map?mode=partner&tab=reports"
-          className="dp-partner-workspace-button inline-flex h-11 shrink-0 items-center justify-center gap-1.5 border border-[rgba(11,31,51,0.14)] bg-white px-4 text-[12px] font-semibold text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
-        >
-          Open map reports
-        </Link>
-      </div>
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          ["Views", "Map opens, listing views, and featured placement reach."],
-          ["Interest", "Saves, scans, RSVPs, event opens, and offer activity."],
-          ["Visits", "Directions, verified visits, redemptions, and repeat activity."],
-          ["Next step", "Suggested updates tied to campaigns, offers, events, and reports."],
-        ].map(([label, copy]) => (
-          <article key={label} className="border border-[rgba(11,31,51,0.10)] bg-white p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</p>
-            <p className="mt-2 text-[13px] leading-[1.55] text-[#0B1F33]/64">{copy}</p>
-          </article>
-        ))}
-      </div>
-      <div className="dp-workspace-report-grid grid gap-2.5">
-        {monthlyReports.map((item) => (
-          <article
-            key={item.section}
-            className="dp-workspace-report-card grid gap-4 bg-white p-5 md:grid-cols-[0.22fr_1fr_auto] md:items-start md:gap-6"
-          >
-            <div>
-              <p className="dp-workspace-report-label text-[10px] font-semibold tracking-[0.12em] uppercase text-[#BFA46A]">{item.section}</p>
-              <div className="dp-workspace-report-metric mt-2 text-[24px] font-bold leading-none tracking-tight text-[#0B1F33] tabular-nums">{item.value}</div>
+        <div className="dp-report-hero-actions">
+          <Link to={`/partner-workspace/analytics${reportQuery}`}>Open analytics</Link>
+          <Link to="/map?mode=partner&tab=reports">Open map report</Link>
+        </div>
+      </header>
+
+      {report ? (
+        <>
+          <section className="dp-report-summary" aria-labelledby="report-summary-title">
+            <div className="dp-report-section-heading">
+              <div><p>Current read</p><h2 id="report-summary-title">Search visibility is strong. The next job is conversion.</h2></div>
+              <span>Snapshot verified {formatWorkspaceDate(report.capturedAt)}</span>
             </div>
-            <div>
-              <h3 className="text-[14.5px] font-semibold leading-snug tracking-tight text-[#0B1F33]">{item.headline}</h3>
-              <p className="mt-1.5 text-[13px] leading-[1.6] text-[#0B1F33]/60">{item.copy}</p>
-              <dl className="dp-workspace-report-readout mt-3.5 grid gap-2 text-[12px] leading-[1.55] md:grid-cols-2">
-                {item.readout.map(([label, detail]) => (
-                  <div key={`${item.section}-${label}`} className="border-t border-[rgba(11,31,51,0.10)] py-3">
-                    <dt className="font-semibold text-[#0B1F33]/50 text-[10.5px] uppercase tracking-[0.08em]">{label}</dt>
-                    <dd className="text-[#0B1F33]/70 mt-0.5">{detail}</dd>
-                  </div>
+            <div className="dp-report-metric-grid" aria-label="Verified partner results">
+              {resultMetrics.map(([value, label, detail]) => (
+                <article key={label}>
+                  <strong>{value}</strong>
+                  <span>{label}</span>
+                  <p>{detail}</p>
+                </article>
+              ))}
+            </div>
+            <aside className="dp-report-primary-insight">
+              <span>Most important insight</span>
+              <h3>People already know the Legends name; listing and agent pages need to carry them into a showing decision.</h3>
+              <p>Branded visibility is the reliable entry point. Use it to lead people directly to current inventory, neighborhood context, and one clear contact action.</p>
+            </aside>
+          </section>
+
+          <section className="dp-report-visual-grid" aria-label="Search performance visualizations">
+            <figure className="dp-report-chart">
+              <figcaption><span>Search demand</span><strong>Where visible impressions are concentrated</strong></figcaption>
+              <ol>
+                {impressionRows.map((metric) => (
+                  <li key={metric.normalizedKeyword}>
+                    <div><strong>{metric.keyword}</strong><span>{formatWorkspaceNumber(metric.impressions)}</span></div>
+                    <i aria-hidden="true"><b style={{ width: `${Math.max(6, (Number(metric.impressions || 0) / maxImpressions) * 100)}%` }} /></i>
+                  </li>
                 ))}
-              </dl>
+              </ol>
+              <p>Source: verified Luxury Presence snapshot. Bars show relative volume within the visible keyword set.</p>
+            </figure>
+
+            <figure className="dp-report-chart">
+              <figcaption><span>Click results</span><strong>Which searches are bringing people through</strong></figcaption>
+              <ol>
+                {clickRows.map((metric) => (
+                  <li key={metric.normalizedKeyword}>
+                    <div><strong>{metric.keyword}</strong><span>{formatWorkspaceNumber(metric.clicks)}</span></div>
+                    <i aria-hidden="true"><b style={{ width: `${Math.max(6, (Number(metric.clicks || 0) / maxClicks) * 100)}%` }} /></i>
+                  </li>
+                ))}
+              </ol>
+              <p>Source: verified Luxury Presence snapshot. Counts cover the visible top-keyword export, not all search traffic.</p>
+            </figure>
+          </section>
+
+          <section className="dp-report-actions" aria-labelledby="report-actions-title">
+            <div className="dp-report-section-heading">
+              <div><p>Recommended work</p><h2 id="report-actions-title">Turn the evidence into three practical actions.</h2></div>
             </div>
-            <Link
-              to="/map?mode=partner&tab=reports"
-              className="dp-workspace-report-link shrink-0 text-[12px] font-semibold text-[#0B1F33]"
-            >
-              {item.action}
-            </Link>
-          </article>
-        ))}
+            <div>
+              {tacticalActions.map((item, index) => (
+                <article key={item.title}>
+                  <span>{index + 1}</span>
+                  <div><p>{item.priority}</p><h3>{item.title}</h3><strong>Why now</strong><p>{item.evidence}</p><strong>What to do</strong><p>{item.action}</p></div>
+                  <Link to={item.href}>{item.label}<ArrowRight aria-hidden="true" /></Link>
+                </article>
+              ))}
+            </div>
+          </section>
+        </>
+      ) : (
+        <section className="dp-report-empty">
+          <p className="dp-workspace-report-label">Partner results</p>
+          <h2>Connect a verified analytics source to see partner-specific results.</h2>
+          <p>This report will not substitute another organization’s data. Downtown context remains available below while this workspace awaits a verified source.</p>
+          <Link to={`/partner-workspace/profile${reportQuery}`}>Review connections</Link>
+        </section>
+      )}
+
+      <section className="dp-report-austin" aria-labelledby="austin-context-title">
+        <div className="dp-report-section-heading">
+          <div><p>Downtown Austin context</p><h2 id="austin-context-title">External signals that should change the plan.</h2></div>
+          <span>Downtown Austin Alliance sources</span>
+        </div>
+        <div className="dp-report-austin-grid">
+          {DOWNTOWN_AUSTIN_REPORT_CONTEXT.map((item) => (
+            <article key={item.label}>
+              <strong>{item.value}</strong>
+              <h3>{item.label}</h3>
+              <p>{item.detail}</p>
+              <a href={item.href} target="_blank" rel="noreferrer">View source</a>
+            </article>
+          ))}
+        </div>
+        <aside className="dp-report-context-action">
+          <div><span>How to use this</span><h3>Plan for more residents, more hotel demand, and more construction friction at the same time.</h3></div>
+          <p>Keep listing and campaign routes specific: name the building, show what is open nearby, explain arrival and parking, and update directions when construction changes access.</p>
+        </aside>
+      </section>
+
+      <footer className="dp-report-method">
+        <strong>How this report is built</strong>
+        <p>Partner metrics come from the named workspace source. Downtown context is displayed separately and dated by its publisher. Recommendations combine those signals but do not present inferred actions as measured results.</p>
+        <a href="https://downtownaustin.com/what-we-do/research/state-of-downtown/" target="_blank" rel="noreferrer">Review State of Downtown sources</a>
+      </footer>
+    </motion.section>
+  );
+}
+
+function workspaceAgentActionHref(action, organizationId) {
+  const type = String(action?.action || action?.type || "");
+  const value = String(action?.value || action?.payload?.entityId || action?.payload?.filter || "");
+  const organizationQuery = organizationId ? `&organizationId=${encodeURIComponent(organizationId)}` : "";
+  if (type === "open_entity") return `/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(value)}${organizationQuery}`;
+  if (type === "apply_filter") return `/map?mode=partner&tab=map&filter=${encodeURIComponent(value || "All")}${organizationQuery}`;
+  if (type === "open_campaign_prefill" || type === "open_dashboard") return `/partner-workspace/campaigns?organizationId=${encodeURIComponent(organizationId || "")}&prompt=${encodeURIComponent(value)}`;
+  if (type === "open_report") return `/partner-workspace/reports?organizationId=${encodeURIComponent(organizationId || "")}`;
+  return "";
+}
+
+function WorkspaceAgent({ user }) {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const requestedOrganizationId = params.get("organizationId") || params.get("workspace") || "";
+  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId) || demoOrganizations[0];
+  const organizationId = organization?.id || requestedOrganizationId;
+  const ownedEntities = getOrganizationEntities(organizationId);
+  const prompts = PARTNER_WORKSPACE_COPY.assistant?.prompts || [];
+  const [question, setQuestion] = useState("");
+  const [response, setResponse] = useState(null);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+
+  async function askAgent(event, suggestedQuestion = "") {
+    event?.preventDefault?.();
+    const nextQuestion = String(suggestedQuestion || question).trim();
+    if (!nextQuestion || status === "loading") return;
+    setQuestion(nextQuestion);
+    setStatus("loading");
+    setError("");
+    try {
+      const answer = await queryAgent({
+        message: nextQuestion,
+        query: nextQuestion,
+        mode: "partner",
+        intent: "workspace_decision",
+        organizationId,
+        userId: user?.id || user?.email || "",
+        location: { district: user?.district || "Downtown Austin" },
+        context: {
+          surface: "partner_workspace",
+          workspaceTab: "assistant",
+          organization: {
+            id: organizationId,
+            name: organization?.name || user?.organization_name || user?.partner_name || "Partner",
+            type: organization?.type || user?.partner_type || "partner",
+          },
+          entities: ownedEntities,
+        },
+        mapContext: ownedEntities.map((entity) => ({
+          id: entity.entity_id,
+          name: entity.display_name,
+          type: entity.entity_type,
+          summary: entity.perk_summary || "",
+          filter: entity.map_filter || "All",
+        })),
+      });
+      setResponse(answer);
+      setStatus("ready");
+    } catch (requestError) {
+      setError(requestError?.message || "The map could not answer that question right now.");
+      setStatus("error");
+    }
+  }
+
+  const structuredActions = Array.isArray(response?.structuredActions)
+    ? response.structuredActions
+    : [];
+  const followUps = Array.isArray(response?.followUps) ? response.followUps : [];
+  const places = Array.isArray(response?.places) ? response.places : [];
+  const sourceLabel = response?.source === "base44-agent"
+    ? "Downtown Perks agent"
+    : response?.source === "openai-ask-map"
+      ? "OpenAI map agent"
+      : response?.source === "local-agent"
+        ? "Current map context"
+        : "Downtown Perks map intelligence";
+
+  return (
+    <motion.section className="dp-workspace-agent" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+      <header className="dp-workspace-agent__hero">
+        <div>
+          <p className="dp-workspace-eyebrow">Ask the Map</p>
+          <h1>Decide what to do next.</h1>
+          <p>Ask about {organization?.name || "your organization"}, nearby demand, listings, offers, campaigns, or results. The answer stays tied to the places and information currently connected to this workspace.</p>
+        </div>
+        <Link to={`/map?mode=partner&tab=map&filter=All&organizationId=${encodeURIComponent(organizationId)}`}>Open partner map <ArrowRight aria-hidden="true" /></Link>
+      </header>
+
+      <div className="dp-workspace-agent__layout">
+        <section className="dp-workspace-agent__ask" aria-labelledby="workspace-agent-question-title">
+          <div><p>Ask a question</p><h2 id="workspace-agent-question-title">What decision are you making?</h2></div>
+          <form onSubmit={askAgent}>
+            <label htmlFor="workspace-agent-question">Question</label>
+            <textarea
+              id="workspace-agent-question"
+              value={question}
+              onChange={(event) => setQuestion(event.target.value)}
+              placeholder="Which listing or campaign should we improve first?"
+              rows={4}
+              maxLength={600}
+            />
+            <button type="submit" disabled={!question.trim() || status === "loading"}>
+              {status === "loading" ? "Finding the clearest next step…" : "Ask the Map"}
+              <ArrowRight aria-hidden="true" />
+            </button>
+          </form>
+          <div className="dp-workspace-agent__prompts" aria-label="Suggested questions">
+            {prompts.map((prompt) => (
+              <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)} disabled={status === "loading"}>{prompt}</button>
+            ))}
+          </div>
+          <aside>
+            <strong>Context included</strong>
+            <p>{ownedEntities.length} connected {ownedEntities.length === 1 ? "place" : "places"}, current organization, selected district, and the question you ask. Missing facts are identified instead of invented.</p>
+          </aside>
+        </section>
+
+        <section className="dp-workspace-agent__answer" aria-live="polite" aria-busy={status === "loading"}>
+          {status === "loading" ? (
+            <div className="dp-workspace-agent__loading"><span aria-hidden="true" /><strong>Reading the current map context</strong><p>Checking connected places and the next useful action.</p></div>
+          ) : error ? (
+            <div className="dp-workspace-agent__empty"><strong>That answer is not available yet.</strong><p>{error}</p><button type="button" onClick={(event) => askAgent(event)}>Try again</button></div>
+          ) : response?.answer ? (
+            <div className="dp-workspace-agent__response">
+              <div className="dp-workspace-agent__response-heading"><span>{sourceLabel}</span><h2>{response.title || "Recommended next step"}</h2></div>
+              <div className="dp-workspace-agent__markdown"><ReactMarkdown>{String(response.answer)}</ReactMarkdown></div>
+              {response.explanation && response.explanation !== response.answer ? <p className="dp-workspace-agent__reason"><strong>Why this fits</strong>{String(response.explanation)}</p> : null}
+              {places.length ? <div className="dp-workspace-agent__places"><strong>Places used in this answer</strong>{places.slice(0, 4).map((place) => <Link key={String(place.id || place.name)} to={`/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(String(place.id || ""))}&organizationId=${encodeURIComponent(organizationId)}`}><span>{String(place.name || place.title || "Downtown place")}</span><small>{String(place.reason || place.summary || "Open on the map")}</small><ArrowRight aria-hidden="true" /></Link>)}</div> : null}
+              {structuredActions.length ? <div className="dp-workspace-agent__actions"><strong>Take the next step</strong>{structuredActions.slice(0, 4).map((action, index) => { const href = workspaceAgentActionHref(action, organizationId); return href ? <Link key={`${action.label || action.type}-${index}`} to={href}>{String(action.label || "Open next step")}<ArrowRight aria-hidden="true" /></Link> : null; })}</div> : null}
+              {followUps.length ? <div className="dp-workspace-agent__followups"><strong>Ask next</strong>{followUps.slice(0, 4).map((prompt) => <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)}>{prompt}</button>)}</div> : null}
+            </div>
+          ) : (
+            <div className="dp-workspace-agent__empty"><MessageSquareText aria-hidden="true" /><strong>Your recommendation will appear here.</strong><p>Start with one decision. The agent will explain what matters, why it matters now, and what you can do next.</p></div>
+          )}
+        </section>
       </div>
     </motion.section>
   );
@@ -899,6 +1102,8 @@ function WorkspaceAnalytics() {
       </motion.section>
     );
   }
+  return <PartnerAnalyticsExperience />;
+  /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
     ["1,284", "Residents reached", "People who can enter from buildings, QR links, campaigns, and the map."],
@@ -999,6 +1204,7 @@ function WorkspaceAnalytics() {
       </section>
     </motion.section>
   );
+  */
 }
 
 function WorkspaceLegendsSeoPanel({ report }) {
@@ -1154,6 +1360,17 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
   const [createMenuOpen, setCreateMenuOpen] = useState(false);
 
   useEffect(() => {
+    function closeWorkspaceMenus(event) {
+      if (event.key !== "Escape") return;
+      setWorkspaceMenuOpen(false);
+      setCreateMenuOpen(false);
+    }
+
+    window.addEventListener("keydown", closeWorkspaceMenus);
+    return () => window.removeEventListener("keydown", closeWorkspaceMenus);
+  }, []);
+
+  useEffect(() => {
     listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
     listWorkspaceItems("Event", "events", user.email).then(setEvents);
   }, [user.email]);
@@ -1210,6 +1427,10 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
             </button>
             {createMenuOpen ? (
               <div className="dp-create-menu" role="menu">
+                <div className="dp-workspace-menu-head" role="none">
+                  <strong>Create</strong>
+                  <button type="button" onClick={() => setCreateMenuOpen(false)} aria-label="Close create menu"><X aria-hidden="true" /></button>
+                </div>
                 {createActions.map(([label, href]) => <Link key={label} to={href} role="menuitem">{label}</Link>)}
               </div>
             ) : null}
@@ -1227,7 +1448,11 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
             <ChevronDown aria-hidden="true" />
           </button>
           {workspaceMenuOpen ? (
-            <div className="dp-workspace-switcher-menu">
+            <div className="dp-workspace-switcher-menu" role="dialog" aria-label="Choose workspace">
+              <div className="dp-workspace-menu-head">
+                <strong>Choose workspace</strong>
+                <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close workspace chooser"><X aria-hidden="true" /></button>
+              </div>
               <label>
                 <Search aria-hidden="true" />
                 <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" />
@@ -1249,14 +1474,16 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           ) : null}
         </div>
         <div className="dp-workspace-entities-compact">
-          <span>Entities</span>
+          <span>Your places</span>
           <div>
             {ownedEntities.map((entity) => (
               <Link key={entity.id} to={`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`}>
-                <strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small><ArrowRight aria-hidden="true" />
+                {entity.media ? <img src={entity.media.src} alt={entity.media.alt} loading="lazy" decoding="async" /> : null}
+                <span><strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small></span>
+                <ArrowRight aria-hidden="true" />
               </Link>
             ))}
-            {!ownedEntities.length ? <p>No linked entities. Add a listing from the Map workspace.</p> : null}
+            {!ownedEntities.length ? <p>No places are linked yet. Add a listing from the map.</p> : null}
           </div>
         </div>
         <div className="dp-workspace-context-actions">
@@ -1310,16 +1537,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         </div>
       </section>
 
-      <section className="dp-featured-experience">
-        <div><p className="dp-workspace-eyebrow">Featured guide</p><h2>Downtown Austin Art & Parks Tour</h2><p>Afternoons are when people use this guide most.</p></div>
-        <dl><div><dt>Opens</dt><dd>4,820</dd></div><div><dt>Verified visits</dt><dd>1,148</dd></div><div><dt>Survey completions</dt><dd>641</dd></div><div><dt>Directions</dt><dd>1,376</dd></div></dl>
-        <div className="dp-featured-actions"><Link to="/partner-workspace/analytics/experiences/downtown-art-parks-tour">Open experience report</Link><Link to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
-      </section>
-
-      <section className="dp-operating-section dp-recent-activity" aria-labelledby="recent-activity-title">
-        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Recent activity</p><h2 id="recent-activity-title">Latest workspace changes.</h2></div></div>
-        <ol><li><span>Offer updated</span><time>Today, 9:42 AM</time></li><li><span>Campaign published</span><time>Yesterday</time></li><li><span>Report created</span><time>Jul 8</time></li><li><span>Team member invited</span><time>Jul 6</time></li></ol>
-      </section>
+      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={`/partner-workspace/analytics?workspace=${encodeURIComponent(selectedOrganizationId)}&range=30d&comparison=previous_period&view=overview`}>Open Analytics <ArrowRight aria-hidden="true" /></Link></section>
     </motion.div>
   );
 }
@@ -1667,11 +1885,11 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
 
       <DaaCivicWorkspacePanel />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="dp-workspace-quick-stats grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {QUICK_STATS.map((s, i) => (
           <div
             key={i}
-            className="flex flex-col items-center justify-center p-5 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] text-center"
+            className="dp-workspace-quick-stat flex flex-col items-center justify-center p-5 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] text-center"
           >
             <div className="font-body text-[26px] font-semibold leading-none tracking-tight text-[#0B1F33] tabular-nums">{s.value}</div>
             <div className="text-[11px] font-medium text-[#0B1F33]/50 mt-1.5 uppercase tracking-[0.08em]">{s.label}</div>
@@ -1679,7 +1897,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mb-8">
+      <div className="dp-workspace-quick-actions grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mb-8">
         {QUICK_ACTIONS.map((a, i) => {
           const Icon = a.icon;
           const content = (
@@ -1694,7 +1912,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               <ChevronRight className="w-4 h-4 text-[#0B1F33]/28 mt-0.5 shrink-0 group-hover:translate-x-0.5 group-hover:text-[#BFA46A] transition-all duration-150" />
             </>
           );
-          const className = "group flex items-start gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 text-left shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(191,164,106,0.4)] hover:shadow-[0_4px_16px_rgba(11,31,51,0.07),0_10px_30px_rgba(11,31,51,0.06)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50";
+          const className = "dp-workspace-quick-action group flex items-start gap-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white p-5 text-left shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[rgba(191,164,106,0.4)] hover:shadow-[0_4px_16px_rgba(11,31,51,0.07),0_10px_30px_rgba(11,31,51,0.06)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50";
           return a.href ? (
             <Link key={i} to={a.href} className={className}>
               {content}
@@ -2052,13 +2270,13 @@ function PerksManager({ user }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="flex items-center justify-between mb-6">
+    <motion.div className="dp-workspace-manager dp-workspace-offers-manager" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="dp-workspace-manager-header flex items-center justify-between mb-6">
         <div>
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Perks</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Offers that appear on the downtown map for people nearby.</p>
         </div>
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        <button type="button" onClick={handleAdd} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add perk
         </button>
       </div>
@@ -2076,7 +2294,7 @@ function PerksManager({ user }) {
       ) : (
         <div className="space-y-3">
           {perks.map(p => (
-            <div key={p.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+            <div key={p.id} className="dp-workspace-manager-row flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
               <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${p.status === "active" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : p.status === "paused" ? "bg-[#BFA46A]/50" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{p.title}</div>
@@ -2089,10 +2307,10 @@ function PerksManager({ user }) {
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{p.status}</span>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
+                <button type="button" aria-label={`Edit ${p.title}`} onClick={() => handleEdit(p)} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
-                <button onClick={() => handleDelete(p.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
+                <button type="button" aria-label={`Delete ${p.title}`} onClick={() => handleDelete(p.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -2212,13 +2430,13 @@ function EventsManager({ user }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="flex items-center justify-between mb-6">
+    <motion.div className="dp-workspace-manager dp-workspace-events-manager" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <div className="dp-workspace-manager-header flex items-center justify-between mb-6">
         <div>
           <h2 className="font-body text-xl font-semibold leading-snug tracking-normal text-foreground">Events</h2>
           <p className="text-muted-foreground text-[13px] mt-0.5">Events that appear on the downtown map with RSVP details.</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true); }} className="inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
+        <button type="button" onClick={() => { setEditing(null); setShowForm(true); }} className="dp-workspace-primary-action inline-flex items-center gap-2 px-4 h-9 rounded-[7px] bg-[#0B1F33] text-white text-[12.5px] font-semibold shadow-[0_2px_8px_rgba(11,31,51,0.18),0_6px_16px_rgba(11,31,51,0.12)] transition-all duration-150 hover:-translate-y-px hover:bg-[#0f2740] hover:shadow-[0_4px_14px_rgba(11,31,51,0.22)] active:translate-y-0 active:shadow-[0_1px_4px_rgba(11,31,51,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50">
           <Plus className="w-3.5 h-3.5" /> Add event
         </button>
       </div>
@@ -2236,7 +2454,7 @@ function EventsManager({ user }) {
       ) : (
         <div className="space-y-3">
           {events.map(e => (
-            <div key={e.id} className="flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
+            <div key={e.id} className="dp-workspace-manager-row flex items-center gap-4 p-4 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_12px_rgba(11,31,51,0.04)] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07),0_6px_18px_rgba(11,31,51,0.06)] hover:-translate-y-px transition-all duration-150">
               <div className={`w-1.5 h-1.5 rounded-[3px] shrink-0 ${e.status === "live" ? "bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.5)]" : e.status === "upcoming" ? "bg-[#0B1F33]/40" : "bg-[rgba(11,31,51,0.2)]"}`} />
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-[13px] text-[#0B1F33]">{e.title}</div>
@@ -2249,10 +2467,10 @@ function EventsManager({ user }) {
                 "bg-[rgba(11,31,51,0.04)] text-[#0B1F33]/40 border-[rgba(11,31,51,0.08)]"
               }`}>{e.status}</span>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={() => { setEditing(e); setShowForm(true); }} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
+                <button type="button" aria-label={`Edit ${e.title}`} onClick={() => { setEditing(e); setShowForm(true); }} className="p-2 rounded-lg hover:bg-muted/40 text-muted-foreground hover:text-foreground transition-colors">
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
-                <button onClick={() => handleDelete(e.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
+                <button type="button" aria-label={`Delete ${e.title}`} onClick={() => handleDelete(e.id)} className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -2296,10 +2514,10 @@ function EventForm({ user, event, onClose, onSave }) {
 
   return (
     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-      className="mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
+      className="dp-native-publisher mb-6 p-6 rounded-[12px] border border-[rgba(11,31,51,0.08)] bg-white shadow-[0_2px_12px_rgba(11,31,51,0.06),0_8px_24px_rgba(11,31,51,0.05)]">
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-[14px] font-semibold text-[#0B1F33] tracking-[-0.01em]">{event ? "Edit event" : "New event"}</h3>
-        <button onClick={onClose} className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
+        <button type="button" onClick={onClose} aria-label="Close event editor" className="flex h-9 w-9 items-center justify-center bg-transparent text-[#0B1F33] transition-colors hover:text-[#BFA46A]"><X className="w-4 h-4" /></button>
       </div>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />

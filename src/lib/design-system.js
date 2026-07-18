@@ -92,7 +92,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.22, ease: [0.2, 0.8, 0.2, 1] },
   },
 
   // Staggered card animations
@@ -100,7 +100,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 8 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.35, delay, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.22, delay, ease: [0.2, 0.8, 0.2, 1] },
   }),
 
   // Drawer entrance
@@ -108,7 +108,7 @@ export const MOTION = {
     initial: { opacity: 0, y: 12 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: 12 },
-    transition: { duration: 0.3 },
+    transition: { duration: 0.22, ease: [0.2, 0.8, 0.2, 1] },
   },
 
   // Overlay/popover
@@ -116,19 +116,19 @@ export const MOTION = {
     initial: { opacity: 0, scale: 0.95 },
     animate: { opacity: 1, scale: 1 },
     exit: { opacity: 0, scale: 0.95 },
-    transition: { duration: 0.2 },
+    transition: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] },
   },
 
   // Hover elevation (cards, buttons)
   hoverLift: {
     whileHover: { y: -2 },
-    transition: { duration: 0.2 },
+    transition: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] },
   },
 
   // Tap feedback
   tapPress: {
     whileTap: { scale: 0.98 },
-    transition: { duration: 0.15 },
+    transition: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
   },
 };
 
@@ -138,17 +138,17 @@ export const MOTION = {
 
 export const SURFACES = {
   // Glass overlays (map, hero, floating modules)
-  glassLight: "bg-white/82 backdrop-blur-md border border-[#0B1F33]/8 shadow-[0_14px_34px_rgba(11,31,51,0.04)]",
-  glassDark: "bg-[#0B1F33]/88 backdrop-blur-md border border-white/10 shadow-[0_18px_46px_rgba(11,31,51,0.18)]",
+  glassLight: "bg-white/90 backdrop-blur-md border border-[#0B1F33]/10 shadow-[0_8px_24px_rgba(11,31,51,0.07)]",
+  glassDark: "bg-[#0B1F33]/92 backdrop-blur-md border border-white/10 shadow-[0_18px_48px_rgba(11,31,51,0.11)]",
 
   // Solid card surfaces
-  cardPrimary: "bg-white/82 border border-[#0B1F33]/8 rounded-[6px] shadow-[0_14px_34px_rgba(11,31,51,0.04)]",
-  cardMuted: "bg-white rounded-[6px]",
-  cardSelected: "bg-[#0B1F33]/10 border border-[#BFA46A]/50 rounded-[6px]",
+  cardPrimary: "bg-white border border-[#0B1F33]/10 rounded-[18px] shadow-[0_1px_2px_rgba(11,31,51,0.04)]",
+  cardMuted: "bg-white rounded-[18px]",
+  cardSelected: "bg-white border border-[#BFA46A]/60 rounded-[18px]",
 
   // Brutalist emphasis (proof, ROI, statements)
-  brutalistDark: "bg-[#0B1F33] text-white rounded-3xl",
-  brutalistContrast: "bg-navy-900 border-2 border-primary rounded-2xl",
+  brutalistDark: "bg-[#0B1F33] text-white rounded-[18px]",
+  brutalistContrast: "bg-navy-900 border border-primary rounded-[18px]",
 
   // Minimal divider
   divider: "border-t border-border/40",
@@ -198,19 +198,19 @@ export const GRIDS = {
 
 export const DEFAULTS = {
   // Tap target minimum
-  minTapTarget: "min-h-12 md:min-h-14",
+  minTapTarget: "min-h-11 md:min-h-12",
 
   // Border radius (consistent)
-  radius: "rounded-[6px]",
-  radiusSm: "rounded-sm",
-  radiusLg: "rounded-[10px]",
+  radius: "rounded-[18px]",
+  radiusSm: "rounded-[12px]",
+  radiusLg: "rounded-[24px]",
 
   // Shadow depth
-  shadowSoft: "shadow-[0_14px_34px_rgba(11,31,51,0.04)]",
-  shadowStandard: "shadow-[0_18px_48px_rgba(11,31,51,0.06)]",
-  shadowStrong: "shadow-[0_18px_46px_rgba(11,31,51,0.18)]",
+  shadowSoft: "shadow-[0_1px_2px_rgba(11,31,51,0.04)]",
+  shadowStandard: "shadow-[0_8px_24px_rgba(11,31,51,0.07)]",
+  shadowStrong: "shadow-[0_18px_48px_rgba(11,31,51,0.11)]",
 
   // Transition defaults
   transitionFast: "transition-all duration-200",
-  transitionSmooth: "transition-all duration-300",
+  transitionSmooth: "transition-all duration-200",
 };

@@ -42,8 +42,6 @@ import '@/styles/resident-native-mobile-final.css'
 
 import "@/styles/partner-public-platform-final.css"
 
-import "@/styles/resident-card-polish-final.css"
-
 import "@/styles/partner-tools-light-final.css"
 
 import "@/styles/partner-admin-access-final.css"
@@ -58,7 +56,6 @@ import "@/styles/partner-integration-logo-grid-final.css"
 
 import "@/styles/partner-register-unified-final.css"
 
-import "@/styles/global-back-control-final.css"
 
 import "@/styles/resident-home-native-panels-final.css"
 
@@ -86,6 +83,11 @@ import '@/styles/map-native-ios-polish-final.css'
 import '@/styles/workspace-sharp-platform-final.css'
 import '@/styles/partner-signup-product-final.css'
 import '@/styles/partner-tools-polish-final.css'
+import '@/styles/ios-native-system-restoration.css'
+import '@/styles/pricing-builder-cleanup-final.css'
+import '@/styles/workspace-polish-sweep-final.css'
+import '@/styles/microsite-system.css'
+import '@/styles/admin-resource-system.css'
 import '@/styles/map-action-system-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

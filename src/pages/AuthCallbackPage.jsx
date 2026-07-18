@@ -22,7 +22,9 @@ export default function AuthCallbackPage() {
       return;
     }
     const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
-    if (role === "admin") return navigate("/admin-studio/command-center", { replace: true });
+    if (["admin", "platform_admin", "super_admin"].includes(role)) {
+      return navigate("/admin-studio/command-center", { replace: true });
+    }
     if (role !== "resident") return navigate("/partner-workspace/overview", { replace: true });
     navigate(consumeAuthReturnPath(returnTo), { replace: true });
   }, [isAuthenticated, isLoadingAuth, location.hash, location.search, navigate, user]);

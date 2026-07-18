@@ -93,7 +93,7 @@ import {
   DPPricingRail,
   quickActionsByEntityType,
 } from "@/components/downtown-perks/primitives";
-import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader";
+import { getGoogleMapsConfigError, getGoogleMapsDiagnostics, getGoogleMapsMapId, loadGoogleMaps } from "@/lib/googleMapsLoader";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { useAuth } from "@/lib/AuthContext";
 import { resolveWorkspaceOrganization } from "@/config/workspaceArchitecture";
@@ -12852,7 +12852,7 @@ function GoogleMapCanvas({
         try {
           if (!mapRef.current) {
             const initialView = initialViewRef.current;
-            const googleMapId = import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || undefined;
+            const googleMapId = getGoogleMapsMapId() || undefined;
             const mapOptions = {
               center: { lat: initialView.center[0], lng: initialView.center[1] },
               zoom: initialView.zoom,
@@ -13015,7 +13015,7 @@ function GoogleMapCanvas({
     markersRef.current = [];
     const canUseAdvancedMarkers = Boolean(
       maps.marker?.AdvancedMarkerElement &&
-      (import.meta.env.VITE_GOOGLE_MAP_ID || import.meta.env.VITE_GOOGLE_MAPS_MAP_ID),
+      getGoogleMapsMapId(),
     );
 
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
@@ -13159,6 +13159,16 @@ function GoogleMapCanvas({
         <div className="dp-google-map-state dp-google-map-state-error" role="alert">
           <strong>{errorTitle}</strong>
           <span>{errorCopy}</span>
+          {import.meta.env.DEV ? (
+            <small>
+              {(() => {
+                const diagnostics = getGoogleMapsDiagnostics();
+                if (!diagnostics.browserKeyPresent) return "Developer diagnostics: missing Google Maps browser key.";
+                if (!diagnostics.browserKeyLooksValid) return "Developer diagnostics: the configured Google Maps browser key is malformed.";
+                return `Developer diagnostics: script count ${diagnostics.scriptCount}, map ID ${diagnostics.mapIdPresent ? "configured" : "not configured"}.`;
+              })()}
+            </small>
+          ) : null}
         </div>
       )}
     </div>

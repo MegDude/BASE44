@@ -48,7 +48,7 @@ function InteractionFeedback() {
 
 export default function Layout() {
   const location = useLocation();
-  const { pathname, search } = location;
+  const { pathname } = location;
   const navigate = useNavigate();
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
 
@@ -63,6 +63,10 @@ export default function Layout() {
 
   const isProductRoute =
     pathname === "/app" ||
+    pathname === "/app/map" ||
+    pathname === "/resident/home" ||
+    pathname === "/interaction-system" ||
+    pathname.startsWith("/admin-studio") ||
     pathname === "/about" ||
     pathname === "/map" ||
     pathname === "/partner-map" ||
@@ -103,21 +107,18 @@ export default function Layout() {
     pathname === "/partners/map" ||
     pathname === "/downtown-perks/events";
 
-  const suppressGlobalBackButton =
-    (noFooter && pathname !== "/card") ||
-    pathname === "/marketing/contact" ||
-    pathname === "/contact" ||
-    pathname === "/pricing" ||
-    pathname === "/marketing/pricing" ||
-    pathname.startsWith("/partner-workspace") ||
-    pathname.startsWith("/dashboard") ||
-    pathname === "/partner-dashboard" ||
-    pathname.startsWith("/resident-workspace") ||
-    pathname.startsWith("/resident-app");
-
-  const showBackButton = pathname !== "/" && !suppressGlobalBackButton;
-  const showNavbar = !["/", "/map", "/app", "/sign-in", "/auth/callback"].includes(pathname);
-  const showProductSearchButton = !showNavbar && pathname !== "/" && pathname !== "/app" && pathname !== "/map";
+  const showNavbar = !pathname.startsWith("/partner-workspace") &&
+    !pathname.startsWith("/admin-studio") &&
+    !["/", "/map", "/app", "/app/map", "/resident/home", "/sign-in", "/auth/callback", "/interaction-system"].includes(pathname);
+  const showProductSearchButton =
+    !showNavbar &&
+    !pathname.startsWith("/partner-workspace") &&
+    !pathname.startsWith("/admin-studio") &&
+    pathname !== "/" &&
+    pathname !== "/app" &&
+    pathname !== "/app/map" &&
+    pathname !== "/map" &&
+    pathname !== "/interaction-system";
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {
@@ -126,44 +127,11 @@ export default function Layout() {
     navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
   }
 
-  function getBackFallbackPath() {
-    const params = new URLSearchParams(search);
-    const mode = params.get("mode");
-    const filter = params.get("filter");
-
-    if (pathname === "/app" || pathname === "/map" || pathname === "/explore" || pathname === "/residents/map" || pathname === "/residents/discover" || pathname === "/partners/map") {
-      if (mode === "partner" && filter === "Events") return "/partners/campaigns";
-      return "/";
-    }
-
-    if (pathname.startsWith("/partners/")) return "/partners";
-    if (pathname.startsWith("/partner-workspace")) return "/partner-workspace/overview";
-    if (pathname.startsWith("/buildings/") || pathname.startsWith("/properties/") || pathname.startsWith("/building-intelligence/")) {
-      return "/partners/properties";
-    }
-    if (pathname.startsWith("/residents/")) return "/residents";
-    if (pathname.startsWith("/brands/")) return "/brands";
-    if (pathname.startsWith("/downtown-perks/")) return "/downtown-perks";
-    if (pathname === "/events") return "/residents";
-    if (pathname === "/about" || pathname === "/card" || pathname === "/perks") return "/residents";
-
-    return "/";
-  }
-
-  function goBack() {
-    const routerHistoryIndex = window.history.state?.idx;
-    if (Number.isInteger(routerHistoryIndex) && routerHistoryIndex > 0) {
-      navigate(-1);
-      return;
-    }
-    navigate(getBackFallbackPath());
-  }
-
   return (
-    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
+    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks" data-route={pathname}>
       <ScrollToTop />
       <InteractionFeedback />
-      {showNavbar && <Navbar showBackButton={showBackButton} onBack={goBack} />}
+      {showNavbar && <Navbar />}
       {showProductSearchButton && (
         <button
           type="button"

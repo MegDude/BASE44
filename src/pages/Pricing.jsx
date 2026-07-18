@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   calculatePricingTotal,
@@ -332,12 +332,6 @@ export default function PricingPage() {
     window.location.href = `/contact?${params.toString()}#contact`;
   }
 
-  function viewCustomOptionDetails(option) {
-    setActiveCustomOption(option.id);
-    setPartnerType("Custom");
-    document.getElementById("custom-pricing-detail")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-
   function trackCta(label, href) {
     persistPartnerSetup(setupPayload);
     trackPricingEvent("pricing_cta_clicked", { label, href, partnerType, planId: selectedPlan?.id, annualTotal: selectedPlan?.annualPrice == null ? "custom" : total });
@@ -370,13 +364,13 @@ export default function PricingPage() {
         <div className="dp-pricing-container">
           <SectionHeader
             eyebrow="Pricing"
-            title="Choose your plan."
-            copy="Start with the right partner type, choose a plan, and add only the modules you need. Your selections carry into registration and checkout."
+            title="Build a plan that fits."
+            copy="Tell us who you are, choose the plan that matches your goals, then add services only if you need them."
           />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
               <fieldset>
-                <legend>Partner Type</legend>
+                <legend>Partner type</legend>
                 <div className="dp-pricing-choice-grid dp-pricing-partner-type-grid">
                   {PARTNER_TYPES.map((type) => (
                     <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
@@ -385,59 +379,15 @@ export default function PricingPage() {
                     </button>
                   ))}
                 </div>
-              </fieldset>
-              {isResident ? (
-                <section className="dp-pricing-resident-access" aria-labelledby="resident-access-heading">
-                  <p className="dp-pricing-kicker">Resident Access</p>
-                  <h3 id="resident-access-heading">Get the Downtown Perks Card and start discovering local perks, places and events.</h3>
-                  <article className="dp-pricing-resident-card">
-                    <div>
-                      <p className="dp-pricing-kicker">Perks Card</p>
-                      <h4>Perks Card</h4>
-                      <strong>$25/year</strong>
-                      <p>For residents who want access to local perks, saved places and downtown recommendations.</p>
+                {partnerType === "Custom" ? (
+                  <section className="dp-custom-options-fieldset dp-custom-options-partner-section" aria-labelledby="custom-partner-heading">
+                    <div className="dp-custom-options-intro">
+                      <p className="dp-pricing-kicker">Enterprise / Custom</p>
+                      <h3 id="custom-partner-heading">Custom setup paths for portfolios, districts, sponsorships, and larger development work.</h3>
                     </div>
-                    <ul>
-                      {selectedPlan?.includes.map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}
-                    </ul>
-                  </article>
-                </section>
-              ) : (
-                <>
-                  {plans.length > 0 ? (
-                    <fieldset>
-                      <legend>Plans</legend>
-                      <div className="dp-pricing-plan-card-grid">
-                        {plans.map((plan) => (
-                        <button key={plan.id} type="button" className="dp-pricing-plan-choice" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
-                          <span>
-                            <strong>{plan.label}</strong>
-                            <small>{plan.summary || plan.bestFor}</small>
-                          </span>
-                          <em>{getPriceText(plan)}</em>
-                          <ul>
-                            {plan.includes.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}
-                          </ul>
-                        </button>
-                        ))}
-                      </div>
-                    </fieldset>
-                  ) : null}
-                  <div className="dp-pricing-field-grid">
-                    <label><span>Number of locations/properties</span><input type="number" min="1" value={locationCount} onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))} /></label>
-                    <label><span>Campaign interest</span><select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}><option>Offers and perks</option><option>Events</option><option>Featured placement</option><option>District or portfolio campaign</option><option>Not sure yet</option></select></label>
-                    <label><span>Reporting needs</span><select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}><option>Standard reporting</option><option>Campaign performance</option><option>Portfolio reporting</option><option>Exports and integrations</option><option>Custom executive reporting</option></select></label>
-                  </div>
-                  <details className="dp-custom-options-fieldset dp-custom-options-rollup">
-                    <summary>
-                      <span>
-                        <strong>Enterprise / Custom</strong>
-                        <small>Custom setup paths for portfolios, districts, sponsorships, and larger development work.</small>
-                      </span>
-                    </summary>
                     <div className="dp-custom-options-body">
                       <div className="dp-pricing-addons-head">
-                        <h3>Custom setup paths</h3>
+                        <h4>Custom setup paths</h4>
                         <p>Choose the shape of the program so the next step carries the right business context.</p>
                         <span>Built for portfolios, districts, sponsorships, and larger development work.</span>
                       </div>
@@ -459,7 +409,7 @@ export default function PricingPage() {
                       {selectedCustomOption ? (
                         <div className="dp-custom-option-detail" id="custom-pricing-detail">
                           <p className="dp-pricing-guide-eyebrow">
-                            <span className="dp-pricing-guide-eyebrow-text">Custom Setup</span>
+                            <span className="dp-pricing-guide-eyebrow-text">Custom setup</span>
                           </p>
                           <h3>{selectedCustomOption.title}</h3>
                           <p>{selectedCustomOption.description}</p>
@@ -481,58 +431,107 @@ export default function PricingPage() {
                             <button type="button" className="dp-button dp-button-primary" onClick={() => contactCustomOption(selectedCustomOption)}>
                               {selectedCustomOption.cta}
                             </button>
-                            <button type="button" className="dp-button dp-button-secondary" onClick={() => viewCustomOptionDetails(selectedCustomOption)}>
-                              View details
-                            </button>
                           </div>
                         </div>
                       ) : null}
                     </div>
-                  </details>
-                  <fieldset>
-                    <legend>Add-ons</legend>
-                    <div className="dp-pricing-addons-head">
-                      <h3>Add-ons</h3>
-                      <p>Only pay for what you need.</p>
-                      <span>Add services now or anytime from your workspace.</span>
+                  </section>
+                ) : null}
+              </fieldset>
+              {isResident ? (
+                <section className="dp-pricing-resident-access" aria-labelledby="resident-access-heading">
+                  <p className="dp-pricing-kicker">Resident Access</p>
+                  <h3 id="resident-access-heading">Get the Downtown Perks Card and start discovering local perks, places and events.</h3>
+                  <article className="dp-pricing-resident-card">
+                    <div>
+                      <p className="dp-pricing-kicker">Perks Card</p>
+                      <h4>Perks Card</h4>
+                      <strong>$25/year</strong>
+                      <p>For residents who want access to local perks, saved places and downtown recommendations.</p>
                     </div>
-                    <div className="dp-pricing-addon-rail" role="tablist" aria-label="Add-on groups">
-                      {visibleModuleGroups.map((group) => (
-                        <button
-                          key={group.id}
-                          type="button"
-                          role="tab"
-                          aria-selected={activeModuleGroup?.id === group.id}
-                          data-active={activeModuleGroup?.id === group.id}
-                          onClick={() => setActiveCapabilityGroup(group.id)}
-                        >
-                          <span>{groupLabels[group.id] || group.heading}</span>
-                          <small>{group.modules.length} {group.modules.length === 1 ? "option" : "options"}</small>
+                    <ul>
+                      {selectedPlan?.includes.map((item) => <li key={item}>{item}</li>)}
+                    </ul>
+                  </article>
+                </section>
+              ) : (
+                <>
+                  {plans.length > 0 ? (
+                    <fieldset>
+                      <legend>{partnerType} plans</legend>
+                      <div className="dp-pricing-plan-card-grid">
+                        {plans.map((plan) => (
+                        <button key={plan.id} type="button" className="dp-pricing-plan-choice" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
+                          <span className="dp-pricing-plan-heading">
+                            <strong>{plan.label}</strong>
+                            <small>{plan.summary || plan.bestFor}</small>
+                          </span>
+                          <em>{getPriceText(plan)}</em>
+                          <span className="dp-pricing-plan-includes" aria-label={`${plan.label} includes`}>
+                            <strong>Includes</strong>
+                            {plan.includes.slice(0, 3).map((item) => <span key={item}>{item}</span>)}
+                          </span>
                         </button>
-                      ))}
+                        ))}
+                      </div>
+                    </fieldset>
+                  ) : null}
+                  <details className="dp-pricing-optional-section">
+                    <summary>
+                      <span><strong>Tell us what you need</strong><small>Locations, campaign goals, and reporting preferences</small></span>
+                      <span aria-hidden="true">+</span>
+                    </summary>
+                    <div className="dp-pricing-field-grid">
+                      <label><span>Locations or properties</span><input type="number" min="1" value={locationCount} onChange={(event) => setLocationCount(Math.max(1, Number(event.target.value) || 1))} /></label>
+                      <label><span>What do you want to launch?</span><select value={campaignInterest} onChange={(event) => setCampaignInterest(event.target.value)}><option>Offers and perks</option><option>Events</option><option>Featured placement</option><option>District or portfolio campaign</option><option>Not sure yet</option></select></label>
+                      <label><span>What do you need to measure?</span><select value={reportingNeeds} onChange={(event) => setReportingNeeds(event.target.value)}><option>Standard reporting</option><option>Campaign performance</option><option>Portfolio reporting</option><option>Exports and integrations</option><option>Custom executive reporting</option></select></label>
                     </div>
-                    {activeModuleGroup ? (
-                      <section className="dp-pricing-addon-panel" role="tabpanel" aria-label={`${activeModuleGroup.heading} add-ons`}>
-                        <div className="dp-pricing-addon-intro">
-                          <strong>{activeModuleGroup.heading}</strong>
-                          <p>{activeModuleGroup.sentence}</p>
-                        </div>
-                        <div className="dp-pricing-option-list">
-                          {activeModuleGroup.modules.map((module) => (
-                            <button key={module.id} type="button" data-active={selectedModuleIds.includes(module.id)} onClick={() => toggleModule(module.id)}>
-                              <span><strong>{module.label}</strong><small>{module.summary}</small></span>
-                              <em>{getPriceText(module)}</em>
-                            </button>
-                          ))}
-                        </div>
-                      </section>
-                    ) : null}
-                  </fieldset>
+                  </details>
+                  <details className="dp-pricing-optional-section dp-pricing-addons-rollup">
+                    <summary>
+                      <span><strong>Add services</strong><small>Campaigns, reporting, research, support, and more</small></span>
+                      <span aria-hidden="true">+</span>
+                    </summary>
+                    <div className="dp-pricing-addons-body">
+                      <p className="dp-pricing-addons-note">Choose only what helps you launch now. You can add more services later.</p>
+                      <div className="dp-pricing-addon-rail" role="tablist" aria-label="Service groups">
+                        {visibleModuleGroups.map((group) => (
+                          <button
+                            key={group.id}
+                            type="button"
+                            role="tab"
+                            aria-selected={activeModuleGroup?.id === group.id}
+                            data-active={activeModuleGroup?.id === group.id}
+                            onClick={() => setActiveCapabilityGroup(group.id)}
+                          >
+                            <span>{groupLabels[group.id] || group.heading}</span>
+                            <small>{group.modules.length} {group.modules.length === 1 ? "option" : "options"}</small>
+                          </button>
+                        ))}
+                      </div>
+                      {activeModuleGroup ? (
+                        <section className="dp-pricing-addon-panel" role="tabpanel" aria-label={`${activeModuleGroup.heading} services`}>
+                          <div className="dp-pricing-addon-intro">
+                            <strong>{activeModuleGroup.heading}</strong>
+                            <p>{activeModuleGroup.sentence}</p>
+                          </div>
+                          <div className="dp-pricing-option-list">
+                            {activeModuleGroup.modules.map((module) => (
+                              <button key={module.id} type="button" data-active={selectedModuleIds.includes(module.id)} onClick={() => toggleModule(module.id)}>
+                                <span><strong>{module.label}</strong><small>{module.summary}</small></span>
+                                <em>{getPriceText(module)}</em>
+                              </button>
+                            ))}
+                          </div>
+                        </section>
+                      ) : null}
+                    </div>
+                  </details>
                 </>
               )}
             </div>
-            <aside className="dp-pricing-summary" aria-label="Order Summary">
-              <p className="dp-pricing-kicker">Order Summary</p>
+            <aside className="dp-pricing-summary" aria-label="Your plan">
+              <p className="dp-pricing-kicker">Your plan</p>
               <h2>{totalText}</h2>
               <p className="dp-pricing-summary-context">{estimatedTotalLabel}</p>
               <div className="dp-pricing-summary-plan"><strong>{selectedPlan?.label || "Custom setup"}</strong><span>{selectedPlan?.summary || "Select a standard plan or continue with custom setup."}</span></div>
@@ -549,11 +548,11 @@ export default function PricingPage() {
                 {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Review your selection, then add the account details Stripe needs for a secure checkout.")}
               </p>
               <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>
-                {isResident ? "Get Perks Card" : "Continue to registration"} <ArrowRight aria-hidden="true" />
+                {isResident ? "Get Perks Card" : `Continue with ${selectedPlan?.label || "this plan"}`} <ArrowRight aria-hidden="true" />
               </button>
             </aside>
           </div>
-          <p className="dp-pricing-footer-note">Helping people discover more of downtown while helping local businesses, properties and organizations reach them at the right moment.</p>
+          <p className="dp-pricing-footer-note">Your selections are saved as you go, so registration starts with the plan you chose.</p>
         </div>
       </section>
     </main>
