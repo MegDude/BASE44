@@ -30,7 +30,7 @@ async function open(route) {
     rows: document.querySelectorAll(".dp-workspace-experiences__rows > button").length,
     overflow: document.documentElement.scrollWidth > innerWidth,
   }));
-  if (summary.title !== "Create one connected experience." || summary.groups < 8 || summary.rows < 1 || summary.overflow) throw new Error(`Campaign library is incomplete or overflows (${JSON.stringify(summary)})`);
+  if (summary.title !== "Create one useful experience" || summary.groups < 8 || summary.rows < 1 || summary.overflow) throw new Error(`Campaign library is incomplete or overflows (${JSON.stringify(summary)})`);
   await page.locator(".dp-workspace-experiences__rows > button").first().click();
   const sheet = page.locator(".dp-workspace-sheet");
   await sheet.waitFor({ state: "visible" });
@@ -44,7 +44,7 @@ async function open(route) {
 {
   const page = await open("/partner-workspace/surveys?organizationId=demo-org-legends-real-estate");
   const body = await page.locator(".dp-workspace-experiences").innerText();
-  if (!body.includes("Ask one useful question.") || !body.includes("without requiring QR") || !body.includes("Google Sheets")) throw new Error("Survey page does not explain native, optional-QR, database-first behavior");
+  if (!body.includes("Ask one useful question") || !body.includes("without requiring QR") || !body.includes("Google Sheets")) throw new Error("Survey page does not explain native, optional-QR, database-first behavior");
   await page.getByRole("button", { name: "Create survey" }).tap();
   const builder = page.locator(".dp-experience-builder");
   await builder.waitFor({ state: "visible" });
