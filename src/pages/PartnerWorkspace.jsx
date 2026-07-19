@@ -214,7 +214,7 @@ const WORKSPACE_MODULE_GROUPS = [
     label: "Media",
     items: [
       { label: "Gallery", href: "/partner-workspace/profile", description: "Keep images and media current." },
-      { label: "Brand", href: "/partner-workspace/profile", description: "Manage public identity and map copy." },
+      { label: "Brand", href: "/partner-workspace/profile", description: "Manage your public name, description, and map copy." },
       { label: "Profile", href: "/partner-workspace/profile", description: "Update organization details." },
     ],
   },
@@ -242,8 +242,8 @@ const WORKSPACE_MODULE_GROUPS = [
       { label: "Team", href: "/partner-workspace/team", description: "Invite teammates and assign roles." },
       { label: "Permissions", href: "/partner-workspace/team", description: "Control workspace access." },
       { label: "Billing", href: "/partner-workspace/billing", description: "Review plan, subscription, invoices, and seats." },
-      { label: "Integrations", href: "/partner-workspace/profile", description: "Connect API, domains, notifications, and tools." },
-      { label: "Settings", href: "/partner-workspace/profile", description: "Manage organization settings and audit context." },
+      { label: "Connected services", href: "/partner-workspace/profile", description: "Connect data sources, domains, notifications, and other services." },
+      { label: "Settings", href: "/partner-workspace/profile", description: "Manage organization settings and review recent account activity." },
     ],
   },
 ];
@@ -818,11 +818,11 @@ function WorkspaceMediaRail({ tabId, organizationId }) {
 
 const WORKSPACE_DETAIL_OVERRIDES = {
   buildings: {
-    headline: "Places connected to this workspace.",
-    body: "Review the buildings, venues, listings, and map records your team manages.",
-    items: ["Buildings", "Venues", "Listings", "Map records"],
+    headline: "Places your team can manage",
+    body: "Review the buildings, venues, listings, and map pages your team manages.",
+    items: ["Buildings", "Venues", "Listings", "Map pages"],
     primaryCta: { label: "Open partner map", href: "/map?mode=partner&tab=map&filter=All" },
-    rowDescription: "Open the map to review current records and visibility.",
+    rowDescription: "Open the map to review current details and visibility.",
   },
   residents: {
     headline: "People connected to this work.",
@@ -1184,12 +1184,12 @@ function WorkspaceAgent({ user }) {
   const followUps = Array.isArray(response?.followUps) ? response.followUps : [];
   const places = Array.isArray(response?.places) ? response.places : [];
   const sourceLabel = response?.source === "base44-agent"
-    ? "Downtown Perks agent"
+    ? "Ask the Map"
     : response?.source === "openai-ask-map"
-      ? "OpenAI map agent"
+      ? "Ask the Map"
       : response?.source === "local-agent"
-        ? "Current map context"
-        : "Downtown Perks map intelligence";
+        ? "Current map details"
+        : "Downtown Perks map guidance";
 
   return (
     <motion.section className="dp-workspace-agent" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
@@ -1527,7 +1527,7 @@ function getPotentialReachSummary(sources = POTENTIAL_REACH_SOURCES) {
       : null,
     labels: sources.map((source) => source.label).join(" · "),
     note: verifiedSources.length === sources.length
-      ? "Combined verified audience records"
+      ? "Combined verified audience total"
       : "Verified audience totals are not connected yet",
   };
 }
@@ -1568,8 +1568,17 @@ function NativeMobileWorkspaceDashboard({
         [formatWorkspaceNumber(activePerks.length), "Live offers", "Current workspace"],
         [formatWorkspaceNumber(upcomingEvents.length), "Upcoming events", "Current workspace"],
       ];
+  const entityTypeLabel = (type) => ({
+    brand: "Brand profile",
+    building: "Building",
+    hotel: "Hotel",
+    listing: "Property listing",
+    property: "Property",
+    restaurant: "Restaurant",
+    venue: "Place",
+  }[type] || "Place");
   const activity = [
-    ...ownedEntities.slice(0, 3).map((entity) => [MapPin, entity.display_name, `${entity.entity_type} record connected to this workspace`, "Connected"]),
+    ...ownedEntities.slice(0, 3).map((entity) => [MapPin, entity.display_name, `${entityTypeLabel(entity.entity_type)} ready to manage`, "Ready"]),
     ...activePerks.slice(0, Math.max(0, 3 - ownedEntities.length)).map((perk) => [Star, perk.title, "Active offer", "Live"]),
     ...upcomingEvents.slice(0, Math.max(0, 3 - ownedEntities.length - activePerks.length)).map((event) => [Calendar, event.title, "Upcoming event", "Scheduled"]),
   ];
@@ -1634,7 +1643,7 @@ function NativeMobileWorkspaceDashboard({
         </figure>
         <p className="dp-native-mobile-kicker">Good morning</p>
         <h1>{organization?.name || "Partner workspace"}</h1>
-        <div className="dp-native-mobile-meta"><span>Current workspace</span><span>Austin · Downtown</span></div>
+        <div className="dp-native-mobile-meta"><span>Managing now</span><span>Austin · Downtown</span></div>
         <strong className="dp-native-mobile-hero-value">{heroMetric}</strong>
         <span className="dp-native-mobile-hero-label">{heroLabel}</span>
         <small className="dp-native-mobile-hero-source">{heroSource}</small>
@@ -1643,7 +1652,7 @@ function NativeMobileWorkspaceDashboard({
       </section>
 
       <section className="dp-native-mobile-section" aria-labelledby="mobile-results-title">
-        <header><h2 id="mobile-results-title">Workspace status</h2><span>Current records</span></header>
+        <header><h2 id="mobile-results-title">What is working</h2><span>Latest verified results</span></header>
         <div className="dp-native-mobile-kpi-rail">
           {kpis.map(([value, label, source]) => <article key={label}><strong>{value}</strong><span>{label}</span><em>{source}</em></article>)}
         </div>
@@ -1657,7 +1666,7 @@ function NativeMobileWorkspaceDashboard({
       </section>
 
       {activity.length ? <section className="dp-native-mobile-section" aria-labelledby="mobile-activity-title">
-        <header><h2 id="mobile-activity-title">Connected now</h2></header>
+        <header><h2 id="mobile-activity-title">Places you can manage</h2></header>
         <div className="dp-native-mobile-activity">
           {activity.map(([Icon, title, description, status]) => <article key={`${title}-${description}`}><Icon aria-hidden="true" /><div><strong>{title}</strong><span>{description}</span><time>{status}</time></div></article>)}
         </div>
@@ -1675,16 +1684,16 @@ function NativeMobileWorkspaceDashboard({
       </section>
 
       <section className="dp-native-mobile-section" aria-labelledby="mobile-campaign-title">
-        <header><h2 id="mobile-campaign-title">Current campaign</h2></header>
+        <header><h2 id="mobile-campaign-title">Campaign to review</h2></header>
         <article className="dp-native-mobile-campaign">
-          <img src={campaign.image} alt={campaign.alt} loading="lazy" decoding="async" />
+          <img src={campaign.image} alt={campaign.alt} width="1200" height="800" loading="eager" decoding="async" />
           <div className="dp-native-mobile-campaign-copy"><span>{campaign.status}</span><h3>{campaign.title}</h3></div>
           <div className="dp-native-mobile-campaign-metrics">{campaign.metrics.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
         </article>
       </section>
 
       <section className="dp-native-mobile-insight" aria-labelledby="mobile-insight-title">
-        <p>Insight</p>
+        <p>What to do next</p>
         <h2 id="mobile-insight-title">{insight}</h2>
         <Link to={workspaceHref("/partner-workspace/assistant")}>Ask the Map<ArrowRight aria-hidden="true" /></Link>
       </section>
@@ -3165,7 +3174,7 @@ function ProfileSection({ user, setUser }) {
 
           <div className="dp-profile-editor__actions">
             <button type="submit" disabled={saving} className="dp-profile-editor__primary">
-              {saved ? <><Check aria-hidden="true" /> Changes saved</> : saving ? "Saving..." : "Save Changes"}
+              {saved ? <><Check aria-hidden="true" /> Changes saved</> : saving ? "Saving..." : "Save changes"}
             </button>
             <Link to="/map?mode=resident&tab=map&filter=All" className="dp-profile-editor__secondary">
               Preview Public Page

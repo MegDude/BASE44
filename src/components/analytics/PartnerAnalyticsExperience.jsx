@@ -24,7 +24,7 @@ const POTENTIAL_AUDIENCE_SOURCES = [
   ["Legends", "Contact count not connected"],
 ];
 
-function DataNotice({ title = "Verified analytics are not connected.", description = "Potential reach and measured activity will appear only after the canonical source provides a verified count." }) {
+function DataNotice({ title = "Verified analytics are not connected.", description = "Potential reach and measured activity will appear after the source provides a verified count." }) {
   return <section className="dp-pa-note" aria-label="Data availability"><Info aria-hidden="true" /><div><strong>{title}</strong><p>{description}</p></div></section>;
 }
 
@@ -33,8 +33,8 @@ function SourceRows() {
 }
 
 function ConnectedPlaces({ entities, workspaceId }) {
-  if (!entities.length) return <section className="dp-pa-empty"><strong>No connected places.</strong><p>Connect a canonical map record before reviewing place-level activity.</p></section>;
-  return <section className="dp-pa-panel"><header><span>Places</span><h2>Canonical records in this workspace.</h2></header><div className="dp-pa-records">{entities.map((entity) => <article key={entity.entity_id}><div><strong>{entity.display_name}</strong><small>{entity.entity_type} · Connected record</small></div><Link to={withPartnerWorkspaceContext(`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`, workspaceId)}>Open map</Link></article>)}</div></section>;
+  if (!entities.length) return <section className="dp-pa-empty"><strong>No connected places.</strong><p>Add a place to the map before reviewing its activity.</p></section>;
+  return <section className="dp-pa-panel"><header><span>Places</span><h2>Places you can manage here</h2></header><div className="dp-pa-records">{entities.map((entity) => <article key={entity.entity_id}><div><strong>{entity.display_name}</strong><small>{entity.entity_type} · Ready to manage</small></div><Link to={withPartnerWorkspaceContext(`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`, workspaceId)}>Open map</Link></article>)}</div></section>;
 }
 
 function EmptyMeasurement({ view }) {
@@ -44,11 +44,11 @@ function EmptyMeasurement({ view }) {
     sources: "No attributed entry counts.",
     geography: "No verified geographic activity.",
   };
-  return <section className="dp-pa-empty"><strong>{labels[view] || "No verified results."}</strong><p>The interface will not estimate or generate performance. Connect the canonical analytics source to report measured activity.</p></section>;
+  return <section className="dp-pa-empty"><strong>{labels[view] || "No verified results."}</strong><p>Downtown Perks will not estimate results. Connect a verified analytics source to report measured activity.</p></section>;
 }
 
 function Reports({ workspaceId }) {
-  return <section className="dp-pa-panel"><header><span>Reports</span><h2>Reports begin with verified records.</h2></header><div className="dp-pa-reports"><article><FileText aria-hidden="true" /><div><strong>Audience and performance report</strong><small>Available after verified audience and action totals are connected.</small></div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", workspaceId)}>Review sources</Link></article></div></section>;
+  return <section className="dp-pa-panel"><header><span>Reports</span><h2>Reports begin with verified results</h2></header><div className="dp-pa-reports"><article><FileText aria-hidden="true" /><div><strong>Audience and performance report</strong><small>Available after verified audience and action totals are connected.</small></div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", workspaceId)}>Review sources</Link></article></div></section>;
 }
 
 const RESEARCH_COUNTS = [
@@ -110,14 +110,14 @@ export function PartnerAnalyticsExperience() {
   }
 
   return <motion.section className="dp-partner-analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-    <header className="dp-pa-header"><div><span>Analytics</span><h1>Report only what is verified.</h1><p>Review connected places now. Audience and action totals appear after their canonical sources are available.</p></div><div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}><Plug aria-hidden="true" />Review sources</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />Reports</Link></div></header>
+    <header className="dp-pa-header"><div><span>Analytics</span><h1>Report only what is verified</h1><p>Review connected places now. Audience and action totals appear after their source totals are available.</p></div><div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}><Plug aria-hidden="true" />Review sources</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />Reports</Link></div></header>
 
     <section className="dp-pa-controls" aria-label="Analytics workspace"><label>Workspace<select value={organization.id} onChange={(event) => update({ workspace: event.target.value })}>{demoOrganizations.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label><div className="dp-pa-status"><Info aria-hidden="true" /><span><strong>Source-safe view</strong>No generated performance data</span></div></section>
 
     <nav className="dp-pa-tabs" aria-label="Analytics views">{VIEWS.map(([id, label]) => <button key={id} type="button" aria-current={view === id ? "page" : undefined} onClick={() => update({ view: id })}>{label}</button>)}</nav>
 
     <div className="dp-pa-content">
-      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected records</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} connected.</h2><p>This is an inventory count, not an audience or performance claim.</p></div><div><span>Potential reach</span><h3>DANA, The Shore, and Legends are ready as source relationships.</h3><p>Their member, resident, and contact totals are not connected, so no combined reach number is shown.</p><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}>Review sources <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Connected places</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Canonical records</span></footer></article><article><div><span>Verified users</span><Users aria-hidden="true" /></div><strong>—</strong><footer><span>Count not connected</span></footer></article><article><div><span>Measured actions</span><MapPin aria-hidden="true" /></div><strong>—</strong><footer><span>Analytics not connected</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><SourceRows /></div><DataNotice /></> : null}
+      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to manage.</h2><p>This count shows places only. It does not estimate audience size or results.</p></div><div><span>Potential reach</span><h3>DANA, The Shore, and Legends can provide audience totals.</h3><p>Their member, resident, and contact totals are not connected, so no combined reach number is shown.</p><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}>Review sources <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Connected places</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Ready to manage</span></footer></article><article><div><span>Verified users</span><Users aria-hidden="true" /></div><strong>—</strong><footer><span>Count not connected</span></footer></article><article><div><span>Measured actions</span><MapPin aria-hidden="true" /></div><strong>—</strong><footer><span>Results not connected</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><SourceRows /></div><DataNotice /></> : null}
       {view === "audience" ? <><SourceRows /><DataNotice title="No verified user total is available." /></> : null}
       {view === "research" ? <ResearchCoverage workspaceId={organization.id} /> : null}
       {view === "places" ? <ConnectedPlaces entities={entities} workspaceId={organization.id} /> : null}

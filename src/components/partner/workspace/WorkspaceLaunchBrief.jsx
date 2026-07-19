@@ -76,15 +76,15 @@ export default function WorkspaceLaunchBrief({ organizationId }) {
     </section>
 
     <section className="dp-launch-brief__records" aria-labelledby="launch-records-title">
-      <header><p>Working records</p><h2 id="launch-records-title">Reading order</h2></header>
+      <header><p>Review materials</p><h2 id="launch-records-title">Read these first</h2></header>
       <ol>{launchWorkingRecords.map(([title, description], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{title}</strong><p>{description}</p></div></li>)}</ol>
-      <p className="dp-launch-brief__record-note">Connect the source URLs before these records become external links. No Notion URL was included in the supplied brief.</p>
+      <p className="dp-launch-brief__record-note">Add the source links before sharing these materials outside the team. The supplied brief did not include a Notion link.</p>
     </section>
 
     <section className="dp-launch-brief__nina" aria-labelledby="launch-nina-title">
       <p>For Nina</p><h2 id="launch-nina-title">One-sentence introduction</h2><blockquote>{NINA_BRIEF}</blockquote><button type="button" onClick={copyBrief}>{copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}{copied ? "Copied" : "Copy introduction"}</button>
     </section>
 
-    <footer className="dp-launch-brief__verification"><ShieldCheck aria-hidden="true" /><p><strong>Verification rule</strong> Confirm current ownership, property management, tenant occupancy, venue ownership, operating status, and decision authority before outreach. Working relationship records are not public confirmation.</p><time dateTime="2026-07-18">Summary created July 18, 2026</time></footer>
+    <footer className="dp-launch-brief__verification"><ShieldCheck aria-hidden="true" /><p><strong>Before outreach</strong> Confirm current ownership, property management, tenant occupancy, venue ownership, operating status, and decision authority. Internal relationship notes are not public confirmation.</p><time dateTime="2026-07-18">Summary created July 18, 2026</time></footer>
   </section>;
 }

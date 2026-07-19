@@ -8,7 +8,7 @@ const TOOLS = [
   ["publish", "Publish", "Offers, events, campaigns, and messages", "1 recommendation", "/partner-workspace/offers"],
   ["performance", "Performance", "Opens, saves, scans, directions, and use", "Live", "/partner-workspace/analytics"],
   ["audience", "Audience", "People and groups you can reach", "Signals available", "/partner-workspace/audience"],
-  ["media", "Media", "Images and files used across the platform", "Needs review", "/partner-workspace/media"],
+  ["media", "Photos and files", "Images and documents used in your public pages", "Needs review", "/partner-workspace/media"],
   ["account", "Account", "Team, membership, billing, and settings", "Active", "/partner-workspace/profile?section=account"],
 ];
 

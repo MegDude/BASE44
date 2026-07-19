@@ -311,6 +311,240 @@ html body #root#root#root .dp-resident-access-page :is(h1, .dp-resident-access-h
   }
 }
 
+/* Partner workspace governance: one white plane, quiet dividers, and contained tools. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-dashboard :is(
+  .dp-native-mobile-kpi-rail article,
+  .dp-native-mobile-attention,
+  .dp-native-mobile-analytics,
+  .dp-native-mobile-actions a,
+  .dp-native-mobile-campaign,
+  .dp-native-mobile-insight,
+  .dp-native-mobile-empty
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-attention {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-attention > span {
+  color: #53606c !important;
+  -webkit-text-fill-color: #53606c !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-attention > h2 {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-attention > a {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-partner-workspace-header :is(button, select, [role="button"]) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-workspace-menu {
+  max-height: min(84dvh, calc(100dvh - env(safe-area-inset-top, 0px) - 18px)) !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 -10px 34px rgba(11, 31, 51, 0.06) !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="insight"],
+  [class*="notice"],
+  [class*="callout"]
+) {
+  border-radius: 0 !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="insight"],
+  [class*="notice"],
+  [class*="callout"]
+) {
+  border-radius: 0 !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td,
+  [role="row"],
+  [role="rowgroup"],
+  [role="cell"],
+  [role="columnheader"]
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td,
+  [role="row"],
+  [role="rowgroup"],
+  [role="cell"],
+  [role="columnheader"]
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  a[class*="button"],
+  a[class*="action"],
+  a[class*="cta"],
+  button,
+  [role="button"],
+  [role="tab"]
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+/* Legacy styles use deeply repeated IDs; this final lock must remain stronger. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  a[class*="button"],
+  a[class*="action"],
+  a[class*="cta"],
+  button,
+  [role="button"],
+  [role="tab"]
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  a[class*="button"],
+  a[class*="action"],
+  a[class*="cta"],
+  button,
+  [role="button"],
+  [role="tab"]
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  [role="tablist"],
+  .dp-pa-tabs,
+  .dp-analytics-view-nav,
+  .dp-filter-tabs,
+  .dp-segmented-control
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body :is(
+  .dp-workspace-sheet,
+  .dp-workspace-search-sheet,
+  .dp-native-mobile-workspace-menu,
+  .dp-workspace-menu-panel
+) {
+  max-height: min(84dvh, calc(100dvh - env(safe-area-inset-top, 0px) - 18px)) !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 -10px 34px rgba(11, 31, 51, 0.06) !important;
+}
+
+html body .dp-workspace-sheet.dp-workspace-sheet,
+html body .dp-workspace-search-sheet.dp-workspace-search-sheet {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 -10px 34px rgba(11, 31, 51, 0.06) !important;
+}
+
+html body :is(
+  .dp-workspace-sheet-body,
+  .dp-workspace-search-sheet > .dp-workspace-destination-list,
+  .dp-native-mobile-workspace-menu > div,
+  .dp-workspace-menu-panel > nav
+) {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  background: #ffffff !important;
+}
+
+html body :is(.dp-workspace-sheet, .dp-workspace-search-sheet, .dp-native-mobile-workspace-menu) :is(
+  table,
+  tr,
+  th,
+  td,
+  [class*="row"],
+  [class*="card"],
+  [class*="panel"]
+) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root#root .dp-partner-workspace-page :is(h1, .dp-native-mobile-hero h1) {
+    font-size: clamp(27px, 7.4vw, 32px) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page :is(h2, .dp-native-mobile-section h2) {
+    font-size: clamp(19px, 5vw, 22px) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page h3 {
+    font-size: clamp(17px, 4.5vw, 20px) !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page :is(button, [role="button"], [role="tab"], a[class*="button"], a[class*="action"], a[class*="cta"]) {
+    min-height: 44px !important;
+    font-size: 13px !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html body #root :is(.dp-partner-workspace-page, .dp-resident-home, .dp-resident-access-page, .dp-pricing-page, .dp-map-page) * {
     animation-duration: 0.01ms !important;

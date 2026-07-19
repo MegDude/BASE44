@@ -56,12 +56,12 @@ const DESTINATIONS = {
   workspace: {
     eyebrow: "Manage",
     title: "Workspace",
-    description: "Keep your organization, places, people, and connected systems current.",
+    description: "Keep your public details, places, people, and account information current.",
     next: { id: "profile", title: "Review your profile", description: "Confirm the details people see before you publish." },
     groups: [
       { title: "Presence", ids: ["entities", "media"] },
       { title: "People and access", ids: ["people", "team", "notifications"] },
-      { title: "Systems", ids: ["sources", "automations", "ai", "qr"] },
+      { title: "Connected services", ids: ["sources", "automations", "ai", "qr"] },
       { title: "Account", ids: ["billing", "support"] },
     ],
   },

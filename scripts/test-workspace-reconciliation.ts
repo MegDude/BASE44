@@ -65,7 +65,7 @@ assert.match(workspaceStyles, /\.dp-report-actions/);
 assert.match(workspaceSource, /className="dp-workspace-reports dp-report-system"/);
 assert.match(workspaceSource, /See what is working and what to do next\./);
 assert.match(workspaceSource, /function WorkspaceMediaRail/);
-assert.match(workspaceSource, /Media ready to use/);
+assert.match(workspaceSource, /Approved media/);
 assert.match(workspaceSource, /See what needs attention and what is working\./);
 assert.match(workspaceSource, /Publish the dining passport offer\./);
 assert.match(workspaceSource, /className="dp-os-summary-strip"/);

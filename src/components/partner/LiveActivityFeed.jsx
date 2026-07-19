@@ -12,7 +12,7 @@ export default function LiveActivityFeed({ activities = [] }) {
             Live activity
           </h3>
           <p className="text-[14px] text-[#0B1F33]/58 mt-2">
-            Real-time engagement from the platform right now.
+            See what people have opened, saved, or used recently.
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export default function LiveActivityFeed({ activities = [] }) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
-              className="flex items-start gap-3 p-4 rounded-xl border border-[#0B1F33]/8 bg-white/50 hover:bg-white transition-colors"
+              className="flex items-start gap-3 py-4 border-b border-[#0B1F33]/8 bg-white"
             >
               <div className="w-2 h-2 rounded-[2px] bg-[#0B1F33] mt-2 shrink-0 animate-pulse" />
 
