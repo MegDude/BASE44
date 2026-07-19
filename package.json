@@ -37,6 +37,7 @@
     "test:active-perks-sheet": "node scripts/test-active-perks-sheet.mjs",
     "test:route-experiences": "node scripts/test-route-experiences.mjs",
     "test:map-detail-system": "node scripts/test-map-detail-system.mjs",
+    "test:native-detail-density": "node scripts/test-native-detail-density.mjs",
     "test:map-panel-action-rail": "node scripts/test-map-panel-action-rail.mjs",
     "test:surface-system": "node scripts/test-canonical-surface-system.mjs",
     "test:workspace-experiences": "node scripts/test-workspace-experience-system.mjs",
