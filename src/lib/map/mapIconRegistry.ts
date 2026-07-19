@@ -154,3 +154,17 @@ export function getMapIcon(pinKey: string | undefined): MapIconDefinition {
 
   return direct || labelMatch || mapIconRegistry.default;
 }
+
+const CANONICAL_GLYPH_FALLBACKS: Partial<Record<MapIconKey, MapIconKey>> = {
+  inkind: "dining",
+  dana: "civic",
+  "fine-eyewear": "retail",
+  rivian: "mobility",
+  legends: "listing",
+};
+
+export function getCanonicalMapGlyph(pin: MapIconDefinition): string {
+  if (!pin.asset) return pin.glyph;
+  const registryKey = (Object.entries(mapIconRegistry).find(([, definition]) => definition === pin)?.[0] || "default") as MapIconKey;
+  return mapIconRegistry[CANONICAL_GLYPH_FALLBACKS[registryKey] || "default"].glyph;
+}

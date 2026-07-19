@@ -6,6 +6,7 @@
 
 import L from 'leaflet';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
+import { getCanonicalMapGlyph } from '@/lib/map/mapIconRegistry';
 
 const SIZES = {
   default: 32,
@@ -22,7 +23,7 @@ const PIN_SVG_STYLE = `
   height: 15px;
   display: block;
   flex-shrink: 0;
-  stroke: #0B1F33;
+  stroke: #C8A96A;
   fill: none;
 `;
 
@@ -31,13 +32,9 @@ const PIN_SVG_STYLE_LG = `
   height: 15px;
   display: block;
   flex-shrink: 0;
-  stroke: #BFA46A;
+  stroke: #0B1F33;
   fill: none;
 `;
-
-function isPremiumPinAsset(asset = '') {
-  return asset.includes('/pins/downtown-perks/partners/');
-}
 
 /**
  * Inject inline style onto the SVG string returned by pinAssetRegistry.
@@ -45,15 +42,8 @@ function isPremiumPinAsset(asset = '') {
  */
 function styledGlyph(pin, large = false) {
   if (!pin?.glyph) return '';
-  if (pin.asset) {
-    const premium = isPremiumPinAsset(pin.asset);
-    const logoClass = premium ? 'dp-live-pin__premium-art' : 'dp-live-pin__legends-logo';
-    return `<img class="dp-pin-logo ${logoClass}" src="${pin.asset}" alt="" aria-hidden="true" style="width:${premium ? 32 : (large ? 22 : 19)}px;height:${premium ? 32 : (large ? 22 : 19)}px;display:block;object-fit:contain;" />`;
-  }
-
-  // Replace the opening <svg tag to add inline style
   const style = large ? PIN_SVG_STYLE_LG : PIN_SVG_STYLE;
-  return pin.glyph.replace(
+  return getCanonicalMapGlyph(pin).replace(
     '<svg ',
     `<svg style="${style}" `
   );
@@ -65,7 +55,6 @@ function styledGlyph(pin, large = false) {
  */
 export function createCompactMarker(entity) {
   const pin = resolveEntityPin(entity);
-  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, false);
   const size = entity.markerType === 'building' ? SIZES.building : SIZES.default;
   const glyph = styledGlyph(pin);
 
@@ -74,16 +63,16 @@ export function createCompactMarker(entity) {
       width: ${size}px;
       height: ${size}px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.96);
-      border: 1px solid rgba(191,164,106,0.72);
-      box-shadow: none;
+      background: #0B1F33;
+      border: 1.25px solid rgba(200,169,106,0.92);
+      box-shadow: 0 5px 14px rgba(11,31,51,0.18);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       overflow: hidden;
-      color: #0B1F33;
+      color: #C8A96A;
     ">
       ${glyph}
     </div>
@@ -99,12 +88,10 @@ export function createCompactMarker(entity) {
 }
 
 /**
- * Create a selected marker icon (slightly larger, gold ring accent)
- * Selected pins keep the same circular style with a stronger gold edge.
+ * Create a selected marker icon with the same footprint and a reversed palette.
  */
 export function createSelectedMarker(entity) {
   const pin = resolveEntityPin(entity);
-  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, true);
   const baseSize = entity.markerType === 'building' ? SIZES.building : SIZES.default;
   const size = Math.round(baseSize * SIZES.selected);
   const glyph = styledGlyph(pin, true);
@@ -114,16 +101,16 @@ export function createSelectedMarker(entity) {
       width: ${size}px;
       height: ${size}px;
       border-radius: 999px;
-      background: #0B1F33;
-      border: 1px solid #BFA46A;
-      box-shadow: none;
+      background: #C8A96A;
+      border: 1.25px solid #0B1F33;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.94), 0 7px 16px rgba(11,31,51,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transform: none;
       overflow: hidden;
-      color: #BFA46A;
+      color: #0B1F33;
     ">
       ${glyph}
     </div>
@@ -139,61 +126,10 @@ export function createSelectedMarker(entity) {
 }
 
 /**
- * Create a pill marker (for detail/expanded state)
- * Shows entity name and category icon
+ * Expanded marker requests reuse the same selected pin footprint.
  */
 export function createPillMarker(entity) {
-  const pin = resolveEntityPin(entity);
-  if (isPremiumPinAsset(pin?.asset)) return createArtworkMarker(pin, true);
-  const pillGlyph = pin.asset
-    ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${pin.asset}" alt="" aria-hidden="true" style="width:16px;height:16px;display:block;object-fit:contain;" />`
-    : pin.glyph.replace(
-      '<svg ',
-      `<svg style="width:14px;height:14px;display:block;flex-shrink:0;stroke:#0B1F33;fill:none;" `
-    );
-
-  const html = `
-    <div style="
-      background: white;
-      border: 2px solid #0B1F33;
-      border-radius: 20px;
-      padding: 6px 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 12px;
-      font-weight: 600;
-      color: #0B1F33;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    ">
-      ${pillGlyph}
-      <span>${entity.name}</span>
-    </div>
-  `;
-
-  return L.divIcon({
-    className: '',
-    html,
-    iconSize: [200, 32],
-    iconAnchor: [100, 16],
-    popupAnchor: [0, -32],
-  });
-}
-
-function createArtworkMarker(pin, selected) {
-  const width = 32;
-  const height = 32;
-  const html = `<div class="dp-marker-factory-pin dp-marker-factory-pin--art${selected ? ' is-selected' : ''}" style="width:${width}px;height:${height}px;display:grid;place-items:center;overflow:visible;cursor:pointer;transform:none;">${styledGlyph(pin, selected)}</div>`;
-
-  return L.divIcon({
-    className: 'dp-leaflet-premium-pin',
-    html,
-    iconSize: [width, height],
-    iconAnchor: [width / 2, height / 2],
-    popupAnchor: [0, -(height / 2 + 4)],
-  });
+  return createSelectedMarker(entity);
 }
 
 /**

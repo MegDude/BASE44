@@ -63,7 +63,7 @@ import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyL
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
 import { resolveEntityPanelArchetype, resolveEntityPanelContent } from "../lib/map/entityPanelArchetypes";
 import { resolveEntityPin } from "../lib/map/entityPinResolver";
-import { normalizeMapIconKey } from "../lib/map/mapIconRegistry";
+import { getCanonicalMapGlyph, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
 import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from "@/utils/nearbyRecommendations";
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
@@ -3759,16 +3759,10 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, z
   const kind = escapeHtmlAttribute(iconKey);
   const activeClass = selected ? "is-selected is-active" : "";
   const pulseClass = pulsing ? "is-pulsing" : "";
-  const rental = place?.raw?.rentalListing || place?.rentalListing || {};
-  const rentalPriceLabel = place?.priceLabel || place?.raw?.priceLabel || rental.priceLabel;
-  const priceLabel = isRentalEntity(place) && rentalPriceLabel ? `<span class="dp-live-pin__price">${escapeHtmlAttribute(rentalPriceLabel)}</span>` : "";
-  const isLegendsPin = isLegendsMapPlace(place) || Boolean(getLegendsListing(place) || getLegendsResidentialProfileForPlace(place));
-  const iconSvg = isLegendsPin
-    ? `<img class="dp-pin-logo dp-live-pin__legends-logo" src="${LEGENDS_PIN_LOGO}" alt="${LEGENDS_PIN_ALT}" loading="eager" decoding="async" />`
-    : pin.glyph;
+  const iconSvg = getCanonicalMapGlyph(pin);
 
   const zoomStyle = zoomMarkerStyleAttribute(zoom, { selected });
-  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" style="${zoomStyle}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span>${priceLabel}</button>`;
+  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" style="${zoomStyle}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span></button>`;
   const stopNumber = Number(place?.routeStopNumber || 0);
   if (!stopNumber) return buttonHtml;
   return `<div class="dp-collection-stop ${selected ? "is-current" : ""}" style="${zoomStyle}" data-collection-stop="${stopNumber}">${buttonHtml}<span class="dp-collection-stop__number">${stopNumber}</span></div>`;
@@ -3844,25 +3838,17 @@ function svgMarkerDataUrl(svg) {
 }
 
 function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
-  const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const pin = resolveEntityPin(place);
-  if (pin.asset) {
-    const markerWidth = size;
-    const markerHeight = size;
-    return {
-      url: isLegends ? LEGENDS_PIN_LOGO : pin.asset,
-      scaledSize: new maps.Size(markerWidth, markerHeight),
-      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
-    };
-  }
-  const paths = mapIconSvgInner(pin.glyph);
-  const iconColor = selected ? "#B8963E" : "#0B1F33";
+  const paths = mapIconSvgInner(getCanonicalMapGlyph(pin));
+  const fill = selected ? "#C8A96A" : "#0B1F33";
+  const stroke = selected ? "#0B1F33" : "#C8A96A";
+  const iconColor = selected ? "#0B1F33" : "#C8A96A";
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <g transform="translate(4 4)" color="#FFFFFF" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
-      <g transform="translate(4 4)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      <circle cx="16" cy="16" r="14" fill="${fill}" stroke="${stroke}" stroke-width="1.25"/>
+      <g transform="translate(7 7) scale(.75)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
       ${stopNumber ? `<text x="28" y="8" dominant-baseline="middle" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
