@@ -1642,6 +1642,19 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-transform: none !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-drawer-shell[aria-label="Grouped map places"] .dp-panel-header-copy .dp-panel-title {
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-drawer-shell[aria-label="Grouped map places"] .dp-panel-header-copy .dp-panel-subtitle {
+  font-size: 11.5px !important;
+  font-weight: 450 !important;
+  line-height: 1.3 !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-grouped-list.dp-grouped-list {
   flex: 1 1 auto !important;
   display: grid !important;
@@ -1758,14 +1771,19 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   background: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
-  color: #0B1F33 !important;
-  -webkit-text-fill-color: #0B1F33 !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  line-height: 1.2 !important;
+  color: #B08A3F !important;
+  -webkit-text-fill-color: #B08A3F !important;
+  font-size: 10px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
   text-align: right !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 1px !important;
-  text-underline-offset: 3px !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
   white-space: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page button.dp-grouped-row.dp-grouped-row:is(:hover, :focus-visible) .dp-grouped-status {
+  color: #8B6B2F !important;
+  -webkit-text-fill-color: #8B6B2F !important;
 }

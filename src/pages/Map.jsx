@@ -4010,11 +4010,12 @@ function getClusterTitle(cluster, mode) {
 }
 
 function getClusterSubtitle(cluster, mode) {
+  const count = cluster.places?.length || 0;
   if (cluster?.groupType === "building") {
-    return `${cluster.places?.length || 0} units available here`;
+    return `${count} ${count === 1 ? "listing" : "listings"} · Tap one to see details`;
   }
 
-  return `${cluster.places?.length || 0} places nearby`;
+  return `${count} ${count === 1 ? "result" : "results"} · Tap one to see details`;
 }
 
 function PinBadge({ place, selected = false, size = "sm" }) {
@@ -4031,7 +4032,7 @@ function PinBadge({ place, selected = false, size = "sm" }) {
       aria-hidden="true"
       title={pin.label}
     >
-      <span dangerouslySetInnerHTML={{ __html: pin.glyph }} />
+      <span dangerouslySetInnerHTML={{ __html: getCanonicalMapGlyph(pin) }} />
     </span>
   );
 }
@@ -18356,7 +18357,6 @@ export default function MapPage() {
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
               <div className="dp-panel-header-copy">
-                <p className="dp-panel-eyebrow">{urlState.mode === "partner" ? "What's happening nearby" : "Nearby places"}</p>
                 <h2 className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
                 <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
               </div>
