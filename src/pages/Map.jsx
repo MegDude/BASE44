@@ -13846,6 +13846,7 @@ export default function MapPage() {
     lastTrigger: scopedLastTrigger,
     catalogState,
     runSearch: runScopedMapSearch,
+    searchCatalog: searchScopedCatalog,
     clearResults: clearScopedMapResults,
   } = useSearchDrivenMapEntities();
   const urlState = useUrlMapState();
@@ -14287,6 +14288,18 @@ export default function MapPage() {
   const effectiveSearch = useMemo(() => {
     return sanitizeMapPrompt(search, urlState.mode);
   }, [search, urlState.mode]);
+  useEffect(() => {
+    const query = effectiveSearch.trim();
+    if (!query) {
+      void searchScopedCatalog("");
+      return undefined;
+    }
+    if (query.length < 2) return undefined;
+    const timeoutId = window.setTimeout(() => {
+      void searchScopedCatalog(query, places, urlState.mode);
+    }, 120);
+    return () => window.clearTimeout(timeoutId);
+  }, [effectiveSearch, places, searchScopedCatalog, urlState.mode]);
   const consoleHasActiveWork = Boolean(effectiveSearch || mapAnswer || filtersOpen || neighborhoodsOpen || intelOpen);
   const buildScopedMapQuery = useCallback(({
     query = effectiveSearch,
@@ -16216,10 +16229,16 @@ export default function MapPage() {
       navigate(`${location.pathname}?${params.toString()}`);
       return;
     }
-    const place = catalogState.entitiesById?.[result.id];
-    if (!place) return;
-    if (result.markerEligible || result.id === "dunlap-atx-portfolio" || String(place.kind || place.type || place.entityType || "").toLowerCase() === "portfolio") {
-      selectPlace(place, { catalogResult: true });
+    const targetEntityId = result.entityId || result.linkedEntityId || result.id;
+    if (targetEntityId && (result.markerEligible || result.linkedEntityId)) {
+      const canonicalTargetId = resolveMapEntityAlias(targetEntityId);
+      navigateMapJourney({
+        tab: "map",
+        entityId: canonicalTargetId,
+        listingId: "",
+        perkId: "",
+        drawerClosed: "",
+      });
       return;
     }
     void applyPrompt(result.resultType === "person" || result.resultType === "organization" ? "Legends listings" : result.title);

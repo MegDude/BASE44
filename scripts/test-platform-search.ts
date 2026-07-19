@@ -8,10 +8,13 @@ import {
 } from "../src/lib/search/platformSearchCatalog.js";
 
 const inventory = JSON.parse(await readFile(new URL("../src/data/production/production-map-inventory.json", import.meta.url), "utf8"));
+const generatedIndex = JSON.parse(await readFile(new URL("../src/data/production/platform-search-index.json", import.meta.url), "utf8"));
 const locations = inventory.records;
 const catalog = buildPlatformSearchCatalog(locations);
 
 assert.ok(catalog.length >= locations.length, "public search catalog retains the full canonical map inventory");
+assert.deepEqual(generatedIndex, JSON.parse(JSON.stringify(catalog)), "the lazy runtime index matches the complete canonical catalog");
+assert.ok(generatedIndex.every((document) => !("lat" in document) && !("lng" in document) && !("image" in document)), "the search index contains metadata, not hydrated pins or drawer payloads");
 
 const nina = searchPlatformCatalog(catalog, "Nina Seely", { limit: 10 });
 assert.equal(nina[0]?.resultType, "person", "public people are searchable without becoming map pins");

@@ -591,10 +591,61 @@ async function loadRegistry() {
   return registryPromise;
 }
 
-function emptyCatalogState() {
+let platformSearchIndexPromise;
+async function loadPlatformSearchIndex() {
+  if (platformSearchIndexPromise) return platformSearchIndexPromise;
+  platformSearchIndexPromise = import("@/data/production/platform-search-index.json")
+    .then((module) => Array.isArray(module.default) ? module.default : []);
+  return platformSearchIndexPromise;
+}
+
+let productionInventoryPromise;
+async function loadProductionInventoryRecords() {
+  if (productionInventoryPromise) return productionInventoryPromise;
+  productionInventoryPromise = import("@/data/production/production-map-inventory.json")
+    .then((module) => Array.isArray(module.default?.records) ? module.default.records : []);
+  return productionInventoryPromise;
+}
+
+async function loadRegistryForScope(scope = {}) {
+  const registry = await loadRegistry();
+  const query = String(scope.query || scope.intent || scope.filter || "").trim();
+  const activeEntityId = String(scope.activeEntityId || "").trim();
+  if (!query && !activeEntityId) return registry;
+
+  const catalog = await loadPlatformSearchIndex();
+  const matchedDocuments = query
+    ? searchPlatformCatalog(catalog, query, {
+        limit: MAP_DISCOVERY_LIMITS.maxVisibleDesktop,
+        mode: scope.audienceMode || "resident",
+      })
+    : [];
+  const selectedDocument = activeEntityId
+    ? catalog.find((document) => [document.id, document.entityId, document.linkedEntityId].map(String).includes(activeEntityId))
+    : null;
+  const requestedIds = new Set(
+    [...matchedDocuments, selectedDocument]
+      .filter((document) => document?.markerEligible || document === selectedDocument)
+      .flatMap((document) => [document?.id, document?.entityId, document?.linkedEntityId])
+      .filter(Boolean)
+      .map(String),
+  );
+  if (!requestedIds.size) return registry;
+
+  const inventory = await loadProductionInventoryRecords();
+  const scopedRecords = inventory.filter((record) => (
+    [record.id, record.entity_id, record.entityId].map(String).some((id) => requestedIds.has(id))
+  ));
+  if (!scopedRecords.length) return registry;
+  const merged = new Map(registry.map((entity) => [String(entity.id), entity]));
+  for (const entity of normalizeMapEntityData(scopedRecords)) merged.set(String(entity.id), entity);
+  return [...merged.values()];
+}
+
+function emptyCatalogState(query = "", status = "idle") {
   return {
-    status: "idle",
-    query: "",
+    status,
+    query,
     results: [],
     groups: [],
     entitiesById: {},
@@ -602,12 +653,15 @@ function emptyCatalogState() {
   };
 }
 
-function resolveCatalogState(query, entities = [], mode = "resident") {
+function resolveCatalogState(query, catalog = [], entities = [], mode = "resident") {
   const normalizedQuery = String(query || "").trim();
   if (!normalizedQuery) return null;
   const boundedEntities = Array.isArray(entities) ? entities.filter(Boolean) : [];
-  const catalog = buildPlatformSearchCatalog(boundedEntities);
-  const results = searchPlatformCatalog(catalog, normalizedQuery, {
+  const runtimeDocuments = buildPlatformSearchCatalog(boundedEntities, { includePublicProfiles: false });
+  const mergedCatalog = new Map(
+    [...catalog, ...runtimeDocuments].map((document) => [`${document.resultType}:${document.id}`, document]),
+  );
+  const results = searchPlatformCatalog([...mergedCatalog.values()], normalizedQuery, {
     limit: typeof window !== "undefined" && window.innerWidth >= 768 ? 40 : 24,
     mode,
   });
@@ -657,12 +711,42 @@ export function useSearchDrivenMapEntities() {
   });
   const abortRef = useRef(null);
   const activeRequestRef = useRef({ id: 0, key: "" });
+  const catalogRequestRef = useRef(0);
   const cacheRef = useRef(new Map());
   const requestStatusRef = useRef("idle");
 
   useEffect(() => {
     requestStatusRef.current = requestStatus;
   }, [requestStatus]);
+
+  const searchCatalog = useCallback(async (query = "", entities = [], mode = "resident") => {
+    const normalizedQuery = String(query || "").trim();
+    const requestId = catalogRequestRef.current + 1;
+    catalogRequestRef.current = requestId;
+    if (!normalizedQuery) {
+      setCatalogState(emptyCatalogState());
+      return null;
+    }
+
+    setCatalogState((current) => (
+      current.query === normalizedQuery && current.status === "resolved"
+        ? current
+        : emptyCatalogState(normalizedQuery, "loading")
+    ));
+    try {
+      const catalog = await loadPlatformSearchIndex();
+      if (catalogRequestRef.current !== requestId) return null;
+      const nextState = resolveCatalogState(normalizedQuery, catalog, entities, mode) || emptyCatalogState();
+      setCatalogState(nextState);
+      return nextState;
+    } catch (error) {
+      if (catalogRequestRef.current !== requestId) return null;
+      console.warn("Platform search index could not be loaded.", error);
+      const fallbackState = resolveCatalogState(normalizedQuery, [], entities, mode) || emptyCatalogState(normalizedQuery, "empty");
+      setCatalogState(fallbackState);
+      return fallbackState;
+    }
+  }, []);
 
   const runSearch = useCallback(async (scope = {}, trigger = "search") => {
     const normalizedScope = normalizeScope(scope);
@@ -672,8 +756,7 @@ export function useSearchDrivenMapEntities() {
     const cached = getCache(cacheRef, queryKey);
     if (cached) {
       const cachedEntities = cached.resultIds.map((id) => cached.entitiesById[id]).filter(Boolean);
-      const cachedCatalog = resolveCatalogState(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
-      setCatalogState(cachedCatalog || emptyCatalogState());
+      await searchCatalog(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
       setResultState(cached);
       setLastTrigger(trigger);
       setRequestStatus("success");
@@ -719,7 +802,7 @@ export function useSearchDrivenMapEntities() {
           resultSubtitle: backendResponse.result_context.subtitle || null,
         };
       } else {
-        const entities = await loadRegistry();
+        const entities = await loadRegistryForScope(normalizedScope);
         if (controller.signal.aborted) throw new DOMException("Map search aborted", "AbortError");
         result = {
           ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
@@ -735,8 +818,7 @@ export function useSearchDrivenMapEntities() {
       }
       putCache(cacheRef, result.queryKey, result);
       const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
-      const catalogResult = resolveCatalogState(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
-      setCatalogState(catalogResult || emptyCatalogState());
+      await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
       setResultState(result);
       setRequestStatus("success");
       setMetrics((current) => ({
@@ -752,7 +834,7 @@ export function useSearchDrivenMapEntities() {
         return null;
       }
       try {
-        const entities = await loadRegistry();
+        const entities = await loadRegistryForScope(normalizedScope);
         if (controller.signal.aborted || activeRequestRef.current.id !== requestId) return null;
         const result = {
           ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
@@ -762,8 +844,7 @@ export function useSearchDrivenMapEntities() {
         };
         putCache(cacheRef, result.queryKey, result);
         const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
-        const catalogResult = resolveCatalogState(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
-        setCatalogState(catalogResult || emptyCatalogState());
+        await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
         setResultState(result);
         setRequestStatus("success");
         setMetrics((current) => ({
@@ -781,11 +862,12 @@ export function useSearchDrivenMapEntities() {
         return null;
       }
     }
-  }, []);
+  }, [searchCatalog]);
 
   const clearResults = useCallback(() => {
     abortRef.current?.abort?.();
     activeRequestRef.current = { id: activeRequestRef.current.id + 1, key: "" };
+    catalogRequestRef.current += 1;
     setRequestStatus("idle");
     setLastTrigger("");
     setCatalogState(emptyCatalogState());
@@ -840,6 +922,7 @@ export function useSearchDrivenMapEntities() {
     metrics,
     limits: SEARCH_RESULT_LIMITS,
     runSearch,
+    searchCatalog,
     clearResults,
   };
 }
