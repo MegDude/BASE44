@@ -813,7 +813,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     .dp-map-sheet,
     aside.dp-pass-panel
   ) :is(.dp-panel-header, .dp-panel-toolbar, .dp-map-detail-header, .dp-active-perks-header, .dp-map-sheet-toolbar) {
-    border-bottom: 1px solid var(--dp-map-system-border) !important;
+    border-bottom: 0 !important;
     background: var(--dp-map-system-surface) !important;
     box-shadow: none !important;
   }
@@ -905,7 +905,7 @@ html body #root .dp-map-page :is(
   .dp-active-perk-row
 ) {
   border: 0 !important;
-  border-bottom: 1px solid var(--dp-surface-border) !important;
+  border-bottom: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
@@ -1024,6 +1024,86 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
     text-decoration: none !important;
     text-transform: uppercase !important;
     white-space: nowrap !important;
+  }
+}
+
+/* Full-bleed panel authority. Keep this last so recovery styles cannot add
+   dialog padding, header dividers, or trailing scroll space back to the
+   resident utility surfaces. Readable insets belong to rows, not the shell. */
+html body #root .dp-map-page :is(
+  #dp-active-map-drawer,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-active-perks-sheet,
+  .dp-resident-card-sheet
+) {
+  padding: 0 !important;
+}
+
+html body #root .dp-map-page :is(
+  #dp-active-map-drawer,
+  aside.dp-panel-shell.dp-map-drawer-shell,
+  .dp-map-directory-sheet,
+  .dp-active-perks-sheet,
+  .dp-resident-card-sheet
+) :is(
+  .dp-panel-header,
+  .dp-panel-toolbar,
+  .dp-map-detail-header,
+  .dp-active-perks-header,
+  .dp-map-sheet-toolbar
+) {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perks-list,
+  .dp-resident-tab-panel-list,
+  .dp-map-directory-list
+) {
+  margin: 0 !important;
+  padding: 0 !important;
+  scroll-padding-bottom: 0 !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perks-list,
+  .dp-resident-tab-panel-list,
+  .dp-map-directory-list
+)::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body #root .dp-map-page .dp-active-perk-row {
+  width: 100% !important;
+  margin: 0 !important;
+  padding-inline: 16px !important;
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perks-list,
+  .dp-resident-tab-panel-list,
+  .dp-map-directory-list
+) > :last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page .dp-active-perks-sheet.is-medium {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: min(
+      50dvh,
+      calc(100dvh - var(--dp-map-system-nav-height) - env(safe-area-inset-top, 0px))
+    ) !important;
+  }
+
+  html body #root .dp-map-page .dp-active-perks-sheet.is-medium .dp-active-perks-list {
+    max-height: calc(50dvh - 96px) !important;
   }
 }
 /* Reports stay on the shared sharp, bright-white workspace surface. */
