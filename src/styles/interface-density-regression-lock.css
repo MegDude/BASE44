@@ -311,6 +311,122 @@ html body #root#root#root .dp-resident-access-page :is(h1, .dp-resident-access-h
   }
 }
 
+/* Resident Home owns one continuous bright-white plane. Sections and actions
+   use spacing and hairline dividers instead of shaded cards or glow. */
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"],
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] > .dp-resident-home__panel.dp-resident-command-center {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-command-nav.dp-resident-command-nav {
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-dynamic-greeting,
+  .dp-resident-ai-concierge,
+  .dp-resident-card-command,
+  .dp-resident-home__section,
+  .dp-resident-directory-section,
+  .dp-resident-live-activity,
+  .dp-resident-home__saved-preview,
+  .dp-resident-home__compact-list,
+  .dp-resident-shared-amenity,
+  .dp-resident-dana-question,
+  .dp-resident-hero-card,
+  .dp-resident-category-rail,
+  .dp-resident-home__saved-rows,
+  .dp-resident-route-list,
+  .dp-resident-directory-list
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-ai-concierge,
+  .dp-resident-card-command,
+  .dp-resident-home__section,
+  .dp-resident-directory-section,
+  .dp-resident-live-activity,
+  .dp-resident-home__saved-preview,
+  .dp-resident-home__compact-list,
+  .dp-resident-shared-amenity,
+  .dp-resident-dana-question,
+  .dp-resident-category-rail,
+  .dp-resident-home__saved-rows,
+  .dp-resident-route-list,
+  .dp-resident-directory-list
+) {
+  border-right: 0 !important;
+  border-left: 0 !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-search-entry,
+  .dp-resident-concierge-prompts > a,
+  .dp-resident-card-command > button,
+  .dp-resident-card-command > a,
+  .dp-resident-live-activity > div:last-child,
+  .dp-resident-live-activity > div:last-child > a,
+  .dp-resident-category-rail > a,
+  .dp-resident-home__saved-rows > button,
+  .dp-resident-home__saved-empty,
+  .dp-resident-home__compact-list > div:last-child,
+  .dp-resident-home__compact-list > div:last-child > a,
+  .dp-resident-route-list > a,
+  .dp-resident-directory-list > a,
+  .dp-resident-shared-amenity > div > a,
+  .dp-resident-dana-question > div > a
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-category-rail > a {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-hero-card {
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-hero-card > div {
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(img, picture, video) {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
 /* Partner workspace governance: one white plane, quiet dividers, and contained tools. */
 html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="overview"] .dp-native-mobile-dashboard :is(
   .dp-native-mobile-kpi-rail article,
