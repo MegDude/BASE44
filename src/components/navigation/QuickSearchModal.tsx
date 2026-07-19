@@ -190,6 +190,42 @@ function normalizeResult(entity: any): SearchResult | null {
   return result;
 }
 
+function normalizeCatalogResult(document: any): SearchResult | null {
+  const id = readText(document?.id);
+  const title = readText(document?.title);
+  if (!id || !title) return null;
+  const resultType = readText(document?.resultType);
+  const kindByResultType: Partial<Record<string, SearchResultKind>> = {
+    listing: "listing",
+    event: "event",
+    perk: "perk",
+    place: "venue",
+    service: "venue",
+    organization: "partner",
+    person: "partner",
+    campaign: "brand",
+    route: "civic",
+    report: "partner",
+    tool: "partner",
+  };
+  const entityId = readText(document?.entityId || document?.linkedEntityId || id);
+  const params = new URLSearchParams({
+    mode: "resident",
+    tab: "map",
+    filter: "All",
+    query: title,
+  });
+  if (entityId) params.set("entityId", entityId);
+  return {
+    id,
+    kind: kindByResultType[resultType] || "venue",
+    title,
+    subtitle: readText(document?.subtitle),
+    category: resultType,
+    route: readText(document?.route) || `/map?${params.toString()}`,
+  };
+}
+
 function getSearchBlob(result: SearchResult) {
   return [
     result.title,
@@ -247,7 +283,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   const inputRef = useRef<HTMLInputElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const { places, runSearch } = useSearchDrivenMapEntities();
+  const { places, catalogState, runSearch, searchCatalog } = useSearchDrivenMapEntities();
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -255,15 +291,17 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
 
   const results = useMemo(() => {
     const seen = new Set<string>();
-    return places
-      .map(normalizeResult)
+    return [
+      ...(catalogState.results || []).map(normalizeCatalogResult),
+      ...places.map(normalizeResult),
+    ]
       .filter((result): result is SearchResult => Boolean(result))
       .filter((result) => {
         if (seen.has(result.id)) return false;
         seen.add(result.id);
         return true;
       });
-  }, [places]);
+  }, [catalogState.results, places]);
 
   const normalizedQuery = query.trim().toLowerCase();
   const grouped = useMemo(
@@ -300,6 +338,20 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   useEffect(() => {
     if (isOpen) setSubmittedQuery("");
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const cleanQuery = query.trim();
+    if (!cleanQuery) {
+      void searchCatalog("");
+      return undefined;
+    }
+    if (cleanQuery.length < 2) return undefined;
+    const timeoutId = window.setTimeout(() => {
+      void searchCatalog(cleanQuery, places, "resident");
+    }, 120);
+    return () => window.clearTimeout(timeoutId);
+  }, [isOpen, places, query, searchCatalog]);
 
   const executeQuickSearch = useCallback((nextQuery = query) => {
     const cleanQuery = nextQuery.trim();

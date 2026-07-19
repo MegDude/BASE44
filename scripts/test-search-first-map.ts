@@ -75,17 +75,26 @@ const hookSource = await readFile(new URL("../src/hooks/useSearchDrivenMapEntiti
 assert.match(hookSource, /const places = resultPlaces;/, "idle places must come only from resolved results");
 assert.doesNotMatch(hookSource, /setLoadedRegistry|initialEntityRequestCount:\s*current\.initialEntityRequestCount\s*\|\|\s*1/, "the hook must not hydrate the registry on mount");
 const catalogResolverSource = hookSource.slice(
-  hookSource.indexOf("function resolveCatalogState"),
+  hookSource.indexOf("async function loadPlatformSearchIndex"),
   hookSource.indexOf("export function useSearchDrivenMapEntities"),
 );
-assert.doesNotMatch(catalogResolverSource, /loadRegistry\(/, "search result presentation must not hydrate the full registry");
-assert.doesNotMatch(hookSource, /const catalogPromise\s*=|Promise\.all\(\[\s*searchOperationalMap/, "bounded search must not run beside a full-catalog request");
-assert.match(hookSource, /resolveCatalogState\(normalizedScope\.query, resolvedEntities/, "catalog results must derive from the bounded pin response");
+assert.match(catalogResolverSource, /import\("@\/data\/production\/platform-search-index\.json"\)/, "the complete search index must load lazily after a query");
+const searchCatalogSource = hookSource.slice(
+  hookSource.indexOf("const searchCatalog = useCallback"),
+  hookSource.indexOf("const runSearch = useCallback"),
+);
+assert.doesNotMatch(searchCatalogSource, /loadRegistry\(/, "typing in search must not hydrate the full map registry");
+assert.doesNotMatch(hookSource, /Promise\.all\(\[\s*searchOperationalMap/, "bounded pin search must not run beside full map-registry hydration");
+assert.match(hookSource, /await searchCatalog\(normalizedScope\.query, resolvedEntities/, "bounded pin responses may enrich the lightweight search index");
+assert.match(hookSource, /loadRegistryForScope\(normalizedScope\)/, "an explicit request may hydrate only matched canonical records for marker resolution");
 
 const quickSearchSource = await readFile(new URL("../src/components/navigation/QuickSearchModal.tsx", import.meta.url), "utf8");
 assert.doesNotMatch(quickSearchSource, /quick_search_open/, "opening quick search must not fetch pins");
+assert.match(quickSearchSource, /searchCatalog\(cleanQuery, places, "resident"\)/, "platform quick search uses the same lazy complete index");
 
 const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
+assert.match(mapSource, /searchScopedCatalog\(query, places, urlState\.mode\)/, "typed queries search the complete lightweight catalog without mounting markers");
+assert.match(mapSource, /entityId: canonicalTargetId/, "selecting a catalog result deep-links only that entity into the bounded resolver");
 assert.doesNotMatch(
   mapSource,
   /Explore Downtown Austin[\s\S]{0,180}Search for a place, property, perk, event, business, building, or experience to begin/i,
