@@ -30,6 +30,7 @@
     "audit:map-intents": "tsx scripts/audit-map-search-intents.ts",
     "test:map-intents": "tsx scripts/test-map-search-intents.ts",
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",
+    "test:search-console-utility": "node scripts/test-search-console-utility-rail.mjs",
     "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",
     "test:active-perks-sheet": "node scripts/test-active-perks-sheet.mjs",

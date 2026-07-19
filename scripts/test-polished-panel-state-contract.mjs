@@ -29,7 +29,7 @@ assert.match(fullscreen, /grid-template-columns: 44px minmax\(0, 1fr\) 44px !imp
 assert.match(fullscreen, /overscroll-behavior-y: contain !important/);
 
 const workspaceControlStart = workspaceLock.indexOf("Every workspace page and temporary surface");
-const workspaceControlEnd = workspaceLock.indexOf("Platform overlay surface terminal authority", workspaceControlStart);
+const workspaceControlEnd = workspaceLock.indexOf("Search console utility rail", workspaceControlStart);
 const workspaceControlBlock = workspaceLock.slice(workspaceControlStart, workspaceControlEnd);
 assert.ok(workspaceControlBlock.length > 0, "workspace surface control contract is missing");
 assert.doesNotMatch(workspaceControlBlock, /\.dp-map-page/);

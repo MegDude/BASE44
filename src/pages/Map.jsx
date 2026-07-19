@@ -13543,27 +13543,41 @@ function MapSearchConsole({
     </div>
   );
 
+  const focusAskTheMap = () => {
+    inputRef?.current?.focus?.();
+  };
+
   const renderModeSwitch = () => (
-    <div className="dp-search-intent-switch dp-search-intent-audience-tabs" role="tablist" aria-label="Map audience">
+    <div className="dp-search-intent-utility-rail" aria-label="Choose a map view or ask the map">
+      <div className="dp-search-intent-switch dp-search-intent-audience-tabs" role="tablist" aria-label="Map audience">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "resident"}
+          className={mode === "resident" ? "is-active" : ""}
+          onClick={() => onModeChange("resident")}
+          onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("resident"))}
+        >
+          Resident
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "partner"}
+          className={mode === "partner" ? "is-active" : ""}
+          onClick={() => onModeChange("partner")}
+          onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("partner"))}
+        >
+          Partner
+        </button>
+      </div>
       <button
         type="button"
-        role="tab"
-        aria-selected={mode === "resident"}
-        className={mode === "resident" ? "is-active" : ""}
-        onClick={() => onModeChange("resident")}
-        onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("resident"))}
+        className="dp-search-intent-ask-map"
+        aria-controls="dp-ask-map-search-input"
+        onClick={focusAskTheMap}
       >
-        Residents
-      </button>
-      <button
-        type="button"
-        role="tab"
-        aria-selected={mode === "partner"}
-        className={mode === "partner" ? "is-active" : ""}
-        onClick={() => onModeChange("partner")}
-        onKeyDown={(event) => handleConsoleTabKeyDown(event, () => onModeChange("partner"))}
-      >
-        Partners
+        Ask the Map
       </button>
     </div>
   );
@@ -13648,18 +13662,15 @@ function MapSearchConsole({
         className="dp-search-intent-console dp-ask-map-panel pointer-events-auto"
         style={topNavBackConsoleStyle}
         role="region"
-        aria-labelledby="dp-ask-map-title"
+        aria-label="Ask the Map"
         aria-expanded={!isCollapsed}
         aria-hidden={isCollapsed}
         data-state={isCollapsed ? "collapsed" : "focused"}
         onPointerDown={(event) => event.stopPropagation()}
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail dp-ask-map-header">
-          <div className="dp-search-intent-label dp-ask-map-header-copy">
-            <h2 id="dp-ask-map-title" className="dp-search-brand-mark dp-ask-map-title">Ask the Map</h2>
-          </div>
-          {renderModeSwitch()}
           <div className="dp-search-intent-top-actions">
+            {renderModeSwitch()}
             <button
               type="button"
               className="dp-search-intent-collapse dp-search-intent-collapse-icon dp-ask-map-panel-control"
@@ -13676,6 +13687,7 @@ function MapSearchConsole({
           <div className="dp-search-intent-input-row">
             <Search className="dp-search-intent-search-icon" aria-hidden="true" />
             <input
+              id="dp-ask-map-search-input"
               ref={inputRef}
               type="text"
               className="dp-ask-map-input"
