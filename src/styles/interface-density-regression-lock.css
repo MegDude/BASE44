@@ -311,6 +311,174 @@ html body #root#root#root .dp-resident-access-page :is(h1, .dp-resident-access-h
   }
 }
 
+/* Resident Home surface selectors are the platform-wide overlay contract.
+   Resident and partner panels, drawers, sheets, pin details, and popovers own
+   one bright-white plane; their content uses spacing and hairline dividers
+   instead of nested shading, blur, glow, or elevated cards. */
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet,
+  .dp-map-sheet,
+  .dp-route-experience-sheet,
+  .dp-collection-route-panel,
+  .dp-route-check-in,
+  .dp-map-list-drawer,
+  .dp-cluster-drawer,
+  .dp-partner-activity-drawer,
+  .dp-native-sheet,
+  .dp-card-drawer,
+  .dp-public-preview-panel,
+  .dp-map-popup,
+  .dp-map-popup-card,
+  .dp-pin-popover,
+  .leaflet-popup-content-wrapper,
+  [data-mobile-panel-surface="true"]
+),
+html body #root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-search-sheet,
+  .dp-quick-search-modal,
+  .dp-workspace-upgrade-modal,
+  .dp-native-mobile-workspace-menu,
+  .dp-profile-editor,
+  .dp-profile-preview,
+  .dp-native-publisher,
+  .dp-create-menu,
+  .dp-workspace-switcher-menu,
+  .dp-persistent-workspace-switcher-menu
+),
+html body .dp-workspace-sheet.dp-workspace-sheet,
+html body [data-radix-popper-content-wrapper] > [role="dialog"],
+html body [data-radix-popper-content-wrapper] > [role="menu"] {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root :is(
+  .dp-resident-home,
+  .dp-partner-workspace-page
+) :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="surface"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"]
+),
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet,
+  .dp-map-sheet,
+  .dp-route-experience-sheet,
+  .dp-collection-route-panel,
+  .dp-route-check-in,
+  .dp-map-list-drawer,
+  .dp-cluster-drawer,
+  .dp-partner-activity-drawer,
+  .dp-native-sheet,
+  .dp-card-drawer,
+  .dp-public-preview-panel,
+  .dp-map-popup,
+  .dp-map-popup-card,
+  .dp-pin-popover,
+  .leaflet-popup-content-wrapper,
+  [data-mobile-panel-surface="true"]
+) :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="surface"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="module"],
+  [class*="section"]
+),
+html body .dp-workspace-sheet.dp-workspace-sheet :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="surface"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="module"],
+  [class*="section"]
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-toolbar,
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-mobile-tab-header,
+  .dp-drawer-control-row,
+  .dp-map-directory-toolbar,
+  .dp-route-sheet-header,
+  .dp-collection-route-panel__header,
+  .dp-active-perks-header
+),
+html body .dp-workspace-sheet.dp-workspace-sheet :is(
+  .dp-workspace-sheet-header,
+  .dp-workspace-sheet-footer
+) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .leaflet-popup-content,
+  .dp-popup-preview,
+  .dp-map-preview-card
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .leaflet-popup-tip {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
 /* Resident Home owns one continuous bright-white plane. Sections and actions
    use spacing and hairline dividers instead of shaded cards or glow. */
 html body #root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"],
@@ -1052,4 +1220,93 @@ html body .dp-workspace-sheet .dp-experience-builder__stage > footer button {
     clip: rect(0 0 0 0) !important;
     white-space: nowrap !important;
   }
+}
+
+/* Platform overlay surface terminal authority. Keep this last so legacy map,
+   route, workspace, and portal styles cannot restore shaded or elevated UI. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-card-sheet,
+  .dp-map-sheet,
+  .dp-route-experience-sheet,
+  .dp-collection-route-panel,
+  .dp-route-check-in,
+  .dp-map-list-drawer,
+  .dp-cluster-drawer,
+  .dp-partner-activity-drawer,
+  .dp-native-sheet,
+  .dp-card-drawer,
+  .dp-public-preview-panel,
+  .dp-map-popup,
+  .dp-map-popup-card,
+  .dp-pin-popover,
+  .leaflet-popup-content-wrapper,
+  [data-mobile-panel-surface="true"]
+),
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-search-sheet,
+  .dp-quick-search-modal,
+  .dp-workspace-upgrade-modal,
+  .dp-native-mobile-workspace-menu,
+  .dp-profile-editor,
+  .dp-profile-preview,
+  .dp-native-publisher,
+  .dp-create-menu,
+  .dp-workspace-switcher-menu,
+  .dp-persistent-workspace-switcher-menu
+),
+html body .dp-workspace-sheet.dp-workspace-sheet,
+html body [data-radix-popper-content-wrapper] > [role="dialog"],
+html body [data-radix-popper-content-wrapper] > [role="menu"] {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(
+  .dp-map-page,
+  .dp-resident-home,
+  .dp-partner-workspace-page
+) :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="surface"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="module"],
+  [class*="section"]
+),
+html body .dp-workspace-sheet.dp-workspace-sheet :is(
+  [class*="card"],
+  [class*="panel"],
+  [class*="surface"],
+  [class*="tile"],
+  [class*="summary"],
+  [class*="metric"],
+  [class*="module"],
+  [class*="section"]
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
 }

@@ -28,7 +28,9 @@ assert.match(canonical, /width: 100vw !important/);
 assert.match(fullscreen, /grid-template-columns: 44px minmax\(0, 1fr\) 44px !important/);
 assert.match(fullscreen, /overscroll-behavior-y: contain !important/);
 
-const workspaceControlBlock = workspaceLock.slice(workspaceLock.indexOf("Every workspace page and temporary surface"));
+const workspaceControlStart = workspaceLock.indexOf("Every workspace page and temporary surface");
+const workspaceControlEnd = workspaceLock.indexOf("Platform overlay surface terminal authority", workspaceControlStart);
+const workspaceControlBlock = workspaceLock.slice(workspaceControlStart, workspaceControlEnd);
 assert.ok(workspaceControlBlock.length > 0, "workspace surface control contract is missing");
 assert.doesNotMatch(workspaceControlBlock, /\.dp-map-page/);
 assert.doesNotMatch(workspaceControlBlock, /\.dp-detail-drawer/);
