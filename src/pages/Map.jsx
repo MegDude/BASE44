@@ -13721,6 +13721,7 @@ function MapSearchConsole({
         aria-expanded={!isCollapsed}
         aria-hidden={isCollapsed}
         data-state={isCollapsed ? "collapsed" : "focused"}
+        data-has-results={showCatalogResults ? "true" : "false"}
         onPointerDown={(event) => event.stopPropagation()}
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail dp-ask-map-header">

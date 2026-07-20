@@ -113,6 +113,7 @@ import "@/styles/legends-seo-snapshot-final.css"
 import "@/styles/native-drawer-geometry-final.css"
 import "@/styles/surface-containment-final.css"
 import "@/styles/interface-density-regression-lock.css"
+import "@/styles/search-intent-glass-surface-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
