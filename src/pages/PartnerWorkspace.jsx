@@ -10,6 +10,7 @@ import { WorkspaceDestinationRoot } from "@/components/partner/workspace/Workspa
 import { WorkspaceExperienceSystem } from "@/components/partner/workspace/WorkspaceExperienceSystem";
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
+import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
 import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunchBrief";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
@@ -112,10 +113,11 @@ const WORKSPACE_MEDIA = [
 const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Launch", href: "/partner-workspace/launch", helper: "Decisions, relationships, and proof." };
 const REDEMPTIONS_WORKSPACE_NAV_ITEM = { id: "redemptions", label: "Redemptions", href: "/partner-workspace/redemptions", helper: "Confirm QR uses and review results." };
 const SHARE_LINKS_WORKSPACE_NAV_ITEM = { id: "share_links", label: "Share links", href: "/partner-workspace/share-links", helper: "Create links and QR codes people can open." };
+const GOVERNANCE_WORKSPACE_NAV_ITEM = { id: "governance", label: "Community decisions", href: "/partner-workspace/governance", helper: "Publish updates and respond to residents." };
 
 const WORKSPACE_NAV_GROUPS = [
   { label: "Workspace", ids: ["overview", "launch", "assistant", "map", "profile"] },
-  { label: "Publish", ids: ["offers", "events", "campaigns", "share_links", "broadcasts"] },
+  { label: "Publish", ids: ["offers", "events", "campaigns", "governance", "share_links", "broadcasts"] },
   { label: "Review", ids: ["audience", "surveys", "redemptions", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
 ].map((group) => ({
@@ -124,6 +126,7 @@ const WORKSPACE_NAV_GROUPS = [
     if (id === "launch") return LAUNCH_WORKSPACE_NAV_ITEM;
     if (id === "redemptions") return REDEMPTIONS_WORKSPACE_NAV_ITEM;
     if (id === "share_links") return SHARE_LINKS_WORKSPACE_NAV_ITEM;
+    if (id === "governance") return GOVERNANCE_WORKSPACE_NAV_ITEM;
     return PARTNER_WORKSPACE_NAV.find((item) => item.id === id);
   }).filter(Boolean),
 }));
@@ -294,6 +297,7 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/surveys")) return "surveys";
   if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
   if (pathname.includes("/share-links")) return "share_links";
+  if (pathname.includes("/governance")) return "governance";
   if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
   if (pathname.includes("/redemptions")) return "redemptions";
   if (pathname.includes("/media")) return "media";
@@ -782,6 +786,7 @@ function PartnerWorkspaceContent() {
           {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}`} organizationId={activeOrganizationId} />}
+          {tab === "governance" && <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
