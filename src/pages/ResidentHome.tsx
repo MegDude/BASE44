@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
+import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 
-const SAVED_ITEMS_KEY = "downtown-perks-card-items";
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 
 const nearbyCategories = [
@@ -57,16 +57,6 @@ type ResidentRecord = {
   verificationStatus?: string;
 };
 
-function readSavedIds() {
-  if (typeof window === "undefined") return [] as string[];
-  try {
-    const value = JSON.parse(window.localStorage.getItem(SAVED_ITEMS_KEY) || "[]");
-    return Array.isArray(value) ? value.map(String) : [];
-  } catch {
-    return [];
-  }
-}
-
 function readResidentRecord(): ResidentRecord | null {
   if (typeof window === "undefined") return null;
   try {
@@ -115,12 +105,12 @@ export default function ResidentHome() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedPanel = searchParams.get("panel");
   const panel: HomePanel = requestedPanel === "perks" || requestedPanel === "card" ? requestedPanel : "home";
-  const [savedIds, setSavedIds] = useState<string[]>(readSavedIds);
+  const savedIds = useSavedStore((state) => state.savedIds);
   const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
+  useSavedEntitiesRealtime();
 
   useEffect(() => {
     function syncResidentState() {
-      setSavedIds(readSavedIds());
       setResident(readResidentRecord());
     }
     window.addEventListener("storage", syncResidentState);

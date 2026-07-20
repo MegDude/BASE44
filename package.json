@@ -89,7 +89,9 @@
     "test:via313-panel-pin": "node scripts/test-via313-panel-pin-contract.mjs",
     "test:interface-density": "node scripts/test-interface-density-regressions.mjs",
     "test:legends-seo-snapshot": "node scripts/test-legends-seo-snapshot.mjs",
-    "test:research-intelligence": "node scripts/test-research-intelligence-contract.mjs"
+    "test:research-intelligence": "node scripts/test-research-intelligence-contract.mjs",
+    "test:saved-redemption-transactions": "node scripts/test-saved-redemption-transactions.mjs",
+    "test:discount-calculator": "node scripts/test-discount-calculator.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

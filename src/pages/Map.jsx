@@ -71,6 +71,8 @@ import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
 import { fireWorkflow, getWorkflowProfileId, getWorkflowSessionId, postWorkflow } from "@/lib/backendWorkflows";
+import { toggleSavedEntity, useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
+import { createResidentQrSession } from "@/features/resident/resident-pass/createQrSession";
 import { getDaaCheckIn, recordDaaCheckIn } from "@/lib/daaCheckIns";
 import { trackingEvents } from "@/lib/analytics/track";
 import { queryAgent } from "@/services/agent/agentClient";
@@ -4158,19 +4160,18 @@ function PartnerQrScanner({ onVerified }) {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const frameRef = useRef(0);
-  const demoTimerRef = useRef(0);
   const [scannerStatus, setScannerStatus] = useState("idle");
   const [scannerSource, setScannerSource] = useState("idle");
-  const [scannerMessage, setScannerMessage] = useState("Start the camera or use the demo scan to verify a resident pass.");
+  const [scannerMessage, setScannerMessage] = useState("Scan the resident's current QR code or enter the code below.");
+  const [manualCode, setManualCode] = useState("");
+  const [validation, setValidation] = useState(null);
+  const [originalAmount, setOriginalAmount] = useState("");
+  const [scanKey, setScanKey] = useState("");
 
   const stopCamera = useCallback(() => {
     if (frameRef.current) {
       window.cancelAnimationFrame(frameRef.current);
       frameRef.current = 0;
-    }
-    if (demoTimerRef.current) {
-      window.clearTimeout(demoTimerRef.current);
-      demoTimerRef.current = 0;
     }
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
@@ -4179,23 +4180,69 @@ function PartnerQrScanner({ onVerified }) {
     }
   }, []);
 
-  const verifyCode = useCallback((code = DEMO_CARD_CODE) => {
-    setScannerStatus("verified");
-    setScannerMessage(`${code} verified for a partner perk, event check-in, or front desk confirmation.`);
+  const verifyCode = useCallback(async (code) => {
+    const token = String(code || "").trim();
+    if (!token) {
+      setScannerStatus("error");
+      setScannerMessage("Enter or scan a resident code first.");
+      return;
+    }
     stopCamera();
-    onVerified?.(code);
-  }, [onVerified, stopCamera]);
+    setScannerStatus("validating");
+    setScannerMessage("Checking this pass and perk eligibility…");
+    const nextKey = typeof crypto !== "undefined" && crypto.randomUUID
+      ? `scan-${crypto.randomUUID()}`
+      : `scan-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    try {
+      const result = await postWorkflow("/api/partner/redemptions/validate", {
+        token,
+        idempotencyKey: nextKey,
+      });
+      setScanKey(nextKey);
+      setValidation(result);
+      setScannerStatus("verified");
+      setScannerMessage("Resident and perk confirmed. Review the details before completing.");
+    } catch (error) {
+      setValidation(null);
+      setScannerStatus("error");
+      setScannerMessage(error instanceof Error ? error.message : "This pass could not be verified.");
+    }
+  }, [stopCamera]);
 
-  const runDemoScan = useCallback(() => {
-    stopCamera();
-    setScannerStatus("scanning");
-    setScannerSource("demo");
-    setScannerMessage("Demo scan running. Reading the resident QR in the scanner window...");
-    demoTimerRef.current = window.setTimeout(() => {
-      demoTimerRef.current = 0;
-      verifyCode(DEMO_CARD_CODE);
-    }, 900);
-  }, [stopCamera, verifyCode]);
+  const completeRedemption = useCallback(async () => {
+    if (!validation?.redemptionId) return;
+    setScannerStatus("completing");
+    setScannerMessage("Completing this perk…");
+    try {
+      const result = await postWorkflow(`/api/partner/redemptions/${validation.redemptionId}/complete`, {
+        idempotencyKey: `${scanKey}-complete`,
+        originalAmount: originalAmount === "" ? null : Number(originalAmount),
+      });
+      setValidation((current) => ({ ...current, completion: result }));
+      setScannerStatus("completed");
+      setScannerMessage("Perk completed and recorded for the resident and partner.");
+      onVerified?.(result);
+    } catch (error) {
+      setScannerStatus("error");
+      setScannerMessage(error instanceof Error ? error.message : "The perk could not be completed.");
+    }
+  }, [onVerified, originalAmount, scanKey, validation]);
+
+  const rejectRedemption = useCallback(async () => {
+    if (!validation?.redemptionId) return;
+    setScannerStatus("completing");
+    setScannerMessage("Recording that this perk was not completed…");
+    try {
+      await postWorkflow(`/api/partner/redemptions/${validation.redemptionId}/reject`, {
+        reason: "Not completed by staff",
+      });
+      setScannerStatus("rejected");
+      setScannerMessage("Not completed. The result was recorded without applying the perk.");
+    } catch (error) {
+      setScannerStatus("error");
+      setScannerMessage(error instanceof Error ? error.message : "The result could not be recorded.");
+    }
+  }, [validation]);
 
   const runDetectionLoop = useCallback(async () => {
     const video = videoRef.current;
@@ -4211,12 +4258,12 @@ function PartnerQrScanner({ onVerified }) {
           const codes = await detector.detect(video);
           const rawValue = codes?.[0]?.rawValue || "";
           if (rawValue) {
-            verifyCode(rawValue.includes("DP-") ? rawValue.match(/DP-[A-Z0-9-]+/)?.[0] || DEMO_CARD_CODE : DEMO_CARD_CODE);
+            verifyCode(rawValue);
             return;
           }
         }
       } catch {
-        setScannerMessage("Camera is live. If your browser cannot read QR codes here, use Demo Scan.");
+        setScannerMessage("Camera is live. If this browser cannot read the code, enter it below.");
       }
       frameRef.current = window.requestAnimationFrame(tick);
     };
@@ -4226,7 +4273,7 @@ function PartnerQrScanner({ onVerified }) {
   const startCamera = useCallback(async () => {
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
       setScannerStatus("error");
-      setScannerMessage("Camera scanning is not available in this browser. Use Demo Scan to test the flow.");
+      setScannerMessage("Camera scanning is not available in this browser. Enter the resident code below.");
       return;
     }
 
@@ -4247,7 +4294,7 @@ function PartnerQrScanner({ onVerified }) {
     } catch {
       setScannerStatus("error");
       setScannerSource("idle");
-      setScannerMessage("Camera permission was blocked or unavailable. Use Demo Scan to verify the partner flow.");
+      setScannerMessage("Camera permission was blocked or unavailable. Enter the resident code below.");
       stopCamera();
     }
   }, [runDetectionLoop, stopCamera]);
@@ -4266,7 +4313,7 @@ function PartnerQrScanner({ onVerified }) {
             Scan resident access
           </h3>
           <p className="mt-1.5 max-w-xl text-[13px] leading-5 text-[#425466]">
-            Verify a resident QR for a perk, event check-in, or front desk moment. Camera scan works when the browser supports QR detection; Demo Scan keeps the flow testable.
+            Scan a current resident code, confirm the perk, and record the result in one place.
           </p>
         </div>
         {scannerStatus === "verified" && <Check className="h-5 w-5 shrink-0 stroke-[2.7] text-[#BFA46A]" />}
@@ -4275,67 +4322,77 @@ function PartnerQrScanner({ onVerified }) {
       <div className="dp-partner-scanner-row mt-3 grid gap-3 overflow-hidden bg-white/78 p-2.5 text-[#0B1F33] shadow-[0_10px_26px_rgba(11,31,51,0.035),0_0_22px_rgba(191,164,106,0.04)]">
         <div className="dp-partner-scanner-copy min-w-0">
           <div className="text-[12px] font-semibold text-[#0B1F33]">
-            {scannerStatus === "verified" ? "Resident pass verified" : scannerStatus === "scanning" ? "Scanning resident QR" : "Ready to scan"}
+            {scannerStatus === "completed" ? "Perk completed" : scannerStatus === "verified" ? "Resident pass verified" : scannerStatus === "scanning" ? "Scanning resident QR" : scannerStatus === "validating" || scannerStatus === "completing" ? "Checking secure access" : "Ready to scan"}
           </div>
           <p className="mt-1 text-[11px] leading-4 text-[#0B1F33]/66">{scannerMessage}</p>
           <p className="mt-1.5 text-[10.5px] leading-4 text-[#0B1F33]/58">
-            The scanner reads the resident pass code, checks it against the access flow, then locks the result as verified for the partner moment.
+            Codes expire quickly and contain no resident contact details. Only staff for this partner can complete the perk.
           </p>
+          <div className="mt-2 flex min-w-0 gap-2">
+            <input
+              type="text"
+              value={manualCode}
+              onChange={(event) => setManualCode(event.target.value)}
+              placeholder="Enter resident code"
+              aria-label="Resident pass code"
+              className="min-h-11 min-w-0 flex-1 border border-[#0B1F33]/10 bg-white px-3 text-[12px] text-[#0B1F33] outline-none focus:border-[#BFA46A]"
+            />
+            <button type="button" onClick={() => verifyCode(manualCode)} className="dp-scanner-action">Check code</button>
+          </div>
           <div className="mt-2 flex flex-wrap gap-1.5 pb-0.5">
             <button type="button" onClick={startCamera} className="dp-scanner-action">
               {scannerStatus === "scanning" ? "Camera Live" : "Start Camera"}
             </button>
-            <button type="button" onClick={runDemoScan} className="dp-scanner-action">
-              {scannerStatus === "scanning" ? "Scanning..." : "Demo Scan"}
-            </button>
-            {(scannerStatus === "scanning" || scannerStatus === "verified" || scannerStatus === "error") && (
+            {(scannerStatus !== "idle") && (
               <button
                 type="button"
                 onClick={() => {
                   stopCamera();
                   setScannerStatus("idle");
                   setScannerSource("idle");
-                  setScannerMessage("Start the camera or use the demo scan to verify a resident pass.");
+                  setScannerMessage("Scan the resident's current QR code or enter the code below.");
+                  setValidation(null);
+                  setOriginalAmount("");
+                  setScanKey("");
                 }}
                 className="dp-scanner-action"
               >
-                Reset
+                Start over
               </button>
             )}
           </div>
+          {validation && (
+            <div className="mt-3 border-t border-[#0B1F33]/8 pt-3">
+              <strong className="block text-[13px] text-[#0B1F33]">{validation.perk?.title}</strong>
+              <span className="mt-1 block text-[11px] text-[#0B1F33]/62">{validation.resident?.displayName} · Eligible resident</span>
+              {validation.perk?.terms ? <p className="mt-2 text-[11px] leading-4 text-[#0B1F33]/66">{validation.perk.terms}</p> : null}
+              {["percentage", "fixed_amount"].includes(validation.perk?.discountType) && (
+                <label className="mt-2 block text-[11px] font-semibold text-[#0B1F33]">
+                  Original amount
+                  <input type="number" min="0" step="0.01" value={originalAmount} onChange={(event) => setOriginalAmount(event.target.value)} className="mt-1 min-h-11 w-full border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#BFA46A]" />
+                </label>
+              )}
+              {!new Set(["completed", "rejected"]).has(scannerStatus) && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button type="button" onClick={completeRedemption} disabled={scannerStatus === "completing"} className="dp-scanner-action">Complete perk</button>
+                  <button type="button" onClick={rejectRedemption} disabled={scannerStatus === "completing"} className="dp-scanner-action">Do not apply</button>
+                </div>
+              )}
+              {scannerStatus === "completed" && validation.completion && (
+                <p className="mt-2 text-[11px] font-semibold text-[#0B5C3E]">Recorded · Final amount {validation.completion.final_amount ?? validation.completion.finalAmount ?? "confirmed"}</p>
+              )}
+            </div>
+          )}
         </div>
         <div className="dp-partner-scanner-window relative flex h-40 min-w-0 items-center justify-center overflow-hidden bg-white md:h-48">
           <video
             ref={videoRef}
-            className={`h-full w-full object-cover transition-opacity duration-300 ${scannerSource === "demo" ? "opacity-0" : "opacity-100"}`}
+            className="h-full w-full object-cover transition-opacity duration-300"
             playsInline
             muted
             aria-label="Partner QR scanner camera preview"
           />
-          {scannerSource === "demo" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white px-4">
-              <div className="dp-demo-scan-card relative w-[154px] bg-white p-2.5 text-center shadow-[0_12px_32px_rgba(11,31,51,0.07),0_0_24px_rgba(191,164,106,0.07)] md:w-[174px]">
-                <div className="text-[8px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Resident pass</div>
-                <DemoQrCode code={DEMO_CARD_CODE} className="mx-auto mt-1 h-28 w-28 md:h-32 md:w-32" />
-                <code className="mt-1 block font-mono text-[8px] font-semibold tracking-[0.08em] text-[#0B1F33]/58">
-                  {DEMO_CARD_CODE}
-                </code>
-                {scannerStatus === "scanning" && (
-                  <div className="pointer-events-none absolute inset-2">
-                    <div className="absolute inset-x-0 top-1/2 h-px bg-[#BFA46A] shadow-[0_0_18px_rgba(191,164,106,0.55)] dp-agent-scan-line" />
-                  </div>
-                )}
-                {scannerStatus === "verified" && (
-                  <div className="absolute inset-0 grid place-items-center bg-white/68 backdrop-blur-[1px]">
-                    <div className="grid h-14 w-14 place-items-center border border-[#BFA46A]/28 bg-white/84 text-[#0B1F33] shadow-[0_12px_28px_rgba(11,31,51,0.08),0_0_30px_rgba(191,164,106,0.18)]">
-                      <Check className="h-8 w-8 stroke-[2.8]" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          {scannerStatus !== "scanning" && scannerSource !== "demo" && (
+          {scannerStatus !== "scanning" && (
             <div className="absolute inset-0 grid place-items-center px-4 text-center">
               {scannerStatus === "verified" ? (
                 <Check className="h-10 w-10 stroke-[2.8] text-[#BFA46A]" />
@@ -4344,7 +4401,7 @@ function PartnerQrScanner({ onVerified }) {
               )}
             </div>
           )}
-          {scannerStatus === "scanning" && scannerSource !== "demo" && (
+          {scannerStatus === "scanning" && (
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute inset-x-4 top-1/2 h-px bg-[#BFA46A] shadow-[0_0_18px_rgba(191,164,106,0.55)] dp-agent-scan-line" />
               <div className="absolute inset-4 border border-[#BFA46A]/28" />
@@ -13948,14 +14005,15 @@ export default function MapPage() {
   const [selectedPlaceOverride, setSelectedPlaceOverride] = useState(null);
   const drawerTriggerRef = useRef(null);
   const inKindParentRef = useRef(null);
-  const [savedIds, setSavedIds] = useState(() => {
-    if (typeof window === "undefined") return new Set();
-    try {
-      return new Set(JSON.parse(window.localStorage.getItem("downtown-perks-card-items") || "[]"));
-    } catch {
-      return new Set();
-    }
-  });
+  const savedIdList = useSavedStore((state) => state.savedIds);
+  const replaceSavedIds = useSavedStore((state) => state.replaceIds);
+  const savedIds = useMemo(() => new Set(savedIdList), [savedIdList]);
+  const setSavedIds = useCallback((updater) => {
+    const current = new Set(useSavedStore.getState().savedIds);
+    const next = typeof updater === "function" ? updater(current) : updater;
+    replaceSavedIds(Array.from(next || []));
+  }, [replaceSavedIds]);
+  useSavedEntitiesRealtime();
   const eventRsvps = useEventRsvpStore((state) => (Array.isArray(state.rsvps) ? state.rsvps : []));
   const addEventRsvp = useEventRsvpStore((state) => state.addRsvp);
   const removeEventRsvp = useEventRsvpStore((state) => state.removeRsvp);
@@ -14030,43 +14088,24 @@ export default function MapPage() {
       },
     };
   }, [activeFilter, district, urlState.campaignId, urlState.collection, urlState.mode]);
-  const openResidentQrModal = useCallback((place = null, action = "show_card", source = "resident_map") => {
+  const openResidentQrModal = useCallback(async (place = null, action = "show_card", source = "resident_map") => {
     const qrPlace = place || RESIDENT_CARD_ENTITY;
     const payload = buildResidentQrPayload({ place: place || null, action, source });
-    const mapAction = action === "use_perk" ? "redeem" : "show_card";
-    const expiresAt = action === "use_perk" ? new Date(Date.now() + 10 * 60 * 1000).toISOString() : "";
-    const workflowPayload = buildMapActionPayload(qrPlace, mapAction, source, {
-      form: {
-        intent: action,
-        label: action === "use_perk" ? "Use resident perk" : "Show resident card",
-        perkId: payload.entityId,
-        qrValue: payload.qrValue,
-        status: action === "use_perk" ? "ready" : "presented",
-        expiresAt,
-      },
-      metadata: { ...payload, expiresAt },
-    });
-    if (action === "use_perk") {
-      fireWorkflow(`/api/perks/${encodeURIComponent(payload.entityId)}/redemption-token`, {
-        ...workflowPayload,
-        token: payload.qrValue,
-        qrPayload: payload.qrValue,
-        status: "ready",
-        expiresAt,
+    try {
+      const session = await createResidentQrSession({
+        perkId: action === "use_perk" ? payload.entityId : undefined,
+        purpose: action === "use_perk" ? "perk_redemption" : "resident_pass",
+        sourceSurface: source,
       });
+      const securePayload = { ...payload, qrValue: session.qrValue, qrSessionId: session.sessionId };
+      recordResidentTouchpoint(securePayload);
+      setPassPresented(true);
+      setResidentQrModal({ ...securePayload, place: qrPlace, redemptionStatus: "ready", expiresAt: session.expiresAt });
+    } catch (error) {
+      console.warn("Resident QR session could not be created", error);
+      if (typeof window !== "undefined") window.alert(error?.message || "We couldn't prepare your resident pass. Try again.");
     }
-    fireWorkflow("/api/map-actions", workflowPayload);
-    fireWorkflow("/api/redeem", {
-      ...payload,
-      ...workflowPayload,
-      action,
-      status: action === "use_perk" ? "ready" : "presented",
-      expiresAt,
-    });
-    recordResidentTouchpoint(payload);
-    setPassPresented(true);
-    setResidentQrModal({ ...payload, place: qrPlace, redemptionStatus: action === "use_perk" ? "ready" : "presented", expiresAt });
-  }, [buildMapActionPayload]);
+  }, []);
   const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
   const presentResidentPass = useCallback((event) => {
     event?.preventDefault?.();
@@ -14281,11 +14320,6 @@ export default function MapPage() {
     setEntityAssistantLoading(false);
     setSelectedDrawerMinimized(false);
   }, [selectedId]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("downtown-perks-card-items", JSON.stringify(Array.from(savedIds)));
-  }, [savedIds]);
 
   useEffect(() => {
     if (consoleCollapsed || urlState.tab !== "map") return undefined;
@@ -16606,18 +16640,17 @@ export default function MapPage() {
   function toggleSaved(place) {
     const nextSaved = !savedIds.has(place.id);
     const action = nextSaved ? "save" : "unsave";
-    setSavedIds((current) => {
-      const next = new Set(current);
-      next.has(place.id) ? next.delete(place.id) : next.add(place.id);
-      return next;
+    void toggleSavedEntity({
+      entityType: workflowEntityType(place),
+      entityId: place.id,
+      savedAt: new Date().toISOString(),
+      title: place.name,
+      imageUrl: place.image,
+      metadata: { district: place.district || "", source: "resident_save_action" },
+    }, nextSaved).catch((error) => {
+      console.warn("Saved item could not be reconciled", error);
+      if (typeof window !== "undefined") window.alert(error?.message || "Couldn't save. Try again.");
     });
-    fireWorkflow("/api/map-actions", buildMapActionPayload(place, action, "resident_save_action", {
-      form: {
-        intent: action,
-        label: nextSaved ? "Save entity" : "Remove saved entity",
-        status: nextSaved ? "active" : "inactive",
-      },
-    }));
     if (nextSaved) {
       recordMapUserAction("save", {
         entityId: place.id,
@@ -16626,11 +16659,6 @@ export default function MapPage() {
         collection: urlState.collection,
       });
       trackingEvents.save(place.id);
-      fireWorkflow("/api/save", {
-        profileId: getWorkflowProfileId(),
-        entityType: workflowEntityType(place),
-        entityId: place.id,
-      });
       return;
     }
     recordMapUserAction("unsave", {
@@ -17838,9 +17866,9 @@ export default function MapPage() {
             <div className="dp-pass-panel-body min-h-0 flex-1 overflow-y-auto px-2.5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2 sm:px-4 md:pb-4 md:pt-3">
                 <div className="px-3 pt-1 sm:px-3">
                   <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">QR verification</p>
-                  <h2 className="mt-1 text-[22px] font-semibold leading-none tracking-[-0.025em] text-[#0B1F33] md:mt-1.5 md:text-[25px]">Partner Scan View</h2>
+                  <h2 className="mt-1 text-[22px] font-semibold leading-none tracking-[-0.025em] text-[#0B1F33] md:mt-1.5 md:text-[25px]">Scan a resident pass</h2>
                   <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
-                    Scan a resident QR and confirm the access moment without adding another workflow.
+                    Check eligibility, review the perk, and record the result.
                   </p>
                 </div>
                 <PartnerQrScanner

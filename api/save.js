@@ -1,36 +1,8 @@
-import { supabaseServer } from '../src/lib/supabaseServer.js';
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  if (!supabaseServer) {
-    return res.status(200).json({
-      ok: true,
-      mode: 'demo_session_only',
-      storage: { stored: false, reason: 'supabase_not_configured' }
-    });
-  }
-
-  const { profileId, entityType, entityId } = req.body || {};
-  if (!profileId || !entityType || !entityId) {
-    return res
-      .status(400)
-      .json({ error: 'Missing required fields: profileId, entityType, and entityId are required' });
-  }
-
-  const { error } = await supabaseServer.from('saved_items').upsert({
-    profile_id: profileId,
-    entity_type: entityType,
-    entity_id: entityId
-  }, {
-    onConflict: 'profile_id,entity_type,entity_id'
+export default function handler(_req, res) {
+  res.setHeader("Deprecation", "true");
+  res.setHeader("Link", '</api/resident/saved>; rel="successor-version"');
+  return res.status(410).json({
+    error: "This save route has been replaced. Sign in and use the resident saved-items route.",
+    successor: "/api/resident/saved",
   });
-
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
-  return res.status(200).json({ ok: true });
 }

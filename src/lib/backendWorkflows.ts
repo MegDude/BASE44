@@ -42,9 +42,17 @@ export function getWorkflowProfileId() {
 }
 
 export async function postWorkflow(endpoint: string, payload: JsonRecord) {
+  const authHeaders: Record<string, string> = {};
+  try {
+    const { supabaseClient } = await import("@/lib/supabase/client");
+    const { data } = supabaseClient ? await supabaseClient.auth.getSession() : { data: null };
+    if (data?.session?.access_token) authHeaders.Authorization = `Bearer ${data.session.access_token}`;
+  } catch {
+    // Public map actions remain available; protected endpoints return a clear sign-in response.
+  }
   const response = await fetch(endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders },
     body: JSON.stringify(payload),
   });
 

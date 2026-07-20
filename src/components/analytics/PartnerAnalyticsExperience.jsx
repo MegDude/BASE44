@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowRight, Building2, FileText, Info, MapPin, Plug, Users } from "lucide-react";
+import { ArrowRight, Building2, FileText, Info, MapPin, ScanLine, Users } from "lucide-react";
 import { demoOrganizations, getOrganizationEntities } from "@/config/workspaceArchitecture";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { getResearchCoverageSummary } from "@/api/researchIntelligenceClient";
+import { getPartnerRedemptionOverview } from "@/features/partner/analytics/partnerRedemptionAnalytics";
 
 const VIEWS = [
   ["overview", "Overview"],
@@ -100,6 +101,17 @@ export function PartnerAnalyticsExperience() {
   const organization = demoOrganizations.find((item) => item.id === requestedWorkspace) || demoOrganizations[0];
   const view = VIEWS.some(([id]) => id === params.get("view")) ? params.get("view") : "overview";
   const entities = getOrganizationEntities(organization.id);
+  const [redemptionState, setRedemptionState] = useState({ status: "loading", data: null });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    getPartnerRedemptionOverview("30d", controller.signal)
+      .then((data) => setRedemptionState({ status: "ready", data }))
+      .catch((error) => {
+        if (error?.name !== "AbortError") setRedemptionState({ status: "unavailable", data: null });
+      });
+    return () => controller.abort();
+  }, []);
 
   function update(changes) {
     const next = new URLSearchParams(location.search);
@@ -110,14 +122,14 @@ export function PartnerAnalyticsExperience() {
   }
 
   return <motion.section className="dp-partner-analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-    <header className="dp-pa-header"><div><span>Analytics</span><h1>Report only what is verified</h1><p>Review connected places now. Audience and action totals appear after their source totals are available.</p></div><div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}><Plug aria-hidden="true" />Review sources</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />Reports</Link></div></header>
+    <header className="dp-pa-header"><div><span>Analytics</span><h1>See what residents used</h1><p>Review verified perk use, repeat visits, and transaction value from your locations.</p></div><div><Link to="/map?mode=partner&tab=pass"><ScanLine aria-hidden="true" />Scan resident pass</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />View reports</Link></div></header>
 
     <section className="dp-pa-controls" aria-label="Analytics workspace"><label>Workspace<select value={organization.id} onChange={(event) => update({ workspace: event.target.value })}>{demoOrganizations.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label><div className="dp-pa-status"><Info aria-hidden="true" /><span><strong>Source-safe view</strong>No generated performance data</span></div></section>
 
     <nav className="dp-pa-tabs" aria-label="Analytics views">{VIEWS.map(([id, label]) => <button key={id} type="button" aria-current={view === id ? "page" : undefined} onClick={() => update({ view: id })}>{label}</button>)}</nav>
 
     <div className="dp-pa-content">
-      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to manage.</h2><p>This count shows places only. It does not estimate audience size or results.</p></div><div><span>Potential reach</span><h3>DANA, The Shore, and Legends can provide audience totals.</h3><p>Their member, resident, and contact totals are not connected, so no combined reach number is shown.</p><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}>Review sources <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Connected places</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Ready to manage</span></footer></article><article><div><span>Verified users</span><Users aria-hidden="true" /></div><strong>—</strong><footer><span>Count not connected</span></footer></article><article><div><span>Measured actions</span><MapPin aria-hidden="true" /></div><strong>—</strong><footer><span>Results not connected</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><SourceRows /></div><DataNotice /></> : null}
+      {view === "overview" ? <>{redemptionState.status === "ready" ? <><section className="dp-pa-decision"><div><span>Last 30 days</span><h2>{redemptionState.data.metrics.completedRedemptions} completed {redemptionState.data.metrics.completedRedemptions === 1 ? "perk" : "perks"}</h2><p>{redemptionState.data.metrics.uniqueResidents} residents used a verified perk at your locations.</p></div><div><span>What to do next</span><h3>{redemptionState.data.audience.peakDay ? `${redemptionState.data.audience.peakDay} at ${redemptionState.data.audience.peakTime} is your strongest verified time.` : "More completed perks will reveal when residents respond."}</h3><p>Audience patterns appear only after at least 10 distinct residents contribute to a group.</p><Link to="/map?mode=partner&tab=pass">Scan resident pass <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified perk results"><article><div><span>Completed perks</span><MapPin aria-hidden="true" /></div><strong>{redemptionState.data.metrics.completedRedemptions}</strong><footer><span>Verified transactions</span></footer></article><article><div><span>Residents served</span><Users aria-hidden="true" /></div><strong>{redemptionState.data.metrics.uniqueResidents}</strong><footer><span>Distinct residents</span></footer></article><article><div><span>Repeat residents</span><Building2 aria-hidden="true" /></div><strong>{redemptionState.data.metrics.repeatResidentRate}%</strong><footer><span>Returned in this period</span></footer></article></div></> : <DataNotice title="No verified perk results are available yet." description="Sign in with an authorized partner account and complete a resident perk to begin reporting." />}<div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><SourceRows /></div></> : null}
       {view === "audience" ? <><SourceRows /><DataNotice title="No verified user total is available." /></> : null}
       {view === "research" ? <ResearchCoverage workspaceId={organization.id} /> : null}
       {view === "places" ? <ConnectedPlaces entities={entities} workspaceId={organization.id} /> : null}
