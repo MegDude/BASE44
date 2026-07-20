@@ -7,6 +7,7 @@ import { getPartnerAnalyticsIntelligence } from "@/config/partnerAnalyticsIntell
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { getResearchCoverageSummary } from "@/api/researchIntelligenceClient";
 import { getPartnerRedemptionOverview } from "@/features/partner/analytics/partnerRedemptionAnalytics";
+import { listPartnerShareLinks } from "@/lib/partner/partnerShareLinksClient";
 
 const VIEWS = [
   ["overview", "Overview"],
@@ -53,14 +54,19 @@ function EmptyMeasurement({ view }) {
   const labels = {
     campaigns: "No verified campaign results.",
     activity: "No verified offer or event activity.",
-    sources: "No attributed entry counts.",
+    sources: "No attributed share-link opens.",
     geography: "No verified geographic activity.",
   };
   return <section className="dp-pa-empty"><strong>{labels[view] || "No verified results."}</strong><p>Downtown Perks will not estimate results. Connect a verified analytics source to report measured activity.</p></section>;
 }
 
 function Reports({ workspaceId }) {
-  return <section className="dp-pa-panel"><header><span>Reports</span><h2>Reports begin with verified results</h2></header><div className="dp-pa-reports"><article><FileText aria-hidden="true" /><div><strong>Audience and performance report</strong><small>Available after verified audience and action totals are connected.</small></div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", workspaceId)}>Review sources</Link></article></div></section>;
+  return <section className="dp-pa-panel"><header><span>Reports</span><h2>Reports begin with verified results</h2></header><div className="dp-pa-reports"><article><FileText aria-hidden="true" /><div><strong>Audience and performance report</strong><small>Available after verified audience and action totals are connected.</small></div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", workspaceId)}>Review sources</Link></article><article><FileText aria-hidden="true" /><div><strong>Share-link report</strong><small>Compare QR and copied-link opens by placement and destination.</small></div><Link to={withPartnerWorkspaceContext("/partner-workspace/share-links", workspaceId)}>Open share links</Link></article></div></section>;
+}
+
+function ShareLinkSources({ records, workspaceId, partnerName }) {
+  if (!records.length) return <section className="dp-pa-empty"><strong>No share-link opens yet.</strong><p>Create a link or QR code for {partnerName}, then use this view to compare where people started.</p><Link to={withPartnerWorkspaceContext("/partner-workspace/share-links", workspaceId)}>Create share link</Link></section>;
+  return <section className="dp-pa-panel"><header><span>Share links</span><h2>See where people started.</h2><p>Each row stays tied to {partnerName}, its placement, and its chosen destination.</p></header><div className="dp-pa-records">{records.map((record) => <article key={record.id}><div><strong>{record.name}</strong><small>{String(record.placement_type || "Other").replaceAll("_", " ")} · {record.status}</small></div><em>{Number(record.analytics?.opens || 0).toLocaleString()} opens</em></article>)}</div><Link to={withPartnerWorkspaceContext("/partner-workspace/share-links", workspaceId)}>Manage share links <ArrowRight aria-hidden="true" /></Link></section>;
 }
 
 const RESEARCH_COUNTS = [
@@ -114,6 +120,7 @@ export function PartnerAnalyticsExperience() {
   const entities = organization ? getOrganizationEntities(organization.id) : [];
   const intelligence = getPartnerAnalyticsIntelligence(organization, entities);
   const [redemptionOverview, setRedemptionOverview] = useState({ status: "loading", data: null });
+  const [shareLinkOverview, setShareLinkOverview] = useState({ status: "loading", records: [] });
 
   useEffect(() => {
     if (!organization?.id) return undefined;
@@ -124,6 +131,16 @@ export function PartnerAnalyticsExperience() {
         if (error?.name !== "AbortError") setRedemptionOverview({ status: "unavailable", data: null });
       });
     return () => controller.abort();
+  }, [organization?.id]);
+
+  useEffect(() => {
+    let active = true;
+    if (!organization?.id) return undefined;
+    setShareLinkOverview({ status: "loading", records: [] });
+    listPartnerShareLinks(organization.id)
+      .then((records) => { if (active) setShareLinkOverview({ status: "ready", records }); })
+      .catch(() => { if (active) setShareLinkOverview({ status: "unavailable", records: [] }); });
+    return () => { active = false; };
   }, [organization?.id]);
 
   function update(changes) {
@@ -147,12 +164,13 @@ export function PartnerAnalyticsExperience() {
     <nav className="dp-pa-tabs" aria-label="Analytics views">{VIEWS.map(([id, label]) => <button key={id} type="button" aria-current={view === id ? "page" : undefined} onClick={() => update({ view: id })}>{label}</button>)}</nav>
 
     <div className="dp-pa-content">
-      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to review.</h2><p>This count describes connected records only. It does not estimate audience size or results.</p></div><div><span>What matters for {organization.name}</span><h3>{intelligence.recommendation}</h3><p>{intelligence.context}</p><Link to={withPartnerWorkspaceContext(intelligence.nextHref, organization.id)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Places ready to review</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Connected to {organization.name}</span></footer></article><article><div><span>Residents who redeemed</span><Users aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.uniqueResidents : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified residents" : "Results not connected"}</span></footer></article><article><div><span>Completed redemptions</span><MapPin aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.completedRedemptions : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified partner activity" : "Results not connected"}</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><PartnerRecommendation intelligence={intelligence} organizationId={organization.id} /></div><DataNotice title={redemptionOverview.status === "ready" ? "Verified results are connected." : "No verified perk results are available yet."} description={redemptionOverview.status === "ready" ? "Results come from completed resident perk transactions for the selected period." : "Sign in with an authorized partner account and complete a resident perk to begin reporting."} /></> : null}
+      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to review.</h2><p>This count describes connected records only. It does not estimate audience size or results.</p></div><div><span>What matters for {organization.name}</span><h3>{intelligence.recommendation}</h3><p>{intelligence.context}</p><Link to={withPartnerWorkspaceContext(intelligence.nextHref, organization.id)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Places ready to review</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Connected to {organization.name}</span></footer></article><article><div><span>Share-link opens</span><Plug aria-hidden="true" /></div><strong>{shareLinkOverview.status === "ready" ? shareLinkOverview.records.reduce((total, record) => total + Number(record.analytics?.opens || 0), 0) : "—"}</strong><footer><span>{shareLinkOverview.status === "ready" ? `${shareLinkOverview.records.length} tracked ${shareLinkOverview.records.length === 1 ? "link" : "links"}` : "Publishing data not connected"}</span></footer></article><article><div><span>Residents who redeemed</span><Users aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.uniqueResidents : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified residents" : "Results not connected"}</span></footer></article><article><div><span>Completed redemptions</span><MapPin aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.completedRedemptions : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified partner activity" : "Results not connected"}</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><PartnerRecommendation intelligence={intelligence} organizationId={organization.id} /></div><DataNotice title={redemptionOverview.status === "ready" ? "Verified results are connected." : "No verified perk results are available yet."} description={redemptionOverview.status === "ready" ? "Results come from completed resident perk transactions and tracked share links for the selected partner." : "Sign in with an authorized partner account and complete a resident perk to begin reporting."} /></> : null}
       {view === "audience" ? <><PartnerRecommendation intelligence={intelligence} organizationId={organization.id} /><DataNotice title="No verified user total is available." description={`Connect a consent-aware audience source for ${organization.name} before reporting reach or behavior.`} /></> : null}
       {view === "research" ? <ResearchCoverage workspaceId={organization.id} /> : null}
       {view === "seo" ? <SeoIntelligence intelligence={intelligence} organization={organization} entities={entities} /> : null}
       {view === "places" ? <ConnectedPlaces entities={entities} workspaceId={organization.id} /> : null}
-      {["campaigns", "activity", "sources", "geography"].includes(view) ? <><EmptyMeasurement view={view} /><DataNotice /></> : null}
+      {view === "sources" ? <><ShareLinkSources records={shareLinkOverview.records} workspaceId={organization.id} partnerName={organization.name} />{shareLinkOverview.status === "unavailable" ? <DataNotice title="Share-link results are not connected." description="Connect the publishing service before reporting attributed opens." /> : null}</> : null}
+      {["campaigns", "activity", "geography"].includes(view) ? <><EmptyMeasurement view={view} /><DataNotice /></> : null}
       {view === "reports" ? <><Reports workspaceId={organization.id} /><DataNotice /></> : null}
     </div>
   </motion.section>;

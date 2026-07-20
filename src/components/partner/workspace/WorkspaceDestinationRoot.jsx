@@ -39,7 +39,7 @@ const DESTINATIONS = {
     description: "Put offers, events, campaigns, and map guides in front of the right people.",
     next: { id: "offers", title: "Create an offer", description: "Give nearby residents one clear reason to visit." },
     groups: [
-      { title: "Publish", ids: ["events", "campaigns", "broadcasts", "surveys"] },
+      { title: "Publish", ids: ["events", "campaigns", "share_links", "broadcasts", "surveys"] },
       { title: "Map content", ids: ["listings", "routes"] },
     ],
   },
@@ -73,6 +73,7 @@ const MODULE_ICONS = {
   campaigns: Megaphone,
   broadcasts: Radio,
   surveys: ListChecks,
+  share_links: QrCode,
   listings: Building2,
   routes: Route,
   analytics: BarChart3,

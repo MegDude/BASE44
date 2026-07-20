@@ -332,6 +332,7 @@ function ProductRoutes() {
           <Route path="/app/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/audience" />} />
           <Route path="/app/workspace/media" element={<RedirectWithSearch to="/partner-workspace/media" />} />
           <Route path="/app/workspace/sources" element={<RedirectWithSearch to="/partner-workspace/sources" />} />
+          <Route path="/app/workspace/share-links" element={<RedirectWithSearch to="/partner-workspace/share-links" />} />
           <Route path="/app/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
           <Route path="/app/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
           <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
@@ -354,6 +355,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/surveys" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/broadcasts" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/sources" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/share-links" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/profile" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/audience" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />

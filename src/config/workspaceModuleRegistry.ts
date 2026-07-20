@@ -32,7 +32,7 @@ export const workspacePrimaryNavigation: readonly {
 }[] = [
   { id: "home", label: "Home", href: "/partner-workspace/overview", icon: House, matches: ["overview"] },
   { id: "map", label: "Map", href: "/map?mode=partner&tab=map&filter=All", icon: MapPin, matches: ["map"] },
-  { id: "publish", label: "Publish", href: "/partner-workspace/publish", icon: Megaphone, matches: ["publish", "offers", "events", "campaigns", "surveys", "broadcasts"] },
+  { id: "publish", label: "Publish", href: "/partner-workspace/publish", icon: Megaphone, matches: ["publish", "offers", "events", "campaigns", "surveys", "broadcasts", "share-links", "share_links"] },
   { id: "performance", label: "Performance", href: "/partner-workspace/performance", icon: ChartNoAxesCombined, matches: ["performance", "analytics", "reports", "audience"] },
   { id: "workspace", label: "Workspace", href: "/partner-workspace/workspace", icon: Settings, matches: ["workspace", "profile", "team", "billing", "media", "sources"] },
 ] as const;
@@ -45,6 +45,7 @@ export const workspaceModules: readonly WorkspaceModuleDefinition[] = [
   { id: "campaigns", label: "Campaigns", description: "Choose what to share, who should see it, and when it runs.", href: "/partner-workspace/campaigns", destination: "publish", featureFlag: "campaigns", permissions: ["campaigns:view"] },
   { id: "broadcasts", label: "Broadcasts", description: "Schedule messages and resident updates.", href: "/partner-workspace/broadcasts", destination: "publish", featureFlag: "broadcasts", permissions: ["broadcasts:view"] },
   { id: "surveys", label: "Surveys", description: "Collect and review structured feedback.", href: "/partner-workspace/surveys", destination: "publish", featureFlag: "surveys", permissions: ["surveys:view"] },
+  { id: "share_links", label: "Share links", description: "Create trackable links and downloadable QR codes for any approved destination.", href: "/partner-workspace/share-links", destination: "publish", featureFlag: "qr", permissions: ["qr:view"] },
   { id: "listings", label: "Listings", description: "Review your properties and publish listing updates.", href: "/map?mode=partner&tab=map&filter=Listings", destination: "publish", featureFlag: "listings", permissions: ["listings:view"], integration: "listing_feed" },
   { id: "routes", label: "Routes and guides", description: "Curate map routes, guides, and collections.", href: "/map?mode=partner&tab=map&filter=Discovery%20Trails", destination: "publish", featureFlag: "routes", permissions: ["routes:view"] },
   { id: "analytics", label: "Analytics", description: "See what people find, open, use, and act on.", href: "/partner-workspace/analytics", destination: "performance", featureFlag: "analytics", permissions: ["analytics:view"] },
@@ -62,7 +63,7 @@ export const workspaceModules: readonly WorkspaceModuleDefinition[] = [
   { id: "sources", label: "Connected services", description: "Manage data feeds, search reports, maps, and billing connections.", href: "/partner-workspace/sources", destination: "workspace", permissions: ["integrations:view"] },
   { id: "automations", label: "Scheduled tasks", description: "Review recurring tasks and fix connection issues.", href: "/partner-workspace/sources?section=automations", destination: "workspace", featureFlag: "automations", permissions: ["automations:view"] },
   { id: "ai", label: "Writing and recommendations", description: "Draft copy, summarize results, and review suggested next steps.", href: "/map?mode=partner&tab=map&filter=All", destination: "workspace", featureFlag: "ai", permissions: ["ai:use"] },
-  { id: "qr", label: "QR codes", description: "Create links, see scans, and download QR materials.", href: "/partner-workspace/sources?section=qr", destination: "workspace", featureFlag: "qr", permissions: ["qr:view"] },
+  { id: "qr", label: "Share links and QR", description: "Create links, see opens, and download QR materials.", href: "/partner-workspace/share-links", destination: "workspace", featureFlag: "qr", permissions: ["qr:view"] },
   { id: "notifications", label: "Notifications", description: "Choose which updates reach your team.", href: "/partner-workspace/profile?section=notifications", destination: "workspace", permissions: ["notifications:view"] },
   { id: "billing", label: "Billing and plan", description: "Plan, usage, payment, invoices, and renewal.", href: "/partner-workspace/billing", destination: "workspace", roles: ["owner", "admin", "super_admin"], permissions: ["billing:view"] },
   { id: "support", label: "Support", description: "Get help with setup, publishing, reports, or data issues.", href: "/map?mode=partner&tab=info", destination: "workspace", permissions: ["workspace:view"] },

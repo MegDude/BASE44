@@ -226,7 +226,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
         price: "$39/year",
         description: "A clearer view of what residents are using.",
         stripeKey: "VITE_STRIPE_DP_PROPERTY_ANALYTICS_39_YEAR",
-        features: ["Activity dashboard", "Monthly report", "Entry links", "Perk usage"],
+        features: ["Activity dashboard", "Monthly report", "Share links", "Perk usage"],
       },
       {
         id: "property-full-stack",
@@ -419,7 +419,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
         price: "$99/year",
         description: "More reports for busy venues.",
         stripeKey: "VITE_STRIPE_DP_VENUE_99_YEAR",
-        features: ["Action progress", "Entry links", "Repeat visits", "Campaign eligibility"],
+        features: ["Action progress", "Share links", "Repeat visits", "Campaign eligibility"],
       },
     ],
     workflow: [
@@ -511,7 +511,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
         price: "Custom",
         description: "Event-led or corridor-based campaign packages.",
         stripeKey: null,
-        features: ["Campaign format", "QR links", "Venue pages", "Entry links"],
+        features: ["Campaign format", "QR links", "Venue pages", "Share links"],
       },
     ],
     workflow: [
@@ -649,7 +649,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
     proof: {
       title: "Neighborhood-led listing interest",
       body: "Listings become more useful when the surrounding downtown layer is visible.",
-      kpis: ["Listing views", "Neighborhood saves", "Lead interest", "Entry links"],
+      kpis: ["Listing views", "Neighborhood saves", "Lead interest", "Share links"],
     },
     analyticsSnapshot: {
       peakWindow: "Waiting for listing activity",
@@ -742,7 +742,7 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     kpis: ["Map opens", "Saves", "Redemptions", "RSVPs", "Campaign actions", "Source locations"],
     primaryCta: { label: "Update an offer", href: PARTNER_ROUTES.workspaceOffers },
     secondaryCta: { label: "Open map view", href: PARTNER_ROUTES.workspaceMap },
-    emptyState: "No activity yet. Publish an offer, event, or entry link to start seeing results.",
+    emptyState: "No activity yet. Publish an offer, event, or share link to start seeing results.",
   },
   assistant: {
     route: PARTNER_ROUTES.workspaceAssistant,
@@ -760,13 +760,13 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
   map: {
     route: PARTNER_ROUTES.workspaceMap,
     headline: "Your place in the downtown map.",
-    body: "See your location, nearby properties, events, offers, and the entry links that can send people your way.",
+    body: "See your location, nearby properties, events, offers, and the share links that can send people your way.",
     prompts: [
       "Who is nearby right now?",
       "Which offers are working?",
       "What events are creating movement?",
       "Where are saves coming from?",
-      "Which entry links matter most?",
+      "Which share links matter most?",
       "What should we update this week?",
     ],
     drawerTabs: ["Overview", "Progress", "People", "Events", "Actions"],
@@ -802,22 +802,22 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
   },
   sources: {
     route: PARTNER_ROUTES.workspaceSources,
-    headline: "Where people start.",
-    body: "Entry links show where someone starts: a lobby QR, hotel desk, event poster, venue counter, campaign placement, or listing link.",
-    columns: ["Entry link", "Type", "Location", "Scans", "Linked campaign", "Status", "Actions"],
-    createCta: "Create entry link",
-    fields: ["Entry name", "Entry type", "Address or placement", "QR label", "Linked offer/event/campaign", "Notes", "Active status"],
-    sourceTypes: ["Building lobby", "Leasing flow", "Hotel lobby", "Guest room", "Venue counter", "Event poster", "Campaign placement", "Listing page", "Civic sign", "Other"],
-    success: "Entry link saved. Use it anywhere people should open the map.",
-    emptyState: "No entry links yet. Add the places where people should open the map.",
+    headline: "Keep connected services working.",
+    body: "Review the services that supply maps, search reports, billing, messages, and publishing data for this partner.",
+    columns: ["Service", "Connection", "Last update", "What it supports", "Status", "Actions"],
+    createCta: "Review connections",
+    fields: ["Service", "Account", "Connection status", "Last update", "Data available", "Owner", "Notes"],
+    sourceTypes: ["Maps", "Search reporting", "Billing", "Email", "SMS", "Listings", "Events", "Other"],
+    success: "Connection details saved.",
+    emptyState: "No connected services yet. Add only the services this partner actually uses.",
   },
   campaigns: {
     route: PARTNER_ROUTES.workspaceCampaigns,
     headline: "Campaigns tied to real places.",
     body: "Build simple campaigns around where people are, what they are doing, and what you want them to do next.",
     types: ["Featured campaign", "Perk campaign", "Destination campaign", "Multi-property campaign", "Major mixed-use campaign", "Survey campaign", "QR redemption campaign"],
-    steps: ["Goal", "People", "Placement", "Offer or event", "Entry links", "Timing", "Budget/pricing", "Review"],
-    success: "Campaign saved. Review placement, entry links, and timing before publishing.",
+    steps: ["Goal", "People", "Placement", "Offer or event", "Share links", "Timing", "Budget/pricing", "Review"],
+    success: "Campaign saved. Review placement, share links, and timing before publishing.",
     emptyState: "No campaigns yet. Start with one clear reason for people to act.",
   },
   broadcasts: {
@@ -854,8 +854,8 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
   analytics: {
     route: PARTNER_ROUTES.workspaceAnalytics,
     headline: "A clearer read on nearby action.",
-    body: "Use scans, saves, RSVPs, redemptions, repeat visits, and entry links to decide what to do next.",
-    sections: ["Action progress", "Entry links", "Offer results", "Event activity", "Repeat visits", "Timing windows", "Nearby properties", "Campaign results"],
+    body: "Use scans, saves, RSVPs, redemptions, repeat visits, and share links to decide what to do next.",
+    sections: ["Action progress", "Share links", "Offer results", "Event activity", "Repeat visits", "Timing windows", "Nearby properties", "Campaign results"],
     emptyState: "Waiting for activity. Results appear once people start using the workspace.",
   },
   profile: {
@@ -884,9 +884,9 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
 
 export const PARTNER_DASHBOARD_COPY = {
   title: "Partner Results",
-  body: "A high-level view of partner activity across the downtown map: scans, saves, RSVPs, redemptions, campaigns, entry links, and repeat visits.",
+  body: "A high-level view of partner activity across the downtown map: scans, saves, RSVPs, redemptions, campaigns, share links, and repeat visits.",
   nav: ["Overview", "Map", "Properties", "Hotels", "Venues", "Brands", "Civic", "Real Estate", "Redemptions", "Reports"],
-  kpis: ["Active partners", "Map opens", "Saves", "Redemptions", "RSVPs", "Campaign actions", "Entry links", "Repeat visits"],
+  kpis: ["Active partners", "Map opens", "Saves", "Redemptions", "RSVPs", "Campaign actions", "Share links", "Repeat visits"],
   waitingState: "Waiting for activity.",
   exportCta: "Export summary",
 } as const;
@@ -957,7 +957,7 @@ export const CAMPAIGN_PRICING_PACKAGES = [
     price: "$99",
     asset: "/assets/campaign-pricing/Perk Campaign .png",
     stripeKey: "VITE_STRIPE_DP_CAMPAIGN_PERK_99",
-    copy: "A stronger campaign package built around a usable perk and tracked entry links.",
+    copy: "A stronger campaign package built around a usable perk and tracked share links.",
   },
   {
     id: "destination-custom",
@@ -973,7 +973,7 @@ export const CAMPAIGN_PRICING_PACKAGES = [
     price: "Custom",
     asset: "/assets/campaign-pricing/Multi Property.png",
     stripeKey: null,
-    copy: "Campaign placement across multiple residential or hospitality entry links.",
+    copy: "Campaign placement across multiple residential or hospitality share links.",
   },
   {
     id: "survey-custom",
