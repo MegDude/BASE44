@@ -200,13 +200,17 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   font: 650 12px/1 Inter, system-ui, sans-serif !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-status.is-ready {
+  color: #0b5c3e !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-status::before {
   width: 7px !important;
   height: 7px !important;
   margin-right: 7px !important;
   border: 0 !important;
   border-radius: 50% !important;
-  background: #9a7a3e !important;
+  background: currentColor !important;
   box-shadow: none !important;
   content: "" !important;
 }
