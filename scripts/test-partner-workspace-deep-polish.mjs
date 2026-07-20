@@ -33,7 +33,8 @@ assert.doesNotMatch(workspaceSource, /Residents who saved a dining perk were 38%
 assert.doesNotMatch(workspaceSource, /\["426", "Map views"/, "fixture map activity must not render as current workspace data");
 assert.doesNotMatch(analyticsSource, /buildFixture|function seed\(/, "analytics must not generate fixture performance");
 assert.match(analyticsSource, /No generated performance data/, "analytics must disclose its source-safe state");
-assert.match(analyticsSource, /DANA, The Shore, and Legends/, "analytics must identify potential reach sources");
+assert.match(analyticsSource, /Partner recommendation/, "analytics must explain the selected partner's next action");
+assert.doesNotMatch(analyticsSource, /DANA, The Shore, and Legends/, "analytics must not reuse another partner's audience sources");
 assert.doesNotMatch(workspaceSource, /record connected to this workspace/, "the overview must not expose database language");
 assert.doesNotMatch(analyticsSource, /Canonical records|Connected record/, "analytics must not expose data-model language");
 assert.doesNotMatch(analyticsPageSource, /Interpreted insight|Canonical partner map|shared map layer and entity records/, "analytics copy must describe the user's decision, not the system");

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowRight, Building2, FileText, Info, MapPin, ScanLine, Users } from "lucide-react";
+import { ArrowRight, Building2, FileText, Info, MapPin, Plug, Search, Users } from "lucide-react";
 import { demoOrganizations, getOrganizationEntities } from "@/config/workspaceArchitecture";
+import { getPartnerAnalyticsIntelligence } from "@/config/partnerAnalyticsIntelligence";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { getResearchCoverageSummary } from "@/api/researchIntelligenceClient";
 import { getPartnerRedemptionOverview } from "@/features/partner/analytics/partnerRedemptionAnalytics";
@@ -11,6 +12,7 @@ const VIEWS = [
   ["overview", "Overview"],
   ["audience", "Audience"],
   ["research", "Research"],
+  ["seo", "SEO Snapshot"],
   ["places", "Places"],
   ["campaigns", "Campaigns"],
   ["activity", "Offers & Events"],
@@ -19,18 +21,27 @@ const VIEWS = [
   ["reports", "Reports"],
 ];
 
-const POTENTIAL_AUDIENCE_SOURCES = [
-  ["DANA", "Member count not connected"],
-  ["The Shore", "Resident count not connected"],
-  ["Legends", "Contact count not connected"],
-];
-
 function DataNotice({ title = "Verified analytics are not connected.", description = "Potential reach and measured activity will appear after the source provides a verified count." }) {
   return <section className="dp-pa-note" aria-label="Data availability"><Info aria-hidden="true" /><div><strong>{title}</strong><p>{description}</p></div></section>;
 }
 
-function SourceRows() {
-  return <section className="dp-pa-panel"><header><span>Potential reach</span><h2>Audience sources ready to connect.</h2></header><div className="dp-pa-records">{POTENTIAL_AUDIENCE_SOURCES.map(([name, status]) => <article key={name}><div><strong>{name}</strong><small>{status}</small></div><em>Potential source</em></article>)}</div></section>;
+function PartnerRecommendation({ intelligence, organizationId }) {
+  return <section className="dp-pa-panel dp-pa-recommendation"><header><span>Partner recommendation</span><h2>{intelligence.recommendation}</h2><p>{intelligence.context}</p></header><dl><div><dt>Why this fits</dt><dd>{intelligence.evidence}</dd></div><div><dt>What it should improve</dt><dd>{intelligence.outcome}</dd></div><div><dt>Confidence</dt><dd>{intelligence.confidence}</dd></div></dl><Link to={withPartnerWorkspaceContext(intelligence.nextHref, organizationId)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></section>;
+}
+
+function SeoIntelligence({ intelligence, organization, entities }) {
+  return <div className="dp-pa-seo">
+    <section className="dp-pa-seo-lead" aria-labelledby="partner-seo-title">
+      <div><span>SEO Snapshot</span><h2 id="partner-seo-title">{intelligence.purpose}</h2><p>{intelligence.context}</p></div>
+      <div><strong>What to do next</strong><p>{intelligence.recommendation}</p><Link to={withPartnerWorkspaceContext(intelligence.nextHref, organization.id)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></div>
+    </section>
+    <section className="dp-pa-panel dp-pa-seo-opportunities" aria-labelledby="seo-opportunities-title">
+      <header><span>Search opportunities</span><h2 id="seo-opportunities-title">Give every connected place a distinct reason to be found.</h2><p>These recommendations use the selected partner and its connected records. They do not borrow another partner's audience, results, or narrative.</p></header>
+      <ol>{intelligence.opportunities.map(([name, recommendation], index) => <li key={name}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{name}</strong><p>{recommendation}</p></div></li>)}</ol>
+    </section>
+    <section className="dp-pa-evidence" aria-label="Recommendation evidence"><div><span>Evidence used</span><p>{intelligence.evidence}</p></div><div><span>Expected result</span><p>{intelligence.outcome}</p></div><div><span>Confidence</span><p>{intelligence.confidence}</p></div></section>
+    {!entities.length ? <DataNotice title={`No connected places are available for ${organization.name}.`} description="Connect and verify a place before publishing its search recommendation." /> : null}
+  </div>;
 }
 
 function ConnectedPlaces({ entities, workspaceId }) {
@@ -98,40 +109,48 @@ export function PartnerAnalyticsExperience() {
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const requestedWorkspace = params.get("workspace") || params.get("organizationId");
-  const organization = demoOrganizations.find((item) => item.id === requestedWorkspace) || demoOrganizations[0];
+  const organization = demoOrganizations.find((item) => item.id === requestedWorkspace) || null;
   const view = VIEWS.some(([id]) => id === params.get("view")) ? params.get("view") : "overview";
-  const entities = getOrganizationEntities(organization.id);
-  const [redemptionState, setRedemptionState] = useState({ status: "loading", data: null });
+  const entities = organization ? getOrganizationEntities(organization.id) : [];
+  const intelligence = getPartnerAnalyticsIntelligence(organization, entities);
+  const [redemptionOverview, setRedemptionOverview] = useState({ status: "loading", data: null });
 
   useEffect(() => {
+    if (!organization?.id) return undefined;
     const controller = new AbortController();
     getPartnerRedemptionOverview("30d", controller.signal)
-      .then((data) => setRedemptionState({ status: "ready", data }))
+      .then((data) => setRedemptionOverview({ status: "ready", data }))
       .catch((error) => {
-        if (error?.name !== "AbortError") setRedemptionState({ status: "unavailable", data: null });
+        if (error?.name !== "AbortError") setRedemptionOverview({ status: "unavailable", data: null });
       });
     return () => controller.abort();
-  }, []);
+  }, [organization?.id]);
 
   function update(changes) {
     const next = new URLSearchParams(location.search);
     Object.entries(changes).forEach(([key, value]) => next.set(key, value));
+    if (!organization?.id && !changes.workspace) return;
     next.set("workspace", changes.workspace || organization.id);
     next.set("organizationId", changes.workspace || organization.id);
     navigate(`${location.pathname}?${next.toString()}`);
   }
 
-  return <motion.section className="dp-partner-analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-    <header className="dp-pa-header"><div><span>Analytics</span><h1>See what residents used</h1><p>Review verified perk use, repeat visits, and transaction value from your locations.</p></div><div><Link to="/map?mode=partner&tab=pass"><ScanLine aria-hidden="true" />Scan resident pass</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />View reports</Link></div></header>
+  if (!organization) {
+    return <section className="dp-pa-empty"><Search aria-hidden="true" /><strong>Choose a partner to see its recommendations.</strong><p>The workspace will keep every insight tied to the selected organization and its connected places.</p></section>;
+  }
 
-    <section className="dp-pa-controls" aria-label="Analytics workspace"><label>Workspace<select value={organization.id} onChange={(event) => update({ workspace: event.target.value })}>{demoOrganizations.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label><div className="dp-pa-status"><Info aria-hidden="true" /><span><strong>Source-safe view</strong>No generated performance data</span></div></section>
+  return <motion.section className="dp-partner-analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+    <header className="dp-pa-header"><div><span>{organization.name}</span><h1>{view === "seo" ? intelligence.purpose : "See what people respond to"}</h1><p>{view === "seo" ? "Use partner-specific search guidance to decide which page, place, and message should be improved next." : "Review verified activity, understand what it means for this partner, and choose one useful next action."}</p></div><div><Link to={withPartnerWorkspaceContext("/partner-workspace/sources", organization.id)}><Plug aria-hidden="true" />Review sources</Link><Link to={withPartnerWorkspaceContext("/partner-workspace/reports", organization.id)}><FileText aria-hidden="true" />View reports</Link></div></header>
+
+    <section className="dp-pa-status" aria-label="Recommendation source"><Info aria-hidden="true" /><span><strong>Specific to {organization.name}</strong>Recommendations use this partner's connected places. No generated performance data is shown.</span></section>
 
     <nav className="dp-pa-tabs" aria-label="Analytics views">{VIEWS.map(([id, label]) => <button key={id} type="button" aria-current={view === id ? "page" : undefined} onClick={() => update({ view: id })}>{label}</button>)}</nav>
 
     <div className="dp-pa-content">
-      {view === "overview" ? <>{redemptionState.status === "ready" ? <><section className="dp-pa-decision"><div><span>Last 30 days</span><h2>{redemptionState.data.metrics.completedRedemptions} completed {redemptionState.data.metrics.completedRedemptions === 1 ? "perk" : "perks"}</h2><p>{redemptionState.data.metrics.uniqueResidents} residents used a verified perk at your locations.</p></div><div><span>What to do next</span><h3>{redemptionState.data.audience.peakDay ? `${redemptionState.data.audience.peakDay} at ${redemptionState.data.audience.peakTime} is your strongest verified time.` : "More completed perks will reveal when residents respond."}</h3><p>Audience patterns appear only after at least 10 distinct residents contribute to a group.</p><Link to="/map?mode=partner&tab=pass">Scan resident pass <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified perk results"><article><div><span>Completed perks</span><MapPin aria-hidden="true" /></div><strong>{redemptionState.data.metrics.completedRedemptions}</strong><footer><span>Verified transactions</span></footer></article><article><div><span>Residents served</span><Users aria-hidden="true" /></div><strong>{redemptionState.data.metrics.uniqueResidents}</strong><footer><span>Distinct residents</span></footer></article><article><div><span>Repeat residents</span><Building2 aria-hidden="true" /></div><strong>{redemptionState.data.metrics.repeatResidentRate}%</strong><footer><span>Returned in this period</span></footer></article></div></> : <DataNotice title="No verified perk results are available yet." description="Sign in with an authorized partner account and complete a resident perk to begin reporting." />}<div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><SourceRows /></div></> : null}
-      {view === "audience" ? <><SourceRows /><DataNotice title="No verified user total is available." /></> : null}
+      {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to review.</h2><p>This count describes connected records only. It does not estimate audience size or results.</p></div><div><span>What matters for {organization.name}</span><h3>{intelligence.recommendation}</h3><p>{intelligence.context}</p><Link to={withPartnerWorkspaceContext(intelligence.nextHref, organization.id)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Places ready to review</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Connected to {organization.name}</span></footer></article><article><div><span>Residents who redeemed</span><Users aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.uniqueResidents : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified residents" : "Results not connected"}</span></footer></article><article><div><span>Completed redemptions</span><MapPin aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.completedRedemptions : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified partner activity" : "Results not connected"}</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} workspaceId={organization.id} /><PartnerRecommendation intelligence={intelligence} organizationId={organization.id} /></div><DataNotice title={redemptionOverview.status === "ready" ? "Verified results are connected." : "No verified perk results are available yet."} description={redemptionOverview.status === "ready" ? "Results come from completed resident perk transactions for the selected period." : "Sign in with an authorized partner account and complete a resident perk to begin reporting."} /></> : null}
+      {view === "audience" ? <><PartnerRecommendation intelligence={intelligence} organizationId={organization.id} /><DataNotice title="No verified user total is available." description={`Connect a consent-aware audience source for ${organization.name} before reporting reach or behavior.`} /></> : null}
       {view === "research" ? <ResearchCoverage workspaceId={organization.id} /> : null}
+      {view === "seo" ? <SeoIntelligence intelligence={intelligence} organization={organization} entities={entities} /> : null}
       {view === "places" ? <ConnectedPlaces entities={entities} workspaceId={organization.id} /> : null}
       {["campaigns", "activity", "sources", "geography"].includes(view) ? <><EmptyMeasurement view={view} /><DataNotice /></> : null}
       {view === "reports" ? <><Reports workspaceId={organization.id} /><DataNotice /></> : null}
