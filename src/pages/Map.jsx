@@ -52,7 +52,6 @@ import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
 import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
-import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
@@ -4052,11 +4051,11 @@ function DemoQrTile({ code = "DP-RES-78701" }) {
   );
 }
 
-function DemoQrCode({ code = DEMO_CARD_CODE, className = "" }) {
+function DemoQrCode({ code = DEMO_CARD_CODE, className = "", alt = "" }) {
   return (
     <img
       src={getQrImageUrl(code)}
-      alt={`Downtown Perks resident QR code for ${code}`}
+      alt={alt || `Downtown Perks resident QR code for ${code}`}
       className={`${className} block bg-white object-contain [image-rendering:crisp-edges]`}
       loading="eager"
       decoding="async"
@@ -4075,12 +4074,11 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
   const placeName = getEntityTouchpointName(data.place);
   const isPerkRedemption = data.action === "use_perk";
   const redemptionStatus = data.redemptionStatus || data.status || (isPerkRedemption ? "ready" : "presented");
-  const actionLabel = isPerkRedemption ? "Ready to scan" : "Resident card";
   const title = data.perkTitle || (data.action === "use_perk" ? `${placeName} resident perk` : "Downtown Perks Card");
   const value = data.perkValue && data.perkValue !== title ? data.perkValue : "";
   const description = isPerkRedemption
-    ? "Partner scans this code to apply the perk."
-    : "Show this QR code to use eligible resident perks, offers, and event access.";
+    ? "Ask the partner to scan this code to apply your perk."
+    : "Show this code to use eligible resident perks, offers, and event access.";
   const terms = data.perkTerms || "";
   const expiresAt = data.expiresAt ? new Date(data.expiresAt) : null;
   const validityLabel = redemptionStatus === "redeemed"
@@ -4090,6 +4088,12 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
       : redemptionStatus === "unavailable"
         ? "Currently unavailable"
         : "Ready to scan";
+  const valueLine = isPerkRedemption
+    ? [placeName, value && value.toLowerCase() !== placeName.toLowerCase() ? value : ""].filter(Boolean).join(" · ")
+    : value || `${placeName} · Resident access`;
+  const scanInstructions = isPerkRedemption
+    ? "Keep this screen open until the scan is confirmed."
+    : "Keep this screen open while the partner checks your resident pass.";
 
   return (
     <AnimatePresence>
@@ -4105,48 +4109,43 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           drawerState="medium"
           panelKind="redemption"
           aria-labelledby="resident-qr-title"
+          contentClassName="dp-resident-qr-content-viewport"
+          scrollClassName="dp-resident-qr-content"
+          header={(
+            <header className="dp-resident-qr-header">
+              <button type="button" className="dp-resident-qr-back" onClick={onBack || onClose} aria-label="Back to map">
+                <ArrowLeft aria-hidden="true" />
+              </button>
+              <span className="dp-resident-qr-header-title">Resident Pass</span>
+              <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
+                <X aria-hidden="true" />
+              </button>
+            </header>
+          )}
           initial={{ opacity: 0, y: 16, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.98 }}
           transition={{ duration: 0.18, ease: "easeOut" }}
           onClick={(event) => event.stopPropagation()}
         >
-          <button type="button" className="dp-resident-qr-back" onClick={onBack || onClose} aria-label="Back to map">
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
-            <X className="h-4 w-4" />
-          </button>
-          {isPerkRedemption ? (
-            <PerkIdentityHeader
-              venueName={placeName}
-              offerName={title}
-              qrCodeSrc={getQrImageUrl(data.qrValue)}
-              qrCodeFallbackSrc={PERKS_CARD_QR_SRC}
-              titleId="resident-qr-title"
-              meta={["Resident perk", validityLabel]}
+          <p className="dp-resident-qr-eyebrow">{isPerkRedemption ? "Resident perk" : "Verified resident"}</p>
+          <h2 id="resident-qr-title">{title}</h2>
+          <p className="dp-resident-qr-value">{valueLine}</p>
+          <p className={`dp-resident-qr-status is-${redemptionStatus}`} role="status">{validityLabel}</p>
+          <div className="dp-resident-qr-frame">
+            <DemoQrCode
+              code={data.qrValue}
+              className="dp-resident-qr-image"
+              alt={`Downtown Perks resident QR code for ${placeName}`}
             />
-          ) : (
-            <>
-              <p className="dp-resident-qr-eyebrow">VERIFIED RESIDENT</p>
-              <h2 id="resident-qr-title">{title}</h2>
-              {value && <p className="dp-resident-qr-value">{value}</p>}
-            </>
-          )}
-          {!isPerkRedemption ? <p className={`dp-resident-qr-status is-${redemptionStatus}`}>{validityLabel}</p> : null}
+          </div>
           <p className="dp-resident-qr-copy">{description}</p>
-          {isPerkRedemption && value ? <p className="dp-resident-qr-value">{value}</p> : null}
-          {terms && <p className="dp-resident-qr-terms">{terms}</p>}
-          {!isPerkRedemption ? (
-            <div className="dp-resident-qr-frame">
-              <DemoQrCode code={data.qrValue} className="dp-resident-qr-image" />
-            </div>
-          ) : null}
+          <p className="dp-resident-qr-terms">{scanInstructions}</p>
+          {terms ? <p className="dp-resident-qr-restrictions">{terms}</p> : null}
           <div className="dp-resident-qr-meta">
-            {!isPerkRedemption ? <span>{actionLabel}</span> : null}
-            {!isPerkRedemption ? <strong>{placeName}</strong> : null}
-            <span>{data.buildingName || "Downtown Austin"}</span>
-            <code>{data.cardNumber || data.uid}</code>
+            <div><span>Venue</span><strong>{isPerkRedemption ? placeName : "Downtown Perks"}</strong></div>
+            <div><span>Location</span><strong>{data.buildingName || "Downtown Austin"}</strong></div>
+            <div><span>Pass ID</span><code>{data.cardNumber || data.uid}</code></div>
             {expiresAt && redemptionStatus === "ready" && <small>Valid until {expiresAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</small>}
           </div>
         </NativeDrawerShell>

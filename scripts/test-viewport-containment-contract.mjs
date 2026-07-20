@@ -8,8 +8,9 @@ const densityStyles = readFileSync("src/styles/interface-density-regression-lock
 const imports = main.match(/^import "@\/styles\/[^"]+"$/gm) || [];
 const containmentImport = 'import "@/styles/surface-containment-final.css"';
 const densityImport = 'import "@/styles/interface-density-regression-lock.css"';
-assert.equal(imports.at(-2), containmentImport, "viewport containment must load immediately before the final density lock");
-assert.equal(imports.at(-1), densityImport, "the governed density lock must remain the final stylesheet");
+const densityIndex = imports.indexOf(densityImport);
+assert.equal(imports[densityIndex - 1], containmentImport, "viewport containment must load immediately before the density lock");
+assert.equal(imports[densityIndex + 1], 'import "@/styles/search-intent-glass-surface-final.css"', "only the scoped search console surface may follow the density lock");
 assert.match(styles, /max-height:calc\(100dvh - var\(--dp-map-native-bottom-nav-height,64px\)/, "medium map panels must remain below the visible safe-area top");
 assert.match(styles, /:is\(\[data-drawer-state="full"\],\[data-drawer-state="expanded"\]\)[\s\S]*?height:100dvh!important;[\s\S]*?max-height:100dvh!important;/, "expanded panels must be contained by the dynamic viewport");
 assert.match(styles, /\.dp-workspace-sheet,[\s\S]*?\.dp-quick-search-modal,[\s\S]*?\.dp-workspace-upgrade-modal[\s\S]*?max-height:calc\(100dvh/, "workspace and search surfaces must remain inside the viewport");

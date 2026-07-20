@@ -1,0 +1,382 @@
+/* Final authority for the resident pass and perk-redemption modal. */
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-backdrop {
+  position: fixed !important;
+  z-index: 1800 !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: max(20px, env(safe-area-inset-top, 0px)) 16px max(20px, env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+  background: rgba(11, 31, 51, 0.36) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal.dp-resident-qr-modal {
+  position: relative !important;
+  width: min(100%, 420px) !important;
+  max-width: 420px !important;
+  height: auto !important;
+  max-height: min(760px, calc(100dvh - max(40px, env(safe-area-inset-top, 0px)) - max(40px, env(safe-area-inset-bottom, 0px)))) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+  box-shadow: 0 24px 64px rgba(11, 31, 51, 0.2), 0 3px 12px rgba(11, 31, 51, 0.08) !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal > .dp-native-drawer-surface {
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  width: 100% !important;
+  max-height: inherit !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal .dp-native-drawer-header {
+  position: relative !important;
+  z-index: 4 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) 40px !important;
+  align-items: center !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  padding: 8px 10px 4px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header-title {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font: 650 13px/1 Inter, system-ui, sans-serif !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close) {
+  position: relative !important;
+  inset: auto !important;
+  display: grid !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close)::before {
+  position: absolute !important;
+  inset: -2px !important;
+  display: block !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  content: "" !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close):is(:hover, :active) {
+  background: rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 1px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close) svg {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 19px !important;
+  height: 19px !important;
+  stroke-width: 2 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content-viewport {
+  width: 100% !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 120px) !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content {
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 120px) !important;
+  margin: 0 !important;
+  padding: 20px 24px 24px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content > .dp-native-drawer-content-end {
+  height: calc(4px + env(safe-area-inset-bottom, 0px)) !important;
+  min-height: calc(4px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-eyebrow {
+  margin: 0 0 6px !important;
+  color: #9a7a3e !important;
+  font: 700 11px/1.2 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0.07em !important;
+  text-align: left !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal h2 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: clamp(25px, 7vw, 32px) !important;
+  font-weight: 700 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
+  text-align: left !important;
+  text-wrap: balance !important;
+  overflow-wrap: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-value {
+  margin: 8px 0 0 !important;
+  max-width: none !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font: 550 14px/1.35 Inter, system-ui, sans-serif !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-status {
+  display: inline-flex !important;
+  min-height: 28px !important;
+  align-items: center !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(11, 31, 51, 0.7) !important;
+  box-shadow: none !important;
+  font: 650 12px/1 Inter, system-ui, sans-serif !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-status::before {
+  width: 7px !important;
+  height: 7px !important;
+  margin-right: 7px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: #9a7a3e !important;
+  box-shadow: none !important;
+  content: "" !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {
+  display: grid !important;
+  width: min(100%, 284px) !important;
+  min-width: 0 !important;
+  max-width: 284px !important;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: 1 !important;
+  place-items: center !important;
+  margin: 18px auto 0 !important;
+  padding: 12px !important;
+  border: 1px solid rgba(11, 31, 51, 0.1) !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(11, 31, 51, 0.04), 0 10px 28px rgba(11, 31, 51, 0.06) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  image-rendering: crisp-edges !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-copy {
+  max-width: 300px !important;
+  margin: 18px auto 0 !important;
+  color: #0b1f33 !important;
+  font: 550 14px/1.42 Inter, system-ui, sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-terms,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-restrictions {
+  max-width: 300px !important;
+  margin: 6px auto 0 !important;
+  color: rgba(11, 31, 51, 0.56) !important;
+  font: 500 12px/1.4 Inter, system-ui, sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-restrictions {
+  margin-top: 10px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 22px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta > div {
+  display: grid !important;
+  grid-template-columns: 80px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: baseline !important;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta span {
+  color: rgba(11, 31, 51, 0.52) !important;
+  font: 600 11px/1.3 Inter, system-ui, sans-serif !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta :is(strong, code) {
+  min-width: 0 !important;
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.3 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta code {
+  overflow-wrap: anywhere !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  letter-spacing: 0.02em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta small {
+  padding-top: 12px !important;
+  color: rgba(11, 31, 51, 0.5) !important;
+  font: 500 11px/1.3 Inter, system-ui, sans-serif !important;
+  text-align: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal .dp-native-drawer-underlay {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-backdrop {
+    align-items: end !important;
+    justify-items: stretch !important;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 0 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal.dp-resident-qr-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - max(12px, env(safe-area-inset-top, 0px))) !important;
+    margin: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 0 !important;
+    border-radius: 22px 22px 0 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header {
+    min-height: 54px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content-viewport,
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content {
+    max-height: calc(100dvh - 66px) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content {
+    padding: 18px 20px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {
+    width: min(100%, 270px) !important;
+    max-width: 270px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content {
+    padding-inline: 16px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-frame {
+    width: min(100%, 244px) !important;
+    max-width: 244px !important;
+    padding: 10px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-modal h2 {
+    font-size: 26px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-resident-qr-modal,
+  .dp-resident-qr-backdrop {
+    transition: none !important;
+  }
+}

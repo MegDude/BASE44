@@ -64,12 +64,13 @@ async function openPanel(route, viewport = { width: 393, height: 852 }) {
   const redemption = page.locator(".dp-resident-qr-modal.is-perk-redemption");
   await redemption.waitFor({ state: "visible", timeout: 5_000 });
   const redemptionResult = await redemption.evaluate((element) => ({
-    identityQr: element.querySelectorAll(".dp-perk-identity-qr img").length,
-    legacyQr: element.querySelectorAll(".dp-resident-qr-frame").length,
+    qr: element.querySelectorAll(".dp-resident-qr-frame .dp-resident-qr-image").length,
     titles: element.querySelectorAll("#resident-qr-title").length,
-    venue: element.querySelector(".dp-perk-identity-venue")?.textContent?.trim(),
+    venue: element.querySelector(".dp-resident-qr-value")?.textContent?.trim(),
+    header: element.querySelector(".dp-resident-qr-header-title")?.textContent?.trim(),
+    instructions: element.querySelector(".dp-resident-qr-copy")?.textContent?.trim(),
   }));
-  if (redemptionResult.identityQr !== 1 || redemptionResult.legacyQr !== 0 || redemptionResult.titles !== 1 || !redemptionResult.venue) throw new Error(`Perk redemption repeats or misplaces QR identity (${JSON.stringify(redemptionResult)})`);
+  if (redemptionResult.qr !== 1 || redemptionResult.titles !== 1 || !redemptionResult.venue || redemptionResult.header !== "Resident Pass" || redemptionResult.instructions !== "Ask the partner to scan this code to apply your perk.") throw new Error(`Perk redemption repeats or misplaces the resident pass hierarchy (${JSON.stringify(redemptionResult)})`);
   await redemption.locator(".dp-resident-qr-close").click();
   await redemption.waitFor({ state: "detached", timeout: 5_000 });
   await panel.locator(".dp-native-detail-grabber").click();

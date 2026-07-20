@@ -11,8 +11,14 @@ const sharedOverlayLock = styles.slice(lockStart, lockEnd);
 assert.ok(sharedOverlayLock.startsWith(marker), "Shared white overlay-surface lock is missing");
 assert.equal(
   (main.match(/^import "@\/styles\/[^\"]+"$/gm) || []).at(-1),
-  'import "@/styles/interface-density-regression-lock.css"',
-  "Shared overlay surface lock must remain in the final stylesheet",
+  'import "@/styles/search-intent-glass-surface-final.css"',
+  "Only the scoped search console surface may follow the shared overlay lock",
+);
+
+assert.match(
+  main,
+  /interface-density-regression-lock\.css"[\s\S]*search-intent-glass-surface-final\.css"/,
+  "The scoped search console surface must follow the shared overlay lock",
 );
 
 for (const selector of [

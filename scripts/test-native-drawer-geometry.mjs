@@ -36,16 +36,17 @@ const browser = await chromium.launch({ headless: true, executablePath });
 for (const viewport of viewports) {
   const page = await browser.newPage({ viewport, isMobile: true, hasTouch: true });
   await page.goto(`${baseUrl}/map?mode=resident&tab=perks&filter=Perks`, { waitUntil: "domcontentloaded", timeout: 30_000 });
-  const drawer = page.locator(".dp-active-perks-sheet");
+  const drawer = page.locator(".dp-active-perks-sheet:has(.dp-active-perk-row)").last();
   await drawer.waitFor({ state: "visible", timeout: 15_000 });
-  await page.waitForTimeout(350);
+  await drawer.locator(".dp-active-perk-row").first().waitFor({ state: "visible", timeout: 15_000 });
   const geometry = await drawer.evaluate((element) => {
     const surface = element.querySelector(".dp-native-drawer-surface");
     const contentViewport = element.querySelector(".dp-native-drawer-content-viewport");
     const scroll = element.querySelector(".dp-native-drawer-scroll");
     const nav = document.querySelector("[data-dp-bottom-navigation='true']");
     scroll.scrollTop = scroll.scrollHeight;
-    const lastRow = scroll.querySelector(".dp-active-perk-row:last-of-type");
+    const perkRows = scroll.querySelectorAll(".dp-active-perk-row");
+    const lastRow = perkRows[perkRows.length - 1];
     return {
       viewportHeight: innerHeight,
       viewportWidth: innerWidth,

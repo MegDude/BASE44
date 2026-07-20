@@ -23,8 +23,8 @@ assert.match(detailSource, /\) : \(\s*<>\s*<DetailHero/s, "the normal hero and r
 assert.match(mapSource, /navigationTitle=\{getMapDetailNavigationTitle\(selected, Boolean\(urlState\.perkId\)\)\}/);
 assert.match(mapSource, /if \(entityType === "perk"\) return "Perk details"/);
 assert.match(mapSource, /backLabel=\{getCanonicalDetailEntityType[^\n]+\? "Back to active perks" : "Back"\}/);
-assert.match(mapSource, /isPerkRedemption \? \(\s*<PerkIdentityHeader/s);
-assert.match(mapSource, /!isPerkRedemption \? \(\s*<div className="dp-resident-qr-frame">/s, "the legacy standalone QR frame must not render for perk redemptions");
+assert.match(mapSource, /<div className="dp-resident-qr-frame">\s*<DemoQrCode/s, "the redemption modal must give every resident pass one dedicated QR focus area");
+assert.doesNotMatch(mapSource, /isPerkRedemption \? \(\s*<PerkIdentityHeader/s, "the compact perk identity header belongs to perk details, not the full resident pass modal");
 
 assert.match(identityCss, /\.dp-perk-identity-header[\s\S]*?border:\s*0\s*!important/);
 assert.match(identityCss, /\.dp-perk-identity-qr[\s\S]*?border-radius:\s*0\s*!important/);
