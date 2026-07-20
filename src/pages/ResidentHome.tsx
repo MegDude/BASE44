@@ -77,10 +77,21 @@ function readResidentRecord(): ResidentRecord | null {
 }
 
 function readableSavedName(id: string) {
+  const preferredWords: Record<string, string> = {
+    atx: "ATX",
+    daa: "DAA",
+    fc: "FC",
+    jos: "Jo's",
+    qr: "QR",
+    usa: "USA",
+  };
+
   return id
-    .replace(/^(place|perk|venue|event|entity)-/i, "")
-    .replace(/[-_]+/g, " ")
-    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    .replace(/^(?:(?:place|perk|venue|event|entity|partner|featured)-)+/i, "")
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((word) => preferredWords[word.toLowerCase()] || `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`)
+    .join(" ");
 }
 
 function residentCardCode(record: ResidentRecord | null) {
@@ -269,16 +280,18 @@ export default function ResidentHome() {
       {panel === "perks" ? (
         <section className="dp-resident-home__panel dp-resident-saved-panel" role="tabpanel" aria-labelledby="saved-perks-title">
           <header className="dp-resident-panel-intro">
-            <p>Saved for later</p>
-            <h2 id="saved-perks-title">Your perks in one place.</h2>
-            <span>Open a saved perk on the map when you are ready to use it.</span>
+            <p>Saved perks</p>
+            <h2 id="saved-perks-title">Ready when you are.</h2>
+            <span>Open any perk for details, directions, and your QR.</span>
           </header>
           {savedPerks.length ? (
             <div className="dp-resident-saved-list">
               {savedPerks.map((item) => (
                 <article key={item.id}>
-                  <div><small>Saved perk</small><h3>{item.name}</h3><p>Ready when you want directions, details, or redemption information.</p></div>
-                  <Link to={`/map?mode=resident&tab=perks&filter=Saved&entityId=${encodeURIComponent(item.id)}`} aria-label={`Open ${item.name} on the map`}><ChevronRight aria-hidden="true" /></Link>
+                  <Link className="dp-resident-saved-row" to={`/map?mode=resident&tab=perks&filter=Saved&entityId=${encodeURIComponent(item.id)}`} aria-label={`Open ${item.name} on the map`}>
+                    <span><small>Saved perk</small><h3>{item.name}</h3></span>
+                    <strong aria-hidden="true">Open <ChevronRight /></strong>
+                  </Link>
                 </article>
               ))}
             </div>

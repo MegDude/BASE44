@@ -44,3 +44,167 @@
   font-weight: 650 !important;
   line-height: 1.25 !important;
 }
+
+/* Saved Perks uses the same uninterrupted white plane and compact row rhythm. */
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] {
+  min-height: 100dvh !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] :is(
+  .dp-resident-command-nav,
+  .dp-resident-saved-panel,
+  .dp-resident-panel-intro,
+  .dp-resident-saved-list,
+  .dp-resident-saved-list article,
+  .dp-resident-saved-row,
+  .dp-resident-saved-row > span
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-panel {
+  width: min(100%, 720px) !important;
+  margin-inline: auto !important;
+  padding-top: 0 !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-panel-intro {
+  padding: 22px 0 18px !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-panel-intro p {
+  margin: 0 0 5px !important;
+  color: #9a7a3e !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-panel-intro h2 {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: #0b1f33 !important;
+  font-size: clamp(22px, 6vw, 26px) !important;
+  font-weight: 650 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.025em !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-panel-intro > span {
+  display: block !important;
+  max-width: 42ch !important;
+  margin-top: 7px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-list {
+  display: grid !important;
+  gap: 0 !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-list article {
+  display: block !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-list article {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 64px !important;
+  justify-items: stretch !important;
+  padding: 11px 0 !important;
+  color: #0b1f33 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row > span {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 3px !important;
+  overflow: hidden !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row small {
+  color: rgba(11, 31, 51, 0.52) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row h3 {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: #0b1f33 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row > strong {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  color: #9a7a3e !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] .dp-resident-saved-row > strong svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+html body #root#root#root#root .dp-resident-home[data-panel="perks"] :is(
+  .dp-resident-command-nav > button,
+  .dp-resident-saved-row
+):is(:hover, :focus-visible, :active) {
+  outline: 0 !important;
+  color: #9a7a3e !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
