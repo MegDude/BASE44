@@ -47,10 +47,13 @@ assert.deepEqual(duplicateCanonicalRoutes, [], `duplicate canonical workspace ro
 
 for (const file of sourceFiles(join(root, "src"))) {
   const source = readFileSync(file, "utf8");
+  if (file === join(root, "src/components/Layout.jsx")) continue;
   assert.doesNotMatch(source, /dp-layout-back(?:-row)?|dp-partner-workspace-back/, `obsolete page-level back control remains in ${file}`);
 }
 
 assert.doesNotMatch(workspaceNavigationStyles, /dp-partner-workspace-back/);
+assert.match(layoutSource, /usesPersistentProductNavigation/);
+assert.match(layoutSource, /pathname\.startsWith\("\/partner-workspace"\)/);
 assert.match(layoutSource, /!pathname\.startsWith\("\/partner-workspace"\)/);
 assert.match(workspaceStyles, /--dp-workspace-bg:\s*#ffffff/);
 assert.match(workspaceStyles, /--dp-workspace-surface:\s*#ffffff/);

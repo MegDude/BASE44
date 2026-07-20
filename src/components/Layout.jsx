@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, Search } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
@@ -50,7 +50,9 @@ export default function Layout() {
   const location = useLocation();
   const { pathname, search } = location;
   const navigate = useNavigate();
+  const routeOutletRef = useRef(null);
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+  const [pageOwnsBackNavigation, setPageOwnsBackNavigation] = useState(true);
   const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
   const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up";
 
@@ -62,6 +64,35 @@ export default function Layout() {
     window.addEventListener("dp-open-quick-search", handleOpenQuickSearch);
     return () => window.removeEventListener("dp-open-quick-search", handleOpenQuickSearch);
   }, []);
+
+  useEffect(() => {
+    const outlet = routeOutletRef.current;
+    if (!outlet) return undefined;
+
+    function pageHasBackNavigation() {
+      return Array.from(outlet.querySelectorAll("button, a[href], [role='button']")).some((element) => {
+        const accessibleLabel = (element.getAttribute("aria-label") || "").trim().toLowerCase();
+        const visibleLabel = (element.textContent || "").trim().toLowerCase();
+        return (
+          element.getAttribute("data-page-back") === "true" ||
+          accessibleLabel.startsWith("back") ||
+          accessibleLabel.startsWith("return") ||
+          visibleLabel === "back" ||
+          visibleLabel.startsWith("back to ") ||
+          visibleLabel.startsWith("return to ")
+        );
+      });
+    }
+
+    function syncBackNavigation() {
+      setPageOwnsBackNavigation(pageHasBackNavigation());
+    }
+
+    syncBackNavigation();
+    const observer = new MutationObserver(syncBackNavigation);
+    observer.observe(outlet, { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-label", "data-page-back"] });
+    return () => observer.disconnect();
+  }, [pathname, search]);
 
   const isProductRoute =
     pathname === "/app" ||
@@ -120,6 +151,35 @@ export default function Layout() {
     !isResidentAccessRoute &&
     !pathname.startsWith("/partner-workspace");
   const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map";
+  const usesPersistentProductNavigation =
+    pathname === "/app" ||
+    pathname === "/app/map" ||
+    pathname === "/map" ||
+    pathname === "/resident/home" ||
+    pathname.startsWith("/partner-workspace");
+  const showLayoutBack =
+    pathname !== "/" &&
+    pathname !== "/auth/callback" &&
+    !usesPersistentProductNavigation &&
+    !pageOwnsBackNavigation;
+
+  function fallbackBackRoute() {
+    if (pathname === "/card" || pathname === "/resident-sign-up") return "/resident/home";
+    if (pathname.startsWith("/admin-studio/") || pathname.startsWith("/admin/")) return "/admin-studio";
+    if (pathname === "/admin-studio") return "/";
+    if (pathname.startsWith("/dashboard/")) return "/dashboard";
+    if (pathname.startsWith("/partners/")) return "/partners";
+    if (pathname === "/partners") return "/";
+    return "/";
+  }
+
+  function handleBackNavigation() {
+    if (location.key !== "default") {
+      navigate(-1);
+      return;
+    }
+    navigate(fallbackBackRoute());
+  }
 
   function handleQuickSearchSelect(result) {
     if (typeof window !== "undefined") {
@@ -144,7 +204,15 @@ export default function Layout() {
           <span>Search</span>
         </button>
       )}
-      <div className="dp-route-outlet">
+      {showLayoutBack && (
+        <div className={`dp-layout-back-row${isProductRoute ? " is-product" : ""}`}>
+          <button type="button" className="dp-layout-back" onClick={handleBackNavigation} aria-label="Go back">
+            <ArrowLeft aria-hidden="true" />
+            <span>Back</span>
+          </button>
+        </div>
+      )}
+      <div className="dp-route-outlet" ref={routeOutletRef}>
         <Outlet />
       </div>
       {!noFooter && (usesEditorialFooter ? <Footer /> : <HomeFooter />)}

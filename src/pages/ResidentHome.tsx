@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
@@ -152,7 +152,16 @@ export default function ResidentHome() {
             <button type="button" onClick={() => openPanel("card")} aria-label="Open resident profile"><UserRound aria-hidden="true" /></button>
           </div>
         ) : (
-          <button type="button" onClick={() => openPanel("home")} aria-label="Return to resident home">Done</button>
+          <button
+            type="button"
+            className="dp-resident-header-back"
+            data-page-back="true"
+            onClick={() => openPanel("home")}
+            aria-label="Back to resident home"
+          >
+            <ArrowLeft aria-hidden="true" />
+            <span>Back</span>
+          </button>
         )}
       </header>
 

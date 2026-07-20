@@ -210,3 +210,43 @@ html body #root :is(button, a[href], input, textarea, select):focus-visible {
     box-shadow: none !important;
   }
 }
+
+/* Resident subpanels use one compact, native Back action instead of a vague Done label. */
+html body #root#root .dp-resident-command-nav .dp-resident-header-back {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+  width: auto !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root#root .dp-resident-command-nav .dp-resident-header-back svg {
+  width: 15px !important;
+  height: 15px !important;
+  flex: 0 0 auto !important;
+}
+
+html body #root#root .dp-resident-command-nav .dp-resident-header-back:is(:hover, :active) {
+  color: #9a7a3e !important;
+  background: transparent !important;
+  transform: none !important;
+}
+
+html body #root#root .dp-resident-command-nav .dp-resident-header-back:focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 2px !important;
+}
