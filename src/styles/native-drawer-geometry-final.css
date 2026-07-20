@@ -31,7 +31,7 @@ body.dp-native-drawer-open {
   margin: 0 !important;
   padding: 0 0 var(--dp-safe-bottom) !important;
   border: 0 !important;
-  border-top: 1px solid var(--dp-drawer-border) !important;
+  border-top: 0 !important;
   border-radius: 0 !important;
   background: #ffffff !important;
   box-shadow: none !important;

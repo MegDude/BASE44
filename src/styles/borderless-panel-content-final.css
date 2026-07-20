@@ -250,3 +250,9 @@ html body #root#root .dp-resident-command-nav .dp-resident-header-back:focus-vis
   outline: 2px solid #c8a96a !important;
   outline-offset: 2px !important;
 }
+
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root#root#root#root .dp-partner-workspace-page .dp-workspace-history-controls button:last-child {
+    display: inline-flex !important;
+  }
+}

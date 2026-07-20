@@ -17529,6 +17529,13 @@ export default function MapPage() {
     : ({ perks: "Perks", events: "Events", saved: "Saved", info: "Guide" }[activeBottomTab] || activeFilter || "Downtown Austin");
   const configureMobilePanelSurface = useCallback((node) => {
     if (!node || typeof window === "undefined") return;
+    // Canonical map detail sheets are governed entirely by the shared
+    // stylesheet and state attributes. Clear any legacy inline geometry
+    // before the generic native-drawer fallback can claim the surface.
+    if (node.classList.contains("dp-map-detail-sheet")) {
+      ["inset", "top", "right", "bottom", "left", "padding"].forEach((property) => node.style.removeProperty(property));
+      return;
+    }
     if (node.classList.contains("dp-native-drawer")) {
       node.style.setProperty("top", "auto", "important");
       node.style.setProperty("right", "0", "important");
@@ -17552,11 +17559,6 @@ export default function MapPage() {
     panelRail?.querySelectorAll(":scope > button").forEach((button) => {
       ["grid-column", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "padding"].forEach((property) => button.style.removeProperty(property));
     });
-    // Canonical map detail sheets are governed entirely by the shared
-    // stylesheet and state attributes. Do not recreate their geometry inline.
-    if (node.classList.contains("dp-map-detail-sheet")) {
-      return;
-    }
     const isDetailPanel = node.dataset.panelLayout === "detail";
     const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
     const detailHeight = "min(78dvh, calc(100dvh - 76px - env(safe-area-inset-bottom, 0px)))";
