@@ -15,10 +15,11 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
-const ResidentAccess = lazy(() => import("./pages/ResidentAccess"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const ResidentGovernance = lazy(() => import("./pages/ResidentGovernance"));
+const ResidentMembership = lazy(() => import("./pages/ResidentMembership"));
+const ResidentWelcome = lazy(() => import("./pages/ResidentWelcome"));
 const ResidentOnboardingFlow = lazy(() => import("./onboarding/ResidentOnboardingFlow"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
@@ -178,6 +179,9 @@ function ProductRoutes() {
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />
           <Route path="/resident/governance" element={<ResidentGovernance />} />
+          <Route path="/residents/membership" element={<Suspense fallback={<MarketingFallback />}><ResidentMembership /></Suspense>} />
+          <Route path="/residents/login" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
+          <Route path="/residents/welcome" element={<Suspense fallback={<MarketingFallback />}><ResidentWelcome /></Suspense>} />
           <Route path="/interaction-system" element={<InteractionSystemPreview />} />
           <Route
             path="/ask-map"
@@ -213,11 +217,11 @@ function ProductRoutes() {
           <Route path="/perks" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/properties" element={<Navigate to="/map?mode=resident&tab=map&filter=Properties" replace />} />
           <Route path="/hotels" element={<Navigate to="/map?mode=resident&tab=map&filter=Hotels" replace />} />
-          <Route path="/card" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
-          <Route path="/sign-in" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
+          <Route path="/card" element={<Navigate to="/residents/membership" replace />} />
+          <Route path="/sign-in" element={<RedirectWithSearch to="/residents/login" />} />
           <Route path="/auth/callback" element={<Suspense fallback={<MarketingFallback />}><AuthCallbackPage /></Suspense>} />
           <Route path="/about" element={<Suspense fallback={<MarketingFallback />}><AboutPage /></Suspense>} />
-          <Route path="/resident-sign-up" element={<Suspense fallback={<MarketingFallback />}><ResidentAccess /></Suspense>} />
+          <Route path="/resident-sign-up" element={<Navigate to="/residents/membership" replace />} />
           <Route path="/resident-access" element={<Navigate to="/card" replace />} />
           <Route path="/downtown-perks" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/downtown-perks/*" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />

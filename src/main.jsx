@@ -28,7 +28,6 @@ import '@/styles/map-drawer-premium-regression-final.css'
 import '@/styles/partner-access-formatting-final.css'
 import '@/styles/partner-signup-cleanup-final.css'
 import '@/styles/inkind-partner-drawer-final.css'
-import '@/styles/resident-product-alignment-final.css'
 import '@/styles/partner-native-mobile-final.css'
 import '@/styles/resident-native-mobile-final.css'
 
@@ -119,6 +118,7 @@ import "@/styles/borderless-panel-content-final.css"
 import "@/styles/resident-qr-modal-final.css"
 import "@/styles/workspace-scope-contract.css"
 import "@/styles/governance-platform.css"
+import '@/styles/resident-product-alignment-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

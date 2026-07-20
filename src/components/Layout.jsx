@@ -54,7 +54,7 @@ export default function Layout() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [pageOwnsBackNavigation, setPageOwnsBackNavigation] = useState(true);
   const isEmbeddedMap = pathname === "/map" && new URLSearchParams(search).get("embed") === "true";
-  const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up";
+  const isResidentAccessRoute = pathname === "/card" || pathname === "/resident-sign-up" || pathname === "/residents/login" || pathname === "/residents/welcome";
 
   useEffect(() => {
     function handleOpenQuickSearch() {

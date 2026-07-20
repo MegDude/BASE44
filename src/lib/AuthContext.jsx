@@ -332,6 +332,36 @@ export const AuthProvider = ({ children }) => {
     return { type: "supabase_oauth", url: data?.url || "" };
   };
 
+  const signInWithApple = async (profile = {}) => {
+    if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) {
+      return { type: "error", message: "Apple sign-in is available when production account access is configured." };
+    }
+    const redirectPath = profile.redirectPath || "/auth/callback";
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "apple",
+      options: { redirectTo: `${window.location.origin}${redirectPath}`, skipBrowserRedirect: true },
+    });
+    if (error) return { type: "error", message: error.message || "Apple sign-in could not be started." };
+    if (data?.url) window.location.assign(data.url);
+    return { type: "supabase_oauth", url: data?.url || "" };
+  };
+
+  const signInResidentWithMagicLink = async ({ email = "", redirectPath = "/auth/callback" } = {}) => {
+    if (!email) return { type: "error", message: "Enter your email address first." };
+    if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    const { error } = await supabaseClient.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}${redirectPath}`, shouldCreateUser: false } });
+    if (error) return { type: "error", message: error.message || "A secure sign-in link could not be sent." };
+    return { type: "confirmation_sent", message: "Check your email for a secure sign-in link." };
+  };
+
+  const sendResidentPasswordReset = async ({ email = "", redirectPath = "/residents/login" } = {}) => {
+    if (!email) return { type: "error", message: "Enter your email address first." };
+    if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}${redirectPath}` });
+    if (error) return { type: "error", message: error.message || "Password reset could not be sent." };
+    return { type: "confirmation_sent", message: "Check your email for the password reset link." };
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -347,6 +377,9 @@ export const AuthProvider = ({ children }) => {
       registerResidentWithPassword,
       resendResidentConfirmation,
       signInWithGoogle,
+      signInWithApple,
+      signInResidentWithMagicLink,
+      sendResidentPasswordReset,
       navigateToLogin,
       checkAppState
     }}>

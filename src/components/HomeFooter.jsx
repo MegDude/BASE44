@@ -4,7 +4,8 @@ import { MapPin } from "lucide-react";
 const footerGroups = {
   Residents: [
     { to: "/map?mode=resident&tab=map", label: "Open App" },
-    { to: "/card", label: "Perks Card" },
+    { to: "/map?mode=resident&tab=pass", label: "Perks Card" },
+    { to: "/residents/membership", label: "Membership" },
   ],
   Partners: [
     { to: "/partners/sign-up", label: "Partner Signup" },

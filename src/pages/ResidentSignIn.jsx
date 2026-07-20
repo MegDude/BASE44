@@ -7,13 +7,14 @@ import { getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
 export default function ResidentSignIn() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { signInResidentWithPassword, registerResidentWithPassword, resendResidentConfirmation, signInWithGoogle } = useAuth();
-  const returnTo = useMemo(() => getSafeReturnPath(location.search), [location.search]);
+  const { signInResidentWithPassword, registerResidentWithPassword, resendResidentConfirmation, signInWithGoogle, signInWithApple, signInResidentWithMagicLink, sendResidentPasswordReset } = useAuth();
+  const returnTo = useMemo(() => getSafeReturnPath(location.search, "/residents/welcome?mode=returning"), [location.search]);
   const [mode, setMode] = useState(() => new URLSearchParams(location.search).get("mode") === "register" ? "register" : "sign-in");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [status, setStatus] = useState(() => {
     const error = new URLSearchParams(location.search).get("error");
     return error ? { type: "error", message: error === "callback_failed" ? "We could not complete sign-in. Request a new secure link and try again." : error } : { type: "idle", message: "" };
@@ -23,6 +24,10 @@ export default function ResidentSignIn() {
     event.preventDefault();
     if (mode === "register" && password !== confirmPassword) {
       setStatus({ type: "error", message: "Passwords do not match." });
+      return;
+    }
+    if (mode === "register" && !acceptedTerms) {
+      setStatus({ type: "error", message: "Review and accept the membership terms and privacy notice to create your account." });
       return;
     }
     setStatus({ type: "loading", message: "" });
@@ -59,12 +64,30 @@ export default function ResidentSignIn() {
     if (result?.type === "error") setStatus({ type: "error", message: result.message });
   }
 
+  async function submitApple() {
+    setStatus({ type: "loading", message: "" }); storeAuthReturnPath(returnTo);
+    const result = await signInWithApple({ redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}` });
+    if (result?.type === "error") setStatus({ type: "error", message: result.message });
+  }
+
+  async function submitMagicLink() {
+    setStatus({ type: "loading", message: "" }); storeAuthReturnPath(returnTo);
+    const result = await signInResidentWithMagicLink({ email, redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}` });
+    setStatus({ type: result?.type === "error" ? "error" : "confirmation", message: result?.message || "Check your email to continue." });
+  }
+
+  async function submitPasswordReset() {
+    setStatus({ type: "loading", message: "" });
+    const result = await sendResidentPasswordReset({ email, redirectPath: "/residents/login" });
+    setStatus({ type: result?.type === "error" ? "error" : "confirmation", message: result?.message || "Check your email to continue." });
+  }
+
   return (
     <main className="dp-resident-signin-page">
       <div className="dp-resident-signin-shell">
         <header className="dp-resident-signin-header">
           <Link to="/" aria-label="Downtown Perks home"><span aria-hidden="true" />Downtown Perks</Link>
-          <Link to={returnTo}><ArrowLeft aria-hidden="true" />Back to map</Link>
+          <Link to="/residents/membership"><ArrowLeft aria-hidden="true" />Membership</Link>
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
           <p className="dp-resident-signin-eyebrow">Resident access</p>
@@ -89,6 +112,7 @@ export default function ResidentSignIn() {
               <>
                 <label htmlFor="resident-confirm-password">Confirm password</label>
                 <input id="resident-confirm-password" name="confirmPassword" type="password" autoComplete="new-password" minLength={8} required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Re-enter your password" />
+                <label className="dp-resident-signin-consent"><input type="checkbox" checked={acceptedTerms} onChange={(event) => setAcceptedTerms(event.target.checked)} required /><span>I accept the resident membership terms and confirm that I have reviewed the privacy notice presented during registration.</span></label>
               </>
             ) : null}
             {status.message ? <p className={`dp-resident-signin-status is-${status.type}`} role={status.type === "error" ? "alert" : "status"}>{status.message}</p> : null}
@@ -97,7 +121,10 @@ export default function ResidentSignIn() {
           </form>
           <div className="dp-resident-signin-divider" aria-hidden="true"><span />Or<span /></div>
           <button type="button" className="dp-resident-signin-google" onClick={submitGoogle} disabled={status.type === "loading"}>Continue with Google</button>
-          <p className="dp-resident-signin-note">After signing in, you return to the same map, filter, offer, property, or route you opened.</p>
+          <button type="button" className="dp-resident-signin-google" onClick={submitApple} disabled={status.type === "loading"}>Continue with Apple</button>
+          <button type="button" className="dp-resident-signin-google" onClick={submitMagicLink} disabled={status.type === "loading"}>Email me a magic link</button>
+          {mode === "sign-in" ? <button type="button" className="dp-resident-resend-confirmation" onClick={submitPasswordReset}>Forgot password?</button> : null}
+          <p className="dp-resident-signin-note">After sign-in, we load your membership, building, saved places, preferences, and personal map before opening the resident experience.</p>
         </section>
       </div>
     </main>

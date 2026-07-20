@@ -8,7 +8,8 @@ const RESIDENT_LINKS = [
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
   { to: "/map?mode=resident&tab=map&filter=Events", label: "Events", description: "See downtown events on the map" },
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks", description: "Find resident perks nearby" },
-  { to: "/card", label: "Perks Card", description: "Get or verify resident access" },
+  { to: "/map?mode=resident&tab=pass", label: "Perks Card", description: "Open your active resident pass" },
+  { to: "/residents/membership", label: "Membership", description: "Join or check building-included access" },
 ];
 
 const PARTNER_LINKS = [
@@ -25,7 +26,8 @@ const HAMBURGER_RESIDENT_LINKS = [
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map" },
   { to: "/map?mode=resident&tab=map&filter=Events", label: "Events" },
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Perks" },
-  { to: "/card", label: "Perks Card" },
+  { to: "/map?mode=resident&tab=pass", label: "Perks Card" },
+  { to: "/residents/membership", label: "Membership" },
 ];
 
 const HAMBURGER_PARTNER_LINKS = [

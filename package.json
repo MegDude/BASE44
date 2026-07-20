@@ -70,6 +70,8 @@
     "test:resident-home-surface": "node scripts/test-resident-home-white-surface.mjs",
     "test:shared-overlay-surface": "node scripts/test-shared-overlay-white-surface.mjs",
     "test:first-party-auth": "tsx scripts/test-first-party-auth.ts",
+    "test:resident-membership": "node scripts/test-resident-membership-contract.mjs",
+    "test:resident-membership-ui": "node scripts/verify-resident-membership-ui.mjs",
     "test:search-intent-exclusivity": "tsx scripts/test-search-intent-exclusivity.ts",
     "test:daa-hospitality": "node scripts/test-daa-hospitality.mjs",
     "test:residential-content": "node scripts/test-residential-mixed-use.mjs",
