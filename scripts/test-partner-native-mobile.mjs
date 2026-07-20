@@ -30,6 +30,15 @@ const mobileOverview = await page.evaluate(() => {
   const dashboard = document.querySelector(".dp-native-mobile-dashboard");
   const attention = document.querySelector(".dp-native-mobile-attention");
   const standard = document.querySelector(".dp-standard-workspace-overview");
+  const brand = document.querySelector(".dp-partner-workspace-brand");
+  const search = document.querySelector(".dp-partner-workspace-search");
+  const visibleSearchControls = [...document.querySelectorAll('[aria-label="Search Downtown Perks"]')].filter((element) => {
+    const style = getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+  });
+  const brandRect = brand?.getBoundingClientRect();
+  const searchRect = search?.getBoundingClientRect();
   return {
     hero: dashboard?.querySelector("h1")?.textContent?.trim(),
     kpis: dashboard?.querySelectorAll(".dp-native-mobile-kpi-rail article").length || 0,
@@ -37,6 +46,11 @@ const mobileOverview = await page.evaluate(() => {
     attentionLinks: attention?.querySelectorAll(":scope > a").length || 0,
     attentionRadius: attention ? getComputedStyle(attention).borderRadius : "",
     standardVisible: standard ? getComputedStyle(standard).display !== "none" : false,
+    visibleSearchControls: visibleSearchControls.length,
+    searchText: search?.textContent?.trim(),
+    searchBorder: search ? getComputedStyle(search).borderStyle : "",
+    searchIconColor: search?.querySelector("svg") ? getComputedStyle(search.querySelector("svg")).color : "",
+    headerAlignmentDelta: brandRect && searchRect ? Math.abs((brandRect.top + brandRect.height / 2) - (searchRect.top + searchRect.height / 2)) : Infinity,
   };
 });
 
@@ -46,6 +60,11 @@ if (mobileOverview.actions !== 6) throw new Error(`Expected 6 mobile quick actio
 if (mobileOverview.attentionLinks !== 1) throw new Error("The attention card must have exactly one action.");
 if (mobileOverview.attentionRadius !== "20px") throw new Error(`Unexpected mobile card radius: ${mobileOverview.attentionRadius}.`);
 if (mobileOverview.standardVisible) throw new Error("Desktop overview remains visible on the mobile dashboard.");
+if (mobileOverview.visibleSearchControls !== 1) throw new Error(`Expected one visible workspace search control, found ${mobileOverview.visibleSearchControls}.`);
+if (mobileOverview.searchText !== "Search Downtown Perks") throw new Error(`Unexpected workspace search label: ${mobileOverview.searchText}.`);
+if (mobileOverview.searchBorder !== "none") throw new Error(`Workspace search retained a ${mobileOverview.searchBorder} border.`);
+if (mobileOverview.searchIconColor !== "rgb(200, 169, 106)") throw new Error(`Workspace search icon is not gold: ${mobileOverview.searchIconColor}.`);
+if (mobileOverview.headerAlignmentDelta > 2) throw new Error(`Workspace brand and search are misaligned by ${mobileOverview.headerAlignmentDelta}px.`);
 
 const labels = await page.locator(".dp-partner-native-tabs :is(a, button)").allTextContents();
 if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Publish|Performance|Workspace") {

@@ -1280,6 +1280,30 @@ html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspa
     align-items: center !important;
     flex-wrap: nowrap !important;
     gap: 2px !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button {
+    width: auto !important;
+    min-width: 88px !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    padding-inline: 4px !important;
+    overflow: visible !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button > span {
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: 38px !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+    font-size: 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button > span::after {
+    content: "Search";
+    font: 600 12px/1 Inter, system-ui, sans-serif !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-back {

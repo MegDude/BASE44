@@ -701,7 +701,10 @@ function PartnerWorkspaceContent() {
             <span>Workspace</span>
           </Link>
           <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-            <button type="button" onClick={handleWorkspaceSearch} aria-label="Search workspace"><Search aria-hidden="true" /></button>
+            <button type="button" className="dp-product-shell-search-button dp-partner-workspace-search" onClick={handleWorkspaceSearch} aria-label="Search Downtown Perks">
+              <Search className="h-4 w-4" aria-hidden="true" />
+              <span>Search Downtown Perks</span>
+            </button>
             {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
               <button type="button" onClick={handleAccount} disabled={!isPartnerLoggedIn && !accountAccessEnabled} className="dp-partner-workspace-signin">

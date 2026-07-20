@@ -1250,7 +1250,7 @@ html body :is(.dp-workspace-sheet, .dp-workspace-search-sheet, .dp-native-mobile
 
 /* Every workspace page and temporary surface exposes the same Back / Close contract. */
 html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-inner {
-  grid-template-columns: auto auto minmax(0, 1fr) auto !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
   gap: 0 !important;
 }
 
@@ -1266,6 +1266,59 @@ html body .dp-workspace-sheet .dp-workspace-surface-controls {
 
 html body #root#root#root .dp-partner-workspace-page .dp-workspace-history-controls {
   margin-right: 14px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button {
+  position: static !important;
+  inset: auto !important;
+  z-index: auto !important;
+  width: auto !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  gap: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button svg {
+  width: 17px !important;
+  height: 17px !important;
+  flex: 0 0 17px !important;
+  color: #c8a96a !important;
+  stroke: #c8a96a !important;
+  stroke-width: 1.8 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button span {
+  display: inline !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font: 600 12px/1 Inter, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button:is(:hover, :focus-visible) {
+  background: transparent !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button:focus-visible {
+  outline: 2px solid rgba(200, 169, 106, 0.58) !important;
+  outline-offset: 3px !important;
 }
 
 html body #root#root#root .dp-partner-workspace-page .dp-workspace-history-controls button,
@@ -1408,7 +1461,7 @@ html body .dp-workspace-sheet .dp-experience-builder__stage > footer button {
   }
 
   html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-inner {
-    grid-template-columns: auto auto minmax(0, 1fr) auto !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
   }
 
   html body #root#root#root .dp-partner-workspace-page .dp-workspace-history-controls {
@@ -1420,11 +1473,32 @@ html body .dp-workspace-sheet .dp-experience-builder__stage > footer button {
     padding: 0 !important;
   }
 
+  html body #root#root#root .dp-partner-workspace-page .dp-workspace-history-controls button:last-child {
+    display: none !important;
+  }
+
   html body #root#root#root .dp-partner-workspace-page .dp-workspace-history-controls button span,
   html body #root#root#root .dp-partner-workspace-page .dp-workspace-mobile-menu,
-  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-brand span,
-  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools {
+  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-brand span {
     display: none !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools {
+    display: flex !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools > button:not(.dp-partner-workspace-search) {
+    display: none !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button {
+    max-width: 150px !important;
+    padding-inline: 2px !important;
+  }
+
+  html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools .dp-partner-workspace-search.dp-product-shell-search-button span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   html body #root#root#root .dp-partner-workspace-page .dp-partner-workspace-brand strong {
