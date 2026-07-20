@@ -1563,6 +1563,70 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 
 /* Platform overlay surface terminal authority. Keep this last so legacy map,
    route, workspace, and portal styles cannot restore shaded or elevated UI. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"],
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] > .dp-resident-command-center.dp-resident-command-center,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-command-nav.dp-resident-command-nav,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-native-tabs.dp-resident-native-tabs {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-dynamic-greeting,
+  .dp-resident-ai-concierge,
+  .dp-resident-card-command,
+  .dp-resident-home__section,
+  .dp-resident-directory-section,
+  .dp-resident-live-activity,
+  .dp-resident-concierge-prompts,
+  .dp-resident-category-rail,
+  .dp-resident-home__saved-rows,
+  .dp-resident-route-list,
+  .dp-resident-directory-list,
+  .dp-resident-shared-amenity,
+  .dp-resident-dana-question,
+  .dp-resident-search-entry,
+  .dp-resident-hero-card,
+  .dp-resident-hero-card > div,
+  .dp-resident-live-activity > div,
+  .dp-resident-home__compact-list > div,
+  .dp-resident-concierge-prompts > a,
+  .dp-resident-category-rail > a,
+  .dp-resident-home__saved-rows > button,
+  .dp-resident-home__saved-empty,
+  .dp-resident-home__compact-list a,
+  .dp-resident-route-list > a,
+  .dp-resident-directory-list > a
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-hero-card::before,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] .dp-resident-hero-card::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(a, button):is(:hover, :focus-visible, :active) {
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
   .dp-panel-shell,
   .dp-map-panel,
