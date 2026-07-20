@@ -52567,36 +52567,6 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-re
   object-fit: contain !important;
 }
 
-html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-modal {
-  width: min(calc(100vw - 24px), 420px) !important;
-  max-height: calc(100dvh - 24px) !important;
-  overflow-y: auto !important;
-  border-radius: 22px !important;
-  background: #FFFFFF !important;
-  color: #0B1F33 !important;
-  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
-  font-family: Inter, system-ui, sans-serif !important;
-}
-
-html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-status {
-  display: inline-flex !important;
-  align-items: center !important;
-  width: fit-content !important;
-  margin: 8px 0 0 !important;
-  padding: 6px 10px !important;
-  border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
-  background: #F7F8FB !important;
-  color: #0B1F33 !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-}
-
-html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-resident-qr-status.is-ready {
-  border-color: rgba(191, 164, 106, 0.38) !important;
-  background: rgba(191, 164, 106, 0.08) !important;
-}
-
 /* Keep bottom tabs readable above mobile browser/home-indicator chrome. */
 html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-map-bottom-nav-shell,
 html body #root .dp-map-page.dp-map-page.dp-map-page-resident .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
