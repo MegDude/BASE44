@@ -51,6 +51,7 @@ import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
 import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
+import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
@@ -4097,7 +4098,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
         onClick={onClose}
       >
         <motion.section
-          className="dp-resident-qr-modal"
+          className={`dp-resident-qr-modal${isPerkRedemption ? " is-perk-redemption" : ""}`}
           role="dialog"
           aria-modal="true"
           aria-labelledby="resident-qr-title"
@@ -4113,18 +4114,34 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           <button type="button" className="dp-resident-qr-close" onClick={onClose} aria-label="Close resident QR code">
             <X className="h-4 w-4" />
           </button>
-          <p className="dp-resident-qr-eyebrow">{isPerkRedemption ? "RESIDENT PERK" : "VERIFIED RESIDENT"}</p>
-          <h2 id="resident-qr-title">{title}</h2>
-          {value && <p className="dp-resident-qr-value">{value}</p>}
-          <p className={`dp-resident-qr-status is-${redemptionStatus}`}>{validityLabel}</p>
+          {isPerkRedemption ? (
+            <PerkIdentityHeader
+              venueName={placeName}
+              offerName={title}
+              qrCodeSrc={getQrImageUrl(data.qrValue)}
+              qrCodeFallbackSrc={PERKS_CARD_QR_SRC}
+              titleId="resident-qr-title"
+              meta={["Resident perk", validityLabel]}
+            />
+          ) : (
+            <>
+              <p className="dp-resident-qr-eyebrow">VERIFIED RESIDENT</p>
+              <h2 id="resident-qr-title">{title}</h2>
+              {value && <p className="dp-resident-qr-value">{value}</p>}
+            </>
+          )}
+          {!isPerkRedemption ? <p className={`dp-resident-qr-status is-${redemptionStatus}`}>{validityLabel}</p> : null}
           <p className="dp-resident-qr-copy">{description}</p>
+          {isPerkRedemption && value ? <p className="dp-resident-qr-value">{value}</p> : null}
           {terms && <p className="dp-resident-qr-terms">{terms}</p>}
-          <div className="dp-resident-qr-frame">
-            <DemoQrCode code={data.qrValue} className="dp-resident-qr-image" />
-          </div>
+          {!isPerkRedemption ? (
+            <div className="dp-resident-qr-frame">
+              <DemoQrCode code={data.qrValue} className="dp-resident-qr-image" />
+            </div>
+          ) : null}
           <div className="dp-resident-qr-meta">
-            <span>{actionLabel}</span>
-            <strong>{placeName}</strong>
+            {!isPerkRedemption ? <span>{actionLabel}</span> : null}
+            {!isPerkRedemption ? <strong>{placeName}</strong> : null}
             <span>{data.buildingName || "Downtown Austin"}</span>
             <code>{data.cardNumber || data.uid}</code>
             {expiresAt && redemptionStatus === "ready" && <small>Valid until {expiresAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</small>}
@@ -5592,7 +5609,27 @@ function buildCanonicalPerkModel(place, places = []) {
   const structured = place?.perk || raw.perk || raw.raw?.perk || {};
   const fallback = getResidentPerkDetails(place);
   const participating = getConfiguredParticipatingLocations(place, places);
-  const title = cleanDisplayCopy(structured.title || fallback.offer || place?.name || "Resident perk").replace(/\s+Perk$/i, "");
+  const rawOfferName = cleanDisplayCopy(structured.offerName || structured.title || fallback.offer || place?.name || "Resident benefit");
+  const possessiveVenueMatch = rawOfferName.match(/^(.+?[’']s)\s+(.+)$/i);
+  const venueName = cleanDisplayCopy(
+    structured.venueName ||
+    structured.locationName ||
+    place?.venueName ||
+    raw.venueName ||
+    place?.parentLocation ||
+    raw.parentLocation ||
+    (participating.length === 1 ? participating[0]?.name : "") ||
+    (participating.length > 1 ? "Downtown dining partners" : "") ||
+    possessiveVenueMatch?.[1] ||
+    place?.name ||
+    "Downtown partner",
+  );
+  const offerWithoutVenue = rawOfferName.toLowerCase() === venueName.toLowerCase()
+    ? rawOfferName
+    : rawOfferName.replace(new RegExp(`^${venueName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[-:–—]?\\s*`, "i"), "");
+  const title = offerWithoutVenue
+    .replace(/\s+Perk$/i, "")
+    .trim() || cleanDisplayCopy(fallback.value || "Resident benefit");
   const summary = firstDecisionSentence(structured.summary || fallback.description || place?.summary);
   const schedule = cleanDisplayCopy(structured.recurringSchedule || place?.time || raw.time || "");
   const eligibility = asCleanArray(structured.eligibility);
@@ -5615,7 +5652,11 @@ function buildCanonicalPerkModel(place, places = []) {
           : "Resident perk · Live",
     title,
     summary,
-    media: getCanonicalDetailMedia(place),
+    perkIdentity: {
+      venueName,
+      offerName: title,
+      meta: ["Resident perk", isExpired ? "Ended" : structured.status === "upcoming" ? "Coming soon" : "Available now"],
+    },
     contextItems: [
       schedule && { icon: CalendarDays, label: schedule },
       participating.length > 0 && { icon: MapPin, label: `${participating.length} ${participating.length === 1 ? "location" : "locations"}` },
@@ -5724,7 +5765,19 @@ function buildCanonicalEventModel(place, places = []) {
 }
 
 function CanonicalPerkDetailDrawer({ place, places = [], savedIds, onSave, onUse, onSelect, onAnalytics }) {
-  return <CanonicalDetailPanel model={buildCanonicalPerkModel(place, places)} saved={savedIds?.has?.(place?.id)} onSave={onSave} onPrimaryAction={onUse} onRelatedSelect={onSelect} onAnalytics={onAnalytics} />;
+  const model = useMemo(() => {
+    const nextModel = buildCanonicalPerkModel(place, places);
+    const qrPayload = buildResidentQrPayload({ place, action: "use_perk", source: "perk_detail" });
+    return {
+      ...nextModel,
+      perkIdentity: {
+        ...nextModel.perkIdentity,
+        qrCodeSrc: getQrImageUrl(qrPayload.qrValue),
+        qrCodeFallbackSrc: PERKS_CARD_QR_SRC,
+      },
+    };
+  }, [place, places]);
+  return <CanonicalDetailPanel model={model} saved={savedIds?.has?.(place?.id)} onSave={onSave} onPrimaryAction={onUse} onRelatedSelect={onSelect} onAnalytics={onAnalytics} />;
 }
 
 function CanonicalCampaignDetailDrawer({ place, places = [], savedIds, onSave, onJoin, onSelect, onAnalytics }) {
@@ -6885,7 +6938,19 @@ function getMapDetailContextLabel(place, hasPerkContext = false) {
   return "Place";
 }
 
-function MapDetailHeader({ place, canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
+function getMapDetailNavigationTitle(place, hasPerkContext = false) {
+  const entityType = getCanonicalDetailEntityType(place, hasPerkContext);
+  if (entityType === "perk") return "Perk details";
+  if (entityType === "event") return "Event details";
+  if (entityType === "campaign") return "Campaign details";
+  if (entityType === "portfolio") return "Portfolio details";
+  if (getResidentEntityKind(place) === "route") return "Walking route";
+  if (isHotelEntity(place) || isLocalServiceEntity(place) || isNeighborhoodEntity(place)) return "Place details";
+  if (isCanonicalResidentialMixedUseEntity(place) || isTheShorePropertyEntity(place) || isExplicitPropertyRecord(place)) return "Resident benefit";
+  return place?.name || "Details";
+}
+
+function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
   const pointerStartRef = useRef(null);
   const stateOrder = ["peek", "medium", "full"];
   const movePanel = (direction) => {
@@ -6911,11 +6976,11 @@ function MapDetailHeader({ place, canGoBack, onBack, onClose, panelState = "medi
       ><span aria-hidden="true" /></button>
       <nav className="dp-map-detail-navigation" aria-label="Panel controls">
         {canGoBack ? (
-          <button type="button" onClick={onBack} className="dp-map-detail-back" aria-label="Back">
+          <button type="button" onClick={onBack} className="dp-map-detail-back" aria-label={backLabel}>
             <ArrowLeft aria-hidden="true" />
           </button>
         ) : <span className="dp-map-detail-header-spacer" aria-hidden="true" />}
-        <span className="dp-map-detail-navigation-title">{place?.name || "Details"}</span>
+        <span className="dp-map-detail-navigation-title">{navigationTitle || place?.name || "Details"}</span>
         <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
           <X aria-hidden="true" />
         </button>
@@ -18439,6 +18504,8 @@ export default function MapPage() {
           >
             <MapDetailHeader
               place={selected}
+              navigationTitle={getMapDetailNavigationTitle(selected, Boolean(urlState.perkId))}
+              backLabel={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)) === "perk" ? "Back to active perks" : "Back"}
               panelState={detailDrawerState}
               onPanelStateChange={updateDetailDrawerState}
               canGoBack={Boolean((isInKindEntity(selected) && !isInKindNetworkEntity(selected) && inKindParentRef.current) || peekPanelState())}

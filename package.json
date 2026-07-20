@@ -35,6 +35,7 @@
     "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",
     "test:active-perks-sheet": "node scripts/test-active-perks-sheet.mjs",
+    "test:perk-identity-header": "node scripts/test-perk-identity-header.mjs",
     "test:route-experiences": "node scripts/test-route-experiences.mjs",
     "test:map-detail-system": "node scripts/test-map-detail-system.mjs",
     "test:native-detail-density": "node scripts/test-native-detail-density.mjs",

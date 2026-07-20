@@ -24,8 +24,24 @@ async function openPanel(route, viewport = { width: 393, height: 852 }) {
     state: element.dataset.drawerState,
     role: element.getAttribute("role"),
     modal: element.getAttribute("aria-modal"),
-    eyebrow: element.querySelector(".dp-native-detail-panel__eyebrow")?.textContent?.trim(),
-    title: element.querySelector(".dp-native-detail-panel__summary h2")?.textContent?.trim(),
+    venue: element.querySelector(".dp-perk-identity-venue")?.textContent?.trim(),
+    title: element.querySelector(".dp-perk-identity-title")?.textContent?.trim(),
+    identityMeta: element.querySelector(".dp-perk-identity-meta")?.textContent?.replace(/\s+/g, " ").trim(),
+    navigationTitle: element.querySelector(".dp-map-detail-navigation-title")?.textContent?.trim(),
+    qr: Boolean(element.querySelector(".dp-perk-identity-qr img")),
+    identityStyles: (() => {
+      const identity = element.querySelector(".dp-perk-identity-header");
+      const qr = element.querySelector(".dp-perk-identity-qr");
+      if (!identity || !qr) return null;
+      const identityStyle = getComputedStyle(identity);
+      const qrStyle = getComputedStyle(qr);
+      return {
+        identityBorders: [identityStyle.borderTopWidth, identityStyle.borderRightWidth, identityStyle.borderBottomWidth, identityStyle.borderLeftWidth],
+        identityShadow: identityStyle.boxShadow,
+        qrBorders: [qrStyle.borderTopWidth, qrStyle.borderRightWidth, qrStyle.borderBottomWidth, qrStyle.borderLeftWidth],
+        qrRadius: qrStyle.borderRadius,
+      };
+    })(),
     titles: [...element.querySelectorAll("h1,h2,h3")].filter((node) => node.textContent?.trim() === "Sunday Brunch Card").length,
     actions: [...element.querySelectorAll(".dp-native-detail-panel__actions > *")].map((node) => node.textContent?.trim()),
     locations: [...element.querySelectorAll(".dp-native-detail-panel__section")]
@@ -36,13 +52,26 @@ async function openPanel(route, viewport = { width: 393, height: 852 }) {
     closeControls: element.querySelectorAll("[data-map-drawer-close='true']").length,
   }));
   if (result.panelKind !== "perk" || result.entityType !== "perk") throw new Error("Sunday Brunch is not classified as a perk");
-  if (result.title !== "Sunday Brunch Card" || result.titles !== 1) throw new Error("Sunday Brunch title hierarchy is duplicated or incorrect");
+  if (result.venue !== "Downtown dining partners" || result.title !== "Sunday Brunch Card" || result.titles !== 1) throw new Error("Sunday Brunch identity hierarchy is duplicated or incorrect");
+  if (!result.qr || result.navigationTitle !== "Perk details" || result.identityMeta !== "Resident perk · Available now") throw new Error(`Sunday Brunch QR identity is incomplete (${JSON.stringify(result)})`);
+  if (!result.identityStyles || result.identityStyles.identityBorders.some((value) => value !== "0px") || result.identityStyles.qrBorders.some((value) => value !== "0px") || result.identityStyles.identityShadow !== "none" || result.identityStyles.qrRadius !== "0px") throw new Error(`Sunday Brunch QR identity has a forbidden divider, border, shadow, or rounded wrapper (${JSON.stringify(result.identityStyles)})`);
   if (result.actions.join("|") !== "Save|Use perk") throw new Error(`Sunday Brunch actions are not canonical (${result.actions.join("|")})`);
   if (result.locations < 3) throw new Error("Sunday Brunch participating locations are missing");
   if (result.hero || result.hasEventLeak) throw new Error("Sunday Brunch still renders unapproved media or event modules");
   if (result.closeControls !== 1 || result.state !== "medium") throw new Error("Sunday Brunch navigation or initial state is invalid");
   if (result.role !== "region" || result.modal !== null) throw new Error("Medium detail panel must not trap the map as a modal");
-  if (result.eyebrow !== "Resident perk · Available Sundays") throw new Error(`Recurring perk status is unclear (${result.eyebrow})`);
+  await panel.locator(".dp-native-detail-panel__primary").click();
+  const redemption = page.locator(".dp-resident-qr-modal.is-perk-redemption");
+  await redemption.waitFor({ state: "visible", timeout: 5_000 });
+  const redemptionResult = await redemption.evaluate((element) => ({
+    identityQr: element.querySelectorAll(".dp-perk-identity-qr img").length,
+    legacyQr: element.querySelectorAll(".dp-resident-qr-frame").length,
+    titles: element.querySelectorAll("#resident-qr-title").length,
+    venue: element.querySelector(".dp-perk-identity-venue")?.textContent?.trim(),
+  }));
+  if (redemptionResult.identityQr !== 1 || redemptionResult.legacyQr !== 0 || redemptionResult.titles !== 1 || !redemptionResult.venue) throw new Error(`Perk redemption repeats or misplaces QR identity (${JSON.stringify(redemptionResult)})`);
+  await redemption.locator(".dp-resident-qr-close").click();
+  await redemption.waitFor({ state: "detached", timeout: 5_000 });
   await panel.locator(".dp-native-detail-grabber").click();
   await page.waitForTimeout(400);
   const expanded = await panel.evaluate((element) => ({ state: element.dataset.drawerState, height: element.getBoundingClientRect().height, close: Boolean(element.querySelector("[data-map-drawer-close]")?.getClientRects().length), role: element.getAttribute("role"), modal: element.getAttribute("aria-modal"), bodyOverflow: document.body.style.overflow }));

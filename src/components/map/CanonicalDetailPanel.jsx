@@ -1,4 +1,5 @@
 import { Bookmark, Check, ChevronRight } from "lucide-react";
+import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 
 function DetailHero({ media }) {
   if (!media?.src) return null;
@@ -89,12 +90,21 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
   if (!model) return null;
   return (
     <div className="dp-native-detail-panel" data-entity-type={model.entityType}>
-      <DetailHero media={model.media} />
-      <header className="dp-native-detail-panel__summary">
-        <p className="dp-native-detail-panel__eyebrow">{model.eyebrow}</p>
-        <h2 id={model.titleId}>{model.title}</h2>
-        {model.summary ? <p>{model.summary}</p> : null}
-      </header>
+      {model.perkIdentity ? (
+        <>
+          <PerkIdentityHeader {...model.perkIdentity} titleId={model.titleId} />
+          {model.summary ? <p className="dp-perk-detail-intro">{model.summary}</p> : null}
+        </>
+      ) : (
+        <>
+          <DetailHero media={model.media} />
+          <header className="dp-native-detail-panel__summary">
+            <p className="dp-native-detail-panel__eyebrow">{model.eyebrow}</p>
+            <h2 id={model.titleId}>{model.title}</h2>
+            {model.summary ? <p>{model.summary}</p> : null}
+          </header>
+        </>
+      )}
       <ContextStrip items={model.contextItems} label={`${model.title} details`} />
       <div className="dp-native-detail-panel__modules">
         {model.sections?.map((section) => <DetailSection key={section.id} section={section} onRelatedSelect={onRelatedSelect} onAnalytics={onAnalytics} />)}
