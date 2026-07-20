@@ -11,14 +11,14 @@ const sharedOverlayLock = styles.slice(lockStart, lockEnd);
 assert.ok(sharedOverlayLock.startsWith(marker), "Shared white overlay-surface lock is missing");
 assert.equal(
   (main.match(/^import "@\/styles\/[^\"]+"$/gm) || []).at(-1),
-  'import "@/styles/search-intent-glass-surface-final.css"',
-  "Only the scoped search console surface may follow the shared overlay lock",
+  'import "@/styles/borderless-panel-content-final.css"',
+  "The borderless panel content lock must remain the final surface authority",
 );
 
 assert.match(
   main,
-  /interface-density-regression-lock\.css"[\s\S]*search-intent-glass-surface-final\.css"/,
-  "The scoped search console surface must follow the shared overlay lock",
+  /interface-density-regression-lock\.css"[\s\S]*search-intent-glass-surface-final\.css"[\s\S]*borderless-panel-content-final\.css"/,
+  "The borderless content authority must follow the shared overlay and search console locks",
 );
 
 for (const selector of [

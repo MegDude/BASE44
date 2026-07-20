@@ -1,0 +1,212 @@
+/* Final release lock: panel content is one uninterrupted bright-white plane.
+ * Essential inputs, QR scan frames, media, and keyboard focus remain legible.
+ */
+:root {
+  --dp-panel-white: #ffffff;
+  --dp-panel-navy: #0b1f33;
+}
+
+html body,
+html body #root,
+html body #root :is(
+  .dp-map-page,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-workspace-shell,
+  .dp-workspace-main,
+  .dp-workspace-content,
+  .dp-admin-shell
+) {
+  background-color: var(--dp-panel-white) !important;
+  background-image: none !important;
+}
+
+/* Outer sheets remain identifiable by position and motion, not card chrome. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-card-drawer,
+  .dp-saved-drawer-shell,
+  .dp-workspace-panel,
+  .dp-profile-panel,
+  .dp-editor-panel
+) {
+  border-color: transparent !important;
+  background-color: var(--dp-panel-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: var(--dp-panel-navy) !important;
+}
+
+/* Headers and sticky action areas continue the same white plane. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-admin-shell
+) :is(
+  header,
+  footer,
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-map-detail-header,
+  .dp-mobile-tab-header,
+  .dp-active-perks-header,
+  .dp-drawer-control-row,
+  .dp-panel-actions,
+  .dp-sticky-action-row,
+  .dp-destination-sticky-actions,
+  .dp-map-sheet-action-footer,
+  .dp-perk-detail-actions
+) {
+  border-color: transparent !important;
+  background-color: var(--dp-panel-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Content groups, metrics, cards, rows, and nested modules never become boxes. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-workspace-content,
+  .dp-admin-shell
+) :is(
+  section,
+  article,
+  [class*="-card"],
+  [class*="-panel"],
+  [class*="-surface"],
+  [class*="-tile"],
+  [class*="-metric"],
+  [class*="-summary"],
+  [class*="-module"],
+  [class*="-note"],
+  [class*="-row"],
+  [class*="-group"],
+  [class*="-list"]
+) {
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background-color: var(--dp-panel-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove leftover row and table rules without creating replacement boxes. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-workspace-content,
+  .dp-admin-shell
+) :is(table, thead, tbody, tfoot, tr, th, td, hr, dl, dt, dd) {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Media should stay photographic rather than inheriting a shaded wrapper. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-admin-shell
+) :is(figure, picture, [class*="media"], [class*="image-wrap"], [class*="hero-media"]) {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Inputs and scannable QR frames keep the minimum structure needed to work. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-panel,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-resident-home,
+  .dp-partner-workspace-page,
+  .dp-admin-shell
+) :is(input, textarea, select, .dp-resident-qr-frame, .dp-perk-identity-qr) {
+  background-color: var(--dp-panel-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Accessibility is functional chrome, not decorative noise. */
+html body #root :is(button, a[href], input, textarea, select):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 767px) {
+  html body #root :is(
+    .dp-panel-shell,
+    .dp-map-panel,
+    .dp-map-drawer-shell,
+    .dp-map-detail-sheet,
+    .dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-mobile-tab-drawer,
+    .dp-bottom-sheet,
+    .dp-active-perks-sheet,
+    .dp-pass-panel
+  ) {
+    border-right-color: transparent !important;
+    border-bottom-color: transparent !important;
+    border-left-color: transparent !important;
+    box-shadow: none !important;
+  }
+}

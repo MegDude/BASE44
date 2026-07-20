@@ -116,6 +116,7 @@ import "@/styles/native-drawer-geometry-final.css"
 import "@/styles/surface-containment-final.css"
 import "@/styles/interface-density-regression-lock.css"
 import "@/styles/search-intent-glass-surface-final.css"
+import "@/styles/borderless-panel-content-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

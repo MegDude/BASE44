@@ -15,7 +15,7 @@ assert.ok(residentSurfaceLock.startsWith(marker), "Resident Home white-surface l
 assert.ok(terminalLock.startsWith(terminalMarker), "Resident Home terminal white-surface authority is missing");
 assert.equal(
   (main.match(/^import "@\/styles\/[^"]+"$/gm) || []).at(-1),
-  'import "@/styles/interface-density-regression-lock.css"',
+  'import "@/styles/borderless-panel-content-final.css"',
   "Resident Home surface lock must remain in the final stylesheet",
 );
 assert.match(residentSurfaceLock, /\.dp-resident-home\.dp-resident-home\[data-panel="home"\][\s\S]*?background:\s*#ffffff\s*!important;/, "Resident Home does not own a bright-white page surface");
