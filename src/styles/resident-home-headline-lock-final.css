@@ -1,0 +1,46 @@
+/* Resident Home headline rhythm. Keep route, event, collection, saved-item,
+   activity, and feature titles on one aligned line without widening the panel. */
+.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-live-activity > div:last-child > a > span,
+  .dp-resident-home__saved-rows > button > span,
+  .dp-resident-home__compact-list > div:last-child > a > span,
+  .dp-resident-route-list > a > span,
+  .dp-resident-directory-list > a > span,
+  .dp-resident-shared-amenity > div,
+  .dp-resident-dana-question > div
+) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-section-title > h2,
+  .dp-resident-live-activity > div:last-child > a strong,
+  .dp-resident-home__saved-rows > button strong,
+  .dp-resident-home__compact-list > div:last-child > a strong,
+  .dp-resident-route-list > a strong,
+  .dp-resident-directory-list > a strong,
+  .dp-resident-shared-amenity h2,
+  .dp-resident-dana-question h2
+) {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin-right: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.dp-resident-home[data-panel="home"] :is(
+  .dp-resident-live-activity > div:last-child > a strong,
+  .dp-resident-home__saved-rows > button strong,
+  .dp-resident-home__compact-list > div:last-child > a strong,
+  .dp-resident-route-list > a strong,
+  .dp-resident-directory-list > a strong
+) {
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+}
