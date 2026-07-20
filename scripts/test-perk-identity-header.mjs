@@ -7,9 +7,9 @@ const identitySource = await readFile(new URL("../src/components/map/PerkIdentit
 const activePerksSource = await readFile(new URL("../src/components/map/ActivePerksSheet.jsx", import.meta.url), "utf8");
 const identityCss = await readFile(new URL("../src/styles/perk-identity-header-final.css", import.meta.url), "utf8");
 
-assert.match(activePerksSource, /className=\{`dp-active-perks-sheet is-\$\{drawerState\}`\}/);
+assert.match(activePerksSource, /className=\{`dp-active-perks-sheet is-\$\{safeState\}`\}/);
 assert.match(activePerksSource, /<p>Resident benefits<\/p>\s*<h2>Active perks<\/h2>/);
-assert.match(activePerksSource, /className="dp-active-perks-list"/);
+assert.match(activePerksSource, /scrollClassName="dp-active-perks-list"/);
 assert.doesNotMatch(activePerksSource, /PerkIdentityHeader|dp-perk-identity|qrCode/i, "the Active Perks list must never render the QR identity header");
 
 assert.match(identitySource, /grid className="dp-perk-identity-qr"|className="dp-perk-identity-qr"/);

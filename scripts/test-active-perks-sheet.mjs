@@ -5,6 +5,8 @@ const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url
 const sheetSource = await readFile(new URL("../src/components/map/ActivePerksSheet.jsx", import.meta.url), "utf8");
 const panelNavigationSource = await readFile(new URL("../src/hooks/useMapPanelNavigation.ts", import.meta.url), "utf8");
 const sheetCss = await readFile(new URL("../src/styles/active-perks-sheet.css", import.meta.url), "utf8");
+const geometryCss = await readFile(new URL("../src/styles/native-drawer-geometry-final.css", import.meta.url), "utf8");
+const shellSource = await readFile(new URL("../src/components/map/NativeDrawerShell.jsx", import.meta.url), "utf8");
 const mainSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 
 assert.match(mapSource, /"Featured"/, "Featured must remain a canonical resident filter");
@@ -15,7 +17,9 @@ assert.match(mapSource, /openResidentQrModal\(item\.place/, "Redeem must use the
 assert.match(mapSource, /toggleSaved\(item\.place\)/, "Save must use the existing saved-place workflow");
 assert.match(mapSource, /pin:\s*resolveEntityPin\(place\)/, "perk rows must use the canonical map icon resolver");
 
-assert.match(sheetSource, /role="dialog"/);
+assert.match(sheetSource, /<NativeDrawerShell/);
+assert.match(shellSource, /role="dialog"/);
+assert.match(shellSource, /aria-modal="true"/);
 assert.match(sheetSource, /aria-label="Active perks"/);
 assert.match(sheetSource, /aria-live="polite"/);
 assert.match(sheetSource, /aria-label="Close active perks"/);
@@ -33,12 +37,14 @@ assert.match(panelNavigationSource, /scrollTop/);
 assert.match(panelNavigationSource, /focusId/);
 assert.match(panelNavigationSource, /window\.sessionStorage/, "panel history must survive refresh when storage is available");
 
-assert.match(sheetCss, /height:\s*50dvh/);
+assert.match(geometryCss, /data-drawer-state="expanded"/);
+assert.match(geometryCss, /var\(--dp-bottom-nav-total-height\)/);
 assert.match(sheetCss, /min-(?:width|height):\s*44px/);
 assert.match(sheetCss, /width:\s*72px/);
 assert.match(sheetCss, /max-width:\s*760px/);
 assert.doesNotMatch(sheetCss, /#[0-9a-f]{3,8}/i, "the sheet stylesheet must use design tokens only");
 assert.doesNotMatch(sheetCss, /border-radius:\s*(?:999|9999)px/i, "pill geometry is forbidden");
 assert.match(mainSource, /styles\/active-perks-sheet\.css/, "the canonical sheet stylesheet must be loaded globally");
+assert.match(mainSource, /styles\/native-drawer-geometry-final\.css/, "the shared drawer geometry must be loaded globally");
 
 console.log("Active perks sheet regression checks passed.");

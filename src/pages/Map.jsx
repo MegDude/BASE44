@@ -49,6 +49,7 @@ import {
 import AboutDowntownPerksModal from "@/components/modals/AboutDowntownPerksModal";
 import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import ActivePerksSheet from "@/components/map/ActivePerksSheet";
+import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
 import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
 import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
@@ -59,6 +60,8 @@ import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
 import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
 import { useMapPanelNavigation } from "@/hooks/useMapPanelNavigation";
+import { useBottomNavigationGeometry } from "@/hooks/useBottomNavigationGeometry";
+import { normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
@@ -4097,10 +4100,10 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
         exit={{ opacity: 0 }}
         onClick={onClose}
       >
-        <motion.section
+        <NativeDrawerShell
           className={`dp-resident-qr-modal${isPerkRedemption ? " is-perk-redemption" : ""}`}
-          role="dialog"
-          aria-modal="true"
+          drawerState="medium"
+          panelKind="redemption"
           aria-labelledby="resident-qr-title"
           initial={{ opacity: 0, y: 16, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -4146,7 +4149,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
             <code>{data.cardNumber || data.uid}</code>
             {expiresAt && redemptionStatus === "ready" && <small>Valid until {expiresAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</small>}
           </div>
-        </motion.section>
+        </NativeDrawerShell>
       </motion.div>
     </AnimatePresence>
   );
@@ -6952,7 +6955,7 @@ function getMapDetailNavigationTitle(place, hasPerkContext = false) {
 
 function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
   const pointerStartRef = useRef(null);
-  const stateOrder = ["peek", "medium", "full"];
+  const stateOrder = ["medium", "expanded", "full"];
   const movePanel = (direction) => {
     const currentIndex = Math.max(0, stateOrder.indexOf(panelState));
     onPanelStateChange?.(stateOrder[Math.max(0, Math.min(stateOrder.length - 1, currentIndex + direction))]);
@@ -8256,19 +8259,19 @@ function MapPanelButton({
 
 function MapSheet({ variant, ariaLabel, onClose, onBack, children, className = "" }) {
   return (
-    <motion.section
+    <NativeDrawerShell
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       className={`dp-map-sheet dp-map-sheet--${variant} ${className}`.trim()}
+      drawerState="full"
+      panelKind={variant}
       data-variant={variant}
-      role="dialog"
-      aria-modal="true"
       aria-label={ariaLabel}
       data-has-close={Boolean(onClose)}
       data-has-back={Boolean(onBack)}
     >
       {children}
-    </motion.section>
+    </NativeDrawerShell>
   );
 }
 
@@ -14099,16 +14102,16 @@ export default function MapPage() {
         : "map"
   ));
   const [activePerksDrawerState, setActivePerksDrawerState] = useState(() => {
-    if (typeof window === "undefined") return "medium";
+    if (typeof window === "undefined") return "expanded";
     try {
       const savedState = window.sessionStorage.getItem("dp-active-perks-drawer-state");
-      return ["collapsed", "medium", "expanded"].includes(savedState) ? savedState : "medium";
+      return normalizeDrawerState(savedState, "list");
     } catch {
-      return "medium";
+      return "expanded";
     }
   });
   const updateActivePerksDrawerState = useCallback((nextState) => {
-    const safeState = ["collapsed", "medium", "expanded"].includes(nextState) ? nextState : "medium";
+    const safeState = normalizeDrawerState(nextState, "list");
     setActivePerksDrawerState(safeState);
     try {
       window.sessionStorage.setItem("dp-active-perks-drawer-state", safeState);
@@ -14127,7 +14130,7 @@ export default function MapPage() {
   });
   const detailPanelAnalyticsRef = useRef(new Set());
   const updateDetailDrawerState = useCallback((nextState) => {
-    const safeState = ["peek", "medium", "full"].includes(nextState) ? nextState : "medium";
+    const safeState = normalizeDrawerState(nextState, "detail");
     setDetailDrawerState(safeState);
     try {
       window.sessionStorage.setItem("dp-detail-drawer-state", safeState);
@@ -14701,8 +14704,18 @@ export default function MapPage() {
     () => getMapCollectionById(urlState.collection),
     [urlState.collection],
   );
+  const activeCollectionRouteRef = useRef(null);
   const activeCollectionRoute = useMemo(
-    () => activeCollection ? resolveMapCollectionRoute(activeCollection, places) : null,
+    () => {
+      if (!activeCollection) {
+        activeCollectionRouteRef.current = null;
+        return null;
+      }
+      const resolvedRoute = resolveMapCollectionRoute(activeCollection, places);
+      if (resolvedRoute?.stops?.length >= 2) activeCollectionRouteRef.current = resolvedRoute;
+      if (activeCollectionRouteRef.current?.id === activeCollection.id) return activeCollectionRouteRef.current;
+      return resolvedRoute;
+    },
     [activeCollection, places],
   );
   const activeRelatedRoutes = useMemo(
@@ -17482,11 +17495,23 @@ export default function MapPage() {
     activeFilter === "Legends" ||
     activeFilter === "Listings";
   const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab));
+  useBottomNavigationGeometry(showBottomNavigation);
   const mapPanelNavigationTitle = urlState.mode === "partner"
     ? ({ activity: "Activity", reports: "Reports", campaigns: "Campaigns", info: "Partner guide", civic: "Civic" }[activePartnerPanel] || activeFilter || "Partner map")
     : ({ perks: "Perks", events: "Events", saved: "Saved", info: "Guide" }[activeBottomTab] || activeFilter || "Downtown Austin");
   const configureMobilePanelSurface = useCallback((node) => {
     if (!node || typeof window === "undefined") return;
+    if (node.classList.contains("dp-native-drawer")) {
+      node.style.setProperty("top", "auto", "important");
+      node.style.setProperty("right", "0", "important");
+      node.style.setProperty("bottom", "0", "important");
+      node.style.setProperty("left", "0", "important");
+      node.style.setProperty("padding", "0 0 var(--dp-bottom-nav-total-height)", "important");
+      node.style.setProperty("border", "0", "important");
+      node.style.setProperty("border-radius", "0", "important");
+      node.style.setProperty("box-shadow", "none", "important");
+      return;
+    }
 
     const ownedProperties = [
       "position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width", "height", "min-height", "max-height",
@@ -17606,52 +17631,6 @@ export default function MapPage() {
     return () => window.removeEventListener("resize", refreshMobilePanels);
   }, [configureMobilePanelSurface]);
 
-  const configureBottomNavigationSurface = useCallback((node) => {
-    if (!node) return;
-    const nav = node.querySelector(":scope > .dp-map-bottom-nav");
-    const setImportant = (element, properties) => {
-      Object.entries(properties).forEach(([property, value]) => element?.style.setProperty(property, value, "important"));
-    };
-
-    setImportant(node, {
-      position: "fixed",
-      display: "block",
-      inset: "auto 0 0 0",
-      width: "100dvw",
-      "min-width": "100dvw",
-      "max-width": "100dvw",
-      height: "calc(64px + env(safe-area-inset-bottom, 0px))",
-      margin: "0",
-      padding: "0 0 env(safe-area-inset-bottom, 0px)",
-      border: "0",
-      "border-radius": "0",
-      background: "#ffffff",
-      "box-shadow": "none",
-      "box-sizing": "border-box",
-      "backdrop-filter": "blur(14px) saturate(120%)",
-      "-webkit-backdrop-filter": "blur(14px) saturate(120%)",
-      "z-index": "1700",
-    });
-    setImportant(nav, {
-      display: "grid",
-      "grid-template-columns": "repeat(5, minmax(0, 1fr))",
-      width: "100%",
-      "min-width": "100%",
-      "max-width": "none",
-      height: "64px",
-      "min-height": "64px",
-      "max-height": "64px",
-      margin: "0",
-      padding: "3px 0 2px",
-      border: "0",
-      "border-top": "0",
-      "border-radius": "0",
-      background: "transparent",
-      "box-shadow": "none",
-      "box-sizing": "border-box",
-      "backdrop-filter": "none",
-    });
-  }, []);
   const embedLoadEventKeyRef = useRef("");
   const fullMapHref = useMemo(() => {
     const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
@@ -17760,7 +17739,7 @@ export default function MapPage() {
         </GoogleMapErrorBoundary>
       </div>
 
-      {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed) ? (
+      {urlState.tab === "map" && activeCollectionRoute?.stops?.length && (!selected || selectedDrawerClosed || Boolean(urlState.drawerClosed)) ? (
         <RouteExperienceSheet
           route={activeCollectionRoute}
           mode={urlState.mode}
@@ -17974,9 +17953,9 @@ export default function MapPage() {
       )}
 
 	      {showBottomNavigation && (
-        <div ref={configureBottomNavigationSurface} className="dp-map-bottom-nav-shell pointer-events-none fixed inset-x-0 bottom-0 z-[700] pb-[env(safe-area-inset-bottom)]">
+        <div data-dp-bottom-navigation="true" className="dp-native-bottom-nav dp-map-bottom-nav-shell pointer-events-none fixed inset-x-0 bottom-0 z-[700] pb-[env(safe-area-inset-bottom)]">
           <nav
-            className="dp-map-bottom-nav pointer-events-auto grid grid-cols-5"
+            className="dp-native-bottom-nav-list dp-map-bottom-nav pointer-events-auto grid grid-cols-5"
             aria-label="Map bottom navigation"
             role="tablist"
             style={{ "--dp-bottom-nav-count": 5 }}
@@ -18009,13 +17988,13 @@ export default function MapPage() {
                   aria-label="Perks"
                   onClick={() => {
                     if (activeBottomTab === "perks" && !selectedId) {
-                      updateActivePerksDrawerState(activePerksDrawerState === "collapsed" ? "medium" : "collapsed");
+                      updateActivePerksDrawerState(activePerksDrawerState === "peek" ? "expanded" : "peek");
                       return;
                     }
                     beginSearchIntentTransition("Perks");
                     setConsoleCollapsed(true);
                     setActiveBottomTab("perks");
-                    updateActivePerksDrawerState("medium");
+                    updateActivePerksDrawerState("expanded");
                     navigate("/map?mode=resident&tab=perks&filter=Perks");
                   }}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "perks"}
@@ -18147,8 +18126,8 @@ export default function MapPage() {
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
-              ? "dp-map-directory-sheet dp-legends-directory-sheet"
-              : `dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
+              ? "dp-native-drawer dp-map-directory-sheet dp-legends-directory-sheet"
+              : `dp-native-drawer dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
             style={MAP_DRAWER_SURFACE_STYLE}
             data-drawer-state="expanded"
             data-mobile-panel-surface="true"
@@ -18410,7 +18389,8 @@ export default function MapPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
+            className="dp-native-drawer dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
+            data-drawer-state="expanded"
             style={MAP_DRAWER_SURFACE_STYLE}
             data-mobile-panel-surface="true"
             role="dialog"
@@ -18484,8 +18464,8 @@ export default function MapPage() {
             exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isInKindNetworkEntity(selected)
-              ? "dp-map-detail-sheet dp-inkind-partner-drawer dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel"
-              : `dp-map-detail-sheet dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""} ${shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "dp-partner-destination-sheet" : ""}`}
+              ? "dp-native-drawer dp-map-detail-sheet dp-inkind-partner-drawer dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel"
+              : `dp-native-drawer dp-map-detail-sheet dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""} ${shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "dp-partner-destination-sheet" : ""}`}
             data-panel-kind={getMapDrawerPanelKind(selected, urlState.mode, Boolean(urlState.perkId))}
             data-panel-layout="detail"
             data-drawer-state={detailDrawerState}
@@ -18493,8 +18473,8 @@ export default function MapPage() {
             data-mode={urlState.mode}
             data-entity-type={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId))}
             data-mobile-panel-surface="true"
-            role={detailDrawerState === "full" ? "dialog" : "region"}
-            aria-modal={detailDrawerState === "full" ? "true" : undefined}
+            role="dialog"
+            aria-modal="true"
             aria-labelledby={["perk", "event", "campaign", "portfolio"].includes(getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)))
               ? `canonical-detail-title-${selected.id}`
               : shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? `partner-drawer-title-${selected.id}` : undefined}

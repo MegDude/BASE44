@@ -1,12 +1,6 @@
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { Star, X } from "lucide-react";
-
-const HEIGHT_BY_STATE = {
-  collapsed: "104px",
-  medium: "46dvh",
-  expanded: "min(82dvh, calc(100dvh - var(--dp-map-native-bottom-nav-height) - var(--dp-safe-bottom) - 18px))",
-};
+import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
+import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
 function formatExpiry(value) {
   if (!value) return "";
@@ -89,73 +83,50 @@ export default function ActivePerksSheet({
   onRedeem,
   onSave,
 }) {
-  const sheetRef = useRef(null);
-  const nextState = drawerState === "collapsed" ? "medium" : drawerState === "medium" ? "expanded" : "medium";
-
-  useEffect(() => {
-    const node = sheetRef.current;
-    if (!node) return;
-    const updateSurface = () => {
-      const isMobile = window.matchMedia("(max-width: 767px)").matches;
-      const properties = {
-        position: "fixed",
-        right: "0",
-        bottom: "calc(var(--dp-map-native-bottom-nav-height) + var(--dp-safe-bottom))",
-        left: "0",
-        width: isMobile ? "100dvw" : "min(760px, 100dvw)",
-        "min-width": "0",
-        "max-width": isMobile ? "100dvw" : "760px",
-        height: HEIGHT_BY_STATE[drawerState],
-        margin: "0 auto",
-        "border-radius": "0",
-      };
-      Object.entries(properties).forEach(([property, value]) => node.style.setProperty(property, value, "important"));
-    };
-    updateSurface();
-    window.addEventListener("resize", updateSurface);
-    return () => window.removeEventListener("resize", updateSurface);
-  }, [drawerState]);
+  const safeState = normalizeDrawerState(drawerState, "list");
+  const nextState = nextDrawerState(safeState, "list");
 
   return (
-    <motion.aside
-      ref={sheetRef}
-      className={`dp-active-perks-sheet is-${drawerState}`}
-      data-drawer-state={drawerState}
-      role="dialog"
-      aria-modal="true"
+    <NativeDrawerShell
+      className={`dp-active-perks-sheet is-${safeState}`}
+      drawerState={safeState}
+      panelKind="list"
       aria-label="Active perks"
       initial={{ opacity: 0, y: 44 }}
-      animate={{ opacity: 1, y: 0, height: HEIGHT_BY_STATE[drawerState] }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 44 }}
       transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+      scrollClassName="dp-active-perks-list"
+      scrollProps={{ "data-active-perks-scroll": "true" }}
+      scrollRef={(node) => {
+        if (node && initialScrollTop > 0 && node.scrollTop === 0) node.scrollTop = initialScrollTop;
+      }}
+      header={(
+        <>
+          <button
+            type="button"
+            className="dp-active-perks-handle"
+            onClick={() => onDrawerStateChange(nextState)}
+            aria-label={`Panel size: ${safeState}. Activate to change the panel height.`}
+            aria-expanded={safeState === "expanded"}
+          >
+            <span aria-hidden="true" />
+          </button>
+          <header className="dp-active-perks-header">
+            <div>
+              <p>Resident benefits</p>
+              <h2>Active perks</h2>
+            </div>
+            <strong aria-live="polite">{items.length} nearby</strong>
+            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close active perks">
+              <X aria-hidden="true" />
+            </button>
+          </header>
+        </>
+      )}
     >
-      <button
-        type="button"
-        className="dp-active-perks-handle"
-        onClick={() => onDrawerStateChange(nextState)}
-        aria-label={`Panel size: ${drawerState}. Activate to change the panel height.`}
-        aria-expanded={drawerState === "expanded"}
-      >
-        <span aria-hidden="true" />
-      </button>
-      <header className="dp-active-perks-header">
+      {safeState !== "peek" && (
         <div>
-          <p>Resident benefits</p>
-          <h2>Active perks</h2>
-        </div>
-        <strong aria-live="polite">{items.length} nearby</strong>
-        <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close active perks">
-          <X aria-hidden="true" />
-        </button>
-      </header>
-      {drawerState !== "collapsed" && (
-        <div
-          className="dp-active-perks-list"
-          data-active-perks-scroll="true"
-          ref={(node) => {
-            if (node && initialScrollTop > 0 && node.scrollTop === 0) node.scrollTop = initialScrollTop;
-          }}
-        >
           {items.length ? items.map((item) => (
             <PerkRow
               key={item.id}
@@ -175,6 +146,6 @@ export default function ActivePerksSheet({
           )}
         </div>
       )}
-    </motion.aside>
+    </NativeDrawerShell>
   );
 }

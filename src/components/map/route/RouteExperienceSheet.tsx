@@ -5,8 +5,10 @@ import { RouteProgress } from "./RouteProgress";
 import { RouteRelatedList } from "./RouteRelatedList";
 import { RouteStopList } from "./RouteStopList";
 import type { RouteAccessibility } from "@/types/routeExperience";
+import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
+import { nextDrawerState } from "@/lib/map/nativeDrawerState";
 
-type SheetState = "peek" | "half" | "full";
+type SheetState = "medium" | "expanded" | "full";
 
 type RouteStop = {
   id: string;
@@ -67,7 +69,7 @@ function walkingDirectionsUrl(stops: RouteStop[] = []) {
 }
 
 export function RouteExperienceSheet({ route, mode, routeState = "", selectedStopId, visitedStopIds = [], relatedRoutes = [], onSelectStop, onOpenStop, onPrimaryAction, onOpenRelatedRoute, onExit }: RouteExperienceSheetProps) {
-  const [sheetState, setSheetState] = useState<SheetState>("half");
+  const [sheetState, setSheetState] = useState<SheetState>("medium");
   const [menuOpen, setMenuOpen] = useState(false);
   const isStarted = routeState === "active" || routeState === "completed";
   const selectedIndex = Math.max(0, route.stops.findIndex((stop) => stop.id === selectedStopId));
@@ -75,27 +77,44 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
   const directionsHref = useMemo(() => walkingDirectionsUrl(route.stops), [route.stops]);
   const publicLabel = route.routeType || "route";
   const primaryLabel = isStarted ? (selectedStopId ? "View stop" : "Continue walk") : `Start ${publicLabel}`;
-  const cycleSheet = () => setSheetState((current) => current === "peek" ? "half" : current === "half" ? "full" : "peek");
+  const cycleSheet = () => setSheetState((current) => nextDrawerState(current, "detail") as SheetState);
 
   if (!route.stops.length) return null;
   return (
-    <section className={`dp-route-experience-sheet is-${sheetState}`} aria-labelledby={`dp-route-sheet-title-${route.id}`} data-sheet-state={sheetState}>
-      <button type="button" className="dp-route-sheet-grabber" onClick={cycleSheet} aria-label={`Route sheet ${sheetState}. Change sheet height.`}><i /></button>
-      <header className="dp-route-sheet-header">
-        <div><span>{publicLabel} · {route.neighborhood || "Downtown Austin"}</span><strong id={`dp-route-sheet-title-${route.id}`}>{route.shortTitle || route.title}</strong></div>
-        <div>
-          <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="More route actions" aria-expanded={menuOpen}><Ellipsis aria-hidden="true" /></button>
-          <button type="button" onClick={onExit} aria-label="Close route"><X aria-hidden="true" /></button>
-        </div>
-        {menuOpen ? (
-          <div className="dp-route-overflow-menu">
-            {directionsHref ? <a href={directionsHref} target="_blank" rel="noreferrer"><Navigation aria-hidden="true" /> Open walking directions</a> : null}
-            <button type="button" onClick={() => { setSheetState("full"); setMenuOpen(false); }}><Map aria-hidden="true" /> Route details</button>
-          </div>
-        ) : null}
-      </header>
-
-      <div className="dp-route-sheet-scroll">
+    <NativeDrawerShell
+      className={`dp-route-experience-sheet is-${sheetState}`}
+      drawerState={sheetState}
+      panelKind="route"
+      aria-labelledby={`dp-route-sheet-title-${route.id}`}
+      data-sheet-state={sheetState}
+      scrollClassName="dp-route-sheet-scroll"
+      header={(
+        <>
+          <button type="button" className="dp-route-sheet-grabber" onClick={cycleSheet} aria-label={`Route sheet ${sheetState}. Change sheet height.`}><i /></button>
+          <header className="dp-route-sheet-header">
+            <div><span>{publicLabel} · {route.neighborhood || "Downtown Austin"}</span><strong id={`dp-route-sheet-title-${route.id}`}>{route.shortTitle || route.title}</strong></div>
+            <div>
+              <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="More route actions" aria-expanded={menuOpen}><Ellipsis aria-hidden="true" /></button>
+              <button type="button" onClick={onExit} aria-label="Close route"><X aria-hidden="true" /></button>
+            </div>
+            {menuOpen ? (
+              <div className="dp-route-overflow-menu">
+                {directionsHref ? <a href={directionsHref} target="_blank" rel="noreferrer"><Navigation aria-hidden="true" /> Open walking directions</a> : null}
+                <button type="button" onClick={() => { setSheetState("full"); setMenuOpen(false); }}><Map aria-hidden="true" /> Route details</button>
+              </div>
+            ) : null}
+          </header>
+        </>
+      )}
+      actions={(
+        <>
+          <button type="button" className="dp-route-primary-action" onClick={() => onPrimaryAction(activeStop)}>{primaryLabel}</button>
+          <button type="button" className="dp-route-sheet-size" onClick={() => setSheetState(sheetState === "full" ? "medium" : "full")} aria-label={sheetState === "full" ? "Show less route information" : "Show all route information"}>
+            <ChevronDown aria-hidden="true" />
+          </button>
+        </>
+      )}
+    >
         <section className="dp-route-hero">
           {route.heroImageUrl ? <img src={route.heroImageUrl} alt="" loading="eager" /> : null}
           <div>
@@ -130,14 +149,6 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
           routeId={route.id}
           mode={mode}
         />
-      </div>
-
-      <footer className="dp-route-sheet-footer">
-        <button type="button" className="dp-route-primary-action" onClick={() => onPrimaryAction(activeStop)}>{primaryLabel}</button>
-        <button type="button" className="dp-route-sheet-size" onClick={() => setSheetState(sheetState === "full" ? "half" : "full")} aria-label={sheetState === "full" ? "Show less route information" : "Show all route information"}>
-          <ChevronDown aria-hidden="true" />
-        </button>
-      </footer>
-    </section>
+    </NativeDrawerShell>
   );
 }

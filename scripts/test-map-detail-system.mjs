@@ -59,7 +59,7 @@ async function openPanel(route, viewport = { width: 393, height: 852 }) {
   if (result.locations < 3) throw new Error("Sunday Brunch participating locations are missing");
   if (result.hero || result.hasEventLeak) throw new Error("Sunday Brunch still renders unapproved media or event modules");
   if (result.closeControls !== 1 || result.state !== "medium") throw new Error("Sunday Brunch navigation or initial state is invalid");
-  if (result.role !== "region" || result.modal !== null) throw new Error("Medium detail panel must not trap the map as a modal");
+  if (result.role !== "dialog" || result.modal !== "true") throw new Error("Every open detail state must expose dialog semantics");
   await panel.locator(".dp-native-detail-panel__primary").click();
   const redemption = page.locator(".dp-resident-qr-modal.is-perk-redemption");
   await redemption.waitFor({ state: "visible", timeout: 5_000 });
@@ -72,6 +72,8 @@ async function openPanel(route, viewport = { width: 393, height: 852 }) {
   if (redemptionResult.identityQr !== 1 || redemptionResult.legacyQr !== 0 || redemptionResult.titles !== 1 || !redemptionResult.venue) throw new Error(`Perk redemption repeats or misplaces QR identity (${JSON.stringify(redemptionResult)})`);
   await redemption.locator(".dp-resident-qr-close").click();
   await redemption.waitFor({ state: "detached", timeout: 5_000 });
+  await panel.locator(".dp-native-detail-grabber").click();
+  await page.waitForTimeout(200);
   await panel.locator(".dp-native-detail-grabber").click();
   await page.waitForTimeout(400);
   const expanded = await panel.evaluate((element) => ({ state: element.dataset.drawerState, height: element.getBoundingClientRect().height, close: Boolean(element.querySelector("[data-map-drawer-close]")?.getClientRects().length), role: element.getAttribute("role"), modal: element.getAttribute("aria-modal"), bodyOverflow: document.body.style.overflow }));

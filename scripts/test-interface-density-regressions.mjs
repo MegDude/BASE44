@@ -62,7 +62,10 @@ try {
         const workspaceControls = workspacePage ? [...workspacePage.querySelectorAll("button, [role='button'], [role='tab'], a[class*='button'], a[class*='action'], a[class*='cta']")].filter(visible) : [];
         const workspaceRows = workspacePage ? [...workspacePage.querySelectorAll("table, tr, th, td, [role='row'], [role='cell'], [role='columnheader']")].filter(visible) : [];
         const workspaceHeadings = workspacePage ? [...workspacePage.querySelectorAll("h1, h2, h3")].filter(visible) : [];
-        const nonWhiteWorkspaceSurfaces = workspaceSurfaces.filter((element) => getComputedStyle(element).backgroundColor !== "rgb(255, 255, 255)");
+        const nonWhiteWorkspaceSurfaces = workspaceSurfaces.filter((element) => {
+          const color = getComputedStyle(element).backgroundColor;
+          return color !== "rgb(255, 255, 255)" && color !== "rgba(0, 0, 0, 0)";
+        });
         const shadowedWorkspaceRows = workspaceRows.filter((element) => getComputedStyle(element).boxShadow !== "none");
         return {
           overflow: document.documentElement.scrollWidth - innerWidth,

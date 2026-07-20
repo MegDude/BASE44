@@ -110,6 +110,7 @@ import "@/styles/search-intent-console-regression-lock.css"
 import "@/styles/accessibility-pin-art-final.css"
 import "@/styles/partner-workspace-deep-polish-final.css"
 import "@/styles/legends-seo-snapshot-final.css"
+import "@/styles/native-drawer-geometry-final.css"
 import "@/styles/surface-containment-final.css"
 import "@/styles/interface-density-regression-lock.css"
 

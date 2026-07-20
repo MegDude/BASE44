@@ -8,18 +8,20 @@ const canonical = read("src/styles/canonical-surface-system.css");
 const fullscreen = read("src/styles/ios-fullscreen-map-panels-final.css");
 const activePerks = read("src/styles/active-perks-sheet.css");
 const workspaceLock = read("src/styles/interface-density-regression-lock.css");
+const drawerState = read("src/lib/map/nativeDrawerState.js");
 
-assert.match(map, /\["peek", "medium", "full"\]\.includes\(savedState\)/);
-assert.match(map, /\["peek", "medium", "full"\]\.includes\(nextState\)/);
+assert.match(map, /normalizeDrawerState\(savedState, "list"\)/);
+assert.match(drawerState, /DETAIL_DRAWER_STATES = \["medium", "expanded", "full"\]/);
+assert.match(map, /normalizeDrawerState\(nextState, "detail"\)/);
 assert.match(map, /window\.sessionStorage\.setItem\("dp-detail-drawer-state", safeState\)/);
 assert.match(map, /data-drawer-state=\{detailDrawerState\}/);
-assert.match(map, /Panel size: \$\{panelState\}\. Activate to \$\{panelState === "full" \? "collapse" : "expand"\}/);
-assert.match(map, /className="dp-map-bottom-nav-shell[^\n]+fixed inset-x-0 bottom-0/);
+assert.match(map, /const stateOrder = \["medium", "expanded", "full"\]/);
+assert.match(map, /className="dp-native-bottom-nav dp-map-bottom-nav-shell[^\n]+fixed inset-x-0 bottom-0/);
 
-assert.match(map, /\["collapsed", "medium", "expanded"\]\.includes\(savedState\)/);
+assert.match(drawerState, /LIST_DRAWER_STATES = \["peek", "expanded"\]/);
 assert.match(map, /window\.sessionStorage\.setItem\("dp-active-perks-drawer-state", safeState\)/);
-assert.match(perks, /data-drawer-state=\{drawerState\}/);
-assert.match(perks, /className=\{`dp-active-perks-sheet is-\$\{drawerState\}`\}/);
+assert.match(perks, /drawerState=\{safeState\}/);
+assert.match(perks, /className=\{`dp-active-perks-sheet is-\$\{safeState\}`\}/);
 assert.match(perks, /aria-label="Close active perks"/);
 assert.match(activePerks, /\.dp-active-perks-sheet\.is-medium/);
 
