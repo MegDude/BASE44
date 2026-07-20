@@ -200,6 +200,28 @@ export function getOrganizationListings(organizationId: string, portfolioId?: st
   ));
 }
 
+export function getScopedOrganizationListings(
+  organizationId: string,
+  portfolioId?: string,
+  listingId?: string,
+) {
+  return getOrganizationListings(organizationId, portfolioId).filter((listing) => (
+    !listingId || listing.id === listingId
+  ));
+}
+
+export function getScopedOrganizationEntities(
+  organizationId: string,
+  portfolioId?: string,
+  listingId?: string,
+) {
+  const entityIds = new Set(
+    getScopedOrganizationListings(organizationId, portfolioId, listingId)
+      .map((listing) => listing.entity_id),
+  );
+  return getOrganizationEntities(organizationId).filter((entity) => entityIds.has(entity.entity_id));
+}
+
 export function getWorkspaceEntitlements(plan: WorkspacePlan) {
   return planEntitlements[plan] || planEntitlements.free;
 }

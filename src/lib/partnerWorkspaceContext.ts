@@ -1,3 +1,9 @@
+import {
+  demoOrganizations,
+  getOrganizationListings,
+  getOrganizationPortfolios,
+} from "../config/workspaceArchitecture";
+
 export const PARTNER_WORKSPACE_CONTEXT_KEY = "dp_partner_workspace:selected_scope";
 
 export const PARTNER_WORKSPACE_SCOPE_KEYS = [
@@ -16,6 +22,11 @@ export type PartnerWorkspaceScope = {
   view?: string;
   section?: string;
   range?: string;
+};
+
+export type ResolvedPartnerWorkspaceScope = PartnerWorkspaceScope & {
+  type: "unscoped" | "organization" | "portfolio" | "listing";
+  listingIds: string[];
 };
 
 function cleanScopeValue(value: string | null | undefined) {
@@ -53,6 +64,35 @@ export function readPartnerWorkspaceScope(search = "", includeStored = true): Pa
 
 export function readPartnerWorkspaceOrganizationId(search = "") {
   return readPartnerWorkspaceScope(search).organizationId || "";
+}
+
+export function resolvePartnerWorkspaceScope(scope: PartnerWorkspaceScope): ResolvedPartnerWorkspaceScope {
+  const organization = demoOrganizations.find((item) => item.id === cleanScopeValue(scope.organizationId));
+  if (!organization) {
+    return {
+      type: "unscoped",
+      listingIds: [],
+      view: cleanScopeValue(scope.view),
+      section: cleanScopeValue(scope.section),
+      range: cleanScopeValue(scope.range),
+    };
+  }
+
+  const portfolio = getOrganizationPortfolios(organization.id)
+    .find((item) => item.id === cleanScopeValue(scope.portfolioId));
+  const listings = getOrganizationListings(organization.id, portfolio?.id);
+  const listing = listings.find((item) => item.id === cleanScopeValue(scope.listingId));
+
+  return {
+    organizationId: organization.id,
+    portfolioId: portfolio?.id,
+    listingId: listing?.id,
+    view: cleanScopeValue(scope.view),
+    section: cleanScopeValue(scope.section),
+    range: cleanScopeValue(scope.range),
+    type: listing ? "listing" : portfolio ? "portfolio" : "organization",
+    listingIds: listing ? [listing.id] : listings.map((item) => item.id),
+  };
 }
 
 export function writePartnerWorkspaceScope(scope: PartnerWorkspaceScope) {

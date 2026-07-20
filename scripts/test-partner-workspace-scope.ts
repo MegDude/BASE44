@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   readPartnerWorkspaceScope,
+  resolvePartnerWorkspaceScope,
   replacePartnerWorkspaceScope,
   withPartnerWorkspaceScope,
 } from "../src/lib/partnerWorkspaceContext";
@@ -39,5 +40,30 @@ assert.match(aggregateRoute, /organizationId=org-1/);
 
 const unscoped = readPartnerWorkspaceScope("", false);
 assert.equal(unscoped.organizationId, undefined, "An unknown session must not receive an arbitrary organization");
+
+const redAshScope = resolvePartnerWorkspaceScope({
+  organizationId: "demo-org-larry-and-guy",
+  portfolioId: "portfolio-larry-and-guy-dining",
+  listingId: "larry-guy-red-ash",
+  range: "30d",
+});
+assert.equal(redAshScope.type, "listing");
+assert.deepEqual(redAshScope.listingIds, ["larry-guy-red-ash"]);
+
+const crossOrganizationScope = resolvePartnerWorkspaceScope({
+  organizationId: "demo-org-larry-and-guy",
+  listingId: "hotel-van-zandt",
+});
+assert.equal(crossOrganizationScope.type, "organization");
+assert.equal(crossOrganizationScope.listingId, undefined);
+assert.ok(!crossOrganizationScope.listingIds.includes("hotel-van-zandt"));
+
+const scopedPerformanceRoute = withPartnerWorkspaceScope(
+  "/partner-workspace/performance",
+  redAshScope,
+);
+assert.match(scopedPerformanceRoute, /organizationId=demo-org-larry-and-guy/);
+assert.match(scopedPerformanceRoute, /portfolioId=portfolio-larry-and-guy-dining/);
+assert.match(scopedPerformanceRoute, /listingId=larry-guy-red-ash/);
 
 console.log("Partner workspace scope contract passed.");

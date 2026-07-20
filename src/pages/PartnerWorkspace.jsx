@@ -19,6 +19,7 @@ import { PARTNER_WORKSPACE_COPY, PARTNER_WORKSPACE_NAV } from "@/content/downtow
 import {
   demoOrganizations,
   getOrganizationEntities,
+  getScopedOrganizationEntities,
   workspaceStatusCopy,
 } from "@/config/workspaceArchitecture";
 import {
@@ -31,6 +32,7 @@ import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyt
 import { queryAgent } from "@/services/agent/agentClient";
 import {
   readPartnerWorkspaceScope,
+  resolvePartnerWorkspaceScope,
   withPartnerWorkspaceScope,
   writePartnerWorkspaceScope,
 } from "@/lib/partnerWorkspaceContext";
@@ -608,23 +610,18 @@ function PartnerWorkspaceContent() {
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const requestedScope = readPartnerWorkspaceScope(location.search);
-  const activeOrganizationId = demoOrganizations.some((organization) => organization.id === requestedScope.organizationId)
-    ? requestedScope.organizationId
-    : "";
-  const workspaceScope = {
-    ...requestedScope,
-    organizationId: activeOrganizationId || undefined,
-  };
+  const workspaceScope = resolvePartnerWorkspaceScope(requestedScope);
+  const activeOrganizationId = workspaceScope.organizationId || "";
 
   useEffect(() => {
     if (!activeOrganizationId) return;
     writePartnerWorkspaceScope({
       organizationId: activeOrganizationId,
-      portfolioId: requestedScope.portfolioId,
-      listingId: requestedScope.listingId,
-      range: requestedScope.range,
+      portfolioId: workspaceScope.portfolioId,
+      listingId: workspaceScope.listingId,
+      range: workspaceScope.range,
     });
-  }, [activeOrganizationId, requestedScope.portfolioId, requestedScope.listingId, requestedScope.range]);
+  }, [activeOrganizationId, workspaceScope.portfolioId, workspaceScope.listingId, workspaceScope.range]);
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -775,9 +772,9 @@ function PartnerWorkspaceContent() {
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} scope={workspaceScope} organizationId={activeOrganizationId} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
-          {tab === "publish" && <WorkspaceDestinationRoot key="publish" destination="publish" organizationId={activeOrganizationId} />}
-          {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" organizationId={activeOrganizationId} />}
-          {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" organizationId={activeOrganizationId} />}
+          {tab === "publish" && <WorkspaceDestinationRoot key="publish" destination="publish" scope={workspaceScope} />}
+          {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" scope={workspaceScope} />}
+          {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" scope={workspaceScope} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />}
           {tab === "offers" && <PerksManager key="offers" user={user} />}
@@ -982,11 +979,12 @@ const DOWNTOWN_AUSTIN_REPORT_CONTEXT = [
 
 function WorkspaceReports() {
   const location = useLocation();
-  const requestedOrganizationId = new URLSearchParams(location.search).get("organizationId");
+  const scope = resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
+  const requestedOrganizationId = scope.organizationId;
   const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const hasVerifiedSearchSnapshot = organization?.id === "demo-org-legends-real-estate";
   const report = hasVerifiedSearchSnapshot ? LEGENDS_WORKSPACE_SEO_REPORT : null;
-  const reportQuery = organization?.id ? `?organizationId=${encodeURIComponent(organization.id)}` : "";
+  const reportHref = (href) => withPartnerWorkspaceScope(href, scope);
   const impressionRows = [...(report?.keywordMetrics || [])]
     .filter((metric) => Number(metric.impressions || 0) > 0)
     .sort((a, b) => Number(b.impressions || 0) - Number(a.impressions || 0))
@@ -1009,7 +1007,7 @@ function WorkspaceReports() {
       title: "Make the two Shore listings easier to compare.",
       evidence: "The workspace already connects The Shore #4301 and #5003, while Legends brand searches produced the strongest visible click volume.",
       action: "Put price, floor plan, Rainey context, and showing options on one comparison path.",
-      href: `/map?mode=partner&tab=map&filter=All%20Listings&entityId=luxury-presence-610-davis-st-4301-5357248&organizationId=${encodeURIComponent(organization.id)}`,
+      href: reportHref("/map?mode=partner&tab=map&filter=All%20Listings&entityId=luxury-presence-610-davis-st-4301-5357248"),
       label: "Open Shore listing",
     },
     {
@@ -1017,7 +1015,7 @@ function WorkspaceReports() {
       title: "Turn agent demand into a downtown showing path.",
       evidence: "Nina Seely generated 774 visible impressions and at least 38 clicks across the current keyword snapshot.",
       action: "Connect the agent page to active downtown listings, neighborhood proof, and a single showing request.",
-      href: `/partner-workspace/profile${reportQuery}`,
+      href: reportHref("/partner-workspace/profile"),
       label: "Update profile",
     },
     {
@@ -1025,7 +1023,7 @@ function WorkspaceReports() {
       title: "Publish a relocation guide for new downtown supply.",
       evidence: "Downtown sources report more than 2,600 homes and 890 hotel rooms under construction.",
       action: "Pair active listings with nearby hotels, parks, dining, parking, and construction-aware arrival guidance.",
-      href: `/partner-workspace/campaigns${reportQuery}`,
+      href: reportHref("/partner-workspace/campaigns"),
       label: "Create campaign",
     },
   ] : [];
@@ -1047,7 +1045,7 @@ function WorkspaceReports() {
           </p>
         </div>
         <div className="dp-report-hero-actions">
-          <Link to={`/partner-workspace/analytics${reportQuery}`}>Open analytics</Link>
+          <Link to={reportHref("/partner-workspace/analytics")}>Open analytics</Link>
           <Link to="/map?mode=partner&tab=reports">Open map report</Link>
         </div>
       </header>
@@ -1123,7 +1121,7 @@ function WorkspaceReports() {
           <p className="dp-workspace-report-label">Partner results</p>
           <h2>Connect a verified analytics source to see partner-specific results.</h2>
           <p>This report will not substitute another organization’s data. Downtown context remains available below while this workspace awaits a verified source.</p>
-          <Link to={`/partner-workspace/profile${reportQuery}`}>Review connections</Link>
+          <Link to={reportHref("/partner-workspace/profile")}>Review connections</Link>
         </section>
       )}
 
@@ -1157,14 +1155,13 @@ function WorkspaceReports() {
   );
 }
 
-function workspaceAgentActionHref(action, organizationId) {
+function workspaceAgentActionHref(action, scope) {
   const type = String(action?.action || action?.type || "");
   const value = String(action?.value || action?.payload?.entityId || action?.payload?.filter || "");
-  const organizationQuery = organizationId ? `&organizationId=${encodeURIComponent(organizationId)}` : "";
-  if (type === "open_entity") return `/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(value)}${organizationQuery}`;
-  if (type === "apply_filter") return `/map?mode=partner&tab=map&filter=${encodeURIComponent(value || "All")}${organizationQuery}`;
-  if (type === "open_campaign_prefill" || type === "open_dashboard") return `/partner-workspace/campaigns?organizationId=${encodeURIComponent(organizationId || "")}&prompt=${encodeURIComponent(value)}`;
-  if (type === "open_report") return `/partner-workspace/reports?organizationId=${encodeURIComponent(organizationId || "")}`;
+  if (type === "open_entity") return withPartnerWorkspaceScope(`/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(value)}`, scope);
+  if (type === "apply_filter") return withPartnerWorkspaceScope(`/map?mode=partner&tab=map&filter=${encodeURIComponent(value || "All")}`, scope);
+  if (type === "open_campaign_prefill" || type === "open_dashboard") return withPartnerWorkspaceScope(`/partner-workspace/campaigns?prompt=${encodeURIComponent(value)}`, scope);
+  if (type === "open_report") return withPartnerWorkspaceScope("/partner-workspace/reports", scope);
   return "";
 }
 
@@ -1174,7 +1171,7 @@ function WorkspaceAgent({ user, scope }) {
   const requestedOrganizationId = scope?.organizationId || params.get("organizationId") || params.get("workspace") || "";
   const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const organizationId = organization?.id || requestedOrganizationId;
-  const ownedEntities = getOrganizationEntities(organizationId);
+  const ownedEntities = getScopedOrganizationEntities(organizationId, scope?.portfolioId, scope?.listingId);
   const prompts = PARTNER_WORKSPACE_COPY.assistant?.prompts || [];
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState(null);
@@ -1290,7 +1287,7 @@ function WorkspaceAgent({ user, scope }) {
               <div className="dp-workspace-agent__markdown"><ReactMarkdown>{String(response.answer)}</ReactMarkdown></div>
               {response.explanation && response.explanation !== response.answer ? <p className="dp-workspace-agent__reason"><strong>Why this fits</strong>{String(response.explanation)}</p> : null}
               {places.length ? <div className="dp-workspace-agent__places"><strong>Places used in this answer</strong>{places.slice(0, 4).map((place) => <Link key={String(place.id || place.name)} to={`/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(String(place.id || ""))}&organizationId=${encodeURIComponent(organizationId)}`}><span>{String(place.name || place.title || "Downtown place")}</span><small>{String(place.reason || place.summary || "Open on the map")}</small><ArrowRight aria-hidden="true" /></Link>)}</div> : null}
-              {structuredActions.length ? <div className="dp-workspace-agent__actions"><strong>Take the next step</strong>{structuredActions.slice(0, 4).map((action, index) => { const href = workspaceAgentActionHref(action, organizationId); return href ? <Link key={`${action.label || action.type}-${index}`} to={href}>{String(action.label || "Open next step")}<ArrowRight aria-hidden="true" /></Link> : null; })}</div> : null}
+              {structuredActions.length ? <div className="dp-workspace-agent__actions"><strong>Take the next step</strong>{structuredActions.slice(0, 4).map((action, index) => { const href = workspaceAgentActionHref(action, scope); return href ? <Link key={`${action.label || action.type}-${index}`} to={href}>{String(action.label || "Open next step")}<ArrowRight aria-hidden="true" /></Link> : null; })}</div> : null}
               {followUps.length ? <div className="dp-workspace-agent__followups"><strong>Ask next</strong>{followUps.slice(0, 4).map((prompt) => <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)}>{prompt}</button>)}</div> : null}
             </div>
           ) : (
@@ -1633,7 +1630,16 @@ function NativeMobileWorkspaceDashboard({
     [Users, "Audience", "/partner-workspace/audience"],
     [Calendar, "Event", "/partner-workspace/events"],
   ];
-  const campaign = isLarryAndGuy
+  const selectedEntity = scope?.type === "listing" ? ownedEntities[0] : null;
+  const campaign = selectedEntity
+    ? {
+        image: selectedEntity.media?.src || "/images/workspace-media/dining-passport.avif",
+        alt: selectedEntity.media?.alt || `${selectedEntity.display_name} campaign preview.`,
+        title: `${selectedEntity.display_name} resident offer`,
+        status: "Draft",
+        metrics: [["Places", 1], ["Offers", activePerks.length], ["Events", upcomingEvents.length]],
+      }
+    : isLarryAndGuy
     ? {
         image: "/images/workspace-media/dining-passport.avif",
         alt: "Friends sharing dinner during a downtown dining passport outing.",
@@ -1650,7 +1656,9 @@ function NativeMobileWorkspaceDashboard({
           ? [["Search views", report.summary.organicImpressions], ["Search visits", report.summary.organicClicks], ["Listings", ownedEntities.filter((entity) => entity.entity_type === "listing").length]]
           : [["Places", ownedEntities.length], ["Offers", activePerks.length], ["Events", upcomingEvents.length]],
       };
-  const insight = isLarryAndGuy
+  const insight = selectedEntity
+    ? `${selectedEntity.display_name} is selected. Publish one verified offer before using this page to describe resident response.`
+    : isLarryAndGuy
     ? `${ownedEntities.length} restaurant records are connected. Publish the shared reward before describing campaign performance.`
     : isLegends
       ? "Non-branded searches are already finding Legends listings. A side-by-side property guide is the clearest next step."
@@ -1747,8 +1755,24 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
   }, [user.email]);
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
-  const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
-  const heroMedia = getPartnerWorkspaceHeroMedia(selectedOrganization?.id);
+  const ownedEntities = selectedOrganization
+    ? getScopedOrganizationEntities(selectedOrganization.id, scope?.portfolioId, scope?.listingId)
+    : [];
+  const selectedEntity = scope?.type === "listing" && selectedOrganization
+    ? getScopedOrganizationEntities(selectedOrganization.id, scope.portfolioId, scope.listingId)[0]
+    : null;
+  const organizationHeroMedia = getPartnerWorkspaceHeroMedia(selectedOrganization?.id);
+  const heroMedia = selectedEntity
+    ? {
+        ...organizationHeroMedia,
+        src: selectedEntity.media?.src || organizationHeroMedia.src,
+        alt: selectedEntity.media?.alt || organizationHeroMedia.alt,
+        headline: `Prepare ${selectedEntity.display_name} for its next resident campaign.`,
+        summary: `Review ${selectedEntity.display_name} on its own, publish one clear reason to visit, and keep its results separate from the wider portfolio.`,
+        label: "Place in focus",
+        caption: selectedEntity.display_name,
+      }
+    : organizationHeroMedia;
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
@@ -1769,7 +1793,15 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Upcoming events", formatWorkspaceNumber(upcomingEvents.length)],
         ["Potential audience", "Not connected"],
       ];
-  const nextAction = isLarryAndGuy
+  const nextAction = isLarryAndGuy && selectedEntity
+    ? {
+        eyebrow: "Recommended next step",
+        title: `Publish the ${selectedEntity.display_name} offer.`,
+        description: `${selectedEntity.display_name} is selected. Confirm its benefit and terms before the offer is shared with residents.`,
+        label: "Create offer",
+        href: "/partner-workspace/offers",
+      }
+    : isLarryAndGuy
     ? {
         eyebrow: "Recommended next step",
         title: "Publish the dining passport offer.",

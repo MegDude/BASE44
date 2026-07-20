@@ -30,7 +30,7 @@ import {
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { getWorkspaceModulesForDestination } from "@/config/workspaceModuleRegistry";
-import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import { withPartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 
 const DESTINATIONS = {
   publish: {
@@ -96,13 +96,13 @@ const MODULE_ICONS = {
   support: CircleHelp,
 };
 
-function WorkspaceModuleRow({ module, organizationId, onClick }) {
+function WorkspaceModuleRow({ module, scope, onClick }) {
   const Icon = MODULE_ICONS[module.id] || ChartNoAxesCombined;
   return (
     <Link
       className="dp-workspace-destination-row"
       data-search-text={`${module.label} ${module.description}`.toLowerCase()}
-      to={withPartnerWorkspaceContext(module.href, organizationId)}
+      to={withPartnerWorkspaceScope(module.href, scope)}
       onClick={onClick}
     >
       <Icon aria-hidden="true" />
@@ -112,7 +112,7 @@ function WorkspaceModuleRow({ module, organizationId, onClick }) {
   );
 }
 
-export function WorkspaceDestinationRoot({ destination, organizationId }) {
+export function WorkspaceDestinationRoot({ destination, scope }) {
   const content = DESTINATIONS[destination];
   const modules = getWorkspaceModulesForDestination(destination);
   const moduleById = new Map(modules.map((module) => [module.id, module]));
@@ -129,7 +129,7 @@ export function WorkspaceDestinationRoot({ destination, organizationId }) {
       <p>Start here</p>
       <h2 id={`workspace-${destination}-next`}>{content.next.title}</h2>
       <span>{content.next.description}</span>
-      <Link to={withPartnerWorkspaceContext(nextModule.href, organizationId)}>{nextModule.label}<ArrowRight aria-hidden="true" /></Link>
+      <Link to={withPartnerWorkspaceScope(nextModule.href, scope)}>{nextModule.label}<ArrowRight aria-hidden="true" /></Link>
     </section> : null}
 
     <div className="dp-workspace-destination-groups">
@@ -139,7 +139,7 @@ export function WorkspaceDestinationRoot({ destination, organizationId }) {
         return <section className="dp-workspace-destination-group" key={group.title} aria-labelledby={`workspace-${destination}-${group.title.replace(/\s+/g, "-").toLowerCase()}`}>
           <h2 id={`workspace-${destination}-${group.title.replace(/\s+/g, "-").toLowerCase()}`}>{group.title}</h2>
           <div className="dp-workspace-destination-list">
-            {groupModules.map((module) => <WorkspaceModuleRow key={module.id} module={module} organizationId={organizationId} />)}
+            {groupModules.map((module) => <WorkspaceModuleRow key={module.id} module={module} scope={scope} />)}
           </div>
         </section>;
       })}
@@ -147,7 +147,7 @@ export function WorkspaceDestinationRoot({ destination, organizationId }) {
   </section>;
 }
 
-export function GlobalWorkspaceSearch({ open, onClose, organizationId }) {
+export function GlobalWorkspaceSearch({ open, onClose, scope }) {
   if (!open || typeof document === "undefined") return null;
   const modules = ["home", "publish", "performance", "workspace"].flatMap(getWorkspaceModulesForDestination);
   return createPortal(<div className="dp-workspace-search-layer" role="dialog" aria-modal="true" aria-label="Search workspace">
@@ -158,7 +158,7 @@ export function GlobalWorkspaceSearch({ open, onClose, organizationId }) {
         event.currentTarget.closest("section")?.querySelectorAll("[data-search-text]").forEach((row) => { row.hidden = Boolean(query) && !row.dataset.searchText.includes(query); });
       }} /><button type="button" onClick={onClose} aria-label="Close search"><X aria-hidden="true" /><span>Close</span></button></header>
       <div className="dp-workspace-destination-list" aria-label="Workspace tools">
-        {modules.map((module) => <WorkspaceModuleRow key={module.id} module={module} organizationId={organizationId} onClick={onClose} />)}
+        {modules.map((module) => <WorkspaceModuleRow key={module.id} module={module} scope={scope} onClick={onClose} />)}
       </div>
     </section>
   </div>, document.body);
