@@ -1,0 +1,68 @@
+.dp-partner-workspace-page .dp-workspace-scope {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) repeat(3, minmax(150px, 220px));
+  gap: 16px;
+  align-items: end;
+  width: 100%;
+  margin: 0 0 24px;
+  padding: 14px 0 16px;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.1);
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0 !important;
+  background: #fff;
+  color: #0b1f33;
+  box-shadow: none !important;
+}
+
+.dp-workspace-scope > div p,
+.dp-workspace-scope label span {
+  display: block;
+  margin: 0 0 5px;
+  color: rgba(11, 31, 51, 0.58);
+  font: 650 11px/1.2 Inter, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.dp-workspace-scope > div strong {
+  display: block;
+  font: 650 14px/1.35 Inter, sans-serif;
+}
+
+.dp-partner-workspace-page .dp-workspace-scope select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 34px 0 0;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.18) !important;
+  border-radius: 0 !important;
+  background-color: #fff;
+  color: #0b1f33;
+  font: 600 14px/1.2 Inter, sans-serif;
+}
+
+.dp-workspace-scope select:focus-visible {
+  outline: 2px solid #c8a96a;
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .dp-partner-workspace-page .dp-workspace-scope {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 10px 0 14px;
+  }
+
+  .dp-workspace-scope > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .dp-workspace-scope > div p {
+    margin: 0;
+  }
+}

@@ -269,7 +269,7 @@ function ProductRoutes() {
           <Route path="/partners/dashboard/brands" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
           <Route path="/partners/dashboard/civic" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
           <Route path="/partners/dashboard/real-estate" element={<RedirectWithSearch to="/partner-workspace/buildings" />} />
-          <Route path="/partners/dashboard/redemptions" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
+          <Route path="/partners/dashboard/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
           <Route
             path="/partners/campaigns"
             element={
@@ -314,6 +314,7 @@ function ProductRoutes() {
           <Route path="/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/audience" />} />
           <Route path="/workspace/media" element={<RedirectWithSearch to="/partner-workspace/media" />} />
           <Route path="/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
+          <Route path="/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
           <Route path="/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
           <Route path="/workspace/assistant" element={<RedirectWithSearch to="/partner-workspace/assistant" />} />
           <Route path="/workspace/profile" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
@@ -332,6 +333,7 @@ function ProductRoutes() {
           <Route path="/app/workspace/media" element={<RedirectWithSearch to="/partner-workspace/media" />} />
           <Route path="/app/workspace/sources" element={<RedirectWithSearch to="/partner-workspace/sources" />} />
           <Route path="/app/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
+          <Route path="/app/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
           <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
           <Route path="/app/workspace/assistant" element={<RedirectWithSearch to="/partner-workspace/assistant" />} />
           <Route path="/app/workspace/profile" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
@@ -363,6 +365,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/billing" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/dashboard" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
           <Route path="/partner-workspace/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/redemptions" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/analytics" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/assistant" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/analytics/experiences/downtown-art-parks-tour" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />

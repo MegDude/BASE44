@@ -34,6 +34,24 @@ export type WorkspaceEntityOwnership = {
   media?: { src: string; alt: string };
 };
 
+export type PartnerPortfolio = {
+  id: string;
+  organization_id: string;
+  name: string;
+  status: "active" | "draft" | "archived";
+};
+
+export type PartnerListing = {
+  id: string;
+  organization_id: string;
+  portfolio_id?: string;
+  entity_id: string;
+  name: string;
+  type: WorkspaceEntityType;
+  status: "active" | "draft" | "archived";
+  evidence: "verified_internal_record" | "requires_verification";
+};
+
 export const roleMatrix: Record<string, Partial<Record<WorkspaceRole, boolean>>> = {
   reports: { owner: true, admin: true, super_admin: true, manager: true, analyst: true },
   campaigns: { owner: true, admin: true, super_admin: true, manager: true, editor: true },
@@ -131,6 +149,26 @@ export const demoEntityOwners: WorkspaceEntityOwnership[] = [
   { id: "owner-yeti-store", organization_id: "demo-org-yeti", entity_id: "brand-yeti", entity_type: "brand", display_name: "YETI" },
 ];
 
+export const demoPartnerPortfolios: PartnerPortfolio[] = [
+  { id: "portfolio-larry-and-guy-dining", organization_id: "demo-org-larry-and-guy", name: "Downtown restaurants", status: "active" },
+  { id: "portfolio-legends-downtown-listings", organization_id: "demo-org-legends-real-estate", name: "Downtown listings", status: "active" },
+];
+
+const portfolioByOrganizationId = new Map(
+  demoPartnerPortfolios.map((portfolio) => [portfolio.organization_id, portfolio.id]),
+);
+
+export const demoPartnerListings: PartnerListing[] = demoEntityOwners.map((owner) => ({
+  id: owner.entity_id,
+  organization_id: owner.organization_id,
+  portfolio_id: portfolioByOrganizationId.get(owner.organization_id),
+  entity_id: owner.entity_id,
+  name: owner.display_name,
+  type: owner.entity_type,
+  status: "active",
+  evidence: "verified_internal_record",
+}));
+
 export const superAdminCapabilities = [
   "view all organizations",
   "impersonate organization",
@@ -149,6 +187,17 @@ export const publicDataRules = {
 
 export function getOrganizationEntities(organizationId: string) {
   return demoEntityOwners.filter((owner) => owner.organization_id === organizationId);
+}
+
+export function getOrganizationPortfolios(organizationId: string) {
+  return demoPartnerPortfolios.filter((portfolio) => portfolio.organization_id === organizationId);
+}
+
+export function getOrganizationListings(organizationId: string, portfolioId?: string) {
+  return demoPartnerListings.filter((listing) => (
+    listing.organization_id === organizationId
+    && (!portfolioId || listing.portfolio_id === portfolioId)
+  ));
 }
 
 export function getWorkspaceEntitlements(plan: WorkspacePlan) {

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import { type PartnerWorkspaceScope, withPartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 import { workspacePrimaryNavigation } from "@/config/workspaceModuleRegistry";
 
 type PartnerMobileTabBarProps = {
   activeTab: string;
-  organizationId: string;
+  scope: PartnerWorkspaceScope;
 };
 
-export function PartnerMobileTabBar({ activeTab, organizationId }: PartnerMobileTabBarProps) {
+export function PartnerMobileTabBar({ activeTab, scope }: PartnerMobileTabBarProps) {
   const navigate = useNavigate();
 
   return (
@@ -24,7 +24,7 @@ export function PartnerMobileTabBar({ activeTab, organizationId }: PartnerMobile
             aria-selected={active}
             aria-current={active ? "page" : undefined}
             className={active ? "is-active" : ""}
-            onClick={() => navigate(withPartnerWorkspaceContext(item.href, organizationId))}
+            onClick={() => navigate(withPartnerWorkspaceScope(item.href, scope))}
           >
             <Icon aria-hidden="true" />
             <span className="dp-native-tab-label">{item.label}</span>

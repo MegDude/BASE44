@@ -3,11 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, ChevronDown, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
+import { Plus, X, Edit2, Trash2, ChevronRight, ChevronLeft, Calendar, Star, LayoutDashboard, Check, MapPin, MessageSquareText, Navigation, Users, CreditCard, UserPlus, LogIn, ArrowRight, Bell, Search, ShieldCheck, WalletCards, Menu } from "lucide-react";
 import { PartnerMobileTabBar } from "@/components/partner/PartnerMobileTabBar";
 import { WorkspaceSheetProvider } from "@/components/partner/workspace/WorkspaceSheetSystem";
 import { WorkspaceDestinationRoot } from "@/components/partner/workspace/WorkspaceDestinationRoot";
 import { WorkspaceExperienceSystem } from "@/components/partner/workspace/WorkspaceExperienceSystem";
+import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunchBrief";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
@@ -27,6 +28,11 @@ import { canViewEverything } from "@/lib/auth/session";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
 import { queryAgent } from "@/services/agent/agentClient";
+import {
+  readPartnerWorkspaceScope,
+  withPartnerWorkspaceScope,
+  writePartnerWorkspaceScope,
+} from "@/lib/partnerWorkspaceContext";
 
 const WORKSPACE_MEDIA_TABS = ["media"];
 
@@ -101,15 +107,20 @@ const WORKSPACE_MEDIA = [
 // Partner profile is stored on the user object.
 
 const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Launch", href: "/partner-workspace/launch", helper: "Decisions, relationships, and proof." };
+const REDEMPTIONS_WORKSPACE_NAV_ITEM = { id: "redemptions", label: "Redemptions", href: "/partner-workspace/redemptions", helper: "Confirm QR uses and review results." };
 
 const WORKSPACE_NAV_GROUPS = [
   { label: "Workspace", ids: ["overview", "launch", "assistant", "map", "profile"] },
   { label: "Publish", ids: ["offers", "events", "campaigns", "broadcasts"] },
-  { label: "Review", ids: ["audience", "surveys", "analytics", "reports"] },
+  { label: "Review", ids: ["audience", "surveys", "redemptions", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
 ].map((group) => ({
   ...group,
-  items: group.ids.map((id) => id === "launch" ? LAUNCH_WORKSPACE_NAV_ITEM : PARTNER_WORKSPACE_NAV.find((item) => item.id === id)).filter(Boolean),
+  items: group.ids.map((id) => {
+    if (id === "launch") return LAUNCH_WORKSPACE_NAV_ITEM;
+    if (id === "redemptions") return REDEMPTIONS_WORKSPACE_NAV_ITEM;
+    return PARTNER_WORKSPACE_NAV.find((item) => item.id === id);
+  }).filter(Boolean),
 }));
 
 const PERK_CATEGORIES = ["discount", "free_item", "priority_access", "members_rate", "experience", "class_pass"];
@@ -278,6 +289,7 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/surveys")) return "surveys";
   if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
   if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
+  if (pathname.includes("/redemptions")) return "redemptions";
   if (pathname.includes("/media")) return "media";
   if (pathname.includes("/residents")) return "residents";
   if (pathname.includes("/buildings")) return "buildings";
@@ -591,10 +603,24 @@ function PartnerWorkspaceContent() {
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const requestedOrganizationId = new URLSearchParams(location.search).get("organizationId");
-  const activeOrganizationId = demoOrganizations.some((organization) => organization.id === requestedOrganizationId)
-    ? requestedOrganizationId
-    : demoOrganizations[0]?.id;
+  const requestedScope = readPartnerWorkspaceScope(location.search);
+  const activeOrganizationId = demoOrganizations.some((organization) => organization.id === requestedScope.organizationId)
+    ? requestedScope.organizationId
+    : "";
+  const workspaceScope = {
+    ...requestedScope,
+    organizationId: activeOrganizationId || undefined,
+  };
+
+  useEffect(() => {
+    if (!activeOrganizationId) return;
+    writePartnerWorkspaceScope({
+      organizationId: activeOrganizationId,
+      portfolioId: requestedScope.portfolioId,
+      listingId: requestedScope.listingId,
+      range: requestedScope.range,
+    });
+  }, [activeOrganizationId, requestedScope.portfolioId, requestedScope.listingId, requestedScope.range]);
 
   useEffect(() => {
     const nextActivation = provisionWorkspaceFromCheckout(location.search);
@@ -658,7 +684,7 @@ function PartnerWorkspaceContent() {
       handleSignIn();
       return;
     }
-    navigate("/partner-workspace/profile?section=account");
+    navigate(withPartnerWorkspaceScope("/partner-workspace/profile?section=account", workspaceScope));
   }
 
   function handleWorkspaceBack() {
@@ -696,7 +722,7 @@ function PartnerWorkspaceContent() {
               <span>Close</span>
             </button>
           </nav>
-          <Link className="dp-partner-workspace-brand" to="/partner-workspace/overview" aria-label="Downtown Perks workspace overview">
+          <Link className="dp-partner-workspace-brand" to={withPartnerWorkspaceScope("/partner-workspace/overview", workspaceScope)} aria-label="Downtown Perks workspace overview">
             <strong>Downtown Perks</strong>
             <span>Workspace</span>
           </Link>
@@ -730,7 +756,7 @@ function PartnerWorkspaceContent() {
               <div className="dp-workspace-nav-group" key={group.label}>
                 <p>{group.label}</p>
                 {group.items.map((item) => (
-                  <Link key={item.id} to={item.href} className={tab === item.id ? "is-active" : ""} aria-current={tab === item.id ? "page" : undefined}>
+                  <Link key={item.id} to={withPartnerWorkspaceScope(item.href, workspaceScope)} className={tab === item.id ? "is-active" : ""} aria-current={tab === item.id ? "page" : undefined}>
                     {item.label}
                   </Link>
                 ))}
@@ -741,8 +767,9 @@ function PartnerWorkspaceContent() {
 
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
+        <WorkspaceScopeSwitcher scope={workspaceScope} />
         <AnimatePresence mode="wait">
-          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
+          {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} scope={workspaceScope} organizationId={activeOrganizationId} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
           {tab === "publish" && <WorkspaceDestinationRoot key="publish" destination="publish" organizationId={activeOrganizationId} />}
           {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" organizationId={activeOrganizationId} />}
@@ -758,9 +785,10 @@ function PartnerWorkspaceContent() {
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
           {tab === "residents" && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
+          {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
-          {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} />}
+          {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
@@ -769,7 +797,7 @@ function PartnerWorkspaceContent() {
           </div>
         </main>
       </div>
-      <PartnerMobileTabBar activeTab={tab === "launch" ? "overview" : tab} organizationId={activeOrganizationId} />
+      <PartnerMobileTabBar activeTab={tab === "launch" ? "overview" : tab} scope={workspaceScope} />
     </div>
   );
 }
@@ -820,6 +848,13 @@ function WorkspaceMediaRail({ tabId, organizationId }) {
 }
 
 const WORKSPACE_DETAIL_OVERRIDES = {
+  redemptions: {
+    headline: "Confirm and review resident perks",
+    body: "See QR scans, confirm eligible uses, and review completed redemptions for the organization or place selected above.",
+    items: ["Ready to confirm", "Completed redemptions", "Needs review", "Recent QR scans"],
+    primaryCta: { label: "Open redemption report", href: "/partner-workspace/reports?view=redemptions" },
+    rowDescription: "Results appear after a partner completes a verified resident QR transaction.",
+  },
   buildings: {
     headline: "Places your team can manage",
     body: "Review the buildings, venues, listings, and map pages your team manages.",
@@ -837,6 +872,8 @@ const WORKSPACE_DETAIL_OVERRIDES = {
 };
 
 function WorkspaceRegistryPanel({ tabId }) {
+  const location = useLocation();
+  const scope = readPartnerWorkspaceScope(location.search);
   const copy = WORKSPACE_DETAIL_OVERRIDES[tabId] || PARTNER_WORKSPACE_COPY[tabId] || PARTNER_WORKSPACE_COPY.overview;
   const items = copy.items || getWorkspacePanelItems(copy);
   const primaryLabel = copy.createCta || copy.primaryCta?.label || copy.actions?.[0] || copy.ctas?.[0] || "Open map view";
@@ -855,7 +892,7 @@ function WorkspaceRegistryPanel({ tabId }) {
         <h2>{copy.headline}</h2>
         <p>{copy.body || copy.emptyState}</p>
         <div className="dp-workspace-panel-actions">
-          <Link to={primaryHref}>{primaryLabel}</Link>
+          <Link to={withPartnerWorkspaceScope(primaryHref, scope)}>{primaryLabel}</Link>
         </div>
       </header>
 
@@ -941,7 +978,7 @@ const DOWNTOWN_AUSTIN_REPORT_CONTEXT = [
 function WorkspaceReports() {
   const location = useLocation();
   const requestedOrganizationId = new URLSearchParams(location.search).get("organizationId");
-  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId) || demoOrganizations[0];
+  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const hasVerifiedSearchSnapshot = organization?.id === "demo-org-legends-real-estate";
   const report = hasVerifiedSearchSnapshot ? LEGENDS_WORKSPACE_SEO_REPORT : null;
   const reportQuery = organization?.id ? `?organizationId=${encodeURIComponent(organization.id)}` : "";
@@ -1126,11 +1163,11 @@ function workspaceAgentActionHref(action, organizationId) {
   return "";
 }
 
-function WorkspaceAgent({ user }) {
+function WorkspaceAgent({ user, scope }) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const requestedOrganizationId = params.get("organizationId") || params.get("workspace") || "";
-  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId) || demoOrganizations[0];
+  const requestedOrganizationId = scope?.organizationId || params.get("organizationId") || params.get("workspace") || "";
+  const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const organizationId = organization?.id || requestedOrganizationId;
   const ownedEntities = getOrganizationEntities(organizationId);
   const prompts = PARTNER_WORKSPACE_COPY.assistant?.prompts || [];
@@ -1153,11 +1190,14 @@ function WorkspaceAgent({ user }) {
         mode: "partner",
         intent: "workspace_decision",
         organizationId,
+        listingIds: scope?.listingId ? [scope.listingId] : ownedEntities.map((entity) => entity.entity_id),
         userId: user?.id || user?.email || "",
         location: { district: user?.district || "Downtown Austin" },
         context: {
           surface: "partner_workspace",
           workspaceTab: "assistant",
+          portfolioId: scope?.portfolioId || null,
+          listingId: scope?.listingId || null,
           organization: {
             id: organizationId,
             name: organization?.name || user?.organization_name || user?.partner_name || "Partner",
@@ -1545,15 +1585,10 @@ function NativeMobileWorkspaceDashboard({
   isLarryAndGuy,
   nextAction,
   report,
-  workspaceMenuOpen,
-  setWorkspaceMenuOpen,
-  workspaceSearch,
-  setWorkspaceSearch,
-  filteredOrganizations,
-  selectWorkspace,
+  scope,
   heroMedia,
 }) {
-  const workspaceHref = (path) => `${path}?organizationId=${encodeURIComponent(organizationId)}`;
+  const workspaceHref = (path) => withPartnerWorkspaceScope(path, scope);
   const potentialReach = getPotentialReachSummary();
   const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : potentialReach.total === null ? "—" : formatWorkspaceNumber(potentialReach.total);
   const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
@@ -1618,19 +1653,6 @@ function NativeMobileWorkspaceDashboard({
 
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
-      <div className="dp-native-mobile-workspace-switcher">
-        <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen} aria-label={`Switch workspace. Current workspace: ${organization?.name || "Partner workspace"}`}>
-          <span><small>Workspace</small><strong>{organization?.name || "Partner workspace"}</strong></span>
-          <ChevronDown aria-hidden="true" />
-        </button>
-        {workspaceMenuOpen ? (
-          <div className="dp-native-mobile-workspace-menu" role="dialog" aria-label="Switch workspace">
-            <header><strong>Switch workspace</strong><div className="dp-workspace-surface-controls"><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Go back from Switch workspace"><ChevronLeft aria-hidden="true" /><span>Back</span></button><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /><span>Close</span></button></div></header>
-            <label><Search aria-hidden="true" /><input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" /></label>
-            <div>{filteredOrganizations.map((item) => <button key={item.id} type="button" aria-current={item.id === organizationId ? "true" : undefined} onClick={() => selectWorkspace(item.id)}><span><strong>{item.name}</strong><small>{friendlyRoleLabel(item.role)}</small></span>{item.id === organizationId ? <Check aria-hidden="true" /> : null}</button>)}</div>
-          </div>
-        ) : null}
-      </div>
       <section className="dp-native-mobile-hero">
         <figure className="dp-workspace-home-hero-media">
           <img
@@ -1708,38 +1730,19 @@ function NativeMobileWorkspaceDashboard({
   );
 }
 
-function WorkspaceOverview({ user, setTab, activation = null }) {
-  const navigate = useNavigate();
+function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null }) {
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
-  const [selectedOrganizationId, setSelectedOrganizationId] = useState(() => {
-    const requestedOrganization = new URLSearchParams(window.location.search).get("organizationId");
-    return demoOrganizations.some((organization) => organization.id === requestedOrganization)
-      ? requestedOrganization
-      : demoOrganizations[0]?.id;
-  });
-  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
-  const [workspaceSearch, setWorkspaceSearch] = useState("");
-
-  useEffect(() => {
-    function closeWorkspaceMenus(event) {
-      if (event.key !== "Escape") return;
-      setWorkspaceMenuOpen(false);
-    }
-
-    window.addEventListener("keydown", closeWorkspaceMenus);
-    return () => window.removeEventListener("keydown", closeWorkspaceMenus);
-  }, []);
+  const selectedOrganizationId = organizationId;
 
   useEffect(() => {
     listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
     listWorkspaceItems("Event", "events", user.email).then(setEvents);
   }, [user.email]);
 
-  const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
+  const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
   const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
   const heroMedia = getPartnerWorkspaceHeroMedia(selectedOrganization?.id);
-  const filteredOrganizations = demoOrganizations.filter((organization) => organization.name.toLowerCase().includes(workspaceSearch.trim().toLowerCase()));
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;
@@ -1791,15 +1794,6 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
     ["Status", "Active"],
   ];
 
-  function selectWorkspace(organizationId) {
-    setSelectedOrganizationId(organizationId);
-    setWorkspaceMenuOpen(false);
-    setWorkspaceSearch("");
-    const params = new URLSearchParams(window.location.search);
-    params.set("organizationId", organizationId);
-    navigate({ pathname: "/partner-workspace/overview", search: `?${params.toString()}` }, { replace: true });
-  }
-
   return (
     <motion.div className="dp-operating-overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
       <NativeMobileWorkspaceDashboard
@@ -1812,12 +1806,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         isLarryAndGuy={isLarryAndGuy}
         nextAction={nextAction}
         report={legendsSeoReport}
-        workspaceMenuOpen={workspaceMenuOpen}
-        setWorkspaceMenuOpen={setWorkspaceMenuOpen}
-        workspaceSearch={workspaceSearch}
-        setWorkspaceSearch={setWorkspaceSearch}
-        filteredOrganizations={filteredOrganizations}
-        selectWorkspace={selectWorkspace}
+        scope={scope}
         heroMedia={heroMedia}
       />
       <div className="dp-standard-workspace-overview">
@@ -1850,48 +1839,15 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
           <h2 id="workspace-next-action-title">{nextAction.title}</h2>
           <p>{nextAction.description}</p>
         </div>
-        <Link to={`${nextAction.href}?organizationId=${encodeURIComponent(selectedOrganizationId)}`}>{nextAction.label}<ArrowRight aria-hidden="true" /></Link>
+        <Link to={withPartnerWorkspaceScope(nextAction.href, scope)}>{nextAction.label}<ArrowRight aria-hidden="true" /></Link>
       </section>
 
       <section className="dp-workspace-context dp-os-workspace-context" aria-labelledby="workspace-context-title">
-        <div className="dp-workspace-switcher-compact">
-          <span id="workspace-context-title">Workspace</span>
-          <button type="button" onClick={() => setWorkspaceMenuOpen((open) => !open)} aria-expanded={workspaceMenuOpen} aria-label={`Switch workspace. Current workspace: ${selectedOrganization?.name || "Partner workspace"}`}>
-            <strong>{selectedOrganization?.name}</strong>
-            <small>{friendlyRoleLabel(selectedOrganization?.role)} — {friendlyWorkspaceStatus(selectedOrganization?.status).replace(" Workspace", "")}</small>
-            <ChevronDown aria-hidden="true" />
-          </button>
-          {workspaceMenuOpen ? (
-            <div className="dp-workspace-switcher-menu" role="dialog" aria-label="Switch workspace">
-              <div className="dp-workspace-menu-head">
-                <strong>Choose workspace</strong>
-                <div className="dp-workspace-surface-controls"><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Go back from Switch workspace"><ChevronLeft aria-hidden="true" /><span>Back</span></button><button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace"><X aria-hidden="true" /><span>Close</span></button></div>
-              </div>
-              <label>
-                <Search aria-hidden="true" />
-                <input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder="Find a workspace" aria-label="Find a workspace" />
-              </label>
-              <div>
-                {filteredOrganizations.map((organization) => (
-                  <button
-                    key={organization.id}
-                    type="button"
-                    aria-current={organization.id === selectedOrganizationId ? "true" : undefined}
-                    onClick={() => selectWorkspace(organization.id)}
-                  >
-                    <span><strong>{organization.name}</strong><small>{friendlyRoleLabel(organization.role)}</small></span>
-                    {organization.id === selectedOrganizationId ? <em>Current</em> : null}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-        </div>
         <div className="dp-workspace-entities-compact dp-os-entity-rail">
-          <span>Your places</span>
+          <span id="workspace-context-title">Places in this view</span>
           <div>
             {ownedEntities.map((entity) => (
-              <Link key={entity.id} to={`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`}>
+              <Link key={entity.id} to={withPartnerWorkspaceScope(`/map?mode=partner&tab=map&filter=${encodeURIComponent(entity.map_filter || "All")}&entityId=${encodeURIComponent(entity.entity_id)}`, { ...scope, listingId: entity.entity_id })}>
                 {entity.media ? <img src={entity.media.src} alt={entity.media.alt} loading="lazy" decoding="async" /> : <span className="dp-os-entity-fallback" aria-hidden="true">{entity.display_name?.slice(0, 1)}</span>}
                 <span><strong>{entity.display_name}</strong><small>{entity.perk_summary || entity.entity_type}</small></span>
                 <ArrowRight aria-hidden="true" />
@@ -1955,7 +1911,7 @@ function WorkspaceOverview({ user, setTab, activation = null }) {
         </div>
       </section>
 
-      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={`/partner-workspace/analytics?workspace=${encodeURIComponent(selectedOrganizationId)}&range=30d&comparison=previous_period&view=overview`}>Open Analytics <ArrowRight aria-hidden="true" /></Link></section>
+      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={withPartnerWorkspaceScope("/partner-workspace/analytics?range=30d&comparison=previous_period&view=overview", scope)}>Open analytics <ArrowRight aria-hidden="true" /></Link></section>
       </div>
     </motion.div>
   );
