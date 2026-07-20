@@ -436,6 +436,24 @@ html body .dp-workspace-sheet.dp-workspace-sheet :is(
   filter: none !important;
 }
 
+/* Resident Home is one uninterrupted white surface. Remove legacy borders and
+   outline chrome from the Home panel only; keyboard focus remains visible as
+   a restrained gold text-and-icon state. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"],
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] *,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] *::before,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] *::after {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(a, button, input, select, textarea):focus-visible,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home.dp-resident-home[data-panel="home"] :is(a, button, input, select, textarea):focus-visible * {
+  color: #9a7a3e !important;
+  text-decoration: none !important;
+}
+
 /* Native map detail density authority.
    Keep every event, perk, campaign, route, and listing detail on the same
    compact iPhone-first plane, regardless of older generic section rules. */

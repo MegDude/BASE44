@@ -39,6 +39,7 @@
     "test:native-drawer-geometry": "node scripts/test-native-drawer-geometry.mjs",
     "test:perk-identity-header": "node scripts/test-perk-identity-header.mjs",
     "test:resident-qr-modal": "node scripts/test-resident-qr-modal.mjs",
+    "test:resident-home-borderless": "node scripts/test-resident-home-borderless.mjs",
     "test:route-experiences": "node scripts/test-route-experiences.mjs",
     "test:map-detail-system": "node scripts/test-map-detail-system.mjs",
     "test:native-detail-density": "node scripts/test-native-detail-density.mjs",
