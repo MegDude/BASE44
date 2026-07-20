@@ -732,9 +732,9 @@ function PartnerWorkspaceContent() {
             <span>Workspace</span>
           </Link>
           <div className="dp-partner-workspace-header-tools" aria-label="Workspace utilities">
-            <button type="button" className="dp-product-shell-search-button dp-partner-workspace-search" onClick={handleWorkspaceSearch} aria-label="Search workspace">
+            <button type="button" className="dp-product-shell-search-button dp-partner-workspace-search" onClick={handleWorkspaceSearch} aria-label="Search Downtown Perks">
               <Search className="h-4 w-4" aria-hidden="true" />
-              <span>Search workspace</span>
+              <span>Search Downtown Perks</span>
             </button>
             {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
@@ -1594,6 +1594,7 @@ function NativeMobileWorkspaceDashboard({
   report,
   scope,
   heroMedia,
+  onSwitchWorkspace,
 }) {
   const workspaceHref = (path) => withPartnerWorkspaceScope(path, scope);
   const potentialReach = getPotentialReachSummary();
@@ -1671,6 +1672,16 @@ function NativeMobileWorkspaceDashboard({
 
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
+      <div className="dp-native-mobile-workspace-switcher">
+        <button
+          type="button"
+          onClick={onSwitchWorkspace}
+          aria-label={`Switch workspace. Current workspace: ${organization?.name || "Partner workspace"}`}
+        >
+          <span><small>Partner workspace</small><strong>{organization?.name || "Partner workspace"}</strong></span>
+          <ChevronRight aria-hidden="true" />
+        </button>
+      </div>
       <section className="dp-native-mobile-hero">
         <p className="dp-native-mobile-kicker">{organization?.name || "Partner overview"}</p>
         <h1>{heroMedia.headline}</h1>
@@ -1750,6 +1761,8 @@ function NativeMobileWorkspaceDashboard({
 }
 
 function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null }) {
+  const navigate = useNavigate();
+  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
   const selectedOrganizationId = organizationId;
@@ -1851,7 +1864,46 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         report={legendsSeoReport}
         scope={scope}
         heroMedia={heroMedia}
+        onSwitchWorkspace={() => setWorkspaceMenuOpen(true)}
       />
+      <AnimatePresence>
+        {workspaceMenuOpen ? (
+          <motion.section
+            className="dp-native-mobile-workspace-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Switch workspace"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+          >
+            <header>
+              <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Go back from Switch workspace">
+                <ChevronLeft aria-hidden="true" />
+              </button>
+              <strong>Choose a workspace</strong>
+              <button type="button" onClick={() => setWorkspaceMenuOpen(false)} aria-label="Close Switch workspace">
+                <X aria-hidden="true" />
+              </button>
+            </header>
+            <div>
+              {demoOrganizations.map((organization) => (
+                <button
+                  type="button"
+                  key={organization.id}
+                  onClick={() => {
+                    setWorkspaceMenuOpen(false);
+                    navigate(`/partner-workspace/overview?organizationId=${encodeURIComponent(organization.id)}&provisioned=1`);
+                  }}
+                >
+                  <span><strong>{organization.name}</strong><small>{organization.partner_type || organization.type || "Partner"}</small></span>
+                  {organization.id === selectedOrganizationId ? <Check aria-label="Current workspace" /> : <ChevronRight aria-hidden="true" />}
+                </button>
+              ))}
+            </div>
+          </motion.section>
+        ) : null}
+      </AnimatePresence>
       <div className="dp-standard-workspace-overview">
       <section className="dp-operating-header dp-os-header">
         <div className="dp-workspace-home-hero-copy">

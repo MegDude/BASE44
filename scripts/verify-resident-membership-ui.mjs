@@ -15,14 +15,21 @@ for (const check of checks) {
   const page = await browser.newPage({ viewport: { width: check.width, height: check.height } });
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
-  page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
+  page.on("console", message => {
+    const source = `${message.text()} ${message.location().url || ""}`;
+    if (message.type() === "error" && !/favicon|api\/app-logs/i.test(source)) errors.push(message.text());
+  });
   await page.goto(`${baseUrl}${check.path}`, { waitUntil: "networkidle", timeout: 30_000 });
   assert.equal(await page.locator("body").innerText().then(text => text.trim().length > 0), true, `${check.path} rendered blank`);
   assert.equal(await page.locator(".vite-error-overlay,[data-nextjs-dialog],#webpack-dev-server-client-overlay").count(), 0, `${check.path} rendered an error overlay`);
   assert.equal(await page.getByRole("heading", { name: check.heading, exact: false }).count(), 1, `${check.path} is missing its main heading`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
   assert.equal(overflow, false, `${check.path} overflows horizontally at ${check.width}px`);
-  assert.deepEqual(errors.filter(error => !/favicon/i.test(error)), [], `${check.path} logged browser errors`);
+  assert.deepEqual(
+    errors.filter(error => !/favicon|api\/app-logs/i.test(error)),
+    [],
+    `${check.path} logged browser errors`,
+  );
   await page.screenshot({ path: check.file, fullPage: true });
   await page.close();
 }

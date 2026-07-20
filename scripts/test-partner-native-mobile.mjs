@@ -58,7 +58,7 @@ if (!mobileOverview.hero) throw new Error("Mobile workspace hero is missing its 
 if (mobileOverview.kpis !== 3) throw new Error(`Expected 3 mobile KPIs, found ${mobileOverview.kpis}.`);
 if (mobileOverview.actions !== 6) throw new Error(`Expected 6 mobile quick actions, found ${mobileOverview.actions}.`);
 if (mobileOverview.attentionLinks !== 1) throw new Error("The attention card must have exactly one action.");
-if (mobileOverview.attentionRadius !== "20px") throw new Error(`Unexpected mobile card radius: ${mobileOverview.attentionRadius}.`);
+if (mobileOverview.attentionRadius !== "0px") throw new Error(`Unexpected mobile surface radius: ${mobileOverview.attentionRadius}.`);
 if (mobileOverview.standardVisible) throw new Error("Desktop overview remains visible on the mobile dashboard.");
 if (mobileOverview.visibleSearchControls !== 1) throw new Error(`Expected one visible workspace search control, found ${mobileOverview.visibleSearchControls}.`);
 if (mobileOverview.searchText !== "Search Downtown Perks") throw new Error(`Unexpected workspace search label: ${mobileOverview.searchText}.`);

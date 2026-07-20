@@ -318,6 +318,7 @@ html body #root#root .dp-partner-workspace-page .dp-native-mobile-dashboard {
 
   html body #root#root#root#root#root#root#root .dp-partner-workspace-page .dp-native-mobile-workspace-menu {
     position: fixed !important;
+    z-index: 120 !important;
     inset: auto 12px calc(var(--dp-workspace-mobile-nav) + 12px) !important;
     display: grid !important;
     max-height: min(560px, calc(100dvh - var(--dp-workspace-mobile-nav) - 76px)) !important;

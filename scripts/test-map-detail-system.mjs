@@ -9,6 +9,19 @@ const errors = [];
 
 async function openPanel(route, viewport = { width: 393, height: 852 }) {
   const page = await browser.newPage({ viewport });
+  await page.route("**/api/resident/qr-session", async (requestRoute) => {
+    await requestRoute.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        sessionId: "qa-resident-qr-session",
+        token: "qa-resident-qr-token",
+        qrValue: "DP-RESIDENT-QA-PASS",
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+        purpose: "perk_redemption",
+      }),
+    });
+  });
   page.on("pageerror", (error) => errors.push(`${route}: ${error.message}`));
   await page.goto(`${baseUrl}${route}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
   const panel = page.locator("#dp-active-map-drawer");

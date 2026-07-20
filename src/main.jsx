@@ -104,6 +104,9 @@ import "@/styles/workspace-compact-media-final.css"
 import "@/styles/partner-workspace-home-hero-final.css"
 import "@/styles/perk-identity-header-final.css"
 import "@/styles/resident-home-headline-lock-final.css"
+import "@/styles/workspace-scope-contract.css"
+import "@/styles/governance-platform.css"
+import '@/styles/resident-product-alignment-final.css'
 import "@/styles/canonical-surface-system.css"
 import "@/styles/map-marker-governance-final.css"
 import "@/styles/search-intent-console-regression-lock.css"
@@ -116,9 +119,6 @@ import "@/styles/interface-density-regression-lock.css"
 import "@/styles/search-intent-glass-surface-final.css"
 import "@/styles/borderless-panel-content-final.css"
 import "@/styles/resident-qr-modal-final.css"
-import "@/styles/workspace-scope-contract.css"
-import "@/styles/governance-platform.css"
-import '@/styles/resident-product-alignment-final.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

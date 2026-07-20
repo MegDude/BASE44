@@ -98,7 +98,10 @@ try {
       assert.ok(result.residentBenefitMaxHeight <= 64, `${viewport.name} ${route} has ${result.residentBenefitMaxHeight}px resident benefit rows`);
       assert.ok(result.workspaceEntityRowMaxHeight <= 68, `${viewport.name} ${route} has ${result.workspaceEntityRowMaxHeight}px workspace place rows`);
       assert.equal(result.workspaceUtilityMaxRadius, 0, `${viewport.name} ${route} retains ${result.workspaceUtilityMaxRadius}px workspace utility rounding`);
-      assert.equal(result.sheetMaxRadius, 0, `${viewport.name} ${route} retains a ${result.sheetMaxRadius}px sheet radius`);
+      assert.ok(
+        result.sheetMaxRadius <= 22,
+        `${viewport.name} ${route} exceeds the approved 22px sheet-top radius with ${result.sheetMaxRadius}px`,
+      );
       assert.equal(result.workspaceSurfaceMaxRadius, 0, `${viewport.name} ${route} retains ${result.workspaceSurfaceMaxRadius}px workspace surface rounding`);
       assert.equal(result.workspaceControlMaxRadius, 0, `${viewport.name} ${route} retains ${result.workspaceControlMaxRadius}px workspace control rounding`);
       assert.equal(result.nonWhiteWorkspaceSurfaceCount, 0, `${viewport.name} ${route} retains ${result.nonWhiteWorkspaceSurfaceCount} shaded workspace surfaces`);

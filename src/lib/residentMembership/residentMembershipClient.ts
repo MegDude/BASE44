@@ -1,4 +1,5 @@
-import { getOperationsApiBaseUrl, requestOperationsApi } from "@/lib/backendWorkflows";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export type MembershipBuilding = {
   id: string;
@@ -11,10 +12,20 @@ export type MembershipBuilding = {
   resident_price_override?: number | null;
 };
 
-async function publicRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${getOperationsApiBaseUrl()}${path}`, {
+async function membershipRequest<T>(path: string, init?: RequestInit, requiresAccount = false): Promise<T> {
+  const baseUrl = getPartnerContentApiBaseUrl();
+  if (!baseUrl) throw new Error("Resident membership is not connected on this preview.");
+  const session = requiresAccount ? await supabaseClient?.auth.getSession().catch(() => null) : null;
+  const token = session?.data?.session?.access_token;
+  if (requiresAccount && !token) throw new Error("Sign in to continue.");
+  const response = await fetch(`${baseUrl}${path}`, {
     ...init,
-    headers: { Accept: "application/json", ...(init?.body ? { "Content-Type": "application/json" } : {}), ...init?.headers },
+    headers: {
+      Accept: "application/json",
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...init?.headers,
+    },
   });
   const body = await response.json().catch(() => null);
   if (!response.ok) throw new Error(body?.error || "We could not complete that request.");
@@ -22,37 +33,37 @@ async function publicRequest<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export function searchMembershipBuildings(query: string) {
-  return publicRequest<{ buildings: MembershipBuilding[] }>(`/api/residents/buildings/search?q=${encodeURIComponent(query)}`);
+  return membershipRequest<{ buildings: MembershipBuilding[] }>(`/api/residents/buildings/search?q=${encodeURIComponent(query)}`);
 }
 
 export function checkMembershipEligibility(buildingId: string) {
-  return publicRequest<{ building: MembershipBuilding; source: "free_building" | "paid"; price: number; currency: string }>("/api/residents/membership/eligibility", {
+  return membershipRequest<{ building: MembershipBuilding; source: "free_building" | "paid"; price: number; currency: string }>("/api/residents/membership/eligibility", {
     method: "POST", body: JSON.stringify({ buildingId }),
   });
 }
 
 export function startResidentMembership(buildingId: string, email: string) {
-  return publicRequest<{ source: "free_building" | "paid"; checkoutUrl?: string; nextUrl?: string }>("/api/residents/membership/start", {
+  return membershipRequest<{ source: "free_building" | "paid"; checkoutUrl?: string; nextUrl?: string }>("/api/residents/membership/start", {
     method: "POST", body: JSON.stringify({ buildingId, email }),
   });
 }
 
 export function completeResidentMembership(registration: string) {
-  return requestOperationsApi<{ ok: boolean; membershipId: string; nextUrl: string }>("/api/residents/membership/complete", {
+  return membershipRequest<{ ok: boolean; membershipId: string; nextUrl: string }>("/api/residents/membership/complete", {
     method: "POST", body: JSON.stringify({ registration }),
-  });
+  }, true);
 }
 
 export function getResidentMembership() {
-  return requestOperationsApi<{ profile: Record<string, unknown>; membership: Record<string, unknown> | null; saved: unknown[]; preferences: Record<string, unknown> | null; mapContext: { path: string; personalized: boolean } }>("/api/residents/membership");
+  return membershipRequest<{ profile: Record<string, unknown>; membership: Record<string, unknown> | null; saved: unknown[]; preferences: Record<string, unknown> | null; mapContext: { path: string; personalized: boolean } }>("/api/residents/membership", undefined, true);
 }
 
 export function saveResidentProfile(payload: Record<string, unknown>) {
-  return requestOperationsApi<{ ok: boolean; profileCompletion: number }>("/api/residents/profile", {
+  return membershipRequest<{ ok: boolean; profileCompletion: number }>("/api/residents/profile", {
     method: "POST", body: JSON.stringify(payload),
-  });
+  }, true);
 }
 
 export function openResidentBilling() {
-  return requestOperationsApi<{ portalUrl: string }>("/api/residents/membership/portal", { method: "POST" });
+  return membershipRequest<{ portalUrl: string }>("/api/residents/membership/portal", { method: "POST" }, true);
 }
