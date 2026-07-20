@@ -32,6 +32,7 @@
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",
     "test:search-console-utility": "node scripts/test-search-console-utility-rail.mjs",
     "test:search-console-glass": "node scripts/test-search-intent-glass-surface.mjs",
+    "test:drawer-glass": "node scripts/test-map-drawer-glass-surface.mjs",
     "test:grouped-popup": "node scripts/test-grouped-popup-contract.mjs",
     "test:mobile-tabs": "tsx scripts/test-mobile-tab-system.ts",
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",

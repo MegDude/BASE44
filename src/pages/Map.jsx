@@ -17507,9 +17507,6 @@ export default function MapPage() {
       node.style.setProperty("bottom", "0", "important");
       node.style.setProperty("left", "0", "important");
       node.style.setProperty("padding", "0 0 var(--dp-bottom-nav-total-height)", "important");
-      node.style.setProperty("border", "0", "important");
-      node.style.setProperty("border-radius", "0", "important");
-      node.style.setProperty("box-shadow", "none", "important");
       return;
     }
 
@@ -17530,9 +17527,6 @@ export default function MapPage() {
     // Canonical map detail sheets are governed entirely by the shared
     // stylesheet and state attributes. Do not recreate their geometry inline.
     if (node.classList.contains("dp-map-detail-sheet")) {
-      node.style.setProperty("border", "0", "important");
-      node.style.setProperty("border-radius", "0", "important");
-      node.style.setProperty("box-shadow", "none", "important");
       return;
     }
     const isDetailPanel = node.dataset.panelLayout === "detail";
@@ -17557,9 +17551,6 @@ export default function MapPage() {
       margin: "0",
       padding: "0",
       overflow: "hidden",
-      border: "0",
-      "border-radius": "0",
-      "box-shadow": "none",
       "z-index": "1500",
     };
 
@@ -17586,7 +17577,7 @@ export default function MapPage() {
       padding: "calc(6px + env(safe-area-inset-top, 0px)) 8px 6px",
       border: "0",
       "border-bottom": "0",
-      background: "#ffffff",
+      background: "transparent",
       "box-shadow": "none",
     });
     const railButtons = panelRail ? Array.from(panelRail.querySelectorAll(":scope > button")) : [];
