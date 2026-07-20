@@ -93,7 +93,8 @@
     "test:saved-redemption-transactions": "node scripts/test-saved-redemption-transactions.mjs",
     "test:discount-calculator": "node scripts/test-discount-calculator.mjs",
     "test:borderless-panel-surfaces": "node scripts/test-borderless-panel-surfaces.mjs",
-    "test:global-back-navigation": "node scripts/test-global-back-navigation.mjs"
+    "test:global-back-navigation": "node scripts/test-global-back-navigation.mjs",
+    "test:governance-foundation": "node scripts/test-governance-foundation.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

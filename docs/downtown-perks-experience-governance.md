@@ -2,6 +2,8 @@
 
 This document overrides previous UI guidance when conflicts appear.
 
+For resident civic participation, the canonical pre-implementation specification is [Resident Governance Platform — Volume 2](./governance/resident-governance-platform-v2.md). Its foundation gate must be approved before governance schema, API, AI, or production UI work begins.
+
 ## Governing Philosophy
 
 Start with the philosophy before applying any component, layout, copy, map, drawer, report, campaign, or partner rule:
