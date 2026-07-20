@@ -6,6 +6,8 @@ Version: 2.0
 
 Status: canonical pre-implementation specification
 
+Revision: experience-complete civic intelligence contract
+
 Audience: product, design, content, engineering, data, security, board operations, and QA
 
 ## 1. Product objective
@@ -59,6 +61,26 @@ AI may summarize, classify, suggest, cluster, retrieve, and draft. It may not pu
 ### 2.5 Map first, not map only
 
 Every location-relevant civic object can appear on the map. The map is a view of the shared object, not a second content system. Non-geographic objects remain discoverable without forcing a pin.
+
+### 2.6 A consultation is living civic work
+
+Do not reduce a consultation to a survey and an export. It is a connected public process:
+
+```text
+Campaign
+-> consultation
+-> progressive questions
+-> map and evidence
+-> discussion
+-> reviewed analysis
+-> board view
+-> resident report
+-> accountable actions
+-> partner collaboration
+-> published outcome
+```
+
+The survey is one way to contribute. The map, discussion, meeting record, project timeline, resident report, and outcome remain available as views of the same work.
 
 ## 3. Resident navigation
 
@@ -142,12 +164,14 @@ Success: the resident can explain what needs attention and what they can do with
 2. Overview states the decision being informed, responsible organization, participation window, privacy treatment, and expected next update.
 3. Resident reviews the timeline, location, documents, partners, discussion, and related objects.
 4. Resident chooses `Share your perspective`.
-5. The consultation asks only relevant questions using progressive steps.
-6. A selected priority may reveal a tailored branch; unrelated branches remain hidden.
-7. Resident may attach a location or evidence when relevant.
-8. Review step shows exactly what will be submitted and whether the contribution is public, anonymous, or private.
-9. Submission creates one contribution and one immutable submission event.
-10. Confirmation explains what happens next and offers Follow or View related work.
+5. Before the first question, the resident sees a realistic time estimate, current step, total steps, and visible progress. A typical compact flow may read `About 5 minutes · Step 2 of 6`.
+6. The consultation asks one relevant question at a time using progressive steps.
+7. A selected priority reveals a tailored branch; unrelated branches remain hidden. For example, choosing Accessibility can ask whether the resident personally encountered a barrier, then offer a location picker, evidence upload, and short description. Transportation questions must not appear merely because they exist in the same instrument.
+8. Resident may attach a location or evidence when relevant.
+9. An optional conversational step can ask concise follow-up questions such as where, when, frequency, and who is affected. Suggested categories remain editable and are never silently applied.
+10. Review step shows exactly what will be submitted and whether the contribution is public, anonymous, or private.
+11. Submission creates one contribution and one immutable submission event.
+12. Confirmation explains what happens next and offers Follow or View related work.
 
 The system must preserve a draft locally and server-side for authenticated residents. Anonymous participation, when allowed, uses a separate consent and recovery model.
 
@@ -186,18 +210,19 @@ Duplicate detection must never silently merge submissions. The resident chooses,
 6. AI-generated material remains labeled `Draft` until board review and publication.
 7. Resident can trace a decision from meeting to project, issue, consultation, and outcome.
 
-### 5.6 Submit a candidate-forum question
+### 5.6 Build or support a civic question
 
 1. Resident opens the active question call.
 2. Neutrality statement appears before the form.
-3. Resident selects an issue topic, writes a respectful issue-focused question, optionally explains why it matters, and selects public attribution preference.
-4. Similar public questions are suggested.
-5. Resident may support an existing question or submit a distinct one.
-6. Submission status begins as `received`.
-7. Board moderation may clarify wording but must retain the original text and an edit history.
-8. Approved questions can be sent to the event organizer.
-9. Publication records whether the question was submitted, asked, answered, or not selected.
-10. Resident receives the outcome if notifications were requested.
+3. Resident starts with the question in their own words. The product may suggest clear issue categories such as Transportation, Construction, Downtown access, Business impact, or Accessibility.
+4. Resident reviews and may change every suggested category before continuing.
+5. Similar public questions are shown with their topic, supporter count, status, and a plain-language explanation of why they may match.
+6. Resident may support an existing question or submit a distinct one. The product must never pressure a resident to accept a suggested duplicate.
+7. Submission status begins as `received`.
+8. Board moderation may clarify wording but must retain the original text and an edit history.
+9. Approved questions can be sent to the event organizer.
+10. Publication records whether the question was submitted, asked, answered, or not selected.
+11. Resident receives the outcome if notifications were requested.
 
 No candidate endorsement, ranking, donation, campaign coordination, or vote-intent feature is permitted.
 
@@ -270,6 +295,18 @@ Each pulse item must show:
 - last updated time.
 
 Never show false precision. A percentage must have a defined numerator, denominator, time window, and minimum cohort threshold.
+
+### 6.4 Five connected resident experiences
+
+Governance must feel like one resident product expressed through five connected experiences:
+
+1. **Share your perspective** — progressive, adaptive questions with saved progress and a clear review step.
+2. **Show where it is happening** — an optional map location, category, evidence, nearby-match check, and non-map alternative.
+3. **Tell the story** — a short resident-led conversation that asks only useful follow-up questions and returns editable suggestions.
+4. **See your contributions** — completed consultations, supported questions, followed work, responses, and next updates in one resident history.
+5. **Follow what changed** — a public timeline from participation through review, recommendation, implementation, completion, and any unresolved follow-up.
+
+These are not separate products. They use the same contribution, object, relationship, and event records.
 
 ## 7. Screen and UI state matrix
 
@@ -656,6 +693,31 @@ Each organization workspace receives role-scoped views of:
 - approved AI drafting tools.
 
 Organizations do not receive duplicate copies of shared objects. Ownership, participation, responsibility, and visibility are relationship roles.
+
+### 13.1 DANA workspace
+
+DANA needs board, committee, meeting, project, resident-question, issue, consultation, report, transparency, document, budget, and communication views. The first screen should lead with decisions due, resident input awaiting review, actions without an owner, and records ready to publish—not a module directory.
+
+### 13.2 Downtown Austin Alliance workspace
+
+Downtown Austin Alliance needs initiative and construction updates, public-realm projects, activations, resident questions, shared issues, documents, milestones, partner comments, and thresholded participation reporting. A waterfront or streetscape project must remain the same canonical project when DANA, DAA, and residents view it.
+
+### 13.3 Waterloo Greenway workspace
+
+Waterloo Greenway needs trail and park improvements, environmental stewardship, volunteer work, tree projects, construction updates, events, consultations, partnership responsibilities, and measured outcomes. Event attendance and volunteer activity may relate to a project but must not be copied into a second project record.
+
+### 13.4 Workspace decision contract
+
+Every organization workspace must answer:
+
+1. What needs attention now?
+2. What did residents say?
+3. What evidence supports it?
+4. Who is responsible for the next action?
+5. What can be published now?
+6. What will residents see next?
+
+AI-produced themes, summaries, questions, minutes, newsletters, website copy, and social copy remain drafts until an authorized person approves them.
 
 ## 14. Accessibility and inclusive participation
 
