@@ -12,6 +12,8 @@ for (const path of [specificationPath, gatePath, indexPath]) {
 const specification = readFileSync(specificationPath, "utf8");
 const gate = readFileSync(gatePath, "utf8");
 const index = readFileSync(indexPath, "utf8");
+const appRoutes = readFileSync("src/App.jsx", "utf8");
+const residentHome = readFileSync("src/pages/ResidentHome.tsx", "utf8");
 
 const requiredSections = [
   "Complete resident journeys",
@@ -35,5 +37,8 @@ assert.match(specification, /The LLM is stateless\. Downtown Perks owns memory/,
 assert.match(specification, /Every drawer stays within the visible viewport/, "Governance panel containment is missing");
 assert.match(gate, /Schema and API implementation begins only after/, "Foundation approval gate is not enforceable");
 assert.match(index, /does not authorize:[\s\S]*creating production tables/, "Pre-implementation scope boundary is missing");
+assert.match(appRoutes, /path="\/residents\/governance" element={<ResidentGovernance \/>}/, "Canonical resident governance route is missing");
+assert.match(appRoutes, /path="\/resident\/governance" element={<Navigate to="\/residents\/governance" replace \/>}/, "Legacy resident governance route must redirect to the canonical route");
+assert.match(residentHome, /to="\/residents\/governance"/, "Resident home must link to the canonical governance route");
 
 console.log("Governance Volume 2 foundation covers all seven required implementation gates: PASS");

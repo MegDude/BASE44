@@ -281,7 +281,7 @@ export default function ResidentHome() {
           </section>
           <section className="dp-resident-directory-section dp-resident-dana-question" aria-labelledby="dana-question-title">
             <Landmark aria-hidden="true" />
-            <div><small>Downtown update</small><h2 id="dana-question-title">Waterloo Greenway weekend festival</h2><p>See what is happening nearby and answer one short community question.</p><Link to="/resident/governance">See community updates</Link></div>
+            <div><small>Downtown update</small><h2 id="dana-question-title">Waterloo Greenway weekend festival</h2><p>See what is happening nearby and answer one short community question.</p><Link to="/residents/governance">See community updates</Link></div>
           </section>
 
         </div>

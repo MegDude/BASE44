@@ -98,7 +98,7 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/resident/home" ||
-    pathname === "/resident/governance" ||
+    pathname === "/residents/governance" ||
     isResidentAccessRoute ||
     pathname === "/about" ||
     pathname === "/map" ||
@@ -148,11 +148,11 @@ export default function Layout() {
     pathname !== "/app/map" &&
     pathname !== "/map" &&
     pathname !== "/resident/home" &&
-    pathname !== "/resident/governance" &&
+    pathname !== "/residents/governance" &&
     !isEmbeddedMap &&
     !isResidentAccessRoute &&
     !pathname.startsWith("/partner-workspace");
-  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/resident/governance";
+  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/residents/governance";
   const usesPersistentProductNavigation =
     pathname === "/app" ||
     pathname === "/app/map" ||

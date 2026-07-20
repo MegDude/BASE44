@@ -94,7 +94,7 @@ The resident product supports seven first-class destinations:
 | Map | Place and civic discovery | `/map?mode=resident` |
 | Perks | Eligible offers and resident value | `/map?mode=resident&tab=perks` |
 | Events | Nearby events and meetings | `/map?mode=resident&tab=events` |
-| Governance | Civic participation and progress | `/resident/governance` |
+| Governance | Civic participation and progress | `/residents/governance` |
 | Card | Resident pass and eligibility | `/resident/home?panel=card` |
 | Profile | Preferences, notifications, privacy, and history | `/resident/profile` |
 

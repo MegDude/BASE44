@@ -178,7 +178,8 @@ function ProductRoutes() {
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
           <Route path="/resident/home" element={<ResidentHome />} />
-          <Route path="/resident/governance" element={<ResidentGovernance />} />
+          <Route path="/resident/governance" element={<Navigate to="/residents/governance" replace />} />
+          <Route path="/residents/governance" element={<ResidentGovernance />} />
           <Route path="/residents/membership" element={<Suspense fallback={<MarketingFallback />}><ResidentMembership /></Suspense>} />
           <Route path="/residents/login" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
           <Route path="/residents/welcome" element={<Suspense fallback={<MarketingFallback />}><ResidentWelcome /></Suspense>} />
