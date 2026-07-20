@@ -8615,19 +8615,19 @@ function getBrandPerkRailImage(entity) {
   if (/stagger\s+lee/.test(text)) return "/images/imported/perks/happy-hour-2.png";
   if (/emmer|rye/.test(text)) return "/images/map-entities/rainey-bars/emmer-rye-bread.png";
   if (/half\s+step/.test(text)) return "/images/restaurants/half-step.jpg";
-  if (/waterline/.test(text)) return "/images/map-pins/property/waterline-building.jpg";
-  if (/70\s*rainey|seventy\s*rainey/.test(text)) return "/images/map-pins/property/70-rainey-sky-garden.jpeg";
-  if (/natiivo/.test(text)) return "/images/map-pins/property/natiivo-building.jpg";
-  if (/w\s*austin|210\s*lavaca/.test(text)) return "/images/map-pins/property/w-austin-residences-210-lavaca.jpg";
-  if (/quincy/.test(text)) return "/images/map-pins/property/the-quincy-building.webp";
-  if (/fifth\s+and\s+west|5th\s+and\s+west|501\s+west/.test(text)) return "/images/map-pins/property/fifth-and-west-building.jpeg";
-  if (/\bpaseo\b/.test(text)) return "/images/map-pins/property/paseo-pool.webp";
-  if (/austin\s+proper/.test(text)) return "/images/map-pins/property/austin-proper-bar.jpeg";
-  if (/200\s+congress/.test(text)) return "/images/map-pins/property/200-congress-austin.jpg";
-  if (/equinox/.test(text)) return "/images/map-pins/property/equinox-austin.jpg";
+  if (/waterline/.test(text)) return "/images/reports/waterline-building.jpg";
+  if (/70\s*rainey|seventy\s*rainey/.test(text)) return "/images/reports/70-rainey-sky-garden.jpeg";
+  if (/natiivo/.test(text)) return "/images/reports/natiivo-building.jpg";
+  if (/w\s*austin|210\s*lavaca/.test(text)) return "/images/reports/w-austin-residences-210-lavaca.jpg";
+  if (/quincy/.test(text)) return "/images/reports/the-quincy-building.webp";
+  if (/fifth\s+and\s+west|5th\s+and\s+west|501\s+west/.test(text)) return "/images/reports/fifth-and-west-building.jpeg";
+  if (/\bpaseo\b/.test(text)) return "/images/reports/paseo-pool.webp";
+  if (/austin\s+proper/.test(text)) return "/images/reports/austin-proper-bar.jpeg";
+  if (/200\s+congress/.test(text)) return "/images/reports/200-congress-austin.jpg";
+  if (/equinox/.test(text)) return "/images/reports/equinox-austin.jpg";
   if (/fairmont/.test(text)) return "/images/map-pins/property/fairmont-austin.jpg";
-  if (/shore/.test(text)) return "/images/map-pins/property/the-shore-austin.jpg";
-  if (/independent|301\s+west/.test(text)) return "/images/map-pins/property/the-independent-301-west.jpg";
+  if (/shore/.test(text)) return "/images/reports/the-shore-austin.jpg";
+  if (/independent|301\s+west/.test(text)) return "/images/reports/the-independent-301-west.jpg";
   return "";
 }
 

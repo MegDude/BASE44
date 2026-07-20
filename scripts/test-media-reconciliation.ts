@@ -1,9 +1,27 @@
 import fs from "node:fs";
+import path from "node:path";
 import { parse } from "csv-parse/sync";
 import { entityMediaManifest } from "../src/data/media/entityMediaManifest";
 import { mapCollections } from "../src/data/mapCollections";
 
 const failures: string[] = [];
+
+const sourceFiles = fs.readdirSync("src", { recursive: true, encoding: "utf8" })
+  .filter((file) => /\.(?:[cm]?[jt]sx?|json|csv)$/i.test(file));
+const literalImagePattern = /["'`](\/images\/[^"'`?#\s)]+\.(?:png|jpe?g|webp|avif|gif|svg))/gi;
+const checkedImagePaths = new Set<string>();
+
+for (const relativeFile of sourceFiles) {
+  const sourcePath = path.join("src", relativeFile);
+  const source = fs.readFileSync(sourcePath, "utf8");
+  for (const match of source.matchAll(literalImagePattern)) {
+    const imagePath = match[1];
+    if (imagePath.includes("${")) continue;
+    checkedImagePaths.add(imagePath);
+    if (!fs.existsSync(path.join("public", imagePath))) failures.push(`${sourcePath}: missing ${imagePath}`);
+  }
+}
+
 let mediaCount = 0;
 for (const [entityId, entry] of Object.entries(entityMediaManifest)) {
   for (const item of [entry.hero, ...(entry.gallery || [])]) {
@@ -33,4 +51,4 @@ for (const row of hospitality.filter((item: Record<string, string>) => item.reco
 }
 
 if (failures.length) throw new Error(`Media reconciliation validation failed:\n${failures.join("\n")}`);
-console.log(JSON.stringify({ manifestEntities: Object.keys(entityMediaManifest).length, mediaAssignments: mediaCount, collections: mapCollections.length, residentialRecords: residential.length, hospitalityRecords: hospitality.length, status: "passed" }, null, 2));
+console.log(JSON.stringify({ manifestEntities: Object.keys(entityMediaManifest).length, mediaAssignments: mediaCount, checkedImagePaths: checkedImagePaths.size, collections: mapCollections.length, residentialRecords: residential.length, hospitalityRecords: hospitality.length, status: "passed" }, null, 2));
