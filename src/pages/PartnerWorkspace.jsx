@@ -1659,6 +1659,10 @@ function NativeMobileWorkspaceDashboard({
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
       <section className="dp-native-mobile-hero">
+        <p className="dp-native-mobile-kicker">{organization?.name || "Partner overview"}</p>
+        <h1>{heroMedia.headline}</h1>
+        <p className="dp-native-mobile-hero-summary">{heroMedia.summary}</p>
+        <div className="dp-native-mobile-meta"><span>{ownedEntities.length} connected places</span><span>Austin · Downtown</span></div>
         <figure className="dp-workspace-home-hero-media">
           <img
             src={heroMedia.src}
@@ -1669,11 +1673,8 @@ function NativeMobileWorkspaceDashboard({
             decoding="async"
             style={{ "--dp-workspace-hero-position": heroMedia.position }}
           />
-          <figcaption>{heroMedia.caption}</figcaption>
+          <figcaption><span>{heroMedia.label}</span><strong>{heroMedia.caption}</strong></figcaption>
         </figure>
-        <p className="dp-native-mobile-kicker">Good morning</p>
-        <h1>{organization?.name || "Partner workspace"}</h1>
-        <div className="dp-native-mobile-meta"><span>Managing now</span><span>Austin · Downtown</span></div>
         <strong className="dp-native-mobile-hero-value">{heroMetric}</strong>
         <span className="dp-native-mobile-hero-label">{heroLabel}</span>
         <small className="dp-native-mobile-hero-source">{heroSource}</small>
@@ -1819,8 +1820,8 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         <div className="dp-workspace-home-hero-copy">
           <div>
             <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
-            <h1>See what needs attention and what is working.</h1>
-            <p>Review the places connected to this workspace, publish the next useful update, and see the results that should guide the next decision.</p>
+            <h1>{heroMedia.headline}</h1>
+            <p>{heroMedia.summary}</p>
           </div>
           <span className="dp-operating-status"><i aria-hidden="true" />Workspace active · {selectedOrganization?.plan || activation?.plan || "Enterprise"}</span>
         </div>
@@ -1834,7 +1835,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
             decoding="async"
             style={{ "--dp-workspace-hero-position": heroMedia.position }}
           />
-          <figcaption>{heroMedia.caption}</figcaption>
+          <figcaption><span>{heroMedia.label}</span><strong>{heroMedia.caption}</strong></figcaption>
         </figure>
       </section>
 
