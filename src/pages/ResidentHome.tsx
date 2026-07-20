@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound, X } from "lucide-react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 
@@ -103,6 +103,8 @@ function weekdayForNow() {
 
 export default function ResidentHome() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const requestedPanel = searchParams.get("panel");
   const panel: HomePanel = requestedPanel === "perks" || requestedPanel === "card" ? requestedPanel : "home";
   const savedIds = useSavedStore((state) => state.savedIds);
@@ -135,6 +137,14 @@ export default function ResidentHome() {
     if (tabId === "home" || tabId === "perks" || tabId === "card") openPanel(tabId);
   }
 
+  function closeResidentHome() {
+    if (location.key !== "default") {
+      navigate(-1);
+      return;
+    }
+    navigate("/map?mode=resident&tab=map&filter=All");
+  }
+
   const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : "home";
   const firstName = resident?.fullName?.trim()?.split(/\s+/)[0] || "";
   const greeting = `${greetingForNow()}${firstName ? `, ${firstName}` : ""}.`;
@@ -150,6 +160,7 @@ export default function ResidentHome() {
           <div className="dp-resident-command-actions" aria-label="Resident shortcuts">
             <Link to="/map?mode=resident&tab=map&filter=All&console=expanded" aria-label="Search Downtown Perks"><Search aria-hidden="true" /></Link>
             <button type="button" onClick={() => openPanel("card")} aria-label="Open resident profile"><UserRound aria-hidden="true" /></button>
+            <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home"><X aria-hidden="true" /></button>
           </div>
         ) : (
           <button

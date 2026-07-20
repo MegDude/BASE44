@@ -17,6 +17,9 @@ assert.match(layout, /usesPersistentProductNavigation/, "Persistent product shel
 assert.match(residentHome, /className="dp-resident-header-back"/, "Resident subpanels do not use the compact Back action");
 assert.match(residentHome, /data-page-back="true"/, "Resident Back action is not registered as contextual navigation");
 assert.match(residentHome, /<ArrowLeft aria-hidden="true" \/>/, "Resident Back action is missing its directional icon");
+assert.match(residentHome, /className="dp-resident-home-close"/, "Resident Home does not provide a close action");
+assert.match(residentHome, /aria-label="Close resident home"/, "Resident Home close action is not accessible");
+assert.match(residentHome, /location\.key !== "default"[\s\S]*navigate\(-1\)[\s\S]*\/map\?mode=resident&tab=map&filter=All/, "Resident Home close action does not preserve history or provide a direct-entry fallback");
 assert.doesNotMatch(residentHome, />Done<|>Done<\/button>/, "The vague Done action remains in Resident Home");
 
 assert.match(backStyles, /\.dp-layout-back/, "Shared Back control styling is missing");
