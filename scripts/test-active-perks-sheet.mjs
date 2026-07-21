@@ -40,11 +40,15 @@ assert.match(panelNavigationSource, /window\.sessionStorage/, "panel history mus
 assert.match(geometryCss, /data-drawer-state="expanded"/);
 assert.match(geometryCss, /var\(--dp-bottom-nav-total-height\)/);
 assert.match(sheetCss, /min-(?:width|height):\s*44px/);
-assert.match(sheetCss, /width:\s*72px/);
+assert.match(sheetCss, /\.dp-active-perks-handle\s*\{[^}]*width:\s*100%[^}]*min-width:\s*100%[^}]*min-height:\s*44px[^}]*place-items:\s*center/s, "the drawer handle must own a centered full-width touch rail");
+assert.match(sheetCss, /\.dp-active-perks-sheet\s+\.dp-active-perks-handle\s*\{[^}]*width:\s*100%\s*!important[^}]*place-items:\s*center\s*!important/s, "the centered handle must win the shared control cascade");
+assert.match(sheetCss, /\.dp-active-perk-actions\s*>\s*button:first-child\s*\{[^}]*white-space:\s*nowrap/s, "the Redeem action must never wrap or clip");
+assert.match(sheetCss, /grid-template-columns:\s*64px\s+minmax\(0,\s*1fr\)/);
 assert.match(sheetCss, /max-width:\s*760px/);
 assert.doesNotMatch(sheetCss, /#[0-9a-f]{3,8}/i, "the sheet stylesheet must use design tokens only");
 assert.doesNotMatch(sheetCss, /border-radius:\s*(?:999|9999)px/i, "pill geometry is forbidden");
 assert.match(mainSource, /styles\/active-perks-sheet\.css/, "the canonical sheet stylesheet must be loaded globally");
+assert.ok(mainSource.lastIndexOf("styles/active-perks-sheet.css") > mainSource.lastIndexOf("styles/resident-home-ios-native-final.css"), "the scoped sheet contract must load after shared resident surface rules");
 assert.match(mainSource, /styles\/native-drawer-geometry-final\.css/, "the shared drawer geometry must be loaded globally");
 
 console.log("Active perks sheet regression checks passed.");

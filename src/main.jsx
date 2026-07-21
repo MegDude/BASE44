@@ -82,7 +82,6 @@ import "@/styles/workspace-context-native-final.css"
 import "@/styles/workspace-profile-save-final.css"
 import "@/styles/collection-route-panels-final.css"
 import "@/styles/ios-fullscreen-map-panels-final.css"
-import "@/styles/active-perks-sheet.css"
 import "@/styles/partner-info-opening-final.css"
 import "@/styles/bright-white-surface-containment-final.css"
 import "@/styles/workspace-operating-system.css"
@@ -121,6 +120,7 @@ import "@/styles/borderless-panel-content-final.css"
 import "@/styles/resident-qr-modal-final.css"
 import "@/styles/partner-workspace-journeys-final.css"
 import "@/styles/resident-home-ios-native-final.css"
+import "@/styles/active-perks-sheet.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
