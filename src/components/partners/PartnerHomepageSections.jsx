@@ -421,7 +421,7 @@ export function DynamicIntakeWorkflow() {
             <button type="button">
               {activePartner.cta || "Start the Pilot"}
             </button>
-            <p>This connects to the partner pilot workflow. Workspace setup begins after intake review.</p>
+            <p>This starts the partner pilot. Workspace setup begins after the review.</p>
           </div>
         </form>
       </div>

@@ -46,7 +46,7 @@ const forms = [
       { name: "address", label: "Street Address", type: "text" },
       { name: "perk", label: "What perk will you offer?", type: "text" },
     ],
-    cta: "Discuss Activation",
+    cta: "Plan a Campaign",
   },
   {
     id: "brands",

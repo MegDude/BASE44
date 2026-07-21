@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { CalendarDays, ChevronRight, MapPin, Route, Sparkles } from "lucide-react";
 import { formatDistanceLabel } from "@/utils/nearbyRecommendations";
 
@@ -11,10 +13,6 @@ const NAV_ITEMS = [
   ["nearby", "Nearby"],
   ["guide", "Guide"],
 ];
-
-function scrollToSection(sectionId) {
-  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
 function Section({ id, title, description, children }) {
   return (
@@ -40,12 +38,81 @@ function PlaceRow({ place, meta, onSelect }) {
 export default function BuildingExperienceModule({ building, experience, mode = "resident", onSelect, onExplore, onOpenRoute }) {
   const isPartner = mode === "partner";
   const campaignRoute = `/partner-workspace/campaigns?entityId=${encodeURIComponent(building.id)}`;
+  const hostRef = useRef(null);
+  const navRef = useRef(null);
+  const [activeSection, setActiveSection] = useState(NAV_ITEMS[0][0]);
+  const reduceMotion = useReducedMotion();
+
+  const scrollToSection = (sectionId, sourceButton) => {
+    const target = hostRef.current?.querySelector(`#building-${sectionId}`);
+    if (!target) return;
+
+    setActiveSection(sectionId);
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    sourceButton?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest", inline: "center" });
+  };
+
+  useEffect(() => {
+    const host = hostRef.current;
+    const nav = navRef.current;
+    if (!host || !nav || typeof IntersectionObserver === "undefined") return undefined;
+
+    const scrollRoot = nav.closest(".dp-map-detail-scroll, .dp-map-panel-scroll, .dp-drawer-scroll, [data-panel-scroll]");
+    const sections = NAV_ITEMS.map(([id]) => host.querySelector(`#building-${id}`)).filter(Boolean);
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => {
+          if (b.intersectionRatio !== a.intersectionRatio) return b.intersectionRatio - a.intersectionRatio;
+          return Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top);
+        });
+
+      const nextId = visible[0]?.target.id.replace("building-", "");
+      if (nextId) setActiveSection(nextId);
+    }, {
+      root: scrollRoot || null,
+      rootMargin: "-12% 0px -64% 0px",
+      threshold: [0, 0.12, 0.32],
+    });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [building.id]);
+
+  useEffect(() => {
+    const activeButton = navRef.current?.querySelector(`[data-building-nav="${activeSection}"]`);
+    activeButton?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest", inline: "center" });
+  }, [activeSection, reduceMotion]);
 
   return (
-    <div className="dp-system dp-building-experience-host">
+    <div ref={hostRef} className="dp-system dp-building-experience-host">
     <div className="dp-building-experience" data-building-experience={building.id}>
-      <nav className="dp-building-experience-nav" aria-label={`${building.name} sections`}>
-        {NAV_ITEMS.map(([id, label]) => <button key={id} type="button" onClick={() => scrollToSection(`building-${id}`)}>{label}</button>)}
+      <nav ref={navRef} className="dp-building-experience-nav" aria-label={`${building.name} sections`}>
+        {NAV_ITEMS.map(([id, label]) => {
+          const isActive = activeSection === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              className={isActive ? "is-active" : undefined}
+              data-building-nav={id}
+              aria-current={isActive ? "location" : undefined}
+              onClick={(event) => scrollToSection(id, event.currentTarget)}
+            >
+              <span className="dp-building-experience-nav__label">{label}</span>
+              {isActive && (
+                <motion.span
+                  className="dp-building-experience-nav__indicator"
+                  layoutId={`building-experience-nav-${building.id}`}
+                  transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  aria-hidden="true"
+                />
+              )}
+            </button>
+          );
+        })}
       </nav>
 
       <Section id="building-overview" title="At a glance">

@@ -12,14 +12,14 @@ const FILTER_OPTIONS = {
   campaignFormat: [
     { id: 'founding', label: 'Founding Partner' },
     { id: 'launch', label: 'Launch Campaign' },
-    { id: 'resident', label: 'Resident Activation' },
+    { id: 'resident', label: 'Resident Campaign' },
     { id: 'event', label: 'Event-Led Campaign' },
     { id: 'utility', label: 'Utility Campaign' }
   ],
   placementType: [
     { id: 'building_qr', label: 'Building QR' },
     { id: 'venue', label: 'Venue Placement' },
-    { id: 'district', label: 'District Activation' },
+    { id: 'district', label: 'District Placement' },
     { id: 'event', label: 'Event Marker' },
     { id: 'redemption', label: 'Redemption Point' },
     { id: 'map', label: 'Map Discovery' }

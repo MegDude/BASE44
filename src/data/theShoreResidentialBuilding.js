@@ -89,6 +89,23 @@ export const theShoreResidentialBuilding = {
   subheadline: "A Rainey Street high-rise positioned between downtown Austin and Lady Bird Lake.",
   overview:
     "The Shore places residents within walking distance of the trail, waterfront, Rainey Street restaurants, Hotel Van Zandt, and the downtown core while maintaining a quieter residential feel along the lake.",
+  ninaInsight: {
+    headline: "The reason to choose The Shore is the contrast.",
+    summary:
+      "Trail-first mornings and Rainey evenings are close, while the building remains a residential base between them.",
+    bestFit:
+      "Best for buyers who want the lake, dining, and downtown close without living in the middle of every plan.",
+    tradeOff:
+      "Rainey is active. Tour when you expect to be home and listen from the residence, balcony, and common areas.",
+    verify:
+      "Confirm HOA costs, parking, guest rules, current amenities, and any Hotel Van Zandt access before relying on them.",
+    suggestedUpdates: [
+      ["Lead with the contrast", "Position the home around trail mornings, walkable evenings, and a quieter place to return to."],
+      ["Add decision proof", "Show the actual view direction, floor plan, balcony, monthly costs, parking, storage, and verified amenities."],
+      ["Separate proximity from access", "Describe Hotel Van Zandt as nearby unless a specific resident-access benefit is confirmed."],
+      ["Make the week visible", "Add verified walk times for the trail, dining, groceries, and the places a resident would use repeatedly."],
+    ],
+  },
   snapshot: [
     ["Address", "603 Davis Street"],
     ["Neighborhood", "Rainey District"],

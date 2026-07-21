@@ -15,8 +15,8 @@ import { FAQ_RESIDENTIAL } from '@/lib/faq-partner-data';
 const RESIDENTIAL_FEATURES = [
   {
     id: 'resident-activation',
-    label: 'Resident Activation',
-    description: 'Residents discover venues, events, and perks directly from your building app or onboarding',
+    label: 'Resident access',
+    description: 'Residents find nearby venues, events, and perks from your building app or welcome link',
     stats: [
       { label: 'Avg engagement', value: '73%' },
       { label: 'Repeat usage', value: '52%' },
