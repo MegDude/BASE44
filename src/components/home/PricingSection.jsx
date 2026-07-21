@@ -80,7 +80,7 @@ export default function PricingSection() {
           >
             Start free where it fits. Partner subscriptions are annual, with venue plans starting at $360/year.
             <span className="block mt-2 text-[12px] text-muted-foreground/60 italic">
-              Final pricing reflects footprint, visibility, and activation.
+              Final pricing reflects locations, placements, and campaign scope.
             </span>
           </motion.p>
         </div>

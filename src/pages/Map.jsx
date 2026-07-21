@@ -52,11 +52,10 @@ import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
 import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
-import { useAuth } from "@/lib/AuthContext";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
-import { useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
+import { isCanonicalEventMapTarget, useSearchDrivenMapEntities } from "@/hooks/useSearchDrivenMapEntities";
 import { useMapPanelNavigation } from "@/hooks/useMapPanelNavigation";
 import { directionsUrl, campaignRoute, mapRoutes } from "../lib/map/mapActionRegistry";
 import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyListingUrlId, resolvePropertyUrlEntityId } from "../lib/mapEntityAliases";
@@ -81,6 +80,7 @@ import {
   legendsResidentialAnalytics,
 } from "@/data/legendsResidentialExperience";
 import { theShoreResidentialBuilding } from "@/data/theShoreResidentialBuilding";
+import { theModernNinaInsight } from "@/data/residentialEditorialInsights";
 import { brandCampaignExamples, liveCampaignLayerExamples } from "@/data/campaignLayerExamples";
 import { getBrandActivationIntelligence, getBrandActivationRoutesForEntity } from "@/data/brandActivationIntelligence";
 import { DAA_TOUR_STOP_COUNT, daaArtWalkImages, getDaaTourStopById } from "@/data/daaArtParksTour";
@@ -2601,6 +2601,7 @@ function isIntentOnlyFilter(activeFilter) {
 }
 
 function matchesFilter(place, activeFilter, savedIds) {
+  if (activeFilter === "Events" && isCanonicalEventMapTarget(place)) return true;
   const intentMatch = entityMatchesSearchIntent(place, activeFilter);
   if (intentMatch !== null) return intentMatch;
   if (["Open Now", "Tonight", "This Week", "Scans", "Saves", "Redemptions", "Opportunities", "Performance", "Opportunity", "Coverage", "Audience", "Stories", "Surveys", "Broadcasts", "Activations"].includes(activeFilter)) return true;
@@ -3672,13 +3673,13 @@ function getZoomScaledMarkerSize(zoom, baseSize) {
 }
 
 function getZoomMarkerMetrics(zoom, { selected = false, clusterCount = 0 } = {}) {
-  const pinSize = 32;
+  const pinSize = getZoomScaledMarkerSize(zoom, selected ? 32 : 28);
   const clusterBase = clusterCount > 49 ? 42 : clusterCount > 9 ? 36 : 30;
   const clusterSize = getZoomScaledMarkerSize(zoom, clusterBase);
   return {
     pinSize,
-    pinIconSize: 15,
-    legendsLogoSize: 28,
+    pinIconSize: Math.max(13, Math.round(pinSize * 0.48)),
+    legendsLogoSize: Math.max(17, Math.round(pinSize * 0.66)),
     stopNumberSize: Math.max(14, Math.round(pinSize * 0.43)),
     clusterSize,
     largeClusterSize: getZoomScaledMarkerSize(zoom, 46),
@@ -3788,6 +3789,11 @@ function getMarkerDataKind(place) {
   return String(place?.type || "place").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
+const LEGENDS_LOGO_SVG_PATHS = `
+  <path d="M60 75 48.6 50.4 28 68.8 17.5 42.2 4 30.8 24.1 8.2 51.6 23.8 60 12.6l8.4 11.2L95.9 8.2 116 30.8l-13.5 11.4L92 68.8 71.4 50.4 60 75Z" fill="none" stroke="#C8A96A" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M24.1 8.2 28 68.8M51.6 23.8 28 68.8M51.6 23.8 48.6 50.4M68.4 23.8 71.4 50.4M95.9 8.2 92 68.8M68.4 23.8 92 68.8M60 12.6v62.4M48.6 50.4h22.8" fill="none" stroke="#C8A96A" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
+`;
+
 function mapIconSvgInner(glyph) {
   return String(glyph || "").match(/<svg[^>]*>([\s\S]*?)<\/svg>/i)?.[1] || "";
 }
@@ -3847,23 +3853,30 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const isLegends = isLegendsMapPlace(place) || getLegendsListing(place);
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
-  const pin = resolveEntityPin(place);
-  if (pin.asset) {
-    const markerWidth = size;
-    const markerHeight = size;
+  if (isLegends) {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 120 120">
+        <g transform="translate(0 16)">${LEGENDS_LOGO_SVG_PATHS}</g>
+        ${stopNumber ? `<circle cx="108" cy="14" r="10" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.6"/><text x="108" y="15" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
+      </svg>`;
     return {
-      url: isLegends ? LEGENDS_PIN_LOGO : pin.asset,
-      scaledSize: new maps.Size(markerWidth, markerHeight),
-      anchor: new maps.Point(markerWidth / 2, markerHeight / 2),
+      url: svgMarkerDataUrl(svg),
+      scaledSize: new maps.Size(size, size),
+      anchor: new maps.Point(size / 2, size / 2),
     };
   }
+  const fill = "#0B1F33";
+  const stroke = "#C8A96A";
+  const iconColor = "#C8A96A";
+  const pin = resolveEntityPin(place);
   const paths = mapIconSvgInner(pin.glyph);
-  const iconColor = selected ? "#B8963E" : "#0B1F33";
+  const iconSize = Math.max(18, Math.round(size * 0.5));
+  const iconScale = Math.max(0.75, size / 48);
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <g transform="translate(4 4)" color="#FFFFFF" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
-      <g transform="translate(4 4)" color="${iconColor}" fill="none" stroke="${iconColor}" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
-      ${stopNumber ? `<text x="28" y="8" dominant-baseline="middle" text-anchor="middle" paint-order="stroke" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
+    <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="${selected ? stroke : fill}" stroke="${selected ? fill : stroke}" stroke-width="1.35"/>
+      <g transform="translate(${size / 2 - iconSize / 2} ${size / 2 - iconSize / 2}) scale(${iconScale})" color="${selected ? fill : iconColor}" fill="none" stroke="${selected ? fill : iconColor}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${paths}</g>
+      ${stopNumber ? `<circle cx="${size - 7}" cy="7" r="6" fill="#FFFFFF" stroke="#0B1F33" stroke-width="1.2"/><text x="${size - 7}" y="7.6" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="800" fill="#0B1F33">${Math.min(stopNumber, 9)}</text>` : ""}
     </svg>`;
   return {
     url: svgMarkerDataUrl(svg),
@@ -3879,7 +3892,7 @@ function legacyDowntownClusterIcon(maps, count, zoom = 16) {
   const label = safeCount > 99 ? "99+" : String(safeCount);
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 2}" fill="#0B1F33" stroke="#C8A96A" stroke-width="1.35"/>
       <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="${size * 0.36}" font-weight="600" fill="#FFFFFF">${label}</text>
     </svg>`;
   return {
@@ -3921,10 +3934,8 @@ function getZoomRouteMetrics(zoom) {
 }
 
 function getClusterCellSize(zoom) {
-  if (zoom >= 19) return 0.00006;
-  if (zoom >= 18) return 0.0001;
-  if (zoom >= 17) return 0.00016;
-  if (zoom >= 16.5) return 0.00024;
+  if (zoom >= 17.5) return 0;
+  if (zoom >= 16.5) return 0;
   if (zoom >= 16) return 0.0012;
   if (zoom >= 15) return 0.003;
   if (zoom >= 14) return 0.0055;
@@ -6907,28 +6918,32 @@ function MapDetailHeader({ place, canGoBack, onBack, onClose, panelState = "medi
   };
   return (
     <header className="dp-map-panel-header dp-map-detail-header" aria-label="Detail navigation">
-      <button
-        type="button"
-        className="dp-native-detail-grabber"
-        aria-label={`Panel size: ${panelState}. Activate to ${panelState === "full" ? "collapse" : "expand"}.`}
-        aria-expanded={panelState === "full"}
-        onClick={() => movePanel(panelState === "full" ? -1 : 1)}
-        onPointerDown={(event) => { pointerStartRef.current = event.clientY; event.currentTarget.setPointerCapture?.(event.pointerId); }}
-        onPointerUp={(event) => {
-          const start = pointerStartRef.current;
-          pointerStartRef.current = null;
-          if (!Number.isFinite(start)) return;
-          const delta = event.clientY - start;
-          if (Math.abs(delta) >= 28) movePanel(delta < 0 ? 1 : -1);
-        }}
-      ><span aria-hidden="true" /></button>
       <nav className="dp-map-detail-navigation" aria-label="Panel controls">
-        {canGoBack ? (
-          <button type="button" onClick={onBack} className="dp-map-detail-back" aria-label="Back">
-            <ArrowLeft aria-hidden="true" />
-          </button>
-        ) : <span className="dp-map-detail-header-spacer" aria-hidden="true" />}
-        <span className="dp-map-detail-navigation-title">{place?.name || "Details"}</span>
+        <div className="dp-map-detail-leading">
+          {canGoBack ? (
+            <button type="button" onClick={onBack} className="dp-map-detail-back" aria-label="Back">
+              <ArrowLeft aria-hidden="true" />
+            </button>
+          ) : null}
+          <span className="dp-map-detail-navigation-title">{place?.name || "Details"}</span>
+        </div>
+        <button
+          type="button"
+          className="dp-native-detail-grabber"
+          aria-label={`Panel size: ${panelState}. Activate to ${panelState === "full" ? "collapse" : "expand"}.`}
+          aria-expanded={panelState === "full"}
+          onClick={() => movePanel(panelState === "full" ? -1 : 1)}
+          onPointerDown={(event) => { pointerStartRef.current = event.clientY; event.currentTarget.setPointerCapture?.(event.pointerId); }}
+          onPointerUp={(event) => {
+            const start = pointerStartRef.current;
+            pointerStartRef.current = null;
+            if (!Number.isFinite(start)) return;
+            const delta = event.clientY - start;
+            if (Math.abs(delta) >= 28) movePanel(delta < 0 ? 1 : -1);
+          }}
+        >
+          <span aria-hidden="true" />
+        </button>
         <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
           <X aria-hidden="true" />
         </button>
@@ -11264,25 +11279,6 @@ function TheShoreResidentialEntityDrawer({
       document.getElementById(contactFormId)?.scrollIntoView({ behavior: "smooth", block: "end" });
     }, 120);
   };
-  const partnerSnapshot = [
-    ["Address", `${building.address}, ${building.city}`],
-    ["District", building.district],
-    ["Available homes", String(building.availableHomes.length)],
-    ["Nearby places", "Rainey, Lady Bird Lake, Hotel Van Zandt"],
-  ];
-  const partnerExperienceRows = [
-    ["Resident guide", "Show dining, live music, trail access, Hotel Van Zandt, and everyday stops around The Shore."],
-    ["Resident campaign", "Create a simple welcome route for people living at The Shore and moving through Rainey."],
-    ["QR access", "Open this map view from lobby materials, resident email, leasing follow-up, or printed guides."],
-    ["Reporting", "Track saves, directions, QR scans, campaign opens, and contact requests tied to this location."],
-  ];
-  const partnerWorkspaceRows = [
-    ["Map listing", "The Shore appears as a residential property in the Rainey map layer."],
-    ["Nearby guide", "Residents can move from the building to dining, music, trail access, and downtown services."],
-    ["Campaign tools", "Create a resident launch, QR path, or nearby guide from the partner workspace."],
-    ["Report view", "Review map activity, saved places, directions, scans, and campaign engagement."],
-  ];
-
   return (
     <div className="dp-entity-drawer dp-shore-residential-drawer" role="document" data-shore-mode={isPartnerMode ? "partner" : "resident"}>
       <figure className="dp-entity-hero dp-entity-hero-image">
@@ -11309,54 +11305,32 @@ function TheShoreResidentialEntityDrawer({
             <Link to="/map?mode=partner&tab=reports" className="dp-entity-action">Open report</Link>
           </div>
 
-          <section className="dp-entity-section dp-shore-partner-lead">
-            <span className="dp-shore-partner-kicker">The Shore</span>
-            <h3>A Rainey residential address connected to downtown routines.</h3>
-            <p>
-              The Shore sits between Lady Bird Lake, Rainey Street, Hotel Van Zandt, and the downtown core.
-              This panel brings the building, nearby places, resident routes, campaigns, and reporting into one map view.
-            </p>
-            <p className="dp-shore-partner-statusline">Residents can use this view to understand what is nearby. Partners can use it to publish, route, and measure the neighborhood experience.</p>
-          </section>
-
-          <section className="dp-entity-section dp-shore-partner-snapshot">
-            <h3>Building snapshot</h3>
-            <div className="dp-entity-row-list">
-              {partnerSnapshot.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="dp-entity-section dp-shore-partner-context">
-            <h3>Resident context</h3>
-            <div className="dp-entity-row-list">
-              {building.partner.insights.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
-              ))}
-            </div>
+          <section className="dp-entity-section dp-shore-nina-read" aria-labelledby="shore-building-nina-read">
+            <p className="dp-shore-insight-kicker">Nina Seely's read</p>
+            <h3 id="shore-building-nina-read">{building.ninaInsight.headline}</h3>
+            <p>{building.ninaInsight.summary}</p>
+            <dl className="dp-shore-decision-read">
+              <div><dt>Best fit</dt><dd>{building.ninaInsight.bestFit}</dd></div>
+              <div><dt>Trade-off to test</dt><dd>{building.ninaInsight.tradeOff}</dd></div>
+              <div><dt>Verify first</dt><dd>{building.ninaInsight.verify}</dd></div>
+            </dl>
           </section>
 
           <section className="dp-entity-section dp-shore-partner-next">
-            <h3>Resident experience</h3>
-            <div className="dp-entity-row-list">
-              {partnerExperienceRows.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
+            <p className="dp-shore-insight-kicker">Recommended next move</p>
+            <h3>Run one measured resident pilot.</h3>
+            <p>Confirm one staff owner, one resident communication, and one useful offer for a 30-day test.</p>
+          </section>
+
+          <section className="dp-entity-section dp-shore-suggested-updates" aria-labelledby="shore-building-updates">
+            <h3 id="shore-building-updates">Suggested updates</h3>
+            <p>Make the building page answer a resident's real decision before adding more content.</p>
+            <div>
+              {building.ninaInsight.suggestedUpdates.map(([title, copy]) => (
+                <article key={title}>
+                  <strong>{title}</strong>
+                  <p>{copy}</p>
+                </article>
               ))}
             </div>
           </section>
@@ -11376,17 +11350,7 @@ function TheShoreResidentialEntityDrawer({
           </section>
 
           <section className="dp-entity-section dp-shore-partner-readiness">
-            <h3>Workspace actions</h3>
-            <div className="dp-entity-row-list">
-              {partnerWorkspaceRows.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
-              ))}
-            </div>
+            <h3>Source and actions</h3>
             <div className="dp-shore-source-actions">
               <a className="dp-text-action" href="https://austin.towers.net/condos/shore/" target="_blank" rel="noreferrer">View building source</a>
               <button type="button" className="dp-text-action" onClick={onSave}>{isSaved ? "Saved to workspace" : "Save to workspace"}</button>
@@ -11415,23 +11379,15 @@ function TheShoreResidentialEntityDrawer({
             </section>
           )}
 
-          <section className="dp-entity-section">
-            <h3>Overview</h3>
-            <p>{building.overview}</p>
-          </section>
-
-          <section className="dp-entity-section">
-            <h3>Building snapshot</h3>
-            <div className="dp-entity-row-list">
-              {building.snapshot.map(([label, value]) => (
-                <div key={label} className="dp-entity-row">
-                  <span>
-                    <strong>{label}</strong>
-                    <small>{value}</small>
-                  </span>
-                </div>
-              ))}
-            </div>
+          <section className="dp-entity-section dp-shore-nina-read" aria-labelledby="shore-resident-building-read">
+            <p className="dp-shore-insight-kicker">Nina Seely's read</p>
+            <h3 id="shore-resident-building-read">{building.ninaInsight.headline}</h3>
+            <p>{building.ninaInsight.summary}</p>
+            <dl className="dp-shore-decision-read">
+              <div><dt>Best fit</dt><dd>{building.ninaInsight.bestFit}</dd></div>
+              <div><dt>Trade-off to test</dt><dd>{building.ninaInsight.tradeOff}</dd></div>
+              <div><dt>Before you decide</dt><dd>{building.ninaInsight.verify}</dd></div>
+            </dl>
           </section>
 
           <section id={availableHomesId} className="dp-entity-section">
@@ -11450,20 +11406,6 @@ function TheShoreResidentialEntityDrawer({
                     <em>{home.description}</em>
                   </div>
                 </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="dp-entity-section">
-            <h3>Why residents choose The Shore</h3>
-            <div className="dp-entity-row-list">
-              {building.residentReasons.map(([title, copy]) => (
-                <div key={title} className="dp-entity-row">
-                  <span>
-                    <strong>{title}</strong>
-                    <small>{copy}</small>
-                  </span>
-                </div>
               ))}
             </div>
           </section>
@@ -11703,7 +11645,15 @@ function LegendsResidentialIntelligenceDrawer({
     return "";
   };
   const cleanTextList = (items = []) => items.filter((item) => safeText(item));
+  const canonicalBuildingTitle = /\b610 davis\b|5357248|1682504/i.test([
+    place?.id,
+    place?.name,
+    place?.address,
+    inquiryListing?.address,
+    place?.raw?.legendsContent?.buildingStory?.name,
+  ].filter(Boolean).join(" ")) ? "The Modern Austin Residences" : "";
   const panelTitle = safeText(
+    canonicalBuildingTitle,
     isListingPanel ? profile?.buildingName : "",
     isListingPanel ? place?.title : "",
     isListingPanel ? place?.name : "",
@@ -11788,17 +11738,6 @@ function LegendsResidentialIntelligenceDrawer({
     if (isHotelEntity(candidate)) return "Hotel";
     return candidate?.category || candidate?.type || "Place";
   };
-  const getNearbyIcon = (candidate) => {
-    const category = getNearbyCategory(candidate).toLowerCase();
-    if (category.includes("coffee")) return Coffee;
-    if (category.includes("dining")) return Utensils;
-    if (category.includes("wellness")) return Dumbbell;
-    if (category.includes("retail")) return Sparkles;
-    if (category.includes("civic")) return Landmark;
-    if (category.includes("hotel")) return Building2;
-    if (isEventEntity(candidate)) return CalendarDays;
-    return MapPin;
-  };
   const nearbyCards = places
     .filter((candidate) => {
       if (!candidate?.id || candidate.id === place?.id || !getPlaceCoords(candidate)) return false;
@@ -11839,6 +11778,23 @@ function LegendsResidentialIntelligenceDrawer({
     inquiryListing?.baths ? `${inquiryListing.baths} bath` : "",
     inquiryListing?.sqftDisplay || (inquiryListing?.sqft ? `${Number(inquiryListing.sqft).toLocaleString()} sq ft` : ""),
   ].filter(Boolean).join(" · ");
+  const shoreListingText = [
+    place?.id,
+    place?.name,
+    place?.address,
+    panelTitle,
+    profile?.buildingName,
+    resolvedLegendsListing?.buildingName,
+    resolvedLegendsListing?.building_name,
+    place?.raw?.legendsContent?.buildingStory?.name,
+  ].filter(Boolean).join(" ");
+  const isTheModernListing = (isListingPanel || isListingEntity(place)) && /\bthe modern\b|\b610 davis\b|5357248|1682504/i.test(shoreListingText);
+  const isTheShoreListing = (isListingPanel || isListingEntity(place)) && /\bthe shore\b|\b603 davis\b/i.test(shoreListingText);
+  const residentialEditorialInsight = isTheModernListing
+    ? theModernNinaInsight
+    : isTheShoreListing
+      ? theShoreResidentialBuilding.ninaInsight
+      : null;
   return (
     <div className="dp-entity-drawer dp-legends-residential-drawer" role="document">
       <figure className="dp-entity-hero dp-entity-hero-image">
@@ -11883,6 +11839,32 @@ function LegendsResidentialIntelligenceDrawer({
 
       {isPartnerMode ? (
         <>
+          {residentialEditorialInsight && (
+            <>
+              <section className="dp-entity-section dp-shore-nina-read" aria-labelledby={`shore-nina-read-${place.id}`}>
+                <p className="dp-shore-insight-kicker">Nina Seely's read</p>
+                <h3 id={`shore-nina-read-${place.id}`}>{residentialEditorialInsight.headline}</h3>
+                <p>{residentialEditorialInsight.summary}</p>
+                <dl className="dp-shore-decision-read">
+                  <div><dt>Best fit</dt><dd>{residentialEditorialInsight.bestFit}</dd></div>
+                  <div><dt>Trade-off to test</dt><dd>{residentialEditorialInsight.tradeOff}</dd></div>
+                  <div><dt>Verify first</dt><dd>{residentialEditorialInsight.verify}</dd></div>
+                </dl>
+              </section>
+              <section className="dp-entity-section dp-shore-suggested-updates" aria-labelledby={`shore-updates-${place.id}`}>
+                <h3 id={`shore-updates-${place.id}`}>Suggested updates</h3>
+                <p>Make the listing answer the questions a serious buyer will ask before requesting a tour.</p>
+                <div>
+                  {residentialEditorialInsight.suggestedUpdates.map(([title, copy]) => (
+                    <article key={title}>
+                      <strong>{title}</strong>
+                      <p>{copy}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
           <section className="dp-entity-section">
             <h3>What people are opening</h3>
             <div className="dp-legends-analytics-groups" aria-label="Legends analytics tracked">
@@ -11926,7 +11908,20 @@ function LegendsResidentialIntelligenceDrawer({
         </>
       ) : (
         <>
-          {isListingPanel ? (
+          {residentialEditorialInsight && (
+            <section className="dp-entity-section dp-shore-nina-read" aria-labelledby={`shore-resident-read-${place.id}`}>
+              <p className="dp-shore-insight-kicker">Nina Seely's read</p>
+              <h3 id={`shore-resident-read-${place.id}`}>{residentialEditorialInsight.headline}</h3>
+              <p>{residentialEditorialInsight.summary}</p>
+              <dl className="dp-shore-decision-read">
+                <div><dt>Best fit</dt><dd>{residentialEditorialInsight.bestFit}</dd></div>
+                <div><dt>Trade-off to test</dt><dd>{residentialEditorialInsight.tradeOff}</dd></div>
+                <div><dt>Before you tour</dt><dd>{residentialEditorialInsight.verify}</dd></div>
+              </dl>
+            </section>
+          )}
+
+          {isListingPanel && !residentialEditorialInsight ? (
             <section className="dp-entity-section">
               <h3>Home highlights</h3>
               <div className="dp-entity-row-list">
@@ -11972,14 +11967,14 @@ function LegendsResidentialIntelligenceDrawer({
             </>
           )}
 
-          {!!propertyOverview.length && isListingPanel && (
+          {!!propertyOverview.length && isListingPanel && !residentialEditorialInsight && (
             <section className="dp-entity-section">
               <h3>Property overview</h3>
               {propertyOverview.map((line) => <p key={line}>{line}</p>)}
             </section>
           )}
 
-          {!!whyLivingHereMatters.length && isListingPanel && (
+          {!!whyLivingHereMatters.length && isListingPanel && !residentialEditorialInsight && (
             <section className="dp-entity-section">
               <h3>Building context</h3>
               {whyLivingHereMatters.map((line) => <p key={line}>{line}</p>)}
@@ -11999,12 +11994,13 @@ function LegendsResidentialIntelligenceDrawer({
               <div className="dp-legends-nearby-grid">
                 {nearbyCards.map((candidate) => {
                   const image = resolveEntityImage(candidate, "card");
-                  const Icon = getNearbyIcon(candidate);
                   return (
-                    <button key={candidate.id} type="button" className="dp-legends-nearby-card" onClick={() => onSelect(candidate)}>
-                      <span className="dp-legends-nearby-card-media" aria-hidden="true">
-                        {image ? <img src={image} alt="" loading="lazy" decoding="async" /> : <Icon className="h-4 w-4" />}
-                      </span>
+                    <button key={candidate.id} type="button" className={`dp-legends-nearby-card${image ? "" : " has-no-media"}`} onClick={() => onSelect(candidate)}>
+                      {image ? (
+                        <span className="dp-legends-nearby-card-media" aria-hidden="true">
+                          <img src={image} alt="" loading="lazy" decoding="async" />
+                        </span>
+                      ) : null}
                       <span className="dp-legends-nearby-card-copy">
                         <strong>{candidate.name || candidate.title}</strong>
                         <span>{getNearbyCategory(candidate)} · {candidate.district || "Downtown Austin"}</span>
@@ -12040,7 +12036,7 @@ function LegendsResidentialIntelligenceDrawer({
             </section>
           )}
 
-          <section id={legendsAvailabilityId} className="dp-entity-section">
+          {(!isListingPanel || !residentialEditorialInsight) && <section id={legendsAvailabilityId} className="dp-entity-section">
             <h3>{isListingPanel ? "Listing" : `Homes at ${panelTitle}`}</h3>
             {!isListingPanel && <p>View current homes represented by Legends Real Estate.</p>}
             {listingRows.length ? (
@@ -12057,7 +12053,7 @@ function LegendsResidentialIntelligenceDrawer({
             ) : (
               <p>No active listings currently available for this building.</p>
             )}
-          </section>
+          </section>}
 
           {isListingPanel && (
           <section className="dp-entity-section">
@@ -12587,7 +12583,6 @@ function getStoredMapView() {
 function GoogleMapCanvas({
   center,
   zoom,
-  markerLayoutZoom,
   mapItems,
   collectionRoute,
   fitPlaces,
@@ -12616,12 +12611,18 @@ function GoogleMapCanvas({
   const programmaticMoveRef = useRef(false);
   const initialViewRef = useRef({ center, zoom });
   const interactionHandlersRef = useRef({ onUserNavigate, onViewportChange, onZoomChange });
+  const interactionStartedAtRef = useRef(0);
+  const viewportPublishCountRef = useRef(0);
+  const mapMountCountRef = useRef(0);
+  const debugMapEnabled = useMemo(() => {
+    if (!import.meta.env.DEV || typeof window === "undefined") return false;
+    return new URLSearchParams(window.location.search).get("debugMap") === "1";
+  }, []);
+  const [debugDiagnostics, setDebugDiagnostics] = useState(null);
   const [loadState, setLoadState] = useState(() => (getGoogleMapsConfigError() ? "error" : "loading"));
   const [loadError, setLoadError] = useState(() => getGoogleMapsConfigError());
-  const markerRenderZoom = useMemo(
-    () => getStableMarkerZoom(markerLayoutZoom ?? zoom),
-    [markerLayoutZoom, zoom],
-  );
+  const [mapZoom, setMapZoom] = useState(() => Number(zoom) || INITIAL_MAP_ZOOM);
+  const markerRenderZoom = useMemo(() => getStableMarkerZoom(mapZoom), [mapZoom]);
 
   useEffect(() => {
     if (!fitActiveKey || !fitEnabled) return;
@@ -12638,7 +12639,7 @@ function GoogleMapCanvas({
 
   const markUserNavigated = useCallback(() => {
     if (programmaticMoveRef.current) return;
-    if (userNavigatedRef.current) return;
+    if (!interactionStartedAtRef.current) interactionStartedAtRef.current = performance.now();
     userNavigatedRef.current = true;
     try {
       window.sessionStorage.setItem(MAP_USER_NAVIGATED_STORAGE_KEY, "true");
@@ -12662,6 +12663,8 @@ function GoogleMapCanvas({
     const bounds = map.getBounds?.();
     const currentZoom = map.getZoom?.() || initialViewRef.current.zoom || INITIAL_MAP_ZOOM;
     const currentCenter = map.getCenter?.();
+    viewportPublishCountRef.current += 1;
+    setMapZoom(currentZoom);
     interactionHandlersRef.current.onZoomChange?.(currentZoom);
     if (!bounds) return;
     interactionHandlersRef.current.onViewportChange?.({
@@ -12719,6 +12722,10 @@ function GoogleMapCanvas({
               ...(googleMapId ? { mapId: googleMapId } : { styles: getInlineGoogleMapStyles() }),
             };
             mapRef.current = createDowntownGoogleMap(maps, containerRef.current, mapOptions);
+            mapMountCountRef.current += 1;
+            if (import.meta.env.DEV) {
+              window.__DP_MAP_MOUNT_COUNT__ = (window.__DP_MAP_MOUNT_COUNT__ || 0) + 1;
+            }
             mapRef.current.addListener("dragstart", markUserNavigated);
             mapRef.current.addListener("drag", markUserNavigated);
             mapRef.current.addListener("dragend", markUserNavigated);
@@ -12726,6 +12733,10 @@ function GoogleMapCanvas({
             mapRef.current.addListener("idle", () => {
               const map = mapRef.current;
               if (!map) return;
+              const lastIdleDuration = interactionStartedAtRef.current
+                ? Math.max(0, Math.round(performance.now() - interactionStartedAtRef.current))
+                : 0;
+              interactionStartedAtRef.current = 0;
               if (containerRef.current?.querySelector(".gm-err-container")) {
                 failMapLoad("authorization-failure");
                 return;
@@ -12738,6 +12749,15 @@ function GoogleMapCanvas({
                 );
               }
               publishViewport();
+              if (debugMapEnabled) {
+                setDebugDiagnostics((current) => ({
+                  ...(current || {}),
+                  mapMountCount: mapMountCountRef.current,
+                  currentZoom: map.getZoom?.() || 0,
+                  lastIdleDuration,
+                  viewportQueryCount: viewportPublishCountRef.current,
+                }));
+              }
               markMapReady();
             });
           } else if (containerRef.current.querySelector(".gm-style")) {
@@ -12770,7 +12790,7 @@ function GoogleMapCanvas({
       cancelled = true;
       if (readinessTimeoutId) window.clearTimeout(readinessTimeoutId);
     };
-  }, [markUserNavigated, publishViewport]);
+  }, [debugMapEnabled, markUserNavigated, publishViewport]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -12875,7 +12895,7 @@ function GoogleMapCanvas({
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
-    const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
+    const updateMarker = (marker, { position, content, title, icon }) => {
       if (canUseAdvancedMarkers && "content" in marker) {
         marker.position = position;
         // Keep the provider-owned marker root stable. Replacing AdvancedMarker
@@ -12883,14 +12903,12 @@ function GoogleMapCanvas({
         // projected element while Google Maps is moving it.
         if (marker.content !== content) marker.content = content;
         marker.title = title;
-        marker.zIndex = zIndex;
         marker.map = map;
         return;
       }
       marker.setPosition?.(position);
       marker.setTitle?.(title);
       marker.setIcon?.(icon);
-      marker.setZIndex?.(zIndex);
       marker.setMap?.(map);
     };
 
@@ -12926,7 +12944,6 @@ function GoogleMapCanvas({
           content: element,
           title: `${item.count} places nearby`,
           icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
-          zIndex: 500,
         };
         if (existing) {
           existing.currentItem = item;
@@ -12962,7 +12979,7 @@ function GoogleMapCanvas({
         ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
-        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
+        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
@@ -12984,11 +13001,6 @@ function GoogleMapCanvas({
         content: wrapper,
         title: place.name,
         icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
-        zIndex: place.id === selectedId
-          ? 1000
-          : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
-            ? 750
-            : 1,
       };
       if (existing) {
         existing.currentPlace = place;
@@ -13025,12 +13037,28 @@ function GoogleMapCanvas({
         resultItemCount: mapItems.length,
         updatedAt: new Date().toISOString(),
       };
+      window.__DP_MAP_MARKER_ROOTS__ = Object.fromEntries(
+        Array.from(registry.entries()).map(([key, entry]) => [key, entry.element || null]),
+      );
+      if (debugMapEnabled) {
+        setDebugDiagnostics((current) => ({
+          ...(current || {}),
+          mapMountCount: mapMountCountRef.current,
+          markerCreateCount: reconciliation.create.length,
+          markerUpdateCount: reconciliation.keep.length,
+          markerRemoveCount: releasedMarkerCount,
+          markerVisibleCount: registry.size,
+          duplicateRecordCount: Math.max(0, mapItems.length - nextKeys.size),
+          selectedEntityId: selectedId || null,
+          viewportQueryCount: viewportPublishCountRef.current,
+        }));
+      }
       const visibleLimit = window.innerWidth <= 767 ? 15 : 25;
       if (registry.size > visibleLimit) {
         console.warn("[map-search] mounted marker count exceeds cap", registry.size);
       }
     }
-  }, [collectionRoute, loadState, mapItems, markerRenderZoom, pulsingPinId, runProgrammaticMove, selectedId, markUserNavigated]);
+  }, [collectionRoute, debugMapEnabled, loadState, mapItems, markerRenderZoom, pulsingPinId, runProgrammaticMove, selectedId, markUserNavigated]);
 
   useEffect(() => () => {
     markerRegistryRef.current.forEach((entry) => removeGoogleMapMarker(entry.marker));
@@ -13038,6 +13066,7 @@ function GoogleMapCanvas({
     containerRef.current?.setAttribute("data-marker-count", "0");
     if (typeof window !== "undefined" && import.meta.env.DEV) {
       window.__DP_MAP_MARKER_LIFECYCLE__ = { mountedMarkerCount: 0, markerRegistrySize: 0, releasedMarkerCount: 0, resultItemCount: 0, updatedAt: new Date().toISOString() };
+      window.__DP_MAP_MARKER_ROOTS__ = {};
     }
   }, []);
 
@@ -13050,6 +13079,20 @@ function GoogleMapCanvas({
   return (
     <div className="dp-google-map-shell h-full w-full">
       <div ref={containerRef} className="dp-google-map-canvas h-full w-full" role="application" aria-label="Downtown Austin map" />
+      {debugMapEnabled && debugDiagnostics ? (
+        <output className="dp-map-diagnostics" aria-label="Map diagnostics">
+          <strong>Map diagnostics</strong>
+          <span>Map mounts {debugDiagnostics.mapMountCount || 0}</span>
+          <span>Visible markers {debugDiagnostics.markerVisibleCount || 0}</span>
+          <span>Created markers {debugDiagnostics.markerCreateCount || 0}</span>
+          <span>Updated markers {debugDiagnostics.markerUpdateCount || 0}</span>
+          <span>Removed markers {debugDiagnostics.markerRemoveCount || 0}</span>
+          <span>Duplicate records {debugDiagnostics.duplicateRecordCount || 0}</span>
+          <span>Zoom {Number(debugDiagnostics.currentZoom || mapZoom).toFixed(1)}</span>
+          <span>Last idle {debugDiagnostics.lastIdleDuration || 0} ms</span>
+          <span>Viewport publishes {debugDiagnostics.viewportQueryCount || 0}</span>
+        </output>
+      ) : null}
       {loadState === "loading" && (
         <div className="dp-google-map-state" role="status">
           <span>Loading downtown map...</span>
@@ -13166,8 +13209,6 @@ function MapSearchConsole({
   hasTopMapBack = false,
 }) {
   const [moreOpen, setMoreOpen] = useState(false);
-  const [previewIntentId, setPreviewIntentId] = useState(null);
-  const [focusedIntentId, setFocusedIntentId] = useState(null);
   const consoleWrapRef = useRef(null);
   const consolePanelRef = useRef(null);
   const [viewportWidth, setViewportWidth] = useState(() => (
@@ -13183,11 +13224,14 @@ function MapSearchConsole({
         : lastTrigger
           ? "No close matches. Try another area or a broader search."
           : "";
-  const selectedIntentAnnouncement = isSingleSelectSearchIntentFilter(activeFilter)
-    ? `${getCanonicalSearchIntentFilter(activeFilter)} selected. ${resultCount} results shown.`
-    : "";
+  // Intent shortcuts keep the canonical icon rails visible. The inline result
+  // list belongs only to an explicit typed submission, not to URL restoration
+  // or a shortcut-generated query such as "Dining nearby".
   const showCatalogResults = Boolean(
-    query && catalogState?.query === query && catalogState?.status !== "idle",
+    lastTrigger === "text_search" &&
+    query &&
+    catalogState?.query === query &&
+    catalogState?.status !== "idle",
   );
   const catalogResultLimit = viewportWidth <= 520 ? 5 : 8;
   let remainingCatalogResults = catalogResultLimit;
@@ -13253,15 +13297,45 @@ function MapSearchConsole({
   });
   const modeConfig = SEARCH_CONSOLE_MODE_CONFIG[mode] || SEARCH_CONSOLE_MODE_CONFIG.resident;
   const primaryIntentSource = PRIMARY_SEARCH_INTENT_RAIL;
+  const configuredRouteCollections = new Set(
+    SECONDARY_SEARCH_INTENT_RAIL.map((item) => item?.collection).filter(Boolean),
+  );
+  const canonicalRouteSource = mapCollections
+    .filter((collection) => collection?.visibility !== "private" && collection?.status !== "draft")
+    .filter((collection) => !configuredRouteCollections.has(collection.id))
+    .map((collection) => ({
+      id: `route-${collection.id}`,
+      label: collection.shortTitle || collection.title,
+      filter: collection.category === "hotel"
+        ? "Hotels"
+        : collection.category === "dining"
+          ? "Dining"
+          : collection.category === "nightlife"
+            ? "Happy Hour"
+            : "Civic",
+      collection: collection.id,
+      prompt: collection.title,
+      icon: Route,
+    }));
   const secondaryIntentSource = mode === "partner"
-    ? [...SECONDARY_SEARCH_INTENT_RAIL, ...(modeConfig.intentChips || []), ...(modeConfig.filterRail || []), ...(modeConfig.featuredPins || [])]
-    : SECONDARY_SEARCH_INTENT_RAIL;
+    ? [...SECONDARY_SEARCH_INTENT_RAIL, ...canonicalRouteSource, ...(modeConfig.intentChips || []), ...(modeConfig.filterRail || []), ...(modeConfig.featuredPins || [])]
+    : [...SECONDARY_SEARCH_INTENT_RAIL, ...canonicalRouteSource];
   const intentRail = primaryIntentSource.map((item) => withRailIcon(item, `${mode}-primary`));
   const rawMoreFilterRail = secondaryIntentSource.map((item) => withRailIcon(item, `${mode}-secondary`));
   const moreFilterRail = rawMoreFilterRail.filter((item, index, items) => {
     const label = String(item.label).toLowerCase();
-    const duplicatesPrimary = intentRail.some((intentItem) => String(intentItem.label).toLowerCase() === label);
-    const firstSecondaryIndex = items.findIndex((candidate) => String(candidate.label).toLowerCase() === label);
+    const duplicatesPrimary = intentRail.some((intentItem) => (
+      item.collection && intentItem.collection
+        ? item.collection === intentItem.collection
+        : String(intentItem.label).toLowerCase() === label
+    ));
+    const firstSecondaryIndex = items.findIndex((candidate) => (
+      item.id && candidate.id && item.id === candidate.id
+        ? true
+        : item.collection && candidate.collection
+        ? item.collection === candidate.collection
+        : String(candidate.label).toLowerCase() === label
+    ));
     return !duplicatesPrimary && firstSecondaryIndex === index;
   });
   const railKeyFor = (item) => String(item?.id || item?.label || item?.filter || item?.prompt || "").toLowerCase();
@@ -13277,17 +13351,7 @@ function MapSearchConsole({
   const primaryCollectionActive = intentRail.some((item) => item.collection && isRailItemActive(item));
   const activeSecondaryItem = primaryCollectionActive ? null : moreFilterRail.find(isRailItemActive);
   const moreToggleLabel = "More";
-  const allIntentItems = [...intentRail, ...moreFilterRail];
-  const activeIntentItem = allIntentItems.find(isRailItemActive) || null;
-  const previewedIntentItem = allIntentItems.find((item) => item.id === previewIntentId || item.id === focusedIntentId) || null;
-  const moreIntentDefinition = getSearchIntentDefinition({ id: "more", label: "More", prompt: "Explore more intents" });
-  const previewDefinition = previewedIntentItem
-    ? getSearchIntentDefinition(previewedIntentItem)
-    : moreOpen
-      ? moreIntentDefinition
-      : activeIntentItem
-        ? getSearchIntentDefinition(activeIntentItem)
-        : null;
+  const moreIntentDefinition = getSearchIntentDefinition({ id: "more", label: "More", prompt: "More" });
   const makeIntentSummary = (item, active) => {
     const definition = getSearchIntentDefinition(item);
     if (!active) return definition.description;
@@ -13303,12 +13367,9 @@ function MapSearchConsole({
     const state = active ? "Pressed" : "Not pressed";
     return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
   };
-  // Preserve the original partner console hierarchy from the migrated map:
-  // two immediate decisions, then the canonical More control that reveals the
-  // secondary rail. Resident discovery keeps the full primary rail order.
-  const moreToggleInsertIndex = mode === "partner"
-    ? Math.min(1, Math.max(0, intentRail.length - 1))
-    : intentRail.length - 1;
+  const activeRailItem = [...intentRail, ...moreFilterRail].find(isRailItemActive) || null;
+  const activeRailDefinition = activeRailItem ? getSearchIntentDefinition(activeRailItem) : null;
+  const moreToggleInsertIndex = intentRail.length - 1;
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
     window.dispatchEvent(new CustomEvent("dp:map-filter-rail", {
@@ -13325,8 +13386,6 @@ function MapSearchConsole({
   };
   const handleMoreClick = (event) => {
     event?.stopPropagation?.();
-    setPreviewIntentId(null);
-    setFocusedIntentId(null);
     setMoreOpen((value) => {
       if (value && activeSecondaryItem) return true;
       const next = !value;
@@ -13411,6 +13470,7 @@ function MapSearchConsole({
         type="button"
         role="tab"
         className={`dp-compact-intent-chip dp-ask-map-prompt-link ${active ? "is-active" : ""}`}
+        aria-pressed={active}
         aria-selected={active}
         aria-label={makeIntentAriaLabel(item, definition, active)}
         aria-describedby={descriptionId}
@@ -13419,32 +13479,25 @@ function MapSearchConsole({
         onFocus={() => {}}
         onBlur={() => {}}
         onClick={() => {
-          setPreviewIntentId(null);
-          setFocusedIntentId(null);
           handleRailItem(item);
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
-            setPreviewIntentId(null);
-            setFocusedIntentId(null);
             event.currentTarget.blur();
             return;
           }
           handleConsoleTabKeyDown(event, () => {
-            setPreviewIntentId(null);
             handleRailItem(item);
           });
         }}
         data-label={definition.shortLabel}
         data-intent-id={definition.id}
+        data-collection-id={item.collection || undefined}
         data-expanded="false"
       >
         <span className="dp-compact-intent-chip__icon" aria-hidden="true">
           {Icon ? <Icon className="dp-search-intent-filter-icon" aria-hidden="true" /> : null}
-        </span>
-        <span className="dp-compact-intent-chip__label" aria-hidden="true">
-          {definition.shortLabel}
         </span>
         <span id={descriptionId} className="sr-only">{summary}</span>
       </button>
@@ -13466,7 +13519,7 @@ function MapSearchConsole({
         className={`dp-search-more-toggle ${moreOpen ? "is-open" : ""} ${previewed ? "is-previewed" : ""}`}
         aria-expanded={moreOpen}
         aria-controls="dp-search-more-filter-panel"
-        aria-label={`Explore more intents. Shows ${moreIntentDefinition.description}.`}
+        aria-label="Show more map shortcuts"
         aria-describedby={descriptionId}
         onPointerEnter={() => {}}
         onPointerLeave={() => {}}
@@ -13476,8 +13529,6 @@ function MapSearchConsole({
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
-            setPreviewIntentId(null);
-            setFocusedIntentId(null);
             if (moreOpen) setMoreOpen(false);
             return;
           }
@@ -13492,9 +13543,9 @@ function MapSearchConsole({
         </span>
         <span className="dp-expanding-intent-chip__text">
           <span className="dp-expanding-intent-chip__label dp-search-intent-filter-label">
-            {expanded ? "More" : moreToggleLabel}
+            {moreToggleLabel}
           </span>
-          <span id={descriptionId} className="sr-only">
+          <span id={descriptionId} className="dp-expanding-intent-chip__description">
             {summary}
           </span>
         </span>
@@ -13608,12 +13659,7 @@ function MapSearchConsole({
     // command surface centered with inline priority so it cannot drift with a
     // parent rail, drawer, or map-camera transition.
     setLockedStyle("position", "fixed");
-    setLockedStyle(
-      "top",
-      isCollapsed
-        ? "calc(8px + env(safe-area-inset-top, 0px))"
-        : `calc(${viewportWidth <= 767 ? 64 : 68}px + env(safe-area-inset-top, 0px))`,
-    );
+    setLockedStyle("top", `calc(${isCollapsed ? 12 : viewportWidth <= 767 ? 64 : 68}px + env(safe-area-inset-top, 0px))`);
     setLockedStyle("right", "auto");
     setLockedStyle("left", "50%");
     setLockedStyle("width", consoleWidth);
@@ -13648,7 +13694,7 @@ function MapSearchConsole({
         className="dp-search-intent-console dp-ask-map-panel pointer-events-auto"
         style={topNavBackConsoleStyle}
         role="region"
-        aria-labelledby="dp-ask-map-title"
+        aria-label="Map command console"
         aria-expanded={!isCollapsed}
         aria-hidden={isCollapsed}
         data-state={isCollapsed ? "collapsed" : "focused"}
@@ -13656,7 +13702,7 @@ function MapSearchConsole({
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail dp-ask-map-header">
           <div className="dp-search-intent-label dp-ask-map-header-copy">
-            <h2 id="dp-ask-map-title" className="dp-search-brand-mark dp-ask-map-title">Ask the Map</h2>
+            <span className="dp-search-brand-mark dp-ask-map-title"><span>Ask the Map</span></span>
           </div>
           {renderModeSwitch()}
           <div className="dp-search-intent-top-actions">
@@ -13680,7 +13726,7 @@ function MapSearchConsole({
               type="text"
               className="dp-ask-map-input"
               aria-label="Ask the Map search"
-              placeholder="Ask what’s nearby"
+              placeholder="Happy hour near me"
               value={query}
               onChange={(event) => onQueryChange(event.target.value)}
             />
@@ -13689,7 +13735,7 @@ function MapSearchConsole({
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             )}
-            <button type="submit" className="dp-search-intent-submit dp-ask-map-submit" aria-label="Search">
+            <button type="submit" className="dp-search-intent-submit dp-ask-map-submit" aria-label="Ask the Map">
               <Send className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
@@ -13706,40 +13752,30 @@ function MapSearchConsole({
                 insertMoreAfterIndex: moreToggleInsertIndex,
               },
             )}
-            {moreOpen ? (
-              <div id="dp-search-more-filter-panel" className="dp-search-intent-more-panel" aria-label="More map shortcuts">
-                {renderRail(
-                  moreFilterRail,
-                  "dp-search-intent-secondary-track dp-map-intent-rail dp-ask-map-prompt-list",
-                  "More intent, collection, and route shortcuts",
-                  { id: "dp-search-secondary-intent-rail" },
-                )}
-              </div>
-            ) : (
-              <div id="dp-search-more-filter-panel" hidden aria-hidden="true" />
-            )}
-          </div>
-        ) : null}
-        {!showCatalogResults && previewDefinition ? (
-          <div className="dp-search-intent-description-strip" aria-live="polite">
-            <span className="dp-search-intent-description-strip__label">
-              {previewDefinition.fullLabel}
-            </span>
-            <span className="dp-search-intent-description-strip__copy">
-              {activeIntentItem && previewDefinition.id === activeIntentItem.id
-                ? makeIntentSummary(activeIntentItem, true)
-              : previewDefinition.description}
-            </span>
+            <div
+              id="dp-search-more-filter-panel"
+              className="dp-search-intent-more-panel"
+              aria-label="More map shortcuts"
+              aria-hidden={!moreOpen}
+              hidden={!moreOpen}
+            >
+              {moreOpen ? renderRail(
+                moreFilterRail,
+                "dp-search-intent-secondary-track dp-map-intent-rail dp-ask-map-prompt-list",
+                "More intent, collection, and route shortcuts",
+                { id: "dp-search-secondary-intent-rail" },
+              ) : null}
+            </div>
+            {activeRailDefinition ? (
+              <p className="dp-search-intent-description-strip sr-only" aria-live="polite">
+                {activeRailDefinition.fullLabel}
+              </p>
+            ) : null}
           </div>
         ) : null}
         {!showCatalogResults && statusCopy ? (
-          <p className="dp-search-intent-status" aria-live="polite">
+          <p className="dp-search-intent-status sr-only" aria-live="polite">
             {statusCopy}
-          </p>
-        ) : null}
-        {selectedIntentAnnouncement ? (
-          <p className="sr-only" aria-live="polite">
-            {selectedIntentAnnouncement}
           </p>
         ) : null}
         {showCatalogResults ? (
@@ -13816,8 +13852,6 @@ function useUrlMapState() {
   const perkId = searchParams.get("perkId") || searchParams.get("perk") || "";
   const eventId = searchParams.get("eventId") || searchParams.get("event") || "";
   const partnerId = searchParams.get("partner") || "";
-  const previewFor = searchParams.get("previewFor") || "";
-  const returnTo = searchParams.get("returnTo") || "";
   const source = searchParams.get("source") || (embed ? "embedded-map" : "downtown-perks-web");
   const utmCampaign = searchParams.get("utm_campaign") || "";
   const drawerClosed = searchParams.get("drawerClosed") || "";
@@ -13831,14 +13865,13 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { pushPanelState, popPanelState, peekPanelState, clearPanelStack } = useMapPanelNavigation();
-  const { user } = useAuth();
   const {
     places,
     resultState: scopedResultState,
@@ -13846,37 +13879,12 @@ export default function MapPage() {
     lastTrigger: scopedLastTrigger,
     catalogState,
     runSearch: runScopedMapSearch,
-    searchCatalog: searchScopedCatalog,
     clearResults: clearScopedMapResults,
   } = useSearchDrivenMapEntities();
   const urlState = useUrlMapState();
   const [initialMapView] = useState(() => getStoredMapView());
   const [search, setSearch] = useState(urlState.prompt);
   const [activeFilter, setActiveFilter] = useState(FILTERS.includes(urlState.filter) ? urlState.filter : "All");
-  const navigateMapJourney = (updates = {}, options = {}) => {
-    const params = new URLSearchParams(location.search);
-    const nextMode = updates.mode || params.get("mode") || urlState.mode || "resident";
-    const nextTab = updates.tab || params.get("tab") || "map";
-
-    params.set("mode", nextMode);
-    params.set("tab", nextTab);
-    if (!params.get("filter") && nextTab === "map") params.set("filter", activeFilter || "All");
-
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value === undefined || value === null || value === "") params.delete(key);
-      else params.set(key, String(value));
-    });
-
-    if (options.clearSelection) {
-      ["entityId", "entity", "entityType", "perkId", "eventId", "listing", "listingId", "drawerClosed"].forEach((key) => params.delete(key));
-    }
-
-    if (options.clearSearchContext) {
-      ["query", "q", "prompt", "intent", "time", "layer", "collection", "collectionId", "routeId", "stop", "radius", "district"].forEach((key) => params.delete(key));
-    }
-
-    navigate(`/map?${params.toString()}`, { replace: Boolean(options.replace) });
-  };
   const [selectedId, setSelectedId] = useState(urlState.entityId);
   const [selectedPlaceOverride, setSelectedPlaceOverride] = useState(null);
   const drawerTriggerRef = useRef(null);
@@ -14116,7 +14124,6 @@ export default function MapPage() {
   const [entityAssistantLoading, setEntityAssistantLoading] = useState(false);
   const [selectedDrawerClosed, setSelectedDrawerClosed] = useState(false);
   const [selectedDrawerMinimized, setSelectedDrawerMinimized] = useState(false);
-  const [nativeDrawerState, setNativeDrawerState] = useState("expanded");
   const searchInputRef = useRef(null);
   const searchRollupRef = useRef(null);
   const updateViewportBounds = useCallback((bounds) => {
@@ -14264,7 +14271,6 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!urlState.rawEntityId) return;
-    if (/^(campaign|perk|offer|event|partner|civic|discovery|route|brand)-/i.test(urlState.rawEntityId)) return;
     const publicPropertyId = resolvePropertyUrlEntityId(urlState.rawEntityId);
     if (!publicPropertyId || publicPropertyId === urlState.rawEntityId) return;
     const next = { entityId: publicPropertyId };
@@ -14288,18 +14294,6 @@ export default function MapPage() {
   const effectiveSearch = useMemo(() => {
     return sanitizeMapPrompt(search, urlState.mode);
   }, [search, urlState.mode]);
-  useEffect(() => {
-    const query = effectiveSearch.trim();
-    if (!query) {
-      void searchScopedCatalog("");
-      return undefined;
-    }
-    if (query.length < 2) return undefined;
-    const timeoutId = window.setTimeout(() => {
-      void searchScopedCatalog(query, places, urlState.mode);
-    }, 120);
-    return () => window.clearTimeout(timeoutId);
-  }, [effectiveSearch, places, searchScopedCatalog, urlState.mode]);
   const consoleHasActiveWork = Boolean(effectiveSearch || mapAnswer || filtersOpen || neighborhoodsOpen || intelOpen);
   const buildScopedMapQuery = useCallback(({
     query = effectiveSearch,
@@ -14683,13 +14677,6 @@ export default function MapPage() {
     () => getCanonicalIntentForFilter(activeFilter, effectiveSearch),
     [activeFilter, effectiveSearch],
   );
-  const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
-  const markerLayoutContext = useMemo(() => ({
-    bounds: scopedResultState.bounds || viewportBoundsRef.current || null,
-    zoom: getStableMarkerZoom(
-      scopedResultState.bounds?.zoom || mapZoomRef.current || initialMapView.zoom,
-    ),
-  }), [mapResultBoundsKey, scopedResultState.queryKey]);
   const governedMarkerCandidates = useMemo(() => {
     const shouldPreserveListingPins = activeFilter === "Rentals" || activeFilter === "Legends" || activeFilter === "Listings" || activeFilter === "All Listings";
     const pinSourcePlaces = shouldPreserveListingPins
@@ -14720,12 +14707,12 @@ export default function MapPage() {
     return getViewportBoundedMarkerPlaces(pinSourcePlaces, {
       activeFilter,
       query: effectiveSearch,
-      viewportBounds: markerLayoutContext.bounds,
-      zoom: markerLayoutContext.zoom,
+      viewportBounds: activeFilter === "Events" ? null : viewportBounds,
+      zoom: mapZoom,
       selectedId,
       mode: urlState.mode,
     });
-  }, [activeCanonicalIntentId, activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, markerLayoutContext, selectedId, urlState.mode]);
+  }, [activeCanonicalIntentId, activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, mapZoom, selectedId, urlState.mode, viewportBounds]);
   const mapPlaces = useMemo(() => {
     if (activeCollectionRoute?.stops?.length) return activeCollectionRoute.stops;
 
@@ -14740,7 +14727,7 @@ export default function MapPage() {
       effectiveSearch,
       intent: urlState.intent,
       mode: urlState.mode,
-      mapZoom: markerLayoutContext.zoom,
+      mapZoom,
       selectedId,
       savedIds,
       userHasNavigatedMap,
@@ -14766,7 +14753,7 @@ export default function MapPage() {
       : [];
 
     return dedupeMapPinPlaces([...legendsTopListingPins, ...selectedMarkerPlaces]);
-  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, markerLayoutContext.zoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
+  }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, mapZoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
   const mappablePlaces = useMemo(
     () => mapPlaces.filter((place) => place?.hasExactMarker !== false || Boolean(getPlaceCoords(place))),
     [mapPlaces],
@@ -14806,16 +14793,33 @@ export default function MapPage() {
     }, 500);
     return () => window.clearTimeout(impressionTimer);
   }, [effectiveSearch, mappablePlaces, scopedLastTrigger, scopedRequestStatus, scopedResultState.intent, scopedResultState.queryId, scopedResultState.queryKey, scopedResultState.source]);
+  const mapResultBoundsKey = `${urlState.mode}:${activeFilter}:${urlState.collection || "none"}:${urlState.layer || "none"}:${district}:${effectiveSearch || "none"}:${discoverDisplayPlaces.length}`;
   const visibleLegendsPlaces = useMemo(
     () => dedupeMapPinPlaces(discoverDisplayPlaces).filter((place) => isLegendsMapPlace(place)),
     [discoverDisplayPlaces],
   );
-  const stableClusterZoom = markerLayoutContext.zoom;
+  const shouldShowListingPins = activeFilter === "Legends" || activeFilter === "Listings" || /\b(legends|listing|mls|condo|for sale|for rent)\b/i.test(effectiveSearch || "");
+  const shouldShowFocusedIntentPins = FOCUSED_INTENT_FILTERS.has(activeFilter) || Boolean(effectiveSearch);
+  const stableClusterZoom = getStableMarkerZoom(mapZoom);
+  const shouldShowIndividualPins = shouldShowFocusedIntentPins || shouldShowListingPins || activeFilter === "Civic" || activeFilter === "Explore Downtown" || /\b(daa|art walk|public art|civic)\b/i.test(effectiveSearch || "");
+  const topLegendsMapPlaces = useMemo(
+    () => dedupeMapPinPlaces(mappablePlaces).filter((place) => isLegendsTopListingPlace(place)),
+    [mappablePlaces],
+  );
+  const nonTopLegendsMapPlaces = useMemo(
+    () => mappablePlaces.filter((place) => !isLegendsTopListingPlace(place)),
+    [mappablePlaces],
+  );
   const clusteredMapItems = useMemo(
     () => activeCollectionRoute?.stops?.length
-      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
-      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
-    [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom],
+      ? activeCollectionRoute.stops.map((place) => ({ id: place.id, type: "place", place }))
+      : shouldShowIndividualPins
+      ? mappablePlaces.map((place) => ({ id: place.id, type: "place", place }))
+      : [
+        ...clusterPlaces(nonTopLegendsMapPlaces, stableClusterZoom, selectedId),
+        ...topLegendsMapPlaces.map((place) => ({ id: place.id, type: "place", place })),
+      ],
+    [activeCollectionRoute, mappablePlaces, nonTopLegendsMapPlaces, selectedId, shouldShowIndividualPins, stableClusterZoom, topLegendsMapPlaces],
   );
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {
@@ -14848,19 +14852,19 @@ export default function MapPage() {
   const activePartnerPanel = urlPartnerPanel || (urlState.mode === "partner" && MAP_NATIVE_PARTNER_PANELS.includes(activeBottomTab) ? activeBottomTab : "");
   const residentPanelCopy = {
     perks: {
-      eyebrow: "Perks",
-      title: "Useful offers nearby.",
-      body: "Places with resident value, card moments, or offers worth saving.",
+      eyebrow: "Resident perks",
+      title: "Benefits nearby",
+      body: "Offers you can use or save for later.",
     },
     events: {
       eyebrow: "Events",
-      title: "Nearby now.",
-      body: "Events, music, park moments, and plans close enough to use.",
+      title: "Events nearby",
+      body: "Music, parks, and plans happening close by.",
     },
     saved: {
-      eyebrow: "MY DOWNTOWN",
-      title: "Saved Downtown",
-      body: "Places, events and experiences you've chosen to come back to.",
+      eyebrow: "Your list",
+      title: "Places to come back to",
+      body: "Saved places, perks, and events stay here.",
     },
   }[isRentalLayer ? "rentals" : activeBottomTab] || (isRentalLayer ? {
     eyebrow: "Rentals",
@@ -15073,100 +15077,37 @@ export default function MapPage() {
     const recommended = getMyDowntownSuggestions();
     const askPrompts = [
       "What should I visit first?",
-      "What's closest right now?",
-      "Any events near my saved places?",
-      "What should I do tonight?",
-      residentSavedPlaces[0]?.name ? `What's happening near ${residentSavedPlaces[0].name}?` : "What's happening near YETI?",
+      "What's close right now?",
+      residentSavedPlaces[0]?.name ? `What's near ${residentSavedPlaces[0].name}?` : "What should I save nearby?",
     ];
-    const favoriteMatrixItems = (residentSavedPlaces.length ? residentSavedPlaces : recommended).slice(0, 8).map((place) => {
-      const group = getSavedItemGroup(place);
-      const related = getRelatedPlaces(place, places).slice(0, 3);
-      return {
-        id: place.id,
-        label: place.name,
-        eyebrow: group === "events" ? "Event" : group === "benefits" ? "Perk" : "Place",
-        title: place.name,
-        description: getSavedItemCopy(place),
-        status: savedIds.has(place.id) ? "Saved" : "Suggested",
-        meta: [
-          place.category || place.type || "Downtown",
-          getSavedLocationLabel(place),
-          placeDistanceLabel(place),
-        ].filter(Boolean),
-        primaryAction: { label: "Open", action: "open" },
-        secondaryActions: [
-          { label: savedIds.has(place.id) ? "Remove" : "Save", action: savedIds.has(place.id) ? "remove" : "save" },
-          { label: "Directions", action: "directions" },
-          { label: "Share", action: "share" },
-        ],
-        relatedItems: related.map((item) => ({
-          id: item.id,
-          title: item.name,
-          type: item.category || item.type || "Nearby",
-          imageUrl: resolveEntityImage(item, "card"),
-        })),
-      };
-    });
-    const handleFavoriteMatrixAction = (action, item) => {
-      const place = places.find((candidate) => candidate.id === item.id) || residentSavedPlaces.find((candidate) => candidate.id === item.id);
-      if (action.action === "open" && place) {
-        selectPlace(place);
-        return;
-      }
-      if ((action.action === "save" || action.action === "remove") && place) {
-        toggleSaved(place);
-        return;
-      }
-      if (action.action === "directions" && place) {
-        window.open(directionsUrl(place), "_blank", "noopener,noreferrer");
-        return;
-      }
-      if (action.action === "share") {
-        shareSavedCollection();
-        return;
-      }
-      if (action.action === "open-related" && action.relatedId) {
-        const relatedPlace = places.find((candidate) => candidate.id === action.relatedId);
-        if (relatedPlace) selectPlace(relatedPlace);
-      }
-    };
 
     return (
       <div className="dp-tabs-content dp-resident-tab-panel dp-saved-downtown-panel min-h-0 flex-1 overflow-hidden">
         <div className="dp-saved-downtown-scroll dp-tab-stack">
           <section className="dp-resident-tab-panel-header dp-saved-downtown-header">
-            <p>MY DOWNTOWN</p>
-            <h2>Saved Downtown</h2>
-            <span>Your saved places, benefits, events, and next nearby options.</span>
+            <p>Your list</p>
+            <h2>Places to come back to</h2>
+            <span>Saved places, perks, and events stay here.</span>
             <strong>{residentSavedPlaces.length} saved</strong>
           </section>
 
-          <section className="dp-saved-overview-rail" aria-label="Saved downtown summary">
-            <span><strong>{savedGroups.places.length}</strong> places</span>
-            <span><strong>{savedGroups.benefits.length}</strong> benefits</span>
-            <span><strong>{savedGroups.events.length}</strong> events</span>
-          </section>
+          {!!residentSavedPlaces.length && (
+            <section className="dp-saved-overview-rail" aria-label="Saved downtown summary">
+              <span><strong>{savedGroups.places.length}</strong> places</span>
+              <span><strong>{savedGroups.benefits.length}</strong> perks</span>
+              <span><strong>{savedGroups.events.length}</strong> events</span>
+            </section>
+          )}
 
           {!residentSavedPlaces.length && (
             <section className="dp-saved-empty-state" aria-label="Nothing saved yet">
               <h3>Nothing saved yet.</h3>
-              <p>Save places, events and benefits while you explore downtown.</p>
+              <p>Save a place, perk, or event to find it here.</p>
               <div className="dp-saved-action-row">
-                <button type="button" onClick={() => openResidentDiscovery("All")}>Explore Nearby</button>
-                <button type="button" onClick={() => openResidentDiscovery("Events")}>View Events</button>
-                <button type="button" onClick={() => openResidentDiscovery("Perks")}>Find Benefits</button>
+                <button type="button" onClick={() => openResidentDiscovery("All")}>Explore nearby</button>
               </div>
             </section>
           )}
-
-          <InteractiveMatrix
-            eyebrow="Saved"
-            title="Saved places, perks, events, and buildings."
-            description="Choose an item to see why it matters, what to do next, and what is connected nearby."
-            items={favoriteMatrixItems}
-            onAction={handleFavoriteMatrixAction}
-            className="dp-favorites-matrix"
-          />
 
           {!!recommended.length && (
             <section className="dp-saved-collection-section" aria-label="Explore Nearby">
@@ -15190,7 +15131,7 @@ export default function MapPage() {
             </div>
           </section>
 
-          <section className="dp-saved-action-row dp-saved-primary-actions" aria-label="Saved downtown actions">
+          {!!residentSavedPlaces.length && <section className="dp-saved-action-row dp-saved-primary-actions" aria-label="Saved downtown actions">
             <button type="button" onClick={() => openResidentDiscovery("All")}>
               <Navigation aria-hidden="true" />
               <span>Nearby</span>
@@ -15203,7 +15144,7 @@ export default function MapPage() {
               <Send aria-hidden="true" />
               <span>Share</span>
             </button>
-          </section>
+          </section>}
         </div>
       </div>
     );
@@ -16229,37 +16170,13 @@ export default function MapPage() {
       navigate(`${location.pathname}?${params.toString()}`);
       return;
     }
-    const targetEntityId = result.entityId || result.linkedEntityId || result.id;
-    if (targetEntityId && (result.markerEligible || result.linkedEntityId)) {
-      const canonicalTargetId = resolveMapEntityAlias(targetEntityId);
-      navigateMapJourney({
-        tab: "map",
-        entityId: canonicalTargetId,
-        listingId: "",
-        perkId: "",
-        drawerClosed: "",
-      });
+    const place = catalogState.entitiesById?.[result.id];
+    if (!place) return;
+    if (result.markerEligible || result.id === "dunlap-atx-portfolio" || String(place.kind || place.type || place.entityType || "").toLowerCase() === "portfolio") {
+      selectPlace(place, { catalogResult: true });
       return;
     }
     void applyPrompt(result.resultType === "person" || result.resultType === "organization" ? "Legends listings" : result.title);
-  }
-
-  function openActivePerkItem(item, event) {
-    const list = event?.currentTarget?.closest?.(".dp-active-perks-sheet")?.querySelector?.("[data-active-perks-scroll='true']");
-    pushPanelState({
-      url: `${location.pathname}${location.search}`,
-      drawerState: activePerksDrawerState,
-      scrollTop: list?.scrollTop || 0,
-      focusId: event?.currentTarget?.id || "",
-    });
-    selectPlace(item.place, { perkId: item.perkId });
-  }
-
-  function closeActivePerksSheet() {
-    clearPanelStack();
-    setActiveBottomTab("map");
-    setConsoleCollapsed(false);
-    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "Perks")}`, { replace: true });
   }
 
   function openActivePerkItem(item, event) {
@@ -16367,15 +16284,14 @@ export default function MapPage() {
     setSearchAreaDirty(false);
     setUserHasNavigatedMap(false);
     clearScopedMapResults();
+    recentScopedQueryRef.current = "";
     try {
       window.sessionStorage.removeItem(MAP_VIEW_STORAGE_KEY);
       window.sessionStorage.removeItem(MAP_USER_NAVIGATED_STORAGE_KEY);
     } catch {
       // Map view reset is best-effort; state reset above still enforces intent exclusivity.
     }
-    const clearedRouteState = { collection: "", routeId: "", routeState: "", stopId: "" };
     urlState.update({
-      ...clearedRouteState,
       tab: "map",
       filter: nextFilter,
       query: nextQuery,
@@ -16383,11 +16299,11 @@ export default function MapPage() {
       prompt: "",
       intent: options.intent || "",
       time: options.time || "",
-      collection: options.collection || clearedRouteState.collection,
+      collection: options.collection || "",
       collectionId: "",
-      routeId: options.routeId || options.collection || clearedRouteState.routeId,
-      routeState: options.routeState || clearedRouteState.routeState,
-      stopId: options.stopId || clearedRouteState.stopId,
+      routeId: options.routeId || options.collection || "",
+      routeState: options.routeState || "",
+      stopId: options.stopId || "",
       layer: options.layer || "",
       district: options.district || "",
       radius: options.radius || "",
@@ -17264,27 +17180,15 @@ export default function MapPage() {
     setClusterDrawer(null);
     setMapAnswer(null);
     setActiveBottomTab("map");
-    navigateMapJourney(
-      {
-        mode: urlState.mode,
-        tab: "map",
-        filter: activeFilter || "All",
-        collection: urlState.collection || "",
-        stopId: urlState.stopId || "",
-        routeState: urlState.routeState || "",
-      },
-      { clearSelection: true, replace: true }
-    );
-  }, [activeFilter, clearPanelStack, detailDrawerState, navigateMapJourney, selected, urlState.collection, urlState.mode, urlState.perkId, urlState.routeState, urlState.stopId]);
-
-  const dismissVisibleNativeDrawer = useCallback(() => {
-    if (urlState.mode === "resident" && nativeDrawerState !== "collapsed") {
-      setNativeDrawerState("collapsed");
-      setConsoleCollapsed(true);
-      return;
+    const params = new URLSearchParams({ mode: urlState.mode, tab: "map", filter: activeFilter || "All" });
+    if (urlState.collection) {
+      params.set("collection", urlState.collection);
+      params.set("routeId", urlState.collection);
     }
-    closeSelectedMapDrawer();
-  }, [closeSelectedMapDrawer, nativeDrawerState, urlState.mode]);
+    if (urlState.stopId) params.set("stopId", urlState.stopId);
+    if (urlState.routeState) params.set("routeState", urlState.routeState);
+    navigate(`/map?${params.toString()}`, { replace: true });
+  }, [activeFilter, clearPanelStack, detailDrawerState, navigate, selected, urlState.collection, urlState.mode, urlState.perkId, urlState.routeState, urlState.stopId]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -17440,12 +17344,7 @@ export default function MapPage() {
     });
     // Canonical map detail sheets are governed entirely by the shared
     // stylesheet and state attributes. Do not recreate their geometry inline.
-    if (node.classList.contains("dp-map-detail-sheet")) {
-      node.style.setProperty("border", "0", "important");
-      node.style.setProperty("border-radius", "0", "important");
-      node.style.setProperty("box-shadow", "none", "important");
-      return;
-    }
+    if (node.classList.contains("dp-map-detail-sheet")) return;
     const isDetailPanel = node.dataset.panelLayout === "detail";
     const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
     const detailHeight = "min(78dvh, calc(100dvh - 76px - env(safe-area-inset-bottom, 0px)))";
@@ -17468,9 +17367,9 @@ export default function MapPage() {
       margin: "0",
       padding: "0",
       overflow: "hidden",
-      border: "0",
-      "border-radius": "0",
-      "box-shadow": "none",
+      border: isDetailPanel ? "1px solid rgba(11, 31, 51, 0.09)" : "0",
+      "border-radius": isDetailPanel ? (isCompactViewport ? "16px 16px 0 0" : "12px 12px 0 0") : "0",
+      "box-shadow": isDetailPanel ? "0 -10px 30px rgba(11, 31, 51, 0.10)" : "none",
       "z-index": "1500",
     };
 
@@ -17496,8 +17395,8 @@ export default function MapPage() {
       margin: "0",
       padding: "calc(6px + env(safe-area-inset-top, 0px)) 8px 6px",
       border: "0",
-      "border-bottom": "0",
-      background: "#ffffff",
+      "border-bottom": "1px solid rgba(11, 31, 51, 0.09)",
+      background: "rgba(255, 255, 255, 0.97)",
       "box-shadow": "none",
     });
     const railButtons = panelRail ? Array.from(panelRail.querySelectorAll(":scope > button")) : [];
@@ -17561,7 +17460,7 @@ export default function MapPage() {
       padding: "0 0 env(safe-area-inset-bottom, 0px)",
       border: "0",
       "border-radius": "0",
-      background: "#ffffff",
+      background: "rgba(255, 255, 255, 0.97)",
       "box-shadow": "none",
       "box-sizing": "border-box",
       "backdrop-filter": "blur(14px) saturate(120%)",
@@ -17580,7 +17479,7 @@ export default function MapPage() {
       margin: "0",
       padding: "3px 0 2px",
       border: "0",
-      "border-top": "0",
+      "border-top": "1px solid rgba(11, 31, 51, 0.09)",
       "border-radius": "0",
       background: "transparent",
       "box-shadow": "none",
@@ -17663,7 +17562,6 @@ export default function MapPage() {
           <GoogleMapCanvas
             center={initialMapView.center}
             zoom={initialMapView.zoom}
-            markerLayoutZoom={markerLayoutContext.zoom}
             mapItems={clusteredMapItems}
             collectionRoute={activeCollectionRoute}
             fitPlaces={activeCollectionRoute?.stops?.length ? activeCollectionRoute.stops : discoverDisplayPlaces}
@@ -17919,14 +17817,13 @@ export default function MapPage() {
           >
             {urlState.mode === "resident" && (
               <>
-                <button type="button" role="tab" aria-label="Home" onClick={() => navigate("/resident/home")} aria-selected={false}>
+                <button type="button" role="tab" onClick={() => navigate("/resident/home")} aria-selected={false}>
                   <House className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
+                  <span>Home</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
                     setConsoleCollapsed(true);
@@ -17937,12 +17834,11 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "map" && activeFilter === "All"}
                 >
                   <MapPin className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Map</span>
+                  <span>Map</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Perks"
                   onClick={() => {
                     if (activeBottomTab === "perks" && !selectedId) {
                       updateActivePerksDrawerState(activePerksDrawerState === "collapsed" ? "medium" : "collapsed");
@@ -17958,12 +17854,11 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "perks"}
                 >
                   <Gift className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Perks</span>
+                  <span>Perks</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Events"
                   onClick={() => {
                     beginSearchIntentTransition("Events");
                     setConsoleCollapsed(true);
@@ -17974,12 +17869,11 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "events"}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Events</span>
+                  <span>Events</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Saved"
                   onClick={() => {
                     beginSearchIntentTransition("Saved");
                     setConsoleCollapsed(true);
@@ -17990,7 +17884,7 @@ export default function MapPage() {
                   aria-selected={urlState.tab === "map" && activeBottomTab === "saved"}
                 >
                   <Bookmark className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Saved</span>
+                  <span>Saved</span>
                 </button>
               </>
             )}
@@ -17999,53 +17893,48 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Home"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/overview", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <BriefcaseBusiness className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
+                  <span>Home</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Map"
                   onClick={() => openPartnerMap("All")}
                   aria-pressed={urlState.tab === "map" && activeBottomTab === "map"}
                   aria-selected={urlState.tab === "map" && activeBottomTab === "map"}
                 >
                   <MapPin className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Map</span>
+                  <span>Map</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Publish"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/publish", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <Megaphone className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Publish</span>
+                  <span>Publish</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Performance"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/performance", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <Activity className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Performance</span>
+                  <span>Performance</span>
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Workspace"
                   onClick={() => navigate(withPartnerWorkspaceContext("/partner-workspace/workspace", readPartnerWorkspaceOrganizationId(location.search)))}
                   aria-selected={false}
                 >
                   <BriefcaseBusiness className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Workspace</span>
+                  <span>Workspace</span>
                 </button>
               </>
             )}
@@ -18074,7 +17963,7 @@ export default function MapPage() {
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
-            : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isRentalLayer || isLegendsDirectoryLayer
+            : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isLegendsDirectoryLayer
         ) && !(urlState.mode === "resident" && activeBottomTab === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
             ref={configureMobilePanelSurface}

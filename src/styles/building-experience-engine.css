@@ -16,13 +16,19 @@
   top: 0;
   z-index: 4;
   display: flex;
-  gap: 22px;
+  gap: 24px;
   width: 100%;
-  min-height: 48px;
+  min-height: 52px;
   padding: 0 20px;
   overflow-x: auto;
-  background: rgba(255, 255, 255, 0.97);
-  border-block: 1px solid rgba(11, 31, 51, 0.08);
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 20px;
+  scroll-snap-type: inline proximity;
+  background: rgba(255, 255, 255, 0.96);
+  border: 0;
+  box-shadow: 0 1px 0 rgba(11, 31, 51, 0.08);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -30,16 +36,39 @@
 .dp-system .dp-building-experience-nav::-webkit-scrollbar { display: none; }
 
 .dp-system .dp-building-experience-nav button {
+  position: relative;
   flex: 0 0 auto;
+  display: grid;
+  place-items: center;
   min-width: 44px;
-  min-height: 48px;
+  min-height: 52px;
   padding: 0;
+  scroll-snap-align: center;
   color: rgba(11, 31, 51, 0.7);
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
   font: 600 13px/1 Inter, sans-serif;
+  transition: color 180ms ease-out, transform 180ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dp-system .dp-building-experience-nav button:hover,
+.dp-system .dp-building-experience-nav button.is-active { color: #0b1f33; }
+.dp-system .dp-building-experience-nav button:active { transform: scale(0.97); }
+
+.dp-system .dp-building-experience-nav__label { position: relative; z-index: 1; white-space: nowrap; }
+
+.dp-system .dp-building-experience-nav__indicator {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  left: 6px;
+  height: 2px;
+  background: #0b1f33;
+  border-radius: 1px;
+  pointer-events: none;
 }
 
 .dp-system .dp-building-experience-nav button:focus-visible,
@@ -187,6 +216,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .dp-system .dp-building-experience { scroll-behavior: auto; }
+  .dp-system .dp-building-experience-nav button { transition: none; }
+  .dp-system .dp-building-experience-nav button:active { transform: none; }
 }
 
 #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-building-experience button {

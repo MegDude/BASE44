@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 
 const RESIDENT_LINKS = [
   { to: "/map?mode=resident&tab=map&filter=Perks", label: "Resident Map", description: "Open the live resident map" },
@@ -138,11 +137,9 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
-  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [mobileAudience, setMobileAudience] = useState("residents");
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -161,7 +158,6 @@ export default function Navbar() {
       if (event.key === "Escape") {
         setOpen(false);
         setOpenMenu(null);
-        setQuickSearchOpen(false);
       }
     };
 
@@ -220,11 +216,7 @@ export default function Navbar() {
   function openQuickSearch() {
     setOpen(false);
     setOpenMenu(null);
-    setQuickSearchOpen(true);
-  }
-
-  function handleQuickSearchSelect(result) {
-    navigate(result.route || `/map?mode=resident&tab=map&entityId=${encodeURIComponent(result.id)}`);
+    window.dispatchEvent(new CustomEvent("dp-open-quick-search"));
   }
 
   return (
@@ -394,11 +386,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      <QuickSearchModal
-        isOpen={quickSearchOpen}
-        onClose={() => setQuickSearchOpen(false)}
-        onSelectResult={handleQuickSearchSelect}
-      />
     </nav>
   );
 }

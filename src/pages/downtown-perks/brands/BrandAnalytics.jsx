@@ -9,7 +9,7 @@ import AnalyticsAttributionTable from '@/components/analytics/AnalyticsAttributi
 const CAMPAIGN_FORMATS = [
   { id: 'founding', label: 'Founding Partner', Icon: Trophy },
   { id: 'launch', label: 'Launch Campaign', Icon: Rocket },
-  { id: 'resident', label: 'Resident Activation', Icon: Users },
+  { id: 'resident', label: 'Resident Campaign', Icon: Users },
   { id: 'event', label: 'Event-Led Campaign', Icon: MapPin },
   { id: 'utility', label: 'Utility Campaign', Icon: Sparkles }
 ];

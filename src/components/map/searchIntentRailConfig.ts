@@ -40,17 +40,17 @@ import { resolveSearchIntent } from "../../map/searchIntent/mapIntentRegistry";
 const SEARCH_INTENT_COPY = {
   breakfast: {
     fullLabel: "Breakfast nearby",
-    description: "Coffee, breakfast, and brunch within walking distance.",
+    description: "Morning cafes, breakfast counters and walkable brunch starts",
   },
   coffee: {
     fullLabel: "Coffee nearby",
-    description: "Nearby coffee, cafés, and active perks.",
+    description: "Coffee shops, cafes, active perks and curated coffee routes",
     includesRoutes: true,
     includesPerks: true,
   },
   lunch: {
     fullLabel: "Lunch nearby",
-    description: "Quick lunches, restaurants, and midday perks.",
+    description: "Fast lunches, food halls, restaurants and midday perks",
     includesPerks: true,
   },
   dinner: {
@@ -60,30 +60,30 @@ const SEARCH_INTENT_COPY = {
   },
   dining: {
     fullLabel: "Dining nearby",
-    description: "Restaurants, food halls, and places worth booking.",
+    description: "Restaurants, food halls, dining perks and curated collections",
     includesCollections: true,
     includesPerks: true,
   },
   drinks: {
     fullLabel: "Drinks nearby",
-    description: "Bars, patios, and places for a drink nearby.",
+    description: "Bars, patios, nightlife stops and drink-friendly routes",
     includesRoutes: true,
   },
   happy_hour: {
     fullLabel: "Happy Hour now",
-    description: "Happy hours and offers available now.",
+    description: "Active offers, participating venues and happy-hour routes",
     includesRoutes: true,
     includesPerks: true,
   },
   events: {
     fullLabel: "Events nearby",
-    description: "Events happening today and coming up.",
+    description: "Upcoming events, venues, campaigns and event collections",
     includesCampaigns: true,
     includesCollections: true,
   },
   more: {
-    fullLabel: "Explore more intents",
-    description: "More ways to explore downtown.",
+    fullLabel: "More",
+    description: "Additional map shortcuts",
   },
   happy_hour_route: {
     fullLabel: "Happy Hour route",
@@ -306,14 +306,12 @@ const PRIMARY_SEARCH_INTENT_IDS = [
   "breakfast",
   "coffee",
   "lunch",
+  "dinner",
   "dining",
   "drinks",
   "happy_hour",
   "events",
-  "perks",
-  "hotels",
-  "properties",
-  "near_me",
+  "legends",
 ] as const;
 
 const SECONDARY_SEARCH_INTENT_IDS = [
@@ -322,9 +320,11 @@ const SECONDARY_SEARCH_INTENT_IDS = [
   "daa_art_walk",
   "waterloo_walk",
   "stories_walk",
+  "hotels",
+  "properties",
+  "perks",
+  "near_me",
   "inkind",
-  "legends",
-  "dinner",
   "arts",
   "live_music",
   "civic",

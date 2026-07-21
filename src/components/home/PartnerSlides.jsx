@@ -55,7 +55,7 @@ const slides = [
     ],
     pricing: "Free-$2,388/year",
     pricingNote: "Free listing path, then annual venue plans.",
-    cta: "Discuss activation",
+    cta: "Plan a campaign",
     href: "/partners/venues",
   },
   {

@@ -28,7 +28,7 @@ const partnerCategories = {
   },
   Venues: {
     pricing: "Free-$2,388/year",
-    cta: "Discuss activation",
+    cta: "Plan a campaign",
     href: "/partners/venues",
     body: "Show up in the moment that counts. Not reach. Relevance. Not impressions. Intent.",
     faq: "Venues can start with a free listing path. Paid venue plans start at $360/year.",
@@ -458,7 +458,7 @@ export default function Home() {
             </h2>
             <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/66">
               {isPartner
-                ? "Final pricing reflects footprint, visibility, and activation."
+                ? "Final pricing reflects locations, placements, and campaign scope."
                 : "It’s 6:30. You’re home. You want dinner, a drink, or something to do without scrolling for 20 minutes. You pick what’s close, what’s open, and what sounds fun."}
             </p>
           </div>

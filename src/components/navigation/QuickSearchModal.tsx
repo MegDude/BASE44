@@ -4,7 +4,6 @@ import {
   Activity,
   Building2,
   CalendarDays,
-  ChevronLeft,
   ChevronRight,
   Coffee,
   Music,
@@ -55,12 +54,6 @@ const DISCOVERY_SECTIONS: SearchSection[] = [
     kinds: ["perk", "venue", "partner"],
     filter: (result) => /\b(perk|benefit|offer|member|included|discount|complimentary|free|inkind|happy hour)\b/i.test(getSearchBlob(result)),
   },
-];
-
-const SEARCH_PLACEHOLDERS = [
-  "Where do you want to go?",
-  "What do you want to do?",
-  "Who do you want to meet?",
 ];
 
 const INTENT_SHORTCUTS = [
@@ -190,42 +183,6 @@ function normalizeResult(entity: any): SearchResult | null {
   return result;
 }
 
-function normalizeCatalogResult(document: any): SearchResult | null {
-  const id = readText(document?.id);
-  const title = readText(document?.title);
-  if (!id || !title) return null;
-  const resultType = readText(document?.resultType);
-  const kindByResultType: Partial<Record<string, SearchResultKind>> = {
-    listing: "listing",
-    event: "event",
-    perk: "perk",
-    place: "venue",
-    service: "venue",
-    organization: "partner",
-    person: "partner",
-    campaign: "brand",
-    route: "civic",
-    report: "partner",
-    tool: "partner",
-  };
-  const entityId = readText(document?.entityId || document?.linkedEntityId || id);
-  const params = new URLSearchParams({
-    mode: "resident",
-    tab: "map",
-    filter: "All",
-    query: title,
-  });
-  if (entityId) params.set("entityId", entityId);
-  return {
-    id,
-    kind: kindByResultType[resultType] || "venue",
-    title,
-    subtitle: readText(document?.subtitle),
-    category: resultType,
-    route: readText(document?.route) || `/map?${params.toString()}`,
-  };
-}
-
 function getSearchBlob(result: SearchResult) {
   return [
     result.title,
@@ -283,25 +240,22 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   const inputRef = useRef<HTMLInputElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const { places, catalogState, runSearch, searchCatalog } = useSearchDrivenMapEntities();
+  const { places, runSearch } = useSearchDrivenMapEntities();
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   const results = useMemo(() => {
     const seen = new Set<string>();
-    return [
-      ...(catalogState.results || []).map(normalizeCatalogResult),
-      ...places.map(normalizeResult),
-    ]
+    return places
+      .map(normalizeResult)
       .filter((result): result is SearchResult => Boolean(result))
       .filter((result) => {
         if (seen.has(result.id)) return false;
         seen.add(result.id);
         return true;
       });
-  }, [catalogState.results, places]);
+  }, [places]);
 
   const normalizedQuery = query.trim().toLowerCase();
   const grouped = useMemo(
@@ -328,30 +282,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   }, [isOpen, normalizedQuery]);
 
   useEffect(() => {
-    if (!isOpen || query) return undefined;
-    const timer = window.setInterval(() => {
-      setPlaceholderIndex((index) => (index + 1) % SEARCH_PLACEHOLDERS.length);
-    }, 3000);
-    return () => window.clearInterval(timer);
-  }, [isOpen, query]);
-
-  useEffect(() => {
     if (isOpen) setSubmittedQuery("");
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return undefined;
-    const cleanQuery = query.trim();
-    if (!cleanQuery) {
-      void searchCatalog("");
-      return undefined;
-    }
-    if (cleanQuery.length < 2) return undefined;
-    const timeoutId = window.setTimeout(() => {
-      void searchCatalog(cleanQuery, places, "resident");
-    }, 120);
-    return () => window.clearTimeout(timeoutId);
-  }, [isOpen, places, query, searchCatalog]);
 
   const executeQuickSearch = useCallback((nextQuery = query) => {
     const cleanQuery = nextQuery.trim();
@@ -447,18 +379,12 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
       >
         <div className="dp-quick-search-head">
           <div>
-            <p className="dp-quick-search-eyebrow">Downtown Austin</p>
             <h2 id="dp-quick-search-title">Search downtown</h2>
-            <p className="dp-quick-search-support">Find places, events, perks, buildings, coffee, music, rooftops, and more.</p>
+            <p className="dp-quick-search-support">Find places, events, perks, and buildings.</p>
           </div>
-          <div className="dp-quick-search-actions" aria-label="Search controls">
-            <button type="button" className="dp-quick-search-back" onClick={onClose} aria-label="Go back from search">
-              <ChevronLeft size={18} aria-hidden="true" /><span>Back</span>
-            </button>
-            <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
-              <X size={18} aria-hidden="true" /><span>Close</span>
-            </button>
-          </div>
+          <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
+            <X size={18} />
+          </button>
         </div>
 
         <div className="dp-quick-search-input-wrap">
@@ -467,11 +393,21 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder={SEARCH_PLACEHOLDERS[placeholderIndex]}
+            placeholder="Search places, events, perks, and buildings"
             aria-label="Search Downtown Perks"
           />
           {query ? (
-            <button type="button" onClick={() => setQuery("")} aria-label="Clear search">
+            <button
+              type="button"
+              className="dp-quick-search-clear"
+              onClick={() => {
+                setQuery("");
+                setSubmittedQuery("");
+                setActiveIndex(0);
+                inputRef.current?.focus({ preventScroll: true });
+              }}
+              aria-label="Clear search"
+            >
               <X size={15} />
             </button>
           ) : (
@@ -479,8 +415,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           )}
         </div>
 
-        <div className="dp-quick-search-intents" aria-label="Explore by intent">
-          <h3>Explore by intent</h3>
+        <div className="dp-quick-search-intents" aria-label="Quick searches">
           <div className="dp-quick-search-intent-rail">
             {INTENT_SHORTCUTS.map((intent) => {
               const Icon = intent.icon;
@@ -536,9 +471,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
                         </span>
                         <span className="dp-quick-search-copy">
                           <strong>{result.title}</strong>
-                          <small>{[result.neighborhood, result.context || result.subtitle || result.address || result.kind].filter(Boolean).join(" · ")}</small>
+                          <small>{[result.neighborhood, result.context || result.subtitle || result.address || result.kind, result.badge].filter(Boolean).join(" · ")}</small>
                         </span>
-                        {result.badge ? <span className="dp-quick-search-badge">{result.badge}</span> : null}
                         <ChevronRight className="dp-quick-search-chevron" size={16} aria-hidden="true" />
                       </button>
                     );
@@ -549,7 +483,6 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           )}
         </div>
 
-        <div className="dp-quick-search-footer" aria-hidden="true" />
       </div>
     </div>
   );

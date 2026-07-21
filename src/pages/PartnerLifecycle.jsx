@@ -163,11 +163,11 @@ const professionalServices = [
   ["Launch Kit", QrCode, "QR setup, welcome materials, and publishing support."],
   ["Photography", Camera, "Polished images for profiles, offers, events, and listings."],
   ["Creative", Megaphone, "Campaign copy, offer framing, and resident-facing messaging."],
-  ["Resident Activation", Users, "Launch communication that helps people understand what to do."],
-  ["Street Team", MapPin, "On-site support for QR placement and event activation."],
+  ["Resident launch", Users, "Clear launch communication that tells people what to do."],
+  ["Street Team", MapPin, "On-site support for QR placement and events."],
   ["Training", BadgeCheck, "A practical workspace handoff for your team."],
   ["Research", Sparkles, "Resident feedback, survey setup, and insight packaging."],
-  ["Custom Campaign", CalendarDays, "A tailored launch or district activation plan."],
+  ["Custom Campaign", CalendarDays, "A tailored launch or district campaign."],
 ];
 
 const integrationPartners = [

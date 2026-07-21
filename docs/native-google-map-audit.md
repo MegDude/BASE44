@@ -1,6 +1,6 @@
 # Native Google Map Audit
 
-Generated: 2026-07-10T19:53:17.404Z
+Generated: 2026-07-18T13:35:30.575Z
 
 ## Result
 

@@ -9,29 +9,191 @@
   --dp-surface-raised: #ffffff;
   --dp-surface-muted: #ffffff;
   --dp-surface-selected: #ffffff;
-  --dp-surface-border: transparent;
-  --dp-surface-border-strong: rgba(11, 31, 51, 0.18);
+  --dp-surface-border: rgba(11, 31, 51, 0.09);
+  --dp-surface-border-strong: rgba(11, 31, 51, 0.16);
   --dp-surface-text: #0b1f33;
   --dp-surface-text-secondary: rgba(11, 31, 51, 0.68);
   --dp-surface-text-muted: rgba(11, 31, 51, 0.52);
   --dp-surface-gold: #c8a96a;
   --dp-surface-emerald: #2f7357;
-  --dp-radius-control: 0px;
-  --dp-radius-card: 0px;
-  --dp-radius-panel: 0px;
-  --dp-radius-media: 0px;
-  --dp-shadow-panel: none;
+  --dp-radius-control: 10px;
+  --dp-radius-card: 16px;
+  --dp-radius-panel: 18px;
+  --dp-radius-media: 16px;
+  --dp-shadow-panel: 0 -1px 0 rgba(11, 31, 51, 0.04), 0 16px 44px rgba(11, 31, 51, 0.085);
   --dp-shadow-card: none;
   --dp-motion-fast: 180ms;
   --dp-motion-standard: 240ms;
   --dp-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dp-map-system-surface: #ffffff;
-  --dp-map-system-border: transparent;
-  --dp-map-system-shadow: none;
-  --dp-map-system-blur: none;
-  --dp-map-system-radius: 0px;
+  --dp-map-system-surface: rgba(255, 255, 255, 0.97);
+  --dp-map-system-border: rgba(11, 31, 51, 0.09);
+  --dp-map-system-shadow: 0 -10px 30px rgba(11, 31, 51, 0.1);
+  --dp-map-system-blur: blur(14px) saturate(120%);
+  --dp-map-system-radius: 16px;
   --dp-map-system-nav-height: calc(64px + env(safe-area-inset-bottom, 0px));
-  --dp-map-system-panel-overlap: 10px;
+}
+
+/* Final platform quality gate: continuous white surfaces, restrained chrome,
+   and row-based information. Major overlays alone receive elevation. */
+html,
+body,
+html body #root,
+html body #root :is(
+  .dp-partner-workspace-page,
+  .dp-workspace-main,
+  .dp-workspace-content,
+  .dp-resident-home,
+  .dp-resident-page,
+  .dp-partners-page,
+  .dp-card-page
+) {
+  background-color: #fff !important;
+  background-image: none !important;
+}
+
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-drawer-panel,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-modal,
+  .dp-dialog,
+  [data-mobile-panel-surface="true"]
+) {
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: var(--dp-shadow-panel) !important;
+}
+
+/* Tables and list rows are information, not floating cards. */
+html body #root :is(.dp-partner-workspace-page, .dp-workspace-main, .dp-resident-page) :is(table, thead, tbody, tfoot, tr, th, td) {
+  border-radius: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-workspace-main) table {
+  width: 100% !important;
+  border: 0 !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-workspace-main) :is(th, td) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+}
+
+html body #root :is(.dp-partner-workspace-page, .dp-workspace-main) :is(
+  .dp-workspace-row,
+  .dp-workspace-report-row,
+  .dp-workspace-list-row,
+  .dp-workspace-analytics-list > a,
+  .dp-workspace-analytics-list > article,
+  .dp-workspace-entities-compact a,
+  .dp-activity-row,
+  .dp-settings-row
+) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Legacy dashboard wrappers must not recreate bento blocks. */
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-overview-section,
+  .dp-workspace-selected-card,
+  .dp-workspace-module-card,
+  .dp-workspace-lifecycle-card,
+  .dp-operating-section,
+  .dp-experience-panel,
+  .dp-work-activity-panel,
+  .dp-profile-editor__section
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page :is(
+  .dp-workspace-module-card,
+  .dp-workspace-lifecycle-card,
+  .dp-profile-editor__section
+) + :is(
+  .dp-workspace-module-card,
+  .dp-workspace-lifecycle-card,
+  .dp-profile-editor__section
+) {
+  border-top: 1px solid var(--dp-surface-border) !important;
+}
+
+@media (max-width: 767px) {
+  html body #root :is(
+    .dp-panel-shell,
+    .dp-map-drawer-shell,
+    .dp-map-detail-sheet,
+    .dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-map-drawer-panel,
+    .dp-mobile-tab-drawer,
+    .dp-bottom-sheet,
+    .dp-active-perks-sheet,
+    .dp-pass-panel,
+    .dp-modal,
+    .dp-dialog,
+    [data-mobile-panel-surface="true"]
+  ) {
+    max-width: 100vw !important;
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px)) !important;
+    overscroll-behavior: contain !important;
+  }
+
+  html body #root :is(
+    .dp-panel-body,
+    .dp-map-panel-body,
+    .dp-map-detail-content,
+    .dp-mobile-tab-body,
+    .dp-active-perks-list,
+    .dp-sheet-body,
+    .dp-dialog-body
+  ) {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html body #root :is(
+    .dp-panel-header,
+    .dp-map-panel-header,
+    .dp-map-detail-header,
+    .dp-mobile-tab-header,
+    .dp-active-perks-header,
+    .dp-drawer-control
+  ) {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5 !important;
+    flex: 0 0 auto !important;
+    background: #fff !important;
+  }
 }
 
 /* Canonical controls intentionally outrank retired recovery locks. */
@@ -165,18 +327,27 @@ html body #root :is(
 }
 
 html body #root .dp-map-detail-header {
-  display: grid !important;
-  grid-template-rows: 22px 44px !important;
-  min-height: 66px !important;
-  padding: 0 12px !important;
+  display: block !important;
+  min-height: 56px !important;
+  padding: 6px 8px !important;
 }
 
 html body #root .dp-map-detail-navigation {
-  display: grid !important;
-  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 44px !important;
+}
+
+html body #root .dp-map-detail-leading {
+  display: flex !important;
+  min-width: 0 !important;
+  max-width: calc(50% - 30px) !important;
   align-items: center !important;
   gap: 4px !important;
-  width: 100% !important;
 }
 
 html body #root .dp-map-detail-navigation-title {
@@ -186,22 +357,32 @@ html body #root .dp-map-detail-navigation-title {
   font-size: 14px;
   font-weight: 650;
   line-height: 1.2;
-  text-align: center;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 html body #root .dp-native-detail-grabber {
+  position: absolute !important;
+  top: 0 !important;
+  left: 50% !important;
   display: grid !important;
-  width: 100% !important;
-  min-width: 44px !important;
-  min-height: 22px !important;
+  width: 56px !important;
+  min-width: 56px !important;
+  height: 44px !important;
+  min-height: 44px !important;
   place-items: center !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  transform: translateX(-50%) !important;
+}
+
+html body #root .dp-map-detail-navigation > .dp-map-detail-close {
+  flex: 0 0 44px !important;
+  margin-left: auto !important;
 }
 
 html body #root .dp-native-detail-grabber > span,
@@ -578,36 +759,6 @@ html body #root :is(
   object-fit: cover !important;
 }
 
-/* Defeat legacy image-radius locks: media fills its assigned plane without an inner box. */
-html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
-  .dp-active-perk-media,
-  .dp-entity-hero,
-  .dp-native-detail-panel__hero,
-  .dp-destination-hero,
-  .dp-destination-media,
-  .dp-panel-detail-hero,
-  .dp-nearby-image-card,
-  .dp-property-nearby-card,
-  .dp-related-place,
-  .dp-native-rail__item,
-  .dp-shore-home-card,
-  .dp-building-network-perk-card
-) > :is(img, picture, video),
-html body #root#root#root .dp-map-page.dp-map-page.dp-map-page img.dp-active-perk-hero {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  object-fit: cover !important;
-}
-
-html body #root#root#root .dp-map-page.dp-map-page.dp-map-page img.dp-active-perk-hero.is-logo-fallback {
-  object-fit: contain !important;
-}
 /* Forms and tabs use the same calm control system. */
 html body #root :is(.dp-panel-shell, .dp-map-detail-sheet, .dp-modal, .dp-dialog) :is(input, select, textarea) {
   min-height: 44px !important;
@@ -700,15 +851,12 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell {
-  box-sizing: border-box !important;
-  inset: auto 0 0 !important;
   right: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
   width: 100vw !important;
   min-width: 100vw !important;
   max-width: none !important;
-  height: var(--dp-map-system-nav-height) !important;
   min-height: var(--dp-map-system-nav-height) !important;
   margin: 0 !important;
   padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
@@ -745,21 +893,21 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
-  box-shadow: none !important;
+  box-shadow: inset 0 2px 0 transparent !important;
   color: rgba(11, 31, 51, 0.56) !important;
   -webkit-text-fill-color: currentColor !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > button:is([aria-pressed="true"], [aria-selected="true"], [data-active="true"]) {
   background: transparent !important;
-  box-shadow: none !important;
-  color: var(--dp-surface-gold) !important;
+  box-shadow: inset 0 2px 0 var(--dp-surface-gold) !important;
+  color: var(--dp-surface-text) !important;
   -webkit-text-fill-color: currentColor !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav > button svg {
-  width: 23px !important;
-  height: 23px !important;
+  width: 18px !important;
+  height: 18px !important;
   color: currentColor !important;
 }
 
@@ -783,12 +931,10 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     aside.dp-panel-shell.dp-map-drawer-shell,
     .dp-map-directory-sheet,
     .dp-active-perks-sheet,
-    .dp-resident-card-sheet,
-    .dp-map-sheet,
-    aside.dp-pass-panel
+    .dp-resident-card-sheet
   ) {
     right: 0 !important;
-    bottom: calc(var(--dp-map-system-nav-height) - var(--dp-map-system-panel-overlap)) !important;
+    bottom: var(--dp-map-system-nav-height) !important;
     left: 0 !important;
     width: 100vw !important;
     min-width: 100vw !important;
@@ -809,9 +955,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     aside.dp-panel-shell.dp-map-drawer-shell,
     .dp-map-directory-sheet,
     .dp-active-perks-sheet,
-    .dp-resident-card-sheet,
-    .dp-map-sheet,
-    aside.dp-pass-panel
+    .dp-resident-card-sheet
   ) :is(.dp-panel-header, .dp-panel-toolbar, .dp-map-detail-header, .dp-active-perks-header, .dp-map-sheet-toolbar) {
     border-bottom: 0 !important;
     background: var(--dp-map-system-surface) !important;
@@ -1012,7 +1156,7 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
     padding-left: 2px !important;
   }
 
-  html body #root .dp-map-page .dp-active-perk-actions > button:first-child {
+html body #root .dp-map-page .dp-active-perk-actions > button:first-child {
     padding: 0 4px !important;
     border: 0 !important;
     border-radius: 0 !important;
@@ -1023,6 +1167,352 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
     text-decoration-color: rgba(200, 169, 106, 0.72) !important;
     text-underline-offset: 4px !important;
   }
+}
+
+/* Keep this final: overlay elevation belongs to the unified shell, never to
+   its rows, tables, controls, or related-item rails. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-drawer-panel,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-modal,
+  .dp-dialog,
+  [data-mobile-panel-surface="true"]
+) {
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.07) !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: var(--dp-shadow-panel) !important;
+}
+
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet
+) :is(
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td,
+  .dp-card,
+  .dp-info-row,
+  .dp-related-place,
+  .dp-native-rail__item,
+  .dp-active-perk-row
+) {
+  border-radius: 0 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Canonical Ask the Map selection: quiet native feedback, never a gold fill. */
+html body #root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-compact-intent-chip,
+  .dp-search-more-toggle
+):is(.is-active, .is-open, [aria-pressed="true"], [aria-selected="true"], [aria-expanded="true"]) {
+  border: 0 !important;
+  background: rgba(11, 31, 51, 0.06) !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+/* The Shore decision layer: editorial insight, not another stack of cards. */
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-nina-read,
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-suggested-updates {
+  padding-block: 24px !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  background: #fff !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-insight-kicker {
+  margin: 0 0 7px !important;
+  color: var(--dp-surface-text-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-nina-read > h3 {
+  max-width: 30ch !important;
+  margin: 0 !important;
+  color: var(--dp-surface-text) !important;
+  font-size: clamp(20px, 5.5vw, 25px) !important;
+  font-weight: 680 !important;
+  line-height: 1.13 !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-nina-read > h3 + p {
+  max-width: 44ch !important;
+  margin: 10px 0 0 !important;
+  color: var(--dp-surface-text-secondary) !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read {
+  display: block !important;
+  margin: 20px 0 0 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read > div {
+  display: grid !important;
+  grid-template-columns: minmax(90px, 0.34fr) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  padding: 14px 0 !important;
+  border-top: 1px solid var(--dp-surface-border) !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read :is(dt, dd) {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read dt {
+  color: var(--dp-surface-text) !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read dd {
+  color: var(--dp-surface-text-secondary) !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-suggested-updates > p {
+  margin: 8px 0 4px !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-suggested-updates article {
+  display: grid !important;
+  gap: 3px !important;
+  padding: 14px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-suggested-updates article:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-suggested-updates article :is(strong, p) {
+  margin: 0 !important;
+}
+
+html body #root .dp-map-page .dp-legends-residential-drawer .dp-legends-nearby-card.has-no-media {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+@media (max-width: 370px) {
+  html body #root .dp-map-page .dp-legends-residential-drawer .dp-shore-decision-read > div {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-nina-read {
+  padding-block: 24px !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  background: #fff !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-insight-kicker {
+  margin: 0 0 7px !important;
+  color: var(--dp-surface-text-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-decision-read {
+  display: block !important;
+  margin: 20px 0 0 !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-decision-read > div {
+  display: grid !important;
+  grid-template-columns: minmax(90px, 0.34fr) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  padding: 14px 0 !important;
+  border-top: 1px solid var(--dp-surface-border) !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-decision-read :is(dt, dd) {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-decision-read dt {
+  color: var(--dp-surface-text) !important;
+  font-weight: 650 !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-decision-read dd {
+  color: var(--dp-surface-text-secondary) !important;
+}
+
+html body #root .dp-map-page .dp-shore-residential-drawer .dp-shore-suggested-updates article {
+  padding: 14px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-compact-intent-chip,
+  .dp-search-more-toggle
+):is(.is-active, .is-open, [aria-pressed="true"], [aria-selected="true"], [aria-expanded="true"])::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page .dp-search-intent-console.dp-search-intent-console :is(
+  .dp-compact-intent-chip__icon,
+  .dp-expanding-intent-chip__icon,
+  .dp-search-intent-filter-icon
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: currentColor !important;
+  fill: none !important;
+  box-shadow: none !important;
+}
+
+/* Continuous-surface authority.
+   App shells own the bright-white surface; content inside them must not create
+   a second floating box. Media, fields, alerts, and primary actions retain
+   their dedicated component treatments. */
+html body #root :is(
+  .dp-resident-home,
+  .dp-resident-page,
+  .dp-partner-workspace-page,
+  .dp-workspace-main,
+  .dp-workspace-content,
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-map-detail-scroll,
+  .dp-map-panel-scroll,
+  .dp-drawer-scroll,
+  .dp-panel-body,
+  .dp-mobile-tab-drawer,
+  .dp-mobile-tab-body,
+  .dp-active-perks-sheet,
+  .dp-active-perks-list,
+  .dp-bottom-sheet,
+  .dp-dialog,
+  .dp-modal
+) {
+  background-color: #fff !important;
+  background-image: none !important;
+}
+
+html body #root :is(
+  .dp-resident-home__panel,
+  .dp-resident-home__section,
+  .dp-resident-card-command,
+  .dp-resident-directory-section,
+  .dp-resident-profile-section,
+  .dp-workspace-content,
+  .dp-workspace-overview-section,
+  .dp-profile-editor__section,
+  .dp-building-experience,
+  .dp-building-experience-section,
+  .dp-map-detail-content,
+  .dp-entity-drawer
+) :is(
+  .dp-card,
+  .dp-info-row,
+  .dp-partner-intel-card,
+  .dp-building-network-perk-card,
+  .dp-shore-home-card,
+  .dp-legends-brand-card,
+  .dp-entity-discovery-card,
+  .dp-related-place,
+  .dp-route-card,
+  .dp-collection-card,
+  .dp-event-card,
+  .dp-report-card,
+  .dp-campaign-card,
+  .dp-metric-card,
+  .dp-active-perk-row
+) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-surface-border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-resident-home__section,
+  .dp-workspace-overview-section,
+  .dp-profile-editor__section,
+  .dp-building-experience-section,
+  .dp-map-detail-section,
+  .dp-entity-section
+) {
+  border-right: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-card,
+  .dp-info-row,
+  .dp-partner-intel-card,
+  .dp-entity-discovery-card,
+  .dp-route-card,
+  .dp-collection-card,
+  .dp-event-card,
+  .dp-report-card,
+  .dp-campaign-card,
+  .dp-metric-card
+) :is(
+  .dp-card,
+  .dp-info-row,
+  .dp-partner-intel-card,
+  .dp-entity-discovery-card,
+  .dp-related-place,
+  .dp-route-card,
+  .dp-collection-card,
+  .dp-event-card,
+  .dp-report-card,
+  .dp-campaign-card,
+  .dp-metric-card
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Full-bleed panel authority. Keep this last so recovery styles cannot add
@@ -1101,109 +1591,8 @@ html body #root .dp-map-page :is(
   }
 
   html body #root .dp-map-page .dp-active-perks-sheet.is-medium .dp-active-perks-list {
-    max-height: calc(50dvh - 96px) !important;
-  }
-}
-/* Reports stay on the shared sharp, bright-white workspace surface. */
-html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-reports,
-html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-page.dp-partner-workspace-page .dp-workspace-reports :is(
-  section,
-  article,
-  [role="dialog"],
-  [class*="panel"],
-  [class*="drawer"],
-  [class*="card"]
-) {
-  border-radius: 0 !important;
-  background: #fff !important;
-  box-shadow: none !important;
-}
-
-/* Release authority: bright, continuous product planes with icon-only mobile navigation. */
-html body,
-html body #root,
-html body #root :is(.dp-partner-workspace-page, .dp-resident-home) {
-  background: #ffffff !important;
-}
-
-html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(
-  [class*="card"],
-  [class*="panel"],
-  [class*="tile"],
-  [class*="metric"],
-  [class*="summary"],
-  [class*="surface"]
-) {
-  border-color: transparent !important;
-  border-radius: 0 !important;
-  background-color: #ffffff !important;
-  box-shadow: none !important;
-}
-
-html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(h1, .dp-operating-header h1) {
-  font-size: clamp(26px, 7vw, 34px) !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.035em !important;
-}
-
-html body #root :is(.dp-partner-workspace-page, .dp-resident-home) :is(h2, h3) {
-  font-size: clamp(18px, 5vw, 24px) !important;
-  line-height: 1.18 !important;
-  letter-spacing: -0.022em !important;
-}
-
-html body #root .dp-native-tab-label {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(50%) !important;
-  border: 0 !important;
-  white-space: nowrap !important;
-}
-
-@media (max-width: 767px) {
-  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs),
-  html body #root .dp-map-page .dp-map-bottom-nav-shell {
-    min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
-    padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
-  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button),
-  html body #root .dp-map-page nav.dp-map-bottom-nav > button {
-    display: grid !important;
-    min-width: 44px !important;
-    min-height: 54px !important;
-    place-items: center !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: rgba(11, 31, 51, 0.5) !important;
-  }
-
-  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button) svg,
-  html body #root .dp-map-page nav.dp-map-bottom-nav > button svg {
-    width: 23px !important;
-    height: 23px !important;
-    stroke-width: 1.8 !important;
-  }
-
-  html body #root :is(.dp-partner-native-tabs, .dp-resident-native-tabs) :is(a, button).is-active,
-  html body #root .dp-map-page nav.dp-map-bottom-nav > button:is([aria-pressed="true"], [aria-selected="true"]) {
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: var(--dp-surface-gold) !important;
+    max-height: calc(
+      50dvh - 96px
+    ) !important;
   }
 }
