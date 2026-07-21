@@ -28,6 +28,9 @@ assert.match(styles, /\.dp-search-intent-switch\.dp-search-intent-audience-tabs 
 assert.match(styles, /\.dp-search-intent-switch\.dp-search-intent-audience-tabs > button \{[\s\S]*?border-radius:\s*0\s*!important;/, "Audience switcher restores pill-shaped controls");
 assert.doesNotMatch(map, /Explore more intents|More ways to explore downtown\./, "Removed More-helper copy returned to the map console");
 assert.doesNotMatch(railConfig, /Explore more intents|More ways to explore downtown\./, "Removed More-helper copy returned to the intent configuration");
+assert.doesNotMatch(map, /dp-search-intent-description-strip/, "The removed intent-description footer returned to the map console");
+assert.doesNotMatch(map, /dp-search-intent-status/, "The removed search-status footer returned to the map console");
+assert.doesNotMatch(map, /No close matches\. Try another area or a broader search\./, "The removed no-match footer copy returned to the map console");
 assert.match(map, /aria-label="Show more map options"/, "The More control lost its concise accessible name");
 
 console.log("Search console aligns Ask the Map left and audience controls right on one row: PASS");

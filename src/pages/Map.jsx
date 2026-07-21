@@ -13287,23 +13287,12 @@ function MapSearchConsole({
   hasTopMapBack = false,
 }) {
   const [moreOpen, setMoreOpen] = useState(false);
-  const [previewIntentId, setPreviewIntentId] = useState(null);
-  const [focusedIntentId, setFocusedIntentId] = useState(null);
   const consoleWrapRef = useRef(null);
   const consolePanelRef = useRef(null);
   const [viewportWidth, setViewportWidth] = useState(() => (
     typeof window === "undefined" ? 393 : window.innerWidth
   ));
   const activeSearchLabel = query || activeFilter || "All";
-  const statusCopy = requestStatus === "loading"
-    ? "Finding the best matches…"
-    : requestStatus === "error"
-      ? "We couldn’t load these results. Your map is still available—try the search again."
-      : resultCount > 0
-        ? `${resultCount} nearby`
-        : lastTrigger
-          ? "No close matches. Try another area or a broader search."
-          : "";
   const selectedIntentAnnouncement = isSingleSelectSearchIntentFilter(activeFilter)
     ? `${getCanonicalSearchIntentFilter(activeFilter)} selected. ${resultCount} results shown.`
     : "";
@@ -13422,14 +13411,6 @@ function MapSearchConsole({
   const primaryCollectionActive = intentRail.some((item) => item.collection && isRailItemActive(item));
   const activeSecondaryItem = primaryCollectionActive ? null : moreFilterRail.find(isRailItemActive);
   const moreToggleLabel = "More";
-  const allIntentItems = [...intentRail, ...moreFilterRail];
-  const activeIntentItem = allIntentItems.find(isRailItemActive) || null;
-  const previewedIntentItem = allIntentItems.find((item) => item.id === previewIntentId || item.id === focusedIntentId) || null;
-  const previewDefinition = previewedIntentItem
-    ? getSearchIntentDefinition(previewedIntentItem)
-    : activeIntentItem
-      ? getSearchIntentDefinition(activeIntentItem)
-      : null;
   const makeIntentSummary = (item, active) => {
     const definition = getSearchIntentDefinition(item);
     if (!active) return definition.description;
@@ -13464,8 +13445,6 @@ function MapSearchConsole({
   };
   const handleMoreClick = (event) => {
     event?.stopPropagation?.();
-    setPreviewIntentId(null);
-    setFocusedIntentId(null);
     setMoreOpen((value) => {
       if (value && activeSecondaryItem) return true;
       const next = !value;
@@ -13567,20 +13546,15 @@ function MapSearchConsole({
         onFocus={() => {}}
         onBlur={() => {}}
         onClick={() => {
-          setPreviewIntentId(null);
-          setFocusedIntentId(null);
           handleRailItem(item);
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
-            setPreviewIntentId(null);
-            setFocusedIntentId(null);
             event.currentTarget.blur();
             return;
           }
           handleConsoleTabKeyDown(event, () => {
-            setPreviewIntentId(null);
             handleRailItem(item);
           });
         }}
@@ -13623,8 +13597,6 @@ function MapSearchConsole({
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             event.preventDefault();
-            setPreviewIntentId(null);
-            setFocusedIntentId(null);
             if (moreOpen) setMoreOpen(false);
             return;
           }
@@ -13881,23 +13853,6 @@ function MapSearchConsole({
               <div id="dp-search-more-filter-panel" hidden aria-hidden="true" />
             )}
           </div>
-        ) : null}
-        {!showCatalogResults && previewDefinition && previewDefinition.id !== "more" ? (
-          <div className="dp-search-intent-description-strip" aria-live="polite">
-            <span className="dp-search-intent-description-strip__label">
-              {previewDefinition.fullLabel}
-            </span>
-            <span className="dp-search-intent-description-strip__copy">
-              {activeIntentItem && previewDefinition.id === activeIntentItem.id
-                ? makeIntentSummary(activeIntentItem, true)
-              : previewDefinition.description}
-            </span>
-          </div>
-        ) : null}
-        {!showCatalogResults && statusCopy ? (
-          <p className="dp-search-intent-status" aria-live="polite">
-            {statusCopy}
-          </p>
         ) : null}
         {selectedIntentAnnouncement ? (
           <p className="sr-only" aria-live="polite">
