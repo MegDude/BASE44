@@ -992,7 +992,7 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
 
 @media (max-width: 767px) {
   html body #root .dp-map-page .dp-active-perk-row {
-    grid-template-columns: minmax(0, 1fr) 104px !important;
+    grid-template-columns: minmax(0, 1fr) 116px !important;
     margin-inline: 16px !important;
   }
 
@@ -1007,21 +1007,23 @@ html body #root .dp-map-page .dp-inkind-partner-brief dd {
   }
 
   html body #root .dp-map-page .dp-active-perk-actions {
-    grid-template-columns: 56px 44px !important;
-    gap: 2px !important;
-    padding-left: 2px !important;
+    grid-template-columns: 68px 44px !important;
+    gap: 4px !important;
+    padding-left: 0 !important;
   }
 
   html body #root .dp-map-page .dp-active-perk-actions > button:first-child {
-    padding: 0 4px !important;
+    padding: 0 8px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
     color: var(--dp-surface-text) !important;
     -webkit-text-fill-color: var(--dp-surface-text) !important;
-    text-decoration: underline !important;
-    text-decoration-color: rgba(200, 169, 106, 0.72) !important;
-    text-underline-offset: 4px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.06em !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
   }
 }
 /* Reports stay on the shared sharp, bright-white workspace surface. */

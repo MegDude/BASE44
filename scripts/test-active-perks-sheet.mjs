@@ -6,6 +6,7 @@ const sheetSource = await readFile(new URL("../src/components/map/ActivePerksShe
 const panelNavigationSource = await readFile(new URL("../src/hooks/useMapPanelNavigation.ts", import.meta.url), "utf8");
 const sheetCss = await readFile(new URL("../src/styles/active-perks-sheet.css", import.meta.url), "utf8");
 const geometryCss = await readFile(new URL("../src/styles/native-drawer-geometry-final.css", import.meta.url), "utf8");
+const surfaceCss = await readFile(new URL("../src/styles/canonical-surface-system.css", import.meta.url), "utf8");
 const shellSource = await readFile(new URL("../src/components/map/NativeDrawerShell.jsx", import.meta.url), "utf8");
 const mainSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 
@@ -44,6 +45,7 @@ assert.match(sheetCss, /\.dp-active-perks-handle\s*\{[^}]*width:\s*100%[^}]*min-
 assert.match(sheetCss, /\.dp-active-perks-sheet\s+\.dp-active-perks-handle\s*\{[^}]*width:\s*100%\s*!important[^}]*place-items:\s*center\s*!important/s, "the centered handle must win the shared control cascade");
 assert.match(sheetCss, /\.dp-active-perk-actions\s*>\s*button:first-child\s*\{[^}]*white-space:\s*nowrap/s, "the Redeem action must never wrap or clip");
 assert.match(sheetCss, /grid-template-columns:\s*64px\s+minmax\(0,\s*1fr\)/);
+assert.match(surfaceCss, /\.dp-active-perk-actions\s*\{[^}]*grid-template-columns:\s*68px\s+44px\s*!important/s, "mobile action tracks must fit Redeem and Save without clipping");
 assert.match(sheetCss, /max-width:\s*760px/);
 assert.doesNotMatch(sheetCss, /#[0-9a-f]{3,8}/i, "the sheet stylesheet must use design tokens only");
 assert.doesNotMatch(sheetCss, /border-radius:\s*(?:999|9999)px/i, "pill geometry is forbidden");

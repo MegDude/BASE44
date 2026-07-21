@@ -56,6 +56,18 @@ for (const viewport of viewports) {
       contentViewport: contentViewport?.getBoundingClientRect().toJSON(),
       nav: nav?.getBoundingClientRect().toJSON(),
       lastRow: lastRow?.getBoundingClientRect().toJSON(),
+      redeemButtonsFit: [...element.querySelectorAll(".dp-active-perk-actions > button:first-child")].every((button) => (
+        button.scrollWidth <= button.clientWidth
+        && button.getBoundingClientRect().right <= element.getBoundingClientRect().right
+        && getComputedStyle(button).whiteSpace === "nowrap"
+      )),
+      handleCenterDelta: (() => {
+        const handle = element.querySelector(".dp-active-perks-handle");
+        if (!handle) return Number.POSITIVE_INFINITY;
+        const handleBox = handle.getBoundingClientRect();
+        const drawerBox = element.getBoundingClientRect();
+        return Math.abs((handleBox.left + handleBox.width / 2) - (drawerBox.left + drawerBox.width / 2));
+      })(),
       scrollOverflow: scroll ? getComputedStyle(scroll).overflowY : "",
       bodyLocked: document.body.style.overflow === "hidden",
       surfaceColor: surface ? getComputedStyle(surface).backgroundColor : "",
@@ -65,6 +77,8 @@ for (const viewport of viewports) {
   assert.ok(geometry.nav && Math.abs(geometry.nav.bottom - geometry.viewportHeight) <= 1, `${viewport.name}: navigation does not reach the viewport bottom`);
   assert.ok(geometry.contentViewport && geometry.contentViewport.bottom <= geometry.nav.top + 1, `${viewport.name}: readable content sits behind navigation`);
   assert.ok(geometry.lastRow && geometry.lastRow.bottom <= geometry.nav.top + 1, `${viewport.name}: final perk row is clipped by navigation`);
+  assert.equal(geometry.redeemButtonsFit, true, `${viewport.name}: Redeem text is clipped or wrapped`);
+  assert.ok(geometry.handleCenterDelta <= 1, `${viewport.name}: drawer handle is not centered`);
   assert.equal(geometry.scrollOverflow, "auto", `${viewport.name}: shared scroll region is not the scroll owner`);
   assert.equal(geometry.bodyLocked, true, `${viewport.name}: map page is not locked while the drawer is open`);
   assert.equal(geometry.surfaceColor, "rgb(255, 255, 255)", `${viewport.name}: drawer surface is not white`);
