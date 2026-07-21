@@ -41,6 +41,11 @@ const governedPostCanonicalLocks = [
   'import "@/styles/partner-workspace-journeys-final.css"',
   'import "@/styles/resident-home-ios-native-final.css"',
   'import "@/styles/active-perks-sheet.css"',
+  'import "@/styles/resident-home-civic-reconciliation.css"',
+  'import "@/styles/resident-events-drawer-full.css"',
+  'import "@/styles/inkind-redemption-compact-final.css"',
+  'import "@/styles/search-input-rail-compact-final.css"',
+  'import "@/styles/global-back-control-final.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);
