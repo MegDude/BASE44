@@ -15,6 +15,8 @@ assert.match(styles, /grid-template-columns:\s*auto minmax\(0, 1fr\)\s*!importan
 assert.match(styles, /\.dp-search-intent-ask-map[\s\S]*?justify-self:\s*start\s*!important;/, "Ask the Map is not aligned to the left margin");
 assert.match(styles, /\.dp-search-intent-header-controls[\s\S]*?justify-self:\s*end\s*!important;/, "Switcher and collapse control are not aligned to the right margin");
 assert.match(styles, /flex-flow:\s*row nowrap\s*!important;/, "Right-side controls can wrap onto another line");
+assert.match(styles, /\.dp-search-intent-prompt-rail\.dp-search-intent-prompt-rail[\s\S]*?padding-inline:\s*12px\s*!important;/, "The icon rail is flush against the console edge");
+assert.match(styles, /\.dp-search-intent-prompt-rail\.dp-search-intent-prompt-rail[\s\S]*?scroll-padding-inline:\s*12px\s*!important;/, "The icon rail does not preserve its inset while scrolling");
 assert.match(styles, /font:\s*720 10px\/1 Inter[^;]+!important;/, "Utility labels do not use the compact text scale");
 assert.match(styles, /text-transform:\s*uppercase\s*!important;/, "Utility labels are not uppercase");
 assert.match(styles, /color:\s*#b08a3f\s*!important;/i, "Utility labels do not use the approved gold");

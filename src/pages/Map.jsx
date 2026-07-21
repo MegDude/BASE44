@@ -13774,7 +13774,6 @@ function MapSearchConsole({
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail dp-ask-map-header">
           <div className="dp-search-intent-top-actions">
-            {renderModeSwitch()}
             <button
               type="button"
               className="dp-search-intent-ask-map"
@@ -13783,15 +13782,18 @@ function MapSearchConsole({
             >
               Ask the Map
             </button>
-            <button
-              type="button"
-              className="dp-search-intent-collapse dp-search-intent-collapse-icon dp-ask-map-panel-control"
-              aria-label="Collapse map search console"
-              aria-expanded="true"
-              onClick={onCollapse}
-            >
-              <ChevronDown aria-hidden="true" />
-            </button>
+            <div className="dp-search-intent-header-controls">
+              {renderModeSwitch()}
+              <button
+                type="button"
+                className="dp-search-intent-collapse dp-search-intent-collapse-icon dp-ask-map-panel-control"
+                aria-label="Collapse map search console"
+                aria-expanded="true"
+                onClick={onCollapse}
+              >
+                <ChevronDown aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
 
