@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 
 const map = readFileSync("src/pages/Map.jsx", "utf8");
 const styles = readFileSync("src/styles/search-intent-glass-surface-final.css", "utf8");
+const railConfig = readFileSync("src/components/map/searchIntentRailConfig.ts", "utf8");
 
 assert.match(map, /className="dp-search-intent-top-actions"[\s\S]*className="dp-search-intent-ask-map"[\s\S]*className="dp-search-intent-header-controls"/, "Ask the Map is not the left-most header action");
 assert.match(map, /className="dp-search-intent-header-controls"[\s\S]*renderModeSwitch\(\)[\s\S]*className="dp-search-intent-collapse/, "Audience switcher and collapse control are not grouped on the right");
@@ -25,5 +26,8 @@ assert.match(styles, /text-transform:\s*uppercase\s*!important;/, "Utility label
 assert.match(styles, /color:\s*#b08a3f\s*!important;/i, "Utility labels do not use the approved gold");
 assert.match(styles, /\.dp-search-intent-switch\.dp-search-intent-audience-tabs \{[\s\S]*?border-radius:\s*0\s*!important;/, "Audience switcher restores a pill-shaped container");
 assert.match(styles, /\.dp-search-intent-switch\.dp-search-intent-audience-tabs > button \{[\s\S]*?border-radius:\s*0\s*!important;/, "Audience switcher restores pill-shaped controls");
+assert.doesNotMatch(map, /Explore more intents|More ways to explore downtown\./, "Removed More-helper copy returned to the map console");
+assert.doesNotMatch(railConfig, /Explore more intents|More ways to explore downtown\./, "Removed More-helper copy returned to the intent configuration");
+assert.match(map, /aria-label="Show more map options"/, "The More control lost its concise accessible name");
 
 console.log("Search console aligns Ask the Map left and audience controls right on one row: PASS");

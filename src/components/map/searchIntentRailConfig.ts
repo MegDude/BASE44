@@ -82,8 +82,8 @@ const SEARCH_INTENT_COPY = {
     includesCollections: true,
   },
   more: {
-    fullLabel: "Explore more intents",
-    description: "More ways to explore downtown.",
+    fullLabel: "More",
+    description: "",
   },
   happy_hour_route: {
     fullLabel: "Happy Hour route",

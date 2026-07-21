@@ -13417,7 +13417,6 @@ function MapSearchConsole({
   const allIntentItems = [...intentRail, ...moreFilterRail];
   const activeIntentItem = allIntentItems.find(isRailItemActive) || null;
   const previewedIntentItem = allIntentItems.find((item) => item.id === previewIntentId || item.id === focusedIntentId) || null;
-  const moreIntentDefinition = getSearchIntentDefinition({ id: "more", label: "More", prompt: "Explore more intents" });
   const previewDefinition = previewedIntentItem
     ? getSearchIntentDefinition(previewedIntentItem)
     : activeIntentItem
@@ -13591,8 +13590,6 @@ function MapSearchConsole({
     const MoreIcon = Compass;
     const previewed = false;
     const expanded = moreOpen;
-    const descriptionId = "dp-search-intent-desc-more";
-    const summary = moreIntentDefinition.description;
 
     return (
       <button
@@ -13602,8 +13599,7 @@ function MapSearchConsole({
         className={`dp-search-more-toggle ${moreOpen ? "is-open" : ""} ${previewed ? "is-previewed" : ""}`}
         aria-expanded={moreOpen}
         aria-controls="dp-search-more-filter-panel"
-        aria-label={`Explore more intents. Shows ${moreIntentDefinition.description}.`}
-        aria-describedby={descriptionId}
+        aria-label="Show more map options"
         onPointerEnter={() => {}}
         onPointerLeave={() => {}}
         onFocus={() => {}}
@@ -13629,9 +13625,6 @@ function MapSearchConsole({
         <span className="dp-expanding-intent-chip__text">
           <span className="dp-expanding-intent-chip__label dp-search-intent-filter-label">
             {expanded ? "More" : moreToggleLabel}
-          </span>
-          <span id={descriptionId} className="sr-only">
-            {summary}
           </span>
         </span>
       </button>
@@ -13869,7 +13862,7 @@ function MapSearchConsole({
             )}
           </div>
         ) : null}
-        {!showCatalogResults && previewDefinition ? (
+        {!showCatalogResults && previewDefinition && previewDefinition.id !== "more" ? (
           <div className="dp-search-intent-description-strip" aria-live="polite">
             <span className="dp-search-intent-description-strip__label">
               {previewDefinition.fullLabel}
