@@ -186,3 +186,42 @@ html body #root .dp-map-page .dp-daa-video-card > video {
     transition: none !important;
   }
 }
+
+/*
+ * The legacy detail bundle intentionally ships a high-specificity product lock.
+ * Match that lock at the final cascade boundary so every active resident and
+ * partner drawer receives the canonical white media plane without editing the
+ * older recovery stylesheet.
+ */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer :is(.dp-panel-detail-hero, .dp-destination-hero, .dp-destination-media, .dp-destination-hero-media, .dp-polished-panel-hero, .dp-entity-hero-image, .dp-native-detail-panel__hero, .dp-partner-drawer-media) {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 320px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+  isolation: isolate !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer :is(.dp-destination-media img, .dp-destination-hero-media img, .dp-panel-detail-hero img, .dp-polished-panel-hero img, .dp-entity-hero-image img, .dp-native-detail-panel__hero img, .dp-partner-drawer-media img) {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  vertical-align: middle !important;
+}

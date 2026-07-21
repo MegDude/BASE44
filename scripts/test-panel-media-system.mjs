@@ -40,5 +40,6 @@ for (const rule of [
 assert.match(canonicalPanel, /onError=\{handlePanelMediaError\}/, "canonical detail media needs a fallback");
 assert.match(routeSheet, /onError=\{handlePanelMediaError\}/, "route media needs a fallback");
 assert.match(map, /dp-daa-art-image-card[\s\S]{0,320}onError=\{handlePanelImageError\}/, "editorial image rails need a fallback");
+assert.match(styles, /#dp-active-map-drawer[\s\S]*background: #fff !important;/, "the final active-drawer lock must defeat legacy tinted media rules");
 
 console.log("Panel media system: shared crop, white surface, seam prevention, and fallbacks verified");
