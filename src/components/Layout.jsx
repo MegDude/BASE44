@@ -98,6 +98,7 @@ export default function Layout() {
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/resident/home" ||
+    pathname.startsWith("/resident/civic") ||
     pathname === "/residents/governance" ||
     isResidentAccessRoute ||
     pathname === "/about" ||
@@ -148,16 +149,18 @@ export default function Layout() {
     pathname !== "/app/map" &&
     pathname !== "/map" &&
     pathname !== "/resident/home" &&
+    !pathname.startsWith("/resident/civic") &&
     pathname !== "/residents/governance" &&
     !isEmbeddedMap &&
     !isResidentAccessRoute &&
     !pathname.startsWith("/partner-workspace");
-  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/resident/home" && pathname !== "/residents/governance";
+  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && !pathname.startsWith("/resident/civic") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/resident/home" && pathname !== "/residents/governance";
   const usesPersistentProductNavigation =
     pathname === "/app" ||
     pathname === "/app/map" ||
     pathname === "/map" ||
     pathname === "/resident/home" ||
+    pathname.startsWith("/resident/civic") ||
     pathname.startsWith("/partner-workspace");
   const showLayoutBack =
     pathname !== "/" &&

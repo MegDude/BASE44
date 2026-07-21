@@ -20,6 +20,13 @@ for (const removed of ["Ask Downtown", "Quick actions", "Walking routes", "Colle
 assert.equal((home.match(/dp-resident-home-primary-actions/g) || []).length, 1, "Home must have one primary action group");
 assert.match(home, /setPassOpen\(true\)/, "Home does not open the secure Resident Pass");
 
+const layout = readFileSync("src/components/Layout.jsx", "utf8");
+assert.match(layout, /pathname\.startsWith\("\/resident\/civic"\)/, "Civic Inbox is not treated as a native product route");
+
+const civicPage = readFileSync("src/pages/ResidentGovernance.tsx", "utf8");
+for (const label of ["Open civic map", "Send a question", "Your activity"]) assert.match(civicPage, new RegExp(label, "i"), `Missing Civic Inbox action: ${label}`);
+assert.doesNotMatch(civicPage, /reason\.message/, "Civic Inbox exposes raw service errors to residents");
+
 const civicApi = readFileSync("api/resident/civic.js", "utf8");
 assert.match(civicApi, /submit_resident_civic_response/, "Civic responses do not use the atomic database transaction");
 assert.match(civicApi, /requireResidentProfile/, "Civic responses are not resident scoped");

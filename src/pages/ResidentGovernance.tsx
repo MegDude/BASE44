@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowLeft, CalendarDays, Landmark, MapPin, Send, UsersRound } from "lucide-react";
+import { ArrowLeft, CalendarDays, ChevronRight, Landmark, Map, MapPin, Send, UsersRound } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { getResidentGovernance, sendResidentGovernanceAction, type ResidentGovernanceResponse } from "@/lib/governance/governanceClient";
@@ -23,12 +23,13 @@ export default function ResidentGovernance() {
   const [message, setMessage] = useState("");
   const organizationId = data.consultations[0]?.organization_id || data.initiatives[0]?.organization_id || data.meetings[0]?.organization_id;
   const visibleConsultations = actionId ? data.consultations.filter((item) => item.id === actionId) : data.consultations;
+  const hasPublishedContent = Boolean(data.updates?.length || visibleConsultations.length || data.initiatives.length || data.meetings.length || data.questions.length);
 
   useEffect(() => {
     const controller = new AbortController();
     getResidentGovernance()
       .then((next) => { if (!controller.signal.aborted) setData(next); })
-      .catch((reason: Error) => { if (!controller.signal.aborted) setError(reason.message); })
+      .catch(() => { if (!controller.signal.aborted) setError("Community updates are taking a moment. The civic map is still ready to explore."); })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, []);
@@ -42,8 +43,8 @@ export default function ResidentGovernance() {
       setQuestion("");
       setMessage(result.message);
       setData(await getResidentGovernance());
-    } catch (reason) {
-      setMessage(reason instanceof Error ? reason.message : "We could not send your question. Try again.");
+    } catch {
+      setMessage("We could not send your question. Please try again.");
     }
   }
 
@@ -51,67 +52,73 @@ export default function ResidentGovernance() {
     <main className="dp-governance-resident">
       <header className="dp-governance-resident__header">
         <Link to="/resident/home" aria-label="Back to resident home"><ArrowLeft aria-hidden="true" /></Link>
-        <div><small>Downtown Perks</small><strong>Civic inbox</strong></div>
+        <div><small>Resident</small><strong>Civic inbox</strong></div>
         <span aria-hidden="true" />
       </header>
 
       <div className="dp-governance-resident__content">
         <section className="dp-governance-intro" aria-labelledby="governance-title">
-          <p>For you</p>
-          <h1 id="governance-title">Have a say in what happens next.</h1>
-          <span>Read verified updates, answer open questions, and follow how downtown organizations respond.</span>
-          {data.consultations[0] ? <a href="#current-consultation">Answer a quick question</a> : <a href="#ask-a-question">Send a question</a>}
+          <p>Civic inbox</p>
+          <h1 id="governance-title">Downtown updates, in one place.</h1>
+          <span>See verified changes nearby, answer open questions, and follow what happens next.</span>
         </section>
+
+        <nav className="dp-governance-actions" aria-label="Civic actions">
+          <Link to="/map?mode=resident&tab=map&filter=Civic"><Map aria-hidden="true" /><span><strong>Open civic map</strong><small>Places, projects and events</small></span><ChevronRight aria-hidden="true" /></Link>
+          <a href={data.consultations[0] ? "#current-consultation" : "#ask-a-question"}><Send aria-hidden="true" /><span><strong>{data.consultations[0] ? "Answer a question" : "Send a question"}</strong><small>Share what matters to you</small></span><ChevronRight aria-hidden="true" /></a>
+        </nav>
 
         {loading ? <p className="dp-governance-state" role="status">Loading verified community updates…</p> : null}
         {error ? <p className="dp-governance-state is-error" role="alert">{error}</p> : null}
 
-        <section className="dp-governance-section" aria-labelledby="civic-updates-title">
-          <header><small>Updates</small><h2 id="civic-updates-title">Know what changed nearby</h2><p>Verified organizations publish the source, timing, and next step.</p></header>
-          {data.updates?.length ? data.updates.map((item) => <article key={item.id} className="dp-governance-row"><Landmark aria-hidden="true" /><div><strong>{item.title}</strong><p>{item.summary}</p><small>{item.organization_name || "Verified downtown organization"}</small></div></article>) : <p className="dp-governance-empty">New verified updates will appear here.</p>}
-        </section>
+        {data.updates?.length ? <section className="dp-governance-section" aria-labelledby="civic-updates-title">
+          <header><small>Latest</small><h2 id="civic-updates-title">Updates near you</h2><p>What changed, who shared it, and what happens next.</p></header>
+          {data.updates.map((item) => <article key={item.id} className="dp-governance-row"><Landmark aria-hidden="true" /><div><strong>{item.title}</strong><p>{item.summary}</p><small>{item.organization_name || "Verified downtown organization"}</small></div></article>)}
+        </section> : null}
 
-        <section className="dp-governance-section" id="current-consultation" aria-labelledby="consultation-title">
-          <header><small>Have your say</small><h2 id="consultation-title">Questions open for residents</h2><p>Responses go to the organization responsible for the work.</p></header>
-          {visibleConsultations.length ? visibleConsultations.map((item) => <QuickCivicQuestion key={item.id} action={item} onSubmitted={async () => setData(await getResidentGovernance())} />) : <p className="dp-governance-empty">No resident question is open right now. You can still send a question below.</p>}
-        </section>
+        {visibleConsultations.length ? <section className="dp-governance-section" id="current-consultation" aria-labelledby="consultation-title">
+          <header><small>Have your say</small><h2 id="consultation-title">Open questions</h2><p>Your response goes to the organization responsible for the work.</p></header>
+          {visibleConsultations.map((item) => <QuickCivicQuestion key={item.id} action={item} onSubmitted={async () => setData(await getResidentGovernance())} />)}
+        </section> : null}
 
-        <section className="dp-governance-section" aria-labelledby="projects-title">
-          <header><small>Current work</small><h2 id="projects-title">Projects residents can follow</h2><p>Each update shows who owns the work and what happens next.</p></header>
-          {data.initiatives.length ? data.initiatives.map((item) => (
+        {data.initiatives.length ? <section className="dp-governance-section" aria-labelledby="projects-title">
+          <header><small>Current work</small><h2 id="projects-title">Projects to follow</h2><p>See who owns the work and its current status.</p></header>
+          {data.initiatives.map((item) => (
             <article key={item.id} className="dp-governance-row">
               <Landmark aria-hidden="true" />
               <div><strong>{item.title}</strong><p>{item.summary}</p><small>{readableStatus(item.work_status)}</small>{item.latitude && item.longitude ? <Link to={`/map?mode=resident&tab=map&filter=Civic&lat=${item.latitude}&lng=${item.longitude}`}>Show on map</Link> : null}</div>
             </article>
-          )) : <p className="dp-governance-empty">Published project updates will appear here after the responsible organization approves them.</p>}
-        </section>
+          ))}
+        </section> : null}
 
-        <section className="dp-governance-section" aria-labelledby="meetings-title">
-          <header><small>Meetings</small><h2 id="meetings-title">Know what is coming up</h2><p>See the date, purpose, location, and available meeting materials together.</p></header>
-          {data.meetings.length ? data.meetings.map((item) => (
+        {data.meetings.length ? <section className="dp-governance-section" aria-labelledby="meetings-title">
+          <header><small>Meetings</small><h2 id="meetings-title">Coming up</h2><p>Dates, locations, and meeting details together.</p></header>
+          {data.meetings.map((item) => (
             <article key={item.id} className="dp-governance-row"><CalendarDays aria-hidden="true" /><div><strong>{item.title}</strong><p>{item.summary}</p><small>{item.starts_at ? new Date(item.starts_at).toLocaleString() : "Date to be confirmed"}{item.location_name ? ` · ${item.location_name}` : ""}</small></div></article>
-          )) : <p className="dp-governance-empty">No upcoming meeting has been published.</p>}
-        </section>
+          ))}
+        </section> : null}
 
-        <section className="dp-governance-section" aria-labelledby="resident-questions-title">
-          <header><small>Resident questions</small><h2 id="resident-questions-title">See what neighbors are asking</h2><p>Similar questions are grouped so organizations can respond clearly.</p></header>
-          {data.questions.length ? data.questions.map((item) => (
+        {data.questions.length ? <section className="dp-governance-section" aria-labelledby="resident-questions-title">
+          <header><small>Resident questions</small><h2 id="resident-questions-title">What neighbors are asking</h2><p>Similar questions are grouped for a clear response.</p></header>
+          {data.questions.map((item) => (
             <article key={item.id} className="dp-governance-row"><UsersRound aria-hidden="true" /><div><strong>{item.question}</strong>{item.answer ? <p>{item.answer}</p> : null}<small>{item.governance_question_supports?.[0]?.count || 0} residents support this question</small></div></article>
-          )) : <p className="dp-governance-empty">Approved resident questions will appear here.</p>}
-        </section>
+          ))}
+        </section> : null}
+
+        {!loading && !error && !hasPublishedContent ? <section className="dp-governance-empty-section" aria-labelledby="civic-empty-title"><Landmark aria-hidden="true" /><div><small>All caught up</small><h2 id="civic-empty-title">Nothing new has been published.</h2><p>Open the civic map to explore downtown places, projects, and community events.</p><Link to="/map?mode=resident&tab=map&filter=Civic">Open civic map <ChevronRight aria-hidden="true" /></Link></div></section> : null}
 
         <section className="dp-governance-section dp-governance-question" id="ask-a-question" aria-labelledby="ask-question-title">
-          <header><small>Ask downtown</small><h2 id="ask-question-title">Send one clear question</h2><p>Your question is reviewed before it appears publicly. We will show its status in your activity.</p></header>
-          <form onSubmit={submitQuestion}>
+          <header><small>Ask downtown</small><h2 id="ask-question-title">Send a question</h2><p>Questions are reviewed before they appear publicly. Follow the status here.</p></header>
+          {organizationId ? <form onSubmit={submitQuestion}>
             <label htmlFor="resident-governance-question">What would you like the responsible organization to explain?</label>
             <textarea id="resident-governance-question" value={question} onChange={(event) => setQuestion(event.target.value)} minLength={12} maxLength={1200} required rows={4} />
             <button type="submit"><Send aria-hidden="true" /> Send question</button>
             {message ? <p role="status">{message}</p> : null}
-          </form>
+          </form> : <div className="dp-governance-question-unavailable"><p>Open a verified civic place first so your question reaches the right organization.</p><Link to="/map?mode=resident&tab=map&filter=Civic">Choose on the civic map <ChevronRight aria-hidden="true" /></Link></div>}
         </section>
 
         <section className="dp-governance-section" aria-labelledby="your-activity-title">
-          <header><small>Results and follow-up</small><h2 id="your-activity-title">Follow what you shared</h2><p>See saved civic items, published responses, and what organizations did next.</p></header>
+          <header><small>Your activity</small><h2 id="your-activity-title">What you shared</h2><p>Your questions, reports, and followed projects stay here.</p></header>
           <dl className="dp-governance-metrics"><div><dt>Questions sent</dt><dd>{data.yourQuestions.length}</dd></div><div><dt>Reports shared</dt><dd>{data.yourReports.length}</dd></div><div><dt>Projects followed</dt><dd>{data.followedInitiativeIds.length}</dd></div></dl>
         </section>
 

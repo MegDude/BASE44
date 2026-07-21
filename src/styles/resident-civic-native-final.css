@@ -1,0 +1,51 @@
+/* Final resident Civic Inbox surface lock. Keep this focused route aligned with the resident app shell. */
+html body #root#root .dp-governance-resident {
+  width: 100% !important;
+  max-width: none !important;
+  background: #fff !important;
+}
+
+html body #root#root .dp-governance-resident .dp-governance-intro h1 {
+  max-width: 15ch !important;
+  font-size: clamp(32px, 9vw, 36px) !important;
+  font-weight: 680 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -.04em !important;
+  hyphens: none !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+html body #root#root .dp-governance-resident :is(
+  .dp-governance-intro,
+  .dp-governance-actions,
+  .dp-governance-section,
+  .dp-governance-empty-section,
+  .dp-governance-metrics,
+  .dp-governance-metrics > div,
+  .dp-governance-question-unavailable
+) {
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-governance-resident .dp-governance-metrics {
+  overflow: visible !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .1) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+}
+
+html body #root#root .dp-governance-resident .dp-governance-question button {
+  min-height: 44px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root .dp-governance-resident * {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
