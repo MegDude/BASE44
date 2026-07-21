@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { mobileTabsByMode, normalizeMobileTab } from "../src/components/map/mobileTabRegistry";
 import { createMobileTabState, rememberTabScroll, transitionMobileTabState } from "../src/components/map/mobileTabState";
 
-assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Home", "Map", "Perks", "Events", "Saved"]);
+assert.deepEqual(mobileTabsByMode.resident.map((tab) => tab.label), ["Map", "Perks", "Events", "Card", "Profile"]);
 assert.deepEqual(mobileTabsByMode.partner.map((tab) => tab.label), ["Home", "Map", "Publish", "Performance", "Workspace"]);
-assert.equal(normalizeMobileTab("resident", "pass"), "saved");
+assert.equal(normalizeMobileTab("resident", "pass"), "card");
+assert.equal(mobileTabsByMode.resident.find((tab) => tab.id === "card")?.route, "/map?mode=resident&tab=pass");
 assert.equal(normalizeMobileTab("partner", "campaigns"), "publish");
 assert.equal(normalizeMobileTab("partner", "audience"), "performance");
 assert.equal(normalizeMobileTab("partner", "reports"), "performance");

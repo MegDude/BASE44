@@ -32,6 +32,10 @@ const coffee = searchPlatformCatalog(catalog, "coffee", { limit: 24 });
 assert.ok(coffee.length > 0, "places remain searchable");
 assert.ok(coffee.length <= 24, "catalog results are bounded");
 
+const walkableDinner = searchPlatformCatalog(catalog, "Walkable dinner tonight", { limit: 24 });
+assert.ok(walkableDinner.length > 0, "natural-language dining searches resolve the complete lazy catalog");
+assert.ok(walkableDinner.some((result) => /dining|restaurant|food|dinner/i.test(`${result.title} ${result.subtitle} ${result.searchText}`)), "natural-language searches preserve intent relevance");
+
 for (const [query, type] of [
   ["44 East", "place"],
   ["Concert Series", "event"],

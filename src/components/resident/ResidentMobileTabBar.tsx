@@ -1,4 +1,4 @@
-import { Bookmark, CalendarDays, Gift, House, MapPin, type LucideIcon } from "lucide-react";
+import { CalendarDays, CreditCard, Gift, MapPin, UserRound, type LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 type ResidentTab = {
@@ -9,11 +9,11 @@ type ResidentTab = {
 };
 
 const RESIDENT_TABS = [
-  { id: "home", label: "Home", href: "/resident/home", icon: House },
   { id: "map", label: "Map", href: "/map?mode=resident&tab=map&filter=All", icon: MapPin },
   { id: "perks", label: "Perks", href: "/map?mode=resident&tab=perks&filter=Perks", icon: Gift },
   { id: "events", label: "Events", href: "/map?mode=resident&tab=events&filter=Events", icon: CalendarDays },
-  { id: "saved", label: "Saved", href: "/map?mode=resident&tab=saved&filter=Saved", icon: Bookmark },
+  { id: "card", label: "Card", href: "/map?mode=resident&tab=card", icon: CreditCard },
+  { id: "profile", label: "Profile", href: "/resident/home?panel=profile", icon: UserRound },
 ] as const satisfies readonly ResidentTab[];
 
 type ResidentMobileTabBarProps = {
@@ -27,7 +27,7 @@ export function ResidentMobileTabBar({ activeTab, onTabChange }: ResidentMobileT
       {RESIDENT_TABS.map((item) => {
         const Icon = item.icon;
         const active = item.id === activeTab;
-        const opensHomePanel = Boolean(onTabChange && item.id === "home");
+        const opensHomePanel = Boolean(onTabChange && ["card", "profile"].includes(item.id));
         const content = <><Icon aria-hidden="true" /><span className="dp-native-tab-label">{item.label}</span></>;
 
         return opensHomePanel ? (

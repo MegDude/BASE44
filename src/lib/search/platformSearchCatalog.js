@@ -201,15 +201,48 @@ function scoreDocument(document, normalizedQuery, tokens) {
   return 100 - matchedTokens * 10 + (document.markerEligible ? 0 : 2);
 }
 
+const NATURAL_LANGUAGE_SEARCH_WORDS = new Set([
+  "a", "about", "around", "at", "best", "close", "for", "in", "me", "near", "nearby",
+  "now", "of", "show", "the", "this", "to", "today", "tonight", "walk", "walkable", "within",
+  "what", "whats", "where",
+]);
+
+const SEARCH_INTENT_ALIASES = Object.freeze({
+  breakfast: ["breakfast", "brunch", "coffee", "morning"],
+  brunch: ["brunch", "breakfast", "dining", "restaurant"],
+  coffee: ["coffee", "cafe", "espresso"],
+  dinner: ["dinner", "dining", "restaurant", "food", "supper"],
+  dining: ["dining", "dinner", "restaurant", "food"],
+  drinks: ["drinks", "cocktail", "bar", "happy hour", "nightlife"],
+  events: ["event", "events", "concert", "festival", "music", "show"],
+  happening: ["event", "events", "concert", "festival", "music", "show"],
+  music: ["music", "concert", "performance", "show"],
+  perks: ["perk", "perks", "offer", "benefit", "discount"],
+  rooftop: ["rooftop", "terrace", "skyline"],
+});
+
+function getQuerySignalGroups(normalizedQuery) {
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  const significantTokens = tokens.filter((token) => !NATURAL_LANGUAGE_SEARCH_WORDS.has(token));
+  const sourceTokens = significantTokens.length ? significantTokens : tokens;
+  return sourceTokens.map((token) => SEARCH_INTENT_ALIASES[token] || [token]);
+}
+
 export function searchPlatformCatalog(catalog = [], query = "", options = {}) {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) return [];
   const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  const signalGroups = getQuerySignalGroups(normalizedQuery);
+  const scoringTokens = signalGroups.flat();
   const limit = Math.max(1, Math.min(PLATFORM_SEARCH_LIMITS.desktop, Number(options.limit || PLATFORM_SEARCH_LIMITS.mobile)));
   return catalog
     .filter((document) => !document.modes?.length || document.modes.includes(options.mode || "resident"))
-    .filter((document) => tokens.every((token) => document.searchText.includes(token)) || document.searchText.includes(normalizedQuery))
-    .sort((a, b) => scoreDocument(a, normalizedQuery, tokens) - scoreDocument(b, normalizedQuery, tokens) || a.title.localeCompare(b.title))
+    .filter((document) => (
+      document.searchText.includes(normalizedQuery) ||
+      tokens.every((token) => document.searchText.includes(token)) ||
+      signalGroups.every((aliases) => aliases.some((alias) => document.searchText.includes(alias)))
+    ))
+    .sort((a, b) => scoreDocument(a, normalizedQuery, scoringTokens) - scoreDocument(b, normalizedQuery, scoringTokens) || a.title.localeCompare(b.title))
     .slice(0, limit);
 }
 

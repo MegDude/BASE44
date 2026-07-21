@@ -78,8 +78,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-top-actions {
   display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) !important;
-  gap: 12px !important;
+  grid-template-columns: auto minmax(0, 1fr) 44px !important;
+  gap: 10px !important;
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
@@ -118,6 +118,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  grid-column: 1 !important;
+  justify-self: start !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-audience-tabs > button {
@@ -150,12 +152,12 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-ask-map {
   display: inline-flex !important;
-  grid-column: 1 !important;
+  grid-column: 2 !important;
   width: auto !important;
   min-width: 0 !important;
   min-height: 44px !important;
   align-items: center !important;
-  justify-self: start !important;
+  justify-self: center !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
@@ -220,8 +222,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console .dp-search-intent-input-row.dp-search-intent-input-row:focus-within {
-  border-color: rgba(184, 149, 79, 0.56) !important;
-  box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.13), 0 8px 24px rgba(11, 31, 51, 0.07) !important;
+  border-color: rgba(11, 31, 51, 0.18) !important;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.08) !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-search-icon {
@@ -383,9 +385,14 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   white-space: nowrap !important;
 }
 
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console :is(button, input):focus-visible {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console button:focus-visible {
   outline: 2px solid rgba(184, 149, 79, 0.85) !important;
   outline-offset: 2px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-ask-map-input:is(:focus, :focus-visible) {
+  outline: 0 !important;
+  outline-offset: 0 !important;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

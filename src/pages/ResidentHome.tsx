@@ -3,6 +3,8 @@ import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight,
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
+import { useAuth } from "@/lib/AuthContext";
+import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 
@@ -46,7 +48,7 @@ const liveActivity = [
   { place: "Fairmont Austin", action: "Pool access", status: "Available today", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-fairmont-austin" },
 ] as const;
 
-type HomePanel = "home" | "perks" | "card";
+type HomePanel = "home" | "perks" | "card" | "profile";
 type ResidentRecord = {
   id?: string;
   fullName?: string;
@@ -57,6 +59,11 @@ type ResidentRecord = {
   verificationStatus?: string;
 };
 
+type ResidentMembershipContext = {
+  profile?: Record<string, unknown>;
+  membership?: Record<string, unknown> | null;
+};
+
 function readResidentRecord(): ResidentRecord | null {
   if (typeof window === "undefined") return null;
   try {
@@ -64,6 +71,26 @@ function readResidentRecord(): ResidentRecord | null {
   } catch {
     return null;
   }
+}
+
+function residentRecordFromMembership(context: ResidentMembershipContext, fallback: ResidentRecord | null): ResidentRecord | null {
+  const profile = context.profile || {};
+  const membership = context.membership || {};
+  const firstName = profile.first_name || profile.firstName || "";
+  const lastName = profile.last_name || profile.lastName || "";
+  const fullName = profile.full_name || profile.fullName || [firstName, lastName].filter(Boolean).join(" ");
+  const hasAccountRecord = Boolean(profile.id || profile.resident_id || fullName || profile.email || fallback);
+  if (!hasAccountRecord) return null;
+  return {
+    ...fallback,
+    id: String(profile.id || profile.resident_id || fallback?.id || ""),
+    fullName: String(fullName || fallback?.fullName || ""),
+    email: String(profile.email || fallback?.email || ""),
+    phone: String(profile.phone || fallback?.phone || ""),
+    buildingName: String(profile.building_name || membership.building_name || fallback?.buildingName || ""),
+    unitNumber: String(profile.apartment || profile.unit_number || fallback?.unitNumber || ""),
+    verificationStatus: String(membership.status || profile.verification_status || fallback?.verificationStatus || "active"),
+  };
 }
 
 function readableSavedName(id: string) {
@@ -106,7 +133,8 @@ export default function ResidentHome() {
   const location = useLocation();
   const navigate = useNavigate();
   const requestedPanel = searchParams.get("panel");
-  const panel: HomePanel = requestedPanel === "perks" || requestedPanel === "card" ? requestedPanel : "home";
+  const panel: HomePanel = ["perks", "card", "profile"].includes(requestedPanel || "") ? requestedPanel as HomePanel : "home";
+  const { isAuthenticated, isLoadingAuth } = useAuth();
   const savedIds = useSavedStore((state) => state.savedIds);
   const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
   useSavedEntitiesRealtime();
@@ -123,6 +151,21 @@ export default function ResidentHome() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isLoadingAuth || !isAuthenticated) return;
+    let active = true;
+    getResidentMembership()
+      .then((context) => {
+        if (!active) return;
+        setResident((current) => residentRecordFromMembership(context, current));
+      })
+      .catch(() => {
+        // The locally cached profile keeps the resident surface usable if the
+        // membership service is briefly unavailable.
+      });
+    return () => { active = false; };
+  }, [isAuthenticated, isLoadingAuth]);
+
   const savedPerks = savedIds.map((id) => ({ id, name: readableSavedName(id) }));
 
   function openPanel(nextPanel: HomePanel) {
@@ -134,7 +177,7 @@ export default function ResidentHome() {
   }
 
   function handleTabChange(tabId: string) {
-    if (tabId === "home" || tabId === "perks" || tabId === "card") openPanel(tabId);
+    if (["home", "perks", "card", "profile"].includes(tabId)) openPanel(tabId as HomePanel);
   }
 
   function closeResidentHome() {
@@ -145,7 +188,7 @@ export default function ResidentHome() {
     navigate("/map?mode=resident&tab=map&filter=All");
   }
 
-  const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : "home";
+  const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : panel === "profile" ? "profile" : "home";
   const firstName = resident?.fullName?.trim()?.split(/\s+/)[0] || "";
   const greeting = `${greetingForNow()}${firstName ? `, ${firstName}` : ""}.`;
 
@@ -154,7 +197,7 @@ export default function ResidentHome() {
       <header className="dp-resident-home__header dp-resident-command-nav">
         <div className="dp-resident-command-brand">
           <strong>Downtown Perks</strong>
-          <span>{panel === "home" ? "Austin" : panel === "perks" ? "Saved" : "Resident Card"}</span>
+          <span>{panel === "home" ? "Austin" : panel === "perks" ? "Saved" : panel === "profile" ? "Profile" : "Resident Card"}</span>
         </div>
         {panel === "home" ? (
           <div className="dp-resident-command-actions" aria-label="Resident shortcuts">
@@ -360,6 +403,41 @@ export default function ResidentHome() {
               <h3>Your resident profile lives here.</h3>
               <p>Create a card to connect your home property, or keep exploring downtown without an account.</p>
               <div><Link to="/map?mode=resident&tab=map&filter=All"><Search aria-hidden="true" />Open the map</Link><Link to="/card">Get a card</Link></div>
+            </div>
+          )}
+        </section>
+      ) : null}
+
+      {panel === "profile" ? (
+        <section className="dp-resident-home__panel dp-resident-card-panel" role="tabpanel" aria-labelledby="resident-profile-page-title">
+          <header className="dp-resident-panel-intro">
+            <p>Resident profile</p>
+            <h2 id="resident-profile-page-title">Your downtown, connected.</h2>
+            <span>Your membership, building, contact details, preferences, and saved places stay together here.</span>
+          </header>
+          {resident ? (
+            <section className="dp-resident-profile-section" aria-label="Resident account details">
+              <dl>
+                <div><dt>Name</dt><dd>{resident.fullName || "Not added"}</dd></div>
+                <div><dt>Email</dt><dd>{resident.email || "Not added"}</dd></div>
+                <div><dt>Home property</dt><dd>{resident.buildingName || "Not connected"}</dd></div>
+                {resident.unitNumber ? <div><dt>Unit</dt><dd>{resident.unitNumber}</dd></div> : null}
+                {resident.phone ? <div><dt>Phone</dt><dd>{resident.phone}</dd></div> : null}
+                <div><dt>Membership</dt><dd>{resident.verificationStatus === "verified" ? "Verified resident" : "Active resident"}</dd></div>
+                <div><dt>Saved</dt><dd>{savedIds.length} {savedIds.length === 1 ? "place" : "places"}</dd></div>
+              </dl>
+              <div className="dp-resident-profile-actions">
+                <Link to="/residents/welcome">Update profile</Link>
+                <button type="button" onClick={() => openPanel("card")}>Open resident card</button>
+                <Link to="/residents/membership">View membership</Link>
+              </div>
+            </section>
+          ) : (
+            <div className="dp-resident-empty-state">
+              <UserRound aria-hidden="true" />
+              <h3>Connect your resident account.</h3>
+              <p>Sign in to load your building, membership, preferences, saved places, and resident card.</p>
+              <div><Link to="/residents/login">Sign in</Link><Link to="/residents/membership">Create account</Link></div>
             </div>
           )}
         </section>

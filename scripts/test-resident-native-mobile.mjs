@@ -14,7 +14,7 @@ await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", tim
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
 const labels = await page.locator(".dp-resident-native-tabs :is(a,button)").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Saved") {
+if (labels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Card|Profile") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
 

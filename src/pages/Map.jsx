@@ -23,7 +23,6 @@ import {
   Gift,
   Heart,
   HeartPulse,
-  House,
   BadgePercent,
   Info,
   Landmark,
@@ -32,6 +31,7 @@ import {
   Moon,
   Music2,
   Navigation,
+  UserRound,
   Route,
   ScanLine,
   Search,
@@ -13298,7 +13298,9 @@ function MapSearchConsole({
     ? `${getCanonicalSearchIntentFilter(activeFilter)} selected. ${resultCount} results shown.`
     : "";
   const showCatalogResults = Boolean(
-    query && catalogState?.query === query && catalogState?.status !== "idle",
+    query &&
+    catalogState?.query === query &&
+    ["loading", "resolved"].includes(catalogState?.status),
   );
   const catalogResultLimit = viewportWidth <= 520 ? 5 : 8;
   let remainingCatalogResults = catalogResultLimit;
@@ -13772,6 +13774,7 @@ function MapSearchConsole({
       >
         <div className="dp-search-intent-console-header dp-search-intent-top-rail dp-ask-map-header">
           <div className="dp-search-intent-top-actions">
+            {renderModeSwitch()}
             <button
               type="button"
               className="dp-search-intent-ask-map"
@@ -13780,18 +13783,15 @@ function MapSearchConsole({
             >
               Ask the Map
             </button>
-            <div className="dp-search-intent-header-controls" aria-label="Map view and search controls">
-              {renderModeSwitch()}
-              <button
-                type="button"
-                className="dp-search-intent-collapse dp-search-intent-collapse-icon dp-ask-map-panel-control"
-                aria-label="Collapse map search console"
-                aria-expanded="true"
-                onClick={onCollapse}
-              >
-                <ChevronDown aria-hidden="true" />
-              </button>
-            </div>
+            <button
+              type="button"
+              className="dp-search-intent-collapse dp-search-intent-collapse-icon dp-ask-map-panel-control"
+              aria-label="Collapse map search console"
+              aria-expanded="true"
+              onClick={onCollapse}
+            >
+              <ChevronDown aria-hidden="true" />
+            </button>
           </div>
         </div>
 
@@ -13884,7 +13884,6 @@ function MapSearchConsole({
                 })}
               </section>
             ))}
-            {catalogState.status === "empty" ? <p className="dp-platform-search-empty">Nothing matches this search. Try a place, listing, event, perk, organization, or guide.</p> : null}
           </div>
         ) : null}
         </section>
@@ -17983,10 +17982,6 @@ export default function MapPage() {
           >
             {urlState.mode === "resident" && (
               <>
-                <button type="button" role="tab" aria-label="Home" onClick={() => navigate("/resident/home")} aria-selected={false}>
-                  <House className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
-                </button>
                 <button
                   type="button"
                   role="tab"
@@ -18040,21 +18035,13 @@ export default function MapPage() {
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
                 </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-label="Saved"
-                  onClick={() => {
-                    beginSearchIntentTransition("Saved");
-                    setConsoleCollapsed(true);
-                    setActiveBottomTab("saved");
-                    navigate("/map?mode=resident&tab=saved&filter=Saved");
-                  }}
-                  aria-pressed={urlState.tab === "map" && activeBottomTab === "saved"}
-                  aria-selected={urlState.tab === "map" && activeBottomTab === "saved"}
-                >
-                  <Bookmark className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Saved</span>
+                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
+                  <CreditCard className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Card</span>
+                </button>
+                <button type="button" role="tab" aria-label="Profile" onClick={() => navigate("/resident/home?panel=profile")} aria-selected={false}>
+                  <UserRound className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Profile</span>
                 </button>
               </>
             )}
