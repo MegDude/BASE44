@@ -46,6 +46,24 @@ if (await page.locator("nav").filter({ hasNot: page.locator(".dp-resident-native
 
 await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 await page.getByRole("heading", { name: "Live activity", exact: true }).waitFor();
+await page.getByRole("heading", { name: "What can I look for?" }).waitFor();
+for (const group of ["Food and drink", "Plans and places", "Walks to follow", "More around downtown"]) {
+  await page.getByText(group, { exact: true }).waitFor();
+}
+const searchGuide = page.locator(".dp-resident-search-guide");
+if (await searchGuide.locator("a").count() !== 29) {
+  throw new Error(`Resident search guide does not contain every map choice: ${await searchGuide.locator("a").count()}`);
+}
+await searchGuide.getByText("Coffee, breakfast, and brunch you can walk to.", { exact: true }).waitFor();
+const guideText = await searchGuide.innerText();
+if (/\bintent(?:s)?\b|Explore more intents|More ways to explore downtown/i.test(guideText)) {
+  throw new Error(`Resident search guide exposes internal or duplicated copy: ${guideText}`);
+}
+await searchGuide.getByText("Plans and places", { exact: true }).click();
+const eventsGuideHref = await searchGuide.getByRole("link", { name: /Events What’s happening today and later this week/ }).getAttribute("href");
+if (!eventsGuideHref?.includes("filter=Events") || !eventsGuideHref.includes("intent=events")) {
+  throw new Error(`Events guide is not wired to its map search: ${eventsGuideHref}`);
+}
 if (await page.locator(".dp-product-shell-search-button").count()) {
   throw new Error("Resident Home renders the global shell search over its native header.");
 }

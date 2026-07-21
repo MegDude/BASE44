@@ -307,6 +307,138 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   white-space: nowrap !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide {
+  margin-top: 30px !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide > header {
+  display: grid !important;
+  gap: 5px !important;
+  padding: 0 0 16px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide > header p {
+  margin: 0 !important;
+  color: #9a7a3e !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .045em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide > header h2 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: 22px !important;
+  font-weight: 670 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -.035em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide > header span {
+  max-width: 42ch !important;
+  color: rgba(11,31,51,.62) !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide__groups {
+  border-top: 1px solid rgba(11,31,51,.1) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide details {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 24px !important;
+  min-height: 68px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 0 !important;
+  color: #0b1f33 !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary span,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a span {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 3px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary strong,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a strong {
+  color: #0b1f33 !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary small,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a small {
+  color: rgba(11,31,51,.58) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide summary > svg {
+  width: 18px !important;
+  height: 18px !important;
+  color: rgba(11,31,51,.42) !important;
+  transition: transform 180ms ease !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide details[open] summary > svg {
+  transform: rotate(180deg) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide details > div {
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 20px !important;
+  min-height: 64px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide a > svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: #9a7a3e !important;
+}
+
+@media (hover: hover) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-search-guide :is(summary,a):hover strong {
+    color: #9a7a3e !important;
+  }
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-card-command {
   margin-top: 28px !important;
   padding: 0 !important;

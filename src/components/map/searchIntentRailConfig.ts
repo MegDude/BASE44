@@ -40,44 +40,44 @@ import { resolveSearchIntent } from "../../map/searchIntent/mapIntentRegistry";
 const SEARCH_INTENT_COPY = {
   breakfast: {
     fullLabel: "Breakfast nearby",
-    description: "Coffee, breakfast, and brunch within walking distance.",
+    description: "Coffee, breakfast, and brunch you can walk to.",
   },
   coffee: {
     fullLabel: "Coffee nearby",
-    description: "Nearby coffee, cafés, and active perks.",
+    description: "Cafés nearby, including places with a resident perk.",
     includesRoutes: true,
     includesPerks: true,
   },
   lunch: {
     fullLabel: "Lunch nearby",
-    description: "Quick lunches, restaurants, and midday perks.",
+    description: "Quick lunches and midday offers close by.",
     includesPerks: true,
   },
   dinner: {
     fullLabel: "Dinner nearby",
-    description: "Dinner restaurants, date-night places and evening dining perks",
+    description: "Dinner spots, date-night tables, and evening perks.",
     includesPerks: true,
   },
   dining: {
     fullLabel: "Dining nearby",
-    description: "Restaurants, food halls, and places worth booking.",
+    description: "Restaurants and food halls for a meal worth planning.",
     includesCollections: true,
     includesPerks: true,
   },
   drinks: {
     fullLabel: "Drinks nearby",
-    description: "Bars, patios, and places for a drink nearby.",
+    description: "Bars and patios for a drink close by.",
     includesRoutes: true,
   },
   happy_hour: {
     fullLabel: "Happy Hour now",
-    description: "Happy hours and offers available now.",
+    description: "Happy hours and offers you can use now.",
     includesRoutes: true,
     includesPerks: true,
   },
   events: {
     fullLabel: "Events nearby",
-    description: "Events happening today and coming up.",
+    description: "What’s happening today and later this week.",
     includesCampaigns: true,
     includesCollections: true,
   },
@@ -87,97 +87,97 @@ const SEARCH_INTENT_COPY = {
   },
   happy_hour_route: {
     fullLabel: "Happy Hour route",
-    description: "A curated walking route for active happy-hour stops",
+    description: "Walk between happy-hour stops with offers available now.",
     includesRoutes: true,
   },
   dining_route: {
     fullLabel: "Dining route",
-    description: "A curated inKind dining walk with participating restaurants",
+    description: "Walk between participating inKind restaurants.",
     includesRoutes: true,
     includesBrands: true,
   },
   daa_art_walk: {
     fullLabel: "DAA Art Walk",
-    description: "Public art, civic stops and a curated downtown walking route",
+    description: "Follow public art, parks, and landmarks across downtown.",
     includesRoutes: true,
     includesCollections: true,
   },
   waterloo_walk: {
     fullLabel: "Waterloo Walk",
-    description: "Greenway stops, civic anchors and walkable public places",
+    description: "Walk Waterloo Park, Waller Creek, and nearby public spaces.",
     includesRoutes: true,
     includesCollections: true,
   },
   stories_walk: {
     fullLabel: "Stories Walk",
-    description: "Downtown story stops, civic context and a curated route",
+    description: "Follow local stories and the downtown places behind them.",
     includesRoutes: true,
     includesCollections: true,
   },
   inkind: {
     fullLabel: "inKind offers",
-    description: "Participating restaurants, brand offers and dining campaigns",
+    description: "Restaurants where you can open current inKind dining offers.",
     includesBrands: true,
     includesCampaigns: true,
   },
   hotels: {
     fullLabel: "Hotels nearby",
-    description: "Hotels and useful places nearby.",
+    description: "Hotels and handy stops for visitors nearby.",
     includesRoutes: true,
   },
   properties: {
     fullLabel: "Properties nearby",
-    description: "Buildings, homes, and listings downtown.",
+    description: "Downtown homes, apartment buildings, and available listings.",
   },
   legends: {
     fullLabel: "Legends listings",
-    description: "Legends real estate listings, featured properties and nearby places",
+    description: "Homes represented by Legends, with nearby places on the map.",
     includesBrands: true,
   },
   arts: {
     fullLabel: "Arts nearby",
-    description: "Arts venues, culture stops, galleries and civic collections",
+    description: "Galleries, museums, public art, and cultural places.",
     includesCollections: true,
   },
   live_music: {
     fullLabel: "Live Music nearby",
-    description: "Music venues, shows, nightlife and evening event context",
+    description: "Music venues and shows happening tonight.",
   },
   civic: {
     fullLabel: "Civic places nearby",
-    description: "Civic anchors, public spaces, districts and cultural collections",
+    description: "Parks, public spaces, and places that help downtown work.",
     includesCollections: true,
   },
   fitness: {
     fullLabel: "Fitness nearby",
-    description: "Gyms, studios, trails and wellness-friendly places",
+    description: "Gyms, studios, trails, and places to move.",
   },
   wellness: {
     fullLabel: "Wellness nearby",
-    description: "Wellness studios, health services and restorative nearby stops",
+    description: "Spas, wellness studios, and health services nearby.",
   },
   retail: {
     fullLabel: "Shopping nearby",
-    description: "Retail, shopping, brand locations and downtown services",
+    description: "Shops and everyday downtown services.",
     includesBrands: true,
   },
   coffee_route: {
     fullLabel: "Coffee route",
-    description: "A curated before-work coffee walking route",
+    description: "Follow a short morning walk between coffee stops.",
     includesRoutes: true,
   },
   hotel_route: {
     fullLabel: "Hotel walk",
-    description: "A guest arrival walking route through useful downtown stops",
+    description: "Start at Hotel Van Zandt and walk to food, music, and the river.",
     includesRoutes: true,
   },
   parking: {
     fullLabel: "Parking nearby",
-    description: "Nearby garages, parking services and arrival context",
+    description: "The closest garages and parking services.",
   },
   utilities: {
     fullLabel: "Utilities nearby",
-    description: "Useful services, errands and practical downtown support",
+    description: "Errands and everyday services nearby.",
   },
   services: {
     fullLabel: "Services nearby",
@@ -185,12 +185,12 @@ const SEARCH_INTENT_COPY = {
   },
   perks: {
     fullLabel: "Perks nearby",
-    description: "Perks available at participating places.",
+    description: "Offers you can use at participating places.",
     includesPerks: true,
   },
   near_me: {
     fullLabel: "Nearby now",
-    description: "The closest useful places and offers.",
+    description: "The closest useful places and current offers.",
     includesPerks: true,
   },
   open_now: {
@@ -389,6 +389,40 @@ export function getSearchIntentDefinition(item: SearchIntentRailItemLike) {
     includesPerks: Boolean(copy?.includesPerks || item?.filter === "Perks"),
   };
 }
+
+const RESIDENT_SEARCH_GUIDE_GROUP_IDS = [
+  {
+    title: "Food and drink",
+    description: "Find something for now or plan where to go later.",
+    ids: ["breakfast", "coffee", "lunch", "dinner", "dining", "drinks", "happy_hour"],
+  },
+  {
+    title: "Plans and places",
+    description: "See what’s happening, use a perk, or find a place downtown.",
+    ids: ["events", "perks", "hotels", "properties", "near_me", "inkind", "legends"],
+  },
+  {
+    title: "Walks to follow",
+    description: "Open a ready-made walk and follow each stop on the map.",
+    ids: ["happy_hour_route", "dining_route", "daa_art_walk", "waterloo_walk", "stories_walk", "coffee_route", "hotel_route"],
+  },
+  {
+    title: "More around downtown",
+    description: "Find culture, music, wellbeing, shopping, parking, and errands.",
+    ids: ["arts", "live_music", "civic", "fitness", "wellness", "retail", "parking", "utilities"],
+  },
+] as const;
+
+export const RESIDENT_SEARCH_GUIDE_GROUPS = RESIDENT_SEARCH_GUIDE_GROUP_IDS.map((group) => ({
+  ...group,
+  items: group.ids
+    .map((id) => SEARCH_INTENT_RAIL.find((item) => item.id === id))
+    .filter(Boolean)
+    .map((item) => ({
+      ...item,
+      ...getSearchIntentDefinition(item),
+    })),
+}));
 
 export const SEARCH_INTENT_DEFINITIONS = SEARCH_INTENT_RAIL.map(getSearchIntentDefinition);
 

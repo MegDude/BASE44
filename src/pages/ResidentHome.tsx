@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronDown, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound, X } from "lucide-react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { RESIDENT_SEARCH_GUIDE_GROUPS } from "@/components/map/searchIntentRailConfig";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 import { useAuth } from "@/lib/AuthContext";
@@ -195,6 +196,21 @@ function readableInterests(values?: string[]) {
   return values.map((value) => value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(", ");
 }
 
+function searchGuideHref(item: (typeof RESIDENT_SEARCH_GUIDE_GROUPS)[number]["items"][number]) {
+  const params = new URLSearchParams({
+    mode: "resident",
+    tab: "map",
+    filter: item.filter || "All",
+    query: item.prompt || item.fullLabel,
+    intent: item.id,
+  });
+  if (item.collection) {
+    params.set("collection", item.collection);
+    params.set("routeId", item.collection);
+  }
+  return `/map?${params.toString()}`;
+}
+
 export default function ResidentHome() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -367,6 +383,32 @@ export default function ResidentHome() {
             <div className="dp-resident-concierge-prompts" aria-label="Suggested searches">
               {["Walkable dinner tonight", "Live music", "Quiet coffee", "Pool access", "Date night", "What's new?"].map((prompt) => (
                 <Link key={prompt} to={`/map?mode=resident&tab=map&filter=All&query=${encodeURIComponent(prompt)}`}>{prompt}</Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="dp-resident-search-guide" aria-labelledby="resident-search-guide-title">
+            <header>
+              <p>Ask the Map</p>
+              <h2 id="resident-search-guide-title">What can I look for?</h2>
+              <span>Choose a place, plan, walk, or everyday need. Tap any option to open it on the map.</span>
+            </header>
+            <div className="dp-resident-search-guide__groups">
+              {RESIDENT_SEARCH_GUIDE_GROUPS.map((group, index) => (
+                <details key={group.title} open={index === 0}>
+                  <summary>
+                    <span><strong>{group.title}</strong><small>{group.description}</small></span>
+                    <ChevronDown aria-hidden="true" />
+                  </summary>
+                  <div>
+                    {group.items.map((item) => (
+                      <Link key={item.id} to={searchGuideHref(item)}>
+                        <span><strong>{item.shortLabel}</strong><small>{item.description}</small></span>
+                        <ChevronRight aria-hidden="true" />
+                      </Link>
+                    ))}
+                  </div>
+                </details>
               ))}
             </div>
           </section>
