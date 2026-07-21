@@ -20,7 +20,7 @@ const EMPTY_CIVIC: ResidentGovernanceResponse = {
   neutrality: "Downtown Perks shares verified civic information and does not endorse political candidates.",
 };
 
-type HomePanel = "home" | "perks" | "card" | "profile";
+type HomePanel = "home" | "perks" | "card";
 type ResidentRecord = {
   id?: string;
   fullName?: string;
@@ -172,7 +172,11 @@ export default function ResidentHome() {
   const location = useLocation();
   const navigate = useNavigate();
   const requestedPanel = searchParams.get("panel");
-  const panel: HomePanel = ["perks", "card", "profile"].includes(requestedPanel || "") ? requestedPanel as HomePanel : "home";
+  const panel: HomePanel = requestedPanel === "profile"
+    ? "card"
+    : ["perks", "card"].includes(requestedPanel || "")
+      ? requestedPanel as HomePanel
+      : "home";
   const { isAuthenticated, isLoadingAuth } = useAuth();
   const savedIds = useSavedStore((state) => state.savedIds);
   const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
@@ -242,7 +246,7 @@ export default function ResidentHome() {
   }
 
   function handleTabChange(tabId: string) {
-    if (["home", "perks", "card", "profile"].includes(tabId)) openPanel(tabId as HomePanel);
+    if (["home", "perks", "card"].includes(tabId)) openPanel(tabId as HomePanel);
   }
 
   function closeResidentHome() {
@@ -259,6 +263,7 @@ export default function ResidentHome() {
   const profileGroups = resident ? [
     {
       title: "Contact",
+      summary: resident.email || resident.fullName || "Add your contact details",
       rows: [
         ["Name", resident.fullName || "Not added"],
         ["Email", resident.email || "Not added"],
@@ -267,6 +272,7 @@ export default function ResidentHome() {
     },
     {
       title: "Home",
+      summary: resident.buildingName || "Connect your property",
       rows: [
         ["Property", resident.buildingName || "Not connected"],
         ["District", resident.buildingDistrict || "Not added"],
@@ -276,6 +282,7 @@ export default function ResidentHome() {
     },
     {
       title: "Membership",
+      summary: readableMembershipSource(resident.membershipSource || resident.membershipType),
       rows: [
         ["Plan", readableMembershipSource(resident.membershipSource || resident.membershipType)],
         ["Status", resident.verificationStatus === "verified" ? "Verified resident" : "Active resident"],
@@ -286,6 +293,7 @@ export default function ResidentHome() {
     },
     {
       title: "Preferences",
+      summary: resident.interests?.length ? `${resident.interests.length} interests selected` : "Choose what you want to see",
       rows: [
         ["Interests", readableInterests(resident.interests)],
         ["Updates", readableNotifications(resident.notifications)],
@@ -297,12 +305,15 @@ export default function ResidentHome() {
 
   function renderProfileDetails(idPrefix: string) {
     return profileGroups.map((group) => (
-      <section className="dp-resident-profile-group" key={group.title} aria-labelledby={`${idPrefix}-${group.title.toLowerCase()}`}>
-        <h3 id={`${idPrefix}-${group.title.toLowerCase()}`}>{group.title}</h3>
+      <details className="dp-resident-profile-group" key={group.title}>
+        <summary id={`${idPrefix}-${group.title.toLowerCase()}`}>
+          <span><strong>{group.title}</strong><small>{group.summary}</small></span>
+          <ChevronRight aria-hidden="true" />
+        </summary>
         <dl>
           {group.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
         </dl>
-      </section>
+      </details>
     ));
   }
 
@@ -311,12 +322,12 @@ export default function ResidentHome() {
       <header className="dp-resident-home__header dp-resident-command-nav">
         <div className="dp-resident-command-brand">
           <strong>Downtown Perks</strong>
-          <span>{panel === "home" ? "Austin" : panel === "perks" ? "Saved" : panel === "profile" ? "Profile" : "Resident Card"}</span>
+          <span>{panel === "home" ? "Austin" : panel === "perks" ? "Saved" : "Resident Card"}</span>
         </div>
         {panel === "home" ? (
           <div className="dp-resident-command-actions" aria-label="Resident shortcuts">
             <Link to="/map?mode=resident&tab=map&filter=All&console=expanded" aria-label="Search Downtown Perks"><Search aria-hidden="true" /></Link>
-            <button type="button" onClick={() => openPanel("profile")} aria-label="Open resident profile"><UserRound aria-hidden="true" /></button>
+            <button type="button" onClick={() => openPanel("card")} aria-label="Open resident card and profile"><UserRound aria-hidden="true" /></button>
             <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home"><X aria-hidden="true" /></button>
           </div>
         ) : (
@@ -462,17 +473,17 @@ export default function ResidentHome() {
           {resident ? (
             <>
               <section className="dp-resident-home-card" aria-label="Downtown Perks resident card">
-                <div><span>Downtown Perks</span><small>{resident.verificationStatus === "verified" ? "Verified resident" : "Resident member"}</small></div>
+                <div><span>Downtown Perks</span><small>{resident.verificationStatus === "verified" ? "Verified resident" : "Resident member"}{resident.buildingName ? ` · ${resident.buildingName}` : ""}</small></div>
                 <CreditCard aria-hidden="true" />
                 <strong>{resident.fullName || "Resident"}</strong>
                 <code>{residentCardCode(resident)}</code>
               </section>
               <section className="dp-resident-card-qr-action" aria-label="Resident perk QR code">
-                <button type="button" onClick={() => setPassOpen(true)}><QrCode aria-hidden="true" /><span>Show secure resident pass</span></button>
-                <div>
-                  <h3>Create a one-time QR code.</h3>
-                  <p>Your pass expires automatically after it is shown.</p>
-                </div>
+                <button type="button" onClick={() => setPassOpen(true)}>
+                  <QrCode aria-hidden="true" />
+                  <span><strong>Show resident pass</strong><small>Create a one-time QR code when a participating place asks to scan it.</small></span>
+                  <ChevronRight aria-hidden="true" />
+                </button>
               </section>
               <section className="dp-resident-profile-section" aria-labelledby="resident-profile-title">
                 <div className="dp-resident-section-title">
@@ -493,33 +504,6 @@ export default function ResidentHome() {
               <h3>Your resident profile lives here.</h3>
               <p>Create a card to connect your home property, or keep exploring downtown without an account.</p>
               <div><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=All"><Search aria-hidden="true" />Open the map</Link><Link className="dp-resident-text-action" to="/card">Get a card</Link></div>
-            </div>
-          )}
-        </section>
-      ) : null}
-
-      {panel === "profile" ? (
-        <section className="dp-resident-home__panel dp-resident-card-panel" role="tabpanel" aria-labelledby="resident-profile-page-title">
-          <header className="dp-resident-panel-intro">
-            <p>Resident profile</p>
-            <h2 id="resident-profile-page-title">Your downtown, connected.</h2>
-            <span>Your membership, building, contact details, preferences, and saved places stay together here.</span>
-          </header>
-          {resident ? (
-            <section className="dp-resident-profile-section" aria-label="Resident account details">
-              {renderProfileDetails("resident-profile")}
-              <div className="dp-resident-profile-actions">
-                <Link to="/residents/welcome">Update profile</Link>
-                <button type="button" onClick={() => openPanel("card")}>View card</button>
-                <Link to="/residents/membership">View membership</Link>
-              </div>
-            </section>
-          ) : (
-            <div className="dp-resident-empty-state">
-              <UserRound aria-hidden="true" />
-              <h3>Connect your resident account.</h3>
-              <p>Sign in to load your building, membership, preferences, saved places, and resident card.</p>
-              <div><Link className="dp-resident-text-action" to="/residents/login">Sign in</Link><Link className="dp-resident-text-action" to="/residents/membership">Create account</Link></div>
             </div>
           )}
         </section>

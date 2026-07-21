@@ -51,11 +51,11 @@ if (await page.locator(".dp-product-shell-search-button").count()) {
   throw new Error("Resident Home renders the global shell search over its native header.");
 }
 
-await page.getByRole("button", { name: "Open resident profile" }).click();
-await page.waitForURL((url) => url.pathname === "/resident/home" && url.searchParams.get("panel") === "profile");
+await page.getByRole("button", { name: "Open resident card and profile" }).click();
+await page.waitForURL((url) => url.pathname === "/resident/home" && url.searchParams.get("panel") === "card");
 await page.getByRole("button", { name: "Back to resident home" }).waitFor();
 
-for (const panel of ["profile", "perks", "card"]) {
+for (const panel of ["perks", "card"]) {
   await page.goto(`${baseUrl}/resident/home?panel=${panel}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
   await page.getByRole("button", { name: "Back to resident home" }).waitFor();
   const surface = await page.locator(".dp-resident-home__panel").evaluate((element) => {
@@ -72,12 +72,24 @@ await page.getByRole("heading", { name: "Downtown today" }).waitFor();
 
 await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Card" }).click();
 await page.getByRole("heading", { name: "Everything connected to your card." }).waitFor();
-for (const section of ["Contact", "Home", "Membership", "Preferences"]) {
-  await page.getByRole("heading", { name: section, exact: true }).waitFor();
+const profileDisclosures = page.locator("details.dp-resident-profile-group");
+if (await profileDisclosures.count() !== 4) {
+  throw new Error("Resident Card does not contain all four profile disclosure groups.");
 }
-await page.getByText("The Shore", { exact: true }).waitFor();
-await page.getByText("Included by your building", { exact: true }).waitFor();
-await page.getByText("Dining, Music, Outdoors", { exact: true }).waitFor();
+const disclosureLabels = (await profileDisclosures.locator("summary").allTextContents()).map((label) => label.replace(/\s+/g, " ").trim());
+for (const section of ["Contact", "Home", "Membership", "Preferences"]) {
+  if (!disclosureLabels.some((label) => label.startsWith(section))) throw new Error(`Missing ${section} disclosure on Resident Card.`);
+}
+const profileCopy = (await profileDisclosures.allTextContents()).join(" ");
+for (const value of ["The Shore", "Included by your building", "Dining, Music, Outdoors"]) {
+  if (!profileCopy.includes(value)) throw new Error(`Resident Card did not preserve profile value: ${value}`);
+}
+
+await page.goto(`${baseUrl}/resident/home?panel=profile`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+await page.getByRole("heading", { name: "Everything connected to your card." }).waitFor();
+if (await page.locator(".dp-resident-profile-group").count() !== 4) {
+  throw new Error("Legacy profile route did not resolve to the unified Card panel.");
+}
 
 const cardSurface = await page.locator(".dp-resident-card-panel").evaluate((element) => {
   const style = getComputedStyle(element);
