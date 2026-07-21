@@ -7,7 +7,7 @@ const JOURNEY_SECTIONS = [
     links: [
       { title: "Start partner registration", description: "Choose a partner type and begin the application.", href: "/partners/sign-up", audience: "Partner" },
       { title: "View pricing", description: "Compare plans and continue to the appropriate checkout path.", href: "/pricing", audience: "Partner" },
-      { title: "Open partner workspace", description: "Manage current partner work from the canonical workspace.", href: "/partner-workspace/overview", audience: "Partner" },
+      { title: "Open partner workspace", description: "Manage current partner work from one workspace.", href: "/partner-workspace/overview", audience: "Partner" },
     ],
   },
   {
@@ -41,7 +41,7 @@ export default function PartnerJourneyResource() {
         <Link to="/admin-studio/command-center">Admin home</Link>
         <p>Admin resource</p>
         <h1>Partner journey links.</h1>
-        <p>Open and verify the canonical routes used for partner onboarding, resident access, admin review, and public pages.</p>
+        <p>Open and verify the key routes used for partner onboarding, resident access, admin review, and public pages.</p>
       </header>
 
       <aside>

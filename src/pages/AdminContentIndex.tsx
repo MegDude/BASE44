@@ -29,7 +29,7 @@ export default function AdminContentIndex() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#927641]">Internal content audit</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">See what the app contains</h1>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-[#526171]">
-            Review routes, places, partner records, search content, and quality gaps generated from the canonical app. Update the source record, then regenerate this index.
+            Review routes, places, partner records, search content, and quality gaps across Downtown Perks. Correct the original item, then refresh this index.
           </p>
           <p className="mt-3 text-xs text-[#6B7785]">Generated {new Date(metadata.generatedAt).toLocaleString()}</p>
         </header>
@@ -45,7 +45,7 @@ export default function AdminContentIndex() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 id="action-heading" className="text-lg font-semibold">Fix these records next</h2>
-              <p className="mt-1 text-sm text-[#526171]">High-priority gaps stay visible until their canonical source records are corrected.</p>
+              <p className="mt-1 text-sm text-[#526171]">High-priority content gaps stay visible until they are corrected.</p>
             </div>
             <p className="text-sm font-medium text-[#927641]">{qualityIssues.length.toLocaleString()} total findings</p>
           </div>

@@ -26,7 +26,7 @@ const VIEWS = [
   ["reports", "Reports"],
 ];
 
-function DataNotice({ title = "Verified analytics are not connected.", description = "Potential reach and measured activity will appear after the source provides a verified count." }) {
+function DataNotice({ title = "Measured activity is not available yet.", description = "Reach and activity appear after a connected source reports a verified total." }) {
   return <section className="dp-pa-note" aria-label="Data availability"><Info aria-hidden="true" /><div><strong>{title}</strong><p>{description}</p></div></section>;
 }
 
@@ -56,12 +56,12 @@ function ConnectedPlaces({ entities, scope }) {
 
 function EmptyMeasurement({ view }) {
   const labels = {
-    campaigns: "No verified campaign results.",
-    activity: "No verified offer or event activity.",
+    campaigns: "No measured campaign results yet.",
+    activity: "No measured offer or event activity yet.",
     sources: "No attributed share-link opens.",
-    geography: "No verified geographic activity.",
+    geography: "No measured location activity yet.",
   };
-  return <section className="dp-pa-empty"><strong>{labels[view] || "No verified results."}</strong><p>Downtown Perks will not estimate results. Connect a verified analytics source to report measured activity.</p></section>;
+  return <section className="dp-pa-empty"><strong>{labels[view] || "No measured results yet."}</strong><p>Results appear after activity is recorded for this workspace.</p></section>;
 }
 
 function Reports({ scope }) {
@@ -100,7 +100,7 @@ function ResearchCoverage({ scope }) {
   }
 
   if (state.status === "error" || !state.data) {
-    return <section className="dp-pa-empty"><strong>Research coverage is not connected yet.</strong><p>The current workspace remains available. Connect the backend source to review aggregate research counts here.</p><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}>Review sources</Link></section>;
+    return <section className="dp-pa-empty"><strong>Research activity is not available yet.</strong><p>The workspace remains ready. Connect a research source to review totals here.</p><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}>Review sources</Link></section>;
   }
 
   return <>
