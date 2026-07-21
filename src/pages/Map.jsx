@@ -8175,7 +8175,7 @@ function PanelContext({ place, mode }) {
   }
 
   return (
-    <DestinationSection title={mode === "resident" ? "Why people choose this" : panelContent.whyHeading || "Why this matters"} className="dp-property-opening-section dp-property-narrative-section">
+    <DestinationSection title={panelContent.whyHeading || "Why this place matters"} className="dp-property-opening-section dp-property-narrative-section">
       <p className="dp-why-people-go">{panelContent.whyBody || getPanelContextSentence(place, mode)}</p>
       {showPanelInsight && (
         <p className="dp-destination-section-note">{insightText}</p>

@@ -309,6 +309,90 @@ function compactPanelSentence(value = "") {
   return firstSentence.length > 230 ? `${firstSentence.slice(0, 227).trim()}...` : firstSentence;
 }
 
+const GENERIC_INVENTORY_COPY = [
+  /^(?:.+?\s+)?listing in downtown austin\.?$/i,
+  /^(?:.+?\s+)?listing operated by .+?\.?$/i,
+  /^(?:restaurant\s*\/\s*food|coffee\s*\/\s*cafe) with cuisine focus:\s*.+?\.?$/i,
+  /^this downtown austin residence is currently available through legends real estate\.?$/i,
+];
+
+export function isGenericInventoryPanelCopy(value = "") {
+  const text = compactPanelSentence(value);
+  return Boolean(text) && GENERIC_INVENTORY_COPY.some((pattern) => pattern.test(text));
+}
+
+function authoredPanelContext(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const candidates = [
+    raw.panelContext,
+    raw.downtown_perks_summary,
+    raw.context,
+    entity.context,
+    raw.summary,
+    entity.summary,
+    raw.description,
+    entity.description,
+    raw.campaignObjective,
+    entity.campaignObjective,
+    raw.partnerInsight,
+    entity.partnerInsight,
+  ];
+  return candidates
+    .map((value) => compactPanelSentence(value))
+    .find((value) => value && !isGenericInventoryPanelCopy(value)) || "";
+}
+
+function panelAddressFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(entity.address || raw.address, "")
+    .replace(/,\s*/g, ", ")
+    .replace(/^(\d+),\s+/, "$1 ")
+    .replace(/,\s*Austin(?:,\s*(?:TX|Texas))?(?:,\s*\d{5}(?:-\d{4})?)?\.?$/i, "")
+    .trim();
+}
+
+function panelLocationPhrase(entity = {}) {
+  const district = panelDistrictFor(entity);
+  const address = panelAddressFor(entity);
+  if (!address) return district;
+  if (district && district !== "Downtown Austin") return `${address} in ${district}`;
+  return address;
+}
+
+function panelCuisineFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const source = [raw.cuisine, entity.cuisine, raw.description, entity.description].filter(Boolean).join(" ");
+  const match = source.match(/cuisine focus:\s*([a-z0-9_-]+)/i);
+  const cuisine = safePanelText(raw.cuisine || entity.cuisine || match?.[1], "")
+    .replace(/[_-]+/g, " ")
+    .trim();
+  if (!cuisine || /^(yes|no|unknown|restaurant|food)$/i.test(cuisine)) return "";
+  return cuisine.replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function panelOperatorFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const source = [raw.operator, entity.operator, raw.description, entity.description].filter(Boolean).join(" ");
+  const match = source.match(/listing operated by\s+(.+?)(?:\.|$)/i);
+  return safePanelText(raw.operator || entity.operator || match?.[1], "");
+}
+
+function panelHostFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(
+    entity.hostName || entity.venueName || entity.partnerName || raw.hostName || raw.venueName || raw.partnerName || raw.organizationName,
+    "",
+  );
+}
+
+function panelTimingFor(entity = {}) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  return safePanelText(
+    entity.displayDate || entity.dateLabel || entity.startsAt || entity.startAt || raw.displayDate || raw.dateLabel || raw.startsAt || raw.startAt,
+    "",
+  );
+}
+
 function panelCategoryLabel(entity = {}, productionType = "venue") {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
   const explicit = safePanelText(entity.category || raw.category || entity.subcategory || raw.subcategory || "", "");
@@ -343,21 +427,7 @@ function panelOfferLine(entity = {}) {
 }
 
 function panelActualContext(entity = {}) {
-  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
-  return compactPanelSentence(
-    raw.panelContext ||
-      raw.downtown_perks_summary ||
-      raw.context ||
-      entity.context ||
-      raw.summary ||
-      entity.summary ||
-      raw.description ||
-      entity.description ||
-      raw.campaignObjective ||
-      entity.campaignObjective ||
-      raw.partnerInsight ||
-      entity.partnerInsight,
-  );
+  return authoredPanelContext(entity);
 }
 
 function buildContextualPanelWhy(entity = {}, title = "this destination", type = "venue") {
@@ -366,32 +436,35 @@ function buildContextualPanelWhy(entity = {}, title = "this destination", type =
   const category = panelCategoryLabel(entity, productionType);
   const actualContext = panelActualContext(entity);
   const offer = panelOfferLine(entity);
-  const address = panelSubtitleFor(entity);
-  const locationLine = address ? `${district}, near ${address}` : district;
+  const locationLine = panelLocationPhrase(entity);
+  const cuisine = panelCuisineFor(entity);
+  const operator = panelOperatorFor(entity);
+  const host = panelHostFor(entity);
+  const timing = panelTimingFor(entity);
   const lowerCategory = category.toLowerCase();
   const categoryLabel = lowerCategory === "venue" ? "downtown stop" : lowerCategory;
 
   if (type === "propertyOverview") {
     return {
       heading: `Why ${title} works`,
-      body: actualContext || `${title} belongs in the map because its resident experience is shaped by what is walkable from ${district}: nearby dining, services, parks, events, and daily routines.`,
-      insight: `${title} should help residents compare the building and the neighborhood together, not as separate decisions.`,
+      body: actualContext || `${title} is a residential address at ${locationLine}. The building sits within a distinct set of nearby places, resident benefits, and routes.`,
+      insight: `Open ${title} to compare the address with nearby places, resident benefits, and the routes connected to this part of downtown.`,
     };
   }
 
   if (type === "listing") {
     return {
       heading: `Why this listing fits`,
-      body: actualContext || `${title} is an active listing in ${locationLine}, so the panel should help a resident understand the home, the block, and the nearby routine before they ask for a showing.`,
-      insight: `This listing matters when its price, layout, building context, and nearby places are presented as one decision.`,
+      body: actualContext || `${title} is an available home at ${locationLine}. The listing connects the residence to the building and nearby places a prospective resident may want to review before a tour.`,
+      insight: `Open ${title} for its available home details, then use the map to understand the surrounding block before contacting the listing team.`,
     };
   }
 
   if (type === "event") {
     return {
       heading: `Why ${title} fits tonight`,
-      body: actualContext || `${title} gives residents a time-specific reason to make a plan around ${district}, then pair it with food, drinks, parking, or a walkable next stop.`,
-      insight: `This event pin should make the next step clear: when to go, what to pair with it, and what is nearby before or after.`,
+      body: actualContext || `${title}${host ? ` is hosted by ${host}` : ""}${timing ? ` on ${timing}` : ""}${locationLine ? ` at ${locationLine}` : ""}.`,
+      insight: `Open ${title} for the current event details, then see what is close enough to add before or after it.`,
     };
   }
 
@@ -399,66 +472,98 @@ function buildContextualPanelWhy(entity = {}, title = "this destination", type =
     return {
       heading: `Why this perk fits`,
       body: offer
-        ? `${title} gives residents a clear benefit: ${offer}`
-        : actualContext || `${title} gives residents a specific local benefit tied to where they already are in ${district}.`,
-      insight: `This perk should lead with the resident value first, then make redemption simple from the map.`,
+        ? `${title}${host ? ` from ${host}` : ""} gives residents this benefit: ${offer}`
+        : actualContext || `${title}${host ? ` is available from ${host}` : ""}${locationLine ? ` at ${locationLine}` : ` in ${district}`}. Open it to confirm the current resident benefit.`,
+      insight: `Open ${title} to check availability and terms before showing or scanning your Resident Pass.`,
     };
   }
 
   if (type === "hotel") {
     return {
       heading: `Why ${title} fits the stay`,
-      body: actualContext || `${title} works as a ${district} base because guests can connect the stay to nearby dining, coffee, events, services, and walkable downtown routines.`,
-      insight: `This hotel pin should help guests turn the area around the lobby into a practical plan.`,
+      body: actualContext || `${title} gives guests a downtown base at ${locationLine}, close to the places, events, and neighborhood stops surrounding the property.`,
+      insight: `Open ${title} to plan from the hotel door and compare the closest useful stops for this stay.`,
     };
   }
 
   if (type === "brand") {
     return {
       heading: `Why ${title} belongs here`,
-      body: actualContext || `${title} belongs on the map when the brand connects to real ${district} routines, nearby events, resident perks, or places people already use.`,
-      insight: `This brand pin should explain the useful local moment, not just name the brand.`,
+      body: actualContext || `${title} has a downtown presence at ${locationLine}${operator ? `, operated by ${operator}` : ""}. Current local places, offers, and events give that presence a practical purpose.`,
+      insight: `Open ${title} to see the specific downtown experience or offer connected to this location.`,
     };
   }
 
   if (type === "civic") {
     return {
       heading: `Why people come here`,
-      body: actualContext || `${title} gives residents and visitors a civic, cultural, or public-space reason to spend time around ${district}.`,
-      insight: `This place should be easy to understand, visit, and connect to nearby stops.`,
+      body: actualContext || `${title} is a civic or cultural place at ${locationLine}${operator ? `, managed by ${operator}` : ""}. It anchors public life in this part of downtown.`,
+      insight: `Open ${title} for its location and connect it to nearby public spaces, programs, and walking routes.`,
     };
   }
 
   if (type === "service") {
     return {
       heading: `Why residents use ${title}`,
-      body: actualContext || `${title} supports practical downtown life around ${district}, from errands and appointments to the everyday needs that make the neighborhood easier to use.`,
-      insight: `This service pin should help residents solve something nearby without leaving the map flow.`,
+      body: actualContext || `${title} is a local service at ${locationLine}${operator ? `, operated by ${operator}` : ""}. It gives residents a specific nearby option for a practical downtown need.`,
+      insight: `Open ${title} for directions and the latest available details before making the trip.`,
     };
   }
 
   if (type === "localGuide") {
     return {
       heading: `Why this guide helps`,
-      body: actualContext || `${title} organizes ${district} options into a clearer route so residents can choose a first stop and build the rest of the plan around what is close.`,
-      insight: `This guide should reduce scattered choices into a useful local sequence.`,
+      body: actualContext || `${title} brings a selected group of ${district} stops into one guide, with each place kept visible as its own map destination.`,
+      insight: `Open ${title} to choose a first stop and follow the ordered places from there.`,
     };
   }
 
   if (type === "campaign") {
     return {
       heading: `Why ${title} fits`,
-      body: actualContext || `${title} works as a ${district} campaign when it connects to a specific nearby routine, audience, offer, or measurable next step.`,
-      insight: `This campaign pin should explain who is close enough to act and what action they should take.`,
+      body: actualContext || `${title} connects selected ${district} places to one timely resident action${host ? ` led by ${host}` : ""}.`,
+      insight: `Open ${title} to see the participating places, current timing, and the action available from the map.`,
+    };
+  }
+
+  if (productionType === "restaurant") {
+    return {
+      heading: `Why choose ${title}`,
+      body: actualContext || `${title} is ${cuisine ? `${cuisine} dining` : "a dining destination"} at ${locationLine}. The address places the restaurant within a specific downtown block and its surrounding evening stops.`,
+      insight: `Open ${title} for directions${offer ? ` and the current resident benefit: ${offer}` : ", current details, and nearby places that can complete the outing"}.`,
+    };
+  }
+
+  if (productionType === "coffee") {
+    return {
+      heading: `Why choose ${title}`,
+      body: actualContext || `${title} is ${cuisine ? `a ${cuisine} stop` : "a coffee stop"} at ${locationLine}. It gives this part of downtown a named café destination with its own exact address.`,
+      insight: `Open ${title} for directions${offer ? ` and its current resident benefit: ${offer}` : " and to see the closest places around it"}.`,
+    };
+  }
+
+  if (productionType === "bars-nightlife" || productionType === "rooftop") {
+    return {
+      heading: `Why choose ${title}`,
+      body: actualContext || `${title} is ${productionType === "rooftop" ? "a rooftop destination" : "a drinks and nightlife destination"} at ${locationLine}. It gives an evening in ${district} a precise place to start or continue.`,
+      insight: `Open ${title} for directions${offer ? ` and the current resident benefit: ${offer}` : ", then compare the other evening stops closest to this address"}.`,
+    };
+  }
+
+  if (productionType === "retail") {
+    return {
+      heading: `Why choose ${title}`,
+      body: actualContext || `${title} is a retail stop at ${locationLine}${operator ? `, operated by ${operator}` : ""}. This specific shop or service belongs to the surrounding downtown block.`,
+      insight: `Open ${title} for directions${offer ? ` and its current resident benefit: ${offer}` : " and the latest available place details"}.`,
     };
   }
 
   return {
-    heading: `Why ${title} fits`,
+    heading: `Why choose ${title}`,
     body: offer
-      ? `${title} is a ${categoryLabel} in ${locationLine} with a specific resident-facing reason to go: ${offer}`
-      : actualContext || `${title} is a ${categoryLabel} in ${locationLine}, so this panel should explain the actual reason to go, what kind of moment it supports, and what nearby plan it completes.`,
-    insight: `This pin matters because ${title} gives people a specific ${categoryLabel} option around ${district}, not a generic nearby result.`,
+      ? `${title} is a ${categoryLabel} at ${locationLine} with this current resident benefit: ${offer}`
+      : actualContext || `${title} is a ${categoryLabel} at ${locationLine}${operator ? `, operated by ${operator}` : ""}. Its exact address gives the place a clear position in downtown.`,
+    insight: `Open ${title} for directions, current details, and the places closest to this address.`,
   };
 }
 
@@ -581,7 +686,7 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
   const title = panelTitleFor(entity);
   const type = panelEntityType(entity);
   const base = PANEL_CONTENT_BY_TYPE[type] || PANEL_CONTENT_BY_TYPE.venue;
-  const isYeti = /\byeti\b/i.test(`${entity.id || ""} ${entity.name || ""} ${entity.brand || ""} ${raw.id || ""} ${raw.name || ""} ${raw.brand || ""}`);
+  const isYeti = /^yeti(?: flagship)?$/i.test(title);
   const context = residentSafePanelText(
     raw.panelContext ||
       raw.downtown_perks_summary ||
@@ -640,17 +745,19 @@ export function resolveEntityPanelContent(entity = {}, mode = "resident") {
   content.whyHeading = contextualWhy.heading || content.whyHeading;
   content.whyBody = contextualWhy.body || content.whyBody;
   content.insight = contextualWhy.insight || content.insight;
+  if (!content.context || isGenericInventoryPanelCopy(content.context)) content.context = content.whyBody;
 
   if (PARTNER_ONLY_COPY.test(content.whyBody)) content.whyBody = formatPanelTemplate(base.whyBody, title);
   if (PARTNER_ONLY_COPY.test(content.insight)) content.insight = base.insight;
 
   if (isYeti) {
+    const yetiLocation = panelLocationPhrase(entity);
     content.primaryActionLabel = "Open Brand Guide";
-    content.whyHeading = "Why it matters";
-    content.whyBody = "YETI fits the lake, trail, hotel, paddle, and event routines that already bring people through this part of downtown.";
+    content.whyHeading = `Why choose ${title}`;
+    content.whyBody = `${title} connects Austin's lake, trail, paddle, hotel, and event routines to a specific stop at ${yetiLocation}.`;
     content.context = content.whyBody;
     content.bestFor = [];
-    content.insight = "";
+    content.insight = `Open ${title} for the current store or activation details and the closest outdoor routes.`;
     content.perkTitle = content.perkTitle || "Resident refill stop and engraving window";
     content.perkValue = content.perkValue || "Cold-water refill context plus YETI engraving access when active.";
     content.perkInstructions = content.perkInstructions || "Show your Resident Pass at a participating YETI station or store window when the activation is live.";
