@@ -10,12 +10,13 @@ for (const view of ["overview", "audience", "places", "campaigns", "activity", "
 for (const parameter of ["workspace", "view"]) assert.match(component, new RegExp(`params\\.get\\(\\"${parameter}\\"\\)`), `missing URL parameter: ${parameter}`);
 for (const parameter of ["range", "comparison", "view"]) assert.match(detailedPage, new RegExp(`params\\.get\\(\\"${parameter}\\"\\)`), `missing detailed analytics URL parameter: ${parameter}`);
 assert.match(component, /No generated performance data/);
-assert.match(component, /See what residents used/);
-assert.match(component, /Scan resident pass/);
+assert.match(component, /See what people respond to/);
+assert.match(component, /getPartnerRedemptionOverview/);
+assert.match(component, /Completed redemptions/);
 assert.match(detailedPage, /URL\.createObjectURL/);
 assert.match(component, /\/map\?mode=partner&tab=map/);
 assert.match(workspace, /<PartnerAnalyticsExperience\s*\/>/);
 assert.doesNotMatch(workspace, /<section className="dp-featured-experience">/);
 assert.doesNotMatch(workspace, /<section className="dp-operating-section dp-recent-activity"/);
-assert.match(styles, /@media\(max-width:560px\)/);
+assert.match(styles, /@media\s*\(max-width:\s*560px\)/);
 console.log("Partner Analytics contract: PASS");

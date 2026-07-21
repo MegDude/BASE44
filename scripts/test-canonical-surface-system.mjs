@@ -38,6 +38,9 @@ const governedPostCanonicalLocks = [
   'import "@/styles/search-intent-glass-surface-final.css"',
   'import "@/styles/borderless-panel-content-final.css"',
   'import "@/styles/resident-qr-modal-final.css"',
+  'import "@/styles/partner-workspace-journeys-final.css"',
+  'import "@/styles/resident-home-ios-native-final.css"',
+  'import "@/styles/active-perks-sheet.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);
