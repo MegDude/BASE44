@@ -215,6 +215,8 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   display: block !important;
   width: 100% !important;
   height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
   aspect-ratio: 16 / 9 !important;
   margin: 0 !important;
   padding: 0 !important;
