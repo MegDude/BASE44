@@ -17,6 +17,9 @@ assert.match(styles, /\.dp-search-intent-header-controls[\s\S]*?justify-self:\s*
 assert.match(styles, /flex-flow:\s*row nowrap\s*!important;/, "Right-side controls can wrap onto another line");
 assert.match(styles, /\.dp-search-intent-prompt-rail\.dp-search-intent-prompt-rail[\s\S]*?padding-inline:\s*12px\s*!important;/, "The icon rail is flush against the console edge");
 assert.match(styles, /\.dp-search-intent-prompt-rail\.dp-search-intent-prompt-rail[\s\S]*?scroll-padding-inline:\s*12px\s*!important;/, "The icon rail does not preserve its inset while scrolling");
+assert.match(styles, /grid-template-columns:\s*28px minmax\(0, 1fr\) 44px\s*!important;/, "The empty search field reserves an unused action track");
+assert.match(styles, /\.dp-search-intent-input-row\.dp-search-intent-input-row:has\(\.dp-search-intent-clear\)[\s\S]*?grid-template-columns:\s*28px minmax\(0, 1fr\) 40px 44px\s*!important;/, "The clear action does not receive its own track when present");
+assert.match(styles, /grid-template-columns:\s*26px minmax\(0, 1fr\) 42px\s*!important;/, "The compact search field reserves an unused action track");
 assert.match(styles, /font:\s*720 10px\/1 Inter[^;]+!important;/, "Utility labels do not use the compact text scale");
 assert.match(styles, /text-transform:\s*uppercase\s*!important;/, "Utility labels are not uppercase");
 assert.match(styles, /color:\s*#b08a3f\s*!important;/i, "Utility labels do not use the approved gold");
