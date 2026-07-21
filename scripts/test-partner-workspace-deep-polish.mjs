@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const [destinationSource, workspaceSource, analyticsSource, analyticsPageSource, registrySource, styles, compactStyles, densityStyles, main] = await Promise.all([
+const [destinationSource, workspaceSource, analyticsSource, analyticsPageSource, registrySource, styles, compactStyles, densityStyles, journeyStyles, main] = await Promise.all([
   readFile(new URL("../src/components/partner/workspace/WorkspaceDestinationRoot.jsx", import.meta.url), "utf8"),
   readFile(new URL("../src/pages/PartnerWorkspace.jsx", import.meta.url), "utf8"),
   readFile(new URL("../src/components/analytics/PartnerAnalyticsExperience.jsx", import.meta.url), "utf8"),
@@ -10,6 +10,7 @@ const [destinationSource, workspaceSource, analyticsSource, analyticsPageSource,
   readFile(new URL("../src/styles/partner-workspace-deep-polish-final.css", import.meta.url), "utf8"),
   readFile(new URL("../src/styles/workspace-compact-media-final.css", import.meta.url), "utf8"),
   readFile(new URL("../src/styles/interface-density-regression-lock.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/styles/partner-workspace-journeys-final.css", import.meta.url), "utf8"),
   readFile(new URL("../src/main.jsx", import.meta.url), "utf8"),
 ]);
 
@@ -47,8 +48,12 @@ assert.match(styles, /min-height:\s*44px\s*!important/, "primary actions must re
 assert.doesNotMatch(compactStyles, /background:\s*#f7f4ed|border-radius:\s*(14|20)px/, "mobile overview must not restore beige, pill, or card geometry");
 assert.match(densityStyles, /Partner workspace governance/, "shared workspace surfaces need a final release lock");
 assert.match(densityStyles, /table,[\s\S]*?box-shadow:\s*none\s*!important/, "tables and rows must remain free of shadows");
+assert.match(journeyStyles, /dp-workspace-agent__ask form[\s\S]*?display:\s*grid\s*!important/, "Ask the Map form must retain a stable mobile layout");
+assert.match(journeyStyles, /dp-workspace-agent__places a[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\) 18px\s*!important/, "Ask the Map answer rows must remain readable");
+assert.match(journeyStyles, /dp-workspace-experiences__flow ol[\s\S]*?repeat\(5, minmax\(0, 1fr\)\)/, "campaign publishing steps must stay within the mobile surface");
 assert.match(main, /partner-workspace-deep-polish-final\.css/, "the workspace surface contract must remain registered");
 assert.match(main, /interface-density-regression-lock\.css/, "the cross-product density lock must follow workspace polish");
+assert.match(main, /partner-workspace-journeys-final\.css/, "campaign and assistant journey polish must load after release locks");
 assert.doesNotMatch(workspaceSource, /import\s+["']@\/styles\//, "workspace styles must load through main before the final release locks");
 
 console.log("Partner workspace deep-polish regression checks passed.");

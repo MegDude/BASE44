@@ -1242,12 +1242,12 @@ function WorkspaceAgent({ user, scope }) {
         : "Downtown Perks map guidance";
 
   return (
-    <motion.section className="dp-workspace-agent" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.section className="dp-workspace-agent" aria-labelledby="workspace-agent-title" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
       <header className="dp-workspace-agent__hero">
         <div>
           <p className="dp-workspace-eyebrow">Ask the Map</p>
-          <h1>Decide what to do next.</h1>
-          <p>Ask about {organization?.name || "your organization"}, nearby demand, listings, offers, campaigns, or results. The answer stays tied to the places and information currently connected to this workspace.</p>
+          <h1 id="workspace-agent-title">Decide what to do next.</h1>
+          <p>Ask about {organization?.name || "your organization"}, nearby demand, listings, offers, campaigns, or results. Answers use the places and details connected to your account.</p>
         </div>
         <Link to={`/map?mode=partner&tab=map&filter=All&organizationId=${encodeURIComponent(organizationId)}`}>Open partner map <ArrowRight aria-hidden="true" /></Link>
       </header>
@@ -1277,7 +1277,7 @@ function WorkspaceAgent({ user, scope }) {
           </div>
           <aside>
             <strong>Context included</strong>
-            <p>{ownedEntities.length} connected {ownedEntities.length === 1 ? "place" : "places"}, current organization, selected district, and the question you ask. Missing facts are identified instead of invented.</p>
+            <p>{ownedEntities.length} connected {ownedEntities.length === 1 ? "place" : "places"}, your organization, the selected district, and your question. Missing details are clearly identified.</p>
           </aside>
         </section>
 

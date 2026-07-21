@@ -1,0 +1,477 @@
+/* Campaigns and Ask the Map share one calm, mobile-first workspace rhythm. */
+:root {
+  --dp-journey-ink: #0b1f33;
+  --dp-journey-muted: rgba(11, 31, 51, 0.62);
+  --dp-journey-border: rgba(11, 31, 51, 0.09);
+  --dp-journey-gold: #a7833f;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-experiences,
+  .dp-workspace-agent
+) {
+  width: min(100%, 1040px) !important;
+  margin-inline: auto !important;
+  padding: clamp(18px, 3vw, 32px) clamp(16px, 3vw, 28px) calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+  color: var(--dp-journey-ink) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="campaigns"] .dp-workspace-content,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page[data-workspace-view="assistant"] .dp-workspace-content {
+  border: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Experiences: one page surface, compact steps, and clean template rows. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px 28px !important;
+  align-items: end !important;
+  padding: 4px 0 28px !important;
+  border: 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header > :not(button) {
+  grid-column: 1 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header > p,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__library header p,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow > h2 {
+  margin: 0 0 6px !important;
+  color: var(--dp-journey-gold) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.045em !important;
+  line-height: 1.2 !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header h1 {
+  margin: 0 !important;
+  font-size: clamp(28px, 4vw, 38px) !important;
+  font-weight: 650 !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header > span {
+  max-width: 650px !important;
+  margin-top: 4px !important;
+  color: var(--dp-journey-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header > button {
+  grid-column: 2 !important;
+  grid-row: 1 / span 3 !important;
+  min-width: 152px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--dp-journey-ink) !important;
+  border-radius: 0 !important;
+  background: var(--dp-journey-ink) !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 680 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow {
+  padding: 18px 0 20px !important;
+  border-block: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow ol {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li {
+  min-width: 0 !important;
+  min-height: 38px !important;
+  gap: 6px !important;
+  padding: 5px 10px !important;
+  border: 0 !important;
+  border-left: 1px solid var(--dp-journey-border) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li:first-child {
+  padding-left: 0 !important;
+  border-left: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li span {
+  color: var(--dp-journey-gold) !important;
+  font-size: 10px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li strong {
+  font-size: 12px !important;
+  font-weight: 620 !important;
+  white-space: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__library {
+  padding: 28px 0 0 !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__library h2 {
+  margin: 0 !important;
+  font-size: clamp(20px, 2.4vw, 25px) !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__tabs {
+  gap: 20px !important;
+  margin-top: 15px !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+  scroll-snap-type: x proximity !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__tabs button {
+  min-height: 42px !important;
+  padding: 0 0 8px !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  color: var(--dp-journey-muted) !important;
+  scroll-snap-align: start !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__tabs button[aria-selected="true"] {
+  border-bottom-color: var(--dp-journey-gold) !important;
+  color: var(--dp-journey-ink) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__rows > button {
+  min-height: 72px !important;
+  padding: 13px 2px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+}
+
+/* Ask the Map: one continuous white decision surface, not three cards. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent {
+  display: grid !important;
+  gap: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-agent__hero,
+  .dp-workspace-agent__ask,
+  .dp-workspace-agent__answer
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: end !important;
+  gap: 24px !important;
+  padding: 4px 0 28px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero h1 {
+  max-width: 680px !important;
+  margin: 5px 0 0 !important;
+  font-size: clamp(28px, 4vw, 38px) !important;
+  line-height: 1.06 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero > div > p:last-child {
+  max-width: 700px !important;
+  margin: 10px 0 0 !important;
+  color: var(--dp-journey-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero > a {
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--dp-journey-gold) !important;
+  -webkit-text-fill-color: var(--dp-journey-gold) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__layout {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr) !important;
+  gap: 0 !important;
+  align-items: stretch !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-agent__ask, .dp-workspace-agent__answer) {
+  min-width: 0 !important;
+  min-height: 430px !important;
+  padding: 28px 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask {
+  padding-right: clamp(24px, 4vw, 42px) !important;
+  border-right: 1px solid var(--dp-journey-border) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__answer {
+  padding-left: clamp(24px, 4vw, 42px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask h2,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__response-heading h2 {
+  font-size: clamp(21px, 2.5vw, 27px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 9px !important;
+  margin-top: 18px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask form label {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  color: var(--dp-journey-muted) !important;
+  font-size: 11px !important;
+  font-weight: 680 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask textarea {
+  display: block !important;
+  width: 100% !important;
+  min-height: 110px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  background: #ffffff !important;
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask form button {
+  display: inline-flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  border: 1px solid var(--dp-journey-ink) !important;
+  background: var(--dp-journey-ink) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-align: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__prompts {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  margin-top: 18px !important;
+  border-top: 1px solid var(--dp-journey-border) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__prompts button {
+  display: block !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+  color: var(--dp-journey-ink) !important;
+  -webkit-text-fill-color: var(--dp-journey-ink) !important;
+  font-size: 12px !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask > aside,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__reason {
+  margin-top: 18px !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-agent__empty, .dp-workspace-agent__loading) {
+  min-height: 100% !important;
+  padding: clamp(8px, 3vw, 30px) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__response {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 18px !important;
+  align-content: start !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-agent__places,
+  .dp-workspace-agent__actions,
+  .dp-workspace-agent__followups
+) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__places a {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 18px !important;
+  gap: 3px 10px !important;
+  width: 100% !important;
+  min-height: 56px !important;
+  align-content: center !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+  color: var(--dp-journey-ink) !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__places a span,
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__places a small {
+  display: block !important;
+  min-width: 0 !important;
+  grid-column: 1 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__places a svg {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__actions a {
+  display: inline-flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+  color: var(--dp-journey-ink) !important;
+  -webkit-text-fill-color: var(--dp-journey-ink) !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__followups button {
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-journey-border) !important;
+  background: #ffffff !important;
+  text-align: left !important;
+}
+
+@media (max-width: 760px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(
+    .dp-workspace-experiences,
+    .dp-workspace-agent
+  ) {
+    padding: 14px 16px calc(104px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header,
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 2px 0 22px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__header > button {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow {
+    padding: 16px 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li {
+    display: grid !important;
+    align-content: start !important;
+    gap: 4px !important;
+    min-height: 48px !important;
+    padding-inline: 7px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li strong {
+    overflow: visible !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    text-overflow: clip !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__hero > a {
+    width: max-content !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-agent__ask, .dp-workspace-agent__answer) {
+    min-height: 0 !important;
+    padding: 22px 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__ask {
+    padding-right: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--dp-journey-border) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-agent__answer {
+    min-height: 260px !important;
+    padding-left: 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-agent__empty, .dp-workspace-agent__loading) {
+    min-height: 220px !important;
+    padding: 20px 0 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li {
+    padding-inline: 4px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page .dp-workspace-experiences__flow li strong {
+    font-size: 9px !important;
+  }
+}
