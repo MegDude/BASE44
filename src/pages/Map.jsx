@@ -113,7 +113,7 @@ import { parseSearchIntent, searchIntentToFilter } from "@/map/searchIntent/sear
 import { RouteExperienceSheet } from "@/components/map/route/RouteExperienceSheet";
 import { getMapCollectionById, getMapCollectionForQuery, mapCollections } from "@/data/mapCollections";
 import { resolveMapCollectionRoute } from "@/lib/map/collectionRoutes";
-import { reconcileMarkerIds } from "@/lib/map/mapDiscovery";
+import { MAP_DISCOVERY_LIMITS, reconcileMarkerIds } from "@/lib/map/mapDiscovery";
 import { createBuildingExperience } from "@/lib/buildingExperienceEngine";
 
 const SEO_NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
@@ -13266,6 +13266,7 @@ function MapSearchConsole({
   activeFilter,
   activeCollection,
   resultCount,
+  visibleResultIds = [],
   requestStatus = "idle",
   lastTrigger = "",
   catalogState,
@@ -13312,11 +13313,22 @@ function MapSearchConsole({
     catalogState?.query === query &&
     ["loading", "resolved"].includes(catalogState?.status),
   );
+  const catalogResultsId = "dp-map-search-results";
   const catalogResultLimit = viewportWidth <= 520 ? 5 : 8;
+  const hasResolvedMapScope = requestStatus === "success" && Boolean(lastTrigger);
+  const visibleMapResultIds = new Set(visibleResultIds.map((value) => String(value || "")).filter(Boolean));
   let remainingCatalogResults = catalogResultLimit;
   const visibleCatalogGroups = (catalogState?.groups || []).reduce((groups, group) => {
     if (remainingCatalogResults <= 0) return groups;
-    const results = (group.results || []).slice(0, remainingCatalogResults);
+    const scopedResults = hasResolvedMapScope
+      ? (group.results || []).filter((result) => (
+          Boolean(result.route) ||
+          [result.id, result.entityId, result.linkedEntityId]
+            .filter(Boolean)
+            .some((id) => visibleMapResultIds.has(String(id)))
+        ))
+      : (group.results || []);
+    const results = scopedResults.slice(0, remainingCatalogResults);
     if (!results.length) return groups;
     remainingCatalogResults -= results.length;
     groups.push({ ...group, results });
@@ -13461,6 +13473,13 @@ function MapSearchConsole({
       trackFilterRailEvent(next ? "secondary_filter_rail_expanded" : "secondary_filter_rail_collapsed", null, next ? "expanded" : "collapsed");
       return next;
     });
+  };
+  const handleSearchInputKeyDown = (event) => {
+    if (event.key !== "ArrowDown" || !showCatalogResults) return;
+    const firstResult = consolePanelRef.current?.querySelector?.("[data-search-result-id]");
+    if (!firstResult) return;
+    event.preventDefault();
+    firstResult.focus?.();
   };
   const handleRailItem = (item) => {
     const isSecondaryFilter = moreFilterRail.includes(item);
@@ -13819,9 +13838,14 @@ function MapSearchConsole({
               type="text"
               className="dp-ask-map-input"
               aria-label="Ask the Map search"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls={catalogResultsId}
+              aria-expanded={showCatalogResults}
               placeholder="Ask what’s nearby"
               value={query}
               onChange={(event) => onQueryChange(event.target.value)}
+              onKeyDown={handleSearchInputKeyDown}
             />
             {query && (
               <button type="button" className="dp-search-intent-clear" onClick={onClear} aria-label="Clear search">
@@ -13882,20 +13906,32 @@ function MapSearchConsole({
           </p>
         ) : null}
         {showCatalogResults ? (
-          <div className="dp-platform-search-results" aria-label="Search results" aria-live="polite">
+          <div id={catalogResultsId} className="dp-platform-search-results" role="listbox" aria-label="Search results" aria-live="polite">
             {visibleCatalogGroups.map((group) => (
               <section key={group.type} className="dp-platform-search-group" aria-labelledby={`dp-search-group-${group.type}`}>
                 <h3 id={`dp-search-group-${group.type}`}>{group.label}</h3>
                 {group.results.map((result) => {
+                  const resultEntityId = result.entityId || result.linkedEntityId || result.id;
+                  const resolvedResultEntity = catalogState?.entitiesById?.[result.id] || null;
+                  const resolvedPerkId = resolvedResultEntity && hasActivePerkData(resolvedResultEntity)
+                    ? getCanonicalResidentPerkId(resolvedResultEntity)
+                    : result.resultType === "perk" ? result.perkId || result.id : "";
                   const content = <>
                     <span><strong>{result.title}</strong><small>{result.subtitle || group.label}</small></span>
-                    <span className="dp-platform-search-result-action">{String(result.id || "").endsWith("-portfolio") ? "Open" : result.route ? "Open" : result.markerEligible ? "View" : "Show places"}</span>
+                    <span className="dp-platform-search-result-action">{resolvedPerkId ? "Open perk" : String(result.id || "").endsWith("-portfolio") ? "Open" : result.route ? "Open" : result.markerEligible ? "View on map" : "Show places"}</span>
                   </>;
-                  if (String(result.id || "").endsWith("-portfolio")) {
-                    const params = new URLSearchParams({ mode, tab: "map", filter: activeFilter || "All", query, entityId: result.id });
-                    return <a key={result.id} data-search-result-id={result.id} href={`/map?${params.toString()}`}>{content}</a>;
+                  if (String(result.id || "").endsWith("-portfolio") || (resultEntityId && (result.markerEligible || result.linkedEntityId))) {
+                    const params = new URLSearchParams({
+                      mode,
+                      tab: "map",
+                      filter: activeFilter || "All",
+                      query,
+                      entityId: resultEntityId,
+                    });
+                    if (resolvedPerkId) params.set("perkId", resolvedPerkId);
+                    return <a key={result.id} role="option" aria-selected="false" data-search-result-id={result.id} href={`/map?${params.toString()}`}>{content}</a>;
                   }
-                  return <button key={result.id} type="button" data-search-result-id={result.id} onClick={() => onCatalogResultSelect?.(result)}>{content}</button>;
+                  return <button key={result.id} type="button" role="option" aria-selected="false" data-search-result-id={result.id} onClick={() => onCatalogResultSelect?.(result)}>{content}</button>;
                 })}
               </section>
             ))}
@@ -14434,10 +14470,13 @@ export default function MapPage() {
     const isMobileViewport = typeof window !== "undefined" && window.matchMedia?.("(max-width: 767px)")?.matches;
     const isEntityLookup = Boolean(activeEntityId);
     const isRouteLookup = Boolean(collection?.stopIds?.length);
+    const isDiscoverySearch = Boolean(normalizedQuery || intentOverride || urlState.intent || canonicalFilter !== "All");
     const defaultLimit = limit || (
       isRouteLookup ? collection.stopIds.length :
         isEntityLookup ? 6 :
-          isMobileViewport ? 8 : 15
+          isDiscoverySearch
+            ? isMobileViewport ? MAP_DISCOVERY_LIMITS.maxVisibleMobile : MAP_DISCOVERY_LIMITS.maxVisibleDesktop
+            : isMobileViewport ? MAP_DISCOVERY_LIMITS.mobile : MAP_DISCOVERY_LIMITS.desktop
     );
 
     return {
@@ -14575,7 +14614,17 @@ export default function MapPage() {
     const parsedIntents = Array.isArray(parsed.intents) ? parsed.intents : [];
     const isBroadPartnerIntent = urlState.mode === "partner" && parsedIntents.some((intent) => ["opportunity", "performance", "campaigns", "activation", "insights", "audience"].includes(intent));
     const isCivicLayerIntent = activeFilter === "Civic" || parsedIntents.includes("DAA_art_walk") || /\b(daa|dana|waterloo|art walk|public art|civic)\b/i.test(query);
+    const hasAuthoritativeScopedResults = Boolean(
+      scopedLastTrigger &&
+      scopedRequestStatus === "success" &&
+      scopedResultState.queryKey,
+    );
     return places.filter((place) => {
+      // Explicit searches and intent selections already return a governed,
+      // bounded result set. Treat that response as authoritative so a second
+      // pass over sparse pin metadata cannot remove relevant pins or reveal
+      // unrelated fallbacks.
+      if (hasAuthoritativeScopedResults) return true;
       if (!shouldSurfaceHospitalityChild(place, activeFilter, query)) return false;
       if (isSingleSelectSearchIntentFilter(activeFilter)) {
         if (urlState.collection && getCollectionFilter(urlState.collection) !== activeFilter) return false;
@@ -14593,7 +14642,7 @@ export default function MapPage() {
         (query.includes("perk") && hasActivePerkData(place))
       );
     });
-  }, [places, effectiveSearch, activeFilter, savedIds, urlState.mode, urlState.collection, urlState.intent]);
+  }, [places, effectiveSearch, activeFilter, savedIds, scopedLastTrigger, scopedRequestStatus, scopedResultState.queryKey, urlState.mode, urlState.collection, urlState.intent]);
 
   const neighborhoodCounts = useMemo(() => {
     return NEIGHBORHOODS.reduce((counts, neighborhood) => {
@@ -16347,11 +16396,19 @@ export default function MapPage() {
     const targetEntityId = result.entityId || result.linkedEntityId || result.id;
     if (targetEntityId && (result.markerEligible || result.linkedEntityId)) {
       const canonicalTargetId = resolveMapEntityAlias(targetEntityId);
+      const catalogEntity = catalogState?.entitiesById?.[result.id] || resolveMapEntityFromCollection(canonicalTargetId, places);
+      if (catalogEntity) {
+        const perkId = result.resultType === "perk" || hasActivePerkData(catalogEntity)
+          ? getCanonicalResidentPerkId(catalogEntity)
+          : "";
+        selectPlace(catalogEntity, { catalogResult: true, perkId });
+        return;
+      }
       navigateMapJourney({
         tab: "map",
         entityId: canonicalTargetId,
         listingId: "",
-        perkId: "",
+        perkId: result.resultType === "perk" ? result.perkId || result.id : "",
         drawerClosed: "",
       });
       return;
@@ -17793,6 +17850,7 @@ export default function MapPage() {
               activeFilter={activeFilter}
               activeCollection={urlState.collection}
               resultCount={mapPlaces.length}
+              visibleResultIds={mapPlaces.flatMap((place) => [place.id, place.entity_id, place.entityId]).filter(Boolean)}
               requestStatus={scopedRequestStatus}
               lastTrigger={scopedLastTrigger}
               catalogState={catalogState}

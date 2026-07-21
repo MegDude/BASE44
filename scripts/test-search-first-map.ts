@@ -95,6 +95,13 @@ assert.match(quickSearchSource, /searchCatalog\(cleanQuery, places, "resident"\)
 const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
 assert.match(mapSource, /searchScopedCatalog\(query, places, urlState\.mode\)/, "typed queries search the complete lightweight catalog without mounting markers");
 assert.match(mapSource, /entityId: canonicalTargetId/, "selecting a catalog result deep-links only that entity into the bounded resolver");
+assert.match(mapSource, /role="combobox"/, "the map search input exposes its dropdown relationship");
+assert.match(mapSource, /role="listbox"/, "typed matches render as an accessible dropdown list");
+assert.match(mapSource, /href=\{`\/map\?\$\{params\.toString\(\)\}`\}/, "each mappable dropdown match is a real map link");
+assert.match(mapSource, /hasResolvedMapScope[\s\S]{0,700}visibleMapResultIds\.has\(String\(id\)\)/, "resolved dropdown matches stay aligned with the pins visible on the map");
+assert.match(mapSource, /selectPlace\(catalogEntity, \{ catalogResult: true, perkId \}\)/, "selecting a dropdown match opens the resolved map entity and its perk");
+assert.match(mapSource, /hasAuthoritativeScopedResults[\s\S]{0,500}if \(hasAuthoritativeScopedResults\) return true;/, "resolved search pins are not removed by a second local text filter");
+assert.match(mapSource, /MAP_DISCOVERY_LIMITS\.maxVisibleMobile/, "explicit mobile searches request the complete governed mobile pin set");
 assert.doesNotMatch(
   mapSource,
   /Explore Downtown Austin[\s\S]{0,180}Search for a place, property, perk, event, business, building, or experience to begin/i,
