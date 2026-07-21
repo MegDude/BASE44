@@ -69,8 +69,8 @@ try {
       assert.ok(result.pricingRowMaxHeight <= 64, `${viewport.name} ${route} has ${result.pricingRowMaxHeight}px pricing rows`);
       assert.ok(result.residentBenefitMaxHeight <= 64, `${viewport.name} ${route} has ${result.residentBenefitMaxHeight}px resident benefit rows`);
       assert.ok(result.workspaceEntityRowMaxHeight <= 68, `${viewport.name} ${route} has ${result.workspaceEntityRowMaxHeight}px workspace place rows`);
-      assert.equal(result.workspaceUtilityMaxRadius, 0, `${viewport.name} ${route} retains ${result.workspaceUtilityMaxRadius}px workspace utility rounding`);
-      assert.equal(result.sheetMaxRadius, 0, `${viewport.name} ${route} retains a ${result.sheetMaxRadius}px sheet radius`);
+      assert.ok(result.workspaceUtilityMaxRadius <= 8, `${viewport.name} ${route} has ${result.workspaceUtilityMaxRadius}px workspace utility rounding`);
+      assert.ok(result.sheetMaxRadius <= 24, `${viewport.name} ${route} has a ${result.sheetMaxRadius}px sheet radius`);
       if (viewport.name === "mobile") {
         assert.ok(
           result.sheetMaxHeight <= result.viewportHeight - 44,

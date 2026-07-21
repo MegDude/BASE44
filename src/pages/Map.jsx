@@ -1656,11 +1656,11 @@ function getPartnerPanelCopy(place) {
   const insights = getPartnerBusinessInsights(place);
   const kind = getResidentEntityKind(place);
   const category = kind === "property" || kind === "rental"
-    ? "Residential intelligence"
+    ? "Residential opportunity"
     : isInKindPartner(place)
-      ? "Dining intelligence"
+      ? "Dining opportunity"
       : isCampaignEntity(place)
-        ? "Campaign intelligence"
+        ? "Campaign opportunity"
         : isBrandEntity(place)
           ? "Brand activation"
         : `${String(place?.category || place?.type || "Partner").replace(/[_-]/g, " ")} insight`;
@@ -3187,13 +3187,13 @@ function getEntityIdentity(place, mode = "resident") {
     return {
       id: place?.id,
       entityType: "parking",
-      displayTypeLabel: `Parking intelligence · ${district}`,
+      displayTypeLabel: `Parking opportunity · ${district}`,
       displayTitle: place?.name || "Parking opportunity",
       displaySubtitle: copy.value || "Parking people can reserve",
       displayContext: truncatePanelCopy(copy.description || context, 130),
       address,
       neighborhood: district,
-      categoryLabel: "Parking intelligence",
+      categoryLabel: "Parking opportunity",
       panelArchetype,
     };
   }
@@ -15234,13 +15234,13 @@ export default function MapPage() {
         role: "Marketing",
         screen: "Campaign read",
         job: "Turn high-intent searches into map-visible campaigns, offers, and routes.",
-        action: "Plan the next campaign around the strongest audience signal.",
+        action: "Plan the next campaign around the clearest audience interest.",
       },
       {
         role: "Content and SEO",
         screen: "Keyword read",
         job: "Protect branded visibility and improve useful Downtown Austin pages.",
-        action: "Update the page, listing, guide, schema, or internal links tied to the priority term.",
+        action: "Update the page, listing, guide, search details, or related links for the priority term.",
       },
       {
         role: "Workspace manager",
@@ -15345,7 +15345,7 @@ export default function MapPage() {
           <section className="dp-legends-opportunity-panel" aria-label="SEO next actions">
             <div>
               <span>What to do next</span>
-              <strong>Turn the search signal into work the team can actually ship.</strong>
+              <strong>Turn search interest into clear next steps.</strong>
               <p>Each row pairs an owner, a destination page, and the next update so the report becomes one practical action.</p>
             </div>
             <div className="dp-legends-opportunity-list">
@@ -15362,7 +15362,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-legends-seo-status" aria-label="SEO Snapshot sync status">
-            <strong>Source status</strong>
+            <strong>Source note</strong>
             <p>{seoReport.accessMethod.note}</p>
             <div>
               <button type="button" onClick={() => window.location.assign("/partner-workspace/overview")}>Open workspace report</button>
@@ -15387,7 +15387,7 @@ export default function MapPage() {
           <section className="dp-partner-readable-hero">
             <p className="dp-tab-eyebrow">Partner activity</p>
             <h2>Nearby activity, simplified.</h2>
-            <p>Open, save, scan, and use signals without the extra noise.</p>
+            <p>See what people open, save, scan, and use without the extra noise.</p>
           </section>
 
           <section className="dp-partner-summary-grid" aria-label="Activity summary">
@@ -15580,7 +15580,7 @@ export default function MapPage() {
               {[
                 ["Map placement", selectedPinCopy],
                 ["User action", tapAction],
-                ["Reporting signal", proofPoint],
+                ["What to measure", proofPoint],
               ].map(([label, copy]) => (
                 <article key={label}>
                   <span>{label}</span>
@@ -17426,7 +17426,7 @@ export default function MapPage() {
 
     const ownedProperties = [
       "position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width", "height", "min-height", "max-height",
-      "display", "grid-template-rows", "margin", "padding", "overflow", "border", "border-radius", "box-shadow", "z-index",
+      "display", "grid-template-rows", "margin", "padding", "overflow", "border", "border-radius", "background", "box-shadow", "z-index",
     ];
     const panelRail = node.querySelector(":scope > .dp-panel-toolbar, :scope > .dp-panel-header, :scope > .dp-map-panel-header, :scope > .dp-map-directory-toolbar");
     const panelBody = node.querySelector(":scope > .dp-panel-body, :scope > .dp-grouped-list, :scope > .dp-map-panel-scroll, :scope > .dp-map-directory-content");
@@ -17440,14 +17440,15 @@ export default function MapPage() {
     });
     // Canonical map detail sheets are governed entirely by the shared
     // stylesheet and state attributes. Do not recreate their geometry inline.
+    const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
     if (node.classList.contains("dp-map-detail-sheet")) {
       node.style.setProperty("border", "0", "important");
-      node.style.setProperty("border-radius", "0", "important");
-      node.style.setProperty("box-shadow", "none", "important");
+      node.style.setProperty("border-radius", isCompactViewport ? "24px 24px 0 0" : "24px 0 0 24px", "important");
+      node.style.setProperty("background", "#ffffff", "important");
+      node.style.setProperty("box-shadow", "var(--dp-ios-sheet-glow)", "important");
       return;
     }
     const isDetailPanel = node.dataset.panelLayout === "detail";
-    const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
     const detailHeight = "min(78dvh, calc(100dvh - 76px - env(safe-area-inset-bottom, 0px)))";
     const detailWidth = isCompactViewport ? "100dvw" : "min(760px, 100dvw)";
     const panelGeometry = {
@@ -17469,8 +17470,9 @@ export default function MapPage() {
       padding: "0",
       overflow: "hidden",
       border: "0",
-      "border-radius": "0",
-      "box-shadow": "none",
+      "border-radius": isDetailPanel ? (isCompactViewport ? "24px 24px 0 0" : "18px 18px 0 0") : "0",
+      background: "#ffffff",
+      "box-shadow": isDetailPanel ? "var(--dp-ios-sheet-glow)" : "none",
       "z-index": "1500",
     };
 
@@ -18163,7 +18165,7 @@ export default function MapPage() {
                   <p className="dp-map-directory-eyebrow">LEGENDS REAL ESTATE</p>
                   <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
                   <span className="dp-map-directory-subtitle">
-                    Active Legends inventory with building context, walkable demand, and nearby lifestyle signals for each address.
+                    Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
                   </span>
                   <strong className="dp-map-directory-count">
                     {legendsDirectoryPlaces.length || discoverDisplayPlaces.length} active listings

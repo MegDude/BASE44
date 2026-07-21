@@ -111,6 +111,7 @@ import "@/styles/partner-workspace-deep-polish-final.css"
 import "@/styles/interface-density-regression-lock.css"
 import "@/styles/legends-seo-snapshot-final.css"
 import "@/styles/surface-containment-final.css"
+import "@/styles/apple-native-surface-contract.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

@@ -107,7 +107,9 @@ export default function ActivePerksSheet({
         "max-width": isMobile ? "100dvw" : "760px",
         height: HEIGHT_BY_STATE[drawerState],
         margin: "0 auto",
-        "border-radius": "0",
+        "border-radius": isMobile ? "24px 24px 0 0" : "18px 18px 0 0",
+        background: "#ffffff",
+        "box-shadow": "var(--dp-ios-sheet-glow)",
       };
       Object.entries(properties).forEach(([property, value]) => node.style.setProperty(property, value, "important"));
     };

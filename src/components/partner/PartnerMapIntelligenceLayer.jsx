@@ -51,22 +51,22 @@ const STORY_BY_KIND = {
     body: "Public moments, district activity, and event interest become easier to see while people are already exploring downtown.",
   },
   brand: {
-    eyebrow: "Campaign intelligence",
+    eyebrow: "Campaign results",
     headline: "See what worked downtown.",
     body: "Placements, QR scans, resident saves, and redemptions become visible by location and moment.",
   },
   hotel: {
-    eyebrow: "Guest intelligence",
+    eyebrow: "Guest activity",
     headline: "See what guests used nearby.",
     body: "Lobby access, saved plans, RSVPs, and local recommendations become clearer across the stay.",
   },
   property: {
-    eyebrow: "Resident intelligence",
+    eyebrow: "Resident activity",
     headline: "See how residents use downtown.",
     body: "Building scans, saved places, nearby perks, and event activity show which parts of the neighborhood are working.",
   },
   venue: {
-    eyebrow: "Venue intelligence",
+    eyebrow: "Venue activity",
     headline: "See nearby demand in motion.",
     body: "Offers, walkable searches, saves, visits, and redemptions show up in the same context people use to decide.",
   },

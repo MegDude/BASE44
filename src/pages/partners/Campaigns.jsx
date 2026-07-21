@@ -500,7 +500,7 @@ export default function CampaignsPage() {
           <div className="dp-campaign-preview-head">
             <div>
               <p className="dp-campaigns-eyebrow">Map layer</p>
-              <h2>Campaign signal</h2>
+              <h2>Campaign opportunity</h2>
             </div>
             <Link to={mapHref}><MapPin size={14} /> Open map</Link>
           </div>
@@ -545,7 +545,7 @@ export default function CampaignsPage() {
           </section>
 
           <section className="dp-campaigns-section dp-campaign-goals" aria-label="Performance goals">
-            <h2>Measured campaign signals</h2>
+            <h2>Campaign results</h2>
             <p>These totals come from map-native campaign records that already have analytics attached.</p>
             <dl className="dp-campaign-signal-strip">
               {measuredSignalRows.map(([label, value]) => (

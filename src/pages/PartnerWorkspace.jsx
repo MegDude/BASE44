@@ -914,7 +914,7 @@ const DOWNTOWN_AUSTIN_REPORT_CONTEXT = [
   },
   {
     value: "890+",
-    label: "hotel rooms in the pipeline",
+    label: "hotel rooms planned",
     detail: "Hotel rooms in downtown projects reported under construction at the end of Q1 2025.",
     source: "Downtown Austin Alliance annual report",
     href: "https://downtownaustin.com/annual-report-2025/",
@@ -998,7 +998,7 @@ function WorkspaceReports() {
           <p className="dp-workspace-report-label">SEO Snapshot</p>
           <h1>See what is working and what to do next.</h1>
           <p>
-            Results for {organization?.name || "this workspace"}, separated from broader downtown signals so every recommendation has a clear source.
+            Results for {organization?.name || "this workspace"}, shown separately from broader downtown trends so every recommendation has a clear source.
           </p>
         </div>
         <div className="dp-report-hero-actions">
@@ -1084,7 +1084,7 @@ function WorkspaceReports() {
 
       <section className="dp-report-austin" aria-labelledby="austin-context-title">
         <div className="dp-report-section-heading">
-          <div><p>Downtown Austin context</p><h2 id="austin-context-title">External signals that should change the plan.</h2></div>
+          <div><p>Downtown Austin context</p><h2 id="austin-context-title">Local trends that should shape the plan.</h2></div>
           <span>Downtown Austin Alliance sources</span>
         </div>
         <div className="dp-report-austin-grid">
@@ -1105,7 +1105,7 @@ function WorkspaceReports() {
 
       <footer className="dp-report-method">
         <strong>How this report is built</strong>
-        <p>Partner metrics come from the named workspace source. Downtown context is displayed separately and dated by its publisher. Recommendations combine those signals but do not present inferred actions as measured results.</p>
+        <p>Workspace results and dated Downtown Austin context are shown separately. Recommendations use both, while measured results remain clearly labeled.</p>
         <a href="https://downtownaustin.com/what-we-do/research/state-of-downtown/" target="_blank" rel="noreferrer">Review State of Downtown sources</a>
       </footer>
     </motion.section>
@@ -1189,7 +1189,7 @@ function WorkspaceAgent({ user }) {
       ? "OpenAI map agent"
       : response?.source === "local-agent"
         ? "Current map context"
-        : "Downtown Perks map intelligence";
+        : "Downtown Perks map activity";
 
   return (
     <motion.section className="dp-workspace-agent" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>

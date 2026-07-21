@@ -34,12 +34,16 @@ const governedPostCanonicalLocks = [
   'import "@/styles/interface-density-regression-lock.css"',
   'import "@/styles/legends-seo-snapshot-final.css"',
   'import "@/styles/surface-containment-final.css"',
+  'import "@/styles/apple-native-surface-contract.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);
 const importsAfterCanonical = stylesheetImports.slice(canonicalIndex + 1);
 if (importsAfterCanonical.some((stylesheetImport) => !governedPostCanonicalLocks.includes(stylesheetImport))) {
   throw new Error("Only governed map and accessibility locks may follow the canonical surface system");
+}
+if (importsAfterCanonical.at(-1) !== 'import "@/styles/apple-native-surface-contract.css"') {
+  throw new Error("Apple-native surface contract must remain the final stylesheet");
 }
 
 for (const selector of [

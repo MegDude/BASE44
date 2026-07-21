@@ -1,0 +1,288 @@
+/*
+ * Final Downtown Perks surface contract.
+ * Keep this import last: outer overlays may carry depth; their content stays
+ * bright, continuous, and unboxed.
+ */
+
+:root {
+  --dp-ios-white: #ffffff;
+  --dp-ios-ink: #0b1f33;
+  --dp-ios-muted: rgba(11, 31, 51, 0.64);
+  --dp-ios-divider: rgba(11, 31, 51, 0.09);
+  --dp-ios-gold: #c8a96a;
+  --dp-ios-control-radius: 8px;
+  --dp-ios-card-radius: 10px;
+  --dp-ios-sheet-radius: 24px;
+  --dp-ios-sheet-glow:
+    0 18px 48px rgba(11, 31, 51, 0.09),
+    0 0 26px rgba(200, 169, 106, 0.045);
+}
+
+html,
+body,
+#root,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(
+  .dp-map-page,
+  .dp-partner-workspace-page,
+  .dp-resident-home,
+  .dp-resident-access-page,
+  .dp-pricing-page,
+  .dp-analytics-page,
+  .dp-admin-page
+) {
+  background: var(--dp-ios-white) !important;
+  color: var(--dp-ios-ink);
+}
+
+/* Only the outer application-owned overlay carries elevation. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-drawer-shell,
+  .dp-map-detail-sheet,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-drawer-panel,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-pass-panel,
+  .dp-native-sheet,
+  .dp-workspace-sheet,
+  .dp-workspace-search-sheet,
+  .dp-quick-search-modal,
+  [data-mobile-panel-surface="true"]
+) {
+  border: 0 !important;
+  border-radius: var(--dp-ios-sheet-radius) var(--dp-ios-sheet-radius) 0 0 !important;
+  background: var(--dp-ios-white) !important;
+  background-image: none !important;
+  box-shadow: var(--dp-ios-sheet-glow) !important;
+  color: var(--dp-ios-ink) !important;
+}
+
+/* A sheet is already the surface. Content inside it must not become a stack
+ * of competing boxes. */
+html body #root :is(
+  .dp-panel-shell,
+  .dp-map-detail-sheet,
+  .dp-mobile-tab-drawer,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-workspace-sheet
+) :is(
+  .dp-info-section,
+  .dp-partner-readable-panel,
+  .dp-tab-stack > section,
+  .dp-native-mobile-section,
+  .dp-workspace-section,
+  .dp-analytics-section,
+  .dp-summary-section,
+  .dp-metric-section
+) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Tables, rows, and list items never glow or float. Fine dividers provide the
+ * hierarchy without creating a card around each item. */
+html body #root :is(
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  th,
+  td,
+  .dp-info-row,
+  .dp-panel-row,
+  .dp-entity-row,
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-analytics-row,
+  .dp-report-row,
+  .dp-keyword-row,
+  .dp-legends-keyword-row,
+  .dp-seo-user-journey-row
+) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body #root :is(
+  .dp-info-row,
+  .dp-panel-row,
+  .dp-entity-row,
+  .dp-directory-result-row,
+  .dp-grouped-row,
+  .dp-analytics-row,
+  .dp-report-row,
+  .dp-keyword-row,
+  .dp-legends-keyword-row,
+  .dp-seo-user-journey-row
+) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-ios-divider) !important;
+}
+
+/* Tabs and controls are compact, softly squared, and never capsules. */
+html body #root :is(
+  .dp-map-page,
+  .dp-partner-workspace-page,
+  .dp-resident-home,
+  .dp-resident-access-page,
+  .dp-analytics-page,
+  .dp-admin-page
+) :is(
+  .dp-panel-action,
+  .dp-entity-action,
+  .dp-map-panel-button,
+  .dp-native-detail-panel__save,
+  .dp-native-detail-panel__primary,
+  [role="tab"],
+  input,
+  select,
+  textarea
+) {
+  border-radius: var(--dp-ios-control-radius) !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-map-page,
+  .dp-partner-workspace-page,
+  .dp-resident-home,
+  .dp-resident-access-page,
+  .dp-analytics-page,
+  .dp-admin-page
+) :is(
+  .dp-chip,
+  .dp-tag,
+  .dp-badge,
+  [class*="-chip"],
+  [class*="-badge"]
+) {
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-map-bottom-nav,
+  .dp-filter-tabs,
+  .dp-segmented-control,
+  .dp-workspace-experiences__tabs,
+  .dp-search-intent-switch,
+  .dp-partner-native-tabs,
+  [role="tablist"]
+) {
+  border-radius: 0 !important;
+  background-color: var(--dp-ios-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Media fills the space assigned by its layout. No extra card, frame, glow,
+ * padding, or colored block is allowed around the image. */
+html body #root :is(
+  .dp-map-page,
+  .dp-partner-workspace-page,
+  .dp-resident-home,
+  .dp-analytics-page
+) :is(
+  .dp-panel-media,
+  .dp-hero-media,
+  .dp-rail-media,
+  .dp-nearby-image-media,
+  .dp-entity-media,
+  .dp-listing-media,
+  figure
+) {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root :is(
+  .dp-panel-media,
+  .dp-hero-media,
+  .dp-rail-media,
+  .dp-nearby-image-media,
+  .dp-entity-media,
+  .dp-listing-media
+) > :is(img, picture, video),
+html body #root :is(
+  .dp-panel-media,
+  .dp-hero-media,
+  .dp-rail-media,
+  .dp-nearby-image-media,
+  .dp-entity-media,
+  .dp-listing-media
+) > picture > img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: cover !important;
+}
+
+/* Copy and navigation chrome stay crisp over the continuous white plane. */
+html body #root :is(
+  .dp-panel-header,
+  .dp-map-panel-header,
+  .dp-map-detail-header,
+  .dp-mobile-tab-header,
+  .dp-active-perks-header,
+  .dp-workspace-sheet-header
+) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-ios-divider) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(
+    .dp-map-detail-sheet,
+    .dp-detail-drawer,
+    .dp-destination-drawer,
+    .dp-map-drawer-panel
+  ) {
+    border-radius: var(--dp-ios-sheet-radius) 0 0 var(--dp-ios-sheet-radius) !important;
+  }
+
+  html body #root :is(
+    .dp-workspace-sheet,
+    .dp-workspace-search-sheet,
+    .dp-quick-search-modal
+  ) {
+    border-radius: 18px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root :is(
+    .dp-panel-shell,
+    .dp-map-detail-sheet,
+    .dp-mobile-tab-drawer,
+    .dp-bottom-sheet,
+    .dp-workspace-sheet
+  ) {
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
