@@ -68,6 +68,7 @@
     "test:partner-panel-content": "node scripts/test-partner-panel-content.mjs",
     "test:resident-native-mobile": "node scripts/test-resident-native-mobile.mjs",
     "test:resident-home-surface": "node scripts/test-resident-home-white-surface.mjs",
+    "test:resident-live-activity": "node scripts/test-resident-live-activity.mjs",
     "test:shared-overlay-surface": "node scripts/test-shared-overlay-white-surface.mjs",
     "test:first-party-auth": "tsx scripts/test-first-party-auth.ts",
     "test:resident-membership": "node scripts/test-resident-membership-contract.mjs",

@@ -1666,6 +1666,16 @@ html body #root#root#root#root .dp-resident-live-activity em {
   white-space: nowrap !important;
 }
 
+html body #root#root#root#root .dp-resident-live-activity__state {
+  margin: 0 !important;
+  padding: 12px 0 !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  background: transparent !important;
+  color: rgba(11,31,51,.62) !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+
 html body #root#root#root#root .dp-resident-hero-card.dp-resident-hero-card {
   display: grid !important;
   overflow: hidden !important;

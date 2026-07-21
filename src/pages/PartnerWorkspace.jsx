@@ -37,6 +37,12 @@ import {
   withPartnerWorkspaceScope,
   writePartnerWorkspaceScope,
 } from "@/lib/partnerWorkspaceContext";
+import {
+  createPublishedWorkspaceItem,
+  deletePublishedWorkspaceItem,
+  listPublishedWorkspaceItems,
+  updatePublishedWorkspaceItem,
+} from "@/lib/partner/publishedContentClient";
 
 const WORKSPACE_MEDIA_TABS = ["media"];
 
@@ -522,6 +528,10 @@ function mergeWorkspaceItems(remoteItems = [], localItems = []) {
 
 async function listWorkspaceItems(entityName, kind, email) {
   const localItems = getStoredItems(kind, email);
+  if (kind === "perks" || kind === "events") {
+    const publishedItems = await listPublishedWorkspaceItems(kind).catch(() => null);
+    if (publishedItems) return mergeWorkspaceItems(publishedItems, localItems);
+  }
   try {
     const remoteItems = await base44.entities[entityName].filter({ created_by: email });
     return mergeWorkspaceItems(remoteItems || [], localItems);
@@ -532,6 +542,10 @@ async function listWorkspaceItems(entityName, kind, email) {
 
 async function createWorkspaceItem(entityName, kind, email, payload) {
   const enriched = normalizeWorkspaceItem(payload, email);
+  if (kind === "perks" || kind === "events") {
+    const publishedItem = await createPublishedWorkspaceItem(kind, payload);
+    if (publishedItem) return normalizeWorkspaceItem(publishedItem, email);
+  }
   try {
     const remoteItem = await base44.entities[entityName].create({
       ...payload,
@@ -563,6 +577,11 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
     return localPendingUpdate;
   }
 
+  if (kind === "perks" || kind === "events") {
+    const publishedItem = await updatePublishedWorkspaceItem(kind, id, payload);
+    if (publishedItem) return normalizeWorkspaceItem(publishedItem, email);
+  }
+
   try {
     const remoteItem = await base44.entities[entityName].update(id, payload);
     return normalizeWorkspaceItem(remoteItem || localUpdate, email);
@@ -579,6 +598,13 @@ async function updateWorkspaceItem(entityName, kind, email, id, payload) {
 
 async function deleteWorkspaceItem(entityName, kind, email, id) {
   if (id && !String(id).startsWith("local-")) {
+    if (kind === "perks" || kind === "events") {
+      const publishedItem = await deletePublishedWorkspaceItem(kind, id);
+      if (publishedItem) {
+        setStoredItems(kind, email, getStoredItems(kind, email).filter((item) => item.id !== id));
+        return;
+      }
+    }
     try {
       await base44.entities[entityName].delete(id);
     } catch {

@@ -6,6 +6,10 @@ import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 import { useAuth } from "@/lib/AuthContext";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
+import {
+  getResidentLiveActivity,
+  type ResidentLiveActivityItem,
+} from "@/lib/resident/liveActivity";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 
@@ -41,12 +45,6 @@ const experienceCollections = [
   { title: "Meet new friends", detail: "Social events, group activities and casual places", href: "/map?mode=resident&tab=events&filter=Events&query=events%20to%20meet%20new%20friends&intent=events" },
   { title: "Campaigns and pop-ups", detail: "Limited-time brand and partner experiences", href: "/map?mode=resident&tab=map&filter=Campaigns&query=campaigns%20pop-ups%20and%20brand%20activations" },
   { title: "Shared amenities", detail: "One participating building at a time", href: "/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access&intent=explore_downtown" },
-] as const;
-
-const liveActivity = [
-  { place: "Hotel Van Zandt", action: "Happy hour", status: "Started 5 mins ago", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-hotel-van-zandt" },
-  { place: "Waterloo Greenway", action: "Concert", status: "Starts at 7 PM", href: "/map?mode=resident&tab=events&filter=Events&collection=waterloo-greenway" },
-  { place: "Fairmont Austin", action: "Pool access", status: "Available today", href: "/map?mode=resident&tab=perks&filter=Perks&entityId=partner-fairmont-austin" },
 ] as const;
 
 type HomePanel = "home" | "perks" | "card" | "profile";
@@ -220,7 +218,22 @@ export default function ResidentHome() {
   const { isAuthenticated, isLoadingAuth } = useAuth();
   const savedIds = useSavedStore((state) => state.savedIds);
   const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
+  const [liveActivity, setLiveActivity] = useState<ResidentLiveActivityItem[]>([]);
+  const [liveActivityStatus, setLiveActivityStatus] = useState<"loading" | "ready" | "empty" | "unavailable">("loading");
   useSavedEntitiesRealtime();
+
+  useEffect(() => {
+    const controller = new AbortController();
+    getResidentLiveActivity(controller.signal)
+      .then((response) => {
+        setLiveActivity(response.items);
+        setLiveActivityStatus(response.status);
+      })
+      .catch((error) => {
+        if (error?.name !== "AbortError") setLiveActivityStatus("unavailable");
+      });
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     function syncResidentState() {
@@ -424,15 +437,18 @@ export default function ResidentHome() {
           </section>
 
           <section className="dp-resident-home__section dp-resident-live-activity" aria-labelledby="live-activity-title">
-            <div className="dp-resident-section-title"><h2 id="live-activity-title">Live activity</h2></div>
-            <div>
+            <div className="dp-resident-section-title"><h2 id="live-activity-title">Live activity</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=events&filter=All">Open map</Link></div>
+            {liveActivityStatus === "loading" ? <p className="dp-resident-live-activity__state" role="status">Checking what is happening downtown.</p> : null}
+            {liveActivityStatus === "empty" ? <p className="dp-resident-live-activity__state">Nothing new has been published right now. Check the map for places and plans nearby.</p> : null}
+            {liveActivityStatus === "unavailable" ? <p className="dp-resident-live-activity__state" role="status">Live updates are taking a moment. The map is still ready to explore.</p> : null}
+            {liveActivity.length ? <div>
               {liveActivity.map((item) => (
-                <Link key={item.place} to={item.href}>
+                <Link key={item.id} to={item.href}>
                   <span><strong>{item.place}</strong><small>{item.action}</small></span>
                   <em>{item.status}</em>
                 </Link>
               ))}
-            </div>
+            </div> : null}
           </section>
 
           <section className="dp-resident-home__section" aria-labelledby="nearby-categories">
