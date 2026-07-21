@@ -86,6 +86,21 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   stroke-width: 1.8 !important;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-command-nav .dp-resident-header-back {
+  display: inline-flex !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  padding: 0 4px !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font: 620 12px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-command-nav .dp-resident-header-back svg {
+  width: 15px !important;
+  height: 15px !important;
+  stroke-width: 1.8 !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-home__panel.dp-resident-home__panel {
   box-sizing: border-box !important;
   width: min(100%,720px) !important;

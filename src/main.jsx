@@ -49,8 +49,6 @@ import "@/styles/partner-integration-logo-grid-final.css"
 
 import "@/styles/partner-register-unified-final.css"
 
-import "@/styles/global-back-control-final.css"
-
 import "@/styles/resident-home-native-panels-final.css"
 
 import "@/styles/resident-home-saved-preview-final.css"
@@ -121,6 +119,7 @@ import "@/styles/resident-qr-modal-final.css"
 import "@/styles/partner-workspace-journeys-final.css"
 import "@/styles/resident-home-ios-native-final.css"
 import "@/styles/active-perks-sheet.css"
+import "@/styles/global-back-control-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

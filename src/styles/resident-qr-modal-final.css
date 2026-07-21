@@ -90,7 +90,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 0 !important;
   background: transparent !important;
   color: #0b1f33 !important;
   box-shadow: none !important;
@@ -118,9 +118,9 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-header :is(.dp-resident-qr-back, .dp-resident-qr-close) svg {
   position: relative !important;
   z-index: 1 !important;
-  width: 19px !important;
-  height: 19px !important;
-  stroke-width: 2 !important;
+  width: 15px !important;
+  height: 15px !important;
+  stroke-width: 1.8 !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-content-viewport {

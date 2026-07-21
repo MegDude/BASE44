@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const layout = readFileSync(new URL("../src/components/Layout.jsx", import.meta.url), "utf8");
+const main = readFileSync(new URL("../src/main.jsx", import.meta.url), "utf8");
 const residentHome = readFileSync(new URL("../src/pages/ResidentHome.tsx", import.meta.url), "utf8");
 const backStyles = readFileSync(new URL("../src/styles/global-back-control-final.css", import.meta.url), "utf8");
 const surfaceStyles = readFileSync(new URL("../src/styles/borderless-panel-content-final.css", import.meta.url), "utf8");
+const mapDrawerStyles = readFileSync(new URL("../src/styles/map-drawer-containment-final.css", import.meta.url), "utf8");
+const qrStyles = readFileSync(new URL("../src/styles/resident-qr-modal-final.css", import.meta.url), "utf8");
 
 assert.match(layout, /pageOwnsBackNavigation/, "Layout does not detect contextual Back controls");
 assert.match(layout, /MutationObserver/, "Layout does not respond when contextual navigation changes");
@@ -24,7 +27,18 @@ assert.doesNotMatch(residentHome, />Done<|>Done<\/button>/, "The vague Done acti
 
 assert.match(backStyles, /\.dp-layout-back/, "Shared Back control styling is missing");
 assert.match(backStyles, /min-height:\s*44px/, "Shared Back control does not keep an accessible target");
+assert.match(backStyles, /font-size:\s*12px\s*!important/, "Shared Back label is not visually compact");
+assert.match(backStyles, /width:\s*15px\s*!important[\s\S]*height:\s*15px\s*!important/, "Shared Back icon is oversized");
+const styleImports = [...main.matchAll(/import\s+"@\/styles\/[^"]+"/g)];
+assert.equal(
+  styleImports.at(-1)?.[0],
+  'import "@/styles/global-back-control-final.css"',
+  "Shared Back control contract must be the final stylesheet import",
+);
 assert.match(surfaceStyles, /\.dp-resident-header-back/, "Resident Back polish is missing from the final surface lock");
 assert.match(surfaceStyles, /border-radius:\s*0\s*!important/, "Resident Back action can regress to a pill");
+assert.match(mapDrawerStyles, /:is\(\.dp-panel-back, \.dp-panel-close\)[\s\S]*width:\s*44px\s*!important/, "Map drawer Back control lost its 44px target");
+assert.match(mapDrawerStyles, /:is\(\.dp-panel-back, \.dp-panel-close\)[\s\S]*border-radius:\s*0\s*!important/, "Map drawer Back control can regress to a rounded block");
+assert.match(qrStyles, /:is\(\.dp-resident-qr-back, \.dp-resident-qr-close\) svg[\s\S]*width:\s*15px\s*!important/, "Resident pass Back icon is oversized");
 
 console.log("Global and resident Back navigation contracts passed.");

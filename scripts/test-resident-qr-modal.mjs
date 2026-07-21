@@ -26,7 +26,7 @@ for (const prohibited of [/#f5efe3/i, /#f7f1e7/i, /\bbeige\b/i, /\bwheat\b/i, /\
 
 assert.match(styles, /\.dp-resident-qr-modal[\s\S]*background:\s*#ffffff\s*!important/i);
 assert.match(styles, /:is\(\.dp-resident-qr-back, \.dp-resident-qr-close\)[\s\S]*width:\s*40px\s*!important[\s\S]*height:\s*40px\s*!important/);
-assert.match(styles, /:is\(\.dp-resident-qr-back, \.dp-resident-qr-close\) svg[\s\S]*width:\s*19px\s*!important[\s\S]*height:\s*19px\s*!important/);
+assert.match(styles, /:is\(\.dp-resident-qr-back, \.dp-resident-qr-close\) svg[\s\S]*width:\s*15px\s*!important[\s\S]*height:\s*15px\s*!important/);
 assert.match(styles, /\.dp-resident-qr-status\.is-ready[\s\S]*color:\s*#0b5c3e\s*!important/i);
 assert.match(styles, /\.dp-resident-qr-frame[\s\S]*width:\s*min\(100%, 284px\)\s*!important[\s\S]*background:\s*#ffffff\s*!important/i);
 assert.match(styles, /\.dp-resident-qr-content[\s\S]*background:\s*#ffffff\s*!important/i);
