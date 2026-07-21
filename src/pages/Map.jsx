@@ -23,6 +23,7 @@ import {
   Gift,
   Heart,
   HeartPulse,
+  House,
   BadgePercent,
   Info,
   Landmark,
@@ -31,7 +32,6 @@ import {
   Moon,
   Music2,
   Navigation,
-  UserRound,
   Route,
   ScanLine,
   Search,
@@ -17987,6 +17987,16 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
+                  aria-label="Home"
+                  onClick={() => navigate("/resident/home")}
+                  aria-selected={false}
+                >
+                  <House className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Home</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
                   aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
@@ -18040,10 +18050,6 @@ export default function MapPage() {
                 <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
                   <CreditCard className="h-4 w-4" />
                   <span className="dp-native-tab-label">Card</span>
-                </button>
-                <button type="button" role="tab" aria-label="Profile" onClick={() => navigate("/resident/home?panel=profile")} aria-selected={false}>
-                  <UserRound className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Profile</span>
                 </button>
               </>
             )}

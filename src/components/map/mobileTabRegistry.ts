@@ -13,11 +13,11 @@ export type MobileTabDefinition = {
 };
 
 export const residentMobileTabs: readonly MobileTabDefinition[] = [
+  { id: "home", label: "Home", purpose: "See what matters now and open the right resident action.", route: "/resident/home", emptyTitle: "Your nearby plans, saved places, and resident access appear here.", emptyAction: "Open map", analyticsEvent: "resident_home_open", sections: ["Today nearby", "Ask Downtown", "Resident card", "Saved places", "Upcoming events", "Walking routes"] },
   { id: "map", label: "Map", purpose: "Discovery and decisions in geographic context.", route: "/map?mode=resident&tab=map&filter=All", emptyTitle: "Move the map or choose a category to explore downtown.", emptyAction: "Reset filters", analyticsEvent: "resident_map_open", sections: ["Current search intent", "Active filters", "Nearby categories", "Walking routes", "Recent searches", "Current district", "Map legend"] },
   { id: "perks", label: "Perks", purpose: "Discover and use verified resident benefits.", route: "/map?mode=resident&tab=perks&filter=Perks", emptyTitle: "No active perks match these filters.", emptyAction: "Try another category", analyticsEvent: "resident_perks_open", sections: ["Featured perk", "Available now", "Near me", "Resident-only", "Building-specific", "Dining", "Wellness", "Shopping", "Hotels", "Expiring soon", "Recently used"] },
   { id: "events", label: "Events", purpose: "Decide what to attend and act quickly.", route: "/map?mode=resident&tab=events&filter=Events", emptyTitle: "Nothing is scheduled nearby for this date.", emptyAction: "Choose another date", analyticsEvent: "resident_events_open", sections: ["Happening today", "Starting soon", "This weekend", "Nearby", "Resident events", "Music", "Food and drink", "Culture", "Wellness", "Civic", "Saved events"] },
   { id: "card", label: "Card", purpose: "Show verified resident access and a secure QR when a participating place asks.", route: "/map?mode=resident&tab=pass", emptyTitle: "Sign in or create an account to prepare your resident card.", emptyAction: "Create account", analyticsEvent: "resident_card_open", sections: ["Resident status", "QR", "Building access", "Current benefits"] },
-  { id: "profile", label: "Profile", purpose: "Keep membership, building, contact details, preferences, and saved places together.", route: "/resident/home?panel=profile", emptyTitle: "Create an account to connect your building and preferences.", emptyAction: "Create account", analyticsEvent: "resident_profile_open", sections: ["Membership", "Building", "Contact details", "Preferences", "Saved places"] },
 ] as const;
 
 export const partnerMobileTabs: readonly MobileTabDefinition[] = [
@@ -41,7 +41,7 @@ export function getMobileTab(mode: MapAudienceMode, id: string) {
 export function normalizeMobileTab(mode: MapAudienceMode, tab?: string | null, panel?: string | null) {
   const requested = panel || tab || "map";
   const aliases: Record<string, string> = mode === "resident"
-    ? { home: "profile", info: "profile", pass: "card", saved: "profile" }
+    ? { info: "home", pass: "card", profile: "home", saved: "home" }
     : { overview: "info", campaigns: "publish", perks: "publish", offers: "publish", events: "publish", audience: "performance", reports: "performance", analytics: "performance", insights: "performance" };
   const canonical = aliases[requested] || requested;
   return getMobileTab(mode, canonical).id;

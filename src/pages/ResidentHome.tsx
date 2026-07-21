@@ -188,7 +188,7 @@ export default function ResidentHome() {
     navigate("/map?mode=resident&tab=map&filter=All");
   }
 
-  const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : panel === "profile" ? "profile" : "home";
+  const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : "home";
   const firstName = resident?.fullName?.trim()?.split(/\s+/)[0] || "";
   const greeting = `${greetingForNow()}${firstName ? `, ${firstName}` : ""}.`;
 

@@ -14,7 +14,7 @@ await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", tim
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
 const labels = await page.locator(".dp-resident-native-tabs :is(a,button)").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Card|Profile") {
+if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
 
@@ -42,7 +42,17 @@ const coffeeHref = await page.getByRole("link", { name: "Coffee", exact: true })
 if (coffeeHref !== "/map?mode=resident&tab=map&filter=Coffee") throw new Error(`Unexpected Coffee route: ${coffeeHref}`);
 await page.goto(`${baseUrl}${coffeeHref}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("filter") === "Coffee", { timeout: 15_000 });
+await page.waitForSelector(".dp-map-bottom-nav", { state: "visible", timeout: 15_000 });
+
+const mapLabels = await page.locator(".dp-map-bottom-nav [role='tab']").allTextContents();
+if (mapLabels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+  throw new Error(`Unexpected resident map tabs: ${mapLabels.join(", ")}`);
+}
+
+await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Home" }).click();
+await page.waitForURL((url) => url.pathname === "/resident/home", { timeout: 15_000 });
+await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
-console.log("resident native mobile: five tabs, calm Home, no overflow, Coffee opens canonical map intent");
+console.log("resident native mobile: five canonical tabs, calm Home, no overflow, and Map returns to Home");
 await browser.close();
