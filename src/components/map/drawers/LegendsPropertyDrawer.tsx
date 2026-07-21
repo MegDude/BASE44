@@ -1,4 +1,5 @@
 import type { LegendsProperty } from "@/data/legendsPropertyContent";
+import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
 type DrawerState = "peek" | "half" | "expanded";
 
@@ -38,7 +39,7 @@ export function LegendsPropertyPanel({
         <button type="button" onClick={() => onDrawerStateChange(drawerState === "peek" ? "half" : "peek")}>Collapse</button>
         <button type="button" onClick={onClose}>Close</button>
       </div>
-      <img src={property.imageAsset} alt={property.buildingName} className="dp-legends-property-hero" loading="lazy" decoding="async" />
+      <img src={property.imageAsset} alt={property.buildingName} className="dp-legends-property-hero" loading="eager" decoding="async" onError={handlePanelMediaError} />
       <p className="dp-legends-property-meta">Residential · {property.neighborhood}</p>
       <h2>{property.buildingName}</h2>
       <p className="dp-legends-property-address">{property.address}</p>

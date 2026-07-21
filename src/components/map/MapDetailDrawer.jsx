@@ -12,6 +12,7 @@ import WhyThisChip from './WhyThisChip';
 import { trackingEvents } from '@/lib/analytics/track';
 import { useResidentStore } from '@/store/resident-store';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
+import { handlePanelMediaError } from '@/lib/map/panelMediaPresentation';
 
 export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
@@ -79,7 +80,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
       <div className="flex-1 overflow-y-auto">
         <div className="relative flex aspect-[16/7] w-full items-center justify-center overflow-hidden bg-[#F7F8FB]">
           {heroImage ? (
-            <img src={heroImage} alt={heroAlt} className="h-full w-full object-cover" loading="eager" decoding="async" />
+            <img src={heroImage} alt={heroAlt} className="h-full w-full object-cover" loading="eager" decoding="async" onError={handlePanelMediaError} />
           ) : (
             <>
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(191,164,106,0.08),transparent_60%),radial-gradient(ellipse_at_80%_70%,rgba(11,31,51,0.05),transparent_50%)]" />

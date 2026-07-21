@@ -1,11 +1,12 @@
 import { Bookmark, Check, ChevronRight } from "lucide-react";
 import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
+import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
 function DetailHero({ media }) {
   if (!media?.src) return null;
   return (
     <figure className="dp-native-detail-panel__hero">
-      <img src={media.src} alt={media.alt || ""} decoding="async" />
+      <img src={media.src} alt={media.alt || ""} loading="eager" decoding="async" onError={handlePanelMediaError} />
       {media.caption ? <figcaption>{media.caption}</figcaption> : null}
     </figure>
   );
@@ -43,7 +44,7 @@ function DetailSection({ section, onRelatedSelect, onAnalytics }) {
         >
           {section.items.map((item) => {
             const content = <>
-              {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : null}
+              {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" onError={handlePanelMediaError} /> : null}
               <span><strong>{item.title}</strong><small>{item.meta}</small>{item.detail ? <em>{item.detail}</em> : null}</span>
               <ChevronRight aria-hidden="true" />
             </>;

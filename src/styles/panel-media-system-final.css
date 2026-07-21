@@ -1,0 +1,188 @@
+/*
+ * Canonical panel media contract
+ * Images and video sit directly on bright-white product surfaces. The wrapper
+ * owns the crop and corner treatment so inner elements cannot create seams.
+ */
+
+html body #root .dp-map-page :is(
+  .dp-destination-hero-media,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-entity-hero-image,
+  .dp-native-detail-panel__hero,
+  .dp-partner-drawer-media,
+  .dp-route-hero,
+  .dp-legends-property-hero
+) {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  transform: translateZ(0);
+}
+
+html body #root .dp-map-page :is(
+  .dp-destination-hero-media,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-entity-hero-image,
+  .dp-native-detail-panel__hero,
+  .dp-partner-drawer-media
+) {
+  aspect-ratio: 16 / 9 !important;
+  max-height: 320px !important;
+  border-radius: 12px !important;
+}
+
+html body #root .dp-map-page .dp-route-hero {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page .dp-route-hero > :is(img, picture, video) {
+  aspect-ratio: 16 / 9 !important;
+  max-height: 320px !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-destination-hero-media,
+  .dp-destination-media,
+  .dp-polished-panel-hero,
+  .dp-entity-hero-image,
+  .dp-native-detail-panel__hero,
+  .dp-partner-drawer-media,
+  .dp-route-hero,
+  .dp-legends-property-hero
+) > :is(img, picture, video),
+html body #root .dp-map-page img.dp-legends-property-hero {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: inherit !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  vertical-align: middle !important;
+}
+
+/* Compact media uses one crop, one edge treatment, and no tinted wrapper. */
+html body #root .dp-map-page :is(
+  .dp-active-perk-media,
+  .dp-entity-media,
+  .dp-nearby-image-media,
+  .dp-tab-discovery-media,
+  .dp-saved-card-media,
+  .dp-daa-art-image-card,
+  .dp-daa-video-card
+) {
+  position: relative !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  line-height: 0 !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  transform: translateZ(0);
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perk-media,
+  .dp-entity-media,
+  .dp-nearby-image-media,
+  .dp-tab-discovery-media,
+  .dp-saved-card-media,
+  .dp-native-rail__item > img,
+  .dp-property-nearby-card > img,
+  .dp-related-place > img,
+  .dp-inkind-related-card > img,
+  .dp-daa-art-image-card > img,
+  .dp-daa-video-card > video
+) {
+  border-radius: 8px !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perk-media,
+  .dp-entity-media,
+  .dp-nearby-image-media,
+  .dp-tab-discovery-media,
+  .dp-saved-card-media,
+  .dp-native-rail__item > img,
+  .dp-property-nearby-card > img,
+  .dp-related-place > img,
+  .dp-inkind-related-card > img,
+  .dp-daa-art-image-card > img,
+  .dp-daa-video-card > video
+) :is(img, picture, video),
+html body #root .dp-map-page :is(
+  .dp-active-perk-media,
+  .dp-entity-media,
+  .dp-nearby-image-media,
+  .dp-tab-discovery-media,
+  .dp-saved-card-media
+) > :is(img, picture, video),
+html body #root .dp-map-page :is(
+  .dp-native-rail__item > img,
+  .dp-property-nearby-card > img,
+  .dp-related-place > img,
+  .dp-inkind-related-card > img,
+  .dp-daa-art-image-card > img,
+  .dp-daa-video-card > video
+) {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  vertical-align: middle !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-active-perk-hero.is-logo-fallback,
+  .dp-native-rail__item > img[data-media-kind="logo"]
+) {
+  object-fit: contain !important;
+}
+
+html body #root .dp-map-page .dp-daa-video-card > video {
+  aspect-ratio: 16 / 9 !important;
+  color-scheme: light !important;
+}
+
+@media (max-width: 430px) {
+  html body #root .dp-map-page :is(
+    .dp-destination-hero-media,
+    .dp-destination-media,
+    .dp-polished-panel-hero,
+    .dp-entity-hero-image,
+    .dp-native-detail-panel__hero,
+    .dp-partner-drawer-media
+  ) {
+    max-height: 232px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .dp-map-page :is(img, video) {
+    transition: none !important;
+  }
+}

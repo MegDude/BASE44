@@ -7,6 +7,7 @@ import { RouteStopList } from "./RouteStopList";
 import type { RouteAccessibility } from "@/types/routeExperience";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState } from "@/lib/map/nativeDrawerState";
+import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
 type SheetState = "medium" | "expanded" | "full";
 
@@ -116,7 +117,7 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
       )}
     >
         <section className="dp-route-hero">
-          {route.heroImageUrl ? <img src={route.heroImageUrl} alt="" loading="eager" /> : null}
+          {route.heroImageUrl ? <img src={route.heroImageUrl} alt="" loading="eager" decoding="async" onError={handlePanelMediaError} /> : null}
           <div>
             <p>{route.summary || route.description}</p>
             <div className="dp-route-facts" aria-label="Route facts">

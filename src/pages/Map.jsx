@@ -8465,7 +8465,7 @@ function InteractiveMatrix({
             <div className="dp-matrix-related-rail" aria-label={`${selectedItem.title} related items`}>
               {selectedItem.relatedItems.slice(0, 4).map((related) => (
                 <button key={related.id} type="button" onClick={() => handleAction({ action: "open-related", relatedId: related.id }, selectedItem)}>
-                  {related.imageUrl && <img src={related.imageUrl} alt="" loading="lazy" />}
+                  {related.imageUrl && <img src={related.imageUrl} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />}
                   <span>
                     <strong>{related.title}</strong>
                     <small>{related.type}</small>
@@ -9981,7 +9981,7 @@ function DaaArtWalkImageRail({ primaryImage }) {
       <div className="dp-daa-art-image-rail">
         {images.map((image) => (
           <figure key={image.src} className="dp-daa-art-image-card">
-            <img src={image.src} alt={image.title} loading="lazy" />
+            <img src={image.src} alt={image.title} loading="lazy" decoding="async" onError={handlePanelImageError} />
             <figcaption>
               <strong>{image.title}</strong>
               <span>{image.label}</span>
