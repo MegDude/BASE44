@@ -8119,11 +8119,24 @@ function PanelContext({ place, mode }) {
     );
   }
   if (isFrostTowerEntity(place)) {
+    const frostGalleryImage = resolveEntityGallery(place)[1];
     return (
       <DestinationSection title="Why this workplace matters" className="dp-property-opening-section dp-property-narrative-section">
         <div className="dp-drawer-meta-line">Premium Workplace · Congress Avenue</div>
         <p className="dp-why-people-go">Frost Tower is one of downtown Austin's primary commercial destinations, connecting office workers, visitors, residents, hospitality, dining, wellness, and professional services in a walkable district.</p>
         <p className="dp-destination-section-note">Downtown Perks treats Frost Tower as a district activation partner, not a residential building or a simple discount pin.</p>
+        {frostGalleryImage && (
+          <figure className="dp-frost-tower-secondary-media mt-5 aspect-[4/5] overflow-hidden bg-white">
+            <img
+              src={frostGalleryImage}
+              alt="Frost Tower rising above Congress Avenue in downtown Austin"
+              className="block h-full w-full object-cover object-center"
+              onError={handlePanelImageError}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        )}
       </DestinationSection>
     );
   }

@@ -36,6 +36,22 @@ export const entityMediaManifest: Record<string, EntityMediaEntry> = {
   ]),
   "700-river": residential("700-river", "700 River", "jpg", [{ src: "/images/residential-content/700-river-shared-access.jpeg", role: "building_shared_amenity", alt: "Shared-access space associated with 700 River.", verificationStatus: "manual_review_required" }]),
   "the-independent": residential("the-independent", "The Independent"),
+  "priority-frost-tower": {
+    hero: {
+      src: "/images/reports/frost-tower-austin.jpg",
+      role: "building_exterior",
+      alt: "Frost Tower on Congress Avenue in downtown Austin.",
+      cropSafe: true,
+      verificationStatus: "verified",
+    },
+    gallery: [{
+      src: "/images/map-entities/attached/properties/frost-tower/frost-tower-upward-view.jpg",
+      role: "building_exterior",
+      alt: "Frost Tower rising above Congress Avenue in downtown Austin.",
+      cropSafe: true,
+      verificationStatus: "verified",
+    }],
+  },
   "fifth-and-west": residential("fifth-and-west", "Fifth and West", "jpeg"),
   "the-austonian": residential("the-austonian", "The Austonian"),
   "360-condominiums": residential("360-condominiums", "360 Condominiums"),
