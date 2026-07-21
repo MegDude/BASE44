@@ -5,6 +5,27 @@ const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 393, height: 852 }, isMobile: true, hasTouch: true });
 const errors = [];
 
+await page.addInitScript(() => {
+  window.localStorage.setItem("dp_resident_access:current", JSON.stringify({
+    id: "resident-native-qa",
+    fullName: "Sarah Austin",
+    email: "sarah@example.com",
+    phone: "512-555-0142",
+    buildingName: "The Shore",
+    buildingDistrict: "Rainey",
+    unitNumber: "1204",
+    verificationStatus: "verified",
+    membershipSource: "free_building",
+    moveInDate: "2026-06-01",
+    profileCompletion: 92,
+    interests: ["dining", "music", "outdoors"],
+    notifications: { email: true, sms: false, push: true },
+    joinedAt: "2026-06-03",
+    personalizedMap: true,
+    savedCount: 4,
+  }));
+});
+
 page.on("pageerror", (error) => errors.push(error.message));
 page.on("console", (message) => {
   if (message.type() === "error" && !/Failed to load resource|api\/apps\/public|Google Maps/.test(message.text())) errors.push(message.text());
@@ -48,6 +69,45 @@ for (const panel of ["profile", "perks", "card"]) {
 await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", timeout: 30_000 });
 await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 
+await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Card" }).click();
+await page.getByRole("heading", { name: "Everything connected to your card." }).waitFor();
+for (const section of ["Contact", "Home", "Membership", "Preferences"]) {
+  await page.getByRole("heading", { name: section, exact: true }).waitFor();
+}
+await page.getByText("The Shore", { exact: true }).waitFor();
+await page.getByText("Included by your building", { exact: true }).waitFor();
+await page.getByText("Dining, Music, Outdoors", { exact: true }).waitFor();
+
+const cardSurface = await page.locator(".dp-resident-card-panel").evaluate((element) => {
+  const style = getComputedStyle(element);
+  const parentBackground = element.parentElement ? getComputedStyle(element.parentElement).backgroundColor : "";
+  return { background: style.backgroundColor, parentBackground, borderRadius: style.borderRadius, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth };
+});
+const isWhiteSurface = cardSurface.background === "rgb(255, 255, 255)"
+  || (cardSurface.background === "rgba(0, 0, 0, 0)" && cardSurface.parentBackground === "rgb(255, 255, 255)");
+if (!isWhiteSurface || cardSurface.borderRadius !== "0px" || cardSurface.scrollWidth > cardSurface.clientWidth) {
+  throw new Error(`Resident card surface is not bright, sharp, and contained: ${JSON.stringify(cardSurface)}`);
+}
+
+const updateDetails = page.getByRole("link", { name: "Update details" });
+const actionStyle = await updateDetails.evaluate((element) => {
+  const style = getComputedStyle(element);
+  return { textTransform: style.textTransform, fontSize: style.fontSize, borderRadius: style.borderRadius };
+});
+if (actionStyle.textTransform !== "uppercase" || actionStyle.fontSize !== "10px" || actionStyle.borderRadius !== "0px") {
+  throw new Error(`Resident text action is not compact and sharp: ${JSON.stringify(actionStyle)}`);
+}
+await updateDetails.hover();
+await page.waitForTimeout(250);
+const hoverColor = await updateDetails.evaluate((element) => getComputedStyle(element).color);
+if (hoverColor !== "rgb(154, 121, 55)") throw new Error(`Resident action hover is not gold: ${hoverColor}`);
+
+const activeCardColor = await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Card" }).evaluate((element) => getComputedStyle(element).color);
+if (activeCardColor !== "rgb(154, 121, 55)") throw new Error(`Selected Card tab is not gold: ${activeCardColor}`);
+
+await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Home" }).click();
+await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
 if (!viewport || bodyWidth > viewport.width) throw new Error(`Horizontal overflow: ${bodyWidth}px for ${viewport?.width}px viewport`);
@@ -76,5 +136,5 @@ await page.waitForURL((url) => url.pathname === "/resident/home", { timeout: 15_
 await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
-console.log("resident native mobile: five canonical tabs, calm Home, no overflow, and Map returns to Home");
+console.log("resident native mobile: complete bright-white Card profile, compact gold actions, five canonical tabs, and Map returns to Home");
 await browser.close();

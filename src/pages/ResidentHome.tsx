@@ -55,14 +55,40 @@ type ResidentRecord = {
   email?: string;
   phone?: string;
   buildingName?: string;
+  buildingDistrict?: string;
   unitNumber?: string;
   verificationStatus?: string;
+  membershipSource?: string;
+  membershipType?: string;
+  renewalDate?: string;
+  expiresAt?: string;
+  moveInDate?: string;
+  profileCompletion?: number;
+  interests?: string[];
+  notifications?: Record<string, unknown>;
+  joinedAt?: string;
+  personalizedMap?: boolean;
+  savedCount?: number;
 };
 
 type ResidentMembershipContext = {
   profile?: Record<string, unknown>;
   membership?: Record<string, unknown> | null;
+  saved?: unknown[];
+  preferences?: Record<string, unknown> | null;
+  mapContext?: { path?: string; personalized?: boolean };
 };
+
+function stringValue(...values: unknown[]) {
+  const value = values.find((item) => typeof item === "string" && item.trim());
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function stringList(...values: unknown[]) {
+  const value = values.find(Array.isArray);
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => String(item).trim()).filter(Boolean);
+}
 
 function readResidentRecord(): ResidentRecord | null {
   if (typeof window === "undefined") return null;
@@ -76,6 +102,7 @@ function readResidentRecord(): ResidentRecord | null {
 function residentRecordFromMembership(context: ResidentMembershipContext, fallback: ResidentRecord | null): ResidentRecord | null {
   const profile = context.profile || {};
   const membership = context.membership || {};
+  const preferences = context.preferences || {};
   const firstName = profile.first_name || profile.firstName || "";
   const lastName = profile.last_name || profile.lastName || "";
   const fullName = profile.full_name || profile.fullName || [firstName, lastName].filter(Boolean).join(" ");
@@ -88,8 +115,20 @@ function residentRecordFromMembership(context: ResidentMembershipContext, fallba
     email: String(profile.email || fallback?.email || ""),
     phone: String(profile.phone || fallback?.phone || ""),
     buildingName: String(profile.building_name || membership.building_name || fallback?.buildingName || ""),
+    buildingDistrict: stringValue(profile.building_district, profile.district, membership.building_district, membership.district, fallback?.buildingDistrict),
     unitNumber: String(profile.apartment || profile.unit_number || fallback?.unitNumber || ""),
     verificationStatus: String(membership.status || profile.verification_status || fallback?.verificationStatus || "active"),
+    membershipSource: stringValue(membership.source, profile.membership_source, fallback?.membershipSource),
+    membershipType: stringValue(membership.membership_type, profile.membership_type, fallback?.membershipType),
+    renewalDate: stringValue(membership.renewal_date, membership.current_period_end, fallback?.renewalDate),
+    expiresAt: stringValue(membership.expires_at, fallback?.expiresAt),
+    moveInDate: stringValue(profile.move_in_date, profile.moveInDate, fallback?.moveInDate),
+    profileCompletion: Number(profile.profile_completion ?? fallback?.profileCompletion ?? 0),
+    interests: stringList(profile.interests, preferences.interests, preferences.categories, fallback?.interests),
+    notifications: (profile.notification_preferences || preferences.notifications || preferences.notification_preferences || fallback?.notifications || {}) as Record<string, unknown>,
+    joinedAt: stringValue(membership.created_at, profile.created_at, fallback?.joinedAt),
+    personalizedMap: Boolean(context.mapContext?.personalized ?? fallback?.personalizedMap),
+    savedCount: Array.isArray(context.saved) ? context.saved.length : fallback?.savedCount,
   };
 }
 
@@ -126,6 +165,34 @@ function greetingForNow() {
 
 function weekdayForNow() {
   return new Intl.DateTimeFormat(undefined, { weekday: "long" }).format(new Date());
+}
+
+function readableDate(value?: string) {
+  if (!value) return "Not added";
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  const parsed = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", year: "numeric" }).format(parsed);
+}
+
+function readableMembershipSource(value?: string) {
+  if (!value) return "Resident membership";
+  if (value === "free_building") return "Included by your building";
+  if (value === "paid") return "Annual resident membership";
+  return value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function readableNotifications(value?: Record<string, unknown>) {
+  if (!value || !Object.keys(value).length) return "Not chosen";
+  const enabled = Object.entries(value).filter(([, setting]) => setting === true).map(([channel]) => channel.toUpperCase());
+  return enabled.length ? enabled.join(" · ") : "Off";
+}
+
+function readableInterests(values?: string[]) {
+  if (!values?.length) return "Not chosen";
+  return values.map((value) => value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(", ");
 }
 
 export default function ResidentHome() {
@@ -191,6 +258,55 @@ export default function ResidentHome() {
   const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : "home";
   const firstName = resident?.fullName?.trim()?.split(/\s+/)[0] || "";
   const greeting = `${greetingForNow()}${firstName ? `, ${firstName}` : ""}.`;
+  const profileGroups = resident ? [
+    {
+      title: "Contact",
+      rows: [
+        ["Name", resident.fullName || "Not added"],
+        ["Email", resident.email || "Not added"],
+        ["Phone", resident.phone || "Not added"],
+      ],
+    },
+    {
+      title: "Home",
+      rows: [
+        ["Property", resident.buildingName || "Not connected"],
+        ["District", resident.buildingDistrict || "Not added"],
+        ["Unit", resident.unitNumber || "Not added"],
+        ["Move-in date", readableDate(resident.moveInDate)],
+      ],
+    },
+    {
+      title: "Membership",
+      rows: [
+        ["Plan", readableMembershipSource(resident.membershipSource || resident.membershipType)],
+        ["Status", resident.verificationStatus === "verified" ? "Verified resident" : "Active resident"],
+        ["Renewal", resident.renewalDate ? readableDate(resident.renewalDate) : resident.expiresAt ? readableDate(resident.expiresAt) : "No renewal date"],
+        ["Member since", readableDate(resident.joinedAt)],
+        ["Profile complete", resident.profileCompletion ? `${resident.profileCompletion}%` : "Not calculated"],
+      ],
+    },
+    {
+      title: "Preferences",
+      rows: [
+        ["Interests", readableInterests(resident.interests)],
+        ["Updates", readableNotifications(resident.notifications)],
+        ["Saved places", String(resident.savedCount ?? savedIds.length)],
+        ["Personal map", resident.personalizedMap ? "Ready for you" : "Uses your current choices"],
+      ],
+    },
+  ] : [];
+
+  function renderProfileDetails(idPrefix: string) {
+    return profileGroups.map((group) => (
+      <section className="dp-resident-profile-group" key={group.title} aria-labelledby={`${idPrefix}-${group.title.toLowerCase()}`}>
+        <h3 id={`${idPrefix}-${group.title.toLowerCase()}`}>{group.title}</h3>
+        <dl>
+          {group.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+        </dl>
+      </section>
+    ));
+  }
 
   return (
     <main className="dp-resident-home" data-panel={panel}>
@@ -230,7 +346,7 @@ export default function ResidentHome() {
           </section>
 
           <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="recommended-today">
-            <div className="dp-resident-section-title"><h2 id="recommended-today">Recommended nearby</h2><Link to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway">View map</Link></div>
+            <div className="dp-resident-section-title"><h2 id="recommended-today">Recommended nearby</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway">View map</Link></div>
             <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" aria-label="Open the Waterloo Greenway walk on the map">
               <img
                 src="/images/map-entities/refresh/civic/waterloo-golden-hour.png"
@@ -261,8 +377,8 @@ export default function ResidentHome() {
               <h2 id="resident-card-command-title">QR ready</h2>
               <span>Tap to show your QR code and use a nearby resident perk.</span>
             </div>
-            <button type="button" onClick={() => openPanel("card")}><QrCode aria-hidden="true" />Show QR</button>
-            <Link to="/map?mode=resident&tab=perks&filter=Perks">Benefits <ChevronRight aria-hidden="true" /></Link>
+            <button className="dp-resident-text-action" type="button" onClick={() => openPanel("card")}><QrCode aria-hidden="true" />Show QR</button>
+            <Link className="dp-resident-text-action" to="/map?mode=resident&tab=perks&filter=Perks">Benefits <ChevronRight aria-hidden="true" /></Link>
           </section>
 
           <section className="dp-resident-home__section dp-resident-live-activity" aria-labelledby="live-activity-title">
@@ -288,7 +404,7 @@ export default function ResidentHome() {
           <section className="dp-resident-home__section dp-resident-home__saved-preview" aria-labelledby="home-saved-title">
             <div className="dp-resident-section-title">
               <h2 id="home-saved-title">Saved</h2>
-              <button type="button" onClick={() => openPanel("perks")}>{savedPerks.length ? "View all" : "Start saving"}</button>
+              <button className="dp-resident-text-action" type="button" onClick={() => openPanel("perks")}>{savedPerks.length ? "View all" : "Start saving"}</button>
             </div>
             {savedPerks.length ? (
               <div className="dp-resident-home__saved-rows">
@@ -309,7 +425,7 @@ export default function ResidentHome() {
           </section>
 
           <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="home-events-title">
-            <div className="dp-resident-section-title"><h2 id="home-events-title">Upcoming</h2><Link to="/map?mode=resident&tab=events&filter=Events">Events</Link></div>
+            <div className="dp-resident-section-title"><h2 id="home-events-title">Upcoming</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=events&filter=Events">Events</Link></div>
             <div>{residentEvents.slice(0, 1).map((item) => <Link key={item.title} to={item.href}><CalendarDays aria-hidden="true" /><span><strong>Tonight · 3 events nearby</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
           </section>
 
@@ -325,11 +441,11 @@ export default function ResidentHome() {
 
           <section className="dp-resident-directory-section dp-resident-shared-amenity" aria-labelledby="shared-amenity-title">
             <Building2 aria-hidden="true" />
-            <div><small>Building benefit</small><h2 id="shared-amenity-title">The Modern · pool access</h2><p>A featured resident benefit available through participating buildings.</p><Link to="/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access">View benefit</Link></div>
+            <div><small>Building benefit</small><h2 id="shared-amenity-title">The Modern · pool access</h2><p>A featured resident benefit available through participating buildings.</p><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access">View benefit</Link></div>
           </section>
           <section className="dp-resident-directory-section dp-resident-dana-question" aria-labelledby="dana-question-title">
             <Landmark aria-hidden="true" />
-            <div><small>Downtown update</small><h2 id="dana-question-title">Waterloo Greenway weekend festival</h2><p>See what is happening nearby and answer one short community question.</p><Link to="/residents/governance">See community updates</Link></div>
+            <div><small>Downtown update</small><h2 id="dana-question-title">Waterloo Greenway weekend festival</h2><p>See what is happening nearby and answer one short community question.</p><Link className="dp-resident-text-action" to="/residents/governance">See community updates</Link></div>
           </section>
 
         </div>
@@ -348,7 +464,7 @@ export default function ResidentHome() {
                 <article key={item.id}>
                   <Link className="dp-resident-saved-row" to={`/map?mode=resident&tab=perks&filter=Saved&entityId=${encodeURIComponent(item.id)}`} aria-label={`Open ${item.name} on the map`}>
                     <span><small>Saved perk</small><h3>{item.name}</h3></span>
-                    <strong aria-hidden="true">Open <ChevronRight /></strong>
+                    <strong className="dp-resident-text-action" aria-hidden="true">Open <ChevronRight /></strong>
                   </Link>
                 </article>
               ))}
@@ -358,7 +474,7 @@ export default function ResidentHome() {
               <Bookmark aria-hidden="true" />
               <h3>No saved perks yet.</h3>
               <p>Save an offer from the map and it will appear here automatically.</p>
-              <Link to="/map?mode=resident&tab=perks&filter=Perks">Browse nearby perks</Link>
+              <Link className="dp-resident-text-action" to="/map?mode=resident&tab=perks&filter=Perks">Browse nearby perks</Link>
             </div>
           )}
         </section>
@@ -388,16 +504,14 @@ export default function ResidentHome() {
                 </div>
               </section>
               <section className="dp-resident-profile-section" aria-labelledby="resident-profile-title">
-                <div className="dp-resident-section-title"><h2 id="resident-profile-title">Profile</h2></div>
-                <dl>
-                  <div><dt>Name</dt><dd>{resident.fullName || "Not added"}</dd></div>
-                  <div><dt>Email</dt><dd>{resident.email || "Not added"}</dd></div>
-                  <div><dt>Home property</dt><dd>{resident.buildingName || "Not connected"}</dd></div>
-                  {resident.unitNumber ? <div><dt>Unit</dt><dd>{resident.unitNumber}</dd></div> : null}
-                  {resident.phone ? <div><dt>Phone</dt><dd>{resident.phone}</dd></div> : null}
-                </dl>
+                <div className="dp-resident-section-title">
+                  <div><p>Resident profile</p><h2 id="resident-profile-title">Everything connected to your card.</h2></div>
+                </div>
+                <p className="dp-resident-profile-summary">Review your contact details, home, membership, preferences, and personal map in one place.</p>
+                {renderProfileDetails("resident-card-profile")}
                 <div className="dp-resident-profile-actions">
-                  <Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Show card on map</Link>
+                  <Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Open on map</Link>
+                  <Link to="/residents/welcome">Update details</Link>
                   <Link to="/card">Manage access</Link>
                 </div>
               </section>
@@ -407,7 +521,7 @@ export default function ResidentHome() {
               <UserRound aria-hidden="true" />
               <h3>Your resident profile lives here.</h3>
               <p>Create a card to connect your home property, or keep exploring downtown without an account.</p>
-              <div><Link to="/map?mode=resident&tab=map&filter=All"><Search aria-hidden="true" />Open the map</Link><Link to="/card">Get a card</Link></div>
+              <div><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=All"><Search aria-hidden="true" />Open the map</Link><Link className="dp-resident-text-action" to="/card">Get a card</Link></div>
             </div>
           )}
         </section>
@@ -422,18 +536,10 @@ export default function ResidentHome() {
           </header>
           {resident ? (
             <section className="dp-resident-profile-section" aria-label="Resident account details">
-              <dl>
-                <div><dt>Name</dt><dd>{resident.fullName || "Not added"}</dd></div>
-                <div><dt>Email</dt><dd>{resident.email || "Not added"}</dd></div>
-                <div><dt>Home property</dt><dd>{resident.buildingName || "Not connected"}</dd></div>
-                {resident.unitNumber ? <div><dt>Unit</dt><dd>{resident.unitNumber}</dd></div> : null}
-                {resident.phone ? <div><dt>Phone</dt><dd>{resident.phone}</dd></div> : null}
-                <div><dt>Membership</dt><dd>{resident.verificationStatus === "verified" ? "Verified resident" : "Active resident"}</dd></div>
-                <div><dt>Saved</dt><dd>{savedIds.length} {savedIds.length === 1 ? "place" : "places"}</dd></div>
-              </dl>
+              {renderProfileDetails("resident-profile")}
               <div className="dp-resident-profile-actions">
                 <Link to="/residents/welcome">Update profile</Link>
-                <button type="button" onClick={() => openPanel("card")}>Open resident card</button>
+                <button type="button" onClick={() => openPanel("card")}>View card</button>
                 <Link to="/residents/membership">View membership</Link>
               </div>
             </section>
@@ -442,7 +548,7 @@ export default function ResidentHome() {
               <UserRound aria-hidden="true" />
               <h3>Connect your resident account.</h3>
               <p>Sign in to load your building, membership, preferences, saved places, and resident card.</p>
-              <div><Link to="/residents/login">Sign in</Link><Link to="/residents/membership">Create account</Link></div>
+              <div><Link className="dp-resident-text-action" to="/residents/login">Sign in</Link><Link className="dp-resident-text-action" to="/residents/membership">Create account</Link></div>
             </div>
           )}
         </section>

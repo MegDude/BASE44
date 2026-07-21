@@ -323,9 +323,21 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   background: transparent !important;
   color: #0b1f33 !important;
   box-shadow: none !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
   font-weight: 670 !important;
+  letter-spacing: .085em !important;
   text-decoration: none !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home :is(
+  .dp-resident-card-command,
+  .dp-resident-profile-actions,
+  .dp-resident-empty-state
+) :is(button,a):is(:hover,:focus-visible,:active) {
+  color: #9a7937 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-resident-home .dp-resident-panel-intro {
