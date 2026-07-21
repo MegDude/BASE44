@@ -152,7 +152,7 @@ export default function Layout() {
     !isEmbeddedMap &&
     !isResidentAccessRoute &&
     !pathname.startsWith("/partner-workspace");
-  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/residents/governance";
+  const showProductSearchButton = !isEmbeddedMap && !isResidentAccessRoute && !showNavbar && !pathname.startsWith("/partner-workspace") && pathname !== "/" && pathname !== "/app" && pathname !== "/app/map" && pathname !== "/map" && pathname !== "/resident/home" && pathname !== "/residents/governance";
   const usesPersistentProductNavigation =
     pathname === "/app" ||
     pathname === "/app/map" ||

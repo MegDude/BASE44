@@ -25,6 +25,28 @@ if (await page.locator("nav").filter({ hasNot: page.locator(".dp-resident-native
 
 await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 await page.getByRole("heading", { name: "Live activity", exact: true }).waitFor();
+if (await page.locator(".dp-product-shell-search-button").count()) {
+  throw new Error("Resident Home renders the global shell search over its native header.");
+}
+
+await page.getByRole("button", { name: "Open resident profile" }).click();
+await page.waitForURL((url) => url.pathname === "/resident/home" && url.searchParams.get("panel") === "profile");
+await page.getByRole("button", { name: "Back to resident home" }).waitFor();
+
+for (const panel of ["profile", "perks", "card"]) {
+  await page.goto(`${baseUrl}/resident/home?panel=${panel}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+  await page.getByRole("button", { name: "Back to resident home" }).waitFor();
+  const surface = await page.locator(".dp-resident-home__panel").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { background: style.backgroundColor, border: style.borderTopWidth, shadow: style.boxShadow };
+  });
+  if (surface.background !== "rgb(255, 255, 255)" || surface.border !== "0px" || surface.shadow !== "none") {
+    throw new Error(`${panel} panel is not on the shared white native surface: ${JSON.stringify(surface)}`);
+  }
+}
+
+await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
 
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);

@@ -8,10 +8,12 @@ const marker = "/* Resident Home headline rhythm.";
 const markerIndex = styles.indexOf(marker);
 
 assert.ok(markerIndex >= 0, "Resident Home headline lock must remain in the terminal stylesheet");
-assert.match(
-  entry,
-  /resident-home-headline-lock-final\.css"\s*import "@\/styles\/canonical-surface-system\.css"/,
-  "Resident Home headline lock must load before the governed surface cascade",
+const headlineImport = entry.indexOf('import "@/styles/resident-home-headline-lock-final.css"');
+const surfaceImport = entry.indexOf('import "@/styles/canonical-surface-system.css"');
+const nativeImport = entry.indexOf('import "@/styles/resident-home-ios-native-final.css"');
+assert.ok(
+  headlineImport >= 0 && surfaceImport > headlineImport && nativeImport > surfaceImport,
+  "Resident Home headline lock must load before the governed surface cascade and final native authority",
 );
 
 const contract = styles.slice(markerIndex);

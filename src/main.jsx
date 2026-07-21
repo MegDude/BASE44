@@ -120,6 +120,7 @@ import "@/styles/search-intent-glass-surface-final.css"
 import "@/styles/borderless-panel-content-final.css"
 import "@/styles/resident-qr-modal-final.css"
 import "@/styles/partner-workspace-journeys-final.css"
+import "@/styles/resident-home-ios-native-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

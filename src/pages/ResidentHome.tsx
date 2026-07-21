@@ -29,7 +29,7 @@ const residentRoutes = [
   { title: "DAA Art & Parks Walk", detail: "Public art, parks, plazas and cultural landmarks", meta: "Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&routeId=daa-art-walk&query=DAA%20Art%20Walk&intent=DAA_art_walk" },
   { title: "Waterloo Greenway Walk", detail: "Parks, gardens, Waller Creek and Moody Amphitheater", meta: "6 stops · Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" },
   { title: "Downtown Stories Walk", detail: "Public spaces, history and neighborhood stories", meta: "25 min · 1.1 mi", href: "/map?mode=resident&tab=map&filter=Civic&routeId=downtown-stories-walk&query=downtown%20stories%20walk&intent=explore_downtown" },
-  { title: "Coffee Before Work", detail: "A short morning route through downtown", meta: "14 min · 0.6 mi", href: "/map?mode=resident&tab=map&filter=Coffee&routeId=coffee-before-work&query=coffee%20before%20work&intent=coffee" },
+  { title: "Downtown Coffee Loop", detail: "A short morning route through downtown", meta: "14 min · 0.6 mi", href: "/map?mode=resident&tab=map&filter=Coffee&routeId=coffee-before-work&query=coffee%20before%20work&intent=coffee" },
   { title: "Hotel Guest Arrival Route", detail: "Hotel Van Zandt to food, music and the river", meta: "16 min · 0.7 mi", href: "/map?mode=resident&tab=map&filter=Hotels&routeId=hotel-guest-arrival-route&query=hotel%20guest%20arrival%20route" },
 ] as const;
 
@@ -202,7 +202,7 @@ export default function ResidentHome() {
         {panel === "home" ? (
           <div className="dp-resident-command-actions" aria-label="Resident shortcuts">
             <Link to="/map?mode=resident&tab=map&filter=All&console=expanded" aria-label="Search Downtown Perks"><Search aria-hidden="true" /></Link>
-            <button type="button" onClick={() => openPanel("card")} aria-label="Open resident profile"><UserRound aria-hidden="true" /></button>
+            <button type="button" onClick={() => openPanel("profile")} aria-label="Open resident profile"><UserRound aria-hidden="true" /></button>
             <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home"><X aria-hidden="true" /></button>
           </div>
         ) : (
@@ -227,6 +227,19 @@ export default function ResidentHome() {
               <h1 id="resident-command-greeting">What feels right downtown?</h1>
               <span>Downtown Austin · {weekdayForNow()}</span>
             </div>
+          </section>
+
+          <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="recommended-today">
+            <div className="dp-resident-section-title"><h2 id="recommended-today">Recommended nearby</h2><Link to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway">View map</Link></div>
+            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" aria-label="Open the Waterloo Greenway walk on the map">
+              <img
+                src="/images/map-entities/refresh/civic/waterloo-golden-hour.png"
+                alt="Waterloo Greenway in downtown Austin at golden hour"
+                loading="eager"
+                decoding="async"
+              />
+              <div><span>For this evening</span><h3>Walk Waterloo at golden hour.</h3><p>Follow Waller Creek through Waterloo Park to Moody Amphitheater.</p><strong>Open the walk <ArrowRight aria-hidden="true" /></strong></div>
+            </Link>
           </section>
 
           <section className="dp-resident-ai-concierge" aria-labelledby="resident-ai-concierge-title">
@@ -262,14 +275,6 @@ export default function ResidentHome() {
                 </Link>
               ))}
             </div>
-          </section>
-
-          <section className="dp-resident-home__section" aria-labelledby="recommended-today">
-            <div className="dp-resident-section-title"><h2 id="recommended-today">Recommended nearby</h2><Link to="/map?mode=resident&tab=map&filter=Dining&intent=dinner">View map</Link></div>
-            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=events&filter=Events&query=live%20music">
-              <img src="/images/map-entities/perks/moody_theater_live_music_1779052684229.png" alt="Live music performance in downtown Austin" />
-              <div><span>Based on today</span><h3>Dinner, then live music.</h3><p>One walkable evening with a nearby place to start.</p><strong>Open plan <ArrowRight aria-hidden="true" /></strong></div>
-            </Link>
           </section>
 
           <section className="dp-resident-home__section" aria-labelledby="nearby-categories">
