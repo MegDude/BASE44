@@ -37,8 +37,10 @@ assert.match(specification, /The LLM is stateless\. Downtown Perks owns memory/,
 assert.match(specification, /Every drawer stays within the visible viewport/, "Governance panel containment is missing");
 assert.match(gate, /Schema and API implementation begins only after/, "Foundation approval gate is not enforceable");
 assert.match(index, /does not authorize:[\s\S]*creating production tables/, "Pre-implementation scope boundary is missing");
-assert.match(appRoutes, /path="\/residents\/governance" element={<ResidentGovernance \/>}/, "Canonical resident governance route is missing");
-assert.match(appRoutes, /path="\/resident\/governance" element={<Navigate to="\/residents\/governance" replace \/>}/, "Legacy resident governance route must redirect to the canonical route");
-assert.match(residentHome, /to="\/residents\/governance"/, "Resident home must link to the canonical governance route");
+assert.match(appRoutes, /path="\/resident\/civic" element={<ResidentCivicHub \/>}/, "Canonical resident civic route is missing");
+assert.match(appRoutes, /path="\/resident\/civic\/:actionId" element={<ResidentCivicHub \/>}/, "Resident civic action route is missing");
+assert.match(appRoutes, /path="\/residents\/governance" element={<Navigate to="\/resident\/civic" replace \/>}/, "Legacy resident governance route must redirect to Civic Inbox");
+assert.match(residentHome, /to="\/resident\/civic"/, "Resident home must link to Civic Inbox");
+assert.doesNotMatch(residentHome, /Ask Downtown|Quick actions|Walking routes|Collections/, "Resident Home still contains duplicate map discovery");
 
 console.log("Governance Volume 2 foundation covers all seven required implementation gates: PASS");

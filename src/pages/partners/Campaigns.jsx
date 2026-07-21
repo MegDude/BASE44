@@ -500,7 +500,7 @@ export default function CampaignsPage() {
           <div className="dp-campaign-preview-head">
             <div>
               <p className="dp-campaigns-eyebrow">Map layer</p>
-              <h2>Campaign opportunity</h2>
+              <h2>Where this could work</h2>
             </div>
             <Link to={mapHref}><MapPin size={14} /> Open map</Link>
           </div>

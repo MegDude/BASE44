@@ -17,7 +17,7 @@ const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
 const ResidentHome = lazy(() => import("./pages/ResidentHome"));
-const ResidentGovernance = lazy(() => import("./pages/ResidentGovernance"));
+const ResidentCivicHub = lazy(() => import("./pages/ResidentCivicHub"));
 const ResidentMembership = lazy(() => import("./pages/ResidentMembership"));
 const ResidentWelcome = lazy(() => import("./pages/ResidentWelcome"));
 const ResidentOnboardingFlow = lazy(() => import("./onboarding/ResidentOnboardingFlow"));
@@ -177,9 +177,12 @@ function ProductRoutes() {
           <Route path="/map" element={<MapPage />} />
           <Route path="/onboarding" element={<ResidentOnboardingFlow />} />
           <Route path="/onboarding/:step" element={<ResidentOnboardingFlow />} />
+          <Route path="/resident" element={<RedirectWithSearch to="/resident/home" />} />
           <Route path="/resident/home" element={<ResidentHome />} />
-          <Route path="/resident/governance" element={<Navigate to="/residents/governance" replace />} />
-          <Route path="/residents/governance" element={<ResidentGovernance />} />
+          <Route path="/resident/civic" element={<ResidentCivicHub />} />
+          <Route path="/resident/civic/:actionId" element={<ResidentCivicHub />} />
+          <Route path="/resident/governance" element={<Navigate to="/resident/civic" replace />} />
+          <Route path="/residents/governance" element={<Navigate to="/resident/civic" replace />} />
           <Route path="/residents/membership" element={<Suspense fallback={<MarketingFallback />}><ResidentMembership /></Suspense>} />
           <Route path="/residents/login" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
           <Route path="/residents/welcome" element={<Suspense fallback={<MarketingFallback />}><ResidentWelcome /></Suspense>} />
@@ -364,6 +367,7 @@ function ProductRoutes() {
           <Route path="/partner-workspace/sources" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/share-links" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/governance" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/civic/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/profile" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/audience" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />

@@ -1,0 +1,79 @@
+/* Compact inKind redemption instructions: one horizontal reading row per step. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps {
+  display: grid !important;
+  gap: 10px !important;
+  padding-block: 14px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps > h3 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: 14px !important;
+  font-weight: 720 !important;
+  line-height: 1.2 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list {
+  display: grid !important;
+  gap: 9px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list li {
+  display: grid !important;
+  grid-template-columns: 24px 82px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  align-items: baseline !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list li > span {
+  color: #9a7a3e !important;
+  font-size: 17px !important;
+  font-weight: 720 !important;
+  line-height: 1 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list :is(h3, p) {
+  min-width: 0 !important;
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list h3 {
+  font-weight: 680 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list p {
+  color: rgba(11, 31, 51, 0.66) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-before-you-go-inline {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px 8px !important;
+  align-items: baseline !important;
+  margin: 2px 0 0 !important;
+  color: rgba(11, 31, 51, 0.66) !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-before-you-go-inline strong {
+  color: #9a7a3e !important;
+  font-size: inherit !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 350px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-inkind-resident-drawer .dp-inkind-redemption-steps .dp-step-list li {
+    grid-template-columns: 22px 70px minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+}

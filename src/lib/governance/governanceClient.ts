@@ -19,10 +19,16 @@ export type GovernanceRecord = {
   latitude?: number | null;
   longitude?: number | null;
   public_update?: string | null;
+  action_type?: string;
+  options?: Array<{ id: string; label: string }>;
+  response_count?: number;
+  has_responded?: boolean;
+  organization_name?: string;
   governance_question_supports?: Array<{ count: number }>;
 };
 
 export type ResidentGovernanceResponse = {
+  updates?: GovernanceRecord[];
   initiatives: GovernanceRecord[];
   meetings: GovernanceRecord[];
   consultations: GovernanceRecord[];
@@ -68,12 +74,21 @@ async function governanceRequest<T>(path: string, init?: RequestInit, idempotenc
 }
 
 export function getResidentGovernance() {
-  return governanceRequest<ResidentGovernanceResponse>("/api/resident/governance");
+  return governanceRequest<ResidentGovernanceResponse>("/api/resident/civic");
 }
 
 export function sendResidentGovernanceAction(input: Record<string, unknown>) {
   const idempotencyKey = String(input.idempotencyKey || crypto.randomUUID());
-  return governanceRequest<{ message: string }>("/api/resident/governance", { method: "POST", body: JSON.stringify({ ...input, idempotencyKey }) }, idempotencyKey);
+  return governanceRequest<{ message: string; responseId?: string }>("/api/resident/civic", { method: "POST", body: JSON.stringify({ ...input, idempotencyKey }) }, idempotencyKey);
+}
+
+export function subscribeToResidentCivicInbox(onChange: () => void) {
+  if (!supabaseClient) return () => undefined;
+  const channel = supabaseClient
+    .channel(`resident-civic-inbox-${crypto.randomUUID()}`)
+    .on("postgres_changes", { event: "*", schema: "public", table: "resident_civic_inbox" }, onChange)
+    .subscribe();
+  return () => { void supabaseClient.removeChannel(channel); };
 }
 
 export function getPartnerGovernance(organizationId: string, portfolioId?: string | null, listingId?: string | null) {
@@ -85,4 +100,12 @@ export function getPartnerGovernance(organizationId: string, portfolioId?: strin
 
 export function sendPartnerGovernanceAction(input: Record<string, unknown>) {
   return governanceRequest<{ message: string; record: GovernanceRecord }>("/api/partner/governance", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function subscribeToCivicResponses(onChange: () => void) {
+  if (!supabaseClient) return () => undefined;
+  const channel = supabaseClient.channel(`civic-responses-${crypto.randomUUID()}`)
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "governance_consultation_responses" }, onChange)
+    .subscribe();
+  return () => { void supabaseClient.removeChannel(channel); };
 }

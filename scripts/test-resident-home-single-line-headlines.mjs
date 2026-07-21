@@ -41,11 +41,8 @@ for (const declaration of [
   assert.ok(contract.includes(declaration), `Headline contract must preserve ${declaration}`);
 }
 
-assert.match(page, /DAA Art & Parks Walk/, "The DAA route must remain in Resident Home");
-assert.match(
-  page,
-  /Waterloo Greenway weekend festival/,
-  "The Waterloo Greenway feature headline must remain in Resident Home",
-);
+assert.doesNotMatch(page, /DAA Art & Parks Walk|Waterloo Greenway weekend festival/, "Directory and repeated civic feature headlines must not return to Resident Home");
+assert.match(page, /What matters today/, "The compact resident briefing headline must remain in Resident Home");
+assert.match(page, /Your civic inbox/, "The Civic Inbox headline must remain high on Resident Home");
 
 console.log("Resident Home single-line headline contract verified.");

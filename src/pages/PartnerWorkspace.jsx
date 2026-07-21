@@ -303,7 +303,7 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/surveys")) return "surveys";
   if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
   if (pathname.includes("/share-links")) return "share_links";
-  if (pathname.includes("/governance")) return "governance";
+  if (pathname.includes("/governance") || pathname.includes("/civic")) return "governance";
   if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
   if (pathname.includes("/redemptions")) return "redemptions";
   if (pathname.includes("/media")) return "media";

@@ -1,0 +1,38 @@
+/* Resident event results open at the largest safe mobile height so the list,
+   toolbar, and bottom navigation remain simultaneously reachable. */
+@media (max-width: 899px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-resident-events-drawer[data-drawer-state="full"] {
+    top: max(8px, env(safe-area-inset-top, 0px)) !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: calc(100dvh - max(8px, env(safe-area-inset-top, 0px))) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - max(8px, env(safe-area-inset-top, 0px))) !important;
+    padding-bottom: var(--dp-bottom-nav-total-height, calc(76px + env(safe-area-inset-bottom, 0px))) !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-resident .dp-resident-events-drawer .dp-resident-tab-panel {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-resident-events-drawer > .dp-panel-body.hidden {
+    display: none !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-resident-events-drawer > .dp-resident-tab-panel {
+    grid-row: 2 !important;
+    height: 100% !important;
+  }
+
+  html body #root .dp-map-page.dp-map-page-resident .dp-resident-events-drawer .dp-resident-tab-panel-list {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+}

@@ -1665,7 +1665,7 @@ function getPartnerPanelCopy(place) {
     : isInKindPartner(place)
       ? "Dining opportunity"
       : isCampaignEntity(place)
-        ? "Campaign opportunity"
+        ? "Campaign on the map"
         : isBrandEntity(place)
           ? "Brand activation"
         : `${String(place?.category || place?.type || "Partner").replace(/[_-]/g, " ")} insight`;
@@ -6803,16 +6803,13 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
       {activeBenefit && (
         <DestinationSection title="How to redeem" className="dp-inkind-redemption-steps">
           <ol className="dp-step-list">
-            <li><span>1</span><div><h3>Open the benefit</h3><p>Review the current offer in inKind before ordering.</p></div></li>
-            <li><span>2</span><div><h3>Visit the restaurant</h3><p>Make a reservation when appropriate and let staff know you are using the active benefit.</p></div></li>
-            <li><span>3</span><div><h3>Redeem through inKind</h3><p>Follow the current inKind instructions for the participating restaurant.</p></div></li>
+            <li><span aria-hidden="true">1</span><h3>Open benefit</h3><p>Check the current inKind offer before ordering.</p></li>
+            <li><span aria-hidden="true">2</span><h3>Visit</h3><p>Reserve if needed and mention the active benefit.</p></li>
+            <li><span aria-hidden="true">3</span><h3>Redeem</h3><p>Follow the restaurant’s current inKind instructions.</p></li>
           </ol>
+          <p className="dp-inkind-before-you-go-inline"><strong>Before you go</strong><span>Check the live offer before you leave.</span></p>
         </DestinationSection>
       )}
-
-      <DestinationSection title="Before you go">
-        <p>{venue.residentView.beforeYouGo}</p>
-      </DestinationSection>
 
       {!!recommendations.length && (
         <DestinationSection title="Continue exploring" className="dp-inkind-nearby-zone">
@@ -14958,7 +14955,12 @@ export default function MapPage() {
   const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
   const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
-  const drawerPreviewPlaces = isResidentSavedDrawer ? savedDrawerPlaces : previewPlaces;
+  const isResidentEventsDrawer = urlState.mode === "resident" && activeBottomTab === "events";
+  const drawerPreviewPlaces = isResidentSavedDrawer
+    ? savedDrawerPlaces
+    : isResidentEventsDrawer
+      ? discoverDisplayPlaces.slice(0, 80)
+      : previewPlaces;
   const legendsDirectoryPlaces = isLegendsDirectoryLayer
     ? discoverDisplayPlaces
       .filter((place) => isRentalEntity(place) || getLegendsResidentialProfileForPlace(place) || isLegendsMapPlace(place))
@@ -18143,9 +18145,9 @@ export default function MapPage() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isLegendsDirectoryLayer
               ? "dp-native-drawer dp-map-directory-sheet dp-legends-directory-sheet"
-              : `dp-native-drawer dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
+              : `dp-native-drawer dp-panel-shell dp-map-drawer-shell ${isResidentSavedDrawer ? "dp-saved-drawer-shell" : ""} ${isResidentEventsDrawer ? "dp-resident-events-drawer" : ""} ${activePartnerPanel === "campaigns" ? "dp-map-campaign-drawer" : ""} ${activePartnerPanel === "reports" ? "dp-map-reports-drawer" : ""} absolute inset-x-0 bottom-0 z-[620] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:max-h-[64dvh] md:rounded-t-[12px]`}
             style={MAP_DRAWER_SURFACE_STYLE}
-            data-drawer-state="expanded"
+            data-drawer-state={isResidentEventsDrawer ? "full" : "expanded"}
             data-mobile-panel-surface="true"
             role="dialog"
             aria-modal="true"

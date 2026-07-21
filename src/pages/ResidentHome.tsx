@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Bookmark, Building2, CalendarDays, ChevronDown, ChevronRight, CreditCard, Landmark, QrCode, Route, Search, UserRound, X } from "lucide-react";
+import { ArrowLeft, Bookmark, CalendarDays, ChevronRight, CreditCard, Landmark, Map, QrCode, Search, UserRound, X } from "lucide-react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { RESIDENT_SEARCH_GUIDE_GROUPS } from "@/components/map/searchIntentRailConfig";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 import { useAuth } from "@/lib/AuthContext";
@@ -10,42 +9,16 @@ import {
   getResidentLiveActivity,
   type ResidentLiveActivityItem,
 } from "@/lib/resident/liveActivity";
+import { QuickCivicQuestion } from "@/features/resident/civic/QuickCivicQuestion";
+import { ResidentPassModal } from "@/features/resident/resident-pass/ResidentPassModal";
+import { getResidentGovernance, subscribeToResidentCivicInbox, type ResidentGovernanceResponse } from "@/lib/governance/governanceClient";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 
-const nearbyCategories = [
-  ["Coffee", "Coffee"],
-  ["Dinner", "Dining"],
-  ["Cocktails", "Drinks"],
-  ["Events", "Events"],
-  ["Happy Hour", "Happy Hour"],
-  ["Fitness", "Fitness"],
-  ["Weekend", "This Week"],
-] as const;
-
-const residentEvents = [
-  { title: "Live music downtown", detail: "Tonight · Rainey and the Red River district", href: "/map?mode=resident&tab=events&filter=Events&query=live%20music&intent=events" },
-  { title: "Waterloo events", detail: "Park programs, performances and community events", href: "/map?mode=resident&tab=events&filter=Events&collection=waterloo-greenway&query=Waterloo%20events" },
-  { title: "Weekend downtown", detail: "Events, markets and plans worth walking to", href: "/map?mode=resident&tab=events&filter=Events&query=weekend%20events&intent=events" },
-] as const;
-
-const residentRoutes = [
-  { title: "Warehouse Happy Hour Walk", detail: "Four walkable drinks and dining stops", meta: "18 min · 0.8 mi", href: "/map?mode=resident&tab=map&filter=Happy%20Hour&routeId=warehouse-district-happy-hour&query=walking%20happy%20hour%20route&intent=happy_hour" },
-  { title: "DAA Art & Parks Walk", detail: "Public art, parks, plazas and cultural landmarks", meta: "Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&routeId=daa-art-walk&query=DAA%20Art%20Walk&intent=DAA_art_walk" },
-  { title: "Waterloo Greenway Walk", detail: "Parks, gardens, Waller Creek and Moody Amphitheater", meta: "6 stops · Self-guided", href: "/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" },
-  { title: "Downtown Stories Walk", detail: "Public spaces, history and neighborhood stories", meta: "25 min · 1.1 mi", href: "/map?mode=resident&tab=map&filter=Civic&routeId=downtown-stories-walk&query=downtown%20stories%20walk&intent=explore_downtown" },
-  { title: "Downtown Coffee Loop", detail: "A short morning route through downtown", meta: "14 min · 0.6 mi", href: "/map?mode=resident&tab=map&filter=Coffee&routeId=coffee-before-work&query=coffee%20before%20work&intent=coffee" },
-  { title: "Hotel Guest Arrival Route", detail: "Hotel Van Zandt to food, music and the river", meta: "16 min · 0.7 mi", href: "/map?mode=resident&tab=map&filter=Hotels&routeId=hotel-guest-arrival-route&query=hotel%20guest%20arrival%20route" },
-] as const;
-
-const experienceCollections = [
-  { title: "Best sushi downtown", detail: "Sushi, sake and resident happy hours", href: "/map?mode=resident&tab=map&filter=Dining&query=Best%20sushi%20downtown&intent=dining" },
-  { title: "Date night", detail: "Dinner, cocktails, music and waterfront stops", href: "/map?mode=resident&tab=map&filter=Dining&collection=date-night&query=Dinner%20for%20a%20date%20night&intent=dinner" },
-  { title: "First date", detail: "Low-pressure coffee, drinks and easy walks", href: "/map?mode=resident&tab=map&filter=All&query=first%20date%20downtown&intent=dining" },
-  { title: "Meet new friends", detail: "Social events, group activities and casual places", href: "/map?mode=resident&tab=events&filter=Events&query=events%20to%20meet%20new%20friends&intent=events" },
-  { title: "Campaigns and pop-ups", detail: "Limited-time brand and partner experiences", href: "/map?mode=resident&tab=map&filter=Campaigns&query=campaigns%20pop-ups%20and%20brand%20activations" },
-  { title: "Shared amenities", detail: "One participating building at a time", href: "/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access&intent=explore_downtown" },
-] as const;
+const EMPTY_CIVIC: ResidentGovernanceResponse = {
+  initiatives: [], meetings: [], consultations: [], questions: [], yourQuestions: [], yourReports: [], followedInitiativeIds: [],
+  neutrality: "Downtown Perks shares verified civic information and does not endorse political candidates.",
+};
 
 type HomePanel = "home" | "perks" | "card" | "profile";
 type ResidentRecord = {
@@ -194,21 +167,6 @@ function readableInterests(values?: string[]) {
   return values.map((value) => value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(", ");
 }
 
-function searchGuideHref(item: (typeof RESIDENT_SEARCH_GUIDE_GROUPS)[number]["items"][number]) {
-  const params = new URLSearchParams({
-    mode: "resident",
-    tab: "map",
-    filter: item.filter || "All",
-    query: item.prompt || item.fullLabel,
-    intent: item.id,
-  });
-  if (item.collection) {
-    params.set("collection", item.collection);
-    params.set("routeId", item.collection);
-  }
-  return `/map?${params.toString()}`;
-}
-
 export default function ResidentHome() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -220,7 +178,18 @@ export default function ResidentHome() {
   const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
   const [liveActivity, setLiveActivity] = useState<ResidentLiveActivityItem[]>([]);
   const [liveActivityStatus, setLiveActivityStatus] = useState<"loading" | "ready" | "empty" | "unavailable">("loading");
+  const [civic, setCivic] = useState<ResidentGovernanceResponse>(EMPTY_CIVIC);
+  const [passOpen, setPassOpen] = useState(false);
   useSavedEntitiesRealtime();
+
+  async function refreshCivic() {
+    try { setCivic(await getResidentGovernance()); } catch { /* Preserve the last verified Home state while civic data reconnects. */ }
+  }
+
+  useEffect(() => {
+    void refreshCivic();
+    return subscribeToResidentCivicInbox(() => { void refreshCivic(); });
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -366,97 +335,55 @@ export default function ResidentHome() {
 
       {panel === "home" ? (
         <div className="dp-resident-home__panel dp-resident-command-center" role="tabpanel" aria-label="Resident home">
-          <section className="dp-resident-dynamic-greeting" aria-labelledby="resident-command-greeting">
+          <section className="dp-resident-dynamic-greeting dp-resident-home-hero" aria-labelledby="resident-command-greeting">
+            <div><p>{greeting}</p><h1 id="resident-command-greeting">Downtown today</h1><span>{weekdayForNow()} · Nearby plans, resident benefits, and community updates.</span></div>
+            <div className="dp-resident-home-primary-actions" aria-label="Primary resident actions">
+              <Link to="/map?mode=resident&tab=map&filter=All"><Map aria-hidden="true" /><span>Open map</span></Link>
+              <button type="button" onClick={() => setPassOpen(true)}><QrCode aria-hidden="true" /><span>Show resident pass</span></button>
+              <Link to="/resident/civic"><Landmark aria-hidden="true" /><span>Civic inbox</span></Link>
+            </div>
+          </section>
+
+          <section className="dp-resident-home__section dp-resident-now-briefing" aria-labelledby="resident-briefing-title">
+            <div className="dp-resident-section-title"><h2 id="resident-briefing-title">What matters today</h2></div>
             <div>
-              <p>{greeting}</p>
-              <h1 id="resident-command-greeting">What feels right downtown?</h1>
-              <span>Downtown Austin · {weekdayForNow()}</span>
+              <Link to="/map?mode=resident&tab=map&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>Events start downtown this evening</strong><small>See verified times and locations on the map.</small></span><ChevronRight aria-hidden="true" /></Link>
+              <Link to="/map?mode=resident&tab=perks&filter=Perks"><CreditCard aria-hidden="true" /><span><strong>Your resident benefits are ready</strong><small>Open a perk before you arrive.</small></span><ChevronRight aria-hidden="true" /></Link>
+              <Link to="/resident/civic"><Landmark aria-hidden="true" /><span><strong>{civic.consultations.length || 1} community question open</strong><small>Share a response and follow what happens next.</small></span><ChevronRight aria-hidden="true" /></Link>
             </div>
           </section>
 
-          <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="recommended-today">
-            <div className="dp-resident-section-title"><h2 id="recommended-today">Recommended nearby</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway">View map</Link></div>
-            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway&query=Waterloo%20Greenway%20walk&intent=explore_downtown" aria-label="Open the Waterloo Greenway walk on the map">
-              <img
-                src="/images/map-entities/refresh/civic/waterloo-golden-hour.png"
-                alt="Waterloo Greenway in downtown Austin at golden hour"
-                loading="eager"
-                decoding="async"
-              />
-              <div><span>For this evening</span><h3>Walk Waterloo at golden hour.</h3><p>Follow Waller Creek through Waterloo Park to Moody Amphitheater.</p><strong>Open the walk <ArrowRight aria-hidden="true" /></strong></div>
+          <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="happening-now-title">
+            <div className="dp-resident-section-title"><h2 id="happening-now-title">Happening now</h2><Link to="/map?mode=resident&tab=map&filter=All">Open map</Link></div>
+            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway" aria-label="Open Waterloo Greenway on the map">
+              <img src="/images/map-entities/refresh/civic/waterloo-golden-hour.png" alt="Waterloo Greenway in downtown Austin at golden hour" loading="eager" decoding="async" />
+              <div><span>Waterloo Greenway</span><h3>Evening along Waller Creek</h3><p>See current park access, programming, and the route to Moody Amphitheater.</p><strong>Open map</strong></div>
             </Link>
-          </section>
-
-          <section className="dp-resident-ai-concierge" aria-labelledby="resident-ai-concierge-title">
-            <Link className="dp-resident-search-entry" to="/map?mode=resident&tab=map&filter=All&console=expanded">
-              <Search aria-hidden="true" />
-              <span id="resident-ai-concierge-title">Ask Downtown</span>
-              <small>Where should we go?</small>
-            </Link>
-            <div className="dp-resident-concierge-prompts" aria-label="Suggested searches">
-              {["Walkable dinner tonight", "Live music", "Quiet coffee", "Pool access", "Date night", "What's new?"].map((prompt) => (
-                <Link key={prompt} to={`/map?mode=resident&tab=map&filter=All&query=${encodeURIComponent(prompt)}`}>{prompt}</Link>
-              ))}
-            </div>
-          </section>
-
-          <section className="dp-resident-search-guide" aria-labelledby="resident-search-guide-title">
-            <header>
-              <p>Ask the Map</p>
-              <h2 id="resident-search-guide-title">What can I look for?</h2>
-              <span>Choose a place, plan, walk, or everyday need. Tap any option to open it on the map.</span>
-            </header>
-            <div className="dp-resident-search-guide__groups">
-              {RESIDENT_SEARCH_GUIDE_GROUPS.map((group, index) => (
-                <details key={group.title} open={index === 0}>
-                  <summary>
-                    <span><strong>{group.title}</strong><small>{group.description}</small></span>
-                    <ChevronDown aria-hidden="true" />
-                  </summary>
-                  <div>
-                    {group.items.map((item) => (
-                      <Link key={item.id} to={searchGuideHref(item)}>
-                        <span><strong>{item.shortLabel}</strong><small>{item.description}</small></span>
-                        <ChevronRight aria-hidden="true" />
-                      </Link>
-                    ))}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </section>
-
-          <section className="dp-resident-card-command" aria-labelledby="resident-card-command-title">
-            <div>
-              <p>Resident Card</p>
-              <h2 id="resident-card-command-title">QR ready</h2>
-              <span>Tap to show your QR code and use a nearby resident perk.</span>
-            </div>
-            <button className="dp-resident-text-action" type="button" onClick={() => openPanel("card")}><QrCode aria-hidden="true" />Show QR</button>
-            <Link className="dp-resident-text-action" to="/map?mode=resident&tab=perks&filter=Perks">Benefits <ChevronRight aria-hidden="true" /></Link>
           </section>
 
           <section className="dp-resident-home__section dp-resident-live-activity" aria-labelledby="live-activity-title">
-            <div className="dp-resident-section-title"><h2 id="live-activity-title">Live activity</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=events&filter=All">Open map</Link></div>
+            <div className="dp-resident-section-title"><h2 id="live-activity-title">Live activity</h2><Link to="/map?mode=resident&tab=events&filter=All">Open map</Link></div>
             {liveActivityStatus === "loading" ? <p className="dp-resident-live-activity__state" role="status">Checking what is happening downtown.</p> : null}
             {liveActivityStatus === "empty" ? <p className="dp-resident-live-activity__state">Nothing new has been published right now. Check the map for places and plans nearby.</p> : null}
             {liveActivityStatus === "unavailable" ? <p className="dp-resident-live-activity__state" role="status">Live updates are taking a moment. The map is still ready to explore.</p> : null}
-            {liveActivity.length ? <div>
-              {liveActivity.map((item) => (
-                <Link key={item.id} to={item.href}>
-                  <span><strong>{item.place}</strong><small>{item.action}</small></span>
-                  <em>{item.status}</em>
-                </Link>
-              ))}
-            </div> : null}
+            {liveActivity.length ? <div>{liveActivity.map((item) => (
+              <Link key={item.id} to={item.href}>
+                <span><strong>{item.place}</strong><small>{item.action}</small></span>
+                <em>{item.status}</em>
+              </Link>
+            ))}</div> : null}
           </section>
 
-          <section className="dp-resident-home__section" aria-labelledby="nearby-categories">
-            <div className="dp-resident-section-title"><h2 id="nearby-categories">Quick actions</h2></div>
-            <div className="dp-resident-category-rail" aria-label="Nearby categories">
-              {nearbyCategories.map(([label, filter]) => <Link key={label} to={`/map?mode=resident&tab=map&filter=${encodeURIComponent(filter)}`}>{label}</Link>)}
-              <Link to="/map?mode=resident&tab=map&filter=Hotels">Hotels</Link>
-            </div>
+          <section className="dp-resident-home__section dp-resident-benefits-summary" aria-labelledby="resident-benefits-title">
+            <div className="dp-resident-section-title"><h2 id="resident-benefits-title">Resident benefits</h2><Link to="/map?mode=resident&tab=perks&filter=Perks">See benefits</Link></div>
+            <p>Use your short-lived Resident Pass when a participating place asks to verify your access.</p>
+          </section>
+
+          <section className="dp-resident-home__section dp-resident-civic-home" aria-labelledby="resident-civic-title">
+            <div className="dp-resident-section-title"><h2 id="resident-civic-title">Your civic inbox</h2><Link to="/resident/civic">View all</Link></div>
+            {civic.consultations[0] ? <QuickCivicQuestion action={civic.consultations[0]} onSubmitted={refreshCivic} /> : (
+              <article className="dp-civic-home-empty"><small>Downtown update</small><h3>Tell DANA what should improve first</h3><p>Sign in to answer the current resident question and follow the published result.</p><Link to="/resident/civic">Open civic inbox</Link></article>
+            )}
           </section>
 
           <section className="dp-resident-home__section dp-resident-home__saved-preview" aria-labelledby="home-saved-title">
@@ -482,28 +409,14 @@ export default function ResidentHome() {
             )}
           </section>
 
-          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="home-events-title">
-            <div className="dp-resident-section-title"><h2 id="home-events-title">Upcoming</h2><Link className="dp-resident-text-action" to="/map?mode=resident&tab=events&filter=Events">Events</Link></div>
-            <div>{residentEvents.slice(0, 1).map((item) => <Link key={item.title} to={item.href}><CalendarDays aria-hidden="true" /><span><strong>Tonight · 3 events nearby</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
+          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="home-upcoming-title">
+            <div className="dp-resident-section-title"><h2 id="home-upcoming-title">Saved and upcoming</h2><Link to="/map?mode=resident&tab=events&filter=Events">See events</Link></div>
+            <div><Link to="/map?mode=resident&tab=events&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>See your next downtown plan</strong><small>Saved places and event responses stay together.</small></span><ChevronRight aria-hidden="true" /></Link></div>
           </section>
 
-          <section className="dp-resident-directory-section" aria-labelledby="walking-routes-title">
-            <div className="dp-resident-section-title"><h2 id="walking-routes-title">Walking routes</h2></div>
-            <div className="dp-resident-route-list">{residentRoutes.map((item, index) => <Link key={item.title} to={item.href} className={index === 0 ? "is-featured" : ""}><Route aria-hidden="true" /><span><strong>{item.title}</strong><small>{item.detail}</small><em>{item.meta}</em></span><ChevronRight aria-hidden="true" /></Link>)}</div>
-          </section>
-
-          <section className="dp-resident-directory-section" aria-labelledby="collections-title">
-            <div className="dp-resident-section-title"><h2 id="collections-title">Collections</h2></div>
-            <div className="dp-resident-directory-list">{experienceCollections.map((item) => <Link key={item.title} to={item.href}><span><strong>{item.title}</strong><small>{item.detail}</small></span><ChevronRight aria-hidden="true" /></Link>)}</div>
-          </section>
-
-          <section className="dp-resident-directory-section dp-resident-shared-amenity" aria-labelledby="shared-amenity-title">
-            <Building2 aria-hidden="true" />
-            <div><small>Building benefit</small><h2 id="shared-amenity-title">The Modern · pool access</h2><p>A featured resident benefit available through participating buildings.</p><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=Properties&query=shared%20amenities%20resident%20access">View benefit</Link></div>
-          </section>
-          <section className="dp-resident-directory-section dp-resident-dana-question" aria-labelledby="dana-question-title">
-            <Landmark aria-hidden="true" />
-            <div><small>Downtown update</small><h2 id="dana-question-title">Waterloo Greenway weekend festival</h2><p>See what is happening nearby and answer one short community question.</p><Link className="dp-resident-text-action" to="/residents/governance">See community updates</Link></div>
+          <section className="dp-resident-home__section dp-resident-recent-activity" aria-labelledby="recent-activity-title">
+            <div className="dp-resident-section-title"><h2 id="recent-activity-title">Recent activity</h2><Link to="/resident/activity">View activity</Link></div>
+            <p>{savedIds.length ? `${savedIds.length} saved ${savedIds.length === 1 ? "place" : "places"} connected to your account.` : "Saved places, civic responses, and pass activity will appear here."}</p>
           </section>
 
         </div>
@@ -555,10 +468,10 @@ export default function ResidentHome() {
                 <code>{residentCardCode(resident)}</code>
               </section>
               <section className="dp-resident-card-qr-action" aria-label="Resident perk QR code">
-                <img src="/images/card/perks-card-qr.png" alt="Downtown Perks QR code for resident perks" />
+                <button type="button" onClick={() => setPassOpen(true)}><QrCode aria-hidden="true" /><span>Show secure resident pass</span></button>
                 <div>
-                  <h3>Tap to show this QR code.</h3>
-                  <p>Show it at a participating partner to get your resident perk.</p>
+                  <h3>Create a one-time QR code.</h3>
+                  <p>Your pass expires automatically after it is shown.</p>
                 </div>
               </section>
               <section className="dp-resident-profile-section" aria-labelledby="resident-profile-title">
@@ -613,6 +526,7 @@ export default function ResidentHome() {
       ) : null}
 
       <ResidentMobileTabBar activeTab={activeTab} onTabChange={handleTabChange} />
+      <ResidentPassModal open={passOpen} residentName={resident?.fullName || "Downtown Perks resident"} buildingName={resident?.buildingName} onClose={() => setPassOpen(false)} />
     </main>
   );
 }

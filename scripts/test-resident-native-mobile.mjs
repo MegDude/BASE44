@@ -44,26 +44,9 @@ if (await page.locator("nav").filter({ hasNot: page.locator(".dp-resident-native
   if (visibleForeignNav) throw new Error("Resident Home shows non-native website navigation.");
 }
 
-await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+await page.getByRole("heading", { name: "Downtown today" }).waitFor();
+await page.getByRole("heading", { name: "What matters today", exact: true }).waitFor();
 await page.getByRole("heading", { name: "Live activity", exact: true }).waitFor();
-await page.getByRole("heading", { name: "What can I look for?" }).waitFor();
-for (const group of ["Food and drink", "Plans and places", "Walks to follow", "More around downtown"]) {
-  await page.getByText(group, { exact: true }).waitFor();
-}
-const searchGuide = page.locator(".dp-resident-search-guide");
-if (await searchGuide.locator("a").count() !== 29) {
-  throw new Error(`Resident search guide does not contain every map choice: ${await searchGuide.locator("a").count()}`);
-}
-await searchGuide.getByText("Coffee, breakfast, and brunch you can walk to.", { exact: true }).waitFor();
-const guideText = await searchGuide.innerText();
-if (/\bintent(?:s)?\b|Explore more intents|More ways to explore downtown/i.test(guideText)) {
-  throw new Error(`Resident search guide exposes internal or duplicated copy: ${guideText}`);
-}
-await searchGuide.getByText("Plans and places", { exact: true }).click();
-const eventsGuideHref = await searchGuide.getByRole("link", { name: /Events What’s happening today and later this week/ }).getAttribute("href");
-if (!eventsGuideHref?.includes("filter=Events") || !eventsGuideHref.includes("intent=events")) {
-  throw new Error(`Events guide is not wired to its map search: ${eventsGuideHref}`);
-}
 if (await page.locator(".dp-product-shell-search-button").count()) {
   throw new Error("Resident Home renders the global shell search over its native header.");
 }
@@ -85,7 +68,7 @@ for (const panel of ["profile", "perks", "card"]) {
 }
 
 await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", timeout: 30_000 });
-await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+await page.getByRole("heading", { name: "Downtown today" }).waitFor();
 
 await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Card" }).click();
 await page.getByRole("heading", { name: "Everything connected to your card." }).waitFor();
@@ -124,7 +107,7 @@ const activeCardColor = await page.locator(".dp-resident-native-tabs").getByRole
 if (activeCardColor !== "rgb(154, 121, 55)") throw new Error(`Selected Card tab is not gold: ${activeCardColor}`);
 
 await page.locator(".dp-resident-native-tabs").getByRole("tab", { name: "Home" }).click();
-await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+await page.getByRole("heading", { name: "Downtown today" }).waitFor();
 
 const viewport = page.viewportSize();
 const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -138,10 +121,10 @@ if (tabGeometry.position !== "fixed" || tabGeometry.bottom !== "0px" || tabGeome
   throw new Error(`Resident tab bar is not safely anchored: ${JSON.stringify(tabGeometry)}`);
 }
 
-const coffeeHref = await page.getByRole("link", { name: "Coffee", exact: true }).getAttribute("href");
-if (coffeeHref !== "/map?mode=resident&tab=map&filter=Coffee") throw new Error(`Unexpected Coffee route: ${coffeeHref}`);
-await page.goto(`${baseUrl}${coffeeHref}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
-await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("filter") === "Coffee", { timeout: 15_000 });
+const mapHref = await page.getByRole("link", { name: "Open map", exact: true }).first().getAttribute("href");
+if (mapHref !== "/map?mode=resident&tab=map&filter=All") throw new Error(`Unexpected map route: ${mapHref}`);
+await page.goto(`${baseUrl}${mapHref}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("filter") === "All", { timeout: 15_000 });
 await page.waitForSelector(".dp-map-bottom-nav", { state: "visible", timeout: 15_000 });
 
 const mapLabels = await page.locator(".dp-map-bottom-nav [role='tab']").allTextContents();
@@ -151,7 +134,7 @@ if (mapLabels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|
 
 await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Home" }).click();
 await page.waitForURL((url) => url.pathname === "/resident/home", { timeout: 15_000 });
-await page.getByRole("heading", { name: "What feels right downtown?" }).waitFor();
+await page.getByRole("heading", { name: "Downtown today" }).waitFor();
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
 console.log("resident native mobile: complete bright-white Card profile, compact gold actions, five canonical tabs, and Map returns to Home");

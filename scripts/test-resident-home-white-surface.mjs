@@ -18,11 +18,11 @@ const residentHomeStyle = 'import "@/styles/resident-home-ios-native-final.css"'
 const activePerksStyle = 'import "@/styles/active-perks-sheet.css"';
 const residentHomeStyleIndex = styleImports.indexOf(residentHomeStyle);
 assert.ok(residentHomeStyleIndex >= 0, "Resident Home surface lock must be loaded globally");
-assert.deepEqual(
-  styleImports.slice(residentHomeStyleIndex + 1),
-  [activePerksStyle],
-  "Only the scoped Active Perks sheet may load after the Resident Home surface lock",
-);
+const homeLockIndex = styleImports.indexOf('import "@/styles/resident-home-civic-reconciliation.css"');
+const eventsLockIndex = styleImports.indexOf('import "@/styles/resident-events-drawer-full.css"');
+assert.ok(styleImports.indexOf(activePerksStyle) > residentHomeStyleIndex, "The approved Active Perks sheet must load after the base Resident Home surface");
+assert.ok(homeLockIndex > styleImports.indexOf(activePerksStyle), "The civic Home reconciliation must remain in the final stylesheet group");
+assert.ok(eventsLockIndex > homeLockIndex, "The scoped Events drawer geometry must load after the Home surface lock");
 assert.match(residentSurfaceLock, /\.dp-resident-home\.dp-resident-home\[data-panel="home"\][\s\S]*?background:\s*#ffffff\s*!important;/, "Resident Home does not own a bright-white page surface");
 assert.match(residentSurfaceLock, /\.dp-resident-command-nav\.dp-resident-command-nav[\s\S]*?backdrop-filter:\s*none\s*!important;[\s\S]*?box-shadow:\s*none\s*!important;/, "Resident Home header still permits blur or glow");
 assert.match(residentSurfaceLock, /\.dp-resident-ai-concierge,[\s\S]*?\.dp-resident-directory-list[\s\S]*?box-shadow:\s*none\s*!important;/, "Resident Home sections still permit elevated card styling");

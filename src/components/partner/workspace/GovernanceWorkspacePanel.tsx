@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { CalendarDays, FileQuestion, Landmark, Send, TriangleAlert } from "lucide-react";
-import { getPartnerGovernance, sendPartnerGovernanceAction, type PartnerGovernanceResponse } from "@/lib/governance/governanceClient";
+import { getPartnerGovernance, sendPartnerGovernanceAction, subscribeToCivicResponses, type PartnerGovernanceResponse } from "@/lib/governance/governanceClient";
 import type { ResolvedPartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 
 type GovernanceWorkspacePanelProps = {
@@ -24,6 +24,10 @@ export function GovernanceWorkspacePanel({ scope, organizationId }: GovernanceWo
       .catch((reason: Error) => { if (!controller.signal.aborted) setError(reason.message); });
     return () => controller.abort();
   }, [organizationId, scope.portfolioId, scope.listingId]);
+
+  useEffect(() => subscribeToCivicResponses(() => {
+    void getPartnerGovernance(organizationId, scope.portfolioId, scope.listingId).then(setData).catch(() => undefined);
+  }), [organizationId, scope.portfolioId, scope.listingId]);
 
   async function createConsultation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,7 +63,7 @@ export function GovernanceWorkspacePanel({ scope, organizationId }: GovernanceWo
       <dl className="dp-governance-partner__metrics" aria-label="Current community work">
         <div><dt>Questions waiting for review</dt><dd>{data?.questions.filter((item) => item.moderation_status === "pending").length || 0}</dd><small>Resident questions that need a decision</small></div>
         <div><dt>Reports needing an update</dt><dd>{data?.reports.filter((item) => !["resolved", "closed"].includes(item.status || "")).length || 0}</dd><small>Residents can follow the status you publish</small></div>
-        <div><dt>Consultations open or in draft</dt><dd>{data?.consultations.length || 0}</dd><small>Questions connected to this organization or selected place</small></div>
+        <div><dt>Resident responses</dt><dd>{data?.consultations.reduce((total, item) => total + (item.response_count || 0), 0) || 0}</dd><small>Responses update here as residents send them</small></div>
       </dl>
 
       <section className="dp-governance-partner__section" aria-labelledby="review-input-title">

@@ -100,6 +100,11 @@
     "test:borderless-panel-surfaces": "node scripts/test-borderless-panel-surfaces.mjs",
     "test:global-back-navigation": "node scripts/test-global-back-navigation.mjs",
     "test:governance-foundation": "node scripts/test-governance-foundation.mjs",
+    "test:resident-civic-runtime": "node scripts/test-resident-civic-runtime.mjs",
+    "test:resident-events-drawer": "node scripts/test-resident-events-full-drawer.mjs",
+    "test:inkind-redemption-compact": "node scripts/test-inkind-redemption-compact.mjs",
+    "test:resident-route-reconciliation": "node scripts/test-resident-route-reconciliation.mjs",
+    "test:search-input-rail-compact": "node scripts/test-search-input-rail-compact.mjs",
     "test:partner-share-links": "node scripts/test-partner-share-links-contract.mjs"
   },
   "dependencies": {
@@ -155,6 +160,7 @@
     "moment": "^2.30.1",
     "next-themes": "^0.4.4",
     "pg": "^8.21.0",
+    "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
@@ -177,6 +183,7 @@
     "@eslint/js": "^9.19.0",
     "@playwright/test": "^1.61.1",
     "@types/node": "^22.13.5",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.3.4",
