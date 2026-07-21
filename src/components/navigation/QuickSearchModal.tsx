@@ -58,20 +58,20 @@ const DISCOVERY_SECTIONS: SearchSection[] = [
 ];
 
 const SEARCH_PLACEHOLDERS = [
-  "Where do you want to go?",
-  "What do you want to do?",
-  "Who do you want to meet?",
+  "Search places and plans",
+  "Find an event or perk",
+  "Search downtown buildings",
 ];
 
 const INTENT_SHORTCUTS = [
-  { label: "Coffee", query: "Coffee before work", icon: Coffee },
-  { label: "Happy Hour", query: "Happy hour nearby", icon: Wine },
-  { label: "Live Music", query: "Live music tonight", icon: Music },
-  { label: "Dinner", query: "Dinner with friends", icon: Utensils },
-  { label: "Wellness", query: "Wellness nearby", icon: Activity },
-  { label: "Events", query: "Events this weekend", icon: CalendarDays },
-  { label: "Buildings", query: "Buildings near Rainey", icon: Building2 },
-  { label: "Perks", query: "Member benefits nearby", icon: TicketPercent },
+  { label: "Coffee", query: "Coffee", icon: Coffee },
+  { label: "Happy Hour", query: "Happy hour", icon: Wine },
+  { label: "Live Music", query: "Live music", icon: Music },
+  { label: "Dinner", query: "Dinner", icon: Utensils },
+  { label: "Wellness", query: "Wellness", icon: Activity },
+  { label: "Events", query: "Events", icon: CalendarDays },
+  { label: "Buildings", query: "Downtown buildings", icon: Building2 },
+  { label: "Perks", query: "Resident perks", icon: TicketPercent },
 ];
 
 const FALLBACK_IMAGES: Record<SearchResultKind, string> = {
@@ -449,7 +449,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           <div>
             <p className="dp-quick-search-eyebrow">Downtown Austin</p>
             <h2 id="dp-quick-search-title">Search downtown</h2>
-            <p className="dp-quick-search-support">Find places, events, perks, buildings, coffee, music, rooftops, and more.</p>
+            <p className="dp-quick-search-support">Find places, events, perks, and buildings.</p>
           </div>
           <div className="dp-quick-search-actions" aria-label="Search controls">
             <button type="button" className="dp-quick-search-back" onClick={onClose} aria-label="Go back from search">
@@ -479,8 +479,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           )}
         </div>
 
-        <div className="dp-quick-search-intents" aria-label="Explore by intent">
-          <h3>Explore by intent</h3>
+        <div className="dp-quick-search-intents" aria-label="Popular searches">
+          <h3>Popular searches</h3>
           <div className="dp-quick-search-intent-rail">
             {INTENT_SHORTCUTS.map((intent) => {
               const Icon = intent.icon;

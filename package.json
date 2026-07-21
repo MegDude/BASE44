@@ -105,6 +105,7 @@
     "test:inkind-redemption-compact": "node scripts/test-inkind-redemption-compact.mjs",
     "test:resident-route-reconciliation": "node scripts/test-resident-route-reconciliation.mjs",
     "test:search-input-rail-compact": "node scripts/test-search-input-rail-compact.mjs",
+    "test:quick-search-native": "node scripts/test-quick-search-native.mjs",
     "test:partner-share-links": "node scripts/test-partner-share-links-contract.mjs"
   },
   "dependencies": {
