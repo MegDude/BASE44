@@ -6837,6 +6837,8 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
     .map((item) => item.entity)
     .filter((entity) => entity?.id !== place?.id && ["property", "hotel", "event", "brand"].includes(getDestinationKind(entity)))
     .slice(0, 6);
+  const partnerCopy = getPartnerPanelCopy(place);
+  const priorityAccounts = opportunityPlaces.slice(0, 4).map((entity) => entity.name).filter(Boolean);
   const residentPreviewParams = new URLSearchParams(location.search);
   residentPreviewParams.set("mode", "resident");
   residentPreviewParams.set("tab", "map");
@@ -6845,10 +6847,10 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
   residentPreviewParams.delete("intent");
   const residentPreview = `/map?${residentPreviewParams.toString()}`;
   const campaignFit = [
-    ["Audience", venue.partnerView.eligibleAudiences.slice(0, 3).join(" · ")],
-    ["Placement", venue.partnerView.placements.slice(0, 3).join(" · ")],
-    ["Occasions", venue.partnerView.campaignOccasions.slice(0, 3).join(" · ")],
-    ["Measure", venue.partnerView.measurementEvents.slice(0, 3).join(" · ")],
+    ["Opportunity", partnerCopy.description],
+    ["Best timing", partnerCopy.timing],
+    ["Where it appears", partnerCopy.placement],
+    ["Expected action", partnerCopy.value],
   ].filter(([, value]) => value);
 
   return (
@@ -6857,18 +6859,19 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
       <header className="dp-entity-panel-header dp-entity-summary">
         <p className="dp-entity-eyebrow">inKind dining partner · {venue.district}</p>
         <h2 className="dp-entity-title">{venue.name}</h2>
-        <p className="dp-entity-dek">{venue.partnerView.partnerSummary}</p>
+        <p className="dp-entity-dek">{partnerCopy.description}</p>
       </header>
-      <DestinationSection title="Resident benefit summary"><p>{venue.inKind.benefitTitle}</p><p className="dp-destination-section-note">{venue.inKind.eligibility}</p></DestinationSection>
+      <DestinationSection title="Current offer"><p>{venue.inKind.benefitTitle}</p><p className="dp-destination-section-note">Review eligibility and redemption rules before publishing this offer.</p></DestinationSection>
       <div className="dp-contained-action-grid dp-inkind-governed-actions">
         <Link to={campaignRoute(place)} className="dp-panel-action dp-primary-action">Build campaign</Link>
-        <Link to={residentPreview} className="dp-panel-action">Preview resident view</Link>
+        <Link to={residentPreview} className="dp-panel-action">Preview published view</Link>
         <Link to={getPartnerDashboardRoute(place)} className="dp-panel-action">View performance</Link>
       </div>
-      <DestinationSection title="Next move"><p>Feature this benefit when nearby people are choosing where to dine.</p></DestinationSection>
-      <DestinationSection title="Campaign fit" className="dp-inkind-partner-brief">
+      <DestinationSection title="What to do next"><p>{partnerCopy.terms || partnerCopy.value}</p></DestinationSection>
+      <DestinationSection title="Recommended campaign brief" className="dp-inkind-partner-brief">
         <dl>{campaignFit.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       </DestinationSection>
+      {!!priorityAccounts.length && <DestinationSection title="Priority nearby accounts"><p>{priorityAccounts.join(" · ")}</p></DestinationSection>}
       {!!opportunityPlaces.length && (
         <DestinationSection title="Participating account network">
           <div className="dp-related-rail">{opportunityPlaces.map((entity) => <button key={entity.id} type="button" className="dp-related-place" onClick={() => onSelect(entity)}><span><strong>{entity.name}</strong><em>{getNearbyKindLabel(entity, getDestinationKind(entity))} · {entity.district || "Downtown Austin"}</em></span></button>)}</div>
@@ -6886,7 +6889,7 @@ function HospitalityNetworkDrawer({ place, places = [], mode = "resident", saved
   const isParentHotel = !isOffer && ["brand-hotel-van-zandt", "brand-fairmont-austin", "hotel-van-zandt"].includes(placeId);
   const hotelName = place?.parentHotelName || raw.parentHotelName || (canonicalParentId === "brand-fairmont-austin" ? "Fairmont Austin" : "Hotel Van Zandt");
   const residentSummary = place?.residentPanel?.description || raw.residentPanel?.description || place?.residentSummary || raw.residentSummary || place?.summary || raw.summary;
-  const partnerSummary = place?.partnerPanel?.description || raw.partnerPanel?.description || place?.partnerSummary || raw.partnerSummary || residentSummary;
+  const partnerSummary = getPartnerPanelCopy(place).description;
   const panel = mode === "partner" ? (place?.partnerPanel || raw.partnerPanel) : (place?.residentPanel || raw.residentPanel);
   const configuredActions = Array.isArray(panel?.actions) ? panel.actions.filter((action) => action?.label).slice(0, 5) : [];
   const offerState = place?.offerState || raw.offerState || "verification_required";
@@ -6994,7 +6997,7 @@ function getMapDetailContextLabel(place, hasPerkContext = false) {
   return "Place";
 }
 
-function getMapDetailNavigationTitle(place, hasPerkContext = false) {
+function getMapDetailNavigationTitle(place, hasPerkContext = false, mode = "resident") {
   const entityType = getCanonicalDetailEntityType(place, hasPerkContext);
   if (entityType === "perk") return "Perk details";
   if (entityType === "event") return "Event details";
@@ -7002,7 +7005,7 @@ function getMapDetailNavigationTitle(place, hasPerkContext = false) {
   if (entityType === "portfolio") return "Portfolio details";
   if (getResidentEntityKind(place) === "route") return "Walking route";
   if (isHotelEntity(place) || isLocalServiceEntity(place) || isNeighborhoodEntity(place)) return "Place details";
-  if (isCanonicalResidentialMixedUseEntity(place) || isTheShorePropertyEntity(place) || isExplicitPropertyRecord(place)) return "Resident benefit";
+  if (isCanonicalResidentialMixedUseEntity(place) || isTheShorePropertyEntity(place) || isExplicitPropertyRecord(place)) return mode === "partner" ? "Property details" : "Resident benefit";
   return place?.name || "Details";
 }
 
@@ -9486,10 +9489,7 @@ function getPartnerDestinationIdentity(place) {
   const perk = hasActivePerkData(place) ? getResidentPerkDetails(place) : null;
   const offer = cleanPartnerPanelText(perk?.offer || place?.offer || raw.offer);
   const status = offer ? `${formatResidentPerkHeading(offer)} available` : "Profile live";
-  const context = firstDecisionSentence(
-    place?.partnerSummary || raw.partnerSummary || place?.partnerInsight || raw.partnerInsight || place?.summary || raw.summary,
-    "Review nearby demand before choosing the next action.",
-  );
+  const context = firstDecisionSentence(getPartnerPanelCopy(place).description, "Review nearby demand before choosing the next action.");
   return {
     id: place?.id,
     entityType: getDestinationKind(place),
@@ -9519,8 +9519,8 @@ function PartnerLiveContentSection({ place, organizationId }) {
   const perk = hasActivePerkData(place) ? getResidentPerkDetails(place) : null;
   const offer = cleanPartnerPanelText(perk?.offer || place?.offer || raw.offer);
   const description = firstDecisionSentence(
-    place?.partnerOfferDescription || raw.partnerOfferDescription || perk?.description,
-    offer ? "Keep this offer clear and easy to use." : "Create one useful offer for nearby residents.",
+    place?.partnerOfferDescription || raw.partnerOfferDescription,
+    offer ? "Review the offer wording, eligibility, and redemption path before publishing." : "Create one clear offer for the audience nearest this place.",
   );
   const route = withPartnerWorkspaceContext(`/partner-workspace/offers?entityId=${encodeURIComponent(place?.id || "")}`, organizationId);
   return (
@@ -9550,11 +9550,7 @@ function PartnerPerformanceSummary({ place, organizationId }) {
 }
 
 function PartnerOpportunitySection({ place, organizationId }) {
-  const raw = place?.raw || {};
-  const opportunity = firstDecisionSentence(
-    place?.partnerRecommendation || raw.partnerRecommendation || place?.partnerOpportunity || raw.partnerOpportunity || place?.campaignObjective || raw.campaignObjective || place?.partnerInsight || raw.partnerInsight,
-    "Choose one nearby audience and one clear reason to visit.",
-  );
+  const opportunity = firstDecisionSentence(getPartnerPanelCopy(place).terms, "Choose one nearby audience and one clear reason to visit.");
   const route = withPartnerWorkspaceContext(`/partner-workspace/campaigns?entityId=${encodeURIComponent(place?.id || "")}`, organizationId);
   return (
     <section className="dp-partner-destination-section" aria-labelledby={`partner-opportunity-${place.id}`}>
@@ -10902,6 +10898,7 @@ function MapNativeCampaignDetails({ place, mode }) {
   const participatingCount = participating.length;
   const reward = place.reward || place.rewardLabel || raw.reward || raw.rewardLabel;
   const campaignType = place.campaignType || raw.campaignType;
+  const partnerCopy = mode === "partner" ? getPartnerPanelCopy(place) : null;
   const reportItems = [
     ["Views", analytics.views],
     ["Opens", analytics.opens],
@@ -10913,13 +10910,15 @@ function MapNativeCampaignDetails({ place, mode }) {
 
   return (
     <section className="dp-destination-section dp-map-native-campaign-detail">
-      <p className="dp-destination-section-kicker">Featured experience</p>
-      <h3>How to use it</h3>
+      <p className="dp-destination-section-kicker">{mode === "partner" ? "Active campaign" : "Featured experience"}</p>
+      <h3>{mode === "partner" ? "What this campaign is for" : "How to use it"}</h3>
       {(place.partnerLine || place.sponsorName) && (
         <p className="dp-destination-section-note">Featured by {place.partnerLine || place.sponsorName}</p>
       )}
       <p className="dp-destination-section-copy">
-        {place.description || raw.description || place.summary || raw.summary || "This featured experience connects nearby places, routes, and useful next steps in the map."}
+        {mode === "partner"
+          ? partnerCopy.description
+          : place.description || raw.description || place.summary || raw.summary || "This featured experience connects nearby places, routes, and useful next steps in the map."}
       </p>
       <div className="dp-campaign-native-stat-grid" aria-label={`${place.name} campaign stats`}>
         {(stats.length ? stats : [
@@ -11273,7 +11272,7 @@ function CleanIndependentEntityDrawer({
             ? "Good for reaching residents when they are already choosing dinner, fitness, coffee, or a walkable plan nearby."
             : "Downtown Perks helps residents find nearby offers, events, dining, wellness, retail, and services from the places they already move through."}
         </p>
-        <div className="dp-entity-text-rail" aria-label="Resident benefit examples">
+        <div className="dp-entity-text-rail" aria-label={isPartnerMode ? "Ways to reach people nearby" : "Resident benefit examples"}>
           {["Dining nearby", "Fitness nearby", "Lake access", "Retail offers", "Weekend plans"].map((item) => (
             <span key={item}>{item}</span>
           ))}
@@ -18560,7 +18559,7 @@ export default function MapPage() {
           >
             <MapDetailHeader
               place={selected}
-              navigationTitle={getMapDetailNavigationTitle(selected, Boolean(urlState.perkId))}
+              navigationTitle={getMapDetailNavigationTitle(selected, Boolean(urlState.perkId), urlState.mode)}
               backLabel={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)) === "perk" ? "Back to active perks" : "Back"}
               panelState={detailDrawerState}
               onPanelStateChange={updateDetailDrawerState}

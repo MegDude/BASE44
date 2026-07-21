@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CalendarDays, ChevronRight, MapPin, Route, Sparkles } from "lucide-react";
 import { formatDistanceLabel } from "@/utils/nearbyRecommendations";
 
-const NAV_ITEMS = [
+const RESIDENT_NAV_ITEMS = [
   ["overview", "Overview"],
   ["perks", "Perks"],
   ["campaigns", "Campaigns"],
@@ -13,6 +13,23 @@ const NAV_ITEMS = [
   ["nearby", "Nearby"],
   ["guide", "Guide"],
 ];
+
+const PARTNER_NAV_ITEMS = [
+  ["overview", "Overview"],
+  ["perks", "Offers"],
+  ["campaigns", "Campaigns"],
+  ["amenities", "Amenities"],
+  ["events", "Events"],
+  ["nearby", "Nearby"],
+  ["guide", "Profile"],
+];
+
+function partnerIdentityLabel(value) {
+  const label = String(value || "").trim();
+  if (/resident perks?/i.test(label)) return "Published offers";
+  if (/resident/i.test(label)) return label.replace(/resident/ig, "audience");
+  return label;
+}
 
 function Section({ id, title, description, children }) {
   return (
@@ -37,10 +54,11 @@ function PlaceRow({ place, meta, onSelect }) {
 
 export default function BuildingExperienceModule({ building, experience, mode = "resident", onSelect, onExplore, onOpenRoute }) {
   const isPartner = mode === "partner";
+  const navItems = isPartner ? PARTNER_NAV_ITEMS : RESIDENT_NAV_ITEMS;
   const campaignRoute = `/partner-workspace/campaigns?entityId=${encodeURIComponent(building.id)}`;
   const hostRef = useRef(null);
   const navRef = useRef(null);
-  const [activeSection, setActiveSection] = useState(NAV_ITEMS[0][0]);
+  const [activeSection, setActiveSection] = useState(navItems[0][0]);
   const reduceMotion = useReducedMotion();
 
   const scrollToSection = (sectionId, sourceButton) => {
@@ -58,7 +76,7 @@ export default function BuildingExperienceModule({ building, experience, mode = 
     if (!host || !nav || typeof IntersectionObserver === "undefined") return undefined;
 
     const scrollRoot = nav.closest(".dp-map-detail-scroll, .dp-map-panel-scroll, .dp-drawer-scroll, [data-panel-scroll]");
-    const sections = NAV_ITEMS.map(([id]) => host.querySelector(`#building-${id}`)).filter(Boolean);
+    const sections = navItems.map(([id]) => host.querySelector(`#building-${id}`)).filter(Boolean);
     if (!sections.length) return undefined;
 
     const observer = new IntersectionObserver((entries) => {
@@ -79,7 +97,7 @@ export default function BuildingExperienceModule({ building, experience, mode = 
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [building.id]);
+  }, [building.id, navItems]);
 
   useEffect(() => {
     const activeButton = navRef.current?.querySelector(`[data-building-nav="${activeSection}"]`);
@@ -90,7 +108,7 @@ export default function BuildingExperienceModule({ building, experience, mode = 
     <div ref={hostRef} className="dp-system dp-building-experience-host">
     <div className="dp-building-experience" data-building-experience={building.id}>
       <nav ref={navRef} className="dp-building-experience-nav" aria-label={`${building.name} sections`}>
-        {NAV_ITEMS.map(([id, label]) => {
+        {navItems.map(([id, label]) => {
           const isActive = activeSection === id;
           return (
             <button
@@ -117,20 +135,20 @@ export default function BuildingExperienceModule({ building, experience, mode = 
 
       <Section id="building-overview" title="At a glance">
         <div className="dp-building-status-line">
-          <span>{experience.perks.length} perks</span>
+          <span>{experience.perks.length} {isPartner ? "live offers" : "perks"}</span>
           <span>{experience.events.length} events</span>
           <span>{experience.routes.length} routes</span>
         </div>
-        {!!experience.identity.length && <ul className="dp-building-identity-list" aria-label="Building character">{experience.identity.map((tag) => <li key={tag}>{tag}</li>)}</ul>}
+        {!!experience.identity.length && <ul className="dp-building-identity-list" aria-label={isPartner ? "Building campaign context" : "Building character"}>{experience.identity.map((tag) => <li key={tag}>{isPartner ? partnerIdentityLabel(tag) : tag}</li>)}</ul>}
       </Section>
 
-      <Section id="building-perks" title="Perks" description="Useful resident benefits available around this building.">
+      <Section id="building-perks" title={isPartner ? "Offers" : "Perks"} description={isPartner ? "Offers currently connected to this building and its nearby audience." : "Useful resident benefits available around this building."}>
         {experience.perks.length ? (
           <div className="dp-building-row-list">{experience.perks.map((place) => <PlaceRow key={place.id} place={place} meta={place.offer || place.deals_offers} onSelect={onSelect} />)}</div>
-        ) : <p className="dp-building-empty">No active perks nearby. Check again as partners publish new offers.</p>}
+        ) : <p className="dp-building-empty">{isPartner ? "No active offers are connected yet. Create one or connect an existing campaign." : "No active perks nearby. Check again as partners publish new offers."}</p>}
       </Section>
 
-      <Section id="building-collections" title="Collections" description="Plans shaped by this building and what is nearby.">
+      <Section id="building-collections" title={isPartner ? "Audience moments" : "Collections"} description={isPartner ? "Nearby themes that can support a focused campaign for this building." : "Plans shaped by this building and what is nearby."}>
         <div className="dp-building-collection-list">
           {experience.collections.map((collection) => (
             <button key={collection.id} type="button" onClick={() => onExplore?.(collection.intent)}>
@@ -155,13 +173,13 @@ export default function BuildingExperienceModule({ building, experience, mode = 
         {isPartner && <Link className="dp-building-inline-action" to={campaignRoute}>Plan a campaign<ChevronRight aria-hidden="true" /></Link>}
       </Section>
 
-      <Section id="building-amenities" title="Shared amenities" description="Structured by how residents use the building.">
+      <Section id="building-amenities" title="Shared amenities" description={isPartner ? "Use these verified amenities to shape building campaigns and communications." : "Structured by how residents use the building."}>
         {experience.amenities.length ? <div className="dp-building-amenity-groups">
           {experience.amenities.map((group) => <article key={group.id}><h4>{group.title}</h4><ul>{group.amenities.map((amenity) => <li key={amenity}>{amenity}</li>)}</ul></article>)}
         </div> : <p className="dp-building-empty">Amenity details have not been published.</p>}
       </Section>
 
-      <Section id="building-events" title="Events" description="Building and downtown events close to home.">
+      <Section id="building-events" title="Events" description={isPartner ? "Events connected to this building and its surrounding district." : "Building and downtown events close to home."}>
         {experience.events.length ? <div className="dp-building-row-list">{experience.events.map((event) => <PlaceRow key={event.id} place={event} meta={event.date || event.startDate || event.district} onSelect={onSelect} />)}</div> : <p className="dp-building-empty">No upcoming events are connected yet.</p>}
       </Section>
 
@@ -169,16 +187,16 @@ export default function BuildingExperienceModule({ building, experience, mode = 
         <div className="dp-building-route-list">{experience.routes.map((routeItem) => <button key={routeItem.id} type="button" onClick={() => onOpenRoute?.(routeItem.id, routeItem.title)}><Route aria-hidden="true" /><span><strong>{routeItem.title}</strong><small>{routeItem.estimatedTime || routeItem.distanceLabel || "Walking route"}</small></span><ChevronRight aria-hidden="true" /></button>)}</div>
       </Section>}
 
-      <Section id="building-nearby" title="Nearby" description="Closest useful places from the active map results.">
+      <Section id="building-nearby" title="Nearby" description={isPartner ? "Places that can strengthen this building's campaigns, offers, and local guide." : "Closest useful places from the active map results."}>
         {experience.nearby.length ? <div className="dp-building-row-list">{experience.nearby.map((place) => <PlaceRow key={place.id} place={place} meta={formatDistanceLabel(place.buildingDistanceMeters) || place.category} onSelect={onSelect} />)}</div> : <button type="button" className="dp-building-empty-action" onClick={() => onExplore?.("Nearby") }><MapPin aria-hidden="true" />Search nearby</button>}
       </Section>
 
-      <Section id="building-guide" title="Resident guide">
+      <Section id="building-guide" title={isPartner ? "Building profile" : "Resident guide"}>
         {experience.guide.summary && <p className="dp-building-guide-copy">{experience.guide.summary}</p>}
         {!!experience.guide.routines.length && <ol className="dp-building-guide-list">{experience.guide.routines.map((routine) => <li key={routine}>{routine}</li>)}</ol>}
         <div className="dp-building-guide-actions">
-          <button type="button" onClick={() => onExplore?.("Events")}><CalendarDays aria-hidden="true" />View events</button>
-          <button type="button" onClick={() => onExplore?.("Nearby")}><MapPin aria-hidden="true" />Explore nearby</button>
+          <button type="button" onClick={() => onExplore?.("Events")}><CalendarDays aria-hidden="true" />{isPartner ? "Review events" : "View events"}</button>
+          <button type="button" onClick={() => onExplore?.("Nearby")}><MapPin aria-hidden="true" />{isPartner ? "Review nearby places" : "Explore nearby"}</button>
         </div>
       </Section>
     </div>

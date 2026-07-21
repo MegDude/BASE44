@@ -6,7 +6,7 @@ function normalized(value) {
   return clean(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
-const RESIDENT_ONLY_COPY = /\b(show your (?:card|resident pass)|resident perk|resident card|resident pass|redeem perk|claim perk|save this place|worth visiting|your resident benefit|verified resident)\b/i;
+const RESIDENT_ONLY_COPY = /\b(show your (?:card|resident pass)|resident[- ]facing|resident perk|resident card|resident pass|redeem perk|claim perk|save this place|worth visiting|your (?:downtown perks )?benefit|verified resident|ready to scan)\b/i;
 
 function partnerSafe(value) {
   const text = clean(value);
@@ -127,6 +127,12 @@ export function resolvePartnerPanelCopy(place) {
   const summary = partnerSafe(
     panel.summary ||
     panel.opportunity ||
+    place?.partnerRecommendation ||
+    place?.raw?.partnerRecommendation ||
+    place?.partnerOpportunity ||
+    place?.raw?.partnerOpportunity ||
+    place?.campaignObjective ||
+    place?.raw?.campaignObjective ||
     place?.partnerInsight ||
     place?.raw?.partnerInsight ||
     place?.description ||

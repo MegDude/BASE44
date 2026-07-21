@@ -15,7 +15,7 @@ const fixtures = [
   { name: "Downtown Service", type: "service", category: "Service", district: "Downtown" },
 ];
 
-const residentOnly = /show your card|resident perk|worth visiting|save this place/i;
+const residentOnly = /show your card|resident-facing|resident perk|resident pass|ready to scan|worth visiting|save this place/i;
 
 for (const fixture of fixtures) {
   const copy = resolvePartnerPanelCopy(fixture);
@@ -71,12 +71,22 @@ const rejectedResidentOverride = resolvePartnerPanelCopy({
   name: "Audience Guard Test",
   type: "event",
   partnerPanel: {
-    summary: "Show your card to redeem this resident perk.",
+    summary: "A resident-facing offer. Show your card to redeem this resident perk.",
     objective: "Claim perk with your Resident Pass.",
     primaryActionLabel: "Redeem Perk",
   },
 });
 assert.equal(/show your card|resident perk|resident pass|redeem perk/i.test(Object.values(rejectedResidentOverride).join(" ")), false);
+
+const mapSource = readFileSync(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
+const buildingExperienceSource = readFileSync(new URL("../src/components/map/BuildingExperienceModule.jsx", import.meta.url), "utf8");
+assert.match(mapSource, /mode === "partner" \? "Property details" : "Resident benefit"/, "Property drawer title must respect audience mode");
+assert.match(mapSource, /title="Current offer"/, "Partner dining drawer uses operational offer language");
+assert.match(mapSource, /Preview published view/, "Partner preview action describes the published surface");
+assert.match(buildingExperienceSource, /isPartner \? "Offers" : "Perks"/, "Building module separates partner offers from resident perks");
+assert.match(buildingExperienceSource, /isPartner \? "Building profile" : "Resident guide"/, "Building module separates partner profile copy from the resident guide");
+const inKindPartnerBlock = mapSource.slice(mapSource.indexOf("function InKindPartnerOpportunityDrawer"), mapSource.indexOf("function HospitalityNetworkDrawer"));
+assert.equal(/resident-facing|Resident benefit summary|Preview resident view|Campaign fit/.test(inKindPartnerBlock), false, "Partner dining drawer must not use resident-facing labels or generic campaign metadata");
 
 const uniqueResidentFixtures = [
   {
