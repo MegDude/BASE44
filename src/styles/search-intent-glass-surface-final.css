@@ -32,6 +32,131 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   scrollbar-width: none !important;
 }
 
+/* Shared resident and partner intent rail. Partner mode changes the content,
+   never the component language: icon-first shortcuts, one active label, and
+   a single disclosed More rail. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-search-intent-two-row-stack {
+  order: 3 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 10px 7px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock :is(.dp-search-intent-primary-rail, .dp-search-intent-secondary-track) {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center !important;
+  gap: 4px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock :is(.dp-search-intent-primary-rail, .dp-search-intent-secondary-track)::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-compact-intent-chip {
+  position: relative !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-bottom: 1px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-compact-intent-chip::after {
+  display: none !important;
+  content: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-compact-intent-chip[data-expanded="true"] {
+  width: auto !important;
+  min-width: 42px !important;
+  max-width: 150px !important;
+  padding: 0 8px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-compact-intent-chip:is(.is-active, [aria-selected="true"]) {
+  border-bottom-color: #a17c35 !important;
+  color: #a17c35 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail .dp-compact-intent-chip__icon {
+  display: grid !important;
+  flex: 0 0 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  place-items: center !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail .dp-search-intent-filter-icon {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  stroke-width: 1.8 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail .dp-compact-intent-chip__label {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: currentColor !important;
+  font: 650 11px/1 Inter, system-ui, sans-serif !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-search-more-toggle {
+  display: inline-flex !important;
+  flex: 0 0 68px !important;
+  width: 68px !important;
+  min-width: 68px !important;
+  max-width: 68px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 0 7px !important;
+  border: 0 !important;
+  border-bottom: 1px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #a17c35 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-map-search-console-lock .dp-map-intent-rail > .dp-search-more-toggle[aria-expanded="true"] {
+  border-bottom-color: #a17c35 !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-intent-console.dp-search-intent-console.dp-ask-map-panel::before {
   position: absolute !important;
   z-index: -1 !important;

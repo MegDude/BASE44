@@ -13365,17 +13365,28 @@ function MapSearchConsole({
     icon: item.icon || railIconFor(item),
   });
   const modeConfig = SEARCH_CONSOLE_MODE_CONFIG[mode] || SEARCH_CONSOLE_MODE_CONFIG.resident;
-  const primaryIntentSource = PRIMARY_SEARCH_INTENT_RAIL;
+  const routeCollectionItems = SECONDARY_SEARCH_INTENT_RAIL.filter((item) => item.collection);
+  const primaryIntentSource = mode === "partner"
+    ? modeConfig.intentChips
+    : PRIMARY_SEARCH_INTENT_RAIL;
   const secondaryIntentSource = mode === "partner"
-    ? [...SECONDARY_SEARCH_INTENT_RAIL, ...(modeConfig.intentChips || []), ...(modeConfig.filterRail || []), ...(modeConfig.featuredPins || [])]
+    ? [...(modeConfig.filterRail || []), ...routeCollectionItems, ...(modeConfig.featuredPins || [])]
     : SECONDARY_SEARCH_INTENT_RAIL;
   const intentRail = primaryIntentSource.map((item) => withRailIcon(item, `${mode}-primary`));
   const rawMoreFilterRail = secondaryIntentSource.map((item) => withRailIcon(item, `${mode}-secondary`));
-  const moreFilterRail = rawMoreFilterRail.filter((item, index, items) => {
-    const label = String(item.label).toLowerCase();
-    const duplicatesPrimary = intentRail.some((intentItem) => String(intentItem.label).toLowerCase() === label);
-    const firstSecondaryIndex = items.findIndex((candidate) => String(candidate.label).toLowerCase() === label);
-    return !duplicatesPrimary && firstSecondaryIndex === index;
+  const primaryIntentKeys = new Set(intentRail.map((item) => (
+    item.collection
+      ? `collection:${item.collection}`
+      : `intent:${String(item.id || item.label).toLowerCase()}`
+  )));
+  const seenSecondaryIntentKeys = new Set();
+  const moreFilterRail = rawMoreFilterRail.filter((item) => {
+    const itemKey = item.collection
+      ? `collection:${item.collection}`
+      : `intent:${String(item.id || item.label).toLowerCase()}`;
+    if (primaryIntentKeys.has(itemKey) || seenSecondaryIntentKeys.has(itemKey)) return false;
+    seenSecondaryIntentKeys.add(itemKey);
+    return true;
   });
   const railKeyFor = (item) => String(item?.id || item?.label || item?.filter || item?.prompt || "").toLowerCase();
   const isRailItemActive = (item) => {
@@ -13396,11 +13407,9 @@ function MapSearchConsole({
   const moreIntentDefinition = getSearchIntentDefinition({ id: "more", label: "More", prompt: "Explore more intents" });
   const previewDefinition = previewedIntentItem
     ? getSearchIntentDefinition(previewedIntentItem)
-    : moreOpen
-      ? moreIntentDefinition
-      : activeIntentItem
-        ? getSearchIntentDefinition(activeIntentItem)
-        : null;
+    : activeIntentItem
+      ? getSearchIntentDefinition(activeIntentItem)
+      : null;
   const makeIntentSummary = (item, active) => {
     const definition = getSearchIntentDefinition(item);
     if (!active) return definition.description;
@@ -13416,11 +13425,8 @@ function MapSearchConsole({
     const state = active ? "Pressed" : "Not pressed";
     return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
   };
-  // Preserve the original partner console hierarchy from the migrated map:
-  // two immediate decisions, then the canonical More control that reveals the
-  // secondary rail. Resident discovery keeps the full primary rail order.
   const moreToggleInsertIndex = mode === "partner"
-    ? Math.min(1, Math.max(0, intentRail.length - 1))
+    ? Math.min(2, Math.max(0, intentRail.length - 1))
     : intentRail.length - 1;
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
@@ -13515,6 +13521,7 @@ function MapSearchConsole({
     const Icon = item.icon;
     const active = isRailItemActive(item);
     const previewed = false;
+    const expanded = active || className.includes("secondary");
     const descriptionId = `dp-search-intent-desc-${definition.id}`;
     const summary = makeIntentSummary(item, active);
 
@@ -13524,6 +13531,7 @@ function MapSearchConsole({
         type="button"
         role="tab"
         className={`dp-compact-intent-chip dp-ask-map-prompt-link ${active ? "is-active" : ""}`}
+        aria-pressed={active}
         aria-selected={active}
         aria-label={makeIntentAriaLabel(item, definition, active)}
         aria-describedby={descriptionId}
@@ -13551,14 +13559,16 @@ function MapSearchConsole({
         }}
         data-label={definition.shortLabel}
         data-intent-id={definition.id}
-        data-expanded="false"
+        data-expanded={expanded ? "true" : "false"}
       >
         <span className="dp-compact-intent-chip__icon" aria-hidden="true">
           {Icon ? <Icon className="dp-search-intent-filter-icon" aria-hidden="true" /> : null}
         </span>
-        <span className="dp-compact-intent-chip__label" aria-hidden="true">
-          {definition.shortLabel}
-        </span>
+        {expanded ? (
+          <span className="dp-compact-intent-chip__label" aria-hidden="true">
+            {definition.shortLabel}
+          </span>
+        ) : null}
         <span id={descriptionId} className="sr-only">{summary}</span>
       </button>
     );
@@ -16257,21 +16267,6 @@ export default function MapPage() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [aboutOpen, clusterDrawer, consoleCollapsed, selectedId, urlState]);
 
-  useEffect(() => {
-    if (consoleCollapsed || urlState.tab !== "map") return undefined;
-
-    function handlePointerDown(event) {
-      const target = event.target;
-      if (target?.closest?.(".dp-map-search-surface, .dp-search-rollup-button, .dp-search-intent-console")) return;
-      if (urlState.mode === "resident") return;
-      if (consoleHasActiveWork) return;
-      setConsoleCollapsed(true);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown, true);
-    return () => document.removeEventListener("pointerdown", handlePointerDown, true);
-  }, [consoleCollapsed, consoleHasActiveWork, urlState.mode, urlState.tab]);
-
   function selectPlace(place, selection = {}) {
     if (!selectedId && typeof document !== "undefined") drawerTriggerRef.current = document.activeElement;
     triggerHaptic();
@@ -17749,7 +17744,6 @@ export default function MapPage() {
                 // Session storage is best-effort only.
               }
               setUserHasNavigatedMap(true);
-              if (urlState.mode !== "resident" && !consoleHasActiveWork) setConsoleCollapsed(true);
             }}
             onBrowsePerks={() => {
               beginSearchIntentTransition("Perks");

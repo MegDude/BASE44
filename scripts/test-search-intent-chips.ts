@@ -6,8 +6,8 @@ import {
 } from "../src/components/map/searchIntentRailConfig";
 
 const baseUrl = process.env.BASE_URL || "http://localhost:5173";
-const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All`;
-const partnerRoute = `${baseUrl.replace(/\/$/, "")}/map?mode=partner&tab=map&filter=All`;
+const route = `${baseUrl.replace(/\/$/, "")}/map?mode=resident&tab=map&filter=All&guest=true`;
+const partnerRoute = `${baseUrl.replace(/\/$/, "")}/map?mode=partner&tab=map&filter=All&guest=true`;
 const screenshotDir = "/private/tmp/search-intent-chips";
 
 function assertRegisteredIntentDefinitions() {
@@ -22,6 +22,11 @@ function assertRegisteredIntentDefinitions() {
 }
 
 async function ensureConsole(page) {
+  const wrap = page.locator("#dp-map-search-console-lock").first();
+  await wrap.waitFor({ state: "attached", timeout: 15_000 });
+  if (await wrap.evaluate((element) => element.classList.contains("is-collapsed"))) {
+    await page.locator(".dp-search-intent-rollup").first().click({ force: true });
+  }
   const console = page.locator(".dp-search-intent-console").first();
   await console.waitFor({ state: "attached", timeout: 15_000 });
   const hidden = await console.getAttribute("aria-hidden");
@@ -111,17 +116,26 @@ async function runPartnerChecks(browser) {
 
   const more = await chip(page, "more");
   const partnerPrimaryOrder = await page.locator(".dp-search-intent-primary-rail [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));
-  expect(partnerPrimaryOrder.indexOf("more")).toBe(2);
+  expect(partnerPrimaryOrder).toEqual(expect.arrayContaining(["performance", "campaigns", "trails", "audience", "activation", "insights", "parking"]));
+  expect(partnerPrimaryOrder.indexOf("more")).toBe(3);
+  expect(partnerPrimaryOrder).not.toContain("breakfast");
+  const partnerPrimaryChips = page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip");
+  await expect(partnerPrimaryChips).toHaveCount(7);
+  await expect(page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip__icon svg")).toHaveCount(7);
+  await expect(page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip__label")).toHaveCount(0);
   await expect(more).toBeInViewport();
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
+  await expect(page.locator("#dp-search-more-filter-panel [data-intent-id]").first()).toBeVisible({ timeout: 5_000 });
   const partnerIntentIds = await page.locator("#dp-search-more-filter-panel [data-intent-id]").evaluateAll((items) => items.map((item) => item.getAttribute("data-intent-id")));
-  for (const requiredIntent of ["campaigns", "performance", "parking", "audience", "properties"]) {
+  for (const requiredIntent of ["perks", "events", "properties", "happy_hour_route", "dining_route", "daa_art_walk", "waterloo_walk", "stories_walk", "coffee_route", "hotel_route"]) {
     expect(partnerIntentIds).toContain(requiredIntent);
   }
   expect(new Set(partnerIntentIds).size).toBe(partnerIntentIds.length);
   expect(new URL(page.url()).searchParams.get("filter")).toBe("All");
   expect(new URL(page.url()).searchParams.get("intent")).toBeNull();
+
+  await page.screenshot({ path: `${screenshotDir}/mobile-390-partner-intents.png`, fullPage: false });
 
   await page.close();
 }
