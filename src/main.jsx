@@ -125,8 +125,8 @@ import "@/styles/inkind-redemption-compact-final.css"
 import "@/styles/search-input-rail-compact-final.css"
 import "@/styles/resident-civic-native-final.css"
 import "@/styles/quick-search-native-final.css"
-import "@/styles/global-back-control-final.css"
 import "@/styles/panel-media-system-final.css"
+import "@/styles/global-back-control-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />

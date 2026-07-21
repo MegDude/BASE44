@@ -147,6 +147,8 @@
 
 .dp-governance-state { margin: 18px 0 0; color: var(--dp-governance-muted); font-size: 14px; }
 .dp-governance-state.is-error { display: flex; gap: 8px; align-items: center; color: #8b2932; }
+.dp-governance-state.is-notice { display: flex; gap: 10px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--dp-governance-line); color: var(--dp-governance-muted); line-height: 1.45; }
+.dp-governance-state.is-notice svg { color: var(--dp-governance-gold); }
 .dp-governance-state svg { width: 18px; height: 18px; flex: 0 0 auto; }
 
 .dp-governance-section,

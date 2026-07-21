@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowLeft, CalendarDays, ChevronRight, Landmark, Map, MapPin, Send, UsersRound } from "lucide-react";
+import { ArrowLeft, CalendarDays, ChevronRight, Info, Landmark, Map, MapPin, Send, UsersRound } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { getResidentGovernance, sendResidentGovernanceAction, type ResidentGovernanceResponse } from "@/lib/governance/governanceClient";
@@ -65,11 +65,11 @@ export default function ResidentGovernance() {
 
         <nav className="dp-governance-actions" aria-label="Civic actions">
           <Link to="/map?mode=resident&tab=map&filter=Civic"><Map aria-hidden="true" /><span><strong>Open civic map</strong><small>Places, projects and events</small></span><ChevronRight aria-hidden="true" /></Link>
-          <a href={data.consultations[0] ? "#current-consultation" : "#ask-a-question"}><Send aria-hidden="true" /><span><strong>{data.consultations[0] ? "Answer a question" : "Send a question"}</strong><small>Share what matters to you</small></span><ChevronRight aria-hidden="true" /></a>
+          {organizationId ? <a href={data.consultations[0] ? "#current-consultation" : "#ask-a-question"}><Send aria-hidden="true" /><span><strong>{data.consultations[0] ? "Answer a question" : "Send a question"}</strong><small>Share what matters to you</small></span><ChevronRight aria-hidden="true" /></a> : <Link to="/map?mode=resident&tab=map&filter=Civic"><Send aria-hidden="true" /><span><strong>Choose a civic place</strong><small>Send a question to the right team</small></span><ChevronRight aria-hidden="true" /></Link>}
         </nav>
 
         {loading ? <p className="dp-governance-state" role="status">Loading verified community updates…</p> : null}
-        {error ? <p className="dp-governance-state is-error" role="alert">{error}</p> : null}
+        {error ? <p className="dp-governance-state is-notice" role="status"><Info aria-hidden="true" />{error}</p> : null}
 
         {data.updates?.length ? <section className="dp-governance-section" aria-labelledby="civic-updates-title">
           <header><small>Latest</small><h2 id="civic-updates-title">Updates near you</h2><p>What changed, who shared it, and what happens next.</p></header>
@@ -107,15 +107,15 @@ export default function ResidentGovernance() {
 
         {!loading && !error && !hasPublishedContent ? <section className="dp-governance-empty-section" aria-labelledby="civic-empty-title"><Landmark aria-hidden="true" /><div><small>All caught up</small><h2 id="civic-empty-title">Nothing new has been published.</h2><p>Open the civic map to explore downtown places, projects, and community events.</p><Link to="/map?mode=resident&tab=map&filter=Civic">Open civic map <ChevronRight aria-hidden="true" /></Link></div></section> : null}
 
-        <section className="dp-governance-section dp-governance-question" id="ask-a-question" aria-labelledby="ask-question-title">
+        {organizationId ? <section className="dp-governance-section dp-governance-question" id="ask-a-question" aria-labelledby="ask-question-title">
           <header><small>Ask downtown</small><h2 id="ask-question-title">Send a question</h2><p>Questions are reviewed before they appear publicly. Follow the status here.</p></header>
-          {organizationId ? <form onSubmit={submitQuestion}>
+          <form onSubmit={submitQuestion}>
             <label htmlFor="resident-governance-question">What would you like the responsible organization to explain?</label>
             <textarea id="resident-governance-question" value={question} onChange={(event) => setQuestion(event.target.value)} minLength={12} maxLength={1200} required rows={4} />
             <button type="submit"><Send aria-hidden="true" /> Send question</button>
             {message ? <p role="status">{message}</p> : null}
-          </form> : <div className="dp-governance-question-unavailable"><p>Open a verified civic place first so your question reaches the right organization.</p><Link to="/map?mode=resident&tab=map&filter=Civic">Choose on the civic map <ChevronRight aria-hidden="true" /></Link></div>}
-        </section>
+          </form>
+        </section> : null}
 
         <section className="dp-governance-section" aria-labelledby="your-activity-title">
           <header><small>Your activity</small><h2 id="your-activity-title">What you shared</h2><p>Your questions, reports, and followed projects stay here.</p></header>
