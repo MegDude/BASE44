@@ -28,8 +28,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Nina Launch Office browser contract
-        run: npx playwright test tests/e2e/nina-launch-office.spec.ts --reporter=list
+      - name: Run Founding Partner Collection browser contract
+        run: npx playwright test tests/e2e/founding-partner-collection.spec.ts --reporter=list
 
       - name: Run Playwright tests
         shell: bash
