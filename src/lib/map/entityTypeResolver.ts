@@ -35,8 +35,34 @@ function collectEntityText(entity: Record<string, unknown>): string {
     .toLowerCase();
 }
 
+function collectDeclaredEntityTypeText(entity: Record<string, unknown>): string {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  return [
+    entity.entityType,
+    entity.type,
+    entity.kind,
+    entity.category,
+    entity.category_key,
+    entity.subcategory,
+    entity.markerType,
+    entity.detailDrawerType,
+    raw.entityType,
+    raw.type,
+    raw.kind,
+    raw.category,
+    raw.category_key,
+    raw.subcategory,
+    raw.markerType,
+    raw.detailDrawerType,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
 export function resolveEntityType(entity: Record<string, unknown>): EntityType {
   const text = collectEntityText(entity);
+  const declaredTypeText = collectDeclaredEntityTypeText(entity);
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
   const name = String(entity.name || entity.title || raw.name || raw.title || "").toLowerCase();
 
@@ -45,6 +71,14 @@ export function resolveEntityType(entity: Record<string, unknown>): EntityType {
   if (text.includes("hotel")) return "hotel";
   if (text.includes("campaign")) return "campaign";
   if (text.includes("event")) return "event";
+
+  // A perk or partner program is secondary membership. Preserve the declared
+  // place type so inKind restaurants continue to use restaurant drawers,
+  // restaurant filtering, and restaurant map presentation.
+  if (/\b(coffee|cafe|café)\b/.test(declaredTypeText)) return "coffee";
+  if (/\b(restaurant|dining|restaurant[_\s/-]*food|food hall)\b/.test(declaredTypeText)) return "restaurant";
+  if (/\b(venue|bar|nightlife|music venue)\b/.test(declaredTypeText) && !/\b(perk|offer)\b/.test(declaredTypeText)) return "venue";
+
   if (text.includes("perk") || text.includes("offer") || text.includes("inkind")) return "perk";
   if (text.includes("brand")) return "brand";
   if (text.includes("civic") || text.includes("public")) return "civic";
