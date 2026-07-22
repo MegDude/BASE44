@@ -13,6 +13,17 @@ import {
   collectionTechnicalNotes,
   collectionWorkingRecords,
 } from "../src/server/foundingPartnerCollectionOperations.js";
+import {
+  collectionBriefMeta,
+  collectionBuildingDirectory,
+  collectionTargetDirectory,
+} from "../src/server/foundingPartnerTargetDirectory.js";
+import {
+  collectionForwardableNote,
+  collectionIntroductionPriorities,
+  collectionPilotOptions,
+  collectionWarmRelationships,
+} from "../src/server/foundingPartnerBriefSupport.js";
 
 const DEFAULT_OPERATOR_EMAILS = ["me@megdude.com"];
 
@@ -55,6 +66,13 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       data: {
+        briefMeta: collectionBriefMeta,
+        targetDirectory: collectionTargetDirectory,
+        buildingDirectory: collectionBuildingDirectory,
+        warmRelationships: collectionWarmRelationships,
+        introductionPriorities: collectionIntroductionPriorities,
+        pilotOptions: collectionPilotOptions,
+        forwardableNote: collectionForwardableNote,
         operatingGoals: collectionOperatingGoals,
         priorityTargets: collectionPriorityTargets,
         residentialRoutes: collectionResidentialRoutes,
