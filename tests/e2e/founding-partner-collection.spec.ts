@@ -14,6 +14,15 @@ const internalTerms = [
   "QA checklist",
   "Material strategy corrections",
   "Contact verification rules",
+  "CONFIDENTIAL BRIEF",
+  "info4hoa@worthross.com",
+  "leasing@paseoatx.com",
+  "shawn.bell@fsresidential.com",
+];
+
+const protectedRoutes = [
+  "/partner-workspace/launch?organizationId=demo-org-legends-real-estate",
+  "/partner-workspace/launch?view=targets&organizationId=demo-org-legends-real-estate",
 ];
 
 test("@smoke Founding Partner Collection is a polished public invitation", async ({ page }) => {
@@ -48,20 +57,23 @@ test("@smoke Founding Partner Collection is a polished public invitation", async
   expect(layout.scripts).toBe(0);
 });
 
-test("@smoke Founding Partner operations require authorized access", async ({ page }) => {
-  await page.goto("/partner-workspace/launch?organizationId=demo-org-legends-real-estate");
+test("@smoke Founding Partner operations and all targets require authorized access", async ({ page }) => {
+  for (const route of protectedRoutes) {
+    await page.goto(route);
 
-  if (new URL(page.url()).pathname.startsWith("/partners/sign-in")) {
-    await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
-  } else {
-    await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
-    ).toBeVisible();
+    if (new URL(page.url()).pathname.startsWith("/partners/sign-in")) {
+      await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
+    } else {
+      await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
+      ).toBeVisible();
+    }
+
+    const body = page.locator("body");
+    await expect(body).not.toContainText("leasing@paseoatx.com");
+    await expect(body).not.toContainText("info4hoa@worthross.com");
+    await expect(body).not.toContainText("shawn.bell@fsresidential.com");
+    await expect(body).not.toContainText("bridget@dunlapatx.com");
   }
-
-  const body = page.locator("body");
-  await expect(body).not.toContainText("leasing@paseoatx.com");
-  await expect(body).not.toContainText("info4hoa@worthross.com");
-  await expect(body).not.toContainText("shawn.bell@fsresidential.com");
 });
