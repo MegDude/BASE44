@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import productionMapInventory from "../src/data/production/production-map-inventory.json";
+import { resolveEntityPin } from "../src/lib/map/entityPinResolver";
+import { resolveEntityType } from "../src/lib/map/entityTypeResolver";
 import {
   CANONICAL_PARTNER_INTENT_IDS,
   MAP_INTENT_REGISTRY,
   applyMapIntent,
+  entityHasExplicitInKindMembership,
   entityMatchesMapIntent,
   resolveSearchIntent,
 } from "../src/map/searchIntent/mapIntentRegistry";
@@ -30,6 +33,48 @@ for (const [legacyId, canonicalId] of Object.entries({
 })) {
   assert.equal(resolveSearchIntent(legacyId, "partner").id, canonicalId, `${legacyId} resolves to ${canonicalId}`);
 }
+
+const ordinaryRestaurant = {
+  id: "venue-independent-dining-room",
+  name: "Independent Dining Room",
+  type: "venue",
+  kind: "venue",
+  entityType: "restaurant",
+  category: "Dining",
+  description: "A restaurant near an inKind offer, but not enrolled in the program.",
+  latitude: 30.2672,
+  longitude: -97.7431,
+  active: true,
+  pinKey: "dining",
+};
+
+const inKindRestaurant = {
+  ...ordinaryRestaurant,
+  id: "venue-participating-dining-room",
+  name: "Participating Dining Room",
+  partnerType: "inkind",
+  partnerNetwork: "inkind",
+  hasPerk: true,
+  pinKey: "inkind",
+};
+
+const curatedInKindRestaurant = {
+  ...ordinaryRestaurant,
+  id: "venue-curated-j-carvers",
+  name: "J Carver's",
+};
+
+assert.equal(entityHasExplicitInKindMembership(ordinaryRestaurant), false, "restaurant text alone does not create inKind membership");
+assert.equal(entityHasExplicitInKindMembership(inKindRestaurant), true, "explicit partner metadata creates inKind membership");
+assert.equal(entityHasExplicitInKindMembership(curatedInKindRestaurant), false, "curated membership stays distinct from explicit program metadata");
+assert.equal(resolveEntityType(inKindRestaurant), "restaurant", "inKind membership does not replace the restaurant entity type");
+assert.equal(resolveEntityPin(ordinaryRestaurant).label, "Dining", "ordinary restaurants use the canonical dining pin");
+assert.equal(resolveEntityPin(inKindRestaurant).label, "Dining", "inKind restaurants keep the canonical dining pin");
+assert.equal(entityMatchesMapIntent(ordinaryRestaurant, "dining"), true, "ordinary restaurants remain in Dining");
+assert.equal(entityMatchesMapIntent(inKindRestaurant, "dining"), true, "inKind restaurants remain in Dining");
+assert.equal(entityMatchesMapIntent(ordinaryRestaurant, "inkind"), false, "ordinary restaurants do not leak into the inKind layer");
+assert.equal(entityMatchesMapIntent(inKindRestaurant, "inkind"), true, "explicit members appear in the inKind layer");
+assert.equal(entityMatchesMapIntent(curatedInKindRestaurant, "inkind"), true, "curated inKind collection stops appear in the inKind layer");
 
 function testIntent(intent: (typeof MAP_INTENT_REGISTRY)[number]) {
   const applied = applyMapIntent(entities, intent, intent.mode);

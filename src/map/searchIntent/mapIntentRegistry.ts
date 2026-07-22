@@ -473,6 +473,52 @@ function includesAny(text: string, terms: string[] = []): boolean {
   return terms.some((term) => text.includes(String(term).toLowerCase()));
 }
 
+export function entityHasExplicitInKindMembership(entity: AnyEntity): boolean {
+  const raw = entity?.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const booleanSignals = [
+    entity?.isInKind,
+    entity?.is_inkind,
+    entity?.inKindEligible,
+    entity?.inkindEligible,
+    entity?.inkind_eligible,
+    raw.isInKind,
+    raw.is_inkind,
+    raw.inKindEligible,
+    raw.inkindEligible,
+    raw.inkind_eligible,
+  ];
+  if (booleanSignals.some((value) => value === true)) return true;
+
+  const membershipSignals = [
+    entity?.id,
+    entity?.partnerType,
+    entity?.partnerNetwork,
+    entity?.brand,
+    entity?.brandId,
+    entity?.partnerBrand,
+    entity?.program,
+    raw.id,
+    raw.partnerType,
+    raw.partnerNetwork,
+    raw.brand,
+    raw.brandId,
+    raw.partnerBrand,
+    raw.program,
+    ...(Array.isArray(entity?.programs) ? entity.programs : []),
+    ...(Array.isArray(entity?.partnerPrograms) ? entity.partnerPrograms : []),
+    ...(Array.isArray(entity?.partner_programs) ? entity.partner_programs : []),
+    ...(Array.isArray(entity?.residentSearchIntents) ? entity.residentSearchIntents : []),
+    ...(Array.isArray(raw.programs) ? raw.programs : []),
+    ...(Array.isArray(raw.partnerPrograms) ? raw.partnerPrograms : []),
+    ...(Array.isArray(raw.partner_programs) ? raw.partner_programs : []),
+    ...(Array.isArray(raw.residentSearchIntents) ? raw.residentSearchIntents : []),
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).trim().toLowerCase().replace(/[_-]+/g, " "));
+
+  return membershipSignals.some((value) => /\binkind\b|\bin\s+kind\b/.test(value));
+}
+
 function entityType(entity: AnyEntity): string {
   return String(entity?.kind || entity?.type || entity?.entityType || entity?.sourceType || entity?.raw?.kind || "venue").toLowerCase();
 }
@@ -568,6 +614,14 @@ export function entityMatchesMapIntent(entity: AnyEntity, intentInput: string | 
 
   if (allowAll && intent.id === "all") return true;
   if (!isActiveEntity(entity) || !hasCoords(entity)) return false;
+
+  // inKind is a verified program layer, not an alias for the Restaurant
+  // category. A place must carry explicit program membership or belong to the
+  // curated inKind collection; being a restaurant alone is never sufficient.
+  if (intent.id === "inkind") {
+    const collectionMatch = Boolean(intent.collectionIds?.some((id) => entityBelongsToCollection(entity, id)));
+    return entityHasExplicitInKindMembership(entity) || collectionMatch;
+  }
 
   if (intent.districtIds?.length) {
     const district = normalizeDistrict(entity?.district || entity?.neighborhood || entity?.raw?.neighborhood);
