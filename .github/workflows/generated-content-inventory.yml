@@ -3,10 +3,12 @@ name: Generated content inventory
 on:
   pull_request:
     paths:
+      - "public/founding-partners.html"
       - "src/**"
-      - "scripts/generate-partner-content-inventory.mjs"
+      - "scripts/**"
       - "package.json"
       - "inventory/**"
+      - "vercel.json"
       - ".github/workflows/generated-content-inventory.yml"
   workflow_dispatch:
 
@@ -34,6 +36,15 @@ jobs:
 
       - name: Generate source-backed inventory
         run: npm run inventory:partner-content:ci
+
+      - name: Validate Founding Partner Collection
+        run: node scripts/test-founding-partner-collection.mjs
+
+      - name: Validate complete confidential target directory
+        run: node scripts/test-confidential-target-directory-completeness.mjs
+
+      - name: Validate map panel actions and Show QR
+        run: node scripts/test-map-panel-action-rail.mjs
 
       - name: Validate map intent routing
         run: npm run test:map-intents

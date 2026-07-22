@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0B1F33" />
+  <meta name="robots" content="index,follow" />
+  <meta name="description" content="Downtown Perks Founding Partners are helping shape a simpler, more connected way to experience Downtown Austin." />
+  <link rel="canonical" href="https://downtownperks.com/founding-partners" />
+  <title>Downtown Perks · Founding Partner Collection</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #0b1f33;
+      --gold: #c8a96a;
+      --white: #ffffff;
+      --soft: #f7f8fb;
+      --ink: #0b1f33;
+      --muted: rgba(11, 31, 51, 0.68);
+      --line: rgba(11, 31, 51, 0.13);
+      --line-dark: rgba(255, 255, 255, 0.2);
+      --max: 1240px;
+      --nav-height: 70px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--white); }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--white);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid rgba(200, 169, 106, 0.88); outline-offset: 4px; }
+    h1, h2, h3, p { margin-top: 0; }
+    .serif { font-family: Canela, Georgia, "Times New Roman", serif; }
+    .shell { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 22px;
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .body-xl {
+      color: var(--muted);
+      font-size: clamp(1.08rem, 1.55vw, 1.34rem);
+      line-height: 1.72;
+    }
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: -80px;
+      z-index: 100;
+      background: var(--navy);
+      color: var(--white);
+      padding: 12px 16px;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .topbar__inner {
+      min-height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .brand {
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      line-height: 1.4;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .topbar__links { display: flex; align-items: center; gap: 25px; }
+    .topbar__links a {
+      border-bottom: 1px solid transparent;
+      color: var(--muted);
+      padding: 9px 0;
+      font-size: 11px;
+      text-decoration: none;
+    }
+    .topbar__links a:hover { border-bottom-color: var(--gold); color: var(--navy); }
+    .topbar__cta {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--navy);
+      padding: 0 18px;
+      color: var(--navy);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .topbar__cta:hover { border-color: var(--gold); background: var(--gold); color: var(--white); }
+
+    .hero {
+      min-height: calc(92vh - var(--nav-height));
+      display: grid;
+      align-items: center;
+      padding: 104px 0;
+      scroll-margin-top: var(--nav-height);
+    }
+    .hero__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(270px, 0.58fr);
+      gap: clamp(55px, 9vw, 135px);
+      align-items: end;
+    }
+    .hero h1 {
+      max-width: 970px;
+      margin-bottom: 30px;
+      font-size: clamp(4rem, 8.4vw, 8.2rem);
+      font-weight: 400;
+      letter-spacing: -0.057em;
+      line-height: 0.92;
+    }
+    .hero__lead {
+      max-width: 780px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: clamp(1.12rem, 1.8vw, 1.46rem);
+      line-height: 1.66;
+    }
+    .hero__aside {
+      border-left: 2px solid var(--gold);
+      padding: 5px 0 5px 28px;
+    }
+    .hero__aside p {
+      margin: 0;
+      color: var(--muted);
+      font: 400 clamp(1.08rem, 1.7vw, 1.35rem)/1.65 Georgia, serif;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 35px; }
+    .button {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--navy);
+      padding: 0 25px;
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .button--primary { background: var(--navy); color: var(--white); }
+    .button:hover { border-color: var(--gold); background: var(--gold); color: var(--white); }
+
+    .section { padding: 118px 0; scroll-margin-top: var(--nav-height); }
+    .section--soft { background: var(--soft); }
+    .section--dark { background: var(--navy); color: var(--white); }
+    .section--dark .body-xl,
+    .section--dark p { color: rgba(255, 255, 255, 0.72); }
+    .section__head {
+      display: grid;
+      grid-template-columns: minmax(235px, 0.54fr) minmax(0, 1.16fr);
+      gap: clamp(48px, 7vw, 105px);
+      align-items: start;
+    }
+    .section h2 {
+      margin-bottom: 30px;
+      font-size: clamp(2.8rem, 5.8vw, 6rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 0.98;
+    }
+    .section-copy { max-width: 850px; }
+    .section-copy p + p { margin-top: 22px; }
+    .place-lines {
+      margin: 38px 0;
+      border-top: 1px solid var(--line);
+    }
+    .place-lines span {
+      display: block;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--navy);
+      font: 400 clamp(1.3rem, 2.1vw, 1.9rem)/1.25 Georgia, serif;
+    }
+    .pull {
+      margin: 38px 0 0;
+      color: var(--navy);
+      font-size: clamp(1.7rem, 3.1vw, 3.15rem);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .experience-opening { max-width: 930px; }
+    .experience-opening h2 { max-width: 1050px; }
+    .benefit-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 64px;
+      border-top: 1px solid var(--line);
+    }
+    .benefit-list article {
+      min-height: 290px;
+      padding: 34px 42px 42px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .benefit-list article:nth-child(even) {
+      padding-left: 42px;
+      border-left: 1px solid var(--line);
+    }
+    .benefit-list__number {
+      margin-bottom: 36px;
+      color: var(--gold);
+      font: 400 1.8rem/1 Georgia, serif;
+    }
+    .benefit-list h3 {
+      margin-bottom: 17px;
+      font: 400 clamp(1.8rem, 3vw, 3.05rem)/1.08 Georgia, serif;
+      letter-spacing: -0.035em;
+    }
+    .benefit-list p { max-width: 510px; margin-bottom: 0; color: var(--muted); line-height: 1.72; }
+    .signal-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px 22px;
+      margin: 22px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .signal-list li { position: relative; padding-left: 16px; color: var(--muted); font-size: 13px; }
+    .signal-list li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 4px; height: 4px; background: var(--gold); }
+
+    .thursday { max-width: 920px; }
+    .thursday p {
+      margin-bottom: 17px;
+      font: 400 clamp(1.35rem, 2.15vw, 2.05rem)/1.48 Georgia, serif;
+    }
+    .thursday p:last-child {
+      margin-top: 48px;
+      color: var(--gold);
+      font-size: clamp(2.5rem, 5.2vw, 5.8rem);
+      letter-spacing: -0.05em;
+      line-height: 0.98;
+    }
+
+    .audience-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 54px;
+      border-top: 1px solid var(--line);
+    }
+    .audience-list article {
+      min-height: 205px;
+      padding: 30px 28px 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .audience-list article:nth-child(3n + 2),
+    .audience-list article:nth-child(3n + 3) {
+      padding-left: 28px;
+      border-left: 1px solid var(--line);
+    }
+    .audience-list h3 {
+      margin-bottom: 14px;
+      font: 400 clamp(1.45rem, 2.2vw, 2.15rem)/1.12 Georgia, serif;
+      letter-spacing: -0.03em;
+    }
+    .audience-list p { margin: 0; color: var(--muted); line-height: 1.68; }
+
+    .partnership-intro { max-width: 880px; }
+    .partnership-intro p {
+      margin-bottom: 8px;
+      font: 400 clamp(1.55rem, 2.7vw, 2.65rem)/1.25 Georgia, serif;
+    }
+    .process {
+      margin-top: 52px;
+      counter-reset: process;
+      border-top: 1px solid var(--line);
+    }
+    .process article {
+      counter-increment: process;
+      display: grid;
+      grid-template-columns: 86px minmax(210px, 0.72fr) minmax(0, 1fr);
+      gap: 28px;
+      padding: 31px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+    .process article::before {
+      content: "0" counter(process);
+      color: var(--gold);
+      font: 400 1.85rem/1 Georgia, serif;
+    }
+    .process h3 {
+      margin: 0;
+      font: 400 clamp(1.5rem, 2.5vw, 2.45rem)/1.12 Georgia, serif;
+      letter-spacing: -0.03em;
+    }
+    .process p { max-width: 650px; margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .pilot-intro { max-width: 850px; }
+    .pilot-intro h2 { color: var(--white); }
+    .pilot-line {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 58px;
+      border-top: 1px solid var(--line-dark);
+      border-bottom: 1px solid var(--line-dark);
+    }
+    .pilot-line div { min-height: 155px; padding: 30px 28px 30px 0; }
+    .pilot-line div + div { padding-left: 28px; border-left: 1px solid var(--line-dark); }
+    .pilot-line strong {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--gold);
+      font: 400 clamp(2rem, 4vw, 4rem)/1 Georgia, serif;
+    }
+    .pilot-line span { color: rgba(255, 255, 255, 0.68); font-size: 11px; letter-spacing: 0.11em; line-height: 1.5; text-transform: uppercase; }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      margin-top: 40px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0;
+      list-style: none;
+    }
+    .journey li {
+      position: relative;
+      min-height: 142px;
+      display: grid;
+      align-content: space-between;
+      padding: 27px 25px;
+      border-right: 1px solid var(--line);
+    }
+    .journey li:last-child { border-right: 0; }
+    .journey li:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      background: var(--white);
+      color: var(--gold);
+      padding: 3px;
+      font: 400 1.1rem/1 Georgia, serif;
+    }
+    .journey span { color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: 0.13em; }
+    .journey strong { font: 400 clamp(1.15rem, 1.8vw, 1.65rem)/1.15 Georgia, serif; }
+
+    .why-copy { max-width: 890px; }
+    .why-copy p { color: rgba(255, 255, 255, 0.75); font: 400 clamp(1.35rem, 2.2vw, 2.05rem)/1.56 Georgia, serif; }
+    .why-copy p:last-child { margin-bottom: 0; color: var(--gold); }
+
+    .close { padding: 145px 0; text-align: center; }
+    .close h2 {
+      max-width: 1050px;
+      margin: 0 auto;
+      font-size: clamp(3rem, 6vw, 6.4rem);
+      font-weight: 400;
+      letter-spacing: -0.052em;
+      line-height: 0.98;
+    }
+    .close .actions { justify-content: center; }
+    .close__or { display: block; margin: 18px 0; color: var(--muted); font: italic 400 1rem/1 Georgia, serif; }
+
+    .footer { border-top: 1px solid var(--line); padding: 31px 0; color: var(--muted); font-size: 10px; letter-spacing: 0.05em; }
+    .footer__inner { display: flex; justify-content: space-between; gap: 24px; }
+
+    @media (max-width: 1000px) {
+      .audience-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .audience-list article:nth-child(3n + 2),
+      .audience-list article:nth-child(3n + 3) { padding-left: 0; border-left: 0; }
+      .audience-list article:nth-child(even) { padding-left: 28px; border-left: 1px solid var(--line); }
+      .journey { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .journey li:nth-child(3) { border-right: 0; }
+      .journey li:nth-child(n + 4) { border-top: 1px solid var(--line); }
+      .journey li:nth-child(3)::after { display: none; }
+    }
+
+    @media (max-width: 780px) {
+      .topbar__links { display: none; }
+      .shell { width: min(var(--max), calc(100% - 32px)); }
+      .hero { min-height: auto; padding: 82px 0; }
+      .hero__grid,
+      .section__head { grid-template-columns: 1fr; }
+      .hero h1 { font-size: clamp(3.25rem, 15vw, 5.5rem); }
+      .section { padding: 86px 0; }
+      .benefit-list,
+      .audience-list,
+      .pilot-line { grid-template-columns: 1fr; }
+      .benefit-list article,
+      .benefit-list article:nth-child(even),
+      .audience-list article,
+      .audience-list article:nth-child(even),
+      .pilot-line div,
+      .pilot-line div + div {
+        min-height: auto;
+        padding: 29px 0;
+        border-left: 0;
+      }
+      .pilot-line div + div { border-top: 1px solid var(--line-dark); }
+      .process article { grid-template-columns: 52px minmax(0, 1fr); gap: 18px; }
+      .process article p { grid-column: 2; }
+      .journey { grid-template-columns: 1fr; }
+      .journey li,
+      .journey li:nth-child(3),
+      .journey li:nth-child(n + 4) { min-height: 92px; grid-template-columns: 50px 1fr; align-items: center; border-right: 0; border-top: 0; border-bottom: 1px solid var(--line); }
+      .journey li:last-child { border-bottom: 0; }
+      .journey li::after { display: none !important; }
+      .footer__inner { flex-direction: column; }
+    }
+
+    @media (max-width: 500px) {
+      .brand { max-width: 225px; }
+      .topbar__cta { display: none; }
+      .actions { display: grid; }
+      .button { width: 100%; }
+      .signal-list { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      .topbar, .skip-link, .actions { display: none !important; }
+      .hero { min-height: auto; }
+      .section, .close { padding: 55px 0; }
+      .section--dark { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="shell topbar__inner">
+      <a class="brand" href="#top">Downtown Perks · Founding Partner Collection</a>
+      <nav class="topbar__links" aria-label="Page sections">
+        <a href="#why">Why</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#partners">Partners</a>
+        <a href="#how">How it works</a>
+      </nav>
+      <a class="topbar__cta" href="https://calendar.app.google/8kJHffLWBiQwkRFH6" target="_blank" rel="noreferrer">Start a conversation</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="hero" id="top">
+      <div class="shell hero__grid">
+        <div>
+          <span class="eyebrow">Downtown Perks Founding Partners</span>
+          <h1 class="serif">Helping shape a more connected downtown.</h1>
+          <p class="hero__lead">Downtown Perks brings together the places, organizations, and people that make Downtown Austin worth choosing every day.</p>
+          <div class="actions">
+            <a class="button button--primary" href="https://calendar.app.google/8kJHffLWBiQwkRFH6" target="_blank" rel="noreferrer">Start a conversation</a>
+          </div>
+        </div>
+        <aside class="hero__aside">
+          <p>Founding Partners are helping create a simpler way for residents and visitors to discover where to go, what is happening nearby, and the businesses that make downtown feel alive.</p>
+        </aside>
+      </div>
+    </header>
+
+    <section class="section section--soft" id="why">
+      <div class="shell section__head">
+        <div>
+          <span class="eyebrow">Why we're building this</span>
+          <h2 class="serif">Downtown Austin already has remarkable places.</h2>
+        </div>
+        <div class="section-copy">
+          <div class="place-lines" aria-label="The places that make downtown remarkable">
+            <span>Independent restaurants.</span>
+            <span>Hotels.</span>
+            <span>Residential communities.</span>
+            <span>Local retailers.</span>
+            <span>Parks.</span>
+            <span>Arts organizations.</span>
+            <span>Community groups.</span>
+          </div>
+          <p class="body-xl">The opportunity isn't creating more destinations.</p>
+          <p class="body-xl">It's making everything already here easier to discover, experience, and return to.</p>
+          <p class="pull serif">Downtown Perks connects those moments into one neighborhood experience.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="shell experience-opening">
+        <span class="eyebrow">A better way to experience downtown</span>
+        <h2 class="serif">One connected experience for the decisions people already make.</h2>
+        <p class="body-xl">Residents can discover nearby places, local events, exclusive perks, neighborhood routes, and trusted recommendations through one connected experience.</p>
+        <p class="body-xl">Partners become part of the everyday decisions people already make.</p>
+      </div>
+    </section>
+
+    <section class="section section--soft" id="benefits">
+      <div class="shell">
+        <span class="eyebrow">What Founding Partners receive</span>
+        <h2 class="serif">Useful participation. Meaningful signals. A role in what comes next.</h2>
+        <div class="benefit-list">
+          <article>
+            <div class="benefit-list__number">01</div>
+            <h3>Be discovered naturally</h3>
+            <p>Appear where people are already looking—through location, timing, recommendations, neighborhood guides, and everyday routines.</p>
+            <p>Not simply another listing.</p>
+          </article>
+          <article>
+            <div class="benefit-list__number">02</div>
+            <h3>Create reasons to return</h3>
+            <p>Welcome residents. Host local events. Offer neighborhood moments. Collaborate with nearby partners.</p>
+            <p>Build habits instead of one-time visits.</p>
+          </article>
+          <article>
+            <div class="benefit-list__number">03</div>
+            <h3>Understand engagement</h3>
+            <p>See meaningful activity across your participation.</p>
+            <ul class="signal-list">
+              <li>Profile views</li>
+              <li>Saves</li>
+              <li>Directions</li>
+              <li>Event interest</li>
+              <li>QR activity</li>
+              <li>Offer redemption</li>
+              <li>Repeat engagement</li>
+            </ul>
+          </article>
+          <article>
+            <div class="benefit-list__number">04</div>
+            <h3>Help shape the platform</h3>
+            <p>Founding Partners influence the experiences, campaigns, and neighborhood tools developed as Downtown Perks grows.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="thursday">
+      <div class="shell">
+        <span class="eyebrow">Imagine an ordinary Thursday</span>
+        <div class="thursday">
+          <p>Work finishes a little later than expected.</p>
+          <p>Dinner is only a few blocks away.</p>
+          <p>A gallery opening has just started.</p>
+          <p>Your favorite café is hosting an evening tasting.</p>
+          <p>There's live music nearby.</p>
+          <p>A walk through the park suddenly feels worthwhile.</p>
+          <p>Nothing feels overwhelming.</p>
+          <p>Everything feels relevant.</p>
+          <p>The question becomes simple.</p>
+          <p>What's worth doing next?</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft" id="partners">
+      <div class="shell">
+        <span class="eyebrow">Built for every part of downtown</span>
+        <h2 class="serif">The organizations that already make downtown exceptional.</h2>
+        <div class="audience-list">
+          <article><h3>Residential communities</h3><p>Help residents feel connected beyond the front door.</p></article>
+          <article><h3>Restaurants and hospitality</h3><p>Turn nearby residents and visitors into returning guests.</p></article>
+          <article><h3>Hotels</h3><p>Introduce visitors to a more authentic downtown experience while strengthening local connections.</p></article>
+          <article><h3>Local businesses</h3><p>Become part of the routines people build every week.</p></article>
+          <article><h3>Civic and cultural organizations</h3><p>Make public programs, community events, and local opportunities easier to discover.</p></article>
+          <article><h3>Property owners and developers</h3><p>Connect buildings with the neighborhood around them through one consistent experience.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="shell">
+        <div class="partnership-intro">
+          <span class="eyebrow">How partnerships begin</span>
+          <h2 class="serif">Every partnership starts with one audience.</h2>
+          <p>One experience.</p>
+          <p>One measurable outcome.</p>
+        </div>
+        <div class="process">
+          <article><h3>Discover the opportunity</h3><p>Define the audience, objectives, and success measures together.</p></article>
+          <article><h3>Build the experience</h3><p>Create your Downtown Perks presence, launch materials, offers, events, and neighborhood story.</p></article>
+          <article><h3>Launch</h3><p>Reach people through resident communications, hospitality channels, QR experiences, events, and trusted local distribution.</p></article>
+          <article><h3>Measure</h3><p>Understand what people actually do. See how discovery becomes visits, participation, and repeat engagement.</p></article>
+          <article><h3>Grow</h3><p>Expand what works. Improve what doesn't. Make decisions using evidence instead of assumptions.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="pilot">
+      <div class="shell">
+        <div class="pilot-intro">
+          <span class="eyebrow">Designed to learn</span>
+          <h2 class="serif">Every pilot is intentionally focused.</h2>
+        </div>
+        <div class="pilot-line" aria-label="Founding Partner pilot structure">
+          <div><strong>60–90</strong><span>Day pilot</span></div>
+          <div><strong>1</strong><span>Audience</span></div>
+          <div><strong>1</strong><span>Experience</span></div>
+          <div><strong>1</strong><span>Measurable outcome</span></div>
+          <div><strong>1</strong><span>Clear decision about what comes next</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="journey">
+      <div class="shell">
+        <span class="eyebrow">Partnership journey</span>
+        <ol class="journey">
+          <li><span>01</span><strong>Discover</strong></li>
+          <li><span>02</span><strong>Plan</strong></li>
+          <li><span>03</span><strong>Build</strong></li>
+          <li><span>04</span><strong>Launch</strong></li>
+          <li><span>05</span><strong>Measure</strong></li>
+          <li><span>06</span><strong>Grow</strong></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="why-join">
+      <div class="shell section__head">
+        <div>
+          <span class="eyebrow">Why become a Founding Partner?</span>
+          <h2 class="serif">Help shape how downtown becomes easier to experience.</h2>
+        </div>
+        <div class="why-copy">
+          <p>Founding Partners aren't simply joining a marketing platform.</p>
+          <p>They're helping shape how Downtown Austin becomes easier to experience, easier to explore, and easier to return to.</p>
+          <p>Together we're building a neighborhood people choose—not just once, but again and again.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" id="ready">
+      <div class="shell">
+        <span class="eyebrow">Ready to explore?</span>
+        <h2 class="serif">Let's shape a more connected downtown together.</h2>
+        <div class="actions">
+          <a class="button button--primary" href="https://calendar.app.google/8kJHffLWBiQwkRFH6" target="_blank" rel="noreferrer">Start a Founding Partner conversation</a>
+        </div>
+        <span class="close__or">or</span>
+        <a class="button" href="https://downtownperks.com" target="_blank" rel="noreferrer">Explore Downtown Perks</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__inner">
+      <span>Downtown Perks · Founding Partner Collection</span>
+      <span>Downtown Austin</span>
+    </div>
+  </footer>
+</body>
+</html>
