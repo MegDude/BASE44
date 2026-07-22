@@ -90,7 +90,7 @@ assert.match(intentRegistry, /if \(intent\.id === "inkind"\)[\s\S]*?entityHasExp
 assert.match(operationsView, /Downtown Perks · Founding Partner Collection/, "Operations workspace is not using the collection name");
 assert.match(operationsView, /fetchFoundingPartnerOperations/, "Operations view is not loading protected data through the API client");
 assert.match(operationsView, /Authorized operations access required/, "Unauthorized access state is missing");
-assert.doesNotMatch(operationsView, /leasing@paseoatx\.com|CustomerCare@worthross\.com|shawn\.bell@fsresidential\.com/, "Protected contact data is bundled into the client component");
+assert.doesNotMatch(operationsView, /leasing@paseoatx\.com|info4hoa@worthross\.com|shawn\.bell@fsresidential\.com/, "Protected contact data is bundled into the client component");
 assert.match(operationsClient, /supabaseClient\?\.auth\.getSession\(\)/, "Operations client does not read the authenticated session");
 assert.match(operationsClient, /Authorization: `Bearer \$\{token\}`/, "Operations client does not send the bearer token");
 assert.match(operationsClient, /\/api\/founding-partner-operations/, "Operations client does not call the protected endpoint");
@@ -100,10 +100,11 @@ assert.match(operationsApi, /COLLECTION_OPERATIONS_FORBIDDEN/, "Operations endpo
 assert.match(operationsApi, /Cache-Control", "private, no-store, max-age=0"/, "Protected operations response can be cached");
 assert.match(operationsApi, /X-Robots-Tag", "noindex, nofollow, noarchive"/, "Protected operations response is not excluded from indexing");
 assert.equal(existsSync("src/data/foundingPartnerCollectionOperations.js"), false, "Protected operations data remains in the client data directory");
-assert.match(operationsData, /CustomerCare@worthross\.com/, "Worth Ross public contact route is missing");
+assert.match(operationsData, /info4hoa@worthross\.com/, "Verified Worth Ross portal contact is missing");
+assert.doesNotMatch(operationsData, /CustomerCare@worthross\.com/, "Unverified Worth Ross inbox remains in the operating data");
 assert.match(operationsData, /leasing@paseoatx\.com/, "Paseo public contact route is missing");
 assert.match(operationsData, /info@haihospitality\.com/, "Hai Hospitality public contact route is missing");
-assert.match(operationsData, /support@inkind\.com/, "inKind public contact route is missing");
+assert.match(operationsData, /support@inkind\.com/, "inKind supplied contact route is missing");
 assert.match(operationsData, /shawn\.bell@fsresidential\.com/, "Residential starting contacts are incomplete");
 assert.match(operationsData, /Managing Director, Property Management, Central West/, "Greystar role is not reconciled");
 assert.match(operationsData, /SVP, Property Management, LV Collective/, "LV Collective operating role is not reconciled");
