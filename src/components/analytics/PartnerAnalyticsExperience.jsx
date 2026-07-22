@@ -136,7 +136,7 @@ export function PartnerAnalyticsExperience() {
       return undefined;
     }
     const controller = new AbortController();
-    getPartnerRedemptionOverview("30d", controller.signal)
+    getPartnerRedemptionOverview(organization.id, "30d", controller.signal)
       .then((data) => setRedemptionOverview({ status: "ready", data }))
       .catch((error) => {
         if (error?.name !== "AbortError") setRedemptionOverview({ status: "unavailable", data: null });
@@ -189,3 +189,4 @@ export function PartnerAnalyticsExperience() {
     </div>
   </motion.section>;
 }
+
