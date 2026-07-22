@@ -1,12 +1,13 @@
 import { supabaseClient } from "@/lib/supabase/client";
 
 const DEFAULT_LOCAL_PLATFORM_URL = "http://localhost:3014";
+const DEFAULT_PRODUCTION_PLATFORM_URL = "https://downtown-perks-backend.vercel.app";
 
 export function getPartnerContentApiBaseUrl() {
   const configured = import.meta.env.VITE_OPERATIONS_API_BASE_URL || import.meta.env.VITE_BACKEND_PLATFORM_URL;
   if (configured) return String(configured).replace(/\/$/, "");
   if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) return DEFAULT_LOCAL_PLATFORM_URL;
-  return "";
+  return DEFAULT_PRODUCTION_PLATFORM_URL;
 }
 
 async function authorizationHeaders() {
@@ -38,3 +39,4 @@ export async function updatePartnerMapContent(slug: string, content: Record<stri
   if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("downtown-perks:partner-content-updated", { detail: body?.data }));
   return body?.data;
 }
+
