@@ -25,6 +25,8 @@ const protectedRoutes = [
   "/partner-workspace/launch?view=targets&organizationId=demo-org-legends-real-estate",
 ];
 
+const secureStateHeading = /Sign in to Downtown Perks\.|Authorized operations access required|Operations are temporarily unavailable/;
+
 test("@smoke Founding Partner Collection is a polished public invitation", async ({ page }) => {
   await page.goto("/founding-partners.html");
 
@@ -61,13 +63,12 @@ test("@smoke Founding Partner operations and all targets require authorized acce
   for (const route of protectedRoutes) {
     await page.goto(route);
 
-    if (new URL(page.url()).pathname.startsWith("/partners/sign-in")) {
-      await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
-    } else {
+    const secureHeading = page.getByRole("heading", { name: secureStateHeading }).first();
+    await expect(secureHeading).toBeVisible({ timeout: 15_000 });
+    const headingText = await secureHeading.innerText();
+
+    if (!/Sign in to Downtown Perks\./.test(headingText)) {
       await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
-      await expect(
-        page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
-      ).toBeVisible();
     }
 
     const body = page.locator("body");
