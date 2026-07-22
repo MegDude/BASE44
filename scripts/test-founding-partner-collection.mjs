@@ -9,7 +9,9 @@ const pinResolver = readFileSync("src/lib/map/entityPinResolver.ts", "utf8");
 const typeResolver = readFileSync("src/lib/map/entityTypeResolver.ts", "utf8");
 const intentRegistry = readFileSync("src/map/searchIntent/mapIntentRegistry.ts", "utf8");
 const operationsView = readFileSync("src/components/partner/workspace/WorkspaceLaunchBrief.jsx", "utf8");
-const operationsData = readFileSync("src/data/foundingPartnerCollectionOperations.js", "utf8");
+const operationsClient = readFileSync("src/lib/partner/foundingPartnerOperationsClient.ts", "utf8");
+const operationsApi = readFileSync("api/founding-partner-operations.js", "utf8");
+const operationsData = readFileSync("src/server/foundingPartnerCollectionOperations.js", "utf8");
 const operationsStyles = readFileSync("src/styles/workspace-launch-brief-final.css", "utf8");
 const inventoryWorkflow = readFileSync(".github/workflows/generated-content-inventory.yml", "utf8");
 
@@ -88,10 +90,18 @@ assert.match(intentRegistry, /export function entityHasExplicitInKindMembership/
 assert.match(intentRegistry, /if \(intent\.id === "inkind"\)[\s\S]*?entityHasExplicitInKindMembership/, "inKind intent is not gated by explicit membership");
 
 assert.match(operationsView, /Downtown Perks · Founding Partner Collection/, "Operations workspace is not using the collection name");
-assert.match(operationsView, /Relationship management, verification, approvals, technical notes, and pilot execution/, "Operations purpose is not explicit");
-assert.match(operationsView, /base44\.auth\.me\(\)/, "Operations view does not verify the authenticated user");
-assert.match(operationsView, /canViewEverything/, "Operations view does not enforce privileged access");
+assert.match(operationsView, /fetchFoundingPartnerOperations/, "Operations view is not loading protected data through the API client");
 assert.match(operationsView, /Authorized operations access required/, "Unauthorized access state is missing");
+assert.doesNotMatch(operationsView, /leasing@paseoatx\.com|CustomerCare@worthross\.com|shawn\.bell@fsresidential\.com/, "Protected contact data is bundled into the client component");
+assert.match(operationsClient, /supabaseClient\?\.auth\.getSession\(\)/, "Operations client does not read the authenticated session");
+assert.match(operationsClient, /Authorization: `Bearer \$\{token\}`/, "Operations client does not send the bearer token");
+assert.match(operationsClient, /\/api\/founding-partner-operations/, "Operations client does not call the protected endpoint");
+assert.match(operationsApi, /requireAuthenticatedUser\(req\)/, "Operations endpoint does not require authentication");
+assert.match(operationsApi, /canAccessOperations\(user\)/, "Operations endpoint does not enforce operator authorization");
+assert.match(operationsApi, /COLLECTION_OPERATIONS_FORBIDDEN/, "Operations endpoint lacks a clear forbidden state");
+assert.match(operationsApi, /Cache-Control", "private, no-store, max-age=0"/, "Protected operations response can be cached");
+assert.match(operationsApi, /X-Robots-Tag", "noindex, nofollow, noarchive"/, "Protected operations response is not excluded from indexing");
+assert.equal(existsSync("src/data/foundingPartnerCollectionOperations.js"), false, "Protected operations data remains in the client data directory");
 assert.match(operationsData, /CustomerCare@worthross\.com/, "Worth Ross public contact route is missing");
 assert.match(operationsData, /leasing@paseoatx\.com/, "Paseo public contact route is missing");
 assert.match(operationsData, /info@haihospitality\.com/, "Hai Hospitality public contact route is missing");
@@ -105,4 +115,4 @@ assert.match(inventoryWorkflow, /Validate Founding Partner Collection[\s\S]*?nod
 assert.match(inventoryWorkflow, /Validate map panel actions and Show QR[\s\S]*?node scripts\/test-map-panel-action-rail\.mjs/, "Show QR regression is not wired into CI");
 assert.match(inventoryWorkflow, /Validate map intent routing[\s\S]*?npm run test:map-intents/, "Map intent regression is not wired into CI");
 
-console.log("Founding Partner Collection public/internal separation and product regressions: PASS");
+console.log("Founding Partner Collection public invitation, protected operations boundary, and product regressions: PASS");
