@@ -23,7 +23,7 @@ for (const viewport of [{ width: 393, height: 852 }, { width: 1440, height: 900 
   }
 
   const result = await page.locator("body").evaluate((element) => ({
-    exposesContacts: /leasing@paseoatx\.com|CustomerCare@worthross\.com|shawn\.bell@fsresidential\.com/i.test(element.textContent || ""),
+    exposesContacts: /leasing@paseoatx\.com|info4hoa@worthross\.com|shawn\.bell@fsresidential\.com/i.test(element.textContent || ""),
     overflow: document.documentElement.scrollWidth > innerWidth,
   }));
 
