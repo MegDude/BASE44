@@ -5,6 +5,7 @@ import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 import { useAuth } from "@/lib/AuthContext";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
+import { residentAccountFromContext, residentAccountStatus, type ResidentAccount } from "@/lib/residentMembership/residentAccount";
 import {
   getResidentLiveActivity,
   type ResidentLiveActivityItem,
@@ -21,87 +22,13 @@ const EMPTY_CIVIC: ResidentGovernanceResponse = {
 };
 
 type HomePanel = "home" | "perks" | "card";
-type ResidentRecord = {
-  id?: string;
-  fullName?: string;
-  email?: string;
-  phone?: string;
-  buildingName?: string;
-  buildingDistrict?: string;
-  unitNumber?: string;
-  verificationStatus?: string;
-  membershipSource?: string;
-  membershipType?: string;
-  renewalDate?: string;
-  expiresAt?: string;
-  moveInDate?: string;
-  profileCompletion?: number;
-  interests?: string[];
-  notifications?: Record<string, unknown>;
-  joinedAt?: string;
-  personalizedMap?: boolean;
-  savedCount?: number;
-};
-
-type ResidentMembershipContext = {
-  profile?: Record<string, unknown>;
-  membership?: Record<string, unknown> | null;
-  saved?: unknown[];
-  preferences?: Record<string, unknown> | null;
-  mapContext?: { path?: string; personalized?: boolean };
-};
-
-function stringValue(...values: unknown[]) {
-  const value = values.find((item) => typeof item === "string" && item.trim());
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function stringList(...values: unknown[]) {
-  const value = values.find(Array.isArray);
-  if (!Array.isArray(value)) return [];
-  return value.map((item) => String(item).trim()).filter(Boolean);
-}
-
-function readResidentRecord(): ResidentRecord | null {
+function readResidentRecord(): ResidentAccount | null {
   if (typeof window === "undefined") return null;
   try {
     return JSON.parse(window.localStorage.getItem(RESIDENT_ACCESS_KEY) || "null");
   } catch {
     return null;
   }
-}
-
-function residentRecordFromMembership(context: ResidentMembershipContext, fallback: ResidentRecord | null): ResidentRecord | null {
-  const profile = context.profile || {};
-  const membership = context.membership || {};
-  const preferences = context.preferences || {};
-  const firstName = profile.first_name || profile.firstName || "";
-  const lastName = profile.last_name || profile.lastName || "";
-  const fullName = profile.full_name || profile.fullName || [firstName, lastName].filter(Boolean).join(" ");
-  const hasAccountRecord = Boolean(profile.id || profile.resident_id || fullName || profile.email || fallback);
-  if (!hasAccountRecord) return null;
-  return {
-    ...fallback,
-    id: String(profile.id || profile.resident_id || fallback?.id || ""),
-    fullName: String(fullName || fallback?.fullName || ""),
-    email: String(profile.email || fallback?.email || ""),
-    phone: String(profile.phone || fallback?.phone || ""),
-    buildingName: String(profile.building_name || membership.building_name || fallback?.buildingName || ""),
-    buildingDistrict: stringValue(profile.building_district, profile.district, membership.building_district, membership.district, fallback?.buildingDistrict),
-    unitNumber: String(profile.apartment || profile.unit_number || fallback?.unitNumber || ""),
-    verificationStatus: String(membership.status || profile.verification_status || fallback?.verificationStatus || "active"),
-    membershipSource: stringValue(membership.source, profile.membership_source, fallback?.membershipSource),
-    membershipType: stringValue(membership.membership_type, profile.membership_type, fallback?.membershipType),
-    renewalDate: stringValue(membership.renewal_date, membership.current_period_end, fallback?.renewalDate),
-    expiresAt: stringValue(membership.expires_at, fallback?.expiresAt),
-    moveInDate: stringValue(profile.move_in_date, profile.moveInDate, fallback?.moveInDate),
-    profileCompletion: Number(profile.profile_completion ?? fallback?.profileCompletion ?? 0),
-    interests: stringList(profile.interests, preferences.interests, preferences.categories, fallback?.interests),
-    notifications: (profile.notification_preferences || preferences.notifications || preferences.notification_preferences || fallback?.notifications || {}) as Record<string, unknown>,
-    joinedAt: stringValue(membership.created_at, profile.created_at, fallback?.joinedAt),
-    personalizedMap: Boolean(context.mapContext?.personalized ?? fallback?.personalizedMap),
-    savedCount: Array.isArray(context.saved) ? context.saved.length : fallback?.savedCount,
-  };
 }
 
 function readableSavedName(id: string) {
@@ -122,7 +49,7 @@ function readableSavedName(id: string) {
     .join(" ");
 }
 
-function residentCardCode(record: ResidentRecord | null) {
+function residentCardCode(record: ResidentAccount | null) {
   const source = record?.id || record?.email || record?.fullName || "resident";
   const clean = String(source).replace(/[^a-z0-9]/gi, "").slice(-10).toUpperCase();
   return `DP-${clean || "RESIDENT"}`;
@@ -177,9 +104,9 @@ export default function ResidentHome() {
     : ["perks", "card"].includes(requestedPanel || "")
       ? requestedPanel as HomePanel
       : "home";
-  const { isAuthenticated, isLoadingAuth } = useAuth();
+  const { user, isAuthenticated, isLoadingAuth, logout } = useAuth();
   const savedIds = useSavedStore((state) => state.savedIds);
-  const [resident, setResident] = useState<ResidentRecord | null>(readResidentRecord);
+  const [resident, setResident] = useState<ResidentAccount | null>(null);
   const [liveActivity, setLiveActivity] = useState<ResidentLiveActivityItem[]>([]);
   const [liveActivityStatus, setLiveActivityStatus] = useState<"loading" | "ready" | "empty" | "unavailable">("loading");
   const [civic, setCivic] = useState<ResidentGovernanceResponse>(EMPTY_CIVIC);
@@ -210,7 +137,7 @@ export default function ResidentHome() {
 
   useEffect(() => {
     function syncResidentState() {
-      setResident(readResidentRecord());
+      if (isAuthenticated) setResident((current) => residentAccountFromContext(null, user, readResidentRecord() || current));
     }
     window.addEventListener("storage", syncResidentState);
     window.addEventListener("focus", syncResidentState);
@@ -218,22 +145,28 @@ export default function ResidentHome() {
       window.removeEventListener("storage", syncResidentState);
       window.removeEventListener("focus", syncResidentState);
     };
-  }, []);
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
-    if (isLoadingAuth || !isAuthenticated) return;
+    if (isLoadingAuth) return;
+    if (!isAuthenticated) {
+      setResident(null);
+      setPassOpen(false);
+      return;
+    }
     let active = true;
+    setResident((current) => residentAccountFromContext(null, user, current || readResidentRecord()));
     getResidentMembership()
       .then((context) => {
         if (!active) return;
-        setResident((current) => residentRecordFromMembership(context, current));
+        setResident((current) => residentAccountFromContext(context, user, current));
       })
       .catch(() => {
         // The locally cached profile keeps the resident surface usable if the
         // membership service is briefly unavailable.
       });
     return () => { active = false; };
-  }, [isAuthenticated, isLoadingAuth]);
+  }, [isAuthenticated, isLoadingAuth, user]);
 
   const savedPerks = savedIds.map((id) => ({ id, name: readableSavedName(id) }));
 
@@ -255,6 +188,14 @@ export default function ResidentHome() {
       return;
     }
     navigate("/map?mode=resident&tab=map&filter=All");
+  }
+
+  function requireResidentAccount(action: () => void) {
+    if (isAuthenticated) {
+      action();
+      return;
+    }
+    navigate(`/residents/login?returnTo=${encodeURIComponent(`${location.pathname}${location.search}`)}`);
   }
 
   const activeTab = panel === "perks" ? "perks" : panel === "card" ? "card" : "home";
@@ -285,7 +226,7 @@ export default function ResidentHome() {
       summary: readableMembershipSource(resident.membershipSource || resident.membershipType),
       rows: [
         ["Plan", readableMembershipSource(resident.membershipSource || resident.membershipType)],
-        ["Status", resident.verificationStatus === "verified" ? "Verified resident" : "Active resident"],
+        ["Status", residentAccountStatus(resident)],
         ["Renewal", resident.renewalDate ? readableDate(resident.renewalDate) : resident.expiresAt ? readableDate(resident.expiresAt) : "No renewal date"],
         ["Member since", readableDate(resident.joinedAt)],
         ["Profile complete", resident.profileCompletion ? `${resident.profileCompletion}%` : "Not calculated"],
@@ -350,7 +291,7 @@ export default function ResidentHome() {
             <div><p>{greeting}</p><h1 id="resident-command-greeting">Downtown today</h1><span>{weekdayForNow()} · Nearby plans, resident benefits, and community updates.</span></div>
             <div className="dp-resident-home-primary-actions" aria-label="Primary resident actions">
               <Link to="/map?mode=resident&tab=map&filter=All"><Map aria-hidden="true" /><span>Open map</span></Link>
-              <button type="button" onClick={() => setPassOpen(true)}><QrCode aria-hidden="true" /><span>Show resident pass</span></button>
+              <button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}><QrCode aria-hidden="true" /><span>{isAuthenticated ? "Show resident pass" : "Sign in"}</span></button>
               <Link to="/resident/civic"><Landmark aria-hidden="true" /><span>Civic inbox</span></Link>
             </div>
           </section>
@@ -479,7 +420,7 @@ export default function ResidentHome() {
                 <code>{residentCardCode(resident)}</code>
               </section>
               <section className="dp-resident-card-qr-action" aria-label="Resident perk QR code">
-                <button type="button" onClick={() => setPassOpen(true)}>
+                <button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}>
                   <QrCode aria-hidden="true" />
                   <span><strong>Show resident pass</strong><small>Create a one-time QR code when a participating place asks to scan it.</small></span>
                   <ChevronRight aria-hidden="true" />
@@ -495,6 +436,7 @@ export default function ResidentHome() {
                   <Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Open on map</Link>
                   <Link to="/residents/welcome">Update details</Link>
                   <Link to="/card">Manage access</Link>
+                  <button type="button" onClick={() => logout(true, "/residents/login")}>Sign out</button>
                 </div>
               </section>
             </>
@@ -502,8 +444,8 @@ export default function ResidentHome() {
             <div className="dp-resident-empty-state">
               <UserRound aria-hidden="true" />
               <h3>Your resident profile lives here.</h3>
-              <p>Create a card to connect your home property, or keep exploring downtown without an account.</p>
-              <div><Link className="dp-resident-text-action" to="/map?mode=resident&tab=map&filter=All"><Search aria-hidden="true" />Open the map</Link><Link className="dp-resident-text-action" to="/card">Get a card</Link></div>
+              <p>Sign in to see your membership, home property, saved places, and resident pass.</p>
+              <div><Link className="dp-resident-text-action" to={`/residents/login?returnTo=${encodeURIComponent("/resident/home?panel=card")}`}>Sign in</Link><Link className="dp-resident-text-action" to="/residents/membership">Create account</Link></div>
             </div>
           )}
         </section>
@@ -514,3 +456,4 @@ export default function ResidentHome() {
     </main>
   );
 }
+
