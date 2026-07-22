@@ -51,11 +51,17 @@ test("@smoke Founding Partner Collection is a polished public invitation", async
 test("@smoke Founding Partner operations require authorized access", async ({ page }) => {
   await page.goto("/partner-workspace/launch?organizationId=demo-org-legends-real-estate");
 
-  await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
-  ).toBeVisible();
-  await expect(page.getByText("leasing@paseoatx.com")).toHaveCount(0);
-  await expect(page.getByText("CustomerCare@worthross.com")).toHaveCount(0);
-  await expect(page.getByText("shawn.bell@fsresidential.com")).toHaveCount(0);
+  if (new URL(page.url()).pathname.startsWith("/partners/sign-in")) {
+    await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
+  } else {
+    await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
+    ).toBeVisible();
+  }
+
+  const body = page.locator("body");
+  await expect(body).not.toContainText("leasing@paseoatx.com");
+  await expect(body).not.toContainText("CustomerCare@worthross.com");
+  await expect(body).not.toContainText("shawn.bell@fsresidential.com");
 });
