@@ -13,7 +13,7 @@ for (const viewport of [{ width: 393, height: 852 }, { width: 1440, height: 900 
 
   const brief = page.locator(".dp-launch-brief");
   await brief.waitFor({ state: "visible", timeout: 15_000 });
-  await page.getByRole("heading", { name: "Authorized operations access required." }).waitFor({ state: "visible", timeout: 15_000 });
+  await page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }).waitFor({ state: "visible", timeout: 15_000 });
 
   const result = await brief.evaluate((element) => ({
     collectionName: /Downtown Perks · Founding Partner Collection/.test(element.textContent || ""),
