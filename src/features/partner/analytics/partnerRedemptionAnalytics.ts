@@ -1,4 +1,5 @@
 import { supabaseClient } from "@/lib/supabase/client";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
 
 export type PartnerRedemptionOverview = {
   range: { from: string; to: string };
@@ -16,11 +17,12 @@ export type PartnerRedemptionOverview = {
   liveActivity: Array<{ id: string; status: string; perkId: string; occurredAt: string }>;
 };
 
-export async function getPartnerRedemptionOverview(range = "30d", signal?: AbortSignal): Promise<PartnerRedemptionOverview> {
+export async function getPartnerRedemptionOverview(organizationId: string, range = "30d", signal?: AbortSignal): Promise<PartnerRedemptionOverview> {
   if (!supabaseClient) throw new Error("Partner analytics are not connected.");
   const { data } = await supabaseClient.auth.getSession();
   if (!data.session?.access_token) throw new Error("Sign in with a partner account to see verified results.");
-  const response = await fetch(`/api/partner/analytics/overview?range=${encodeURIComponent(range)}`, {
+  const query = new URLSearchParams({ organizationId, range });
+  const response = await fetch(`${getPartnerContentApiBaseUrl()}/api/partner/analytics/overview?${query.toString()}`, {
     headers: { Authorization: `Bearer ${data.session.access_token}` },
     signal,
   });
@@ -28,3 +30,4 @@ export async function getPartnerRedemptionOverview(range = "30d", signal?: Abort
   if (!response.ok) throw new Error(body.error || "Verified results are not available yet.");
   return body;
 }
+
