@@ -126,7 +126,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async (shouldRedirect = true) => {
+  const logout = async (shouldRedirect = true, redirectPath = "") => {
+    const isResidentAccount = String(user?.role || user?.partner_type || "").toLowerCase() === "resident";
+    const nextPath = redirectPath || (isResidentAccount ? "/residents/login" : "/partners/sign-in");
     setUser(null);
     setIsAuthenticated(false);
     setPartnerSession(null);
@@ -134,13 +136,13 @@ export const AuthProvider = ({ children }) => {
 
     if (isProductionLike() && supabaseClient) {
       await supabaseClient.auth.signOut().catch(() => {});
-      if (shouldRedirect) window.location.href = "/partners/sign-in";
+      if (shouldRedirect) window.location.href = nextPath;
       return;
     }
     
     if (shouldRedirect) {
       // Use the SDK's logout method which handles token cleanup and redirect
-      base44.auth.logout(window.location.href);
+      base44.auth.logout(`${window.location.origin}${nextPath}`);
     } else {
       // Just remove the token without redirect
       base44.auth.logout();
@@ -395,3 +397,4 @@ export const useAuth = () => {
   }
   return context;
 };
+
