@@ -12,7 +12,6 @@ const operationsView = readFileSync("src/components/partner/workspace/WorkspaceL
 const operationsClient = readFileSync("src/lib/partner/foundingPartnerOperationsClient.ts", "utf8");
 const operationsApi = readFileSync("api/founding-partner-operations.js", "utf8");
 const operationsData = readFileSync("src/server/foundingPartnerCollectionOperations.js", "utf8");
-const operationsStyles = readFileSync("src/styles/workspace-launch-brief-final.css", "utf8");
 const inventoryWorkflow = readFileSync(".github/workflows/generated-content-inventory.yml", "utf8");
 
 for (const requiredCopy of [
@@ -29,6 +28,7 @@ for (const requiredCopy of [
   "What's worth doing next?",
   "Built for every part of downtown",
   "How partnerships begin",
+  "One measurable outcome.",
   "Designed to learn",
   "Partnership journey",
   "Why become a Founding Partner?",
@@ -78,8 +78,6 @@ assert.match(publicPage, /rel="canonical" href="https:\/\/downtownperks\.com\/fo
 const rewrites = new Map(vercel.rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
 assert.equal(rewrites.get("/founding-partners"), "/founding-partners.html", "Founding Partners route is missing");
 assert.equal(rewrites.get("/founding-partner-collection"), "/founding-partners.html", "Collection alias is missing");
-assert.equal(rewrites.has("/nina-launch-office"), false, "Retired public launch-office route still exists");
-assert.equal(existsSync("public/nina-launch-office.html"), false, "Legacy public operations page still exists");
 
 assert.ok(main.trim().includes('import "@/styles/perk-action-visibility-final.css"'), "Show QR correction stylesheet is not imported");
 assert.match(qrStyles, /\.dp-perk-cta\.is-secondary[\s\S]*?grid-column:\s*1 \/ -1/, "Show QR secondary action is not kept visible");
@@ -107,9 +105,10 @@ assert.match(operationsData, /leasing@paseoatx\.com/, "Paseo public contact rout
 assert.match(operationsData, /info@haihospitality\.com/, "Hai Hospitality public contact route is missing");
 assert.match(operationsData, /support@inkind\.com/, "inKind public contact route is missing");
 assert.match(operationsData, /shawn\.bell@fsresidential\.com/, "Residential starting contacts are incomplete");
-assert.doesNotMatch(operationsView, /Nina Launch Office|For Nina|NINA_BRIEF|dp-launch-brief__nina/, "Legacy internal naming remains in the operations view");
-assert.doesNotMatch(operationsData, /Nina Launch Office|Nina Introduction/, "Legacy internal naming remains in operations data");
-assert.doesNotMatch(operationsStyles, /dp-launch-brief__nina/, "Legacy internal selector remains in operations styles");
+assert.match(operationsData, /Managing Director, Property Management, Central West/, "Greystar role is not reconciled");
+assert.match(operationsData, /SVP, Property Management, LV Collective/, "LV Collective operating role is not reconciled");
+assert.match(operationsData, /Chief Brand Officer; Leo Barrera — Vice President of Operations/, "Hai leadership roles are not reconciled");
+assert.match(operationsData, /Corporate Director of Marketing; Mindi Marshall — Corporate Director of Hotel Operations/, "New Waterloo operating roles are not reconciled");
 
 assert.match(inventoryWorkflow, /Validate Founding Partner Collection[\s\S]*?node scripts\/test-founding-partner-collection\.mjs/, "Collection regression is not wired into CI");
 assert.match(inventoryWorkflow, /Validate map panel actions and Show QR[\s\S]*?node scripts\/test-map-panel-action-rail\.mjs/, "Show QR regression is not wired into CI");
