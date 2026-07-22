@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink, LockKeyhole, Search, ShieldCheck, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import WorkspaceFoundingPartnerTargets from "@/components/partner/workspace/WorkspaceFoundingPartnerTargets";
 import { fetchFoundingPartnerOperations } from "@/lib/partner/foundingPartnerOperationsClient";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 
@@ -22,12 +23,14 @@ function buildTargetBrief(target) {
 }
 
 export default function WorkspaceLaunchBrief({ organizationId }) {
+  const location = useLocation();
   const [accessState, setAccessState] = useState("checking");
   const [operations, setOperations] = useState(null);
   const [query, setQuery] = useState("");
   const [segment, setSegment] = useState("all");
   const [selectedTargetId, setSelectedTargetId] = useState("");
   const [copied, setCopied] = useState("");
+  const view = new URLSearchParams(location.search).get("view") || "overview";
 
   useEffect(() => {
     let active = true;
@@ -89,6 +92,10 @@ export default function WorkspaceLaunchBrief({ organizationId }) {
     );
   }
 
+  if (view === "targets") {
+    return <WorkspaceFoundingPartnerTargets operations={operations} organizationId={organizationId} />;
+  }
+
   return (
     <section className="dp-launch-brief" aria-labelledby="collection-operations-title">
       <header className="dp-launch-brief__hero">
@@ -96,6 +103,7 @@ export default function WorkspaceLaunchBrief({ organizationId }) {
         <h1 id="collection-operations-title">Turn relationships into approved, measurable pilots.</h1>
         <span>Relationship management, verification, approvals, technical notes, and pilot execution—kept separate from the public Founding Partner invitation.</span>
         <div>
+          <Link to={withPartnerWorkspaceContext("/partner-workspace/launch?view=targets", organizationId)}>Open all targets</Link>
           <Link to={withPartnerWorkspaceContext("/partner-workspace/campaigns", organizationId)}>Open campaigns</Link>
           <Link to="/map?mode=partner&tab=map&filter=All">Open partner map<ExternalLink aria-hidden="true" /></Link>
           <a href="/founding-partners" target="_blank" rel="noreferrer">View public invitation<ExternalLink aria-hidden="true" /></a>
