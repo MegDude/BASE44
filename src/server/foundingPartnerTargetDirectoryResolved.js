@@ -79,9 +79,10 @@ const pouringWithHeartTarget = {
   sources: [],
 };
 
+const resolvedTargets = collectionTargetDirectory.map((target) => targetOverrides[target.id]?.(target) || target);
+const activeHospitalityIndex = resolvedTargets.findIndex((target) => target.id === "dunlap-atx");
+resolvedTargets.splice(activeHospitalityIndex >= 0 ? activeHospitalityIndex + 1 : 0, 0, pouringWithHeartTarget);
+
 export const collectionResolvedBriefMeta = collectionBriefMeta;
 export const collectionResolvedBuildingDirectory = collectionBuildingDirectory;
-export const collectionResolvedTargetDirectory = [
-  ...collectionTargetDirectory.map((target) => targetOverrides[target.id]?.(target) || target),
-  pouringWithHeartTarget,
-];
+export const collectionResolvedTargetDirectory = resolvedTargets;
