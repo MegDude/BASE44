@@ -10,12 +10,12 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/nina-launch-office",
-      "destination": "/nina-launch-office.html"
+      "source": "/founding-partners",
+      "destination": "/founding-partners.html"
     },
     {
-      "source": "/founding-partners",
-      "destination": "/nina-launch-office.html"
+      "source": "/founding-partner-collection",
+      "destination": "/founding-partners.html"
     },
     {
       "source": "/app/:path*",
