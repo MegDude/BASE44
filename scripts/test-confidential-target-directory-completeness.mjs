@@ -56,9 +56,10 @@ for (const name of [
 const coalition = byId.get("rainey-street-coalition");
 assert.ok(coalition, "Rainey Street Coalition record is missing");
 assert.ok(coalition.assets.includes("Banger’s Sausage House & Beer Garden"), "Banger’s is missing from the coalition route");
-assert.ok(coalition.contacts.some((contact) => contact.name === "Ben Siegel"), "Ben Siegel is missing from the coalition route");
-assert.match(JSON.stringify(coalition.contacts), /current title.*authority to verify/i, "Ben Siegel is not clearly qualified as a supplied route requiring verification");
-assert.doesNotMatch(JSON.stringify(coalition.contacts), /Ben Siegel[^}]*Founder/i, "Ben Siegel must not be described as founder without confirmation");
+const benSiegel = coalition.contacts.find((contact) => contact.name === "Ben Siegel");
+assert.ok(benSiegel, "Ben Siegel is missing from the coalition route");
+assert.match(benSiegel.role, /current title.*authority to verify/i, "Ben Siegel is not clearly qualified as a supplied route requiring verification");
+assert.doesNotMatch(benSiegel.role, /Founder/i, "Ben Siegel must not be described as founder without confirmation");
 
 const pouringWithHeart = byId.get("pouring-with-heart");
 assert.ok(pouringWithHeart, "The active Pouring With Heart relationship is missing");
