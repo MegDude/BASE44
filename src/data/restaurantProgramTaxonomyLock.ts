@@ -8,6 +8,15 @@ function normalizeList(value: unknown): string[] {
   return [...new Set(values.map((item) => String(item || "").trim().toLowerCase()).filter(Boolean))];
 }
 
+function reconcileSearchTerms(value: unknown, includeInKind: boolean): string[] {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+  const withoutInKind = values
+    .map((item) => String(item || "").trim())
+    .filter(Boolean)
+    .filter((item) => !/^in[\s-]?kind$/i.test(item));
+  return includeInKind ? [...new Set([...withoutInKind, "inKind"])] : [...new Set(withoutInKind)];
+}
+
 /**
  * Program membership must come from an explicit verification field.
  * Legacy partnerType / partnerNetwork defaults are intentionally not proof:
@@ -51,6 +60,8 @@ function reconcileRestaurantProgramMembership(record: Record<string, any>): void
   record.applicableIntents = isVerifiedInKind
     ? [...new Set([...applicableIntents, INKIND_PROGRAM_ID])]
     : applicableIntents;
+  record.tags = reconcileSearchTerms(record.tags, isVerifiedInKind);
+  record.searchKeywords = reconcileSearchTerms(record.searchKeywords, isVerifiedInKind);
 
   if (isVerifiedInKind) {
     record.partnerNetwork = INKIND_PROGRAM_ID;
