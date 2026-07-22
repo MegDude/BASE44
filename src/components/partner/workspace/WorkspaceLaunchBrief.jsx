@@ -1,18 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink, LockKeyhole, Search, ShieldCheck, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
-import {
-  collectionAdditionalRoutes,
-  collectionLaunchSequence,
-  collectionOperatingGoals,
-  collectionPriorityTargets,
-  collectionResidentialRoutes,
-  collectionSuccessMeasures,
-  collectionTechnicalNotes,
-  collectionWorkingRecords,
-} from "@/data/foundingPartnerCollectionOperations";
-import { canViewEverything } from "@/lib/auth/session";
+import { fetchFoundingPartnerOperations } from "@/lib/partner/foundingPartnerOperationsClient";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 
 const COLLECTION_NAME = "Downtown Perks · Founding Partner Collection";
@@ -32,34 +21,34 @@ function buildTargetBrief(target) {
   ].join("\n");
 }
 
-export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAccess = false }) {
-  const [accessState, setAccessState] = useState(hasPrivilegedAccess ? "granted" : "checking");
+export default function WorkspaceLaunchBrief({ organizationId }) {
+  const [accessState, setAccessState] = useState("checking");
+  const [operations, setOperations] = useState(null);
   const [query, setQuery] = useState("");
   const [segment, setSegment] = useState("all");
-  const [selectedTargetId, setSelectedTargetId] = useState(collectionPriorityTargets[0]?.id || "");
+  const [selectedTargetId, setSelectedTargetId] = useState("");
   const [copied, setCopied] = useState("");
 
   useEffect(() => {
-    if (hasPrivilegedAccess) {
-      setAccessState("granted");
-      return undefined;
-    }
-
     let active = true;
-    base44.auth.me()
-      .then((user) => {
-        if (active) setAccessState(canViewEverything(user || {}) ? "granted" : "denied");
+    fetchFoundingPartnerOperations()
+      .then((data) => {
+        if (!active) return;
+        setOperations(data);
+        setSelectedTargetId(data.priorityTargets?.[0]?.id || "");
+        setAccessState("granted");
       })
-      .catch(() => {
-        if (active) setAccessState("denied");
+      .catch((error) => {
+        if (!active) return;
+        setAccessState(error?.code === "COLLECTION_OPERATIONS_FORBIDDEN" || error?.message === "AUTH_REQUIRED" ? "denied" : "error");
       });
-
     return () => { active = false; };
-  }, [hasPrivilegedAccess]);
+  }, []);
 
+  const priorityTargets = operations?.priorityTargets || [];
   const filteredTargets = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return collectionPriorityTargets.filter((target) => {
+    return priorityTargets.filter((target) => {
       const segmentMatch = segment === "all" || target.segment.toLowerCase().includes(segment);
       const queryMatch = !normalizedQuery || [
         target.name,
@@ -72,9 +61,9 @@ export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAcce
       ].join(" ").toLowerCase().includes(normalizedQuery);
       return segmentMatch && queryMatch;
     });
-  }, [query, segment]);
+  }, [priorityTargets, query, segment]);
 
-  const selectedTarget = collectionPriorityTargets.find((target) => target.id === selectedTargetId) || filteredTargets[0] || collectionPriorityTargets[0];
+  const selectedTarget = priorityTargets.find((target) => target.id === selectedTargetId) || filteredTargets[0] || priorityTargets[0];
 
   async function copyText(key, value) {
     try {
@@ -86,15 +75,16 @@ export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAcce
     }
   }
 
-  if (accessState !== "granted") {
+  if (accessState !== "granted" || !operations) {
     const checking = accessState === "checking";
+    const failed = accessState === "error";
     return (
       <section className="dp-launch-brief dp-launch-brief--locked" aria-labelledby="collection-access-title">
         <LockKeyhole aria-hidden="true" />
         <p>{COLLECTION_NAME}</p>
-        <h1 id="collection-access-title">{checking ? "Checking authorized access…" : "Authorized operations access required."}</h1>
-        <span>{checking ? "Confirming the current Downtown Perks operator session." : "Relationship management, verification, approvals, technical notes, and pilot execution are available only to authorized Downtown Perks operators."}</span>
-        {!checking ? <Link to="/partners/sign-in">Sign in</Link> : null}
+        <h1 id="collection-access-title">{checking ? "Checking authorized access…" : failed ? "Operations are temporarily unavailable." : "Authorized operations access required."}</h1>
+        <span>{checking ? "Confirming the current Downtown Perks operator session." : failed ? "The protected operating dataset could not be loaded. Try again after confirming the service connection." : "Relationship management, verification, approvals, technical notes, and pilot execution are available only to authorized Downtown Perks operators."}</span>
+        {!checking ? <Link to={failed ? "/partner-workspace/launch" : "/partners/sign-in"}>{failed ? "Try again" : "Sign in"}</Link> : null}
       </section>
     );
   }
@@ -114,7 +104,7 @@ export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAcce
 
       <section className="dp-launch-brief__goals" aria-labelledby="collection-goals-title">
         <header><p>Proof set</p><h2 id="collection-goals-title">The first operating outcome</h2></header>
-        <div>{collectionOperatingGoals.map((goal) => <div key={goal.label}><strong>{goal.value}</strong><span>{goal.label}</span></div>)}</div>
+        <div>{operations.operatingGoals.map((goal) => <div key={goal.label}><strong>{goal.value}</strong><span>{goal.label}</span></div>)}</div>
       </section>
 
       <section className="dp-launch-brief__minute" aria-labelledby="collection-minute-title">
@@ -171,36 +161,36 @@ export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAcce
         <header><p>Residential</p><h2 id="collection-residential-title">Building-ready starting routes</h2></header>
         <div role="table" aria-label="Residential launch contacts">
           <div role="row"><strong role="columnheader">Property</strong><strong role="columnheader">Contact</strong><strong role="columnheader">Email</strong><strong role="columnheader">Phone</strong></div>
-          {collectionResidentialRoutes.map((route) => <div role="row" key={route.property}><span role="cell">{route.property}</span><span role="cell">{route.contact}</span><a role="cell" href={`mailto:${route.email}`}>{route.email}</a><a role="cell" href={`tel:${route.phone.replace(/[^\d+]/g, "")}`}>{route.phone}</a></div>)}
+          {operations.residentialRoutes.map((route) => <div role="row" key={route.property}><span role="cell">{route.property}</span><span role="cell">{route.contact}</span><a role="cell" href={`mailto:${route.email}`}>{route.email}</a><a role="cell" href={`tel:${route.phone.replace(/[^\d+]/g, "")}`}>{route.phone}</a></div>)}
         </div>
       </section>
 
       <section className="dp-launch-brief__additional" aria-labelledby="collection-additional-title">
         <header><p>Additional routes</p><h2 id="collection-additional-title">Keep these available without expanding the first move</h2></header>
-        <div>{collectionAdditionalRoutes.map((route) => <article key={route.organization}><strong>{route.organization}</strong><p>{route.contacts}</p><span>{route.contactPath}</span></article>)}</div>
+        <div>{operations.additionalRoutes.map((route) => <article key={route.organization}><strong>{route.organization}</strong><p>{route.contacts}</p><span>{route.contactPath}</span></article>)}</div>
       </section>
 
       <section className="dp-launch-brief__technical" aria-labelledby="collection-technical-title">
         <header><p>Technical notes</p><h2 id="collection-technical-title">Product integrity stays inside operations</h2></header>
-        <div>{collectionTechnicalNotes.map((note) => <article key={note.id}><strong>{note.title}</strong><span>{note.status}</span><p>{note.summary}</p></article>)}</div>
+        <div>{operations.technicalNotes.map((note) => <article key={note.id}><strong>{note.title}</strong><span>{note.status}</span><p>{note.summary}</p></article>)}</div>
       </section>
 
       <section className="dp-launch-brief__sequence" aria-labelledby="collection-sequence-title">
         <header><p>90 days</p><h2 id="collection-sequence-title">Execution sequence</h2></header>
-        <ol>{collectionLaunchSequence.map((item) => <li key={item.period}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol>
+        <ol>{operations.launchSequence.map((item) => <li key={item.period}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol>
       </section>
 
       <section className="dp-launch-brief__metrics" aria-labelledby="collection-metrics-title">
         <header><p>Proof</p><h2 id="collection-metrics-title">Success measures</h2></header>
-        <div role="table" aria-label="Founding Partner Collection launch targets"><div role="row"><strong role="columnheader">Measure</strong><strong role="columnheader">Minimum</strong><strong role="columnheader">Strong</strong></div>{collectionSuccessMeasures.map(([label, minimum, strong]) => <div role="row" key={label}><span role="cell">{label}</span><strong role="cell">{minimum}</strong><strong role="cell">{strong}</strong></div>)}</div>
+        <div role="table" aria-label="Founding Partner Collection launch targets"><div role="row"><strong role="columnheader">Measure</strong><strong role="columnheader">Minimum</strong><strong role="columnheader">Strong</strong></div>{operations.successMeasures.map(([label, minimum, strong]) => <div role="row" key={label}><span role="cell">{label}</span><strong role="cell">{minimum}</strong><strong role="cell">{strong}</strong></div>)}</div>
       </section>
 
       <section className="dp-launch-brief__records" aria-labelledby="collection-records-title">
         <header><p>Source of truth</p><h2 id="collection-records-title">Operating records</h2></header>
-        <ol>{collectionWorkingRecords.map(([title, description], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{title}</strong><p>{description}</p></div></li>)}</ol>
+        <ol>{operations.workingRecords.map(([title, description], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{title}</strong><p>{description}</p></div></li>)}</ol>
       </section>
 
-      <footer className="dp-launch-brief__verification"><ShieldCheck aria-hidden="true" /><p><strong>Operating standard</strong>Use confirmed public routes or documented warm introductions. Reconfirm titles, portfolio scope, participating assets, and approval authority at the moment of outreach; unknown authority is never treated as approval.</p><time dateTime="2026-07-22">Reconciled July 22, 2026</time></footer>
+      <footer className="dp-launch-brief__verification"><ShieldCheck aria-hidden="true" /><p><strong>Operating standard</strong>Use confirmed public routes or documented warm introductions. Reconfirm titles, portfolio scope, participating assets, and approval authority at the moment of outreach; unknown authority is never treated as approval.</p><time dateTime={operations.reconciledAt}>Reconciled July 22, 2026</time></footer>
     </section>
   );
 }
