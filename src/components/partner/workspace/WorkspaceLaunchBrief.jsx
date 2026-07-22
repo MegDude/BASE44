@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink, LockKeyhole, Search, ShieldCheck, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import {
   collectionAdditionalRoutes,
   collectionLaunchSequence,
@@ -11,6 +12,7 @@ import {
   collectionTechnicalNotes,
   collectionWorkingRecords,
 } from "@/data/foundingPartnerCollectionOperations";
+import { canViewEverything } from "@/lib/auth/session";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 
 const COLLECTION_NAME = "Downtown Perks · Founding Partner Collection";
@@ -31,10 +33,29 @@ function buildTargetBrief(target) {
 }
 
 export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAccess = false }) {
+  const [accessState, setAccessState] = useState(hasPrivilegedAccess ? "granted" : "checking");
   const [query, setQuery] = useState("");
   const [segment, setSegment] = useState("all");
   const [selectedTargetId, setSelectedTargetId] = useState(collectionPriorityTargets[0]?.id || "");
   const [copied, setCopied] = useState("");
+
+  useEffect(() => {
+    if (hasPrivilegedAccess) {
+      setAccessState("granted");
+      return undefined;
+    }
+
+    let active = true;
+    base44.auth.me()
+      .then((user) => {
+        if (active) setAccessState(canViewEverything(user || {}) ? "granted" : "denied");
+      })
+      .catch(() => {
+        if (active) setAccessState("denied");
+      });
+
+    return () => { active = false; };
+  }, [hasPrivilegedAccess]);
 
   const filteredTargets = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -65,14 +86,15 @@ export default function WorkspaceLaunchBrief({ organizationId, hasPrivilegedAcce
     }
   }
 
-  if (!hasPrivilegedAccess) {
+  if (accessState !== "granted") {
+    const checking = accessState === "checking";
     return (
       <section className="dp-launch-brief dp-launch-brief--locked" aria-labelledby="collection-access-title">
         <LockKeyhole aria-hidden="true" />
         <p>{COLLECTION_NAME}</p>
-        <h1 id="collection-access-title">Authorized operations access required.</h1>
-        <span>Relationship management, verification, approvals, technical notes, and pilot execution are available only to authorized Downtown Perks operators.</span>
-        <Link to="/partners/sign-in">Sign in</Link>
+        <h1 id="collection-access-title">{checking ? "Checking authorized access…" : "Authorized operations access required."}</h1>
+        <span>{checking ? "Confirming the current Downtown Perks operator session." : "Relationship management, verification, approvals, technical notes, and pilot execution are available only to authorized Downtown Perks operators."}</span>
+        {!checking ? <Link to="/partners/sign-in">Sign in</Link> : null}
       </section>
     );
   }
