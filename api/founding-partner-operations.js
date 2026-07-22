@@ -50,7 +50,7 @@ function canAccessOperations(user) {
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "private, no-store, max-age=0");
   res.setHeader("Pragma", "no-cache");
-  res.setHeader("X-Robots-Tag", "noindex, nofollow,noarchive".replace(",noarchive", ", noarchive"));
+  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
 
   try {
     if (req.method !== "GET") {
