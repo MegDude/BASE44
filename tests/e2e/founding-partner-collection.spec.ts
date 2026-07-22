@@ -62,6 +62,6 @@ test("@smoke Founding Partner operations require authorized access", async ({ pa
 
   const body = page.locator("body");
   await expect(body).not.toContainText("leasing@paseoatx.com");
-  await expect(body).not.toContainText("CustomerCare@worthross.com");
+  await expect(body).not.toContainText("info4hoa@worthross.com");
   await expect(body).not.toContainText("shawn.bell@fsresidential.com");
 });
