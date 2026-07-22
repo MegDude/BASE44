@@ -14,10 +14,10 @@ import {
   collectionWorkingRecords,
 } from "../src/server/foundingPartnerCollectionOperations.js";
 import {
-  collectionBriefMeta,
-  collectionBuildingDirectory,
-  collectionTargetDirectory,
-} from "../src/server/foundingPartnerTargetDirectory.js";
+  collectionResolvedBriefMeta,
+  collectionResolvedBuildingDirectory,
+  collectionResolvedTargetDirectory,
+} from "../src/server/foundingPartnerTargetDirectoryResolved.js";
 import {
   collectionForwardableNote,
   collectionIntroductionPriorities,
@@ -66,9 +66,9 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       data: {
-        briefMeta: collectionBriefMeta,
-        targetDirectory: collectionTargetDirectory,
-        buildingDirectory: collectionBuildingDirectory,
+        briefMeta: collectionResolvedBriefMeta,
+        targetDirectory: collectionResolvedTargetDirectory,
+        buildingDirectory: collectionResolvedBuildingDirectory,
         warmRelationships: collectionWarmRelationships,
         introductionPriorities: collectionIntroductionPriorities,
         pilotOptions: collectionPilotOptions,
