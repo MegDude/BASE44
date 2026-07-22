@@ -1,6 +1,13 @@
 import { supabaseClient } from "@/lib/supabase/client";
 
 export type FoundingPartnerOperations = {
+  briefMeta: Record<string, string>;
+  targetDirectory: Array<Record<string, any>>;
+  buildingDirectory: Array<Record<string, string>>;
+  warmRelationships: Array<Record<string, string>>;
+  introductionPriorities: Array<Record<string, string>>;
+  pilotOptions: Array<Record<string, string>>;
+  forwardableNote: { title: string; body: string };
   operatingGoals: Array<{ value: string; label: string }>;
   priorityTargets: Array<Record<string, any>>;
   residentialRoutes: Array<Record<string, string>>;
