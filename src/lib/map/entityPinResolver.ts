@@ -97,12 +97,15 @@ function entityText(entity: Record<string, unknown>): string {
     entity.name,
     entity.title,
     entity.type,
+    entity.kind,
     entity.entityType,
     entity.markerType,
     entity.detailDrawerType,
     entity.category,
     entity.category_key,
+    entity.subcategory,
     entity.partnerType,
+    entity.partnerNetwork,
     entity.brand,
     entity.source,
     entity.osm_type,
@@ -112,12 +115,15 @@ function entityText(entity: Record<string, unknown>): string {
     entity.legendsListing ? "legends listing" : "",
     entity.luxuryPresenceListing ? "luxury presence listing" : "",
     raw.type,
+    raw.kind,
     raw.name,
     raw.title,
     raw.entityType,
     raw.category,
     raw.category_key,
+    raw.subcategory,
     raw.partnerType,
+    raw.partnerNetwork,
     raw.source,
     raw.pinKey,
     raw.pinAsset,
@@ -135,6 +141,42 @@ function explicitPinKey(entity: Record<string, unknown>): string {
   return String(entity.pinKey || entity.pinAsset || entity.pin_asset || raw.pinKey || raw.pinAsset || raw.pin_asset || "")
     .toLowerCase()
     .trim();
+}
+
+function hasRestaurantSignal(entity: Record<string, unknown>): boolean {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  const primaryTypeText = [
+    entity.entityType,
+    entity.type,
+    entity.kind,
+    entity.markerType,
+    entity.detailDrawerType,
+    raw.entityType,
+    raw.type,
+    raw.kind,
+    raw.markerType,
+    raw.detailDrawerType,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const categoryText = [
+    entity.category,
+    entity.category_key,
+    entity.subcategory,
+    raw.category,
+    raw.category_key,
+    raw.subcategory,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (/\b(event|campaign|property|listing|rental|hotel|brand|civic|service)\b/.test(primaryTypeText) && !/\b(restaurant|dining)\b/.test(primaryTypeText)) {
+    return false;
+  }
+
+  return /\b(restaurant|dining|restaurant[_\s/-]*food|food hall)\b/.test(`${primaryTypeText} ${categoryText}`);
 }
 
 function hasVenueSignal(entity: Record<string, unknown>): boolean {
@@ -178,6 +220,13 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   const textForPin = entityText(entity);
   if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => textForPin.includes(token)))?.[0] === "legends") {
     return getMapIcon("legends");
+  }
+
+  // Program membership, search intent, and perks must never replace the
+  // restaurant's primary category. Restaurants keep the canonical dining pin
+  // and can independently participate in the inKind layer.
+  if (hasRestaurantSignal(entity)) {
+    return getMapIcon("dining");
   }
 
   const explicit = explicitPinKey(entity);
