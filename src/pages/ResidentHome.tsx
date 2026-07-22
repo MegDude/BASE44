@@ -118,9 +118,14 @@ export default function ResidentHome() {
   }
 
   useEffect(() => {
+    if (isLoadingAuth) return;
+    if (!isAuthenticated) {
+      setCivic(EMPTY_CIVIC);
+      return;
+    }
     void refreshCivic();
     return subscribeToResidentCivicInbox(() => { void refreshCivic(); });
-  }, []);
+  }, [isAuthenticated, isLoadingAuth]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -456,4 +461,3 @@ export default function ResidentHome() {
     </main>
   );
 }
-
