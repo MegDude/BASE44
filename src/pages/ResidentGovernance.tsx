@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { getResidentGovernance, sendResidentGovernanceAction, type ResidentGovernanceResponse } from "@/lib/governance/governanceClient";
 import { QuickCivicQuestion } from "@/features/resident/civic/QuickCivicQuestion";
+import "@/styles/resident-governance-single-surface-final.css";
 
 const EMPTY_GOVERNANCE: ResidentGovernanceResponse = {
   initiatives: [], meetings: [], consultations: [], questions: [], yourQuestions: [], yourReports: [], followedInitiativeIds: [],
@@ -91,7 +92,7 @@ export default function ResidentGovernance() {
           ))}
         </section> : null}
 
-        {data.meetings.length ? <section className="dp-governance-section" aria-labelledby="meetings-title">
+        {data.meetings.length ? <section className="dp-governance-section" id="meetings" aria-labelledby="meetings-title">
           <header><small>Meetings</small><h2 id="meetings-title">Coming up</h2><p>Dates, locations, and meeting details together.</p></header>
           {data.meetings.map((item) => (
             <article key={item.id} className="dp-governance-row"><CalendarDays aria-hidden="true" /><div><strong>{item.title}</strong><p>{item.summary}</p><small>{item.starts_at ? new Date(item.starts_at).toLocaleString() : "Date to be confirmed"}{item.location_name ? ` · ${item.location_name}` : ""}</small></div></article>
