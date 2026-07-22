@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix",
     "pretypecheck": "npm run inventory:partner-content",
     "typecheck": "tsc -p ./jsconfig.json",
+    "test:resident-account-surface": "node scripts/test-resident-account-surface.mjs",
     "preview": "vite preview",
     "pretest:e2e": "node scripts/ensure-local-playwright.cjs",
     "test:e2e": "playwright test",
@@ -204,3 +205,4 @@
     "vite": "^6.1.0"
   }
 }
+
