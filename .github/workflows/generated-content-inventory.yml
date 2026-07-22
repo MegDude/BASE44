@@ -35,6 +35,9 @@ jobs:
       - name: Generate source-backed inventory
         run: npm run inventory:partner-content:ci
 
+      - name: Validate map intent routing
+        run: npm run test:map-intents
+
       - name: Validate required outputs
         run: npm run test:partner-content-inventory
 
