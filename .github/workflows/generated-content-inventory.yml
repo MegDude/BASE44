@@ -3,7 +3,7 @@ name: Generated content inventory
 on:
   pull_request:
     paths:
-      - "public/nina-launch-office.html"
+      - "public/founding-partners.html"
       - "src/**"
       - "scripts/**"
       - "package.json"
@@ -37,8 +37,8 @@ jobs:
       - name: Generate source-backed inventory
         run: npm run inventory:partner-content:ci
 
-      - name: Validate Nina Launch Office
-        run: node scripts/test-nina-launch-office.mjs
+      - name: Validate Founding Partner Collection
+        run: node scripts/test-founding-partner-collection.mjs
 
       - name: Validate map panel actions and Show QR
         run: node scripts/test-map-panel-action-rail.mjs
