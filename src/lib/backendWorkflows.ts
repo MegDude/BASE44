@@ -1,3 +1,5 @@
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
+
 type JsonRecord = Record<string, unknown>;
 
 const SESSION_KEY = "dp_session_id";
@@ -5,14 +7,20 @@ const PROFILE_KEY = "dp_profile_id";
 const DEFAULT_LOCAL_OPERATIONS_URL = "http://localhost:3014";
 
 function getOperationsApiBaseUrl() {
-  const configured = import.meta.env.VITE_OPERATIONS_API_BASE_URL || import.meta.env.VITE_BACKEND_PLATFORM_URL;
-  if (configured) return String(configured).replace(/\/$/, "");
+  return getPartnerContentApiBaseUrl() || DEFAULT_LOCAL_OPERATIONS_URL;
+}
 
-  if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) {
-    return DEFAULT_LOCAL_OPERATIONS_URL;
-  }
+const PLATFORM_WORKFLOW_PREFIXES = [
+  "/api/partner/redemptions/",
+  "/api/resident/qr-session",
+  "/api/resident/saved",
+  "/api/residents/",
+];
 
-  return "";
+function workflowUrl(endpoint: string) {
+  return PLATFORM_WORKFLOW_PREFIXES.some((prefix) => endpoint.startsWith(prefix))
+    ? `${getOperationsApiBaseUrl()}${endpoint}`
+    : endpoint;
 }
 
 function getOrCreateBrowserId(key: string, prefix: string) {
@@ -43,6 +51,9 @@ export function getWorkflowProfileId() {
 
 export async function postWorkflow(endpoint: string, payload: JsonRecord) {
   const authHeaders: Record<string, string> = {};
+  if (typeof payload.idempotencyKey === "string" && payload.idempotencyKey.trim()) {
+    authHeaders["Idempotency-Key"] = payload.idempotencyKey.trim();
+  }
   try {
     const { supabaseClient } = await import("@/lib/supabase/client");
     const { data } = supabaseClient ? await supabaseClient.auth.getSession() : { data: null };
@@ -50,7 +61,7 @@ export async function postWorkflow(endpoint: string, payload: JsonRecord) {
   } catch {
     // Public map actions remain available; protected endpoints return a clear sign-in response.
   }
-  const response = await fetch(endpoint, {
+  const response = await fetch(workflowUrl(endpoint), {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders },
     body: JSON.stringify(payload),
@@ -118,3 +129,4 @@ export function fireWorkflow(endpoint: string, payload: JsonRecord) {
     if (import.meta.env.DEV) console.warn(`[workflow] ${endpoint}`, error);
   });
 }
+
