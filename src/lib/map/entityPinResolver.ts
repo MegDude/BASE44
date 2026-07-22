@@ -1,3 +1,4 @@
+import "../../data/restaurantProgramTaxonomyLock";
 import { getMapIcon, type MapIconKey } from "./mapIconRegistry";
 
 const CATEGORY_PIN_MAP: Array<[MapIconKey, string[]]> = [
@@ -137,6 +138,53 @@ function explicitPinKey(entity: Record<string, unknown>): string {
     .trim();
 }
 
+/**
+ * The primary place type owns the map glyph. Optional programs such as inKind
+ * remain searchable metadata and must never replace a restaurant, coffee, or
+ * nightlife icon.
+ */
+function primaryVenuePinKey(entity: Record<string, unknown>): MapIconKey | null {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
+  const typeText = [
+    entity.type,
+    entity.entityType,
+    entity.kind,
+    entity.markerType,
+    entity.detailDrawerType,
+    raw.type,
+    raw.entityType,
+    raw.kind,
+    raw.markerType,
+    raw.detailDrawerType,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const categoryText = [
+    entity.category,
+    entity.category_key,
+    entity.subcategory,
+    raw.category,
+    raw.category_key,
+    raw.subcategory,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const isVenueLike = /\b(venue|restaurant|bar|nightlife|coffee|cafe|café)\b/.test(typeText);
+
+  if (/\b(coffee|cafe|café)\b/.test(typeText) || (isVenueLike && /\b(coffee|cafe|café|espresso)\b/.test(categoryText))) {
+    return "coffee";
+  }
+  if (/\brestaurant\b/.test(typeText) || (isVenueLike && /\b(restaurant|dining|food|steakhouse|sushi|seafood|mexican|italian|pizza|taqueria|bistro|bakery)\b/.test(categoryText))) {
+    return "dining";
+  }
+  if (/\b(bar|nightlife)\b/.test(typeText) || (isVenueLike && /\b(bar|nightlife|cocktail|pub|club|lounge|beer|wine)\b/.test(categoryText))) {
+    return "nightlife";
+  }
+  return null;
+}
+
 function hasVenueSignal(entity: Record<string, unknown>): boolean {
   const text = entityText(entity);
   return /\b(venue|restaurant|bar|nightlife|coffee|retail|store|shop|antone'?s|nightclub|live music|music venue|cocktail|dining|pizza|brewery|beer|cafe)\b/.test(text);
@@ -178,6 +226,11 @@ export function resolveEntityPin(entity: Record<string, unknown>) {
   const textForPin = entityText(entity);
   if (PIN_MATCHERS.find(([, tokens]) => tokens.some((token) => textForPin.includes(token)))?.[0] === "legends") {
     return getMapIcon("legends");
+  }
+
+  const primaryPinKey = primaryVenuePinKey(entity);
+  if (primaryPinKey) {
+    return getMapIcon(primaryPinKey);
   }
 
   const explicit = explicitPinKey(entity);
