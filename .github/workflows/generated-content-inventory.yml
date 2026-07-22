@@ -40,6 +40,9 @@ jobs:
       - name: Validate Founding Partner Collection
         run: node scripts/test-founding-partner-collection.mjs
 
+      - name: Validate complete confidential target directory
+        run: node scripts/test-confidential-target-directory-completeness.mjs
+
       - name: Validate map panel actions and Show QR
         run: node scripts/test-map-panel-action-rail.mjs
 
