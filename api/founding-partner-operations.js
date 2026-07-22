@@ -14,9 +14,9 @@ import {
   collectionWorkingRecords,
 } from "../src/server/foundingPartnerCollectionOperations.js";
 import {
-  collectionResolvedBriefMeta,
-  collectionResolvedBuildingDirectory,
-  collectionResolvedTargetDirectory,
+  collectionResolvedBriefMeta as collectionBriefMeta,
+  collectionResolvedBuildingDirectory as collectionBuildingDirectory,
+  collectionResolvedTargetDirectory as collectionTargetDirectory,
 } from "../src/server/foundingPartnerTargetDirectoryResolved.js";
 import {
   collectionForwardableNote,
@@ -50,7 +50,7 @@ function canAccessOperations(user) {
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "private, no-store, max-age=0");
   res.setHeader("Pragma", "no-cache");
-  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow,noarchive".replace(",noarchive", ", noarchive"));
 
   try {
     if (req.method !== "GET") {
@@ -66,9 +66,9 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       data: {
-        briefMeta: collectionResolvedBriefMeta,
-        targetDirectory: collectionResolvedTargetDirectory,
-        buildingDirectory: collectionResolvedBuildingDirectory,
+        briefMeta: collectionBriefMeta,
+        targetDirectory: collectionTargetDirectory,
+        buildingDirectory: collectionBuildingDirectory,
         warmRelationships: collectionWarmRelationships,
         introductionPriorities: collectionIntroductionPriorities,
         pilotOptions: collectionPilotOptions,
