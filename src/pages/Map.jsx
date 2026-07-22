@@ -54,6 +54,8 @@ import BuildingExperienceModule from "@/components/map/BuildingExperienceModule"
 import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
+import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
+import { residentAccountFromContext, residentAccountStatus } from "@/lib/residentMembership/residentAccount";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
 import MapActionStandardPanel from "@/components/map/MapActionStandardPanel";
 import { AppButton } from "@/components/ui/AppButton";
@@ -1346,8 +1348,8 @@ function getResidentQrPerkCopy(place) {
   };
 }
 
-function buildResidentQrPayload({ place, action = "show_card", source = "resident_map" } = {}) {
-  const uid = getResidentProfileUid();
+function buildResidentQrPayload({ place, action = "show_card", source = "resident_map", residentAccount = null } = {}) {
+  const uid = residentAccount?.id || getResidentProfileUid();
   const entityId = getEntityTouchpointId(place);
   const entityName = getEntityTouchpointName(place);
   const perk = getResidentQrPerkCopy(place);
@@ -1371,7 +1373,10 @@ function buildResidentQrPayload({ place, action = "show_card", source = "residen
     cardId,
     cardNumber,
     cardStatus: "active",
-    buildingName: "Downtown Austin",
+    residentName: residentAccount?.fullName || "Downtown Perks resident",
+    residentEmail: residentAccount?.email || "",
+    buildingName: residentAccount?.buildingName || residentAccount?.buildingDistrict || "Downtown Austin",
+    membershipStatus: residentAccountStatus(residentAccount),
     sessionId,
     action,
     source,
@@ -4235,6 +4240,7 @@ function PartnerQrScanner({ onVerified }) {
     try {
       await postWorkflow(`/api/partner/redemptions/${validation.redemptionId}/reject`, {
         reason: "Not completed by staff",
+        idempotencyKey: `${scanKey}-reject`,
       });
       setScannerStatus("rejected");
       setScannerMessage("Not completed. The result was recorded without applying the perk.");
@@ -4242,7 +4248,7 @@ function PartnerQrScanner({ onVerified }) {
       setScannerStatus("error");
       setScannerMessage(error instanceof Error ? error.message : "The result could not be recorded.");
     }
-  }, [validation]);
+  }, [scanKey, validation]);
 
   const runDetectionLoop = useCallback(async () => {
     const video = videoRef.current;
@@ -13966,7 +13972,25 @@ export default function MapPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { pushPanelState, popPanelState, peekPanelState, clearPanelStack } = useMapPanelNavigation();
-  const { user } = useAuth();
+  const { user, isAuthenticated, isLoadingAuth, logout } = useAuth();
+  const [residentAccount, setResidentAccount] = useState(null);
+  useEffect(() => {
+    if (isLoadingAuth) return undefined;
+    if (!isAuthenticated) {
+      setResidentAccount(null);
+      return undefined;
+    }
+    let active = true;
+    setResidentAccount((current) => residentAccountFromContext(null, user, current));
+    getResidentMembership()
+      .then((context) => {
+        if (active) setResidentAccount((current) => residentAccountFromContext(context, user, current));
+      })
+      .catch(() => {
+        // Keep the authenticated identity visible while membership details reconnect.
+      });
+    return () => { active = false; };
+  }, [isAuthenticated, isLoadingAuth, user]);
   const {
     places,
     resultState: scopedResultState,
@@ -14093,8 +14117,12 @@ export default function MapPage() {
     };
   }, [activeFilter, district, urlState.campaignId, urlState.collection, urlState.mode]);
   const openResidentQrModal = useCallback(async (place = null, action = "show_card", source = "resident_map") => {
+    if (!isAuthenticated) {
+      navigate(`/residents/login?returnTo=${encodeURIComponent(`${location.pathname}${location.search}`)}`);
+      return;
+    }
     const qrPlace = place || RESIDENT_CARD_ENTITY;
-    const payload = buildResidentQrPayload({ place: place || null, action, source });
+    const payload = buildResidentQrPayload({ place: place || null, action, source, residentAccount });
     try {
       const session = await createResidentQrSession({
         perkId: action === "use_perk" ? payload.entityId : undefined,
@@ -14109,16 +14137,20 @@ export default function MapPage() {
       console.warn("Resident QR session could not be created", error);
       if (typeof window !== "undefined") window.alert(error?.message || "We couldn't prepare your resident pass. Try again.");
     }
-  }, []);
-  const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card" }), []);
+  }, [isAuthenticated, location.pathname, location.search, navigate, residentAccount]);
+  const residentCardPayload = useMemo(() => buildResidentQrPayload({ action: "show_card", source: "resident_card", residentAccount }), [residentAccount]);
   const presentResidentPass = useCallback((event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
-    openResidentQrModal(null, "show_card", "resident_pass");
+    void openResidentQrModal(null, "show_card", "resident_pass");
   }, [openResidentQrModal]);
   const saveResidentPassForLater = useCallback(async (event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
+    if (!isAuthenticated) {
+      navigate(`/residents/login?returnTo=${encodeURIComponent(`${location.pathname}${location.search}`)}`);
+      return;
+    }
     try {
       await postWorkflow("/api/map-actions", {
         action: "add_wallet",
@@ -14135,7 +14167,7 @@ export default function MapPage() {
         window.alert("We couldn't add the card right now. Please try again.");
       }
     }
-  }, [residentCardPayload]);
+  }, [isAuthenticated, location.pathname, location.search, navigate, residentCardPayload]);
   const [resultsExpanded, setResultsExpanded] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
     urlState.panelTab
@@ -17918,71 +17950,87 @@ export default function MapPage() {
               onClose={() => switchMode(urlState.mode, "map")}
             />
             <div className="dp-map-sheet-scroll">
-                <section className="dp-resident-card-identity">
+              {!isAuthenticated && !isLoadingAuth ? (
+                <section className="dp-resident-card-identity dp-resident-card-identity--signed-out">
                   <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
-                  <h2 className="dp-map-panel-title">Your Downtown Card</h2>
-                  <p className="dp-map-panel-subtitle">
-                    Use your card when a participating place, event, or building benefit asks for resident access.
-                  </p>
+                  <h2 className="dp-map-panel-title">Sign in to your resident card.</h2>
+                  <p className="dp-map-panel-subtitle">See your membership, home property, saved places, and one-time QR pass in one secure view.</p>
                 </section>
-
-                <section className={`dp-card-credential ${passPresented ? "is-ready" : ""}`} aria-label="Resident QR code">
-                  <div className="dp-card-credential-header">
-                    <span className="dp-card-credential-kicker">VERIFIED RESIDENT</span>
-                    <span className="dp-card-credential-status">{passPresented ? "Scanned" : "Ready"}</span>
-                  </div>
-                  <h3 className="dp-card-credential-title">Downtown Austin</h3>
-                  <p className="dp-card-credential-copy">
-                    {passPresented
-                      ? "Resident access is confirmed. You can use this card for eligible perks, event check-ins, and participating partner experiences."
-                      : "Show this QR code when a participating partner asks to confirm resident access."}
-                  </p>
-                  <div className="dp-card-qr-wrap">
-                    <DemoQrCode code={residentCardPayload.qrValue} className="dp-card-qr-image" />
-                  </div>
-                  <div className="dp-card-scan-demo" aria-live="polite">
-                    <span>{passPresented ? "Resident access confirmed" : "Ready when a partner asks"}</span>
-                    <button type="button" onClick={presentResidentPass}>
-                      {passPresented ? "Show Again" : "Confirm Access"}
-                    </button>
-                  </div>
-                  <div className="dp-card-verification-row">
-                    <span>{passPresented ? "Confirmed resident · Downtown Austin" : "Verified resident · Downtown Austin"}</span>
-                    <code>{residentCardPayload.uid}</code>
-                  </div>
+              ) : null}
+              {isLoadingAuth ? (
+                <section className="dp-resident-card-identity" role="status">
+                  <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
+                  <h2 className="dp-map-panel-title">Checking your account.</h2>
+                  <p className="dp-map-panel-subtitle">Your resident details will appear here when they are ready.</p>
                 </section>
+              ) : null}
+              {isAuthenticated ? (
+                <>
+                  <section className="dp-resident-card-identity">
+                    <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
+                    <h2 className="dp-map-panel-title">{residentAccount?.fullName || "Your Downtown Card"}</h2>
+                    <p className="dp-map-panel-subtitle">
+                      {residentAccount?.buildingName ? `${residentAccount.buildingName} is connected to this resident card.` : "Use your card when a participating place or event asks to confirm resident access."}
+                    </p>
+                  </section>
 
-                <MapPanelMatrix label="RESIDENT STATUS">
-                  <MapPanelMatrixRow label="Status" value="Verified Resident" />
-                  <MapPanelMatrixRow label="Access" value="Downtown Austin" />
-                  <MapPanelMatrixRow label="Active Through" value="December 2026" />
-                  <MapPanelMatrixRow label="Partner Access" value="Enabled" />
-                </MapPanelMatrix>
+                  <section className={`dp-card-credential ${passPresented ? "is-ready" : ""}`} aria-label="Resident QR code">
+                    <div className="dp-card-credential-header">
+                      <span className="dp-card-credential-kicker">{residentAccountStatus(residentAccount).toUpperCase()}</span>
+                      <span className="dp-card-credential-status">{passPresented ? "Scanned" : "Ready"}</span>
+                    </div>
+                    <h3 className="dp-card-credential-title">{residentAccount?.buildingName || residentAccount?.buildingDistrict || "Downtown Austin"}</h3>
+                    <p className="dp-card-credential-copy">
+                      {passPresented ? "Resident access is confirmed for this visit." : "Show this QR code when a participating partner asks to confirm resident access."}
+                    </p>
+                    <div className="dp-card-qr-wrap"><DemoQrCode code={residentCardPayload.qrValue} className="dp-card-qr-image" /></div>
+                    <div className="dp-card-scan-demo" aria-live="polite">
+                      <span>{passPresented ? "Resident access confirmed" : "Ready when a partner asks"}</span>
+                      <button type="button" onClick={presentResidentPass}>{passPresented ? "Show again" : "Show QR"}</button>
+                    </div>
+                    <div className="dp-card-verification-row">
+                      <span>{residentAccountStatus(residentAccount)}{residentAccount?.buildingName ? ` · ${residentAccount.buildingName}` : ""}</span>
+                      <code>{residentCardPayload.uid}</code>
+                    </div>
+                  </section>
 
-                <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Current access">
-                  <p className="dp-map-panel-section-label">CURRENT ACCESS</p>
-                  <h3 className="dp-map-panel-section-title">Resident benefits nearby</h3>
-                  <p className="dp-map-panel-body-copy">Participating places can use this card for eligible resident perks, event entry, featured experiences, and limited-time offers.</p>
-                  <span className="dp-map-panel-small-note">Availability can vary by partner, event, and building.</span>
-                </section>
+                  <MapPanelMatrix label="YOUR ACCOUNT">
+                    <MapPanelMatrixRow label="Name" value={residentAccount?.fullName || user?.full_name || user?.email || "Resident"} />
+                    <MapPanelMatrixRow label="Email" value={residentAccount?.email || user?.email || "Not added"} />
+                    <MapPanelMatrixRow label="Home" value={residentAccount?.buildingName || "Not connected"} />
+                    <MapPanelMatrixRow label="Status" value={residentAccountStatus(residentAccount)} />
+                    <MapPanelMatrixRow label="Renewal" value={residentAccount?.renewalDate || residentAccount?.expiresAt || "No renewal date"} />
+                  </MapPanelMatrix>
 
-                <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Tonight nearby">
-                  <p className="dp-map-panel-section-label">TONIGHT NEARBY</p>
-                  <p className="dp-map-panel-body-copy">Open the Events layer to see walkable plans, check-in moments, and resident-friendly experiences before you head out.</p>
-                </section>
+                  <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Current access">
+                    <p className="dp-map-panel-section-label">WHAT YOU CAN USE</p>
+                    <h3 className="dp-map-panel-section-title">Resident benefits nearby</h3>
+                    <p className="dp-map-panel-body-copy">Open a participating perk to review its current terms, then show a one-time QR when the partner asks.</p>
+                  </section>
 
-                <section className="dp-map-panel-note">
-                  <p className="dp-map-panel-section-label">BUILDING MEMBERSHIP</p>
-                  <p className="dp-map-panel-body-copy">If your building joins Downtown Perks after you purchase individual access, your resident membership can be credited or refunded through the building plan.</p>
-                </section>
+                  <section className="dp-map-panel-note">
+                    <p className="dp-map-panel-section-label">BUILDING MEMBERSHIP</p>
+                    <p className="dp-map-panel-body-copy">If your building is an active Downtown Perks or DANA member, eligible resident access is included automatically.</p>
+                  </section>
+                </>
+              ) : null}
             </div>
             <footer className="dp-map-sheet-action-footer">
-              <MapPanelButton action="open-detail" label={passPresented ? "Confirmed" : "Show QR"} ariaLabel={passPresented ? "Show confirmed resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
-              <div className="dp-map-sheet-action-grid">
-                <MapPanelButton action="open-detail" label="Add Wallet" ariaLabel={walletAdded ? "Add wallet already completed" : "Add card to wallet"} variant="secondary" onPress={saveResidentPassForLater} />
-                <MapPanelButton action="open-filter" label="Perks" ariaLabel="Open Perks panel" variant="secondary" onPress={() => switchMode("resident", "map", "Perks")} />
-                <MapPanelButton action="open-filter" label="Events" ariaLabel="Open Events panel" variant="secondary" onPress={() => switchMode("resident", "map", "Events")} />
-              </div>
+              {isAuthenticated ? (
+                <>
+                  <MapPanelButton action="open-detail" label={passPresented ? "Confirmed" : "Show QR"} ariaLabel={passPresented ? "Show confirmed resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
+                  <div className="dp-map-sheet-action-grid">
+                    <MapPanelButton action="open-detail" label="Profile" ariaLabel="Open resident profile" variant="secondary" onPress={() => navigate("/resident/home?panel=card")} />
+                    <MapPanelButton action="open-detail" label="Add Wallet" ariaLabel={walletAdded ? "Add wallet already completed" : "Add card to wallet"} variant="secondary" onPress={saveResidentPassForLater} />
+                  </div>
+                  <button type="button" className="dp-resident-card-signout" onClick={() => logout(true, "/residents/login")}>Sign out</button>
+                </>
+              ) : !isLoadingAuth ? (
+                <div className="dp-map-sheet-action-grid">
+                  <MapPanelButton action="open-detail" label="Sign in" ariaLabel="Sign in to resident access" variant="primary" onPress={() => navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}`)} />
+                  <MapPanelButton action="open-detail" label="Create account" ariaLabel="Create a resident account" variant="secondary" onPress={() => navigate("/residents/membership")} />
+                </div>
+              ) : null}
             </footer>
           </MapSheet>
         </div>
@@ -19154,3 +19202,4 @@ export default function MapPage() {
     </div>
   );
 }
+
