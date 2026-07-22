@@ -37,6 +37,10 @@ function canAccessOperations(user) {
 }
 
 export default async function handler(req, res) {
+  res.setHeader("Cache-Control", "private, no-store, max-age=0");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+
   try {
     if (req.method !== "GET") {
       res.setHeader("Allow", "GET");
@@ -48,8 +52,6 @@ export default async function handler(req, res) {
       throw new TransactionApiError(403, "COLLECTION_OPERATIONS_FORBIDDEN", "Authorized Downtown Perks operator access is required.");
     }
 
-    res.setHeader("Cache-Control", "private, no-store, max-age=0");
-    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
     return res.status(200).json({
       ok: true,
       data: {
