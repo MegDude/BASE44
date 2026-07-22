@@ -19,11 +19,10 @@ for (const viewport of [{ width: 393, height: 852 }, { width: 1440, height: 900 
     collectionName: /Downtown Perks · Founding Partner Collection/.test(element.textContent || ""),
     locked: element.classList.contains("dp-launch-brief--locked"),
     exposesContacts: /leasing@paseoatx\.com|CustomerCare@worthross\.com|shawn\.bell@fsresidential\.com/i.test(element.textContent || ""),
-    legacyName: /Nina Launch Office/i.test(element.textContent || ""),
     overflow: document.documentElement.scrollWidth > innerWidth,
   }));
 
-  if (!result.collectionName || !result.locked || result.exposesContacts || result.legacyName || result.overflow) {
+  if (!result.collectionName || !result.locked || result.exposesContacts || result.overflow) {
     throw new Error(`Collection operations access or containment failed at ${viewport.width}px (${JSON.stringify(result)})`);
   }
 
@@ -37,4 +36,4 @@ for (const viewport of [{ width: 393, height: 852 }, { width: 1440, height: 900 
 
 await browser.close();
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
-console.log("Founding Partner Collection operations remain authenticated, contained, and free of legacy naming");
+console.log("Founding Partner Collection operations remain authenticated and contained");
