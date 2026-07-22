@@ -24,6 +24,7 @@ test("@smoke Founding Partner Collection is a polished public invitation", async
   await expect(page.getByRole("heading", { name: "Downtown Austin already has remarkable places." })).toBeVisible();
   await expect(page.getByText("What's worth doing next?")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Every partnership starts with one audience." })).toBeVisible();
+  await expect(page.getByText("One measurable outcome.", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Every pilot is intentionally focused." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Start a Founding Partner conversation" }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Explore Downtown Perks" })).toBeVisible();
@@ -45,4 +46,16 @@ test("@smoke Founding Partner Collection is a polished public invitation", async
   expect(layout.shadowDeclarations).toBe(0);
   expect(layout.gradientDeclarations).toBe(0);
   expect(layout.scripts).toBe(0);
+});
+
+test("@smoke Founding Partner operations require authorized access", async ({ page }) => {
+  await page.goto("/partner-workspace/launch?organizationId=demo-org-legends-real-estate");
+
+  await expect(page.getByText("Downtown Perks · Founding Partner Collection")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Authorized operations access required|Operations are temporarily unavailable/ }),
+  ).toBeVisible();
+  await expect(page.getByText("leasing@paseoatx.com")).toHaveCount(0);
+  await expect(page.getByText("CustomerCare@worthross.com")).toHaveCount(0);
+  await expect(page.getByText("shawn.bell@fsresidential.com")).toHaveCount(0);
 });
