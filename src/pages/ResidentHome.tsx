@@ -1,27 +1,52 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Bookmark, CalendarDays, ChevronRight, CreditCard, Landmark, Map, QrCode, Search, UserRound, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Bookmark,
+  CalendarDays,
+  ChevronRight,
+  CreditCard,
+  Landmark,
+  Map as MapIcon,
+  QrCode,
+  UserRound,
+} from "lucide-react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
 import { useSavedEntitiesRealtime, useSavedStore } from "@/features/resident/saved/savedStore";
 import { useAuth } from "@/lib/AuthContext";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
-import { residentAccountFromContext, residentAccountStatus, type ResidentAccount } from "@/lib/residentMembership/residentAccount";
+import {
+  residentAccountFromContext,
+  residentAccountStatus,
+  type ResidentAccount,
+} from "@/lib/residentMembership/residentAccount";
 import {
   getResidentLiveActivity,
   type ResidentLiveActivityItem,
 } from "@/lib/resident/liveActivity";
 import { QuickCivicQuestion } from "@/features/resident/civic/QuickCivicQuestion";
 import { ResidentPassModal } from "@/features/resident/resident-pass/ResidentPassModal";
-import { getResidentGovernance, subscribeToResidentCivicInbox, type ResidentGovernanceResponse } from "@/lib/governance/governanceClient";
+import {
+  getResidentGovernance,
+  subscribeToResidentCivicInbox,
+  type ResidentGovernanceResponse,
+} from "@/lib/governance/governanceClient";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
 
 const EMPTY_CIVIC: ResidentGovernanceResponse = {
-  initiatives: [], meetings: [], consultations: [], questions: [], yourQuestions: [], yourReports: [], followedInitiativeIds: [],
+  initiatives: [],
+  meetings: [],
+  consultations: [],
+  questions: [],
+  yourQuestions: [],
+  yourReports: [],
+  followedInitiativeIds: [],
   neutrality: "Downtown Perks shares verified civic information and does not endorse political candidates.",
 };
 
 type HomePanel = "home" | "perks" | "card";
+
 function readResidentRecord(): ResidentAccount | null {
   if (typeof window === "undefined") return null;
   try {
@@ -85,13 +110,17 @@ function readableMembershipSource(value?: string) {
 
 function readableNotifications(value?: Record<string, unknown>) {
   if (!value || !Object.keys(value).length) return "Not chosen";
-  const enabled = Object.entries(value).filter(([, setting]) => setting === true).map(([channel]) => channel.toUpperCase());
+  const enabled = Object.entries(value)
+    .filter(([, setting]) => setting === true)
+    .map(([channel]) => channel.toUpperCase());
   return enabled.length ? enabled.join(" · ") : "Off";
 }
 
 function readableInterests(values?: string[]) {
   if (!values?.length) return "Not chosen";
-  return values.map((value) => value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(", ");
+  return values
+    .map((value) => value.replace(/[_-]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase()))
+    .join(", ");
 }
 
 export default function ResidentHome() {
@@ -114,7 +143,11 @@ export default function ResidentHome() {
   useSavedEntitiesRealtime();
 
   async function refreshCivic() {
-    try { setCivic(await getResidentGovernance()); } catch { /* Preserve the last verified Home state while civic data reconnects. */ }
+    try {
+      setCivic(await getResidentGovernance());
+    } catch {
+      // Preserve the last verified state while civic data reconnects.
+    }
   }
 
   useEffect(() => {
@@ -131,7 +164,7 @@ export default function ResidentHome() {
     const controller = new AbortController();
     getResidentLiveActivity(controller.signal)
       .then((response) => {
-        setLiveActivity(response.items);
+        setLiveActivity(response.items.slice(0, 3));
         setLiveActivityStatus(response.status);
       })
       .catch((error) => {
@@ -163,13 +196,9 @@ export default function ResidentHome() {
     setResident((current) => residentAccountFromContext(null, user, current || readResidentRecord()));
     getResidentMembership()
       .then((context) => {
-        if (!active) return;
-        setResident((current) => residentAccountFromContext(context, user, current));
+        if (active) setResident((current) => residentAccountFromContext(context, user, current));
       })
-      .catch(() => {
-        // The locally cached profile keeps the resident surface usable if the
-        // membership service is briefly unavailable.
-      });
+      .catch(() => undefined);
     return () => { active = false; };
   }, [isAuthenticated, isLoadingAuth, user]);
 
@@ -187,14 +216,6 @@ export default function ResidentHome() {
     if (["home", "perks", "card"].includes(tabId)) openPanel(tabId as HomePanel);
   }
 
-  function closeResidentHome() {
-    if (location.key !== "default") {
-      navigate(-1);
-      return;
-    }
-    navigate("/map?mode=resident&tab=map&filter=All");
-  }
-
   function requireResidentAccount(action: () => void) {
     if (isAuthenticated) {
       action();
@@ -210,42 +231,22 @@ export default function ResidentHome() {
     {
       title: "Contact",
       summary: resident.email || resident.fullName || "Add your contact details",
-      rows: [
-        ["Name", resident.fullName || "Not added"],
-        ["Email", resident.email || "Not added"],
-        ["Phone", resident.phone || "Not added"],
-      ],
+      rows: [["Name", resident.fullName || "Not added"], ["Email", resident.email || "Not added"], ["Phone", resident.phone || "Not added"]],
     },
     {
       title: "Home",
       summary: resident.buildingName || "Connect your property",
-      rows: [
-        ["Property", resident.buildingName || "Not connected"],
-        ["District", resident.buildingDistrict || "Not added"],
-        ["Unit", resident.unitNumber || "Not added"],
-        ["Move-in date", readableDate(resident.moveInDate)],
-      ],
+      rows: [["Property", resident.buildingName || "Not connected"], ["District", resident.buildingDistrict || "Not added"], ["Unit", resident.unitNumber || "Not added"], ["Move-in date", readableDate(resident.moveInDate)]],
     },
     {
       title: "Membership",
       summary: readableMembershipSource(resident.membershipSource || resident.membershipType),
-      rows: [
-        ["Plan", readableMembershipSource(resident.membershipSource || resident.membershipType)],
-        ["Status", residentAccountStatus(resident)],
-        ["Renewal", resident.renewalDate ? readableDate(resident.renewalDate) : resident.expiresAt ? readableDate(resident.expiresAt) : "No renewal date"],
-        ["Member since", readableDate(resident.joinedAt)],
-        ["Profile complete", resident.profileCompletion ? `${resident.profileCompletion}%` : "Not calculated"],
-      ],
+      rows: [["Plan", readableMembershipSource(resident.membershipSource || resident.membershipType)], ["Status", residentAccountStatus(resident)], ["Renewal", resident.renewalDate ? readableDate(resident.renewalDate) : resident.expiresAt ? readableDate(resident.expiresAt) : "No renewal date"], ["Member since", readableDate(resident.joinedAt)], ["Profile complete", resident.profileCompletion ? `${resident.profileCompletion}%` : "Not calculated"]],
     },
     {
       title: "Preferences",
       summary: resident.interests?.length ? `${resident.interests.length} interests selected` : "Choose what you want to see",
-      rows: [
-        ["Interests", readableInterests(resident.interests)],
-        ["Updates", readableNotifications(resident.notifications)],
-        ["Saved places", String(resident.savedCount ?? savedIds.length)],
-        ["Personal map", resident.personalizedMap ? "Ready for you" : "Uses your current choices"],
-      ],
+      rows: [["Interests", readableInterests(resident.interests)], ["Updates", readableNotifications(resident.notifications)], ["Saved places", String(resident.savedCount ?? savedIds.length)], ["Personal map", resident.personalizedMap ? "Ready for you" : "Uses your current choices"]],
     },
   ] : [];
 
@@ -256,9 +257,7 @@ export default function ResidentHome() {
           <span><strong>{group.title}</strong><small>{group.summary}</small></span>
           <ChevronRight aria-hidden="true" />
         </summary>
-        <dl>
-          {group.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
-        </dl>
+        <dl>{group.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       </details>
     ));
   }
@@ -271,21 +270,12 @@ export default function ResidentHome() {
           <span>{panel === "home" ? "Austin" : panel === "perks" ? "Saved" : "Resident Card"}</span>
         </div>
         {panel === "home" ? (
-          <div className="dp-resident-command-actions" aria-label="Resident shortcuts">
-            <Link to="/map?mode=resident&tab=map&filter=All&console=expanded" aria-label="Search Downtown Perks"><Search aria-hidden="true" /></Link>
-            <button type="button" onClick={() => openPanel("card")} aria-label="Open resident card and profile"><UserRound aria-hidden="true" /></button>
-            <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home"><X aria-hidden="true" /></button>
-          </div>
+          <button type="button" className="dp-resident-home-profile" onClick={() => openPanel("card")} aria-label="Open resident profile">
+            <UserRound aria-hidden="true" />
+          </button>
         ) : (
-          <button
-            type="button"
-            className="dp-resident-header-back"
-            data-page-back="true"
-            onClick={() => openPanel("home")}
-            aria-label="Back to resident home"
-          >
-            <ArrowLeft aria-hidden="true" />
-            <span>Back</span>
+          <button type="button" className="dp-resident-header-back" data-page-back="true" onClick={() => openPanel("home")} aria-label="Back to resident home">
+            <ArrowLeft aria-hidden="true" /><span>Back</span>
           </button>
         )}
       </header>
@@ -293,36 +283,23 @@ export default function ResidentHome() {
       {panel === "home" ? (
         <div className="dp-resident-home__panel dp-resident-command-center" role="tabpanel" aria-label="Resident home">
           <section className="dp-resident-dynamic-greeting dp-resident-home-hero" aria-labelledby="resident-command-greeting">
-            <div><p>{greeting}</p><h1 id="resident-command-greeting">Downtown today</h1><span>{weekdayForNow()} · Nearby plans, resident benefits, and community updates.</span></div>
+            <div>
+              <p>{greeting}</p>
+              <h1 id="resident-command-greeting">Downtown today</h1>
+              <span>{weekdayForNow()} · A concise view of what is useful nearby.</span>
+            </div>
             <div className="dp-resident-home-primary-actions" aria-label="Primary resident actions">
-              <Link to="/map?mode=resident&tab=map&filter=All"><Map aria-hidden="true" /><span>Open map</span></Link>
+              <Link to="/map?mode=resident&tab=map&filter=All"><MapIcon aria-hidden="true" /><span>Open map</span></Link>
               <button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}><QrCode aria-hidden="true" /><span>{isAuthenticated ? "Show resident pass" : "Sign in"}</span></button>
               <Link to="/resident/civic"><Landmark aria-hidden="true" /><span>Civic inbox</span></Link>
             </div>
           </section>
 
-          <section className="dp-resident-home__section dp-resident-now-briefing" aria-labelledby="resident-briefing-title">
-            <div className="dp-resident-section-title"><h2 id="resident-briefing-title">What matters today</h2></div>
-            <div>
-              <Link to="/map?mode=resident&tab=map&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>Events start downtown this evening</strong><small>See verified times and locations on the map.</small></span><ChevronRight aria-hidden="true" /></Link>
-              <Link to="/map?mode=resident&tab=perks&filter=Perks"><CreditCard aria-hidden="true" /><span><strong>Your resident benefits are ready</strong><small>Open a perk before you arrive.</small></span><ChevronRight aria-hidden="true" /></Link>
-              <Link to="/resident/civic"><Landmark aria-hidden="true" /><span><strong>{civic.consultations.length || 1} community question open</strong><small>Share a response and follow what happens next.</small></span><ChevronRight aria-hidden="true" /></Link>
-            </div>
-          </section>
-
-          <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="happening-now-title">
-            <div className="dp-resident-section-title"><h2 id="happening-now-title">Happening now</h2><Link to="/map?mode=resident&tab=map&filter=All">Open map</Link></div>
-            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway" aria-label="Open Waterloo Greenway on the map">
-              <img src="/images/map-entities/refresh/civic/waterloo-golden-hour.png" alt="Waterloo Greenway in downtown Austin at golden hour" loading="eager" decoding="async" />
-              <div><span>Waterloo Greenway</span><h3>Evening along Waller Creek</h3><p>See current park access, programming, and the route to Moody Amphitheater.</p><strong>Open map</strong></div>
-            </Link>
-          </section>
-
-          <section className="dp-resident-home__section dp-resident-live-activity" aria-labelledby="live-activity-title">
-            <div className="dp-resident-section-title"><h2 id="live-activity-title">Live activity</h2><Link to="/map?mode=resident&tab=events&filter=All">Open map</Link></div>
+          <section className="dp-resident-home__section dp-resident-live-activity" aria-labelledby="happening-now-title">
+            <div className="dp-resident-section-title"><h2 id="happening-now-title">Happening now</h2><Link to="/map?mode=resident&tab=map&filter=All">See all</Link></div>
             {liveActivityStatus === "loading" ? <p className="dp-resident-live-activity__state" role="status">Checking what is happening downtown.</p> : null}
-            {liveActivityStatus === "empty" ? <p className="dp-resident-live-activity__state">Nothing new has been published right now. Check the map for places and plans nearby.</p> : null}
-            {liveActivityStatus === "unavailable" ? <p className="dp-resident-live-activity__state" role="status">Live updates are taking a moment. The map is still ready to explore.</p> : null}
+            {liveActivityStatus === "empty" ? <p className="dp-resident-live-activity__state">Nothing new has been published right now.</p> : null}
+            {liveActivityStatus === "unavailable" ? <p className="dp-resident-live-activity__state" role="status">Live updates are taking a moment. The map is still ready.</p> : null}
             {liveActivity.length ? <div>{liveActivity.map((item) => (
               <Link key={item.id} to={item.href}>
                 <span><strong>{item.place}</strong><small>{item.action}</small></span>
@@ -331,127 +308,70 @@ export default function ResidentHome() {
             ))}</div> : null}
           </section>
 
-          <section className="dp-resident-home__section dp-resident-benefits-summary" aria-labelledby="resident-benefits-title">
-            <div className="dp-resident-section-title"><h2 id="resident-benefits-title">Resident benefits</h2><Link to="/map?mode=resident&tab=perks&filter=Perks">See benefits</Link></div>
-            <p>Use your short-lived Resident Pass when a participating place asks to verify your access.</p>
+          <section className="dp-resident-home__section dp-resident-pass-preview" aria-labelledby="resident-pass-preview-title">
+            <button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}>
+              <QrCode aria-hidden="true" />
+              <span><small>Resident Pass</small><strong id="resident-pass-preview-title">{resident ? "Ready to use" : "Sign in to activate"}</strong><em>{resident?.buildingName || "Downtown Perks resident access"}</em></span>
+              <span className="dp-resident-pass-preview__action">Show QR</span>
+              <ChevronRight aria-hidden="true" />
+            </button>
           </section>
 
           <section className="dp-resident-home__section dp-resident-civic-home" aria-labelledby="resident-civic-title">
-            <div className="dp-resident-section-title"><h2 id="resident-civic-title">Your civic inbox</h2><Link to="/resident/civic">View all</Link></div>
+            <div className="dp-resident-section-title"><h2 id="resident-civic-title">Downtown voice</h2><Link to="/resident/civic">Civic inbox</Link></div>
             {civic.consultations[0] ? <QuickCivicQuestion action={civic.consultations[0]} onSubmitted={refreshCivic} /> : (
-              <article className="dp-civic-home-empty"><small>Downtown update</small><h3>Tell DANA what should improve first</h3><p>Sign in to answer the current resident question and follow the published result.</p><Link to="/resident/civic">Open civic inbox</Link></article>
+              <article className="dp-civic-home-empty"><small>Community question</small><h3>Tell DANA what should improve first</h3><p>Sign in to answer the current resident question and follow the published result.</p><Link to="/resident/civic">Open civic inbox</Link></article>
             )}
           </section>
 
-          <section className="dp-resident-home__section dp-resident-home__saved-preview" aria-labelledby="home-saved-title">
-            <div className="dp-resident-section-title">
-              <h2 id="home-saved-title">Saved</h2>
-              <button className="dp-resident-text-action" type="button" onClick={() => openPanel("perks")}>{savedPerks.length ? "View all" : "Start saving"}</button>
+          <section className="dp-resident-home__section dp-resident-home__recommendation" aria-labelledby="for-you-title">
+            <div className="dp-resident-section-title"><h2 id="for-you-title">For you</h2></div>
+            <Link className="dp-resident-hero-card" to="/map?mode=resident&tab=map&filter=Civic&routeId=waterloo-greenway" aria-label="Open Waterloo Greenway on the map">
+              <img src="/images/map-entities/refresh/civic/waterloo-golden-hour.png" alt="Waterloo Greenway in downtown Austin at golden hour" loading="lazy" decoding="async" />
+              <div><span>Nearby now</span><h3>Evening along Waller Creek</h3><p>Current access, programming, and a direct route to Moody Amphitheater.</p><strong>Open plan</strong></div>
+            </Link>
+          </section>
+
+          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="your-activity-title">
+            <div className="dp-resident-section-title"><h2 id="your-activity-title">Your activity</h2><button className="dp-resident-text-action" type="button" onClick={() => openPanel("perks")}>Open saved</button></div>
+            <div>
+              <button type="button" onClick={() => openPanel("perks")}><Bookmark aria-hidden="true" /><span><strong>Saved</strong><small>{savedIds.length ? `${savedIds.length} ${savedIds.length === 1 ? "place" : "places"}` : "Nothing saved yet"}</small></span><ChevronRight aria-hidden="true" /></button>
+              <Link to="/map?mode=resident&tab=events&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>Upcoming</strong><small>Events and responses stay together.</small></span><ChevronRight aria-hidden="true" /></Link>
+              <Link to="/resident/activity"><CreditCard aria-hidden="true" /><span><strong>Recent</strong><small>Pass, redemption, save, and civic activity.</small></span><ChevronRight aria-hidden="true" /></Link>
             </div>
-            {savedPerks.length ? (
-              <div className="dp-resident-home__saved-rows">
-                {savedPerks.slice(0, 3).map((item) => (
-                  <button key={item.id} type="button" onClick={() => openPanel("perks")}>
-                    <Bookmark aria-hidden="true" />
-                    <span><strong>{item.name}</strong><small>Saved perk</small></span>
-                    <ChevronRight aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <button className="dp-resident-home__saved-empty" type="button" onClick={() => openPanel("perks")}>
-                <span><strong>Your favourite places live here.</strong><small>Save something from the map to begin.</small></span>
-                <ChevronRight aria-hidden="true" />
-              </button>
-            )}
           </section>
-
-          <section className="dp-resident-home__section dp-resident-home__compact-list" aria-labelledby="home-upcoming-title">
-            <div className="dp-resident-section-title"><h2 id="home-upcoming-title">Saved and upcoming</h2><Link to="/map?mode=resident&tab=events&filter=Events">See events</Link></div>
-            <div><Link to="/map?mode=resident&tab=events&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>See your next downtown plan</strong><small>Saved places and event responses stay together.</small></span><ChevronRight aria-hidden="true" /></Link></div>
-          </section>
-
-          <section className="dp-resident-home__section dp-resident-recent-activity" aria-labelledby="recent-activity-title">
-            <div className="dp-resident-section-title"><h2 id="recent-activity-title">Recent activity</h2><Link to="/resident/activity">View activity</Link></div>
-            <p>{savedIds.length ? `${savedIds.length} saved ${savedIds.length === 1 ? "place" : "places"} connected to your account.` : "Saved places, civic responses, and pass activity will appear here."}</p>
-          </section>
-
         </div>
       ) : null}
 
       {panel === "perks" ? (
         <section className="dp-resident-home__panel dp-resident-saved-panel" role="tabpanel" aria-labelledby="saved-perks-title">
-          <header className="dp-resident-panel-intro">
-            <p>Saved perks</p>
-            <h2 id="saved-perks-title">Ready when you are.</h2>
-            <span>Open any perk for details, directions, and your QR.</span>
-          </header>
+          <header className="dp-resident-panel-intro"><p>Saved perks</p><h2 id="saved-perks-title">Ready when you are.</h2><span>Open any perk for details, directions, and your QR.</span></header>
           {savedPerks.length ? (
-            <div className="dp-resident-saved-list">
-              {savedPerks.map((item) => (
-                <article key={item.id}>
-                  <Link className="dp-resident-saved-row" to={`/map?mode=resident&tab=perks&filter=Saved&entityId=${encodeURIComponent(item.id)}`} aria-label={`Open ${item.name} on the map`}>
-                    <span><small>Saved perk</small><h3>{item.name}</h3></span>
-                    <strong className="dp-resident-text-action" aria-hidden="true">Open <ChevronRight /></strong>
-                  </Link>
-                </article>
-              ))}
-            </div>
+            <div className="dp-resident-saved-list">{savedPerks.map((item) => (
+              <article key={item.id}><Link className="dp-resident-saved-row" to={`/map?mode=resident&tab=perks&filter=Saved&entityId=${encodeURIComponent(item.id)}`} aria-label={`Open ${item.name} on the map`}><span><small>Saved perk</small><h3>{item.name}</h3></span><strong className="dp-resident-text-action" aria-hidden="true">Open <ChevronRight /></strong></Link></article>
+            ))}</div>
           ) : (
-            <div className="dp-resident-empty-state">
-              <Bookmark aria-hidden="true" />
-              <h3>No saved perks yet.</h3>
-              <p>Save an offer from the map and it will appear here automatically.</p>
-              <Link className="dp-resident-text-action" to="/map?mode=resident&tab=perks&filter=Perks">Browse nearby perks</Link>
-            </div>
+            <div className="dp-resident-empty-state"><Bookmark aria-hidden="true" /><h3>No saved perks yet.</h3><p>Save an offer from the map and it will appear here automatically.</p><Link className="dp-resident-text-action" to="/map?mode=resident&tab=perks&filter=Perks">Browse nearby perks</Link></div>
           )}
         </section>
       ) : null}
 
       {panel === "card" ? (
         <section className="dp-resident-home__panel dp-resident-card-panel" role="tabpanel" aria-labelledby="resident-card-title">
-          <header className="dp-resident-panel-intro">
-            <p>Resident access</p>
-            <h2 id="resident-card-title">{resident ? "Ready when you need it." : "Sign in to your card."}</h2>
-            <span>{resident ? "Your card and account details stay together here." : "Access saved perks, your resident card, and building benefits."}</span>
-          </header>
-
+          <header className="dp-resident-panel-intro"><p>Resident access</p><h2 id="resident-card-title">{resident ? "Ready when you need it." : "Sign in to your card."}</h2><span>{resident ? "Your card and account details stay together here." : "Access saved perks, your resident card, and building benefits."}</span></header>
           {resident ? (
             <>
-              <section className="dp-resident-home-card" aria-label="Downtown Perks resident card">
-                <div><span>Downtown Perks</span><small>{resident.verificationStatus === "verified" ? "Verified resident" : "Resident member"}{resident.buildingName ? ` · ${resident.buildingName}` : ""}</small></div>
-                <CreditCard aria-hidden="true" />
-                <strong>{resident.fullName || "Resident"}</strong>
-                <code>{residentCardCode(resident)}</code>
-              </section>
-              <section className="dp-resident-card-qr-action" aria-label="Resident perk QR code">
-                <button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}>
-                  <QrCode aria-hidden="true" />
-                  <span><strong>Show resident pass</strong><small>Create a one-time QR code when a participating place asks to scan it.</small></span>
-                  <ChevronRight aria-hidden="true" />
-                </button>
-              </section>
+              <section className="dp-resident-home-card" aria-label="Downtown Perks resident card"><div><span>Downtown Perks</span><small>{resident.verificationStatus === "verified" ? "Verified resident" : "Resident member"}{resident.buildingName ? ` · ${resident.buildingName}` : ""}</small></div><CreditCard aria-hidden="true" /><strong>{resident.fullName || "Resident"}</strong><code>{residentCardCode(resident)}</code></section>
+              <section className="dp-resident-card-qr-action" aria-label="Resident perk QR code"><button type="button" onClick={() => requireResidentAccount(() => setPassOpen(true))}><QrCode aria-hidden="true" /><span><strong>Show resident pass</strong><small>Create a one-time QR code when a participating place asks to scan it.</small></span><ChevronRight aria-hidden="true" /></button></section>
               <section className="dp-resident-profile-section" aria-labelledby="resident-profile-title">
-                <div className="dp-resident-section-title">
-                  <div><p>Resident profile</p><h2 id="resident-profile-title">Everything connected to your card.</h2></div>
-                </div>
+                <div className="dp-resident-section-title"><div><p>Resident profile</p><h2 id="resident-profile-title">Everything connected to your card.</h2></div></div>
                 <p className="dp-resident-profile-summary">Review your contact details, home, membership, preferences, and personal map in one place.</p>
                 {renderProfileDetails("resident-card-profile")}
-                <div className="dp-resident-profile-actions">
-                  <Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Open on map</Link>
-                  <Link to="/residents/welcome">Update details</Link>
-                  <Link to="/card">Manage access</Link>
-                  <button type="button" onClick={() => logout(true, "/residents/login")}>Sign out</button>
-                </div>
+                <div className="dp-resident-profile-actions"><Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Open on map</Link><Link to="/residents/welcome">Update details</Link><Link to="/card">Manage access</Link><button type="button" onClick={() => logout(true, "/residents/login")}>Sign out</button></div>
               </section>
             </>
           ) : (
-            <div className="dp-resident-empty-state">
-              <UserRound aria-hidden="true" />
-              <h3>Your resident profile lives here.</h3>
-              <p>Sign in to see your membership, home property, saved places, and resident pass.</p>
-              <div><Link className="dp-resident-text-action" to={`/residents/login?returnTo=${encodeURIComponent("/resident/home?panel=card")}`}>Sign in</Link><Link className="dp-resident-text-action" to="/residents/membership">Create account</Link></div>
-            </div>
+            <div className="dp-resident-empty-state"><UserRound aria-hidden="true" /><h3>Your resident profile lives here.</h3><p>Sign in to see your membership, home property, saved places, and resident pass.</p><div><Link className="dp-resident-text-action" to={`/residents/login?returnTo=${encodeURIComponent("/resident/home?panel=card")}`}>Sign in</Link><Link className="dp-resident-text-action" to="/residents/membership">Create account</Link></div></div>
           )}
         </section>
       ) : null}
