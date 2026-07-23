@@ -24,6 +24,17 @@ const PIN_TYPE_KIND = {
   public_listing_pin: "venue",
 };
 
+const INTERNAL_TITLE_SUFFIXES = [
+  /\s+[—–-]\s+guest guide anchor\s*$/i,
+  /\s+[—–-]\s+hotel guest anchor\s*$/i,
+  /\s+[—–-]\s+campaign anchor\s*$/i,
+  /\s+[—–-]\s+route anchor\s*$/i,
+  /\s+[—–-]\s+map anchor\s*$/i,
+  /\s+[—–-]\s+activation anchor\s*$/i,
+  /\s+[—–-]\s+resident guide anchor\s*$/i,
+  /\s+[—–-]\s+arrival anchor\s*$/i,
+];
+
 function normalizedKey(parts) {
   return parts
     .filter(Boolean)
@@ -37,6 +48,26 @@ function clean(value) {
   return typeof value === "string" ? value.trim() : value;
 }
 
+export function cleanPublicMapTitle(value) {
+  let title = String(clean(value) || "").replace(/\s+/g, " ").trim();
+  for (const suffix of INTERNAL_TITLE_SUFFIXES) title = title.replace(suffix, "").trim();
+  return title;
+}
+
+function contentOverrideFor(pin = {}, title = "") {
+  if (/^citizenm austin downtown$/i.test(title)) {
+    return {
+      summary: "A compact downtown hotel on East 7th with a social living room, rooftop pool, 24/7 food and drink, and a walkable base for exploring the city center.",
+      description: "citizenM Austin Downtown puts guests near Congress Avenue, Red River, the Convention Center, museums, restaurants, and nightlife. Use this listing to plan the closest coffee, dining, events, civic stops, and practical arrival options from the hotel.",
+      alignment: "Start from citizenM Austin Downtown and build a simple guest plan around nearby food, drinks, events, culture, and walkable downtown destinations.",
+      primaryAction: "Explore nearby",
+      tags: ["citizenM", "hotel", "East 7th", "Downtown Core", "rooftop pool", "24/7 food", "guest guide"],
+      searchKeywords: ["citizenM Austin Downtown", "citizenM Austin", "downtown Austin hotel", "East 7th hotel", "hotel near Red River", "hotel near Convention Center"],
+    };
+  }
+  return null;
+}
+
 export const launchMapPinImportSummary = launchMapPinsPayload.sourceSummary || {};
 export const launchMapCampaigns = launchMapPinsPayload.campaigns || [];
 export const launchMapOfferTemplates = launchMapPinsPayload.offerTemplates || [];
@@ -46,6 +77,9 @@ export function launchMapPinToPlace(pin) {
   const kind = PIN_TYPE_KIND[pin.pinType] || pin.kind || "venue";
   const category = clean(pin.category) || clean(pin.publicCategory) || "Dining";
   const pinKey = CATEGORY_PIN_KEYS[category] || CATEGORY_PIN_KEYS[pin.publicCategory] || kind || "venue";
+  const sourceTitle = clean(pin.publicDisplayTitle) || clean(pin.name) || pin.pinId;
+  const title = cleanPublicMapTitle(sourceTitle) || pin.pinId;
+  const override = contentOverrideFor(pin, title);
   const tags = [
     pin.publicCategory,
     category,
@@ -54,10 +88,12 @@ export function launchMapPinToPlace(pin) {
     pin.collection,
     pin.sourceCategory,
     ...(pin.recommendedTags || []),
+    ...(override?.tags || []),
   ].filter(Boolean);
   const searchKeywords = [
-    pin.name,
-    pin.publicDisplayTitle,
+    title,
+    cleanPublicMapTitle(pin.name),
+    cleanPublicMapTitle(pin.publicDisplayTitle),
     pin.publicCategory,
     category,
     pin.districtOrNeighborhood,
@@ -65,6 +101,7 @@ export function launchMapPinToPlace(pin) {
     pin.collection,
     ...(pin.searchKeywords || []),
     ...(pin.recommendedTags || []),
+    ...(override?.searchKeywords || []),
   ].filter(Boolean);
   const offerTitle = pin.offer?.offerTitle || pin.offer?.recommendedPerkOrOffer || "";
   const hasPerk = Boolean(offerTitle || pin.offer?.offerDescription);
@@ -72,8 +109,8 @@ export function launchMapPinToPlace(pin) {
   return {
     id: pin.id || `launch-${pin.pinId}`,
     venueId: pin.pinId,
-    name: clean(pin.publicDisplayTitle) || clean(pin.name) || pin.pinId,
-    title: clean(pin.publicDisplayTitle) || clean(pin.name) || pin.pinId,
+    name: title,
+    title,
     type: kind,
     kind,
     entityType: kind,
@@ -90,9 +127,9 @@ export function launchMapPinToPlace(pin) {
     neighborhood: pin.districtOrNeighborhood || "Downtown Austin",
     address: clean(pin.address) || "",
     website: clean(pin.website) || "",
-    summary: pin.publicShortCardCopy || pin.residentValueProp || pin.visitorGuestValueProp || "",
-    description: pin.publicFullListingCopy || pin.publicShortCardCopy || "",
-    alignment_to_downtown_perks: pin.residentValueProp || pin.visitorGuestValueProp || pin.campaignCopy || "",
+    summary: override?.summary || pin.publicShortCardCopy || pin.residentValueProp || pin.visitorGuestValueProp || "",
+    description: override?.description || pin.publicFullListingCopy || pin.publicShortCardCopy || "",
+    alignment_to_downtown_perks: override?.alignment || pin.residentValueProp || pin.visitorGuestValueProp || pin.campaignCopy || "",
     deals_offers: hasPerk ? offerTitle : "",
     specials: hasPerk ? pin.offer?.offerDescription || offerTitle : "",
     hasPerk,
@@ -110,10 +147,10 @@ export function launchMapPinToPlace(pin) {
     campaignType: pin.campaignType,
     campaignCopy: pin.campaignCopy,
     collection: pin.collection,
-    mapCardCta: pin.mapCardCta,
+    mapCardCta: override?.primaryAction || pin.mapCardCta,
     qrPromptCopy: pin.qrPromptCopy,
     proofMetrics: pin.proofMetrics || [],
-    primaryAction: pin.mapCardCta || (pin.website ? "Open Website" : pin.hasExactMarker ? "Get Directions" : "View Details"),
+    primaryAction: override?.primaryAction || pin.mapCardCta || (pin.website ? "Open Website" : pin.hasExactMarker ? "Get Directions" : "View Details"),
     secondaryAction: pin.hasExactMarker ? "Get Directions" : pin.website ? "Open Website" : "Save",
     tags,
     searchKeywords,
@@ -122,6 +159,7 @@ export function launchMapPinToPlace(pin) {
     publicCategory: pin.publicCategory,
     raw: {
       launchMapPin: pin,
+      originalPublicDisplayTitle: sourceTitle,
     },
     source: "Downtown Perks launch map",
   };
