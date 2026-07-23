@@ -14,6 +14,10 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # Static CI build only. Production receives the restricted key from Vercel.
+      VITE_GOOGLE_MAPS_API_KEY: AIzaSyA000000000000000000000000000000000
+      DP_SKIP_PUBLIC_COPY: "true"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
