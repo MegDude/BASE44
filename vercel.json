@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/test-platform-integration-gate.mjs && npm run build",
   "rewrites": [
     {
       "source": "/api/app-logs/(.*)",
