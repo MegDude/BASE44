@@ -1,5 +1,6 @@
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
+import { resolveMapEntityByIdentityCandidates } from "@/lib/mapEntityIdentityCandidates";
 
 export function normalizePropertyId(value) {
   return String(value || "")
@@ -386,6 +387,9 @@ export function resolveMapEntityAlias(entityId) {
 }
 
 export function resolveMapEntityFromCollection(entityId, entities = []) {
+  const runtimeIdentityMatch = resolveMapEntityByIdentityCandidates(entityId, entities);
+  if (runtimeIdentityMatch) return runtimeIdentityMatch;
+
   const raw = String(entityId || "").trim();
   const rawNormalized = raw.toLowerCase();
   const rawSlug = normalizePropertyId(raw);
