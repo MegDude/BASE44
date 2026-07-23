@@ -1,5 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "alias": [
+    "base-44-downtown-perks-live.vercel.app"
+  ],
   "rewrites": [
     {
       "source": "/api/app-logs/(.*)",
