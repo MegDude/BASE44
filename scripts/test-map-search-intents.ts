@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import productionMapInventory from "../src/data/production/production-map-inventory.json";
+import { DOWNTOWN_CORE_RESTAURANT_RECORDS } from "../src/data/downtownCoreRestaurantPerks";
+import {
+  getCanonicalIntentForFilter,
+  getEntityGovernance,
+  getMarkerProjection,
+  getViewportBoundedMarkerPlaces,
+  hasVerifiedInKindMembership,
+} from "../src/lib/map/intentGovernance";
 import { resolveEntityPin } from "../src/lib/map/entityPinResolver";
 import { resolveEntityType } from "../src/lib/map/entityTypeResolver";
 import {
@@ -10,6 +19,7 @@ import {
   entityMatchesMapIntent,
   resolveSearchIntent,
 } from "../src/map/searchIntent/mapIntentRegistry";
+import { parseSearchIntent } from "../src/map/searchIntent/searchIntentParser";
 
 const entities = productionMapInventory.records;
 const failures: Array<{ intentId: string; message: string }> = [];
@@ -41,7 +51,7 @@ const ordinaryRestaurant = {
   kind: "venue",
   entityType: "restaurant",
   category: "Dining",
-  description: "A restaurant near an inKind offer, but not enrolled in the program.",
+  description: "A restaurant with a Downtown Perks offer, but no verified partner-program membership.",
   latitude: 30.2672,
   longitude: -97.7431,
   active: true,
@@ -60,13 +70,12 @@ const inKindRestaurant = {
 
 const curatedInKindRestaurant = {
   ...ordinaryRestaurant,
-  id: "venue-curated-j-carvers",
+  id: "inkind-j-carvers",
   name: "J Carver's",
 };
 
 assert.equal(entityHasExplicitInKindMembership(ordinaryRestaurant), false, "restaurant text alone does not create inKind membership");
 assert.equal(entityHasExplicitInKindMembership(inKindRestaurant), true, "explicit partner metadata creates inKind membership");
-assert.equal(entityHasExplicitInKindMembership(curatedInKindRestaurant), false, "curated membership stays distinct from explicit program metadata");
 assert.equal(resolveEntityType(inKindRestaurant), "restaurant", "inKind membership does not replace the restaurant entity type");
 assert.equal(resolveEntityPin(ordinaryRestaurant).label, "Dining", "ordinary restaurants use the canonical dining pin");
 assert.equal(resolveEntityPin(inKindRestaurant).label, "Dining", "inKind restaurants keep the canonical dining pin");
@@ -75,6 +84,51 @@ assert.equal(entityMatchesMapIntent(inKindRestaurant, "dining"), true, "inKind r
 assert.equal(entityMatchesMapIntent(ordinaryRestaurant, "inkind"), false, "ordinary restaurants do not leak into the inKind layer");
 assert.equal(entityMatchesMapIntent(inKindRestaurant, "inkind"), true, "explicit members appear in the inKind layer");
 assert.equal(entityMatchesMapIntent(curatedInKindRestaurant, "inkind"), true, "curated inKind collection stops appear in the inKind layer");
+
+assert.equal(parseSearchIntent("inKind restaurants"), "inkind", "explicit inKind language wins before the generic restaurant keyword");
+assert.equal(getCanonicalIntentForFilter("All", "inKind restaurants"), "inkind", "map governance prioritizes the inKind program query");
+assert.equal(getCanonicalIntentForFilter("inKind", ""), "inkind", "the inKind filter uses a dedicated program intent");
+assert.equal(getCanonicalIntentForFilter("Dining", "restaurants"), "eat_drink", "generic restaurant queries remain in Dining");
+
+assert.equal(hasVerifiedInKindMembership(ordinaryRestaurant), false, "ordinary restaurants are not verified inKind members");
+assert.equal(hasVerifiedInKindMembership(inKindRestaurant), true, "explicit program metadata is accepted by marker governance");
+assert.equal(hasVerifiedInKindMembership(curatedInKindRestaurant), true, "curated collection stops are accepted by marker governance");
+
+const ordinaryMarker = getMarkerProjection(ordinaryRestaurant);
+const inKindMarker = getMarkerProjection(inKindRestaurant);
+assert.equal(ordinaryMarker.iconKey, "dining", "ordinary restaurants project the canonical dining icon");
+assert.equal(inKindMarker.iconKey, "dining", "inKind restaurants still project the canonical dining icon");
+assert.equal(ordinaryMarker.primaryIntentId, "eat_drink", "restaurant place identity owns the primary marker intent");
+assert.equal(inKindMarker.primaryIntentId, "eat_drink", "program membership does not replace the primary restaurant intent");
+assert.deepEqual(inKindMarker.programIntentIds, ["inkind"], "verified membership is emitted as secondary program state");
+
+const inKindGovernedResults = getViewportBoundedMarkerPlaces(
+  [ordinaryRestaurant, inKindRestaurant, curatedInKindRestaurant],
+  { activeFilter: "inKind", query: "", zoom: 17, mode: "resident" },
+);
+assert.equal(inKindGovernedResults.intentId, "inkind", "inKind viewport filtering uses the dedicated intent");
+assert.deepEqual(
+  inKindGovernedResults.places.map((entity) => entity.id).sort(),
+  [curatedInKindRestaurant.id, inKindRestaurant.id].sort(),
+  "inKind viewport filtering excludes ordinary restaurants",
+);
+
+for (const restaurant of DOWNTOWN_CORE_RESTAURANT_RECORDS) {
+  assert.equal(restaurant.entityType, "restaurant", `${restaurant.id} keeps restaurant as its primary type`);
+  assert.equal(restaurant.partnerType, "venues", `${restaurant.id} defaults to the venue partner type`);
+  assert.equal(restaurant.partnerNetwork, undefined, `${restaurant.id} has no unverified inKind network assignment`);
+  assert.equal(restaurant.isInKind, false, `${restaurant.id} is not marked inKind without verification`);
+  assert.equal(restaurant.pinKey, "dining", `${restaurant.id} uses the knife-and-fork dining glyph`);
+  assert.ok(!restaurant.applicableIntents.includes("inkind"), `${restaurant.id} is excluded from the inKind intent`);
+  assert.ok(!restaurant.tags.some((tag) => /^in[\s-]?kind$/i.test(String(tag))), `${restaurant.id} has no inKind search tag`);
+  assert.ok(!getEntityGovernance(restaurant).searchIntentIds.includes("inkind"), `${restaurant.id} does not inherit inKind through marker governance`);
+}
+
+const mainSource = fs.readFileSync(new URL("../src/main.jsx", import.meta.url), "utf8");
+const markerLockCss = fs.readFileSync(new URL("../src/styles/restaurant-program-layer-final.css", import.meta.url), "utf8");
+assert.ok(mainSource.includes('import "@/styles/restaurant-program-layer-final.css"'), "restaurant program marker lock loads after the shared marker system");
+assert.ok(markerLockCss.includes(".dp-map-pin.dp-live-pin--inkind"), "marker lock covers the inKind program class");
+assert.ok(markerLockCss.includes("--dp-canonical-pin-navy"), "inKind program state preserves the canonical restaurant marker palette");
 
 function testIntent(intent: (typeof MAP_INTENT_REGISTRY)[number]) {
   const applied = applyMapIntent(entities, intent, intent.mode);
