@@ -31,6 +31,8 @@ jobs:
         run: node scripts/test-map-entity-identity-candidates.mjs
       - name: Verify runtime map identity wiring
         run: node scripts/test-map-entity-runtime-wiring.mjs
+      - name: Verify selected map entity retention
+        run: node scripts/test-map-selected-entity-retention.mjs
       - name: Typecheck
         run: npm run typecheck
       - name: Production build
