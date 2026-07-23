@@ -24,7 +24,7 @@ assert.equal(retained.filter((entity) => entity.id === selectedHotel.id).length,
 assert.equal(retained.some((entity) => entity.id === "hotel-1"), true);
 
 const alreadyVisible = retainSelectedMapEntity({
-  selectedEntity,
+  selectedEntity: selectedHotel,
   visibleEntities: [hotels[0], selectedHotel, hotels[1]],
   allEntities: [...hotels, selectedHotel],
   limit: 3,
