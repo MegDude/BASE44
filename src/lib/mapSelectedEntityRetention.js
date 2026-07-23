@@ -1,4 +1,4 @@
-import { resolveMapEntityFromCollection } from "./mapEntityAliases.js";
+import { resolveMapEntityByIdentityCandidates } from "./mapEntityIdentityCandidates.js";
 
 function getCanonicalEntityKey(entity = {}) {
   return String(entity?.id || entity?.entityId || entity?.slug || "").trim().toLowerCase();
@@ -6,17 +6,21 @@ function getCanonicalEntityKey(entity = {}) {
 
 /**
  * Ensures an explicitly selected/deep-linked entity remains in the rendered cohort.
- * Normal discovery limits still apply to the rest of the collection.
+ * Normal discovery limits still apply to every other entity.
+ *
+ * Pass selectedEntity when the canonical alias resolver has already run. Generated
+ * launch-pin identities can be resolved directly from allEntities as a fallback.
  */
 export function retainSelectedMapEntity({
   selectedEntityId = "",
+  selectedEntity = null,
   visibleEntities = [],
   allEntities = [],
   limit,
 } = {}) {
   const visible = Array.isArray(visibleEntities) ? visibleEntities.filter(Boolean) : [];
   const all = Array.isArray(allEntities) ? allEntities.filter(Boolean) : [];
-  const selected = resolveMapEntityFromCollection(selectedEntityId, all);
+  const selected = selectedEntity || resolveMapEntityByIdentityCandidates(selectedEntityId, all);
 
   if (!selected) {
     return Number.isFinite(limit) ? visible.slice(0, Math.max(0, limit)) : visible;
