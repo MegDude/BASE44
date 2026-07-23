@@ -59,3 +59,14 @@ export function entityHasMapIdentity(entity = {}, requestedIdentity = "") {
   return getMapEntityIdentityCandidates(entity)
     .some((candidate) => normalizeMapEntityIdentity(candidate) === requested);
 }
+
+/**
+ * Resolves runtime/generated map identities before legacy alias fallbacks run.
+ * The returned object is always the canonical entity from the supplied collection.
+ */
+export function resolveMapEntityByIdentityCandidates(requestedIdentity = "", entities = []) {
+  if (!Array.isArray(entities) || entities.length === 0) return null;
+  const requested = normalizeMapEntityIdentity(requestedIdentity);
+  if (!requested) return null;
+  return entities.find((entity) => entityHasMapIdentity(entity, requested)) || null;
+}
