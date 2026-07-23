@@ -1,4 +1,10 @@
+import { getMapCollectionById } from "../../data/mapCollections";
+import { entityHasExplicitInKindMembership } from "../../map/searchIntent/mapIntentRegistry";
+import { resolveEntityType } from "./entityTypeResolver";
+
 const DEFAULT_CENTER = { lat: 30.25855, lng: -97.73835 };
+const INKIND_COLLECTION_ID = "inkind-dining-market";
+const INKIND_COLLECTION_STOP_IDS = new Set(getMapCollectionById(INKIND_COLLECTION_ID)?.stopIds || []);
 
 export const CANONICAL_SEARCH_INTENTS = Object.freeze({
   eat_drink: {
@@ -29,10 +35,17 @@ export const CANONICAL_SEARCH_INTENTS = Object.freeze({
     iconKey: "event",
     cap: 36,
   },
+  inkind: {
+    id: "inkind",
+    label: "inKind",
+    aliases: ["inkind", "in kind"],
+    iconKey: "dining",
+    cap: 24,
+  },
   resident_perks: {
     id: "resident_perks",
     label: "Resident Perks",
-    aliases: ["perks", "perk", "offer", "offers", "redeem", "use perk", "resident perk", "inkind", "in kind"],
+    aliases: ["perks", "perk", "offer", "offers", "redeem", "use perk", "resident perk"],
     iconKey: "offer",
     cap: 36,
   },
@@ -131,7 +144,7 @@ const FILTER_INTENT_MAP = Object.freeze({
   Events: "events",
   "Live Music": "events",
   Perks: "resident_perks",
-  inKind: "resident_perks",
+  inKind: "inkind",
   Hotels: "hotels",
   Properties: "buildings",
   Rentals: "buildings",
@@ -178,6 +191,10 @@ function textForEntity(entity = {}) {
     entity.visibilityMode,
     entity.utilityType,
     entity.offerType,
+    entity.partnerType,
+    entity.partnerNetwork,
+    entity.brand,
+    entity.program,
     raw.id,
     raw.title,
     raw.kind,
@@ -186,6 +203,10 @@ function textForEntity(entity = {}) {
     raw.visibilityMode,
     raw.utilityType,
     raw.offerType,
+    raw.partnerType,
+    raw.partnerNetwork,
+    raw.brand,
+    raw.program,
     ...(Array.isArray(entity.tags) ? entity.tags : []),
     ...(Array.isArray(raw.tags) ? raw.tags : []),
   ].filter(Boolean).join(" ").toLowerCase();
@@ -200,6 +221,22 @@ function numberOrNull(value) {
   return Number.isFinite(next) ? next : null;
 }
 
+function normalizeIconKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function stableEntityId(entity = {}) {
+  return String(entity.id || entity.entityId || entity.raw?.id || "").trim();
+}
+
+export function hasVerifiedInKindMembership(entity = {}) {
+  return entityHasExplicitInKindMembership(entity) || INKIND_COLLECTION_STOP_IDS.has(stableEntityId(entity));
+}
+
 function hasActivePerk(entity = {}) {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
   const text = textForEntity(entity);
@@ -212,7 +249,7 @@ function hasActivePerk(entity = {}) {
       raw.perk?.isActive ||
       entity.perkStatus === "active" ||
       raw.perkStatus === "active" ||
-      /\b(perk|offer|redeem|inkind|in kind|resident perk|happy hour)\b/.test(text),
+      /\b(perk|offer|redeem|resident perk|happy hour)\b/.test(text),
   );
 }
 
@@ -232,9 +269,10 @@ function hasActiveCampaign(entity = {}) {
 function deriveIntentIds(entity = {}) {
   const text = textForEntity(entity);
   const ids = Object.values(CANONICAL_SEARCH_INTENTS)
-    .filter((intent) => intent.aliases.some((alias) => text.includes(alias)))
+    .filter((intent) => intent.id !== "inkind" && intent.aliases.some((alias) => text.includes(alias)))
     .map((intent) => intent.id);
 
+  if (hasVerifiedInKindMembership(entity)) ids.push("inkind");
   if (hasActivePerk(entity)) ids.push("resident_perks");
   if (hasActiveCampaign(entity)) ids.push("campaigns");
   if (/\b(event|rsvp|festival|show|concert)\b/.test(text)) ids.push("events");
@@ -280,11 +318,59 @@ function derivePriorityTier(entity = {}, searchIntentIds = []) {
   return 3;
 }
 
+function resolvedEntityType(entity = {}) {
+  try {
+    return String(resolveEntityType(entity) || entity.entityType || entity.type || entity.kind || entity.raw?.kind || "place").toLowerCase();
+  } catch {
+    return String(entity.entityType || entity.type || entity.kind || entity.raw?.kind || "place").toLowerCase();
+  }
+}
+
+function canonicalMarkerIconKey(entity = {}, targetType = resolvedEntityType(entity)) {
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const explicitPin = normalizeIconKey(entity.pinKey || raw.pinKey);
+
+  if (targetType === "restaurant") return "dining";
+  if (["coffee", "cafe"].includes(targetType)) return "coffee";
+  if (["bar", "nightlife"].includes(targetType)) return "nightlife";
+  if (explicitPin && explicitPin !== "default") return explicitPin;
+  if (["property", "residential", "building"].includes(targetType)) return "residential";
+  if (["listing", "rental"].includes(targetType)) return "listing";
+  if (targetType === "hotel") return "hotel";
+  if (targetType === "event") return "event";
+  if (targetType === "civic") return "civic";
+  if (targetType === "wellness") return "wellness";
+  if (targetType === "retail") return "retail";
+  if (targetType === "brand") return "brand";
+  if (targetType === "campaign") return "campaign";
+  if (["perk", "offer"].includes(targetType)) return "offer";
+  if (["service", "mobility"].includes(targetType)) return "service";
+  return "guide";
+}
+
+function canonicalPlaceIntentId(targetType, iconKey, fallbackIntentIds = []) {
+  if (targetType === "restaurant" || iconKey === "dining") return "eat_drink";
+  if (["coffee", "cafe"].includes(targetType) || iconKey === "coffee") return "coffee";
+  if (["bar", "nightlife"].includes(targetType) || iconKey === "nightlife") return "nightlife";
+  if (targetType === "event" || iconKey === "event") return "events";
+  if (targetType === "hotel" || iconKey === "hotel") return "hotels";
+  if (["property", "residential", "building", "listing", "rental"].includes(targetType)) return "buildings";
+  if (targetType === "retail" || iconKey === "retail") return "shopping";
+  if (targetType === "wellness" || iconKey === "wellness") return "wellness";
+  if (targetType === "civic" || iconKey === "civic") return "civic";
+  return fallbackIntentIds.find((intentId) => intentId !== "inkind") || "eat_drink";
+}
+
 export function getCanonicalIntentForFilter(filter = "All", query = "") {
+  const normalizedQuery = String(query || "").trim().toLowerCase();
+  if (/\binkind\b|\bin\s+kind\b/.test(normalizedQuery)) return "inkind";
+
   const mapped = FILTER_INTENT_MAP[filter] || "";
   if (mapped) return mapped;
-  const normalizedQuery = String(query || "").toLowerCase();
-  const matched = Object.values(CANONICAL_SEARCH_INTENTS).find((intent) => intent.aliases.some((alias) => normalizedQuery.includes(alias)));
+
+  const matched = Object.values(CANONICAL_SEARCH_INTENTS)
+    .filter((intent) => intent.id !== "inkind")
+    .find((intent) => intent.aliases.some((alias) => normalizedQuery.includes(alias)));
   return matched?.id || "eat_drink";
 }
 
@@ -297,6 +383,7 @@ export function getEntityGovernance(entity = {}) {
   const lng = numberOrNull(entity.longitude ?? entity.lng ?? entity.raw?.lng);
   const isMapEligible = publicationStatus === "published" && mapVisibility !== "hidden" && lat !== null && lng !== null;
   const isResidentVisible = !/\b(admin|internal|qa only|backend|workspace)\b/.test(textForEntity(entity));
+  const targetType = resolvedEntityType(entity);
   return {
     publicationStatus,
     mapVisibility,
@@ -304,10 +391,11 @@ export function getEntityGovernance(entity = {}) {
     isMapEligible,
     isResidentVisible,
     searchIntentIds,
-    targetType: String(entity.kind || entity.type || entity.entityType || entity.raw?.kind || "place").toLowerCase(),
+    targetType,
     civicSubtype: deriveCivicSubtype(entity),
     hasActivePerk: hasActivePerk(entity),
     hasActiveCampaign: hasActiveCampaign(entity),
+    hasVerifiedInKindMembership: hasVerifiedInKindMembership(entity),
     lat,
     lng,
   };
@@ -330,6 +418,8 @@ function distanceScore(entity, center = DEFAULT_CENTER) {
 
 function matchesIntent(entity, intentId) {
   if (!intentId || intentId === "all") return true;
+  if (intentId === "inkind") return hasVerifiedInKindMembership(entity);
+
   const governance = getEntityGovernance(entity);
   if (!governance.searchIntentIds.includes(intentId)) return false;
   if (intentId === "civic") {
@@ -350,14 +440,17 @@ export function getMarkerLimit({ zoom = 16, viewportBounds = null, intentId = "e
 
 export function getMarkerProjection(entity = {}) {
   const governance = getEntityGovernance(entity);
+  const iconKey = canonicalMarkerIconKey(entity, governance.targetType);
+  const primaryIntentId = canonicalPlaceIntentId(governance.targetType, iconKey, governance.searchIntentIds);
   return {
     id: String(entity.id || entity.raw?.id || ""),
     lat: governance.lat,
     lng: governance.lng,
     label: String(entity.name || entity.title || entity.raw?.title || ""),
     entityType: governance.targetType,
-    primaryIntentId: governance.searchIntentIds[0] || "eat_drink",
-    iconKey: CANONICAL_SEARCH_INTENTS[governance.searchIntentIds[0]]?.iconKey || entity.pinKey || "guide",
+    primaryIntentId,
+    iconKey,
+    programIntentIds: governance.searchIntentIds.filter((intentId) => intentId === "inkind"),
     priorityTier: governance.priorityTier,
     hasActivePerk: governance.hasActivePerk,
     hasActiveCampaign: governance.hasActiveCampaign,
@@ -413,13 +506,15 @@ export function getViewportBoundedMarkerPlaces(places = [], {
 export function getAgentEntityRegistrySnapshot(places = [], options = {}) {
   return getViewportBoundedMarkerPlaces(places, options).places.slice(0, 32).map((place) => {
     const governance = getEntityGovernance(place);
+    const marker = getMarkerProjection(place);
     return {
       id: place.id,
       title: place.name || place.title,
       kind: place.kind || place.type || place.category || "",
       category: place.category || "",
       district: place.district || "",
-      primaryIntentId: governance.searchIntentIds[0],
+      primaryIntentId: marker.primaryIntentId,
+      programIntentIds: marker.programIntentIds,
       priorityTier: governance.priorityTier,
       hasActivePerk: governance.hasActivePerk,
       hasActiveCampaign: governance.hasActiveCampaign,
