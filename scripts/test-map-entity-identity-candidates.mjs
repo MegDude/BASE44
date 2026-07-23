@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   entityHasMapIdentity,
   getMapEntityIdentityCandidates,
+  resolveMapEntityByIdentityCandidates,
 } from "../src/lib/mapEntityIdentityCandidates.js";
 
 const canonicalHotel = {
@@ -27,5 +28,21 @@ assert.ok(identities.includes("marker-example-hotel"));
 assert.equal(entityHasMapIdentity(canonicalHotel, "launch-dp-pin-e4046742f9"), true);
 assert.equal(entityHasMapIdentity(canonicalHotel, "PARTNER-HOTEL-EXAMPLE"), true);
 assert.equal(entityHasMapIdentity(canonicalHotel, "missing-pin"), false);
+
+const otherHotel = {
+  id: "partner-hotel-other",
+  raw: { launchPinId: "launch-dp-pin-other" },
+};
+
+const resolved = resolveMapEntityByIdentityCandidates(
+  "launch-dp-pin-e4046742f9",
+  [otherHotel, canonicalHotel],
+);
+assert.strictEqual(resolved, canonicalHotel);
+assert.equal(resolved.id, "partner-hotel-example");
+assert.equal(
+  resolveMapEntityByIdentityCandidates("missing-pin", [otherHotel, canonicalHotel]),
+  null,
+);
 
 console.log("map entity identity candidate contract passed");
