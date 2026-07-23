@@ -131,6 +131,7 @@ import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/search-intent-expanded-readability-final.css"
 import "@/styles/resident-card-drawer-system-final.css"
+import "@/styles/resident-card-map-full-width-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
