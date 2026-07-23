@@ -128,6 +128,7 @@ import "@/styles/quick-search-native-final.css"
 import "@/styles/global-back-control-final.css"
 import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
+import "@/styles/search-intent-expanded-readability-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
