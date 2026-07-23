@@ -27,6 +27,8 @@ jobs:
       - run: npm ci
       - name: Verify platform integration contracts
         run: node scripts/test-platform-integration-gate.mjs
+      - name: Verify generated map identity aliases
+        run: node scripts/test-map-entity-identity-candidates.mjs
       - name: Typecheck
         run: npm run typecheck
       - name: Production build
