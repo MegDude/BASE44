@@ -1,0 +1,66 @@
+name: Apply restaurant and inKind routing fix
+
+on:
+  push:
+    branches:
+      - agent/fix-restaurant-inkind-ui-routing
+    paths:
+      - ".github/workflows/apply-restaurant-inkind-ui-routing.yml"
+      - "scripts/apply-restaurant-inkind-ui-routing.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Apply focused source patch
+        run: node scripts/apply-restaurant-inkind-ui-routing.mjs
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test map intent routing
+        run: npm run test:map-intents
+
+      - name: Test marker contract
+        run: npm run test:map-markers
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Check patch integrity
+        run: git diff --check
+
+      - name: Commit validated changes
+        run: |
+          git config user.name "OpenAI Codex"
+          git config user.email "codex@openai.com"
+          git add \
+            src/pages/Map.jsx \
+            src/data/downtownCoreRestaurantPerks.js \
+            src/map/searchIntent/mapIntentRegistry.ts \
+            src/lib/map/intentGovernance.js \
+            scripts/test-map-search-intents.ts
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+            exit 0
+          fi
+          git commit -m "fix(map): separate restaurant identity from inKind membership"
+          git push origin HEAD:${GITHUB_REF_NAME}
