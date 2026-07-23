@@ -1,0 +1,174 @@
+/* Final cross-platform panel cohesion lock.
+   Bright white surfaces, quiet navy rules, no grey fills, decorative shadows, gradients, pills, or nested-card styling. */
+
+:root {
+  --dp-cohesion-white: #ffffff;
+  --dp-cohesion-navy: #0b1f33;
+  --dp-cohesion-gold: #c8a96a;
+  --dp-cohesion-rule: rgba(11, 31, 51, 0.10);
+  --dp-cohesion-muted: rgba(11, 31, 51, 0.62);
+}
+
+html,
+body,
+#root,
+.dp-partner-access-page,
+.dp-campaigns-page,
+.dp-partner-workspace-page,
+.dp-os-studio-page,
+.dp-os-studio-main {
+  background: var(--dp-cohesion-white) !important;
+  color: var(--dp-cohesion-navy) !important;
+}
+
+/* Continuous page and panel surfaces. */
+.dp-partner-access-page :is(.dp-partner-access-panel, .dp-partner-type-section, .dp-partner-access-setup),
+.dp-campaigns-page :is(.dp-campaign-plan-shell, .dp-campaign-plan-header, .dp-campaign-type-selector, .dp-campaign-type-readout, .dp-campaigns-section, .dp-campaign-live-preview, .dp-campaign-real-panel, article, form),
+.dp-partner-workspace-page :is(.dp-workspace-shell, .dp-workspace-main, .dp-workspace-content, .dp-workspace-sidebar, .dp-workspace-destination, .dp-workspace-experience, .dp-workspace-panel, .dp-workspace-card, .dp-workspace-sheet, article, section),
+.dp-os-studio-page :is(.dp-os-studio-main, .dp-os-wire-card, .dp-os-active-panel, .dp-os-system-map article, .dp-os-status-grid article, .dp-os-resident-admin, .dp-os-resident-admin article, .dp-os-mobile-frame, .dp-os-mobile-frame__body article) {
+  background: var(--dp-cohesion-white) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Use spacing and rules instead of cards. */
+.dp-partner-access-page :is(.dp-partner-access-panel, .dp-partner-type-section, .dp-partner-access-setup),
+.dp-campaigns-page :is(.dp-campaign-plan-header, .dp-campaign-type-selector, .dp-campaigns-section, .dp-campaign-live-preview),
+.dp-partner-workspace-page :is(.dp-workspace-panel, .dp-workspace-card, .dp-workspace-destination, .dp-workspace-experience, .dp-workspace-sheet, article, section),
+.dp-os-studio-page :is(.dp-os-wire-card, .dp-os-active-panel, .dp-os-system-map article, .dp-os-status-grid article, .dp-os-resident-admin article) {
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-cohesion-rule) !important;
+}
+
+.dp-partner-workspace-page :is(.dp-workspace-sidebar, .dp-partner-workspace-header),
+.dp-os-studio-page .dp-os-studio-rail {
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: none !important;
+  border-color: var(--dp-cohesion-rule) !important;
+}
+
+/* Map panels remain independent of map geometry while sharing the same surface language. */
+.dp-map-page :is(
+  .dp-native-drawer,
+  .dp-map-drawer,
+  .dp-map-detail-sheet,
+  .dp-native-detail-panel,
+  .dp-detail-panel,
+  .dp-bottom-sheet,
+  .dp-search-intent-console,
+  .dp-platform-search-results,
+  .dp-search-intent-more-panel
+) {
+  background: var(--dp-cohesion-white) !important;
+  background-image: none !important;
+  color: var(--dp-cohesion-navy) !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page :is(.dp-native-detail-panel, .dp-detail-panel, .dp-platform-search-results) :is(article, section, li) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Controls: white or transparent, rectangular, readable, with hierarchy from rules. */
+.dp-partner-access-page :is(button, a, input, select, textarea),
+.dp-campaigns-page :is(button, a, input, select, textarea),
+.dp-partner-workspace-page :is(button, a, input, select, textarea),
+.dp-os-studio-page :is(button, a, input, select, textarea),
+.dp-map-page :is(.dp-search-intent-console, .dp-native-detail-panel, .dp-detail-panel) :is(button, a, input, select, textarea) {
+  box-shadow: none !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+}
+
+.dp-partner-access-page :is(button, a),
+.dp-campaigns-page :is(button, a),
+.dp-partner-workspace-page :is(button, a),
+.dp-os-studio-page :is(button, a) {
+  background: transparent !important;
+  color: var(--dp-cohesion-navy) !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.18) !important;
+}
+
+.dp-partner-access-page :is(button, a):hover,
+.dp-campaigns-page :is(button, a):hover,
+.dp-partner-workspace-page :is(button, a):hover,
+.dp-os-studio-page :is(button, a):hover {
+  border-bottom-color: var(--dp-cohesion-gold) !important;
+  color: var(--dp-cohesion-navy) !important;
+}
+
+/* Active navigation and selection use a gold rule, never a filled capsule. */
+.dp-partner-access-page [data-active="true"],
+.dp-campaigns-page [aria-selected="true"],
+.dp-partner-workspace-page :is(.is-active, [aria-current="page"], [aria-selected="true"]),
+.dp-os-studio-page :is(.is-active, [aria-current="page"], [aria-selected="true"]),
+.dp-map-page .dp-search-intent-console :is([aria-selected="true"], [data-active="true"], [data-expanded="true"]) {
+  background: transparent !important;
+  color: var(--dp-cohesion-navy) !important;
+  border-color: var(--dp-cohesion-gold) !important;
+  box-shadow: inset 0 -2px 0 var(--dp-cohesion-gold) !important;
+}
+
+/* Inputs stay white and clearly bounded. */
+.dp-partner-access-page :is(input, select, textarea),
+.dp-campaigns-page :is(input, select, textarea),
+.dp-partner-workspace-page :is(input, select, textarea),
+.dp-os-studio-page :is(input, select, textarea) {
+  background: var(--dp-cohesion-white) !important;
+  color: var(--dp-cohesion-navy) !important;
+  border: 1px solid rgba(11, 31, 51, 0.16) !important;
+}
+
+.dp-partner-access-page :is(input, select, textarea):focus,
+.dp-campaigns-page :is(input, select, textarea):focus,
+.dp-partner-workspace-page :is(input, select, textarea):focus,
+.dp-os-studio-page :is(input, select, textarea):focus {
+  border-color: var(--dp-cohesion-gold) !important;
+  outline: 2px solid rgba(200, 169, 106, 0.22) !important;
+  outline-offset: 1px !important;
+}
+
+/* Remove grey copy and retain accessible navy hierarchy. */
+.dp-partner-access-page :is(p, small, dt, dd, span),
+.dp-campaigns-page :is(p, small, dt, dd, span),
+.dp-partner-workspace-page :is(p, small, dt, dd, span),
+.dp-os-studio-page :is(p, small, dt, dd, span) {
+  text-shadow: none !important;
+}
+
+.dp-partner-access-page :is(p, small, dt),
+.dp-campaigns-page :is(p, small, dt),
+.dp-partner-workspace-page :is(p, small, dt),
+.dp-os-studio-page :is(p, small, dt) {
+  color: var(--dp-cohesion-muted) !important;
+}
+
+/* Never hide workflow actions or navigation through overflow. */
+.dp-campaigns-page :is(.dp-campaign-type-rail, .dp-campaign-plan-lower),
+.dp-partner-workspace-page :is(.dp-workspace-content, .dp-workspace-main),
+.dp-os-studio-page .dp-os-studio-main {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 767px) {
+  .dp-partner-access-page,
+  .dp-campaigns-page,
+  .dp-partner-workspace-page,
+  .dp-os-studio-page {
+    overflow-x: hidden !important;
+  }
+
+  .dp-partner-access-page .dp-partner-access-panel,
+  .dp-campaigns-page .dp-campaign-plan-shell,
+  .dp-partner-workspace-page .dp-workspace-content,
+  .dp-os-studio-page .dp-os-studio-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+  }
+}
