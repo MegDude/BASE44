@@ -59,6 +59,7 @@ import "@/styles/resident-discover-native-final.css"
 import "@/styles/partner-signin-native-final.css"
 
 import "@/styles/workspace-no-capsules-final.css"
+
 import "@/styles/workspace-switcher-clean-final.css"
 
 import "@/styles/partner-gateway-final.css"
@@ -129,6 +130,8 @@ import "@/styles/global-back-control-final.css"
 import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/search-intent-expanded-readability-final.css"
+import "@/styles/resident-card-drawer-system-final.css"
+import "@/styles/resident-card-map-full-width-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
