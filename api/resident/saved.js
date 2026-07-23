@@ -5,8 +5,27 @@ import {
   TransactionApiError,
 } from "../../src/lib/api/transactionAuth.js";
 
+const SAVED_ENTITY_RPC_NAMES = ["dp_set_resident_saved_entity", "set_resident_saved_entity"];
+
 function clean(value, limit = 240) {
   return String(value || "").trim().slice(0, limit);
+}
+
+function isMissingRpc(error) {
+  return error?.code === "PGRST202" || /could not find the function/i.test(String(error?.message || ""));
+}
+
+async function setResidentSavedEntity(database, parameters) {
+  let lastError = null;
+
+  for (const rpcName of SAVED_ENTITY_RPC_NAMES) {
+    const result = await database.rpc(rpcName, parameters);
+    if (!result.error) return result;
+    lastError = result.error;
+    if (!isMissingRpc(result.error)) return result;
+  }
+
+  return { data: null, error: lastError };
 }
 
 export default async function handler(req, res) {
@@ -34,7 +53,7 @@ export default async function handler(req, res) {
     const sourceContext = req.body?.sourceContext && typeof req.body.sourceContext === "object" ? req.body.sourceContext : {};
     if (!entityType || !entityId) throw new TransactionApiError(400, "ENTITY_REQUIRED", "Choose an item to save.");
 
-    const { data, error } = await database.rpc("set_resident_saved_entity", {
+    const { data, error } = await setResidentSavedEntity(database, {
       p_resident_profile_id: profile.id,
       p_entity_type: entityType,
       p_entity_id: entityId,

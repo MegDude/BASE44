@@ -24,6 +24,9 @@ assert.doesNotMatch(migration, /create policy[^;]+resident_profiles[^;]+partner/
 
 assert.match(savedApi, /requireResidentProfile\(req\)/, "saved API must derive the resident from auth");
 assert.doesNotMatch(savedApi, /req\.body\?\.profileId/, "saved API must not trust a client profile ID");
+assert.match(savedApi, /dp_set_resident_saved_entity/, "saved API must support the deployed prefixed RPC");
+assert.match(savedApi, /set_resident_saved_entity/, "saved API must retain compatibility with the migration RPC");
+assert.match(savedApi, /PGRST202/, "saved API may fall back only when an RPC is missing");
 assert.match(qrApi, /randomBytes\(32\)/, "QR tokens must have strong entropy");
 assert.match(qrApi, /hashOpaqueToken\(rawToken\)/, "QR tokens must be hashed at rest");
 assert.match(validateApi, /requirePartnerMembership\(req\)/, "validation must derive partner access from auth");
