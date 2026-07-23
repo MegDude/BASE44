@@ -48,6 +48,10 @@ export const venueImages = {
   },
 };
 
+function withoutInKind(values = []) {
+  return values.filter((value) => !/^in[\s-]?kind$/i.test(String(value || "").trim()));
+}
+
 function buildRestaurantRecord(record) {
   const image = venueImages[record.id]?.src;
   const perk = {
@@ -63,8 +67,10 @@ function buildRestaurantRecord(record) {
     name: record.title,
     entityType: "restaurant",
     kind: "venue",
-    partnerType: "inkind",
-    partnerNetwork: "inkind",
+    partnerType: "venues",
+    isInKind: false,
+    programs: [],
+    programVerificationStatus: "unverified",
     benefitType: "resident-dining-benefit",
     residentEligible: true,
     partnerCampaignEligible: true,
@@ -97,18 +103,17 @@ function buildRestaurantRecord(record) {
     terms: record.perkFinePrint,
     perk,
     hasPerk: true,
-    pinKey: record.category === "Drinks" ? "cocktail" : "dining",
-    tags: [
+    pinKey: "dining",
+    tags: withoutInKind([
       record.category,
       record.subcategory,
       record.district,
       record.neighborhood,
-      record.perkLabel,
       record.perkTitle,
       ...(record.bestFor || []),
       ...(record.searchKeywords || []),
-    ].filter(Boolean),
-    residentSearchIntents: [
+    ].filter(Boolean)),
+    residentSearchIntents: withoutInKind([
       "All",
       record.category,
       "Perks",
@@ -120,8 +125,8 @@ function buildRestaurantRecord(record) {
       "Happy hour nearby",
       "Client dinner",
       ...(record.residentSearchIntents || []),
-    ],
-    applicableIntents: ["dining", "perks", "inkind", "date-night", "hotel-dining", "resident-benefits"],
+    ]),
+    applicableIntents: ["dining", "perks", "date-night", "hotel-dining", "resident-benefits"],
     partnerSearchTerms: ["campaign", "audience", "placement", "attribution", "building distribution", "hotel distribution", "resident reach", "guest dining", "partner performance"],
     residentDrawer: {
       eyebrow: record.cardEyebrow,

@@ -1,0 +1,44 @@
+/*
+ * Restaurant + partner-program marker contract.
+ *
+ * A restaurant's place identity owns the knife-and-fork glyph and canonical
+ * navy/gold marker treatment. The inKind class is secondary program state; it
+ * may affect filtering and panel context, but it must never recolor or replace
+ * the restaurant marker.
+ */
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--inkind,
+  .dp-map-pin.dp-live-pin--inkind .dp-live-pin__core,
+  .dp-marker-factory-pin.dp-live-pin--inkind
+) {
+  border-color: rgba(200, 169, 106, 0.92) !important;
+  background: var(--dp-canonical-pin-navy, #0B1F33) !important;
+  color: var(--dp-canonical-pin-gold, #C8A96A) !important;
+  box-shadow: 0 5px 14px rgba(11, 31, 51, 0.18) !important;
+  filter: none !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--inkind:hover,
+  .dp-map-pin.dp-live-pin--inkind:focus-visible,
+  .dp-marker-factory-pin.dp-live-pin--inkind:hover,
+  .dp-marker-factory-pin.dp-live-pin--inkind:focus-visible
+) {
+  border-color: var(--dp-canonical-pin-gold, #C8A96A) !important;
+  background: #132238 !important;
+  color: #D9BD78 !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92), 0 7px 17px rgba(11, 31, 51, 0.22) !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-map-pin.dp-live-pin--inkind.is-selected,
+  .dp-map-pin.dp-live-pin--inkind.is-active,
+  .dp-map-pin.dp-live-pin--inkind.is-pulsing,
+  .dp-map-pin.dp-live-pin--inkind[data-active="true"],
+  .dp-marker-factory-pin.dp-live-pin--inkind.is-selected
+) {
+  border-color: var(--dp-canonical-pin-navy, #0B1F33) !important;
+  background: var(--dp-canonical-pin-gold, #C8A96A) !important;
+  color: var(--dp-canonical-pin-navy, #0B1F33) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.94), 0 7px 16px rgba(11, 31, 51, 0.2) !important;
+}
