@@ -13,6 +13,7 @@ const main = read('src/main.jsx');
 const panel = read('src/components/map/CanonicalDetailPanel.jsx');
 const footerLock = read('src/styles/detail-panel-action-footer-regression-lock.css');
 const drawerGeometry = read('src/styles/native-drawer-geometry-final.css');
+const savedApi = read('api/resident/saved.js');
 
 requireMatch('routes', app, /partners\/sign-in/, 'partner sign-in route is missing');
 requireMatch('routes', app, /partner-workspace/, 'partner workspace route is missing');
@@ -29,6 +30,11 @@ requireMatch('access', access, /getSuperAdminEmails/, 'super-admin email allowli
 requireMatch('access', access, /isSuperAdminSession/, 'super-admin session detection is not connected');
 requireMatch('access', access, /Request team access/, 'team-access recovery path is missing');
 requireMatch('access', access, /Send sign-in link/, 'secure sign-in action is missing');
+
+requireMatch('resident saved API', savedApi, /requireResidentProfile\(req\)/, 'resident identity is not derived from authentication');
+requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'deployed saved-entity RPC compatibility is missing');
+requireMatch('resident saved API', savedApi, /set_resident_saved_entity/, 'migration saved-entity RPC compatibility is missing');
+requireMatch('resident saved API', savedApi, /PGRST202/, 'missing-RPC fallback is not constrained to PostgREST schema errors');
 
 requireMatch('detail panel', panel, /dp-native-detail-panel__actions/, 'canonical action footer is missing');
 requireMatch('detail panel', panel, /aria-pressed=\{saved\}/, 'save state is not accessible');
@@ -50,4 +56,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('Platform integration gate passed: routes, auth, super-admin access, drawer geometry, and fixed action footer are connected.');
+console.log('Platform integration gate passed: routes, auth, super-admin access, resident save transactions, drawer geometry, and fixed action footer are connected.');
