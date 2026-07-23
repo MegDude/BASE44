@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Check, ChevronRight, Sparkles } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
 import {
   ADMIN_STUDIO_ROUTES,
   CAMPAIGN_CREATION_FLOW,
@@ -192,6 +193,31 @@ function ResidentAdminPanel() {
 export default function AdminMarketingStudio() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated, isLoadingAuth, user } = useAuth();
+
+  if (isLoadingAuth) {
+    return (
+      <main className="dp-os-studio-page flex min-h-screen items-center justify-center bg-white text-[#0B1F33]" aria-busy="true">
+        <p>Checking administrator access…</p>
+      </main>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/partners/sign-in"
+        replace
+        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+      />
+    );
+  }
+
+  const role = String(user?.role || "").toLowerCase();
+  if (!["admin", "platform_admin", "super_admin"].includes(role)) {
+    return <Navigate to="/partner-workspace/overview" replace />;
+  }
+
   const activeRoute = getActiveStudioRoute(location.pathname);
   const ActiveIcon = activeRoute.icon;
 
