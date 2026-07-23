@@ -11,7 +11,7 @@ const auth = read('src/lib/AuthContext.jsx');
 const access = read('src/pages/partners/Access.jsx');
 const main = read('src/main.jsx');
 const panel = read('src/components/map/CanonicalDetailPanel.jsx');
-const footerLock = read('src/styles/detail-panel-action-footer-regression-lock.css');
+const fixedActions = read('src/styles/detail-panel-fixed-actions-final.css');
 const drawerGeometry = read('src/styles/native-drawer-geometry-final.css');
 const savedApi = read('api/resident/saved.js');
 
@@ -38,16 +38,17 @@ requireMatch('resident saved API', savedApi, /PGRST202/, 'missing-RPC fallback i
 
 requireMatch('detail panel', panel, /dp-native-detail-panel__actions/, 'canonical action footer is missing');
 requireMatch('detail panel', panel, /aria-pressed=\{saved\}/, 'save state is not accessible');
-requireMatch('detail panel', footerLock, /grid-row:\s*3/, 'footer is not assigned to the non-scrolling drawer row');
-requireMatch('detail panel', footerLock, /position:\s*relative\s*!important/, 'footer is not explicitly removed from sticky/fixed scroll behavior');
-requireMatch('detail panel', drawerGeometry, /grid-template-rows:\s*auto minmax\(0, 1fr\) auto/, 'drawer does not reserve a fixed action row');
+requireMatch('detail panel', fixedActions, /position:\s*fixed\s*!important/, 'actions are not anchored to the drawer viewport');
+requireMatch('detail panel', fixedActions, /overflow-y:\s*auto\s*!important/, 'drawer content does not retain its own scroll viewport');
+requireMatch('detail panel', fixedActions, /padding-bottom:\s*84px\s*!important/, 'scroll content does not reserve space for fixed actions');
+requireMatch('detail panel', drawerGeometry, /grid-template-rows:\s*auto minmax\(0, 1fr\) auto/, 'drawer geometry contract is missing');
 
-const footerImport = main.indexOf('detail-panel-action-footer-regression-lock.css');
+const actionsImport = main.indexOf('detail-panel-fixed-actions-final.css');
 const geometryImport = main.indexOf('native-drawer-geometry-final.css');
-if (footerImport < 0) failures.push('styles: detail panel action footer regression lock is not imported');
+if (actionsImport < 0) failures.push('styles: fixed action footer lock is not imported');
 if (geometryImport < 0) failures.push('styles: native drawer geometry is not imported');
-if (footerImport >= 0 && geometryImport >= 0 && footerImport < geometryImport) {
-  failures.push('styles: footer regression lock must load after native drawer geometry');
+if (actionsImport >= 0 && geometryImport >= 0 && actionsImport < geometryImport) {
+  failures.push('styles: fixed action footer lock must load after native drawer geometry');
 }
 
 if (failures.length) {
