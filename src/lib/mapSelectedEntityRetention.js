@@ -1,4 +1,4 @@
-import { resolveMapEntityFromCollection } from "@/lib/mapEntityAliases";
+import { resolveMapEntityFromCollection } from "./mapEntityAliases.js";
 
 function getCanonicalEntityKey(entity = {}) {
   return String(entity?.id || entity?.entityId || entity?.slug || "").trim().toLowerCase();
