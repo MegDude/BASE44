@@ -1,0 +1,365 @@
+/* Resident Card / Resident Access — canonical native drawer alignment.
+   One bright-white surface, quiet rules, clear hierarchy, and fixed action affordances. */
+
+html body #root#root .dp-resident-home[data-panel="card"] {
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home__header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 30 !important;
+  min-height: 56px !important;
+  padding: 8px 16px !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: rgba(255,255,255,.96) !important;
+  backdrop-filter: saturate(180%) blur(18px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(18px) !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-panel {
+  display: grid !important;
+  gap: 0 !important;
+  width: 100% !important;
+  padding: 0 16px calc(104px + env(safe-area-inset-bottom)) !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-panel-intro {
+  display: grid !important;
+  gap: 7px !important;
+  padding: 24px 0 18px !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-panel-intro p,
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-section-title p {
+  margin: 0 !important;
+  color: rgba(11,31,51,.58) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: .055em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-panel-intro h2 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: clamp(28px, 8vw, 36px) !important;
+  font-weight: 650 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -.04em !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-panel-intro > span,
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-summary {
+  margin: 0 !important;
+  max-width: 38ch !important;
+  color: rgba(11,31,51,.66) !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  gap: 18px 12px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card > div {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card > div > span {
+  color: #0b1f33 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card small {
+  color: rgba(11,31,51,.62) !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card > svg {
+  width: 22px !important;
+  height: 22px !important;
+  color: #c8a96a !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card > strong {
+  color: #0b1f33 !important;
+  font-size: 18px !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-home-card code {
+  align-self: end !important;
+  color: rgba(11,31,51,.58) !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: .03em !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11,31,51,.08) !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action > button {
+  appearance: none !important;
+  display: grid !important;
+  grid-template-columns: 44px minmax(0,1fr) 20px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 78px !important;
+  padding: 14px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  text-align: left !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action > button > svg:first-child {
+  width: 22px !important;
+  height: 22px !important;
+  padding: 10px !important;
+  box-sizing: content-box !important;
+  color: #c8a96a !important;
+  border: 1px solid rgba(11,31,51,.1) !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action > button > span {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action strong {
+  color: #0b1f33 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action small {
+  color: rgba(11,31,51,.62) !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-qr-action > button > svg:last-child {
+  width: 18px !important;
+  height: 18px !important;
+  color: rgba(11,31,51,.42) !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-section {
+  display: grid !important;
+  gap: 0 !important;
+  padding: 22px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-section-title h2 {
+  margin: 5px 0 0 !important;
+  color: #0b1f33 !important;
+  font-size: 21px !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -.025em !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-summary {
+  padding: 10px 0 16px !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group {
+  margin: 0 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 18px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  min-height: 66px !important;
+  padding: 11px 0 !important;
+  color: #0b1f33 !important;
+  list-style: none !important;
+  cursor: pointer !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary span {
+  display: grid !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary strong {
+  color: #0b1f33 !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary small {
+  color: rgba(11,31,51,.58) !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group > summary svg {
+  width: 17px !important;
+  height: 17px !important;
+  color: rgba(11,31,51,.42) !important;
+  transition: transform 160ms ease !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group[open] > summary svg {
+  transform: rotate(90deg) !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dl {
+  display: grid !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 0 12px !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dl > div {
+  display: grid !important;
+  grid-template-columns: minmax(92px,.42fr) minmax(0,1fr) !important;
+  gap: 14px !important;
+  padding: 9px 0 !important;
+  border-top: 1px solid rgba(11,31,51,.055) !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dt,
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dd {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dt {
+  color: rgba(11,31,51,.56) !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-group dd {
+  color: #0b1f33 !important;
+  font-weight: 550 !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-actions {
+  position: sticky !important;
+  bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+  z-index: 20 !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin: 20px -16px 0 !important;
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(11,31,51,.08) !important;
+  background: rgba(255,255,255,.97) !important;
+  backdrop-filter: saturate(180%) blur(18px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(18px) !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-actions :is(a,button) {
+  appearance: none !important;
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(11,31,51,.16) !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-actions :is(a,button):first-child {
+  border-color: #0b1f33 !important;
+  background: #0b1f33 !important;
+  color: #ffffff !important;
+}
+
+html body #root#root .dp-resident-home[data-panel="card"] :is(button,a):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: 3px !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-card-panel {
+    max-width: 560px !important;
+    margin: 0 auto !important;
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+  }
+
+  html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-actions {
+    margin-right: -24px !important;
+    margin-left: -24px !important;
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+  }
+}
+
+@media (max-width: 359px) {
+  html body #root#root .dp-resident-home[data-panel="card"] .dp-resident-profile-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
