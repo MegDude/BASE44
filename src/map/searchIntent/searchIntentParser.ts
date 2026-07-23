@@ -41,6 +41,12 @@ const INTENT_KEYWORDS: Record<SearchIntent, string[]> = {
 export function parseSearchIntent(input: string): SearchIntent {
   const query = input.toLowerCase().trim();
 
+  // Exact partner-program language must win before generic category words.
+  // Without this guard, "inKind restaurants" is captured by Dining first.
+  if (/\binkind\b|\bin\s+kind\b/.test(query)) {
+    return "inkind";
+  }
+
   for (const [intent, keywords] of Object.entries(INTENT_KEYWORDS)) {
     if (keywords.some((keyword) => query.includes(keyword))) {
       return intent as SearchIntent;
