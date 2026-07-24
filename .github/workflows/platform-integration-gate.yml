@@ -33,6 +33,8 @@ jobs:
         run: node scripts/test-map-entity-runtime-wiring.mjs
       - name: Verify selected map entity retention
         run: node scripts/test-map-selected-entity-retention.mjs
+      - name: Verify partner parking visibility
+        run: node scripts/test-partner-parking-visibility.mjs
       - name: Typecheck
         run: npm run typecheck
       - name: Production build
