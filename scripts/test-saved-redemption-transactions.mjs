@@ -24,9 +24,11 @@ assert.doesNotMatch(migration, /create policy[^;]+resident_profiles[^;]+partner/
 
 assert.match(savedApi, /requireResidentProfile\(req\)/, "saved API must derive the resident from auth");
 assert.doesNotMatch(savedApi, /req\.body\?\.profileId/, "saved API must not trust a client profile ID");
-assert.match(savedApi, /dp_set_resident_saved_entity/, "saved API must support the deployed prefixed RPC");
-assert.match(savedApi, /set_resident_saved_entity/, "saved API must retain compatibility with the migration RPC");
-assert.match(savedApi, /PGRST202/, "saved API may fall back only when an RPC is missing");
+assert.match(savedApi, /database\.rpc\(\s*["']dp_set_resident_saved_entity["']/, "saved API must call the deployed prefixed RPC directly");
+assert.doesNotMatch(savedApi, /set_resident_saved_entity["']\s*\]/, "saved API must not fall back to an obsolete RPC name");
+assert.match(savedApi, /p_auth_user_id:\s*user\.id/, "saved RPC must use the authenticated user ID");
+assert.match(savedApi, /p_idempotency_key:\s*idempotencyKey/, "saved RPC must include an idempotency key");
+assert.match(savedApi, /p_source_route:\s*sourceRoute/, "saved RPC must preserve the source route");
 assert.match(qrApi, /randomBytes\(32\)/, "QR tokens must have strong entropy");
 assert.match(qrApi, /hashOpaqueToken\(rawToken\)/, "QR tokens must be hashed at rest");
 assert.match(validateApi, /requirePartnerMembership\(req\)/, "validation must derive partner access from auth");
