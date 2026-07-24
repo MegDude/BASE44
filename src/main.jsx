@@ -133,6 +133,7 @@ import "@/styles/search-intent-expanded-readability-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
 import "@/styles/platform-panel-cohesion-final.css"
 import "@/styles/workspace-action-empty-state-final.css"
+import "@/styles/legends-map-partner-profile-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
