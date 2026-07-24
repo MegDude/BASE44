@@ -1,0 +1,204 @@
+/* Legends Real Estate map directory and listing identity refinement. */
+html body #root .dp-map-page {
+  --dp-legends-navy: #0b1f33;
+  --dp-legends-gold: #c8a96a;
+  --dp-legends-border: rgba(11, 31, 51, 0.08);
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet {
+  background: #fff !important;
+  color: var(--dp-legends-navy) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(h1, h2, h3, p, span, strong, small, button, a) {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-eyebrow, [data-legends-eyebrow]) {
+  color: #8c713b !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(h1, h2) {
+  color: var(--dp-legends-navy) !important;
+  font-size: clamp(24px, 4vw, 32px) !important;
+  font-weight: 650 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.035em !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-summary, .dp-map-directory-intro, header > p) {
+  color: rgba(11, 31, 51, 0.68) !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile, [data-legends-partner-profile="true"]) {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 18px 0 !important;
+  border-top: 1px solid var(--dp-legends-border) !important;
+  border-bottom: 1px solid var(--dp-legends-border) !important;
+  background: #fff !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__identity, [data-legends-partner-identity="true"]) {
+  display: grid !important;
+  grid-template-columns: 52px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__identity img, [data-legends-partner-identity="true"] img) {
+  width: 52px !important;
+  height: 42px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__identity strong, [data-legends-partner-identity="true"] strong) {
+  color: var(--dp-legends-navy) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__identity span, [data-legends-partner-identity="true"] span) {
+  color: rgba(11, 31, 51, 0.58) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__copy, [data-legends-partner-copy="true"]) {
+  max-width: 58ch !important;
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.72) !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions, [data-legends-partner-actions="true"]) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions a, .dp-legends-partner-profile__actions button, [data-legends-partner-actions="true"] a, [data-legends-partner-actions="true"] button) {
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions a:first-child, .dp-legends-partner-profile__actions button:first-child, [data-legends-partner-actions="true"] a:first-child, [data-legends-partner-actions="true"] button:first-child) {
+  border: 1px solid var(--dp-legends-navy) !important;
+  background: var(--dp-legends-navy) !important;
+  color: #fff !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions a:not(:first-child), .dp-legends-partner-profile__actions button:not(:first-child), [data-legends-partner-actions="true"] a:not(:first-child), [data-legends-partner-actions="true"] button:not(:first-child)) {
+  border: 1px solid rgba(11, 31, 51, 0.14) !important;
+  background: #fff !important;
+  color: var(--dp-legends-navy) !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-list, [data-legends-listings]) {
+  display: grid !important;
+  gap: 0 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-list button, [data-legends-listings] button) {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 76px !important;
+  width: 100% !important;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-legends-border) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: var(--dp-legends-navy) !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-list button img, [data-legends-listings] button img, .dp-legends-listing-logo) {
+  width: 44px !important;
+  height: 34px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-list button strong, [data-legends-listings] button strong) {
+  color: var(--dp-legends-navy) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-map-directory-list button span, .dp-map-directory-list button small, [data-legends-listings] button span, [data-legends-listings] button small) {
+  color: rgba(11, 31, 51, 0.6) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root .dp-map-page .dp-map-pin.dp-map-pin:has(.dp-live-pin__legends-logo),
+html body #root .dp-map-page .dp-map-pin.dp-map-pin[data-pin-key="legends"],
+html body #root .dp-map-page .dp-map-pin.dp-map-pin[data-pin-key="listing"] {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-pin.dp-map-pin :is(.dp-live-pin__legends-logo, .dp-pin-logo[data-brand="legends"], img[alt*="Legends Real Estate"]) {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+html body #root .dp-map-page .dp-map-pin.dp-map-pin:is([data-pin-key="legends"], [data-pin-key="listing"]):is(.is-selected, [data-active="true"]) {
+  transform: translateY(-1px) scale(1.05) !important;
+  filter: drop-shadow(0 5px 10px rgba(11, 31, 51, 0.18)) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions, [data-legends-partner-actions="true"]) {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  html body #root .dp-map-page .dp-map-directory-sheet :is(.dp-legends-partner-profile__actions a, .dp-legends-partner-profile__actions button, [data-legends-partner-actions="true"] a, [data-legends-partner-actions="true"] button) {
+    width: 100% !important;
+  }
+}
