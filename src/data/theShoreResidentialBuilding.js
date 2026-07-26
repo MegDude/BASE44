@@ -1,10 +1,22 @@
-export const THE_SHORE_PROPERTY_ID = "property-the-shore";
+export const THE_SHORE_ENTITY_ID = "the-shore";
+export const THE_SHORE_PROPERTY_ID = THE_SHORE_ENTITY_ID;
+export const THE_SHORE_LEGACY_IDS = [
+  "property-the-shore",
+  "priority-the-shore",
+  "shore-condos",
+  "shore-building",
+  "shore-property",
+  "603-davis",
+  "603-davis-st",
+  "parking-the-shore-evening",
+];
 
 export const THE_SHORE_HERO_IMAGE = "/images/reports/the-shore-austin.jpeg";
 
 export const theShoreAvailableHomes = [
   {
     id: "the-shore-2011",
+    entityId: THE_SHORE_ENTITY_ID,
     unit: "2011",
     address: "603 Davis Street #2011",
     status: "Active Under Contract",
@@ -19,6 +31,7 @@ export const theShoreAvailableHomes = [
   },
   {
     id: "the-shore-1704",
+    entityId: THE_SHORE_ENTITY_ID,
     unit: "1704",
     address: "603 Davis Street #1704",
     status: "Active",
@@ -32,6 +45,7 @@ export const theShoreAvailableHomes = [
   },
   {
     id: "the-shore-1409",
+    entityId: THE_SHORE_ENTITY_ID,
     unit: "1409",
     address: "603 Davis Street #1409",
     status: "Active Under Contract",
@@ -46,6 +60,7 @@ export const theShoreAvailableHomes = [
   },
   {
     id: "the-shore-907",
+    entityId: THE_SHORE_ENTITY_ID,
     unit: "907",
     address: "603 Davis Street #907",
     status: "Active",
@@ -59,6 +74,7 @@ export const theShoreAvailableHomes = [
   },
   {
     id: "the-shore-2007",
+    entityId: THE_SHORE_ENTITY_ID,
     unit: "2007",
     address: "603 Davis Street #2007",
     status: "Active",
@@ -73,8 +89,13 @@ export const theShoreAvailableHomes = [
 ];
 
 export const theShoreResidentialBuilding = {
-  id: THE_SHORE_PROPERTY_ID,
+  id: THE_SHORE_ENTITY_ID,
+  entityId: THE_SHORE_ENTITY_ID,
+  slug: THE_SHORE_ENTITY_ID,
+  legacyIds: THE_SHORE_LEGACY_IDS,
+  canonicalUrl: `/map?entity=${THE_SHORE_ENTITY_ID}`,
   kind: "property",
+  entityType: "property",
   category: "Residential",
   name: "The Shore",
   address: "603 Davis Street",
@@ -89,6 +110,15 @@ export const theShoreResidentialBuilding = {
   subheadline: "A Rainey Street high-rise positioned between downtown Austin and Lady Bird Lake.",
   overview:
     "The Shore places residents within walking distance of the trail, waterfront, Rainey Street restaurants, Hotel Van Zandt, and the downtown core while maintaining a quieter residential feel along the lake.",
+  children: {
+    parking: [],
+    amenities: [],
+    perks: [],
+    events: [],
+    campaigns: [],
+    media: [],
+    analytics: [],
+  },
   ninaInsight: {
     headline: "The reason to choose The Shore is the contrast.",
     summary:
