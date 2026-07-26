@@ -132,6 +132,7 @@ import "@/styles/platform-cleanup-polish-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
 import "@/styles/platform-panel-cohesion-final.css"
 import "@/styles/search-intent-expanded-readability-final.css"
+import "@/styles/partner-signin-white-surface-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
