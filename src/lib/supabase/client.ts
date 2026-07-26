@@ -7,7 +7,15 @@ const publishableKey =
   import.meta.env.SUPABASE_ANON_KEY;
 
 export const supabaseClient = url && publishableKey
-  ? createClient(url, publishableKey)
+  ? createClient(url, publishableKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storageKey: "downtown-perks-auth",
+        flowType: "pkce",
+      },
+    })
   : null;
 
 export function requireSupabaseClient() {
