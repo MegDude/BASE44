@@ -1,5 +1,8 @@
 /* Final readability lock for expanded resident and partner search-intent rails. */
 html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip[data-expanded="true"],
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip[aria-pressed="true"],
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip[aria-selected="true"],
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip.is-active,
 html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle[aria-expanded="true"],
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-more-panel:not([hidden]) button,
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-secondary-track button {
@@ -7,9 +10,16 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-seconda
   -webkit-text-fill-color: #0b1f33 !important;
 }
 
-html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip[data-expanded="true"] :is(
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip:is(
+  [data-expanded="true"],
+  [aria-pressed="true"],
+  [aria-selected="true"],
+  .is-active
+) :is(
   .dp-compact-intent-chip__label,
+  .dp-expanding-intent-chip__label,
   .dp-compact-intent-chip__icon,
+  .dp-expanding-intent-chip__icon,
   .dp-search-intent-filter-icon
 ),
 html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle[aria-expanded="true"] :is(
@@ -32,13 +42,25 @@ html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-seconda
   .dp-search-intent-filter-icon
 ) {
   color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
   stroke: currentColor !important;
   opacity: 1 !important;
+  visibility: visible !important;
 }
 
-html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip[data-expanded="true"],
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip:is(
+  [data-expanded="true"],
+  [aria-pressed="true"],
+  [aria-selected="true"],
+  .is-active
+),
 html body #root .dp-map-page .dp-search-intent-console button.dp-search-more-toggle[aria-expanded="true"] {
   background: rgba(11, 31, 51, 0.055) !important;
+}
+
+html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip:not([data-expanded="true"])[aria-pressed="true"] {
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
 }
 
 html body #root .dp-map-page .dp-search-intent-console .dp-search-intent-description-strip,
