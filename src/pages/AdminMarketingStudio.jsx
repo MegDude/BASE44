@@ -11,8 +11,24 @@ import {
   STUDIO_STATUS_CARDS,
 } from "@/content/downtown-perks/downtownPerksOSBlueprint";
 
+const ADMIN_ACTION_TARGETS = {
+  "command-center": "/partner-workspace/overview",
+  "campaign-builder": "/partner-workspace/campaigns?intent=new",
+  "audience-builder": "/partner-workspace/audience",
+  "content-library": "/partner-workspace/media",
+  "approval-queue": "/partner-workspace/publish",
+  distribution: "/partner-workspace/broadcasts",
+  performance: "/partner-workspace/performance",
+  "partner-intelligence": "/partner-workspace/analytics",
+  residents: "/partner-workspace/residents",
+};
+
 function getActiveStudioRoute(pathname) {
   return ADMIN_STUDIO_ROUTES.find((route) => pathname.includes(route.id)) || ADMIN_STUDIO_ROUTES[0];
+}
+
+function getAdminActionTarget(route) {
+  return ADMIN_ACTION_TARGETS[route?.id] || "/partner-workspace/overview";
 }
 
 function StudioShell({ activeRoute }) {
@@ -27,7 +43,7 @@ function StudioShell({ activeRoute }) {
           const Icon = route.icon;
           const active = route.id === activeRoute.id;
           return (
-            <Link key={route.id} to={route.path} className={active ? "is-active" : ""}>
+            <Link key={route.id} to={route.path} className={active ? "is-active" : ""} aria-current={active ? "page" : undefined}>
               <Icon aria-hidden="true" />
               <span>{route.label}</span>
             </Link>
@@ -45,7 +61,7 @@ function MobileStudioNav({ activeRoute }) {
         const Icon = route.icon;
         const active = route.id === activeRoute.id;
         return (
-          <Link key={route.id} to={route.path} className={active ? "is-active" : ""}>
+          <Link key={route.id} to={route.path} className={active ? "is-active" : ""} aria-current={active ? "page" : undefined}>
             <Icon aria-hidden="true" />
             <span>{route.label.split(" ")[0]}</span>
           </Link>
@@ -75,16 +91,16 @@ function CampaignFlowCard() {
   );
 }
 
-function StudioRouteWireframe({ route }) {
+function StudioRouteModule({ route }) {
+  const target = getAdminActionTarget(route);
   return (
-    <section className="dp-os-wire-card dp-os-route-wireframe" aria-label={`${route.label} wireframe`}>
+    <section className="dp-os-wire-card dp-os-route-wireframe" aria-label={`${route.label} operating module`}>
       <header>
         <span>{route.label}</span>
         <h2>{route.purpose}</h2>
         <p>{route.priority}</p>
       </header>
-
-      <div className="dp-os-mobile-frame" aria-label={`${route.label} mobile wireframe`}>
+      <div className="dp-os-mobile-frame" aria-label={`${route.label} mobile operating module`}>
         <div className="dp-os-mobile-frame__top">
           <strong>{route.label}</strong>
           <small>Today’s priority</small>
@@ -93,14 +109,14 @@ function StudioRouteWireframe({ route }) {
           <article>
             <span>Primary</span>
             <strong>{route.priority}</strong>
-            <button type="button">{route.primaryCta}</button>
+            <Link to={target}>{route.primaryCta}</Link>
           </article>
           <div>
             {route.cards.slice(0, 4).map((card) => (
-              <button key={card} type="button">
+              <Link key={card} to={target} aria-label={`${card} in ${route.label}`}>
                 <span>{card}</span>
                 <ChevronRight aria-hidden="true" />
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -119,9 +135,7 @@ function CampaignObjectPanel() {
         {CAMPAIGN_TYPES.map((type) => <span key={type}>{type}</span>)}
       </div>
       <div className="dp-os-field-list" aria-label="Campaign fields">
-        {CAMPAIGN_OBJECT_FIELDS.map((field) => (
-          <span key={field}>{field}</span>
-        ))}
+        {CAMPAIGN_OBJECT_FIELDS.map((field) => <span key={field}>{field}</span>)}
       </div>
     </section>
   );
@@ -134,9 +148,7 @@ function SystemMap() {
         <article key={area.id}>
           <span>{area.label}</span>
           <p>{area.job}</p>
-          <div>
-            {area.routes.map((route) => <em key={route}>{route}</em>)}
-          </div>
+          <div>{area.routes.map((route) => <em key={route}>{route}</em>)}</div>
         </article>
       ))}
     </section>
@@ -156,18 +168,15 @@ function ResidentAdminPanel() {
   const records = useMemo(() => readResidentRecords(), []);
   const visibleRecords = records.length
     ? records
-    : [
-        {
-          id: "sample-resident",
-          fullName: "Sample Resident",
-          email: "resident@example.com",
-          buildingName: "Building review",
-          unitNumber: "Pending",
-          verificationStatus: "pending_building_review",
-          accessPath: "building",
-        },
-      ];
-
+    : [{
+        id: "sample-resident",
+        fullName: "Sample Resident",
+        email: "resident@example.com",
+        buildingName: "Building review",
+        unitNumber: "Pending",
+        verificationStatus: "pending_building_review",
+        accessPath: "building",
+      }];
   return (
     <section className="dp-os-wire-card dp-os-resident-admin" aria-label="Resident access management">
       <span>Admin only</span>
@@ -186,6 +195,7 @@ function ResidentAdminPanel() {
           </article>
         ))}
       </div>
+      <Link to="/partner-workspace/residents">Open resident operations</Link>
     </section>
   );
 }
@@ -194,7 +204,6 @@ export default function AdminMarketingStudio() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, isLoadingAuth, user } = useAuth();
-
   if (isLoadingAuth) {
     return (
       <main className="dp-os-studio-page flex min-h-screen items-center justify-center bg-white text-[#0B1F33]" aria-busy="true">
@@ -202,25 +211,16 @@ export default function AdminMarketingStudio() {
       </main>
     );
   }
-
   if (!isAuthenticated) {
-    return (
-      <Navigate
-        to="/partners/sign-in"
-        replace
-        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
-      />
-    );
+    return <Navigate to="/partners/sign-in" replace state={{ from: `${location.pathname}${location.search}${location.hash}` }} />;
   }
-
   const role = String(user?.role || "").toLowerCase();
   if (!["admin", "platform_admin", "super_admin"].includes(role)) {
     return <Navigate to="/partner-workspace/overview" replace />;
   }
-
   const activeRoute = getActiveStudioRoute(location.pathname);
   const ActiveIcon = activeRoute.icon;
-
+  const activeTarget = getAdminActionTarget(activeRoute);
   return (
     <div className="dp-os-studio-page">
       <StudioShell activeRoute={activeRoute} />
@@ -229,59 +229,33 @@ export default function AdminMarketingStudio() {
           <div>
             <span className="dp-os-kicker">Downtown Perks OS</span>
             <h1>Premium control layer for downtown discovery.</h1>
-            <p>
-              One native-feeling system for resident decisions, partner launches, admin governance, and public storytelling.
-            </p>
+            <p>One native-feeling system for resident decisions, partner launches, admin governance, and public storytelling.</p>
           </div>
           <div className="dp-os-studio-hero__actions">
-            <button type="button" onClick={() => navigate("/admin-studio/campaign-builder")}>
-              Build campaign
-              <ArrowRight aria-hidden="true" />
-            </button>
+            <button type="button" onClick={() => navigate("/partner-workspace/campaigns?intent=new")}>Build campaign <ArrowRight aria-hidden="true" /></button>
             <Link to="/map?mode=resident&tab=map&filter=All">Open resident map</Link>
           </div>
         </header>
-
         <section className="dp-os-status-grid" aria-label="Today in Marketing Studio">
           {STUDIO_STATUS_CARDS.map((card) => (
-            <article key={card.label}>
-              <span>{card.label}</span>
-              <strong>{card.value}</strong>
-              <p>{card.note}</p>
-            </article>
+            <article key={card.label}><span>{card.label}</span><strong>{card.value}</strong><p>{card.note}</p></article>
           ))}
         </section>
-
         <section className="dp-os-active-panel" aria-label={activeRoute.label}>
-          <div className="dp-os-active-panel__icon">
-            <ActiveIcon aria-hidden="true" />
-          </div>
-          <div>
-            <span>{activeRoute.label}</span>
-            <h2>{activeRoute.purpose}</h2>
-            <p>{activeRoute.priority}</p>
-          </div>
-          <button type="button">
-            {activeRoute.primaryCta}
-            <Sparkles aria-hidden="true" />
-          </button>
+          <div className="dp-os-active-panel__icon"><ActiveIcon aria-hidden="true" /></div>
+          <div><span>{activeRoute.label}</span><h2>{activeRoute.purpose}</h2><p>{activeRoute.priority}</p></div>
+          <Link to={activeTarget}>{activeRoute.primaryCta}<Sparkles aria-hidden="true" /></Link>
         </section>
-
         <div className="dp-os-studio-grid">
           {activeRoute.id === "residents" ? <ResidentAdminPanel /> : null}
-          <StudioRouteWireframe route={activeRoute} />
+          <StudioRouteModule route={activeRoute} />
           <CampaignFlowCard />
           <CampaignObjectPanel />
         </div>
-
         <SystemMap />
-
         <section className="dp-os-governance-strip" aria-label="Launch rules">
           {["Draft mode always available", "Preview required", "Test send required", "Approval for paid/public placements", "Report auto-generated"].map((rule) => (
-            <span key={rule}>
-              <Check aria-hidden="true" />
-              {rule}
-            </span>
+            <span key={rule}><Check aria-hidden="true" />{rule}</span>
           ))}
         </section>
       </main>
