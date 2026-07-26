@@ -28,9 +28,9 @@ const workspaceModules = {
   performance: "WorkspaceDestinationRoot", map: "WorkspaceRegistryPanel", campaigns: "WorkspaceExperienceSystem",
   offers: "PerksManager", events: "EventsManager", surveys: "WorkspaceExperienceSystem",
   broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceRegistryPanel", audience: "WorkspaceRegistryPanel",
-  media: "WorkspaceMediaPanel", reports: "WorkspaceReports", analytics: "PartnerAnalyticsExperience",
-  profile: "PartnerProfileEditor", team: "WorkspaceRegistryPanel", billing: "WorkspaceRegistryPanel",
-  residents: "WorkspaceRegistryPanel",
+  media: "WorkspaceRegistryPanel", reports: "WorkspaceReports", analytics: "WorkspaceAnalytics",
+  assistant: "WorkspaceAgent", profile: "ProfileSection", team: "WorkspaceRegistryPanel",
+  billing: "WorkspaceRegistryPanel", residents: "WorkspaceRegistryPanel",
 };
 for (const [tab, moduleName] of Object.entries(workspaceModules)) {
   assert.match(workspace, new RegExp(`tab === [\"']${tab}[\"'][\\s\\S]{0,260}${moduleName}`), `workspace tab ${tab} is not wired to ${moduleName}`);
