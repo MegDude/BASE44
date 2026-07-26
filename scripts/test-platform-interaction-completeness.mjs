@@ -65,7 +65,7 @@ assert.match(access, /fetch\("\/api\/contact"/, "partner registration is not con
 
 for (const apiFile of [
   "api/campaign-requests.js", "api/contact.js", "api/resident/saved.js", "api/resident/qr-session.js",
-  "api/partner/published-content.js", "api/stripe/create-checkout-session.js",
+  "api/partner/published-content.js", "api/stripe/create-checkout-session-local.js",
 ]) assert.ok(existsSync(apiFile), `missing API module: ${apiFile}`);
 
 assert.match(vercel, /\"source\":\s*\"\/resident-app\"/, "legacy resident CTA does not have a canonical redirect");
