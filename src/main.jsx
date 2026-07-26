@@ -129,9 +129,9 @@ import "@/styles/global-back-control-final.css"
 import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/platform-cleanup-polish-final.css"
-import "@/styles/search-intent-expanded-readability-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
 import "@/styles/platform-panel-cohesion-final.css"
+import "@/styles/search-intent-expanded-readability-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
