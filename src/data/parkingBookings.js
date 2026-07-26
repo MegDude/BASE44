@@ -1,6 +1,11 @@
 export const downtownParkingItems = [
   {
     id: "parking-the-shore-evening",
+    entityId: "the-shore",
+    parentEntityId: "the-shore",
+    childType: "parking",
+    exposeAsStandaloneMapPin: false,
+    canonicalUrl: "/map?entity=the-shore&tab=parking",
     kind: "parking",
     title: "Evening Parking at The Shore",
     buildingName: "The Shore",
@@ -40,11 +45,15 @@ export const downtownParkingItems = [
       },
     ],
     partnerId: "partner-the-shore",
-    propertyId: "property-the-shore",
+    propertyId: "the-shore",
     active: true,
   },
   {
     id: "parking-waterline-weekend",
+    entityId: "property-waterline",
+    parentEntityId: "property-waterline",
+    childType: "parking",
+    exposeAsStandaloneMapPin: true,
     kind: "parking",
     title: "Weekend Parking at Waterline",
     buildingName: "Waterline",
