@@ -55,6 +55,7 @@
     "test:map-markers": "node scripts/test-unified-map-markers.mjs",
     "test:accessible-surfaces-pin-art": "node scripts/test-accessible-surfaces-pin-art.mjs",
     "test:map-camera-stability": "node scripts/test-map-camera-stability.mjs",
+    "test:geographic-integrity": "node scripts/test-geographic-integrity.mjs",
     "test:platform-search": "tsx scripts/test-platform-search.ts",
     "inventory:platform-search-index": "node scripts/generate-platform-search-index.mjs",
     "audit:content:report": "tsx scripts/audit-content-governance.ts",
@@ -205,4 +206,3 @@
     "vite": "^6.1.0"
   }
 }
-
