@@ -20,7 +20,8 @@ assert.match(mapSource, /pin:\s*resolveEntityPin\(place\)/, "perk rows must use 
 
 assert.match(sheetSource, /<NativeDrawerShell/);
 assert.match(shellSource, /role="dialog"/);
-assert.match(shellSource, /aria-modal="true"/);
+assert.match(shellSource, /aria-modal="false"/);
+assert.match(shellSource, /event\.key !== "Escape"/);
 assert.match(sheetSource, /aria-label="Active perks"/);
 assert.match(sheetSource, /aria-live="polite"/);
 assert.match(sheetSource, /aria-label="Close active perks"/);

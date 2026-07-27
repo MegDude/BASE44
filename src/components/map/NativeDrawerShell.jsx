@@ -35,6 +35,9 @@ function lockPage() {
  *   drawerState?: "peek" | "medium" | "expanded" | "full",
  *   panelKind?: string,
  *   hasInternalActions?: boolean,
+ *   onDrawerStateChange?: (state: "peek" | "medium" | "expanded" | "full") => void,
+ *   onRequestClose?: () => void,
+ *   returnFocusRef?: import("react").RefObject<HTMLElement>,
  * }} NativeDrawerShellProps
  */
 
@@ -51,10 +54,34 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
   drawerState = "medium",
   panelKind = "detail",
   hasInternalActions = false,
+  onDrawerStateChange,
+  onRequestClose,
+  returnFocusRef,
+  onKeyDown,
   ...props
 }, ref) {
   const shellRef = useRef(null);
+  const previousFocusRef = useRef(null);
   useEffect(() => lockPage(), []);
+  useEffect(() => {
+    if (typeof document === "undefined") return undefined;
+    previousFocusRef.current = returnFocusRef?.current || document.activeElement;
+    return () => {
+      const focusTarget = returnFocusRef?.current || previousFocusRef.current;
+      if (focusTarget && typeof focusTarget.focus === "function" && document.contains(focusTarget)) {
+        window.requestAnimationFrame(() => focusTarget.focus({ preventScroll: true }));
+      }
+    };
+  }, [returnFocusRef]);
+  const handleKeyDown = useCallback((event) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented || event.key !== "Escape") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (drawerState === "full") onDrawerStateChange?.("expanded");
+    else if (drawerState === "expanded") onDrawerStateChange?.("medium");
+    else onRequestClose?.();
+  }, [drawerState, onDrawerStateChange, onKeyDown, onRequestClose]);
   const setShellRef = useCallback((node) => {
     shellRef.current = node;
     if (typeof ref === "function") ref(node);
@@ -79,7 +106,8 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       data-panel-kind={panelKind}
       data-has-drawer-actions={actions || hasInternalActions ? "true" : "false"}
       role="dialog"
-      aria-modal="true"
+      aria-modal="false"
+      onKeyDown={handleKeyDown}
       {...props}
     >
       <div className="dp-native-drawer-surface">

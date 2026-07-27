@@ -1,0 +1,188 @@
+/* Canonical entity drawer contract.
+   Loaded last so one shell owns mobile geometry, scrolling, and persistent actions. */
+
+.dp-map-page #dp-active-map-drawer.dp-native-drawer {
+  --dp-entity-drawer-nav-clearance: var(--dp-bottom-nav-total-height, calc(64px + env(safe-area-inset-bottom, 0px)));
+  --dp-entity-drawer-line: rgba(11, 31, 51, 0.08);
+  --dp-entity-drawer-gold: #c8a96a;
+  position: fixed !important;
+  z-index: 760 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif !important;
+  pointer-events: none !important;
+}
+
+.dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--dp-entity-drawer-line) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  pointer-events: auto !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-header,
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+  background: #fff !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-content-viewport,
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-scroll {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-scroll {
+  height: 100% !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  scrollbar-gutter: stable !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+  position: relative !important;
+  z-index: 5 !important;
+  display: block !important;
+  min-height: 68px !important;
+  margin: 0 !important;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--dp-entity-drawer-line) !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-universal-action-rail {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-universal-action-rail > :is(a, button) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+  font: 650 12px/1.15 Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  white-space: normal !important;
+  box-shadow: none !important;
+  touch-action: manipulation !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-universal-action-rail > .is-primary {
+  border-color: #0b1f33 !important;
+  background: #0b1f33 !important;
+  color: #fff !important;
+}
+
+.dp-map-page #dp-active-map-drawer .dp-universal-action-rail > :is(a, button):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dp-entity-drawer-gold) 65%, transparent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Entity modules may retain contextual links, but they do not own a second
+   persistent CTA rail inside the scrolling region. */
+.dp-map-page #dp-active-map-drawer[data-has-drawer-actions="true"] .dp-native-drawer-scroll :is(
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-map-detail-actions,
+  .dp-partner-destination-actions,
+  .dp-native-detail-panel__actions,
+  .dp-drawer-primary-actions,
+  .dp-perk-action-row
+) {
+  display: none !important;
+}
+
+@media (max-width: 767px), (max-height: 599px) {
+  .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    inset: auto 0 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-drawer-state="peek"] {
+    height: calc(96px + var(--dp-entity-drawer-nav-clearance)) !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-drawer-state="medium"] {
+    height: min(calc(45dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-drawer-state="expanded"] {
+    height: min(calc(85dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
+    height: 100dvh !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 0 !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+    margin-bottom: var(--dp-entity-drawer-nav-clearance) !important;
+    padding-bottom: 10px !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] .dp-native-drawer-actions {
+    margin-bottom: 0 !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (min-width: 768px) and (min-height: 600px) {
+  .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    inset: 0 0 0 auto !important;
+    width: min(480px, 42vw) !important;
+    max-width: 480px !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
+    border-top: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dp-map-page #dp-active-map-drawer,
+  .dp-map-page #dp-active-map-drawer * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
