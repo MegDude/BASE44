@@ -51,7 +51,7 @@ import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
-import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
+import { CanonicalDetailPanel, DrawerActionFooter } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
@@ -2122,6 +2122,7 @@ function getCanonicalDetailEntityType(place, hasPerkContext = false) {
 function getMapDrawerPanelKind(place, mode = "resident", hasPerkContext = false) {
   if (!place) return "destination";
   const canonicalType = getCanonicalDetailEntityType(place, hasPerkContext);
+  if (isBangersVenue(place)) return "place";
   if (["perk", "event", "campaign", "collection", "route", "amenity", "portfolio"].includes(canonicalType)) return canonicalType;
   const entityKind = getResidentEntityKind(place);
   if (isInKindEntity(place) && !isInKindNetworkEntity(place)) return mode === "partner" ? "partner-opportunity" : "place";
@@ -2239,6 +2240,14 @@ function isHappyHourEntity(place) {
     hasHappyHourDetails ||
     text.includes("happy hour")
   );
+}
+
+function isBangersVenue(place) {
+  const id = String(place?.id || place?.raw?.id || "").toLowerCase();
+  const name = String(place?.name || place?.title || place?.raw?.name || place?.raw?.title || "").toLowerCase();
+  return id === "partner-bangers"
+    || id.includes("banger-s-sausage-house")
+    || /\bbanger(?:'|’)?s sausage house(?:\s*&|\s+and)?\s*beer garden\b/i.test(name);
 }
 
 function isCivicEntity(place) {
@@ -3173,6 +3182,21 @@ function getEntityIdentity(place, mode = "resident") {
   const panelTitle = panelContent.title || place?.name || place?.title || "Downtown destination";
   const panelSubtitle = panelContent.subtitle || [getCanonicalCategoryLabel(place), address || district].filter(Boolean).join(" · ");
   const panelContext = panelContent.context || context;
+
+  if (isBangersVenue(place)) {
+    return {
+      id: place?.id,
+      entityType: "venue",
+      displayTypeLabel: `Restaurant & beer garden · ${district}`,
+      displayTitle: "Banger's Sausage House & Beer Garden",
+      displaySubtitle: address || "79 Rainey St",
+      displayContext: "A Rainey Street destination for sausages, local beer, outdoor gatherings, and live music.",
+      address: address || "79 Rainey St",
+      neighborhood: district,
+      categoryLabel: "Restaurant & beer garden",
+      panelArchetype: resolveEntityPanelArchetype({ ...place, type: "venue", category: "Restaurant & beer garden" }),
+    };
+  }
 
   if (isBurgerBarCongress(place)) {
     return {
@@ -8657,6 +8681,7 @@ function getNearbyCardImage(entity, mode = "resident") {
 function getContextualRailFallbackImage(entity, mode = "resident") {
   const text = placeCoreText({ ...entity, mode });
   const kind = getDestinationKind(entity);
+  if (isBangersVenue(entity)) return "/images/map-entities/attached/venues/bangers.jpg";
   if (text.includes("fitness") || text.includes("athletic") || text.includes("gym") || text.includes("workout") || text.includes("orangetheory")) return "/images/fallbacks/fitness.jpg";
   if (text.includes("wellness") || text.includes("yoga") || text.includes("pilates") || text.includes("spa") || text.includes("recovery")) return "/images/fallbacks/wellness.jpg";
   if (text.includes("coffee") || text.includes("cafe") || text.includes("espresso")) return "/images/fallbacks/coffee.jpg";
@@ -9706,7 +9731,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
   const isSaved = savedIds?.has?.(place?.id);
 
   return (
-    <DestinationSection title="Happy Hour" className="dp-happy-hour-section">
+    <DestinationSection title={isBangersVenue(place) ? "Resident perk" : "Happy Hour"} className="dp-happy-hour-section">
       {shouldShowDetails && <p className="dp-destination-section-copy">{details}</p>}
       <div className="dp-quiet-facts" aria-label={`${place.name} happy hour details`}>
         {time && (
@@ -9721,7 +9746,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
         </div>
       </div>
       {shouldShowRedemption && <p className="dp-destination-section-note">{redemption}</p>}
-      <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} happy hour actions`}>
+      <DrawerActionFooter label={`${place.name} actions`} className="dp-happy-hour-action-footer">
         <button type="button" onClick={onUse || onSave} className="dp-panel-action dp-primary-action dp-perk-cta is-primary">
           Use Perk
         </button>
@@ -9731,7 +9756,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
         <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action dp-perk-cta is-tertiary">
           Directions
         </a>
-      </div>
+      </DrawerActionFooter>
     </DestinationSection>
   );
 }
@@ -12511,6 +12536,10 @@ function getResidentEntityKind(place) {
 
   if (type === "service" || category.includes("service") || category.includes("restoration") || text.includes("restoration")) {
     return "service";
+  }
+
+  if (isBangersVenue(place)) {
+    return "venue";
   }
 
   if (isHappyHourEntity(place)) {
@@ -19202,4 +19231,3 @@ export default function MapPage() {
     </div>
   );
 }
-
