@@ -323,6 +323,49 @@ function isPrivatePartnerEntity(entity = {}) {
   return /\b(admin|internal|qa only|backend|workspace|private partner)\b/.test(textForEntity(entity));
 }
 
+function isParkingEntity(entity = {}) {
+  const type = String(entity.type || entity.kind || entity.entityType || entity.sourceType || "").toLowerCase();
+  return type === "parking" || /\b(parking|garage|valet|ev charging|surface lot|bike parking)\b/.test(textForEntity(entity));
+}
+
+function hasPartnerParkingRelationship(entity = {}, scope = {}) {
+  if (!isParkingEntity(entity)) return true;
+  const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
+  const visibleCampaignIds = new Set((scope.visibleCampaignIds || []).map(String));
+  const visiblePerkIds = new Set((scope.visiblePerkIds || []).map(String));
+  const visiblePropertyIds = new Set((scope.visiblePropertyIds || []).map(String));
+  const visibleEventIds = new Set((scope.visibleEventIds || []).map(String));
+  const permissions = new Set((scope.permissions || []).map(String));
+  const partnerIds = new Set([
+    scope.partnerId,
+    scope.organizationId,
+    scope.workspaceId,
+  ].filter(Boolean).map(String));
+  const relationshipIds = [
+    entity.ownerPartnerId,
+    entity.operatorPartnerId,
+    entity.managerPartnerId,
+    entity.partnerId,
+    entity.partner_id,
+    raw.ownerPartnerId,
+    raw.operatorPartnerId,
+    raw.managerPartnerId,
+    raw.partnerId,
+    raw.partner_id,
+  ].filter(Boolean).map(String);
+  const campaignIds = [entity.campaignId, entity.campaign_id, raw.campaignId, raw.campaign_id, ...(entity.campaignIds || []), ...(raw.campaignIds || [])].filter(Boolean).map(String);
+  const perkIds = [entity.perkId, entity.perk_id, raw.perkId, raw.perk_id, ...(entity.perkIds || []), ...(raw.perkIds || [])].filter(Boolean).map(String);
+  const propertyIds = [entity.propertyId, entity.property_id, raw.propertyId, raw.property_id, ...(entity.propertyIds || []), ...(raw.propertyIds || [])].filter(Boolean).map(String);
+  const eventIds = [entity.eventId, entity.event_id, raw.eventId, raw.event_id, ...(entity.eventIds || []), ...(raw.eventIds || [])].filter(Boolean).map(String);
+  return relationshipIds.some((id) => partnerIds.has(id)) ||
+    campaignIds.some((id) => visibleCampaignIds.has(id)) ||
+    perkIds.some((id) => visiblePerkIds.has(id)) ||
+    propertyIds.some((id) => visiblePropertyIds.has(id)) ||
+    eventIds.some((id) => visibleEventIds.has(id)) ||
+    permissions.has("parking:admin") ||
+    permissions.has("parking:manage");
+}
+
 function matchesIntent(entity, intent, filter, mode = "resident") {
   const text = textForEntity(entity);
   const type = String(entity.type || entity.kind || entity.entityType || entity.sourceType || "").toLowerCase();
@@ -410,6 +453,14 @@ function buildQueryKey(scope = {}) {
     routeId: scope.routeId || "",
     openNow: Boolean(scope.openNow),
     hasPerk: Boolean(scope.hasPerk),
+    partnerId: scope.partnerId || "",
+    organizationId: scope.organizationId || "",
+    workspaceId: scope.workspaceId || "",
+    visibleCampaignIds: scope.visibleCampaignIds || [],
+    visiblePerkIds: scope.visiblePerkIds || [],
+    visiblePropertyIds: scope.visiblePropertyIds || [],
+    visibleEventIds: scope.visibleEventIds || [],
+    permissions: scope.permissions || [],
     limit: clampLimit(scope.resultLimit),
     cursor: scope.cursor || "",
   });
@@ -459,7 +510,7 @@ export function buildResolverRequest(scope = {}, trigger = "search") {
       west: Number(normalized.currentBounds.west),
     } : undefined,
     selected_entity_id: normalized.activeEntityId || undefined,
-    partner_id: normalized.partnerId || undefined,
+    partner_id: normalized.partnerId || normalized.organizationId || undefined,
     campaign_id: normalized.campaignId || undefined,
     perk_id: normalized.perkId || undefined,
     event_id: normalized.eventId || undefined,
@@ -511,6 +562,7 @@ export function selectScopedEntities(allEntities, scope) {
         const governance = getEntityGovernance(entity);
         if (!governance.isMapEligible) return false;
         if (scope.audienceMode !== "partner" && (isPrivatePartnerEntity(entity) || !governance.isResidentVisible)) return false;
+        if (scope.audienceMode === "partner" && isParkingEntity(entity) && !hasPartnerParkingRelationship(entity, scope)) return false;
         return true;
       })
       .sort((a, b) => {
@@ -544,6 +596,7 @@ export function selectScopedEntities(allEntities, scope) {
     const governance = getEntityGovernance(entity);
     if (!governance.isMapEligible) return false;
     if (scope.audienceMode !== "partner" && (isPrivatePartnerEntity(entity) || !governance.isResidentVisible)) return false;
+    if (scope.audienceMode === "partner" && isParkingEntity(entity) && !hasPartnerParkingRelationship(entity, scope)) return false;
     if (scope.district && scope.district !== "All Downtown" && entity.district !== scope.district) return false;
     if (scope.hasPerk && !hasActivePerk(entity)) return false;
     if (scope.filter === "Saved" && !savedEntityIds.has(String(entity.id))) return false;
@@ -698,179 +751,86 @@ export function useSearchDrivenMapEntities() {
     resultSubtitle: null,
   });
   const [requestStatus, setRequestStatus] = useState("idle");
-  const [lastTrigger, setLastTrigger] = useState("");
-  const [catalogState, setCatalogState] = useState(emptyCatalogState);
-  const [metrics, setMetrics] = useState({
-    initialEntityRequestCount: 0,
-    searchRequestCount: 0,
-    cacheHitCount: 0,
-    staleCancellationCount: 0,
-    duplicateRequestCount: 0,
-    lastDurationMs: 0,
-    localFallbackCount: 0,
-  });
-  const abortRef = useRef(null);
-  const activeRequestRef = useRef({ id: 0, key: "" });
-  const catalogRequestRef = useRef(0);
-  const cacheRef = useRef(new Map());
-  const requestStatusRef = useRef("idle");
+  const [error, setError] = useState(null);
+  const [catalogState, setCatalogState] = useState(() => emptyCatalogState());
+  const queryCacheRef = useRef(new Map());
+  const requestSequenceRef = useRef(0);
+  const activeAbortControllerRef = useRef(null);
 
-  useEffect(() => {
-    requestStatusRef.current = requestStatus;
-  }, [requestStatus]);
-
-  const searchCatalog = useCallback(async (query = "", entities = [], mode = "resident") => {
-    const normalizedQuery = String(query || "").trim();
-    const requestId = catalogRequestRef.current + 1;
-    catalogRequestRef.current = requestId;
-    if (!normalizedQuery) {
-      setCatalogState(emptyCatalogState());
-      return null;
-    }
-
-    setCatalogState((current) => (
-      current.query === normalizedQuery && current.status === "resolved"
-        ? current
-        : emptyCatalogState(normalizedQuery, "loading")
-    ));
-    try {
-      const catalog = await loadPlatformSearchIndex();
-      if (catalogRequestRef.current !== requestId) return null;
-      const nextState = resolveCatalogState(normalizedQuery, catalog, entities, mode) || emptyCatalogState();
-      setCatalogState(nextState);
-      return nextState;
-    } catch (error) {
-      if (catalogRequestRef.current !== requestId) return null;
-      console.warn("Platform search index could not be loaded.", error);
-      const fallbackState = resolveCatalogState(normalizedQuery, [], entities, mode) || emptyCatalogState(normalizedQuery, "empty");
-      setCatalogState(fallbackState);
-      return fallbackState;
-    }
-  }, []);
-
-  const runSearch = useCallback(async (scope = {}, trigger = "search") => {
+  const runResolver = useCallback(async (scope = {}, trigger = "search") => {
     const normalizedScope = normalizeScope(scope);
-    const resolverRequest = buildResolverRequest(normalizedScope, trigger);
-    if (!isExplicitMapSearch(resolverRequest)) return null;
-    const queryKey = buildQueryKey({ ...normalizedScope, resultLimit: resolverRequest.limit });
-    const cached = getCache(cacheRef, queryKey);
+    const queryKey = buildQueryKey(normalizedScope);
+    const cached = getCache(queryCacheRef, queryKey);
     if (cached) {
-      const cachedEntities = cached.resultIds.map((id) => cached.entitiesById[id]).filter(Boolean);
-      await searchCatalog(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
       setResultState(cached);
-      setLastTrigger(trigger);
-      setRequestStatus("success");
-      setMetrics((current) => ({ ...current, cacheHitCount: current.cacheHitCount + 1 }));
+      setRequestStatus("ready");
       return cached;
     }
 
-    if (activeRequestRef.current.key === queryKey && requestStatusRef.current === "loading") {
-      setMetrics((current) => ({ ...current, duplicateRequestCount: current.duplicateRequestCount + 1 }));
-      return null;
-    }
-
-    abortRef.current?.abort?.();
-    const controller = new AbortController();
-    abortRef.current = controller;
-    const requestId = activeRequestRef.current.id + 1;
-    activeRequestRef.current = { id: requestId, key: queryKey };
+    requestSequenceRef.current += 1;
+    const requestSequence = requestSequenceRef.current;
+    activeAbortControllerRef.current?.abort();
+    const abortController = new AbortController();
+    activeAbortControllerRef.current = abortController;
     setRequestStatus("loading");
-    setLastTrigger(trigger);
-    setResultState((current) => ({ ...current, status: "resolving", source: resolverRequest.source }));
-    const startedAt = performance.now();
+    setError(null);
 
     try {
-      const backendResponse = await searchOperationalMap(resolverRequest, controller.signal);
-      let result;
-      let usedLocalFallback = false;
-      if (backendResponse) {
-        const entities = backendResponse.pins.map(backendPinToMapEntity);
-        result = {
-          queryKey,
-          resultIds: entities.map((entity) => entity.id),
-          entitiesById: Object.fromEntries(entities.map((entity) => [entity.id, entity])),
-          total: backendResponse.total_available,
-          cursor: backendResponse.next_cursor || "",
-          bounds: compactBounds(normalizedScope.currentBounds),
-          fetchedAt: Date.now(),
-          intent: backendResponse.interpreted_intent || normalizedScope.intent,
-          limit: resolverRequest.limit,
-          status: entities.length ? "resolved" : "empty",
-          source: resolverRequest.source,
-          queryId: backendResponse.query_id,
-          resultTitle: backendResponse.result_context.title,
-          resultSubtitle: backendResponse.result_context.subtitle || null,
-        };
-      } else {
-        const entities = await loadRegistryForScope(normalizedScope);
-        if (controller.signal.aborted) throw new DOMException("Map search aborted", "AbortError");
-        result = {
-          ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
-          queryKey,
-          source: resolverRequest.source,
-          queryId: `local-${requestId}`,
-        };
-        usedLocalFallback = true;
-      }
-      if (activeRequestRef.current.id !== requestId) {
-        setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
-        return null;
-      }
-      putCache(cacheRef, result.queryKey, result);
-      const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
-      await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
-      setResultState(result);
-      setRequestStatus("success");
-      setMetrics((current) => ({
-        ...current,
-        searchRequestCount: current.searchRequestCount + 1,
-        lastDurationMs: Math.round(performance.now() - startedAt),
-        localFallbackCount: current.localFallbackCount + (usedLocalFallback ? 1 : 0),
-      }));
-      return result;
-    } catch (error) {
-      if (error?.name === "AbortError") {
-        setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
-        return null;
-      }
-      try {
-        const entities = await loadRegistryForScope(normalizedScope);
-        if (controller.signal.aborted || activeRequestRef.current.id !== requestId) return null;
-        const result = {
-          ...selectScopedEntities(entities, { ...normalizedScope, resultLimit: resolverRequest.limit }),
-          queryKey,
-          source: resolverRequest.source,
-          queryId: `local-${requestId}`,
-        };
-        putCache(cacheRef, result.queryKey, result);
-        const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
-        await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
-        setResultState(result);
-        setRequestStatus("success");
-        setMetrics((current) => ({
-          ...current,
-          searchRequestCount: current.searchRequestCount + 1,
-          lastDurationMs: Math.round(performance.now() - startedAt),
-          localFallbackCount: current.localFallbackCount + 1,
-        }));
-        return result;
-      } catch (fallbackError) {
-        if (fallbackError?.name === "AbortError") return null;
-        console.warn("Map results could not be loaded.", fallbackError);
-        setRequestStatus("error");
-        setResultState((current) => ({ ...current, status: "error" }));
-        return null;
-      }
-    }
-  }, [searchCatalog]);
+      const localRegistry = await loadRegistryForScope(normalizedScope);
+      if (abortController.signal.aborted || requestSequence !== requestSequenceRef.current) return null;
+      const localResult = selectScopedEntities(localRegistry, normalizedScope);
+      const platformCatalog = await loadPlatformSearchIndex();
+      const resolvedCatalog = resolveCatalogState(normalizedScope.query, platformCatalog, localResult.resultIds.map((id) => localResult.entitiesById[id]), normalizedScope.audienceMode || "resident");
+      if (resolvedCatalog) setCatalogState(resolvedCatalog);
 
-  const clearResults = useCallback(() => {
-    abortRef.current?.abort?.();
-    activeRequestRef.current = { id: activeRequestRef.current.id + 1, key: "" };
-    catalogRequestRef.current += 1;
-    setRequestStatus("idle");
-    setLastTrigger("");
-    setCatalogState(emptyCatalogState());
+      if (!isExplicitMapSearch(normalizedScope) || normalizedScope.useOperationalResolver === false) {
+        const result = { ...localResult, source: sourceFromTrigger(trigger), queryId: "" };
+        putCache(queryCacheRef, queryKey, result);
+        setResultState(result);
+        setRequestStatus("ready");
+        return result;
+      }
+
+      const request = buildResolverRequest(normalizedScope, trigger);
+      const response = await searchOperationalMap(request, { signal: abortController.signal });
+      if (abortController.signal.aborted || requestSequence !== requestSequenceRef.current) return null;
+      const backendEntities = Array.isArray(response?.results)
+        ? response.results.map(backendPinToMapEntity).filter(Boolean)
+        : [];
+      if (!backendEntities.length) {
+        const result = { ...localResult, source: sourceFromTrigger(trigger), queryId: response?.query_id || "" };
+        putCache(queryCacheRef, queryKey, result);
+        setResultState(result);
+        setRequestStatus("ready");
+        return result;
+      }
+      const backendResult = selectScopedEntities(normalizeMapEntityData(backendEntities), normalizedScope);
+      const result = {
+        ...backendResult,
+        total: Number(response.total || backendResult.total),
+        cursor: String(response.cursor || backendResult.cursor || ""),
+        source: sourceFromTrigger(trigger),
+        queryId: response.query_id || "",
+      };
+      putCache(queryCacheRef, queryKey, result);
+      setResultState(result);
+      setRequestStatus("ready");
+      return result;
+    } catch (nextError) {
+      if (abortController.signal.aborted) return null;
+      setError(nextError);
+      setRequestStatus("error");
+      const registry = await loadRegistryForScope(normalizedScope);
+      const fallbackResult = { ...selectScopedEntities(registry, normalizedScope), source: "fallback", queryId: "" };
+      setResultState(fallbackResult);
+      return fallbackResult;
+    }
+  }, []);
+
+  const reset = useCallback(() => {
+    requestSequenceRef.current += 1;
+    activeAbortControllerRef.current?.abort();
+    activeAbortControllerRef.current = null;
     setResultState({
       queryKey: "",
       resultIds: [],
@@ -887,44 +847,20 @@ export function useSearchDrivenMapEntities() {
       resultTitle: null,
       resultSubtitle: null,
     });
+    setCatalogState(emptyCatalogState());
+    setRequestStatus("idle");
+    setError(null);
   }, []);
 
-  const resultPlaces = useMemo(
-    () => resultState.resultIds.map((id) => resultState.entitiesById[id]).filter(Boolean),
-    [resultState],
-  );
+  useEffect(() => () => activeAbortControllerRef.current?.abort(), []);
 
-  const places = resultPlaces;
-
-  useEffect(() => {
-    if (typeof window === "undefined" || import.meta.env.PROD) return;
-    window.__DP_MAP_SEARCH_METRICS__ = {
-      ...metrics,
-      initialMarkerCount: lastTrigger ? places.length : 0,
-      mountedMarkerCount: places.length,
-      resultTotal: resultState.total,
-      requestStatus,
-      lastTrigger,
-    };
-    if (resultState.total > 100) {
-      console.warn("[map-search] public request returned more than 100 records", resultState.total);
-    }
-  }, [lastTrigger, metrics, places.length, requestStatus, resultState.total]);
-
-  return {
-    places,
-    allLoadedPlaces: places,
-    entitiesById: resultState.entitiesById,
-    resultState,
-    catalogState,
+  return useMemo(() => ({
+    ...resultState,
+    entities: resultState.resultIds.map((id) => resultState.entitiesById[id]).filter(Boolean),
     requestStatus,
-    lastTrigger,
-    metrics,
-    limits: SEARCH_RESULT_LIMITS,
-    runSearch,
-    searchCatalog,
-    clearResults,
-  };
+    error,
+    catalogState,
+    runResolver,
+    reset,
+  }), [resultState, requestStatus, error, catalogState, runResolver, reset]);
 }
-
-export default useSearchDrivenMapEntities;
