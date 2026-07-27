@@ -11,6 +11,7 @@ assert.match(mapSource, /dp-compact-intent-chip__label/, "Intent text label is m
 assert.match(css, /color:\s*#0b1f33\s*!important/, "Intent labels must use readable navy text");
 assert.match(css, /stroke:\s*currentColor\s*!important/, "Intent icons must inherit the governed readable color");
 assert.match(css, /min-height:\s*44px\s*!important/, "Intent controls must retain a 44px touch target");
+assert.match(css, /block-size:\s*44px\s*!important/, "Legacy chip heights must not reduce the 44px touch target");
 assert.match(css, /prefers-contrast:\s*more/, "High-contrast users need an explicit icon and label rule");
 assert.equal(
   (main.match(/^import "@\/styles\/[^"]+"$/gm) || []).at(-1),

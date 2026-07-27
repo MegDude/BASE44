@@ -4,6 +4,9 @@
 html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip {
   min-width: max-content !important;
   min-height: 44px !important;
+  height: 44px !important;
+  block-size: 44px !important;
+  min-block-size: 44px !important;
   gap: 7px !important;
   padding-inline: 10px !important;
   color: #0b1f33 !important;
