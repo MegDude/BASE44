@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Bookmark, Check, ChevronRight } from "lucide-react";
 import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
@@ -88,9 +90,31 @@ function DetailSection({ section, onRelatedSelect, onAnalytics }) {
 }
 
 export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, onRelatedSelect, onAnalytics }) {
+  const panelRef = useRef(null);
+  const [drawerActionHost, setDrawerActionHost] = useState(null);
+
+  useEffect(() => {
+    setDrawerActionHost(panelRef.current?.closest?.("#dp-active-map-drawer") || null);
+    return () => setDrawerActionHost(null);
+  }, [model?.titleId]);
+
   if (!model) return null;
+  const actions = (
+    <div className="dp-native-detail-panel__actions dp-canonical-detail-actions" aria-label={`${model.title} actions`}>
+      <button type="button" className="dp-native-detail-panel__save" aria-pressed={saved} onClick={() => { onAnalytics?.("entity_saved", { saved: !saved }); onSave?.(); }}>
+        <Bookmark aria-hidden="true" />
+        <span>{saved ? "Saved" : "Save"}</span>
+      </button>
+      {model.primaryAction?.href ? (
+        <a className="dp-native-detail-panel__primary" href={model.primaryAction.href} target={model.primaryAction.external ? "_blank" : undefined} rel={model.primaryAction.external ? "noreferrer" : undefined} onClick={(event) => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction.label }); onPrimaryAction?.(event); }}>{model.primaryAction.label}</a>
+      ) : (
+        <button type="button" className="dp-native-detail-panel__primary" disabled={model.primaryAction?.disabled} onClick={() => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction?.label }); onPrimaryAction?.(); }}>{model.primaryAction?.label}</button>
+      )}
+    </div>
+  );
+
   return (
-    <div className="dp-native-detail-panel" data-entity-type={model.entityType}>
+    <div ref={panelRef} className="dp-native-detail-panel" data-entity-type={model.entityType}>
       {model.perkIdentity ? (
         <>
           <PerkIdentityHeader {...model.perkIdentity} titleId={model.titleId} />
@@ -110,17 +134,7 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
       <div className="dp-native-detail-panel__modules">
         {model.sections?.map((section) => <DetailSection key={section.id} section={section} onRelatedSelect={onRelatedSelect} onAnalytics={onAnalytics} />)}
       </div>
-      <div className="dp-native-detail-panel__actions" aria-label={`${model.title} actions`}>
-        <button type="button" className="dp-native-detail-panel__save" aria-pressed={saved} onClick={() => { onAnalytics?.("entity_saved", { saved: !saved }); onSave?.(); }}>
-          <Bookmark aria-hidden="true" />
-          <span>{saved ? "Saved" : "Save"}</span>
-        </button>
-        {model.primaryAction?.href ? (
-          <a className="dp-native-detail-panel__primary" href={model.primaryAction.href} target={model.primaryAction.external ? "_blank" : undefined} rel={model.primaryAction.external ? "noreferrer" : undefined} onClick={(event) => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction.label }); onPrimaryAction?.(event); }}>{model.primaryAction.label}</a>
-        ) : (
-          <button type="button" className="dp-native-detail-panel__primary" disabled={model.primaryAction?.disabled} onClick={() => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction?.label }); onPrimaryAction?.(); }}>{model.primaryAction?.label}</button>
-        )}
-      </div>
+      {drawerActionHost ? createPortal(actions, drawerActionHost) : actions}
     </div>
   );
 }
