@@ -13,6 +13,10 @@ assert.match(mapSource, /clusterPlaces\(mappablePlaces, stableClusterZoom, selec
 assert.doesNotMatch(mapSource, /shouldShowIndividualPins\s*\?\s*mappablePlaces\.map/, "focused searches must not bypass clustering");
 assert.match(markerSource, /OPTIONAL_AND_HIDES_LOWER_PRIORITY/, "advanced markers must hide lower-priority collisions");
 assert.match(markerSource, /zIndex/, "selected markers must retain stable priority");
+assert.match(markerSource, /gmpClickable:\s*true/, "advanced markers must be provider-level clickable");
+assert.match(markerSource, /addEventListener\("gmp-click", onClick\)/, "advanced markers must wire the provider click event");
+assert.match(markerSource, /marker\.addListener\("click", onClick\)/, "legacy markers must preserve the same click contract");
+assert.match(mapSource, /onClick:\s*\(\)\s*=>\s*\{[\s\S]*?markerActionHandlersRef\.current\.onSelect\?\.\(entry\.currentPlace\)/, "property and place markers must select their current canonical entity");
 
 assert.match(markerCss, /--dp-canonical-pin-size:\s*32px/, "all map pins must share the canonical 32px footprint");
 assert.match(markerCss, /--dp-canonical-pin-navy:\s*#0B1F33/i, "map pins must use the canonical navy");
