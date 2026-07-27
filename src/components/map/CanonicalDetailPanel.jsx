@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Bookmark, Check, ChevronRight } from "lucide-react";
 import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
@@ -87,6 +89,28 @@ function DetailSection({ section, onRelatedSelect, onAnalytics }) {
   );
 }
 
+export function DrawerActionFooter({ label, className = "", children }) {
+  const anchorRef = useRef(null);
+  const [drawerHost, setDrawerHost] = useState(null);
+
+  useEffect(() => {
+    setDrawerHost(anchorRef.current?.closest?.("#dp-active-map-drawer") || null);
+  }, []);
+
+  const actions = (
+    <div className={`dp-native-detail-panel__actions dp-canonical-detail-actions ${className}`.trim()} aria-label={label}>
+      {children}
+    </div>
+  );
+
+  return (
+    <>
+      <span ref={anchorRef} className="dp-drawer-action-anchor" aria-hidden="true" />
+      {drawerHost ? createPortal(actions, drawerHost) : actions}
+    </>
+  );
+}
+
 export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, onRelatedSelect, onAnalytics }) {
   if (!model) return null;
   return (
@@ -110,7 +134,7 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
       <div className="dp-native-detail-panel__modules">
         {model.sections?.map((section) => <DetailSection key={section.id} section={section} onRelatedSelect={onRelatedSelect} onAnalytics={onAnalytics} />)}
       </div>
-      <div className="dp-native-detail-panel__actions" aria-label={`${model.title} actions`}>
+      <DrawerActionFooter label={`${model.title} actions`}>
         <button type="button" className="dp-native-detail-panel__save" aria-pressed={saved} onClick={() => { onAnalytics?.("entity_saved", { saved: !saved }); onSave?.(); }}>
           <Bookmark aria-hidden="true" />
           <span>{saved ? "Saved" : "Save"}</span>
@@ -120,7 +144,7 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
         ) : (
           <button type="button" className="dp-native-detail-panel__primary" disabled={model.primaryAction?.disabled} onClick={() => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction?.label }); onPrimaryAction?.(); }}>{model.primaryAction?.label}</button>
         )}
-      </div>
+      </DrawerActionFooter>
     </div>
   );
 }
