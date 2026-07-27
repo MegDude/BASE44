@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
-import { getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
+import { DEFAULT_RESIDENT_MAP_PATH, getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
 
 export default function ResidentSignIn() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { signInResidentWithPassword, registerResidentWithPassword, resendResidentConfirmation, signInWithGoogle, signInWithApple, signInResidentWithMagicLink, sendResidentPasswordReset } = useAuth();
-  const returnTo = useMemo(() => getSafeReturnPath(location.search, "/residents/welcome?mode=returning"), [location.search]);
+  const { isAuthenticated, isLoadingAuth, user, signInResidentWithPassword, registerResidentWithPassword, resendResidentConfirmation, signInWithGoogle, signInWithApple, signInResidentWithMagicLink, sendResidentPasswordReset } = useAuth();
+  const returnTo = useMemo(() => getSafeReturnPath(location.search, DEFAULT_RESIDENT_MAP_PATH), [location.search]);
   const [mode, setMode] = useState(() => new URLSearchParams(location.search).get("mode") === "register" ? "register" : "sign-in");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +19,12 @@ export default function ResidentSignIn() {
     const error = new URLSearchParams(location.search).get("error");
     return error ? { type: "error", message: error === "callback_failed" ? "We could not complete sign-in. Request a new secure link and try again." : error } : { type: "idle", message: "" };
   });
+
+  useEffect(() => {
+    if (isLoadingAuth || !isAuthenticated) return;
+    const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
+    if (role === "resident") navigate(DEFAULT_RESIDENT_MAP_PATH, { replace: true });
+  }, [isAuthenticated, isLoadingAuth, navigate, user]);
 
   async function submit(event) {
     event.preventDefault();
@@ -37,7 +43,7 @@ export default function ResidentSignIn() {
       ? await registerResidentWithPassword({ email, password, fullName, redirectPath })
       : await signInResidentWithPassword({ email, password });
     if (result?.type === "authenticated") {
-      navigate(returnTo, { replace: true });
+      navigate(DEFAULT_RESIDENT_MAP_PATH, { replace: true });
       return;
     }
     setStatus({
@@ -87,12 +93,12 @@ export default function ResidentSignIn() {
       <div className="dp-resident-signin-shell">
         <header className="dp-resident-signin-header">
           <Link to="/" aria-label="Downtown Perks home"><span aria-hidden="true" />Downtown Perks</Link>
-          <Link to="/residents/membership"><ArrowLeft aria-hidden="true" />Membership</Link>
+          <Link to="/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured"><ArrowLeft aria-hidden="true" />Back to map</Link>
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
           <p className="dp-resident-signin-eyebrow">Resident access</p>
           <h1 id="resident-signin-title">{mode === "register" ? "Create your resident account." : "Sign in to your downtown."}</h1>
-          <p>{mode === "register" ? "Register with your email and a secure password. Confirm your email before signing in for the first time." : "Use your email and password to access your resident card, saved places, perks, RSVPs, and building benefits."}</p>
+          <p>{mode === "register" ? "Register with your email and a secure password. Confirm your email before signing in for the first time." : "Use your email and password to open your resident map, perks, saved places, events, and card."}</p>
           <div className="dp-resident-signin-mode" role="tablist" aria-label="Resident account access">
             <button type="button" role="tab" aria-selected={mode === "sign-in"} className={mode === "sign-in" ? "is-active" : ""} onClick={() => { setMode("sign-in"); setStatus({ type: "idle", message: "" }); }}>Sign in</button>
             <button type="button" role="tab" aria-selected={mode === "register"} className={mode === "register" ? "is-active" : ""} onClick={() => { setMode("register"); setStatus({ type: "idle", message: "" }); }}>Create account</button>
@@ -124,7 +130,7 @@ export default function ResidentSignIn() {
           <button type="button" className="dp-resident-signin-google" onClick={submitApple} disabled={status.type === "loading"}>Continue with Apple</button>
           <button type="button" className="dp-resident-signin-google" onClick={submitMagicLink} disabled={status.type === "loading"}>Email me a magic link</button>
           {mode === "sign-in" ? <button type="button" className="dp-resident-resend-confirmation" onClick={submitPasswordReset}>Forgot password?</button> : null}
-          <p className="dp-resident-signin-note">After sign-in, we load your membership, building, saved places, preferences, and personal map before opening the resident experience.</p>
+          <p className="dp-resident-signin-note">After sign-in, Downtown Perks opens directly to your resident map.</p>
         </section>
       </div>
     </main>
