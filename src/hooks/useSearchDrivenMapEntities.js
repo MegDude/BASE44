@@ -445,9 +445,14 @@ export function buildResolverRequest(scope = {}, trigger = "search") {
   const filter = String(normalized.filter || "").trim();
   const normalizedFilter = filter.toLowerCase();
   const genericIntent = ["", "all", "eat_drink"].includes(String(normalized.intent || "").toLowerCase());
+  const resolverIntent = normalizedFilter === "nearby"
+    ? "nearby"
+    : genericIntent
+      ? undefined
+      : normalized.intent;
   return {
     query: normalized.query || undefined,
-    intent: genericIntent ? undefined : normalized.intent,
+    intent: resolverIntent,
     source,
     mode: normalized.audienceMode || "resident",
     categories: filter && !isDiscoveryControlFilter(normalizedFilter) ? [filter] : undefined,
