@@ -13188,17 +13188,21 @@ function GoogleMapCanvas({
       const existing = registry.get(key);
       const wrapper = existing?.element || document.createElement("div");
       wrapper.className = "dp-google-map-marker-shell";
+      wrapper.dataset.markerEntityId = String(place.id);
+      wrapper.dataset.entityId = String(place.id);
       applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: place.id === selectedId });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
-        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
+        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
+      button?.setAttribute("data-marker-entity-id", String(place.id));
+      button?.setAttribute("data-entity-id", String(place.id));
       button?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
