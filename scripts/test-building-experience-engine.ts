@@ -3,6 +3,9 @@ import fs from "node:fs";
 import { parse } from "csv-parse/sync";
 import { createBuildingExperience } from "../src/lib/buildingExperienceEngine.js";
 
+const buildingModuleSource = fs.readFileSync("src/components/map/BuildingExperienceModule.jsx", "utf8");
+const buildingStyles = fs.readFileSync("src/styles/building-experience-engine.css", "utf8");
+
 const building = {
   id: "test-building",
   name: "Test Building",
@@ -38,6 +41,14 @@ assert.ok(experience.collections.some((collection) => collection.id === "everyda
 assert.ok(experience.nearby.some((place) => place.id === "coffee"));
 assert.equal(experience.analytics.relationshipIds.buildingId, building.id);
 assert.ok(experience.analytics.events.includes("route_started"));
+for (const section of ["overview", "perks", "campaigns", "amenities", "events", "nearby", "guide"]) {
+  assert.match(buildingModuleSource, new RegExp(`id="${section}" controlId=`), `${section} must have an instance-scoped section target`);
+}
+assert.match(buildingModuleSource, /data-building-nav=\{id\}[\s\S]*?aria-controls=\{`\$\{sectionPrefix\}-\$\{id\}`\}/, "each building navigation control must reference its section");
+assert.match(buildingModuleSource, /scrollRoot\.scrollTo\(\{/, "building navigation must scroll the active panel rather than the page");
+assert.match(buildingModuleSource, /event\.key === "Home"[\s\S]*?event\.key === "End"[\s\S]*?event\.key === "ArrowRight"[\s\S]*?event\.key === "ArrowLeft"/, "building navigation must support rail keyboard controls");
+assert.match(buildingStyles, /--dp-building-font:\s*"Inter"/, "building panels must use the canonical product typeface");
+assert.doesNotMatch(buildingStyles, /font:[^;]*Inter,\s*sans-serif/, "building typography must resolve through the shared font token");
 
 const residentialRows = parse(fs.readFileSync("src/data/imports/downtown_perks_residential_mixed_use_copy_deck.csv", "utf8"), {
   columns: true,
