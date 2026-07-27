@@ -81,6 +81,7 @@ assert.equal(normalizeDiscoveryControlQuery("Coffee nearby", "Coffee"), "Coffee 
 const hookSource = await readFile(new URL("../src/hooks/useSearchDrivenMapEntities.js", import.meta.url), "utf8");
 assert.match(hookSource, /normalizeDiscoveryControlQuery\(scope\.query, scope\.filter\)/, "resolver normalizes semantic discovery labels before matching entities");
 assert.match(hookSource, /!isDiscoveryControlFilter\(normalizedFilter\)/, "semantic discovery labels are not emitted as backend entity categories");
+assert.match(hookSource, /normalizedFilter === "nearby"[\s\S]{0,120}\? "nearby"/, "Nearby remains an explicit bounded spatial intent");
 assert.match(hookSource, /const places = resultPlaces;/, "idle places must come only from resolved results");
 assert.doesNotMatch(hookSource, /setLoadedRegistry|initialEntityRequestCount:\s*current\.initialEntityRequestCount\s*\|\|\s*1/, "the hook must not hydrate the registry on mount");
 const catalogResolverSource = hookSource.slice(
