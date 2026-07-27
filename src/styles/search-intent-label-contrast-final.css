@@ -13,6 +13,18 @@ html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-
   -webkit-text-fill-color: #0b1f33 !important;
 }
 
+/* Retire the legacy ultra-specific 42px rail override without changing markup. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root
+  .dp-map-page.dp-map-page.dp-map-page
+  #dp-map-search-console-lock
+  .dp-map-intent-rail
+  > .dp-compact-intent-chip {
+  min-height: 44px !important;
+  height: 44px !important;
+  block-size: 44px !important;
+  min-block-size: 44px !important;
+}
+
 html body #root .dp-map-page .dp-search-intent-console button.dp-compact-intent-chip .dp-compact-intent-chip__label {
   display: inline-flex !important;
   align-items: center !important;
