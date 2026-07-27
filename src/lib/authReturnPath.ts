@@ -69,20 +69,50 @@ export function isSafeFirstPartyPath(value?: string | null): value is string {
   return Boolean(value && value.startsWith("/") && !value.startsWith("//") && !/^[a-z][a-z0-9+.-]*:/i.test(value));
 }
 
+export function normalizeResidentReturnPath(value?: string | null) {
+  if (!isSafeFirstPartyPath(value)) return DEFAULT_RESIDENT_MAP_PATH;
+
+  const parsed = new URL(value, "https://downtownperks.local");
+  const path = parsed.pathname;
+
+  if (path === "/map" || path === "/app/map") {
+    return buildResidentMapPath(parsed.search, "/map");
+  }
+
+  if (path === "/resident/card" || path === "/card") {
+    return buildResidentMapPath("?mode=resident&tab=card&filter=Featured", "/map");
+  }
+
+  if (path === "/resident/saved") {
+    return buildResidentMapPath("?mode=resident&tab=saved&filter=Featured", "/map");
+  }
+
+  if (path === "/resident/events" || path === "/events") {
+    return buildResidentMapPath("?mode=resident&tab=events&filter=Events", "/map");
+  }
+
+  if (path === "/resident/perks" || path === "/perks") {
+    return buildResidentMapPath("?mode=resident&tab=perks&filter=Perks", "/map");
+  }
+
+  if (path === "/resident/home" || path === "/resident/onboarding" || path === "/onboarding" || path.startsWith("/onboarding/") || path.startsWith("/resident/")) {
+    return DEFAULT_RESIDENT_MAP_PATH;
+  }
+
+  return DEFAULT_RESIDENT_MAP_PATH;
+}
+
 export function getSafeReturnPath(search: string, fallback = DEFAULT_RESIDENT_MAP_PATH) {
   const requested = new URLSearchParams(search).get("returnTo");
-  if (!isSafeFirstPartyPath(requested)) return fallback;
-  if (requested === "/app/map" || requested.startsWith("/app/map?") || requested.startsWith("/app/map#")) {
-    return `/map${requested.slice("/app/map".length)}`;
-  }
-  return requested;
+  if (!requested) return fallback;
+  return normalizeResidentReturnPath(requested);
 }
 
 export function buildResidentMapPath(search: string, pathname = "/map") {
   const source = new URLSearchParams(search);
   const filter = normalizeResidentFilter(source.get("filter"));
   const target = new URLSearchParams({
-    mode: source.get("mode") || "resident",
+    mode: "resident",
     tab: source.get("tab") || "map",
     filter,
   });
@@ -106,13 +136,13 @@ export function buildResidentMapPath(search: string, pathname = "/map") {
 }
 
 export function storeAuthReturnPath(path: string) {
-  if (typeof window === "undefined" || !isSafeFirstPartyPath(path)) return;
-  window.sessionStorage.setItem("dp_auth_return_to", path);
+  if (typeof window === "undefined") return;
+  window.sessionStorage.setItem("dp_auth_return_to", normalizeResidentReturnPath(path));
 }
 
 export function consumeAuthReturnPath(fallback = DEFAULT_RESIDENT_MAP_PATH) {
   if (typeof window === "undefined") return fallback;
   const stored = window.sessionStorage.getItem("dp_auth_return_to");
   window.sessionStorage.removeItem("dp_auth_return_to");
-  return isSafeFirstPartyPath(stored) ? stored : fallback;
+  return stored ? normalizeResidentReturnPath(stored) : fallback;
 }
