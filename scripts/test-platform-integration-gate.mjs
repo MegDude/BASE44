@@ -51,11 +51,12 @@ requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'de
 requireMatch('resident saved API', savedApi, /set_resident_saved_entity/, 'migration saved-entity RPC compatibility is missing');
 requireMatch('resident saved API', savedApi, /PGRST202/, 'missing-RPC fallback is not constrained to PostgREST schema errors');
 
-requireMatch('detail panel', panel, /dp-native-detail-panel__actions/, 'canonical action footer is missing');
+requireMatch('detail panel', panel, /createPortal\(actions,\s*drawerHost\)/, 'canonical actions are not mounted in the drawer shell footer');
 requireMatch('detail panel', panel, /aria-pressed=\{saved\}/, 'save state is not accessible');
-requireMatch('detail panel', fixedActions, /position:\s*fixed\s*!important/, 'actions are not anchored to the drawer viewport');
+requireMatch('detail panel', fixedActions, />\s*\.dp-canonical-detail-actions/, 'actions are not direct children of the drawer shell');
+requireMatch('detail panel', fixedActions, /position:\s*relative\s*!important/, 'shell footer is not anchored in its dedicated drawer grid row');
 requireMatch('detail panel', fixedActions, /overflow-y:\s*auto\s*!important/, 'drawer content does not retain its own scroll viewport');
-requireMatch('detail panel', fixedActions, /padding-bottom:\s*84px\s*!important/, 'scroll content does not reserve space for fixed actions');
+requireMatch('detail panel', fixedActions, /grid-template-rows:\s*auto minmax\(0,\s*1fr\) auto/, 'drawer does not reserve a dedicated action-footer row');
 requireMatch('detail panel', drawerGeometry, /grid-template-rows:\s*auto minmax\(0, 1fr\) auto/, 'drawer geometry contract is missing');
 
 for (const selector of [
