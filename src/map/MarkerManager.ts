@@ -36,7 +36,13 @@ export function createDowntownMarker({
       zIndex,
       ...(collisionBehavior ? { collisionBehavior } : {}),
     });
-    if (onClick) marker.addEventListener("gmp-click", onClick);
+    marker.addEventListener("gmp-click", () => {
+      if (onClick) {
+        onClick();
+        return;
+      }
+      content.querySelector<HTMLElement>(".dp-map-pin")?.click();
+    });
     return marker;
   }
   const marker = new maps.Marker({
