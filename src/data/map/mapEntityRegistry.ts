@@ -2,19 +2,24 @@ import productionRegistry from "./mapRegistry.production.json";
 import type { DowntownDistrict, MapEntity, MapEntityKind } from "./mapEntitySchema";
 import { filterEntitiesByIntent } from "../../map/searchIntent/searchIntentFilters";
 import type { SearchIntent } from "../../map/searchIntent/searchIntentTypes";
+import { isWithinAustinArea } from "../../lib/map/coordinateValidation";
 
 const registry = productionRegistry as MapEntity[];
+
+function isPublicMapEntity(entity: MapEntity): boolean {
+  return entity.active && isWithinAustinArea(entity.lat, entity.lng);
+}
 
 export function getMapEntityRegistry(): MapEntity[] {
   return registry;
 }
 
 export function getActiveMapEntities(): MapEntity[] {
-  return registry.filter((entity) => entity.active && typeof entity.lat === "number" && typeof entity.lng === "number");
+  return registry.filter(isPublicMapEntity);
 }
 
 export function getMapEntitiesBySearchIntent(intent: SearchIntent): MapEntity[] {
-  return filterEntitiesByIntent(registry, intent).filter((entity) => typeof entity.lat === "number" && typeof entity.lng === "number");
+  return filterEntitiesByIntent(registry, intent).filter(isPublicMapEntity);
 }
 
 export function getAllActiveMapEntitiesIncludingQa(): MapEntity[] {
