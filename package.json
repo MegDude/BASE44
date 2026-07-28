@@ -52,6 +52,7 @@
     "test:universal-entity-drawer": "node scripts/test-universal-entity-drawer.mjs",
     "test:surface-system": "node scripts/test-canonical-surface-system.mjs",
     "test:workspace-experiences": "node scripts/test-workspace-experience-system.mjs",
+    "test:experience-publishing-contract": "node scripts/test-experience-publishing-contract.mjs",
     "test:workspace-launch": "node scripts/test-workspace-launch-brief.mjs",
     "test:search-first-map": "tsx scripts/test-search-first-map.ts",
     "test:map-markers": "node scripts/test-unified-map-markers.mjs",
