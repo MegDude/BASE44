@@ -104,6 +104,8 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
 
     const grabber = node.querySelector(".dp-native-detail-grabber");
     grabber?.style.setProperty("display", "grid", "important");
+    grabber?.style.setProperty("visibility", "visible", "important");
+    grabber?.style.setProperty("opacity", "1", "important");
     grabber?.style.setProperty("position", "absolute", "important");
     grabber?.style.setProperty("top", "7px", "important");
     grabber?.style.setProperty("right", "auto", "important");
@@ -116,6 +118,7 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     grabber?.style.setProperty("min-height", "44px", "important");
     grabber?.style.setProperty("margin", "0", "important");
     grabber?.style.setProperty("transform", "translateX(-50%)", "important");
+    grabber?.style.setProperty("pointer-events", "auto", "important");
 
     const navigation = node.querySelector(".dp-map-detail-navigation");
     navigation?.style.setProperty("pointer-events", "none", "important");
