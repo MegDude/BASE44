@@ -15225,6 +15225,11 @@ export default function MapPage() {
   const previewPlaces = discoverDisplayPlaces.slice(0, previewLimit);
   const isRentalLayer = urlState.mode === "resident" && activeFilter === "Rentals";
   const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
+  // The perks sheet is a route surface, never a persisted local-tab surface.
+  const shouldShowActivePerks = urlState.mode === "resident"
+    && urlState.tab === "map"
+    && urlState.filter === "Perks"
+    && !selected;
   // Preserve the requested resident tab even though route normalization maps resident panels to /map.
   // This makes sheet transitions URL-authoritative rather than depending on a lagging local tab state.
   const requestedResidentPanel = urlState.mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(urlState.rawTab)
@@ -18422,7 +18427,7 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {urlState.mode === "resident" && urlState.tab === "map" && activeResidentPanel === "perks" && !selected && (
+        {shouldShowActivePerks && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
@@ -18443,7 +18448,7 @@ export default function MapPage() {
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
             : ["perks", "events", "saved", "info"].includes(activeResidentPanel) || isRentalLayer || isLegendsDirectoryLayer
-        ) && !(urlState.mode === "resident" && activeResidentPanel === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
+        ) && !shouldShowActivePerks && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
             ref={configureMobilePanelSurface}
             initial={{ opacity: 0, y: 44 }}
