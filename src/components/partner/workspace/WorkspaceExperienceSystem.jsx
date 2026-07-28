@@ -11,7 +11,9 @@ import {
   buildExperiencePublishRequest,
   createExperienceDraft,
 } from "@/lib/experiences/experienceSystem";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import { supabaseClient } from "@/lib/supabase/client";
 
 const GOALS = [
   ["visit_place", "Visit a place"], ["use_offer", "Use an offer"], ["view_listing", "View a listing"],
@@ -41,7 +43,11 @@ function ExperienceBuilder({ template, organizationId }) {
   const [draft, setDraft] = useState(() => createExperienceDraft(template, organizationId));
   const [publishState, setPublishState] = useState("idle");
   const [publishMessage, setPublishMessage] = useState("");
-  const update = (patch) => setDraft((current) => ({ ...current, ...patch }));
+  const idempotencyKeyRef = useRef("");
+  const update = (patch) => {
+    idempotencyKeyRef.current = "";
+    setDraft((current) => ({ ...current, ...patch }));
+  };
   const moveContent = (index, direction) => {
     const nextIndex = index + direction;
     if (nextIndex < 0 || nextIndex >= draft.content.length) return;
@@ -54,17 +60,41 @@ function ExperienceBuilder({ template, organizationId }) {
     setPublishState("publishing");
     setPublishMessage("");
     try {
-      const response = await fetch(EXPERIENCE_API_CONTRACT.publish, {
+      const sessionResult = await supabaseClient?.auth.getSession();
+      const token = sessionResult?.data?.session?.access_token;
+      if (!token) throw new Error("Sign in to publish this experience.");
+      if (!draft.organizationId) throw new Error("Choose an organization before publishing.");
+      if (!idempotencyKeyRef.current) {
+        idempotencyKeyRef.current = globalThis.crypto?.randomUUID?.()
+          || `${draft.organizationId}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      }
+      const response = await fetch(`${getPartnerContentApiBaseUrl()}${EXPERIENCE_API_CONTRACT.publish}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          "Idempotency-Key": idempotencyKeyRef.current,
+        },
+        cache: "no-store",
         body: JSON.stringify(buildExperiencePublishRequest(draft)),
       });
-      if (!response.ok) throw new Error("publish unavailable");
+      const body = await response.json().catch(() => null);
+      if (!response.ok || !body?.data?.id) {
+        throw new Error(body?.error || "Publishing could not be completed.");
+      }
+      setDraft((current) => ({
+        ...current,
+        id: body.data.id,
+        status: body.data.status,
+        version: body.data.version,
+      }));
+      idempotencyKeyRef.current = "";
       setPublishState("published");
-      setPublishMessage("Published. The experience is ready for its configured placements.");
-    } catch {
+      setPublishMessage(`Published and saved. Version ${body.data.version} is live.`);
+    } catch (error) {
       setPublishState("error");
-      setPublishMessage("Publishing is unavailable. Nothing was sent, and this draft remains open in this session.");
+      setPublishMessage(error instanceof Error ? error.message : "Publishing could not be completed.");
     }
   };
 

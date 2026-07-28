@@ -17753,7 +17753,7 @@ export default function MapPage() {
     if (node.classList.contains("dp-native-drawer")) {
       node.style.setProperty("top", "auto", "important");
       node.style.setProperty("right", "0", "important");
-      node.style.setProperty("bottom", "0", "important");
+      node.style.setProperty("bottom", "calc(var(--dp-bottom-nav-total-height) - 10px)", "important");
       node.style.setProperty("left", "0", "important");
       node.style.setProperty("padding", "0 0 var(--dp-bottom-nav-total-height)", "important");
       return;
