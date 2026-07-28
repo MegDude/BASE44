@@ -96,6 +96,7 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     surface?.style.setProperty("background", "#ffffff", "important");
     surface?.style.setProperty("border", "0", "important");
     surface?.style.setProperty("box-shadow", "none", "important");
+    node.querySelector(".dp-map-detail-navigation-title")?.style.setProperty("display", "none", "important");
   }, [ref]);
 
   return (
