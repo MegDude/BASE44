@@ -15225,9 +15225,13 @@ export default function MapPage() {
   const previewPlaces = discoverDisplayPlaces.slice(0, previewLimit);
   const isRentalLayer = urlState.mode === "resident" && activeFilter === "Rentals";
   const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
-  const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
+  // URL panel state is authoritative during navigation; local tab state may lag by one render.
+  const activeResidentPanel = urlState.mode === "resident" && urlState.panelTab
+    ? urlState.panelTab
+    : activeBottomTab;
+  const isResidentSavedDrawer = urlState.mode === "resident" && activeResidentPanel === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
-  const isResidentEventsDrawer = urlState.mode === "resident" && activeBottomTab === "events";
+  const isResidentEventsDrawer = urlState.mode === "resident" && activeResidentPanel === "events";
   const drawerPreviewPlaces = isResidentSavedDrawer
     ? savedDrawerPlaces
     : isResidentEventsDrawer
@@ -15263,16 +15267,16 @@ export default function MapPage() {
       title: "Saved Downtown",
       body: "Places, events and experiences you've chosen to come back to.",
     },
-  }[isRentalLayer ? "rentals" : activeBottomTab] || (isRentalLayer ? {
+  }[isRentalLayer ? "rentals" : activeResidentPanel] || (isRentalLayer ? {
     eyebrow: "Rentals",
     title: "Downtown rentals on the map.",
     body: "Building-first listings with nearby perks, amenities, and walking context.",
   } : null);
   const residentResultCountLabel = isResidentSavedDrawer
     ? `${residentSavedPlaces.length} saved ${residentSavedPlaces.length === 1 ? "place" : "places"}`
-    : activeBottomTab === "perks"
+    : activeResidentPanel === "perks"
       ? `${discoverDisplayPlaces.length} active ${discoverDisplayPlaces.length === 1 ? "offer" : "offers"} in this map area`
-      : activeBottomTab === "events"
+      : activeResidentPanel === "events"
         ? `${discoverDisplayPlaces.length} ${discoverDisplayPlaces.length === 1 ? "event" : "events"} in this map area`
         : `${discoverDisplayPlaces.length} matching ${discoverDisplayPlaces.length === 1 ? "place" : "places"}`;
   const panelPlaces = previewPlaces.length ? previewPlaces : discoverDisplayPlaces.slice(0, 8);
@@ -18415,7 +18419,7 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
+        {urlState.mode === "resident" && urlState.tab === "map" && activeResidentPanel === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
@@ -18435,8 +18439,8 @@ export default function MapPage() {
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
-            : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isRentalLayer || isLegendsDirectoryLayer
-        ) && !(urlState.mode === "resident" && activeBottomTab === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
+            : ["perks", "events", "saved", "info"].includes(activeResidentPanel) || isRentalLayer || isLegendsDirectoryLayer
+        ) && !(urlState.mode === "resident" && activeResidentPanel === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
             ref={configureMobilePanelSurface}
             initial={{ opacity: 0, y: 44 }}
