@@ -139,6 +139,15 @@ function savePartnerProfile(profile) {
   }
 }
 
+function getAuthFailureMessage(code) {
+  const value = String(code || "").trim();
+  if (!value) return "";
+  if (value === "callback_failed") return "The secure sign-in link could not be completed. Request a new link and try again.";
+  if (value === "partner_access_required") return "This account does not have partner access. Request access from your organization owner.";
+  if (/expired|otp_expired/i.test(value)) return "That secure sign-in link has expired. Request a new link and try again.";
+  return value.replace(/_/g, " ");
+}
+
 async function startPartnerSignIn(navigate, signInPartner, { email, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
@@ -216,7 +225,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [reportingNeeds, setReportingNeeds] = useState(initialReportingNeeds);
   const [saved, setSaved] = useState(false);
   const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
-  const [submissionMessage, setSubmissionMessage] = useState(callbackError ? decodeURIComponent(callbackError) : "");
+  const [submissionMessage, setSubmissionMessage] = useState(getAuthFailureMessage(callbackError));
   const [signInEmail, setSignInEmail] = useState("");
   const [signInType, setSignInType] = useState(initialType || "property");
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
