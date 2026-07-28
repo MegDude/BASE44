@@ -37,9 +37,10 @@ assert.match(specification, /The LLM is stateless\. Downtown Perks owns memory/,
 assert.match(specification, /Every drawer stays within the visible viewport/, "Governance panel containment is missing");
 assert.match(gate, /Schema and API implementation begins only after/, "Foundation approval gate is not enforceable");
 assert.match(index, /does not authorize:[\s\S]*creating production tables/, "Pre-implementation scope boundary is missing");
-assert.match(appRoutes, /path="\/resident\/civic" element={<ResidentCivicHub \/>}/, "Canonical resident civic route is missing");
-assert.match(appRoutes, /path="\/resident\/civic\/:actionId" element={<ResidentCivicHub \/>}/, "Resident civic action route is missing");
-assert.match(appRoutes, /path="\/residents\/governance" element={<Navigate to="\/resident\/civic" replace \/>}/, "Legacy resident governance route must redirect to Civic Inbox");
+assert.match(appRoutes, /const ResidentGovernance = lazy\(\(\) => import\("\.\/pages\/ResidentGovernance"\)\);/, "Resident Governance page is not loaded by the router");
+assert.match(appRoutes, /path="\/resident\/civic" element={<ResidentGovernance \/>}/, "Canonical resident civic route is missing");
+assert.match(appRoutes, /path="\/resident\/civic\/:actionId" element={<ResidentGovernance \/>}/, "Resident civic action route is missing");
+assert.match(appRoutes, /path="\/residents\/governance" element={<ResidentGovernance \/>}/, "Public resident governance route must render the Governance page");
 assert.match(residentHome, /to="\/resident\/civic"/, "Resident home must link to Civic Inbox");
 assert.doesNotMatch(residentHome, /Ask Downtown|Quick actions|Walking routes|Collections/, "Resident Home still contains duplicate map discovery");
 
