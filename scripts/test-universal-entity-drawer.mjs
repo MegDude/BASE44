@@ -14,6 +14,9 @@ for (const state of ["peek", "medium", "expanded", "full"]) {
 
 assert.match(mapSource, /<NativeDrawerShell[\s\S]*id="dp-active-map-drawer"/, "Selected entities bypass the shared drawer");
 assert.match(mapSource, /actions=\{<UniversalEntityActionRail/, "Selected entities do not use the shared fixed action rail");
+assert.match(mapSource, /entityType=\{getCanonicalDetailEntityType\(selected, Boolean\(urlState\.perkId\)\)\}/, "The fixed action rail is not driven by the canonical drawer identity");
+assert.match(mapSource, /if \(explicitDetailType === "perk"\)[\s\S]*?return "perk"/, "Explicit perk identity can still be misclassified as an event");
+assert.match(mapSource, /aria-label="Saved"[\s\S]*?tab=saved&filter=Saved/, "Resident Saved access is missing from the map navigation");
 assert.match(mapSource, /scrollClassName="dp-map-detail-scroll dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"/, "Drawer must own one scroll region");
 assert.match(shellSource, /data-has-drawer-actions/, "Drawer does not expose action ownership");
 assert.match(shellSource, /document\.body\.style\.overflow = "hidden"/, "Body scroll is not locked while the drawer is active");
