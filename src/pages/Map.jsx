@@ -23,7 +23,6 @@ import {
   Gift,
   Heart,
   HeartPulse,
-  House,
   BadgePercent,
   Info,
   Landmark,
@@ -10918,6 +10917,7 @@ function PartnerDrawerActions({ place, organizationId }) {
 
 function UniversalEntityActionRail({
   place,
+  entityType,
   mode,
   saved,
   rsvped,
@@ -10929,7 +10929,7 @@ function UniversalEntityActionRail({
   onExplore,
   onTrack,
 }) {
-  const kind = getResidentEntityKind(place);
+  const kind = entityType || getCanonicalDetailEntityType(place) || getResidentEntityKind(place);
   const entityId = encodeURIComponent(place?.id || place?.entityId || "");
   const directionsHref = directionsUrl(place);
   const track = (action, source = "universal_entity_action_rail") => onTrack?.(action, source);
@@ -12638,6 +12638,7 @@ function getResidentEntityKind(place) {
   const text = placeCoreText(place);
   const category = String(place?.category || "").toLowerCase();
   const type = String(place?.type || "").toLowerCase();
+  const explicitDetailType = String(place?.detailEntityType || place?.raw?.detailEntityType || "").toLowerCase();
   const isCivicLandmark = isDaaTourPlace(place) || /\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|auditorium shores|shoal creek|waller creek)\b/i.test(text);
 
   if (isRentalEntity(place)) {
@@ -12658,6 +12659,13 @@ function getResidentEntityKind(place) {
 
   if (isBangersVenue(place)) {
     return "venue";
+  }
+
+  // Canonical detail identity outranks heuristic words and source factories.
+  // Some benefits originate in an event feed and retain an event-shaped source
+  // id, but their approved public identity is still a perk.
+  if (explicitDetailType === "perk") {
+    return "perk";
   }
 
   if (isHappyHourEntity(place)) {
@@ -13337,6 +13345,20 @@ function GoogleMapCanvas({
   return (
     <div className="dp-google-map-shell h-full w-full">
       <div ref={containerRef} className="dp-google-map-canvas h-full w-full" role="application" aria-label="Downtown Austin map" />
+      <div className="sr-only" role="group" aria-label="Visible map places">
+        {mapItems.filter((item) => item.type !== "cluster" && item.place?.id).map((item) => (
+          <button
+            key={`accessible-marker-${item.place.id}`}
+            type="button"
+            data-accessible-marker-entity-id={item.place.id}
+            aria-label={`Open ${item.place.name}`}
+            aria-pressed={item.place.id === selectedId}
+            onClick={() => markerActionHandlersRef.current.onSelect?.(item.place)}
+          >
+            Open {item.place.name}
+          </button>
+        ))}
+      </div>
       {loadState === "loading" && (
         <div className="dp-google-map-state" role="status">
           <span>Loading downtown map...</span>
@@ -18216,16 +18238,6 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Home"
-                  onClick={() => navigate("/resident/home")}
-                  aria-selected={false}
-                >
-                  <House className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
-                </button>
-                <button
-                  type="button"
-                  role="tab"
                   aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
@@ -18275,6 +18287,20 @@ export default function MapPage() {
                 >
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-label="Saved"
+                  onClick={() => {
+                    setConsoleCollapsed(true);
+                    setActiveBottomTab("saved");
+                    navigate("/map?mode=resident&tab=saved&filter=Saved");
+                  }}
+                  aria-selected={urlState.tab === "saved" || activeBottomTab === "saved"}
+                >
+                  <Bookmark className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Saved</span>
                 </button>
                 <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
                   <CreditCard className="h-4 w-4" />
@@ -18749,6 +18775,7 @@ export default function MapPage() {
             />}
             actions={<UniversalEntityActionRail
               place={selected}
+              entityType={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId))}
               mode={urlState.mode}
               saved={savedIds.has(selected.id)}
               rsvped={(Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === selected.id)}
