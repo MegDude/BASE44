@@ -51,7 +51,7 @@ import EntityDiscoveryGrid from "@/components/map/EntityDiscoveryGrid";
 import ActivePerksSheet from "@/components/map/ActivePerksSheet";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import BuildingExperienceModule from "@/components/map/BuildingExperienceModule";
-import { CanonicalDetailPanel } from "@/components/map/CanonicalDetailPanel";
+import { CanonicalDetailPanel, DrawerActionFooter } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
@@ -2122,6 +2122,7 @@ function getCanonicalDetailEntityType(place, hasPerkContext = false) {
 function getMapDrawerPanelKind(place, mode = "resident", hasPerkContext = false) {
   if (!place) return "destination";
   const canonicalType = getCanonicalDetailEntityType(place, hasPerkContext);
+  if (isBangersVenue(place)) return "place";
   if (["perk", "event", "campaign", "collection", "route", "amenity", "portfolio"].includes(canonicalType)) return canonicalType;
   const entityKind = getResidentEntityKind(place);
   if (isInKindEntity(place) && !isInKindNetworkEntity(place)) return mode === "partner" ? "partner-opportunity" : "place";
@@ -2239,6 +2240,14 @@ function isHappyHourEntity(place) {
     hasHappyHourDetails ||
     text.includes("happy hour")
   );
+}
+
+function isBangersVenue(place) {
+  const id = String(place?.id || place?.raw?.id || "").toLowerCase();
+  const name = String(place?.name || place?.title || place?.raw?.name || place?.raw?.title || "").toLowerCase();
+  return id === "partner-bangers"
+    || id.includes("banger-s-sausage-house")
+    || /\bbanger(?:'|’)?s sausage house(?:\s*&|\s+and)?\s*beer garden\b/i.test(name);
 }
 
 function isCivicEntity(place) {
@@ -3173,6 +3182,21 @@ function getEntityIdentity(place, mode = "resident") {
   const panelTitle = panelContent.title || place?.name || place?.title || "Downtown destination";
   const panelSubtitle = panelContent.subtitle || [getCanonicalCategoryLabel(place), address || district].filter(Boolean).join(" · ");
   const panelContext = panelContent.context || context;
+
+  if (isBangersVenue(place)) {
+    return {
+      id: place?.id,
+      entityType: "venue",
+      displayTypeLabel: `Restaurant & beer garden · ${district}`,
+      displayTitle: "Banger's Sausage House & Beer Garden",
+      displaySubtitle: address || "79 Rainey St",
+      displayContext: "A Rainey Street destination for sausages, local beer, outdoor gatherings, and live music.",
+      address: address || "79 Rainey St",
+      neighborhood: district,
+      categoryLabel: "Restaurant & beer garden",
+      panelArchetype: resolveEntityPanelArchetype({ ...place, type: "venue", category: "Restaurant & beer garden" }),
+    };
+  }
 
   if (isBurgerBarCongress(place)) {
     return {
@@ -8657,6 +8681,7 @@ function getNearbyCardImage(entity, mode = "resident") {
 function getContextualRailFallbackImage(entity, mode = "resident") {
   const text = placeCoreText({ ...entity, mode });
   const kind = getDestinationKind(entity);
+  if (isBangersVenue(entity)) return "/images/map-entities/attached/venues/bangers.jpg";
   if (text.includes("fitness") || text.includes("athletic") || text.includes("gym") || text.includes("workout") || text.includes("orangetheory")) return "/images/fallbacks/fitness.jpg";
   if (text.includes("wellness") || text.includes("yoga") || text.includes("pilates") || text.includes("spa") || text.includes("recovery")) return "/images/fallbacks/wellness.jpg";
   if (text.includes("coffee") || text.includes("cafe") || text.includes("espresso")) return "/images/fallbacks/coffee.jpg";
@@ -9706,7 +9731,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
   const isSaved = savedIds?.has?.(place?.id);
 
   return (
-    <DestinationSection title="Happy Hour" className="dp-happy-hour-section">
+    <DestinationSection title={isBangersVenue(place) ? "Resident perk" : "Happy Hour"} className="dp-happy-hour-section">
       {shouldShowDetails && <p className="dp-destination-section-copy">{details}</p>}
       <div className="dp-quiet-facts" aria-label={`${place.name} happy hour details`}>
         {time && (
@@ -9721,7 +9746,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
         </div>
       </div>
       {shouldShowRedemption && <p className="dp-destination-section-note">{redemption}</p>}
-      <div className="dp-primary-action-row dp-perk-action-row" aria-label={`${place.name} happy hour actions`}>
+      <DrawerActionFooter label={`${place.name} actions`} className="dp-happy-hour-action-footer">
         <button type="button" onClick={onUse || onSave} className="dp-panel-action dp-primary-action dp-perk-cta is-primary">
           Use Perk
         </button>
@@ -9731,7 +9756,7 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
         <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action dp-perk-cta is-tertiary">
           Directions
         </a>
-      </div>
+      </DrawerActionFooter>
     </DestinationSection>
   );
 }
@@ -10881,6 +10906,108 @@ function PartnerDrawerActions({ place, organizationId }) {
         </details>
       </div>
     </section>
+  );
+}
+
+function UniversalEntityActionRail({
+  place,
+  mode,
+  saved,
+  rsvped,
+  organizationId,
+  onSave,
+  onRsvp,
+  onUsePerk,
+  onContact,
+  onExplore,
+  onTrack,
+}) {
+  const kind = getResidentEntityKind(place);
+  const entityId = encodeURIComponent(place?.id || place?.entityId || "");
+  const directionsHref = directionsUrl(place);
+  const track = (action, source = "universal_entity_action_rail") => onTrack?.(action, source);
+  const share = async () => {
+    track("share");
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    try {
+      if (navigator.share) await navigator.share({ title: place?.name, text: place?.summary || place?.description || place?.name, url });
+      else if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(url);
+    } catch {
+      // The native share sheet may be dismissed without changing drawer state.
+    }
+  };
+
+  if (mode === "partner") {
+    const manageRoute = withPartnerWorkspaceContext(`/partner-workspace/workspace?entityId=${entityId}`, organizationId);
+    const performanceRoute = withPartnerWorkspaceContext(`/partner-workspace/performance?entityId=${entityId}`, organizationId);
+    const editRoute = withPartnerWorkspaceContext(`/partner-workspace/workspace?entityId=${entityId}&action=edit`, organizationId);
+    return (
+      <div className="dp-universal-action-rail" aria-label={`${place?.name || "Entity"} partner actions`}>
+        <Link className="is-primary" to={manageRoute} onClick={() => track("partner_action_selected", "manage")}>Manage</Link>
+        <Link to={performanceRoute} onClick={() => track("partner_action_selected", "performance")}>Performance</Link>
+        <Link to={editRoute} onClick={() => track("partner_action_selected", "edit")}>Edit</Link>
+      </div>
+    );
+  }
+
+  const saveButton = (
+    <button type="button" aria-pressed={saved} onClick={() => { track(saved ? "entity_unsaved" : "entity_saved"); onSave?.(); }}>
+      {saved ? "Saved" : "Save"}
+    </button>
+  );
+  const directionsAction = directionsHref ? (
+    <a href={directionsHref} target="_blank" rel="noreferrer" onClick={() => track("directions_opened")}>Directions</a>
+  ) : null;
+
+  if (kind === "perk" || kind === "happy_hour") {
+    return (
+      <div className="dp-universal-action-rail" aria-label={`${place?.name || "Perk"} actions`}>
+        <button type="button" className="is-primary" onClick={() => { track("perk_viewed"); onUsePerk?.(); }}>Show QR</button>
+        {saveButton}
+        {directionsAction}
+      </div>
+    );
+  }
+
+  if (kind === "event") {
+    return (
+      <div className="dp-universal-action-rail" aria-label={`${place?.name || "Event"} actions`}>
+        <button type="button" className="is-primary" aria-pressed={rsvped} onClick={() => { track("event_saved"); onRsvp?.(); }}>{rsvped ? "RSVP saved" : "RSVP"}</button>
+        {saveButton}
+        {directionsAction}
+      </div>
+    );
+  }
+
+  if (kind === "property" || kind === "rental") {
+    const isListing = kind === "rental" || isListingEntity(place) || Boolean(getResolvedLegendsListing(place));
+    return (
+      <div className="dp-universal-action-rail" aria-label={`${place?.name || "Property"} actions`}>
+        <button type="button" className="is-primary" onClick={() => { track(isListing ? "listing_contact_opened" : "property_explored"); isListing ? onContact?.() : onExplore?.(); }}>
+          {isListing ? "Contact" : "Explore property"}
+        </button>
+        {saveButton}
+        {directionsAction}
+      </div>
+    );
+  }
+
+  if (kind === "civic") {
+    return (
+      <div className="dp-universal-action-rail" aria-label={`${place?.name || "Civic item"} actions`}>
+        <button type="button" className="is-primary" onClick={() => { track("civic_update_opened"); onExplore?.(); }}>View update</button>
+        {saveButton}
+        <button type="button" onClick={share}>Share</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dp-universal-action-rail" aria-label={`${place?.name || "Place"} actions`}>
+      {directionsHref ? <a className="is-primary" href={directionsHref} target="_blank" rel="noreferrer" onClick={() => track("directions_opened")}>Directions</a> : <button type="button" className="is-primary" onClick={onExplore}>View details</button>}
+      {saveButton}
+      <button type="button" onClick={share}>Share</button>
+    </div>
   );
 }
 
@@ -12513,6 +12640,10 @@ function getResidentEntityKind(place) {
     return "service";
   }
 
+  if (isBangersVenue(place)) {
+    return "venue";
+  }
+
   if (isHappyHourEntity(place)) {
     return "happy_hour";
   }
@@ -13060,8 +13191,13 @@ function GoogleMapCanvas({
         } else {
           const entry = { currentItem: item, type: "cluster", marker: null, element };
           element.addEventListener("click", () => openCluster(entry.currentItem));
-          entry.marker = createDowntownMarker({ maps, map, ...markerOptions, preferAdvanced: canUseAdvancedMarkers });
-          if (!canUseAdvancedMarkers) entry.marker.addListener("click", () => openCluster(entry.currentItem));
+          entry.marker = createDowntownMarker({
+            maps,
+            map,
+            ...markerOptions,
+            onClick: () => openCluster(entry.currentItem),
+            preferAdvanced: canUseAdvancedMarkers,
+          });
           registry.set(key, entry);
         }
         return;
@@ -13081,17 +13217,21 @@ function GoogleMapCanvas({
       const existing = registry.get(key);
       const wrapper = existing?.element || document.createElement("div");
       wrapper.className = "dp-google-map-marker-shell";
+      wrapper.dataset.markerEntityId = String(place.id);
+      wrapper.dataset.entityId = String(place.id);
       applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: place.id === selectedId });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
-        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `${place.name}, Legends Real Estate listing. Open listing details.` : `${place.name} details`,
+        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
         selected: place.id === selectedId,
         pulsing: place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
+      button?.setAttribute("data-marker-entity-id", String(place.id));
+      button?.setAttribute("data-entity-id", String(place.id));
       button?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -13121,10 +13261,15 @@ function GoogleMapCanvas({
         updateMarker(existing.marker, markerOptions);
       } else {
         const entry = { currentPlace: place, type: "pin", marker: null, element: wrapper };
-        entry.marker = createDowntownMarker({ maps, map, ...markerOptions, preferAdvanced: canUseAdvancedMarkers });
-        if (!canUseAdvancedMarkers) entry.marker.addListener("click", () => {
-          markUserNavigated();
-          markerActionHandlersRef.current.onSelect?.(entry.currentPlace);
+        entry.marker = createDowntownMarker({
+          maps,
+          map,
+          ...markerOptions,
+          onClick: () => {
+            markUserNavigated();
+            markerActionHandlersRef.current.onSelect?.(entry.currentPlace);
+          },
+          preferAdvanced: canUseAdvancedMarkers,
         });
         registry.set(key, entry);
       }
@@ -13533,7 +13678,7 @@ function MapSearchConsole({
     const Icon = item.icon;
     const active = isRailItemActive(item);
     const previewed = false;
-    const expanded = active || className.includes("secondary");
+    const expanded = true;
     const descriptionId = `dp-search-intent-desc-${definition.id}`;
     const summary = makeIntentSummary(item, active);
 
@@ -18534,7 +18679,7 @@ export default function MapPage() {
 
       <AnimatePresence>
         {selected && !selectedDrawerClosed && !activePartnerPanel && urlState.tab !== "pass" && (
-          <motion.aside
+          <NativeDrawerShell
             id="dp-active-map-drawer"
             ref={configureMobilePanelSurface}
             initial={{ opacity: 0, y: "100%" }}
@@ -18551,16 +18696,18 @@ export default function MapPage() {
             data-mode={urlState.mode}
             data-entity-type={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId))}
             data-mobile-panel-surface="true"
-            role="dialog"
-            aria-modal="true"
             aria-labelledby={["perk", "event", "campaign", "portfolio"].includes(getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)))
               ? `canonical-detail-title-${selected.id}`
               : shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? `partner-drawer-title-${selected.id}` : undefined}
             aria-label={["perk", "event", "campaign", "portfolio"].includes(getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)))
               ? undefined
               : shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? undefined : `${selected.name} details`}
-          >
-            <MapDetailHeader
+            drawerState={detailDrawerState}
+            panelKind={getMapDrawerPanelKind(selected, urlState.mode, Boolean(urlState.perkId))}
+            scrollClassName="dp-map-detail-scroll dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"
+            onDrawerStateChange={updateDetailDrawerState}
+            onRequestClose={closeSelectedMapDrawer}
+            header={<MapDetailHeader
               place={selected}
               navigationTitle={getMapDetailNavigationTitle(selected, Boolean(urlState.perkId), urlState.mode)}
               backLabel={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)) === "perk" ? "Back to active perks" : "Back"}
@@ -18577,10 +18724,31 @@ export default function MapPage() {
                     } else restorePreviousMapPanel();
               }}
               onClose={closeSelectedMapDrawer}
-            />
-            <div
-              className="dp-map-detail-scroll dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"
-            >
+            />}
+            actions={<UniversalEntityActionRail
+              place={selected}
+              mode={urlState.mode}
+              saved={savedIds.has(selected.id)}
+              rsvped={(Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === selected.id)}
+              organizationId={readPartnerWorkspaceOrganizationId(location.search)}
+              onSave={() => toggleSaved(selected)}
+              onRsvp={() => toggleRsvp(selected)}
+              onUsePerk={() => openResidentQrModal(selected, "use_perk", "universal_entity_action_rail")}
+              onContact={() => {
+                setAgentFormPlaceId(selected.id);
+                setAgentFormSubmitted(false);
+                window.setTimeout(() => document.getElementById(`map-contact-form-${selected.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+              }}
+              onExplore={() => document.querySelector("#dp-active-map-drawer [data-building-section='overview'], #dp-active-map-drawer .dp-native-detail-panel__summary, #dp-active-map-drawer .dp-entity-summary")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              onTrack={(action, source) => fireWorkflow("/api/map-actions", buildMapActionPayload(selected, action, source, {
+                metadata: {
+                  entityType: getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)),
+                  panelState: detailDrawerState,
+                  sourceSurface: urlState.collection ? "collection" : "map",
+                },
+              }))}
+            />}
+          >
               <article className="dp-map-detail-content">
               {(() => {
                 const entityKind = getResidentEntityKind(selected);
@@ -19185,8 +19353,7 @@ export default function MapPage() {
                 );
               })()}
               </article>
-            </div>
-          </motion.aside>
+          </NativeDrawerShell>
         )}
       </AnimatePresence>
 
@@ -19202,4 +19369,3 @@ export default function MapPage() {
     </div>
   );
 }
-
