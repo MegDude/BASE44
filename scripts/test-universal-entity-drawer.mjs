@@ -17,7 +17,8 @@ assert.match(mapSource, /actions=\{<UniversalEntityActionRail/, "Selected entiti
 assert.match(mapSource, /entityType=\{getCanonicalDetailEntityType\(selected, Boolean\(urlState\.perkId\)\)\}/, "The fixed action rail is not driven by the canonical drawer identity");
 assert.match(mapSource, /if \(explicitDetailType === "perk"\)[\s\S]*?return "perk"/, "Explicit perk identity can still be misclassified as an event");
 assert.match(mapSource, /aria-label="Saved"[\s\S]*?tab=saved&filter=Saved/, "Resident Saved access is missing from the map navigation");
-assert.match(mapSource, /function selectPlace[\s\S]*?navigateMapJourney\([\s\S]*?entityId: isPropertySelection \? publicPropertyId \|\| nextEntityId : nextEntityId/, "map selections do not write the canonical entity ID through the shared URL state pipeline");
+assert.match(mapSource, /function selectPlace[\s\S]*?navigateMapJourney\([\s\S]*?entityId: nextEntityId/, "map selections do not write the canonical entity ID through the shared URL state pipeline");
+assert.doesNotMatch(mapSource, /entityId: isPropertySelection \? publicPropertyId/, "map selections can still substitute a presentation/property identifier for the canonical selected entity");
 assert.match(mapSource, /scrollClassName="dp-map-detail-scroll dp-map-panel-scroll dp-destination-scroll dp-drawer-scroll"/, "Drawer must own one scroll region");
 assert.match(shellSource, /data-has-drawer-actions/, "Drawer does not expose action ownership");
 assert.match(shellSource, /document\.body\.style\.overflow = "hidden"/, "Body scroll is not locked while the drawer is active");
