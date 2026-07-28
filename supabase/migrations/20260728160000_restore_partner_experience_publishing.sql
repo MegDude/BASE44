@@ -26,6 +26,7 @@ create table if not exists public.partner_experiences (
 create index if not exists partner_experiences_partner_updated_idx on public.partner_experiences(partner_id, updated_at desc);
 create index if not exists partner_experiences_org_status_idx on public.partner_experiences(organization_id, status, updated_at desc);
 create index if not exists partner_experiences_placements_gin_idx on public.partner_experiences using gin(placements);
+create index if not exists partner_experiences_creator_idx on public.partner_experiences(created_by_partner_user_id);
 
 alter table public.partner_experiences enable row level security;
 grant select, insert, update on public.partner_experiences to authenticated;
