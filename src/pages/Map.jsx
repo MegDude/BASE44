@@ -11929,7 +11929,15 @@ function LegendsResidentialIntelligenceDrawer({
   const resolvedLegendsListing = getResolvedLegendsListing(place);
   const luxuryBuilding = getLuxuryPresenceBuilding(place);
   const isRentalPanel = isRentalEntity(place);
-  const isListingPanel = Boolean(isRentalPanel || directLegendsListing || (!luxuryBuilding && resolvedLegendsListing && !isPropertyEntity(place)));
+  // Exact listing identity wins over the parent building. A listing can resolve to
+  // both a Legends home and its Luxury Presence building; the building link is
+  // context, not permission to collapse the unit into a property workspace.
+  const isListingPanel = Boolean(
+    isRentalPanel ||
+    directLegendsListing ||
+    isLegendsListingLike(place) ||
+    (resolvedLegendsListing && !isPropertyEntity(place))
+  );
   const legendsInquiryFormId = `legends-inquiry-form-${place.id}`;
   const legendsAvailabilityId = `legends-active-listings-${place.id}`;
   const inquiryListing = getLegendsInquiryListing(place, profile);
@@ -11964,7 +11972,9 @@ function LegendsResidentialIntelligenceDrawer({
   };
   const cleanTextList = (items = []) => items.filter((item) => safeText(item));
   const panelTitle = safeText(
-    isListingPanel ? profile?.buildingName : "",
+    isListingPanel ? inquiryListing?.address : "",
+    isListingPanel ? directLegendsListing?.address : "",
+    isListingPanel ? resolvedLegendsListing?.address : "",
     isListingPanel ? place?.title : "",
     isListingPanel ? place?.name : "",
     place?.buildingName,

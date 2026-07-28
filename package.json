@@ -113,7 +113,8 @@
     "test:quick-search-native": "node scripts/test-quick-search-native.mjs",
     "test:partner-share-links": "node scripts/test-partner-share-links-contract.mjs",
     "test:super-admin-auth": "node scripts/test-super-admin-auth-contract.mjs",
-    "test:legends-logo-pin": "node scripts/test-legends-logo-pin-contract.mjs"
+    "test:legends-logo-pin": "node scripts/test-legends-logo-pin-contract.mjs",
+    "test:legends-listing-identity": "node scripts/test-legends-listing-identity-contract.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",
