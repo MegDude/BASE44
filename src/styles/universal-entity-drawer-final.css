@@ -120,23 +120,23 @@
 
 @media (max-width: 767px), (max-height: 599px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: auto 0 var(--dp-entity-drawer-nav-clearance) !important;
+    inset: auto 0 calc(var(--dp-entity-drawer-nav-clearance) - 10px) !important;
     width: 100dvw !important;
     max-width: 100dvw !important;
     min-height: 0 !important;
-    max-height: calc(100dvh - var(--dp-entity-drawer-nav-clearance)) !important;
+    max-height: 100dvh !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="peek"] {
-    height: 96px !important;
+    height: calc(96px + var(--dp-entity-drawer-nav-clearance)) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="medium"] {
-    height: 45dvh !important;
+    height: min(calc(45dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="expanded"] {
-    height: min(85dvh, calc(100dvh - var(--dp-entity-drawer-nav-clearance))) !important;
+    height: min(calc(85dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
@@ -152,7 +152,7 @@
   }
 
   .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
-    margin-bottom: 0 !important;
+    margin-bottom: var(--dp-entity-drawer-nav-clearance) !important;
     padding-bottom: 10px !important;
   }
 
@@ -187,6 +187,20 @@
     animation-duration: 0.01ms !important;
   }
 }
+
+/* The legacy regression lock uses two ID selectors. Match that authority here
+   so the canonical drawer overlaps the fixed navigation by only the intended
+   10px instead of sitting behind its full 64px height. */
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    bottom: calc(var(--dp-bottom-nav-total-height, calc(64px + env(safe-area-inset-bottom, 0px))) - 10px) !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer[data-drawer-state="full"] {
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, calc(64px + env(safe-area-inset-bottom, 0px))) + 10px) !important;
+  }
+}
+
 
 /* Legends Founding Partner profile — one quiet brand block across resident and partner drawers. */
 .dp-legends-founding-partner {

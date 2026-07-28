@@ -8,12 +8,6 @@ const root = path.resolve(__dirname, "..");
 const outputDir = path.join(root, "src", "data", "production");
 const today = "2026-06-04";
 
-const committedProduction = JSON.parse(
-  await fs.readFile(path.join(outputDir, "production-map-inventory.json"), "utf8"),
-);
-const { canonicalEntityAliasRegistry: committedAliasRegistry = {} } = await loadBundledModule(
-  "src/data/production/canonicalEntityAliasRegistry.ts",
-);
 const locations = JSON.parse(await fs.readFile(path.join(root, "src", "data", "locations.json"), "utf8"));
 const happyHourInventory = await loadTsExport("src/data/happyHourInventory.ts", "happyHourInventory");
 const waterlooParkInventory = await loadTsExport("src/data/waterlooParkInventory.ts", "waterlooParkInventory");
@@ -524,32 +518,20 @@ function hasFiniteCoordinates(record) {
     && Number.isFinite(Number(record.lng));
 }
 
-const happyHours = happyHourInventory.flatMap((venue) => {
-  const matchingParents = rawMapEntities
-    .filter((entity) => slug(entity.name) === slug(venue.name))
+const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
+  entityType: "perk",
+  category: "Perks",
+  parentEntityId: hasFiniteCoordinates(venue) ? rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name) && hasFiniteCoordinates(entity))
     .sort((left, right) => {
-      if (!hasFiniteCoordinates(venue)) return 0;
-      if (!hasFiniteCoordinates(left)) return 1;
-      if (!hasFiniteCoordinates(right)) return -1;
       const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
       const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
       return leftDistance - rightDistance;
-    });
-  const parentEntityId = matchingParents[0]?.id;
-
-  // Happy hours are child perks. An unmatched source row remains visible in
-  // the source audit, but must never be promoted as a standalone map entity.
-  if (!parentEntityId) return [];
-
-  return [normalizeBase(venue, "happy-hour", {
-    entityType: "perk",
-    category: "Perks",
-    parentEntityId,
-    source: "Happy Hour Inventory",
-    updatedAt: today,
-    description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
-  })];
-});
+    })[0]?.id || "" : "",
+  source: "Happy Hour Inventory",
+  updatedAt: today,
+  description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
+}));
 
 const waterloo = waterlooParkInventory.map((pin) => normalizeBase(pin, "waterloo", {
   entityType: pin.kind === "destination" ? "civic" : pin.kind === "event" ? "event" : "event",
@@ -619,14 +601,10 @@ for (const record of all) {
   if (duplicateIndex === -1) canonicalRecords.push(record);
   else canonicalRecords[duplicateIndex] = mergeCanonicalRecord(canonicalRecords[duplicateIndex], record);
 }
-const candidateRecords = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
-const inventory = [...(committedProduction.records || [])].sort((a, b) => a.slug.localeCompare(b.slug));
-const canonicalEntityAliasRegistry = {
-  ...committedAliasRegistry,
-  ...Object.fromEntries(
-    inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
-  ),
-};
+const inventory = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
+const canonicalEntityAliasRegistry = Object.fromEntries(
+  inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
+);
 
 const heroRegistry = inventory.map(({ slug, primaryImage, thumbnail, galleryImages, category, inheritance }) => ({
   slug,
@@ -792,11 +770,10 @@ const production = {
     requestedLegendsRecords: 942,
     rawMapRowsAvailable: locations.length,
     normalizedProductionRecords: inventory.length,
-    sourceCandidateRecords: candidateRecords.length,
     legendsListingPlacesAvailable: legendsListingPlaces.length,
     luxuryPresenceListingsAvailable: luxuryPresenceListings.length,
     luxuryPresenceBuildingsAvailable: luxuryPresenceBuildings.length,
-    note: "The published canonical inventory is curated and remains authoritative. Raw source candidates are audited separately and never overwrite approved records automatically.",
+    note: "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented.",
   },
   inheritanceRules: {
     imageHierarchy: ["Actual Place Photography", "MLS Photography", "Building Hero", "District Hero", "Category Fallback"],

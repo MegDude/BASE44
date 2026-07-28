@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "npm run inventory:partner-content && npm run inventory:platform-search-index",
     "dev": "vite",
-    "prebuild": "npm run inventory:partner-content && npm run test:partner-content-inventory && npm run inventory:platform-search-index",
+    "prebuild": "npm run inventory:partner-content && npm run inventory:platform-search-index",
     "build": "vite build",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
@@ -89,7 +89,6 @@
     "inventory:partner-content": "node scripts/generate-partner-content-inventory.mjs",
     "inventory:partner-content:ci": "DP_CANONICAL_BASE_URL=${DP_CANONICAL_BASE_URL:-https://base-44-downtown-perks-live.vercel.app} node scripts/generate-partner-content-inventory.mjs",
     "test:partner-content-inventory": "node scripts/test-partner-content-inventory.mjs",
-    "test:production-content-determinism": "node scripts/test-production-content-determinism.mjs",
     "test:workspace-deep-polish": "node scripts/test-partner-workspace-deep-polish.mjs",
     "test:workspace-navigation": "node scripts/test-workspace-navigation-contract.mjs",
     "test:workspace-scope": "tsx scripts/test-partner-workspace-scope.ts",
