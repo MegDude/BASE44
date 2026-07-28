@@ -18414,8 +18414,7 @@ export default function MapPage() {
         </div>
       )}
 
-      <AnimatePresence>
-        {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
+      {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
@@ -18428,8 +18427,7 @@ export default function MapPage() {
             onRedeem={(item) => openResidentQrModal(item.place, "use_perk", "active_perks_sheet")}
             onSave={(item) => toggleSaved(item.place)}
           />
-        )}
-      </AnimatePresence>
+      )}
 
       <AnimatePresence>
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
