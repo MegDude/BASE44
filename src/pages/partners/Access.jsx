@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { demoOrganizations } from "@/config/workspaceArchitecture";
 import { getSuperAdminEmails, isSuperAdminSession } from "@/lib/auth/session";
+import { DEFAULT_PARTNER_RETURN_PATH, getSafeReturnPath } from "@/lib/authReturnPath";
 import {
   canUseProductionAccountAccess,
   ACTION_ACCEPTED_MESSAGE,
@@ -138,13 +139,14 @@ function savePartnerProfile(profile) {
   }
 }
 
-async function startPartnerSignIn(navigate, signInPartner, { email, accountType } = {}) {
+async function startPartnerSignIn(navigate, signInPartner, { email, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
   const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
   const normalizedEmail = String(email || "").trim().toLowerCase();
   const isAdminEmail = getSuperAdminEmails().includes(normalizedEmail);
-  const redirectPath = isAdminEmail ? "/partners/sign-in?admin=1" : getAccessRouteForType(partnerType);
+  const destination = isAdminEmail && returnTo === DEFAULT_PARTNER_RETURN_PATH ? "/admin-studio/command-center" : returnTo;
+  const redirectPath = `/auth/callback?audience=partner&returnTo=${encodeURIComponent(destination)}`;
   const session = await signInPartner({
     email,
     organization_name: `${accessLabel} Access`,
@@ -154,7 +156,7 @@ async function startPartnerSignIn(navigate, signInPartner, { email, accountType 
     role: getAccessRoleForType(partnerType),
     redirectPath,
   });
-  if (session?.type === "partner") navigate(redirectPath);
+  if (session?.type === "partner") navigate(destination);
   return session;
 }
 
@@ -179,6 +181,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const location = useLocation();
   const { isAuthenticated, user, signInPartner } = useAuth();
   const searchParams = new URLSearchParams(location.search);
+  const requestedReturnTo = getSafeReturnPath(location.search, DEFAULT_PARTNER_RETURN_PATH);
+  const callbackError = searchParams.get("error") || "";
   const initialType = normalizePartnerType(
     searchParams.get("type")
       || searchParams.get("partnerTypeSlug")
@@ -211,8 +215,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [campaignInterest, setCampaignInterest] = useState(initialCampaignInterest);
   const [reportingNeeds, setReportingNeeds] = useState(initialReportingNeeds);
   const [saved, setSaved] = useState(false);
-  const [submissionState, setSubmissionState] = useState("idle");
-  const [submissionMessage, setSubmissionMessage] = useState("");
+  const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
+  const [submissionMessage, setSubmissionMessage] = useState(callbackError ? decodeURIComponent(callbackError) : "");
   const [signInEmail, setSignInEmail] = useState("");
   const [signInType, setSignInType] = useState(initialType || "property");
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
@@ -408,9 +412,10 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     const session = await startPartnerSignIn(navigate, signInPartner, {
       email: signInEmail || user?.email || "account@downtownperks.local",
       accountType: signInType,
+      returnTo: requestedReturnTo,
     });
     if (session?.type === "partner") return;
-    setSubmissionState("idle");
+    setSubmissionState(session?.type === "link_sent" ? "success" : "error");
     setSubmissionMessage(session?.message || "Check your email for the secure sign-in link.");
   }
 
