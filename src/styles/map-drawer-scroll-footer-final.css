@@ -14,8 +14,58 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header {
   min-width: 0 !important;
 }
 
+/* The shared header always presents one centered expand/minimise control and
+   one close control anchored to the right safe edge. Hidden titles must never
+   collapse the close button into the centre grid track. */
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-header {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 58px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-detail-grabber {
+  position: absolute !important;
+  top: 7px !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  z-index: 4 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 96px !important;
+  min-width: 96px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateX(-50%) !important;
+  touch-action: manipulation !important;
+}
+
 html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-navigation {
+  position: relative !important;
+  z-index: 3 !important;
   grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  pointer-events: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-header-spacer {
+  grid-column: 1 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-close {
+  grid-column: 3 !important;
+  justify-self: end !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
 }
 
 html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-navigation-title {
