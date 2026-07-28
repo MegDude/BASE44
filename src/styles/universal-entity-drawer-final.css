@@ -231,9 +231,10 @@
 /* Final viewport authority: the persistent navigation owns the bottom strip
    at every breakpoint, so contextual actions can never be clipped beneath it. */
 @media (min-width: 768px) and (min-height: 600px) {
-  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+  html body #root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel {
     inset: 0 0 var(--dp-bottom-nav-total-height, 64px) auto !important;
     height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+    min-height: 0 !important;
     max-height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
   }
 }
