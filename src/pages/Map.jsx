@@ -14200,7 +14200,7 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, rawTab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
@@ -15225,10 +15225,13 @@ export default function MapPage() {
   const previewPlaces = discoverDisplayPlaces.slice(0, previewLimit);
   const isRentalLayer = urlState.mode === "resident" && activeFilter === "Rentals";
   const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
-  // URL panel state is authoritative during navigation; local tab state may lag by one render.
-  const activeResidentPanel = urlState.mode === "resident" && urlState.panelTab
-    ? urlState.panelTab
-    : activeBottomTab;
+  // Preserve the requested resident tab even though route normalization maps resident panels to /map.
+  // This makes sheet transitions URL-authoritative rather than depending on a lagging local tab state.
+  const requestedResidentPanel = urlState.mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(urlState.rawTab)
+    ? urlState.rawTab
+    : "";
+  const activeResidentPanel = requestedResidentPanel
+    || (urlState.mode === "resident" && urlState.panelTab ? urlState.panelTab : activeBottomTab);
   const isResidentSavedDrawer = urlState.mode === "resident" && activeResidentPanel === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
   const isResidentEventsDrawer = urlState.mode === "resident" && activeResidentPanel === "events";
