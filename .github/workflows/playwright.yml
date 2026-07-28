@@ -2,6 +2,12 @@ name: Playwright
 
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      preview_url:
+        description: Vercel preview base URL
+        required: false
+        type: string
   push:
     branches:
       - main
@@ -9,6 +15,8 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BASE_URL: ${{ inputs.preview_url || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
