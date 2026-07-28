@@ -48,13 +48,6 @@ function MarketingFallback() {
 function ProtectedRoute({ children }) {
   const location = useLocation();
   const { isAuthenticated, isLoadingAuth, user } = useAuth();
-  const params = new URLSearchParams(location.search);
-  const hasWorkspaceActivation =
-    typeof window !== "undefined" &&
-    Boolean(window.localStorage.getItem("dp_partner_workspace:activation"));
-  const canBootstrapWorkspace =
-    location.pathname.startsWith("/partner-workspace") &&
-    (params.get("checkout") === "success" || params.get("provisioned") === "1" || hasWorkspaceActivation);
 
   if (isLoadingAuth) return <MarketingFallback />;
   if (isAuthenticated) {
@@ -62,7 +55,6 @@ function ProtectedRoute({ children }) {
     if (role === "resident") return <Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />;
     return children;
   }
-  if (canBootstrapWorkspace) return children;
 
   return (
     <Navigate
@@ -93,6 +85,14 @@ function AdminProtectedRoute({ children }) {
     return <Navigate to="/partner-workspace/overview" replace />;
   }
   return children;
+}
+
+function ProtectedAdminStudio() {
+  return (
+    <AdminProtectedRoute>
+      <AdminMarketingStudio />
+    </AdminProtectedRoute>
+  );
 }
 
 function RedirectWithSearch({ to }) {
@@ -194,16 +194,16 @@ function ProductRoutes() {
               </Suspense>
             }
           />
-          <Route path="/admin-studio" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/command-center" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/campaign-builder" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/audience-builder" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/content-library" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/approval-queue" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/distribution" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/performance" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/partner-intelligence" element={<AdminMarketingStudio />} />
-          <Route path="/admin-studio/residents" element={<AdminMarketingStudio />} />
+          <Route path="/admin-studio" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/command-center" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/campaign-builder" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/audience-builder" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/content-library" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/approval-queue" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/distribution" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/performance" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/partner-intelligence" element={<ProtectedAdminStudio />} />
+          <Route path="/admin-studio/residents" element={<ProtectedAdminStudio />} />
           <Route
             path="/admin-studio/microsites"
             element={<AdminProtectedRoute><MicrositeAdminRegistry /></AdminProtectedRoute>}
