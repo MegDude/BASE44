@@ -54,7 +54,27 @@ assert.match(appSource, /path="\/resident\/\*".*DEFAULT_RESIDENT_MAP_PATH/s);
 assert.match(appSource, /path="\/resident\/home".*DEFAULT_RESIDENT_MAP_PATH/s);
 assert.match(appSource, /path="\/residents\/register".*\/residents\/login/s);
 assert.match(appSource, /path="\/partner-workspace\/overview".*ProtectedRoute/s);
+assert.doesNotMatch(appSource, /canBootstrapWorkspace|hasWorkspaceActivation/);
+assert.match(appSource, /function ProtectedAdminStudio\(\)[\s\S]*?<AdminProtectedRoute>/);
+for (const adminPath of [
+  "/admin-studio",
+  "/admin-studio/command-center",
+  "/admin-studio/campaign-builder",
+  "/admin-studio/audience-builder",
+  "/admin-studio/content-library",
+  "/admin-studio/approval-queue",
+  "/admin-studio/distribution",
+  "/admin-studio/performance",
+  "/admin-studio/partner-intelligence",
+  "/admin-studio/residents",
+]) {
+  assert.ok(
+    appSource.includes(`path="${adminPath}" element={<ProtectedAdminStudio />}`),
+    `${adminPath} must use the admin authorization guard`,
+  );
+}
 assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
+assert.match(authSource, /signInWithOtp\(\{[\s\S]*?shouldCreateUser:\s*false/);
 assert.match(supabaseClientSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(productionGuardSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(authSource, /auth\.signUp\(\{/);
