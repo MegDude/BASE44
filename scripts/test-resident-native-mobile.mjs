@@ -35,7 +35,7 @@ await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", tim
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
 const labels = await page.locator(".dp-resident-native-tabs :is(a,button)").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+if (labels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Saved|Card") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
 
@@ -140,7 +140,7 @@ await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("
 await page.waitForSelector(".dp-map-bottom-nav", { state: "visible", timeout: 15_000 });
 
 const mapLabels = await page.locator(".dp-map-bottom-nav [role='tab']").allTextContents();
-if (mapLabels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+if (mapLabels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Saved|Card") {
   throw new Error(`Unexpected resident map tabs: ${mapLabels.join(", ")}`);
 }
 
