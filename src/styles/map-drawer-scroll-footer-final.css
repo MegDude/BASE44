@@ -1,0 +1,135 @@
+/* Final shared drawer structure.
+   The header owns navigation only, the middle row is the sole scroll region,
+   and contextual actions remain in a dedicated footer above mobile navigation. */
+
+html body #root .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header {
+  grid-row: 1 !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-navigation {
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-navigation-title {
+  display: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-content-viewport {
+  grid-row: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-scroll {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  scroll-padding-block: 16px 24px !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-content-end {
+  display: block !important;
+  width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 8 !important;
+  grid-row: 3 !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 68px !important;
+  margin: 0 !important;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px))
+    calc(10px + env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px)) !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.09) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions .dp-universal-action-rail {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions .dp-universal-action-rail > :is(a, button) {
+  min-width: 0 !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Internal entity modules cannot inject duplicate Save, Directions, RSVP,
+   contact, or perk rails into the scrolling body when the shell footer exists. */
+html body #root .dp-map-page #dp-active-map-drawer[data-has-drawer-actions="true"] .dp-native-drawer-scroll :is(
+  .dp-primary-action-row,
+  .dp-entity-action-row,
+  .dp-map-detail-actions,
+  .dp-partner-destination-actions,
+  .dp-native-detail-panel__actions,
+  .dp-drawer-primary-actions,
+  .dp-perk-action-row
+) {
+  display: none !important;
+}
+
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+    margin-bottom: var(
+      --dp-bottom-nav-total-height,
+      calc(64px + env(safe-area-inset-bottom, 0px))
+    ) !important;
+    padding-bottom: 10px !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] .dp-native-drawer-actions {
+    margin-bottom: 0 !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (min-width: 768px) and (min-height: 600px) {
+  html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-scroll {
+    scroll-behavior: auto !important;
+  }
+}

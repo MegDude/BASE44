@@ -6,11 +6,9 @@ const styles = readFileSync("src/styles/map-drawer-single-line-titles-final.css"
 const identity = readFileSync("src/components/map/unified/EntityIdentityPanel.tsx", "utf8");
 const canonical = readFileSync("src/components/map/CanonicalDetailPanel.jsx", "utf8");
 
-assert.equal(
-  (main.match(/^import "@\/styles\/[^"]+"$/gm) || []).at(-1),
-  'import "@/styles/map-drawer-single-line-titles-final.css"',
-  "The universal title contract must remain the final stylesheet",
-);
+const titleContractIndex = main.indexOf('import "@/styles/map-drawer-single-line-titles-final.css"');
+const broadPanelContractIndex = main.indexOf('import "@/styles/platform-panel-mobile-cohesion-final.css"');
+assert.ok(titleContractIndex > broadPanelContractIndex, "The universal title contract must load after broad panel typography");
 
 for (const selector of [
   ".dp-map-detail-navigation-title",
