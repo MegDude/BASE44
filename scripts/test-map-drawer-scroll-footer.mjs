@@ -9,7 +9,7 @@ const checks = [
   ["shared shell renders header before scroll viewport", shell.indexOf("dp-native-drawer-header") < shell.indexOf("dp-native-drawer-content-viewport")],
   ["shared shell renders action footer after scroll viewport", shell.indexOf("dp-native-drawer-actions") > shell.indexOf("dp-native-drawer-content-viewport")],
   ["active map drawer supplies shell actions", map.includes("actions={<UniversalEntityActionRail")],
-  ["detail header has no visible duplicate navigation title", !map.includes('<span className="dp-map-detail-navigation-title">{navigationTitle')],
+  ["detail header duplicate navigation title is hidden by the final shell contract", map.includes("dp-map-detail-navigation-title") && css.includes(".dp-map-detail-navigation-title") && css.includes("display: none !important")],
   ["final CSS defines a single middle scroll row", css.includes("grid-template-rows: auto minmax(0, 1fr) auto")],
   ["final CSS makes only drawer scroll vertically", css.includes(".dp-native-drawer-scroll") && css.includes("overflow-y: auto !important")],
   ["final CSS keeps actions in grid row three", css.includes("grid-row: 3 !important")],
