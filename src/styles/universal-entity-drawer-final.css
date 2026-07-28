@@ -192,8 +192,12 @@
    so the canonical drawer overlaps the fixed navigation by only the intended
    10px instead of sitting behind its full 64px height. */
 @media (max-width: 767px), (max-height: 599px) {
-  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer:not([data-drawer-state="full"]) {
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
     bottom: calc(var(--dp-bottom-nav-total-height, calc(64px + env(safe-area-inset-bottom, 0px))) - 10px) !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer[data-drawer-state="full"] {
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, calc(64px + env(safe-area-inset-bottom, 0px))) + 10px) !important;
   }
 }
 
