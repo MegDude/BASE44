@@ -166,5 +166,9 @@ const CANONICAL_GLYPH_FALLBACKS: Partial<Record<MapIconKey, MapIconKey>> = {
 export function getCanonicalMapGlyph(pin: MapIconDefinition): string {
   if (!pin.asset) return pin.glyph;
   const registryKey = (Object.entries(mapIconRegistry).find(([, definition]) => definition === pin)?.[0] || "default") as MapIconKey;
+  // Legends listings are intentionally brand-identified. Returning the generic
+  // listing fallback here caused every Legends marker to lose its logo even
+  // when resolveEntityPin correctly selected the Legends definition.
+  if (registryKey === "legends") return pin.glyph;
   return mapIconRegistry[CANONICAL_GLYPH_FALLBACKS[registryKey] || "default"].glyph;
 }
