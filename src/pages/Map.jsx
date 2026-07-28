@@ -15228,7 +15228,7 @@ export default function MapPage() {
   // The perks sheet is a route surface, never a persisted local-tab surface.
   const shouldShowActivePerks = urlState.mode === "resident"
     && urlState.tab === "map"
-    && urlState.filter === "Perks"
+    && new URLSearchParams(location.search).get("filter") === "Perks"
     && !selected;
   // Preserve the requested resident tab even though route normalization maps resident panels to /map.
   // This makes sheet transitions URL-authoritative rather than depending on a lagging local tab state.
