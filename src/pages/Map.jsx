@@ -3875,6 +3875,13 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const pin = resolveEntityPin(place);
+  if (pin.asset && normalizeMapIconKey(pin.label) === "legends") {
+    return {
+      url: pin.asset,
+      scaledSize: new maps.Size(size, size),
+      anchor: new maps.Point(size / 2, size / 2),
+    };
+  }
   const paths = mapIconSvgInner(getCanonicalMapGlyph(pin));
   const fill = selected ? "#C8A96A" : "#0B1F33";
   const stroke = selected ? "#0B1F33" : "#C8A96A";
@@ -12112,15 +12119,14 @@ function LegendsResidentialIntelligenceDrawer({
         <p className="dp-entity-dek">{panelDek}</p>
       </header>
 
-      {isListingPanel && (
-      <section className="dp-legends-brand-card" aria-label="Legends Real Estate">
+      <section className="dp-legends-brand-card dp-legends-founding-partner" aria-label="Legends Real Estate Founding Partner">
         <img src={LEGENDS_PIN_LOGO} alt={LEGENDS_PIN_ALT} loading="lazy" decoding="async" />
         <span>
-          <strong>Presented by {LEGENDS_BRAND_LINE}</strong>
-          <small>Downtown listings and showing requests.</small>
+          <small>Founding Partner</small>
+          <strong>{LEGENDS_BRAND_LINE}</strong>
+          <p>Led by Nina Seely, Legends brings trusted Austin knowledge to residential discovery. Listings are paired with neighborhood context, walkability, and the everyday places that help people understand what living here could feel like.</p>
         </span>
       </section>
-      )}
 
       {!isPartnerMode && (
         <div className="dp-legends-action-grid dp-entity-action-row" aria-label={isListingPanel ? "Listing actions" : "Residential building actions"}>
@@ -15143,7 +15149,13 @@ export default function MapPage() {
       : previewPlaces;
   const legendsDirectoryPlaces = isLegendsDirectoryLayer
     ? discoverDisplayPlaces
-      .filter((place) => isRentalEntity(place) || getLegendsResidentialProfileForPlace(place) || isLegendsMapPlace(place))
+      .filter((place) =>
+        isRentalEntity(place) ||
+        getLegendsResidentialProfileForPlace(place) ||
+        isLegendsMapPlace(place) ||
+        isLegendsListingLike(place) ||
+        Boolean(getResolvedLegendsListing(place))
+      )
       .slice(0, 80)
     : [];
   const hiddenPreviewCount = Math.max(0, Math.min(discoverDisplayPlaces.length, 12) - previewPlaces.length);
