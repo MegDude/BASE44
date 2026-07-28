@@ -9,6 +9,7 @@ import {
   searchOperationalMap,
   sourceFromTrigger,
 } from "@/lib/map/mapDiscovery";
+import { isDiscoveryControlFilter, normalizeDiscoveryControlQuery } from "@/lib/map/mapDiscoveryControls";
 import { buildPlatformSearchCatalog, groupPlatformSearchResults, searchPlatformCatalog } from "@/lib/search/platformSearchCatalog";
 
 const QUERY_CACHE_MAX = MAP_DISCOVERY_LIMITS.cacheEntries;
@@ -416,7 +417,7 @@ function buildQueryKey(scope = {}) {
 }
 
 function normalizeScope(scope = {}) {
-  const query = String(scope.query || "").trim();
+  const query = normalizeDiscoveryControlQuery(scope.query, scope.filter);
   const intent = scope.intent || getCanonicalIntentForFilter(scope.filter || "All", query);
   const fallbackLimit = query ? SEARCH_RESULT_LIMITS.text : SEARCH_RESULT_LIMITS.intent;
   return {
@@ -442,13 +443,19 @@ export function buildResolverRequest(scope = {}, trigger = "search") {
   const routeStopCount = Array.isArray(normalized.routeIds) ? normalized.routeIds.length : 0;
   const boundedLimit = getDiscoveryLimit({ viewportWidth, source, routeStopCount });
   const filter = String(normalized.filter || "").trim();
+  const normalizedFilter = filter.toLowerCase();
   const genericIntent = ["", "all", "eat_drink"].includes(String(normalized.intent || "").toLowerCase());
+  const resolverIntent = normalizedFilter === "nearby"
+    ? "nearby"
+    : genericIntent
+      ? undefined
+      : normalized.intent;
   return {
     query: normalized.query || undefined,
-    intent: genericIntent ? undefined : normalized.intent,
+    intent: resolverIntent,
     source,
     mode: normalized.audienceMode || "resident",
-    categories: filter && filter !== "All" ? [filter] : undefined,
+    categories: filter && !isDiscoveryControlFilter(normalizedFilter) ? [filter] : undefined,
     district: normalized.district || undefined,
     radius_meters: radiusToMeters(normalized.radius),
     center: normalized.mapCenter || undefined,
