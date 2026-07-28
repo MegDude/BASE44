@@ -32,6 +32,7 @@
     "test:map-intents": "tsx scripts/test-map-search-intents.ts",
     "test:search-intent-chips": "tsx scripts/test-search-intent-chips.ts",
     "test:search-intent-label-contrast": "node scripts/test-search-intent-label-contrast.mjs",
+    "test:pr100-legends-auth": "node scripts/test-pr100-legends-auth.mjs",
     "test:search-console-utility": "node scripts/test-search-console-utility-rail.mjs",
     "test:search-console-glass": "node scripts/test-search-intent-glass-surface.mjs",
     "test:drawer-glass": "node scripts/test-map-drawer-glass-surface.mjs",

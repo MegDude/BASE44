@@ -214,7 +214,7 @@ export const AuthProvider = ({ children }) => {
 
     const partnerType = profile.partner_type || profile.account_type || "partner";
     const accessRole = partnerType === "resident" ? "resident" : "partner";
-    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/map?mode=resident&tab=map&filter=All" : "/partner-workspace/overview");
+    const redirectPath = profile.redirectPath || (partnerType === "resident" ? "/auth/callback" : "/auth/callback?audience=partner&returnTo=%2Fpartner-workspace%2Foverview");
     const organizationName = profile.organization_name || profile.company || "Downtown Perks Account";
     const email = profile.email || profile.signup_email || "";
 
@@ -232,6 +232,7 @@ export const AuthProvider = ({ children }) => {
         email,
         options: {
           emailRedirectTo: `${window.location.origin}${redirectPath}`,
+          shouldCreateUser: false,
           data: {
             organization_name: organizationName,
             partner_type: partnerType,
@@ -240,13 +241,12 @@ export const AuthProvider = ({ children }) => {
         },
       });
       if (error) {
-        const message = error.message || "Supabase sign-in could not be started.";
-        setAuthError(message);
-        return { type: "error", message };
+        const rateLimited = error.status === 429 || /rate|too many/i.test(error.message || "");
+        const message = rateLimited ? "Too many sign-in links were requested. Wait a few minutes, then try again." : (error.message || "The secure sign-in link could not be sent.");
+        setAuthError(message); return { type: rateLimited ? "rate_limited" : "delivery_failed", message };
       }
       const message = "Check your email for the secure sign-in link.";
-      setAuthError(message);
-      return { type: "supabase_otp", email, message };
+      setAuthError(null); return { type: "link_sent", email, message, redirectPath };
     }
 
     const nextSession = {
