@@ -14200,7 +14200,7 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, rawTab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
@@ -15225,21 +15225,9 @@ export default function MapPage() {
   const previewPlaces = discoverDisplayPlaces.slice(0, previewLimit);
   const isRentalLayer = urlState.mode === "resident" && activeFilter === "Rentals";
   const isLegendsDirectoryLayer = ["Rentals", "Living Here", "Legends", "All Listings"].includes(activeFilter);
-  // The perks sheet is a route surface, never a persisted local-tab surface.
-  const shouldShowActivePerks = urlState.mode === "resident"
-    && urlState.tab === "map"
-    && new URLSearchParams(location.search).get("filter") === "Perks"
-    && !selected;
-  // Preserve the requested resident tab even though route normalization maps resident panels to /map.
-  // This makes sheet transitions URL-authoritative rather than depending on a lagging local tab state.
-  const requestedResidentPanel = urlState.mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(urlState.rawTab)
-    ? urlState.rawTab
-    : "";
-  const activeResidentPanel = requestedResidentPanel
-    || (urlState.mode === "resident" && urlState.panelTab ? urlState.panelTab : activeBottomTab);
-  const isResidentSavedDrawer = urlState.mode === "resident" && activeResidentPanel === "saved";
+  const isResidentSavedDrawer = urlState.mode === "resident" && activeBottomTab === "saved";
   const savedDrawerPlaces = residentSavedPlaces.slice(0, previewLimit);
-  const isResidentEventsDrawer = urlState.mode === "resident" && activeResidentPanel === "events";
+  const isResidentEventsDrawer = urlState.mode === "resident" && activeBottomTab === "events";
   const drawerPreviewPlaces = isResidentSavedDrawer
     ? savedDrawerPlaces
     : isResidentEventsDrawer
@@ -15275,16 +15263,16 @@ export default function MapPage() {
       title: "Saved Downtown",
       body: "Places, events and experiences you've chosen to come back to.",
     },
-  }[isRentalLayer ? "rentals" : activeResidentPanel] || (isRentalLayer ? {
+  }[isRentalLayer ? "rentals" : activeBottomTab] || (isRentalLayer ? {
     eyebrow: "Rentals",
     title: "Downtown rentals on the map.",
     body: "Building-first listings with nearby perks, amenities, and walking context.",
   } : null);
   const residentResultCountLabel = isResidentSavedDrawer
     ? `${residentSavedPlaces.length} saved ${residentSavedPlaces.length === 1 ? "place" : "places"}`
-    : activeResidentPanel === "perks"
+    : activeBottomTab === "perks"
       ? `${discoverDisplayPlaces.length} active ${discoverDisplayPlaces.length === 1 ? "offer" : "offers"} in this map area`
-      : activeResidentPanel === "events"
+      : activeBottomTab === "events"
         ? `${discoverDisplayPlaces.length} ${discoverDisplayPlaces.length === 1 ? "event" : "events"} in this map area`
         : `${discoverDisplayPlaces.length} matching ${discoverDisplayPlaces.length === 1 ? "place" : "places"}`;
   const panelPlaces = previewPlaces.length ? previewPlaces : discoverDisplayPlaces.slice(0, 8);
@@ -18427,7 +18415,7 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {shouldShowActivePerks && (
+        {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
@@ -18447,8 +18435,8 @@ export default function MapPage() {
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
-            : ["perks", "events", "saved", "info"].includes(activeResidentPanel) || isRentalLayer || isLegendsDirectoryLayer
-        ) && !shouldShowActivePerks && (!selected || selectedDrawerClosed || activePartnerPanel) && (
+            : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isRentalLayer || isLegendsDirectoryLayer
+        ) && !(urlState.mode === "resident" && activeBottomTab === "perks") && (!selected || selectedDrawerClosed || activePartnerPanel) && (
           <motion.aside
             ref={configureMobilePanelSurface}
             initial={{ opacity: 0, y: 44 }}
