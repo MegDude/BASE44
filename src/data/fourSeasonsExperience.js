@@ -595,11 +595,17 @@ export function getFourSeasonsExperienceUpdate(item) {
     text.includes("four-seasons-congress-guest-dining-campaign") ||
     text.includes("four seasons guest dining campaign")
   ) {
+    const sourceAlias = item?.id || item?.slug;
     return {
       ...FOUR_SEASONS_HOSPITALITY_ACCESS,
-      id: item?.id || FOUR_SEASONS_HOSPITALITY_ACCESS.id,
-      name: item?.name || FOUR_SEASONS_HOSPITALITY_ACCESS.name,
-      title: item?.title || item?.name || FOUR_SEASONS_HOSPITALITY_ACCESS.title,
+      id: FOUR_SEASONS_HOSPITALITY_ACCESS.id,
+      name: FOUR_SEASONS_HOSPITALITY_ACCESS.name,
+      title: FOUR_SEASONS_HOSPITALITY_ACCESS.title,
+      aliases: sourceAlias && sourceAlias !== FOUR_SEASONS_HOSPITALITY_ACCESS.id
+        ? [sourceAlias]
+        : [],
+      relatedCampaignName: item?.campaignName || item?.raw?.campaignName,
+      relatedCampaignCopy: item?.campaignCopy || item?.raw?.campaignCopy,
     };
   }
 

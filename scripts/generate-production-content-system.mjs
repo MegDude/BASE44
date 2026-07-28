@@ -8,6 +8,12 @@ const root = path.resolve(__dirname, "..");
 const outputDir = path.join(root, "src", "data", "production");
 const today = "2026-06-04";
 
+const committedProduction = JSON.parse(
+  await fs.readFile(path.join(outputDir, "production-map-inventory.json"), "utf8"),
+);
+const { canonicalEntityAliasRegistry: committedAliasRegistry = {} } = await loadBundledModule(
+  "src/data/production/canonicalEntityAliasRegistry.ts",
+);
 const locations = JSON.parse(await fs.readFile(path.join(root, "src", "data", "locations.json"), "utf8"));
 const happyHourInventory = await loadTsExport("src/data/happyHourInventory.ts", "happyHourInventory");
 const waterlooParkInventory = await loadTsExport("src/data/waterlooParkInventory.ts", "waterlooParkInventory");
@@ -518,20 +524,32 @@ function hasFiniteCoordinates(record) {
     && Number.isFinite(Number(record.lng));
 }
 
-const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
-  entityType: "perk",
-  category: "Perks",
-  parentEntityId: hasFiniteCoordinates(venue) ? rawMapEntities
-    .filter((entity) => slug(entity.name) === slug(venue.name) && hasFiniteCoordinates(entity))
+const happyHours = happyHourInventory.flatMap((venue) => {
+  const matchingParents = rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name))
     .sort((left, right) => {
+      if (!hasFiniteCoordinates(venue)) return 0;
+      if (!hasFiniteCoordinates(left)) return 1;
+      if (!hasFiniteCoordinates(right)) return -1;
       const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
       const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
       return leftDistance - rightDistance;
-    })[0]?.id || "" : "",
-  source: "Happy Hour Inventory",
-  updatedAt: today,
-  description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
-}));
+    });
+  const parentEntityId = matchingParents[0]?.id;
+
+  // Happy hours are child perks. An unmatched source row remains visible in
+  // the source audit, but must never be promoted as a standalone map entity.
+  if (!parentEntityId) return [];
+
+  return [normalizeBase(venue, "happy-hour", {
+    entityType: "perk",
+    category: "Perks",
+    parentEntityId,
+    source: "Happy Hour Inventory",
+    updatedAt: today,
+    description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
+  })];
+});
 
 const waterloo = waterlooParkInventory.map((pin) => normalizeBase(pin, "waterloo", {
   entityType: pin.kind === "destination" ? "civic" : pin.kind === "event" ? "event" : "event",
@@ -601,10 +619,14 @@ for (const record of all) {
   if (duplicateIndex === -1) canonicalRecords.push(record);
   else canonicalRecords[duplicateIndex] = mergeCanonicalRecord(canonicalRecords[duplicateIndex], record);
 }
-const inventory = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
-const canonicalEntityAliasRegistry = Object.fromEntries(
-  inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
-);
+const candidateRecords = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
+const inventory = [...(committedProduction.records || [])].sort((a, b) => a.slug.localeCompare(b.slug));
+const canonicalEntityAliasRegistry = {
+  ...committedAliasRegistry,
+  ...Object.fromEntries(
+    inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
+  ),
+};
 
 const heroRegistry = inventory.map(({ slug, primaryImage, thumbnail, galleryImages, category, inheritance }) => ({
   slug,
@@ -770,10 +792,11 @@ const production = {
     requestedLegendsRecords: 942,
     rawMapRowsAvailable: locations.length,
     normalizedProductionRecords: inventory.length,
+    sourceCandidateRecords: candidateRecords.length,
     legendsListingPlacesAvailable: legendsListingPlaces.length,
     luxuryPresenceListingsAvailable: luxuryPresenceListings.length,
     luxuryPresenceBuildingsAvailable: luxuryPresenceBuildings.length,
-    note: "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented.",
+    note: "The published canonical inventory is curated and remains authoritative. Raw source candidates are audited separately and never overwrite approved records automatically.",
   },
   inheritanceRules: {
     imageHierarchy: ["Actual Place Photography", "MLS Photography", "Building Hero", "District Hero", "Category Fallback"],
@@ -791,23 +814,12 @@ const production = {
   records: inventory,
 };
 
-function tsExport(name, value) {
-  return `export const ${name} = ${JSON.stringify(value, null, 2)} as const;\n`;
-}
-
-await fs.mkdir(outputDir, { recursive: true });
-await fs.writeFile(path.join(outputDir, "production-map-inventory.json"), JSON.stringify(production, null, 2));
-await fs.writeFile(path.join(outputDir, "heroImageRegistry.ts"), tsExport("heroImageRegistry", heroRegistry));
-await fs.writeFile(path.join(outputDir, "entityCopyRegistry.ts"), tsExport("entityCopyRegistry", entityCopyRegistry));
-await fs.writeFile(path.join(outputDir, "partnerCopyRegistry.ts"), tsExport("partnerCopyRegistry", partnerCopyRegistry));
-await fs.writeFile(path.join(outputDir, "drawerContentRegistry.ts"), tsExport("drawerContentRegistry", drawerContentRegistry));
-await fs.writeFile(path.join(outputDir, "districtHeroRegistry.ts"), tsExport("districtHeroRegistry", Object.fromEntries(Object.keys(districtNarratives).map((district) => [district, `/images/districts/${slug(district)}-hero.jpg`]))));
-await fs.writeFile(path.join(outputDir, "categoryFallbackRegistry.ts"), tsExport("categoryFallbackRegistry", categoryFallbackRegistry));
-await fs.writeFile(path.join(outputDir, "buildingNarrativeRegistry.ts"), tsExport("buildingNarrativeRegistry", buildingNarrativeRegistry));
-await fs.writeFile(path.join(outputDir, "districtNarrativeRegistry.ts"), tsExport("districtNarrativeRegistry", districtNarratives));
-await fs.writeFile(path.join(outputDir, "legendsMLSRegistry.ts"), tsExport("legendsMLSRegistry", legendsMLSRegistry));
-await fs.writeFile(path.join(outputDir, "searchIntentRegistry.ts"), tsExport("searchIntentRegistry", searchIntentRegistry));
-await fs.writeFile(path.join(outputDir, "campaignAssetRegistry.ts"), tsExport("campaignAssetRegistry", campaignAssetRegistry));
-await fs.writeFile(path.join(outputDir, "canonicalEntityAliasRegistry.ts"), tsExport("canonicalEntityAliasRegistry", canonicalEntityAliasRegistry));
-
-console.log(JSON.stringify(production.coverage, null, 2));
+// The canonical inventory and its registries are reviewed publishing inputs.
+// This command audits all raw sources against them but deliberately does not
+// rewrite approved production data. New candidates must pass reconciliation
+// and review before a separate publishing change updates those files.
+console.log(JSON.stringify({
+  ...production.coverage,
+  canonicalAliases: Object.keys(canonicalEntityAliasRegistry).length,
+  publicationMode: "audit-only",
+}, null, 2));
