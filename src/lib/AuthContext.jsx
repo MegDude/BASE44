@@ -232,6 +232,7 @@ export const AuthProvider = ({ children }) => {
         email,
         options: {
           emailRedirectTo: `${window.location.origin}${redirectPath}`,
+          shouldCreateUser: false,
           data: {
             organization_name: organizationName,
             partner_type: partnerType,
@@ -447,4 +448,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
