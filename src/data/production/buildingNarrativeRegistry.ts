@@ -61,16 +61,16 @@ export const buildingNarrativeRegistry = {
       "Seaholm Plaza"
     ]
   },
-  "the-shore": {
-    "name": "The Shore",
-    "district": "Rainey",
-    "narrative": "Rainey connects waterfront access with restaurants, nightlife, trail access, and some of downtown's most active evenings.",
-    "walkTo": []
-  },
   "austin-proper-residences": {
     "name": "Austin Proper Residences",
     "district": "2nd Street",
     "narrative": "2nd Street brings retail, dining, fitness, grocery access, and daily convenience into one walkable district.",
+    "walkTo": []
+  },
+  "70-rainey": {
+    "name": "70 Rainey",
+    "district": "Rainey",
+    "narrative": "Rainey connects waterfront access with restaurants, nightlife, trail access, and some of downtown's most active evenings.",
     "walkTo": []
   },
   "1212-guadalupe": {

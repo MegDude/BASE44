@@ -26,11 +26,11 @@ export const searchIntentRegistry = {
   },
   "partner": {
     "placeholders": [
-      "What are people saving?",
-      "Which perk is working best?",
-      "What should we share next?",
+      "What drove the most activity?",
+      "Which perk performed best?",
+      "What should we promote next?",
       "What are residents saving?",
-      "Which buildings are busiest nearby?",
+      "Which buildings are most engaged?",
       "What is trending downtown?"
     ],
     "surfaces": [
@@ -39,7 +39,7 @@ export const searchIntentRegistry = {
       "Properties",
       "Events",
       "Perks",
-      "What's changing"
+      "Trends"
     ],
     "filters": [
       "Activity",
@@ -47,7 +47,7 @@ export const searchIntentRegistry = {
       "Events",
       "Perks",
       "Properties",
-      "What's changing"
+      "Trends"
     ],
     "inventorySource": "production-map-inventory.json"
   }

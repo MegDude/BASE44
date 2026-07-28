@@ -2,7 +2,7 @@ export const drawerContentRegistry = {
   "resident": [
     "Image",
     "District",
-    "Place Name",
+    "Entity Name",
     "Narrative",
     "Actions",
     "Nearby"
@@ -10,8 +10,8 @@ export const drawerContentRegistry = {
   "partner": [
     "Image",
     "District",
-    "Place Name",
-    "What Could Help",
+    "Entity Name",
+    "Opportunity Narrative",
     "Resident Narrative",
     "Actions",
     "Nearby Activity"

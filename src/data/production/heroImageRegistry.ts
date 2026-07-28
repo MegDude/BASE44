@@ -591,7 +591,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West End",
       "imageStrategy": "category-fallback",
@@ -926,32 +926,6 @@ export const heroImageRegistry = [
     }
   },
   {
-    "slug": "311-w-5th-st-1005",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "311-w-5th-st-1008",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
     "slug": "311-w-5th-st-1008",
     "heroImage": "/images/fallbacks/property.jpg",
     "thumbnail": "/images/fallbacks/property-thumb.jpg",
@@ -988,19 +962,6 @@ export const heroImageRegistry = [
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "source",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "311-w-5th-st-806",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
       "buildingSlug": "",
       "mlsOverridesImage": false
     }
@@ -1151,46 +1112,7 @@ export const heroImageRegistry = [
     }
   },
   {
-    "slug": "311-w-5th-st-unit-806",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
     "slug": "311-w-5th-st-unit-902",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "311-w-5th-st-w-902",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "311-w-5th-st-w-902",
     "heroImage": "/images/fallbacks/property.jpg",
     "thumbnail": "/images/fallbacks/property-thumb.jpg",
     "gallery": [],
@@ -2131,7 +2053,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "The Domain",
       "imageStrategy": "category-fallback",
@@ -2320,7 +2242,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Congress",
       "imageStrategy": "category-fallback",
@@ -2525,19 +2447,6 @@ export const heroImageRegistry = [
   },
   {
     "slug": "amli-eastside",
-    "heroImage": "/images/fallbacks/residential.jpg",
-    "thumbnail": "/images/fallbacks/residential-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/residential.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "amli-south-shore",
     "heroImage": "/images/fallbacks/residential.jpg",
     "thumbnail": "/images/fallbacks/residential-thumb.jpg",
     "gallery": [],
@@ -2811,12 +2720,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "aris",
-    "heroImage": "/images/map-listing-actual/aris/aris_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/aris/aris_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/aris/aris_listing_card_1600x900.png"
-    ],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "heroImage": "/images/fallbacks/dining.jpg",
+    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
+    "gallery": [],
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -2982,11 +2889,9 @@ export const heroImageRegistry = [
   },
   {
     "slug": "atx-cocina",
-    "heroImage": "/images/map-listing-actual/atx-cocina/atx-cocina_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/atx-cocina/atx-cocina_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/atx-cocina/atx-cocina_listing_card_1600x900.png"
-    ],
+    "heroImage": "/images/fallbacks/dining.jpg",
+    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
+    "gallery": [],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Downtown Core",
@@ -3506,23 +3411,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "banger-s-sausage-house-and-beer-garden",
-    "heroImage": "/images/fallbacks/property.jpg",
-    "thumbnail": "/images/fallbacks/property-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/property.jpg",
-    "inheritance": {
-      "district": "Rainey",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "banger-s-sausage-house-and-beer-garden",
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Rainey",
       "imageStrategy": "category-fallback",
@@ -3561,7 +3453,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -3600,7 +3492,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -3613,7 +3505,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown",
       "imageStrategy": "category-fallback",
@@ -3782,7 +3674,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/coffee.jpg",
     "thumbnail": "/images/fallbacks/coffee-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West Austin",
       "imageStrategy": "category-fallback",
@@ -3834,7 +3726,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
       "imageStrategy": "category-fallback",
@@ -4997,7 +4889,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Red River",
       "imageStrategy": "category-fallback",
@@ -5501,12 +5393,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "comedy-mothership",
-    "heroImage": "/images/venues/comedy-mothership.png",
-    "thumbnail": "/images/venues/comedy-mothership.png",
-    "gallery": [
-      "/images/venues/comedy-mothership.png"
-    ],
-    "fallback": "/images/venues/comedy-mothership.png",
+    "heroImage": "/images/fallbacks/civic.jpg",
+    "thumbnail": "/images/fallbacks/civic-thumb.jpg",
+    "gallery": [],
+    "fallback": "/images/fallbacks/civic.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -6065,7 +5955,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "The Domain",
       "imageStrategy": "category-fallback",
@@ -6156,7 +6046,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "The Domain",
       "imageStrategy": "category-fallback",
@@ -6299,7 +6189,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
       "imageStrategy": "category-fallback",
@@ -6403,7 +6293,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -6702,7 +6592,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Warehouse",
       "imageStrategy": "category-fallback",
@@ -7462,7 +7352,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -7969,7 +7859,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Congress",
       "imageStrategy": "category-fallback",
@@ -8153,7 +8043,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Rainey",
       "imageStrategy": "category-fallback",
@@ -8357,19 +8247,6 @@ export const heroImageRegistry = [
     }
   },
   {
-    "slug": "green-light-social",
-    "heroImage": "/images/fallbacks/drinks.jpg",
-    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
-    "inheritance": {
-      "district": "West 6th",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
     "slug": "green-mesquite-bbq",
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
@@ -8543,7 +8420,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/coffee.jpg",
     "thumbnail": "/images/fallbacks/coffee-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Warehouse",
       "imageStrategy": "category-fallback",
@@ -8569,7 +8446,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Rainey",
       "imageStrategy": "category-fallback",
@@ -8832,19 +8709,6 @@ export const heroImageRegistry = [
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
     "fallback": "/images/fallbacks/drinks.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "historic-scoot-inn",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -10278,22 +10142,9 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
-    "slug": "la-condesa",
-    "heroImage": "/images/fallbacks/dining.jpg",
-    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
-    "inheritance": {
-      "district": "Downtown",
       "imageStrategy": "category-fallback",
       "buildingSlug": "",
       "mlsOverridesImage": false
@@ -10408,7 +10259,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
       "imageStrategy": "category-fallback",
@@ -10483,11 +10334,9 @@ export const heroImageRegistry = [
   },
   {
     "slug": "las-perlas",
-    "heroImage": "/images/map-listing-actual/las-perlas/las-perlas_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/las-perlas/las-perlas_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/las-perlas/las-perlas_listing_card_1600x900.png"
-    ],
+    "heroImage": "/images/fallbacks/drinks.jpg",
+    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
+    "gallery": [],
     "fallback": "/images/fallbacks/drinks.jpg",
     "inheritance": {
       "district": "Downtown Core",
@@ -10498,12 +10347,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "las-perlas",
-    "heroImage": "/images/map-listing-actual/las-perlas/las-perlas_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/las-perlas/las-perlas_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/las-perlas/las-perlas_listing_card_1600x900.png"
-    ],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "heroImage": "/images/fallbacks/drinks.jpg",
+    "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
+    "gallery": [],
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Red River",
       "imageStrategy": "category-fallback",
@@ -11153,7 +11000,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -12058,7 +11905,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
       "imageStrategy": "category-fallback",
@@ -12123,7 +11970,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "2nd Street",
       "imageStrategy": "category-fallback",
@@ -12604,7 +12451,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Warehouse",
       "imageStrategy": "category-fallback",
@@ -12669,7 +12516,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Waterfront",
       "imageStrategy": "category-fallback",
@@ -12991,12 +12838,10 @@ export const heroImageRegistry = [
   },
   {
     "slug": "pelon-s",
-    "heroImage": "/images/map-listing-actual/pelons/pelons_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/pelons/pelons_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/pelons/pelons_listing_card_1600x900.png"
-    ],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "heroImage": "/images/fallbacks/dining.jpg",
+    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
+    "gallery": [],
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Red River",
       "imageStrategy": "category-fallback",
@@ -13006,11 +12851,9 @@ export const heroImageRegistry = [
   },
   {
     "slug": "pelons-tex-mex",
-    "heroImage": "/images/map-listing-actual/pelons/pelons_hero_clean_1600x900.png",
-    "thumbnail": "/images/map-listing-actual/pelons/pelons_map_thumb_512x512.png",
-    "gallery": [
-      "/images/map-listing-actual/pelons/pelons_listing_card_1600x900.png"
-    ],
+    "heroImage": "/images/fallbacks/dining.jpg",
+    "thumbnail": "/images/fallbacks/dining-thumb.jpg",
+    "gallery": [],
     "fallback": "/images/fallbacks/dining.jpg",
     "inheritance": {
       "district": "Red River",
@@ -13115,7 +12958,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -14313,7 +14156,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Warehouse",
       "imageStrategy": "category-fallback",
@@ -14703,7 +14546,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Red River",
       "imageStrategy": "category-fallback",
@@ -15433,7 +15276,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Congress",
       "imageStrategy": "category-fallback",
@@ -15539,7 +15382,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/drinks.jpg",
     "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/drinks.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -16237,19 +16080,6 @@ export const heroImageRegistry = [
     }
   },
   {
-    "slug": "target",
-    "heroImage": "/images/fallbacks/retail.jpg",
-    "thumbnail": "/images/fallbacks/retail-thumb.jpg",
-    "gallery": [],
-    "fallback": "/images/fallbacks/retail.jpg",
-    "inheritance": {
-      "district": "Downtown Core",
-      "imageStrategy": "category-fallback",
-      "buildingSlug": "",
-      "mlsOverridesImage": false
-    }
-  },
-  {
     "slug": "taverna",
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
@@ -16345,7 +16175,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -18243,7 +18073,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -18542,7 +18372,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "West 6th",
       "imageStrategy": "category-fallback",
@@ -19508,7 +19338,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown Core",
       "imageStrategy": "category-fallback",
@@ -19651,7 +19481,7 @@ export const heroImageRegistry = [
     "heroImage": "/images/fallbacks/dining.jpg",
     "thumbnail": "/images/fallbacks/dining-thumb.jpg",
     "gallery": [],
-    "fallback": "/images/fallbacks/dining.jpg",
+    "fallback": "/images/fallbacks/perks.jpg",
     "inheritance": {
       "district": "Downtown",
       "imageStrategy": "category-fallback",

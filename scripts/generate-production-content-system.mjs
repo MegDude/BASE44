@@ -8,6 +8,12 @@ const root = path.resolve(__dirname, "..");
 const outputDir = path.join(root, "src", "data", "production");
 const today = "2026-06-04";
 
+const committedProduction = JSON.parse(
+  await fs.readFile(path.join(outputDir, "production-map-inventory.json"), "utf8"),
+);
+const { canonicalEntityAliasRegistry: committedAliasRegistry = {} } = await loadBundledModule(
+  "src/data/production/canonicalEntityAliasRegistry.ts",
+);
 const locations = JSON.parse(await fs.readFile(path.join(root, "src", "data", "locations.json"), "utf8"));
 const happyHourInventory = await loadTsExport("src/data/happyHourInventory.ts", "happyHourInventory");
 const waterlooParkInventory = await loadTsExport("src/data/waterlooParkInventory.ts", "waterlooParkInventory");
@@ -601,10 +607,14 @@ for (const record of all) {
   if (duplicateIndex === -1) canonicalRecords.push(record);
   else canonicalRecords[duplicateIndex] = mergeCanonicalRecord(canonicalRecords[duplicateIndex], record);
 }
-const inventory = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
-const canonicalEntityAliasRegistry = Object.fromEntries(
-  inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
-);
+const candidateRecords = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
+const inventory = [...(committedProduction.records || [])].sort((a, b) => a.slug.localeCompare(b.slug));
+const canonicalEntityAliasRegistry = {
+  ...committedAliasRegistry,
+  ...Object.fromEntries(
+    inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
+  ),
+};
 
 const heroRegistry = inventory.map(({ slug, primaryImage, thumbnail, galleryImages, category, inheritance }) => ({
   slug,
@@ -770,10 +780,11 @@ const production = {
     requestedLegendsRecords: 942,
     rawMapRowsAvailable: locations.length,
     normalizedProductionRecords: inventory.length,
+    sourceCandidateRecords: candidateRecords.length,
     legendsListingPlacesAvailable: legendsListingPlaces.length,
     luxuryPresenceListingsAvailable: luxuryPresenceListings.length,
     luxuryPresenceBuildingsAvailable: luxuryPresenceBuildings.length,
-    note: "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented.",
+    note: "The published canonical inventory is curated and remains authoritative. Raw source candidates are audited separately and never overwrite approved records automatically.",
   },
   inheritanceRules: {
     imageHierarchy: ["Actual Place Photography", "MLS Photography", "Building Hero", "District Hero", "Category Fallback"],

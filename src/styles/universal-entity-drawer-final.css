@@ -120,23 +120,23 @@
 
 @media (max-width: 767px), (max-height: 599px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: auto 0 calc(var(--dp-entity-drawer-nav-clearance) - 10px) !important;
+    inset: auto 0 var(--dp-entity-drawer-nav-clearance) !important;
     width: 100dvw !important;
     max-width: 100dvw !important;
     min-height: 0 !important;
-    max-height: 100dvh !important;
+    max-height: calc(100dvh - var(--dp-entity-drawer-nav-clearance)) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="peek"] {
-    height: calc(96px + var(--dp-entity-drawer-nav-clearance)) !important;
+    height: 96px !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="medium"] {
-    height: min(calc(45dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+    height: 45dvh !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="expanded"] {
-    height: min(calc(85dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+    height: min(85dvh, calc(100dvh - var(--dp-entity-drawer-nav-clearance))) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
@@ -152,7 +152,7 @@
   }
 
   .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
-    margin-bottom: var(--dp-entity-drawer-nav-clearance) !important;
+    margin-bottom: 0 !important;
     padding-bottom: 10px !important;
   }
 

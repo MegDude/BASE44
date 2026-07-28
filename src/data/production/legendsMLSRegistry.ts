@@ -2,10 +2,10 @@ export const legendsMLSRegistry = {
   "sourceHierarchy": [
     "MLS",
     "Luxury Presence",
-    "Legends listings",
+    "Legends Feed",
     "Building Registry",
     "District Registry",
-    "Downtown Perks places"
+    "Downtown Perks Inventory"
   ],
   "rules": {
     "mlsWins": true,
@@ -29,8 +29,8 @@ export const legendsMLSRegistry = {
     ]
   },
   "partnerNarrative": {
-    "headline": "Property interest",
-    "purpose": "Help partners understand how available homes connect to neighborhood activity.",
+    "headline": "Property Visibility",
+    "purpose": "Help partners understand how residential inventory connects to neighborhood activity.",
     "actions": [
       "Create Property Plan",
       "Reports",
@@ -85,7 +85,7 @@ export const legendsMLSRegistry = {
       "Hero Image",
       "Address",
       "District",
-      "Listing details",
+      "MLS Metrics",
       "Resident Narrative",
       "Opportunity Narrative",
       "Building Story",
@@ -104,14 +104,14 @@ export const legendsMLSRegistry = {
     "salesProvided": 48,
     "missingSalesForReconciliation": 17
   },
-  "luxuryPresenceListingsSummary": {
-    "source": "Luxury Presence MLS feed",
+  "luxuryPresenceInventorySummary": {
+    "source": "Legends listing feed",
     "generatedAt": "2026-06-04",
     "buildingCount": 11,
-    "listingCount": 14,
+    "listingCount": 13,
     "rejectedMissingRequiredFields": 0
   },
-  "listingCount": 75,
+  "listingCount": 74,
   "buildingCount": 11,
   "targetLegendsRecords": 942,
   "targetNote": "The generator only normalizes committed local source data. Import the full production Legends feed to reach 942 records; do not fabricate MLS facts."
