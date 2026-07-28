@@ -55,7 +55,7 @@ export type MapIconDefinition = {
   asset?: string;
 };
 
-export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo.png";
+export const LEGENDS_PIN_ASSET = "/pins/downtown-perks/legends-logo-gold.svg";
 const PARTNER_PIN_ROOT = "/pins/downtown-perks/partners";
 export const INKIND_PIN_ASSET = `${PARTNER_PIN_ROOT}/inkind.png`;
 export const COFFEE_PIN_ASSET = `${PARTNER_PIN_ROOT}/coffee.png`;
