@@ -14907,6 +14907,7 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!urlState.perkId || !selected) return;
+    if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     const raw = selected.raw || {};
     const validIds = new Set([
       selected.id,
@@ -14918,7 +14919,7 @@ export default function MapPage() {
       raw.perks?.[0]?.id,
     ].filter(Boolean).map(String));
     if (!validIds.has(String(urlState.perkId))) urlState.update({ perkId: "" });
-  }, [selected, urlState]);
+  }, [selected, selectedId, selectedPlaceOverride, urlState]);
 
   const clusterPlacesForDrawer = clusterDrawer?.places || [];
 
