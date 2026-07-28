@@ -14,8 +14,6 @@ function normalizeGoogleMapsEnv(mode) {
   const googleMapsApiKey =
     process.env.VITE_GOOGLE_MAPS_API_KEY ||
     env.VITE_GOOGLE_MAPS_API_KEY ||
-    process.env.GOOGLE_MAPS_API_KEY ||
-    env.GOOGLE_MAPS_API_KEY ||
     "";
   const googleMapsMapId =
     process.env.VITE_GOOGLE_MAP_ID ||
@@ -34,7 +32,7 @@ function assertProductionGoogleMapsEnv(mode, googleMapsApiKey) {
   if (mode !== "production") return;
   if (!/^AIza[0-9A-Za-z_-]{30,}$/.test(String(googleMapsApiKey || "").trim())) {
     throw new Error(
-      "Production map build blocked: configure a valid VITE_GOOGLE_MAPS_API_KEY or GOOGLE_MAPS_API_KEY.",
+      "Production map build blocked: configure a valid VITE_GOOGLE_MAPS_API_KEY.",
     );
   }
 }
