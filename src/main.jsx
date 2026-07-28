@@ -132,6 +132,9 @@ import "@/styles/platform-cleanup-polish-final.css"
 import "@/styles/search-intent-expanded-readability-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
 import "@/styles/platform-panel-cohesion-final.css"
+import "@/styles/universal-entity-drawer-final.css"
+import "@/styles/search-intent-label-contrast-final.css"
+import "@/styles/map-drawer-single-line-titles-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
