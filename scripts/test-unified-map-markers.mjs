@@ -39,7 +39,8 @@ const legacyMarkerSource = mapSource.slice(
   mapSource.indexOf("function legacyDowntownClusterIcon"),
 );
 assert.match(legacyMarkerSource, /<circle\b/, "legacy markers must retain the polished circular plate");
-assert.doesNotMatch(legacyMarkerSource, /pin\.asset|<img\b/, "legacy markers must use the same glyph language as advanced markers");
+assert.match(legacyMarkerSource, /if \(pin\.asset && normalizeMapIconKey\(pin\.label\) === "legends"\)/, "only the approved Legends identity may use branded legacy pin artwork");
+assert.doesNotMatch(legacyMarkerSource, /<img\b/, "legacy markers must not introduce arbitrary image markup");
 
 assert.match(markerFactory, /default:\s*32,[\s\S]*?building:\s*32,[\s\S]*?selected:\s*1,/, "Leaflet pins must retain the same footprint in every state");
 assert.doesNotMatch(markerFactory, /pin\.asset|createArtworkMarker|iconSize:\s*\[200, 32\]/, "Leaflet pins must not restore artwork or expanded-pill variants");
