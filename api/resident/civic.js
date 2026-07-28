@@ -22,7 +22,7 @@ async function loadCivic(database, profile) {
   if (actionError) throw actionError;
 
   const actionIds = (actions || []).map((item) => item.id);
-  const { data: inbox, error: inboxError } = actionIds.length
+  const { data: inbox, error: inboxError } = actionIds.length && profile?.id
     ? await database.from("resident_civic_inbox").select("consultation_id,acted_at,dismissed_at").eq("resident_profile_id", profile.id).in("consultation_id", actionIds)
     : { data: [], error: null };
   if (inboxError) throw inboxError;
@@ -58,11 +58,19 @@ async function loadCivic(database, profile) {
 export default async function handler(req, res) {
   try {
     const database = requireTransactionDatabase();
-    const { profile } = await requireResidentProfile(req);
 
-    if (req.method === "GET") return res.status(200).json(await loadCivic(database, profile));
+    if (req.method === "GET") {
+      let profile = null;
+      try {
+        ({ profile } = await requireResidentProfile(req));
+      } catch (error) {
+        if (!(error instanceof TransactionApiError) || error.status !== 401) throw error;
+      }
+      return res.status(200).json(await loadCivic(database, profile));
+    }
     if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
+    const { profile } = await requireResidentProfile(req);
     const action = cleanText(req.body?.action, 60);
     if (action === "submit_response") {
       const civicActionId = cleanText(req.body?.civicActionId, 80);
