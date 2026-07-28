@@ -524,20 +524,32 @@ function hasFiniteCoordinates(record) {
     && Number.isFinite(Number(record.lng));
 }
 
-const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
-  entityType: "perk",
-  category: "Perks",
-  parentEntityId: hasFiniteCoordinates(venue) ? rawMapEntities
-    .filter((entity) => slug(entity.name) === slug(venue.name) && hasFiniteCoordinates(entity))
+const happyHours = happyHourInventory.flatMap((venue) => {
+  const matchingParents = rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name))
     .sort((left, right) => {
+      if (!hasFiniteCoordinates(venue)) return 0;
+      if (!hasFiniteCoordinates(left)) return 1;
+      if (!hasFiniteCoordinates(right)) return -1;
       const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
       const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
       return leftDistance - rightDistance;
-    })[0]?.id || "" : "",
-  source: "Happy Hour Inventory",
-  updatedAt: today,
-  description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
-}));
+    });
+  const parentEntityId = matchingParents[0]?.id;
+
+  // Happy hours are child perks. An unmatched source row remains visible in
+  // the source audit, but must never be promoted as a standalone map entity.
+  if (!parentEntityId) return [];
+
+  return [normalizeBase(venue, "happy-hour", {
+    entityType: "perk",
+    category: "Perks",
+    parentEntityId,
+    source: "Happy Hour Inventory",
+    updatedAt: today,
+    description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
+  })];
+});
 
 const waterloo = waterlooParkInventory.map((pin) => normalizeBase(pin, "waterloo", {
   entityType: pin.kind === "destination" ? "civic" : pin.kind === "event" ? "event" : "event",
