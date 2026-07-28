@@ -66,9 +66,8 @@ function ProtectedRoute({ children }) {
 
   return (
     <Navigate
-      to="/partners/sign-in"
+      to={`/partners/sign-in?returnTo=${encodeURIComponent(`${location.pathname}${location.search}${location.hash}`)}`}
       replace
-      state={{ from: `${location.pathname}${location.search}${location.hash}` }}
     />
   );
 }
