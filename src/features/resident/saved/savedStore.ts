@@ -110,13 +110,17 @@ export async function toggleSavedEntity(entity: SavedEntity, saved: boolean) {
   store.setOptimistic(entity, saved);
   store.setPending(entity.entityId, true);
   try {
+    const idempotencyKey = globalThis.crypto?.randomUUID?.() || `save-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     return await request("/api/resident/saved", {
       method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
       body: JSON.stringify({
         entityType: entity.entityType,
         entityId: entity.entityId,
         saved,
+        idempotencyKey,
         sourceSurface: "map_detail_drawer",
+        sourceRoute: typeof window === "undefined" ? "" : `${window.location.pathname}${window.location.search}`,
         sourceContext: entity.metadata || {},
       }),
     });
