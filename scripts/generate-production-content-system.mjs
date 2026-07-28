@@ -250,6 +250,8 @@ function normalizeBase(entity, namespace, overrides = {}) {
   const visual = imageFor(entity, type, slugValue);
   return {
     id: overrides.id || entity.id || `${namespace}-${slugValue}`,
+    parentEntityId: overrides.parentEntityId || entity.parentEntityId || "",
+    aliases: [...new Set([...(Array.isArray(entity.aliases) ? entity.aliases : []), ...(Array.isArray(overrides.aliases) ? overrides.aliases : [])].filter(Boolean))],
     slug: slugValue,
     name,
     entityType: type,
@@ -479,8 +481,15 @@ const buildings = luxuryPresenceBuildings.map((building) => normalizeBase(buildi
 }));
 
 const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
-  entityType: venue.category.toLowerCase().includes("coffee") ? "coffee" : venue.category.toLowerCase().includes("bar") ? "bar" : "restaurant",
-  category: venue.category.toLowerCase().includes("bar") ? "Drinks" : "Dining",
+  entityType: "perk",
+  category: "Perks",
+  parentEntityId: rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name))
+    .sort((left, right) => {
+      const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
+      const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
+      return leftDistance - rightDistance;
+    })[0]?.id || "",
   source: "Happy Hour Inventory",
   updatedAt: today,
   description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
@@ -512,12 +521,51 @@ const all = [
   ...waterlooCampaigns,
 ];
 
-const seen = new Map();
-for (const record of all) {
-  const key = [record.entityType, record.slug, baseAddress(record.address)].join("|");
-  if (!seen.has(key)) seen.set(key, record);
+function distanceMeters(left, right) {
+  const coordinates = [left.lat, left.lng, right.lat, right.lng];
+  if (coordinates.some((value) => value == null || value === "") || !coordinates.map(Number).every(Number.isFinite)) return Number.POSITIVE_INFINITY;
+  const radians = (degrees) => degrees * Math.PI / 180;
+  const dLat = radians(Number(right.lat) - Number(left.lat));
+  const dLng = radians(Number(right.lng) - Number(left.lng));
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(radians(Number(left.lat))) * Math.cos(radians(Number(right.lat))) * Math.sin(dLng / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-const inventory = [...seen.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+
+function canonicalFamily(record) {
+  if (["restaurant", "bar", "coffee", "retail", "wellness"].includes(record.entityType)) return "place";
+  return record.entityType;
+}
+
+function mergeCanonicalRecord(canonical, duplicate) {
+  const aliases = new Set([...(canonical.aliases || []), ...(duplicate.aliases || [])]);
+  if (duplicate.id !== canonical.id) aliases.add(duplicate.id);
+  return {
+    ...duplicate,
+    ...canonical,
+    address: canonical.address || duplicate.address,
+    description: canonical.description || duplicate.description,
+    primaryImage: canonical.primaryImage || duplicate.primaryImage,
+    galleryImages: [...new Set([...(canonical.galleryImages || []), ...(duplicate.galleryImages || [])])],
+    aliases: [...aliases],
+  };
+}
+
+const canonicalRecords = [];
+for (const record of all) {
+  const duplicateIndex = canonicalRecords.findIndex((candidate) => {
+    if (candidate.id === record.id) return true;
+    if (record.entityType === "perk" || candidate.entityType === "perk") return false;
+    if (canonicalFamily(candidate) !== canonicalFamily(record)) return false;
+    return slug(candidate.name) === slug(record.name) && distanceMeters(candidate, record) <= 35;
+  });
+  if (duplicateIndex === -1) canonicalRecords.push(record);
+  else canonicalRecords[duplicateIndex] = mergeCanonicalRecord(canonicalRecords[duplicateIndex], record);
+}
+const inventory = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
+const canonicalEntityAliasRegistry = Object.fromEntries(
+  inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
+);
 
 const heroRegistry = inventory.map(({ slug, primaryImage, thumbnail, galleryImages, category, inheritance }) => ({
   slug,
@@ -721,5 +769,6 @@ await fs.writeFile(path.join(outputDir, "districtNarrativeRegistry.ts"), tsExpor
 await fs.writeFile(path.join(outputDir, "legendsMLSRegistry.ts"), tsExport("legendsMLSRegistry", legendsMLSRegistry));
 await fs.writeFile(path.join(outputDir, "searchIntentRegistry.ts"), tsExport("searchIntentRegistry", searchIntentRegistry));
 await fs.writeFile(path.join(outputDir, "campaignAssetRegistry.ts"), tsExport("campaignAssetRegistry", campaignAssetRegistry));
+await fs.writeFile(path.join(outputDir, "canonicalEntityAliasRegistry.ts"), tsExport("canonicalEntityAliasRegistry", canonicalEntityAliasRegistry));
 
 console.log(JSON.stringify(production.coverage, null, 2));
