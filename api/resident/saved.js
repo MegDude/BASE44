@@ -12,7 +12,7 @@ function clean(value, limit = 240) {
 }
 
 function isMissingRpc(error) {
-  return error?.code === "PGRST202" || /could not find the function/i.test(String(error?.message || ""));
+  return error?.code === "PGRST202";
 }
 
 async function setResidentSavedEntity(database, parameters) {
