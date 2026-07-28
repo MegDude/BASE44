@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { consumeAuthReturnPath, getSafeReturnPath } from "@/lib/authReturnPath";
+import { DEFAULT_PARTNER_RETURN_PATH, consumeAuthReturnPath, getSafeReturnPath } from "@/lib/authReturnPath";
 
 export default function AuthCallbackPage() {
   const location = useLocation();
@@ -12,20 +12,17 @@ export default function AuthCallbackPage() {
     if (isLoadingAuth) return;
     const hashParams = new URLSearchParams(location.hash.replace(/^#/, ""));
     const callbackError = hashParams.get("error_description") || hashParams.get("error");
-    const returnTo = getSafeReturnPath(location.search);
-    if (callbackError) {
-      navigate(`/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=${encodeURIComponent(callbackError)}`, { replace: true });
-      return;
-    }
-    if (!isAuthenticated) {
-      navigate(`/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=callback_failed`, { replace: true });
-      return;
-    }
+    const audience = new URLSearchParams(location.search).get("audience") === "partner" ? "partner" : "resident";
+    const fallback = audience === "partner" ? DEFAULT_PARTNER_RETURN_PATH : undefined;
+    const returnTo = getSafeReturnPath(location.search, fallback);
+    const signInPath = audience === "partner" ? "/partners/sign-in" : "/sign-in";
+    if (callbackError) return navigate(`${signInPath}?returnTo=${encodeURIComponent(returnTo)}&error=${encodeURIComponent(callbackError)}`, { replace: true });
+    if (!isAuthenticated) return navigate(`${signInPath}?returnTo=${encodeURIComponent(returnTo)}&error=callback_failed`, { replace: true });
     const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
-    if (["admin", "platform_admin", "super_admin"].includes(role)) {
-      return navigate("/admin-studio/command-center", { replace: true });
+    if (audience === "partner") {
+      if (role === "resident") return navigate(`/partners/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=partner_access_required`, { replace: true });
+      return navigate(returnTo, { replace: true });
     }
-    if (role !== "resident") return navigate("/partner-workspace/overview", { replace: true });
     navigate(consumeAuthReturnPath(returnTo), { replace: true });
   }, [isAuthenticated, isLoadingAuth, location.hash, location.search, navigate, user]);
 
