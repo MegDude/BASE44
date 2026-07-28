@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-export type MapPanelDrawerState = "collapsed" | "medium" | "expanded";
+export type MapPanelDrawerState = "peek" | "medium" | "expanded" | "full";
 
 export interface MapPanelHistoryEntry {
   url: string;
