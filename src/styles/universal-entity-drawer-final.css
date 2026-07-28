@@ -164,11 +164,11 @@
 
 @media (min-width: 768px) and (min-height: 600px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: 0 0 0 auto !important;
+    inset: 0 0 var(--dp-bottom-nav-total-height, 64px) auto !important;
     width: min(480px, 42vw) !important;
     max-width: 480px !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+    max-height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
   }
 
   .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
