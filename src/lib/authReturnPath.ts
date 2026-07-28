@@ -1,4 +1,5 @@
 export const DEFAULT_RESIDENT_MAP_PATH = "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured";
+export const DEFAULT_PARTNER_RETURN_PATH = "/partner-workspace/overview";
 const DEFAULT_RESIDENT_FILTER = "Featured";
 
 function normalizeResidentFilter(value?: string | null) {
@@ -102,10 +103,14 @@ export function normalizeResidentReturnPath(value?: string | null) {
   return DEFAULT_RESIDENT_MAP_PATH;
 }
 
+export function normalizeAuthReturnPath(value: string | null | undefined, fallback = DEFAULT_RESIDENT_MAP_PATH) {
+  if (!isSafeFirstPartyPath(value)) return fallback;
+  const parsed = new URL(value, "https://downtownperks.local");
+  if (["/auth/callback", "/sign-in", "/partners/sign-in", "/residents/login"].includes(parsed.pathname)) return fallback;
+  return fallback === DEFAULT_RESIDENT_MAP_PATH ? normalizeResidentReturnPath(value) : value;
+}
 export function getSafeReturnPath(search: string, fallback = DEFAULT_RESIDENT_MAP_PATH) {
-  const requested = new URLSearchParams(search).get("returnTo");
-  if (!requested) return fallback;
-  return normalizeResidentReturnPath(requested);
+  return normalizeAuthReturnPath(new URLSearchParams(search).get("returnTo"), fallback);
 }
 
 export function buildResidentMapPath(search: string, pathname = "/map") {
