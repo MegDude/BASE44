@@ -3154,14 +3154,14 @@ function ProfileSection({ user, setUser }) {
       const normalizedUser = { ...nextUser, ...(updated || {}) };
       saveStoredProfile(normalizedUser);
       setUser(normalizedUser);
-    } catch {
-      const localUser = markLocalRecord(nextUser);
-      saveStoredProfile(localUser);
-      setUser(localUser);
-    } finally {
-      setSaving(false);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+    } catch (error) {
+      console.error("[partner-profile] Remote save failed", error);
+      setSaved(false);
+      window.alert("Your changes were not saved. Check your connection and sign in again.");
+    } finally {
+      setSaving(false);
     }
   }
 
