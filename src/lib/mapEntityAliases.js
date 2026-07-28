@@ -1,5 +1,6 @@
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { luxuryPresenceListings } from "@/data/luxuryPresenceInventory";
+import { canonicalEntityAliasRegistry } from "@/data/production/canonicalEntityAliasRegistry";
 
 export function normalizePropertyId(value) {
   return String(value || "")
@@ -275,6 +276,7 @@ export function resolvePropertyListingUrlId(rawEntityId) {
 }
 
 export const mapEntityAliases = {
+  ...canonicalEntityAliasRegistry,
   bathe: "bathe-austin",
   "bathe-austin": "bathe-austin",
   "bathe-wellness": "bathe-austin",
