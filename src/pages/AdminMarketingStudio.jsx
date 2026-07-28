@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Check, ChevronRight, Sparkles } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { supabaseClient } from "@/lib/supabase/client";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
 import {
   ADMIN_STUDIO_ROUTES,
   CAMPAIGN_CREATION_FLOW,
@@ -173,8 +174,12 @@ function ResidentAdminPanel() {
         return;
       }
       try {
-        const response = await fetch("/api/admin/accounts", {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await fetch(`${getPartnerContentApiBaseUrl()}/api/admin/accounts`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
         });
         const payload = await response.json();
         if (!response.ok) throw new Error(payload.error || "Account records could not be loaded.");
