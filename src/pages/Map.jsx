@@ -16506,8 +16506,6 @@ export default function MapPage() {
     const isRentalSelection = isRentalEntity(place);
     const isCatalogSelection = Boolean(selection.catalogResult);
     const isListingSelection = !isCatalogSelection && isUnitLevelListingPlace(place);
-    const isPropertySelection = isListingSelection || Boolean(getLuxuryPresenceBuilding(place)) || isPropertyEntity(place);
-    const publicPropertyId = isCatalogSelection ? place.id : isPropertySelection ? resolvePropertyUrlEntityId(place.id) : "";
     const publicListingId = isListingSelection ? resolvePropertyListingUrlId(place.id) : "";
     const nextEntityId = canonicalSelectedId;
     const nextPerkId = selection.perkId || "";
@@ -16533,7 +16531,7 @@ export default function MapPage() {
     navigateMapJourney(
       isRentalSelection
         ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: nextEntityId, listingId: "", perkId: "" }
-        : { tab: "map", entityId: isPropertySelection ? publicPropertyId || nextEntityId : nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
+        : { tab: "map", entityId: nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
     );
     const raw = place.raw || {};
     const trackingContext = {
