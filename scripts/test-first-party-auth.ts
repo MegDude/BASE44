@@ -13,6 +13,8 @@ const residentAccessApiSource = readFileSync(join(root, "api/resident-access.js"
 const layoutSource = readFileSync(join(root, "src/components/Layout.jsx"), "utf8");
 const supabaseClientSource = readFileSync(join(root, "src/lib/supabase/client.ts"), "utf8");
 const productionGuardSource = readFileSync(join(root, "src/lib/productionGuards.ts"), "utf8");
+const adminStudioSource = readFileSync(join(root, "src/pages/AdminMarketingStudio.jsx"), "utf8");
+const adminAccountsApiSource = readFileSync(join(root, "api/admin/accounts.js"), "utf8");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
@@ -75,6 +77,12 @@ for (const adminPath of [
 }
 assert.match(authSource, /signInWithPassword\(\{ email, password \}\)/);
 assert.match(authSource, /signInWithOtp\(\{[\s\S]*?shouldCreateUser:\s*false/);
+assert.doesNotMatch(adminStudioSource, /dp_admin_resident_records|sample-resident|resident@example\.com/);
+assert.match(adminStudioSource, /fetch\("\/api\/admin\/accounts"/);
+assert.match(adminAccountsApiSource, /requireAuthenticatedUser\(req\)/);
+assert.match(adminAccountsApiSource, /platform_profiles/);
+assert.match(adminAccountsApiSource, /auth\.admin\.listUsers/);
+assert.match(adminAccountsApiSource, /Cache-Control", "private, no-store"/);
 assert.match(supabaseClientSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(productionGuardSource, /VITE_SUPABASE_PUBLISHABLE_KEY/);
 assert.match(authSource, /auth\.signUp\(\{/);
