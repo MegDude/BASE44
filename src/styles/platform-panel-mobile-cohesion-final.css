@@ -11,7 +11,7 @@
 }
 
 html body #root .dp-map-page :is(
-  aside.dp-native-drawer,
+  aside.dp-native-drawer:not(#dp-active-map-drawer),
   .dp-map-drawer,
   .dp-map-drawer-shell,
   .dp-map-directory-sheet,
@@ -218,7 +218,7 @@ html body #root .dp-map-page img[src*="/pins/downtown-perks/legends-logo-gold.sv
 
 @media (max-width: 767px) {
   html body #root .dp-map-page :is(
-    aside.dp-native-drawer,
+    aside.dp-native-drawer:not(#dp-active-map-drawer),
     .dp-map-drawer,
     .dp-map-drawer-shell,
     .dp-map-directory-sheet,
@@ -256,7 +256,7 @@ html body #root .dp-map-page img[src*="/pins/downtown-perks/legends-logo-gold.sv
 
 @media (min-width: 768px) {
   html body #root .dp-map-page :is(
-    aside.dp-native-drawer,
+    aside.dp-native-drawer:not(#dp-active-map-drawer),
     .dp-map-drawer,
     .dp-map-drawer-shell,
     .dp-map-directory-sheet,
