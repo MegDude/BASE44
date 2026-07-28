@@ -13,6 +13,8 @@ export type SessionClaims = {
   userId?: string;
   email?: string;
   role?: DowntownPerksRole;
+  platformRole?: DowntownPerksRole;
+  isSuperAdmin?: boolean;
   partnerType?: string;
   entityId?: string;
   organizationId?: string;
@@ -44,7 +46,9 @@ export function normalizeSessionClaims(claims: Record<string, unknown> = {}): Se
   return {
     userId: String(claims.sub || claims.user_id || claims.userId || ""),
     email: normalizeEmail(claims.email || claims.user_email || claims.userEmail),
-    role: claims.role as DowntownPerksRole | undefined,
+    role: String(claims.platformRole || claims.platform_role || claims.role || "").toLowerCase() as DowntownPerksRole | undefined,
+    platformRole: String(claims.platformRole || claims.platform_role || "").toLowerCase() as DowntownPerksRole | undefined,
+    isSuperAdmin: claims.isSuperAdmin === true || claims.is_super_admin === true,
     partnerType: String(claims.partnerType || claims.partner_type || ""),
     entityId: String(claims.entityId || claims.entity_id || ""),
     organizationId: String(claims.organizationId || claims.organization_id || ""),
@@ -52,9 +56,9 @@ export function normalizeSessionClaims(claims: Record<string, unknown> = {}): Se
 }
 
 export function isSuperAdminSession(session: SessionClaims = {}) {
-  if (session.role === "super_admin") return true;
-  const email = normalizeEmail(session.email);
-  return Boolean(email && getSuperAdminEmails().includes(email));
+  // Authorization is derived from trusted Supabase app_metadata/profile claims.
+  // Email allowlists may support recovery tooling, but never grant browser access.
+  return session.role === "super_admin" || session.platformRole === "super_admin" || session.isSuperAdmin === true;
 }
 
 export function isAdminSession(session: SessionClaims = {}) {
