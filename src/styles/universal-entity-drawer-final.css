@@ -120,7 +120,7 @@
 
 @media (max-width: 767px), (max-height: 599px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: auto 0 0 !important;
+    inset: auto 0 calc(var(--dp-entity-drawer-nav-clearance) - 10px) !important;
     width: 100dvw !important;
     max-width: 100dvw !important;
     min-height: 0 !important;
@@ -140,6 +140,7 @@
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
+    bottom: 0 !important;
     height: 100dvh !important;
   }
 

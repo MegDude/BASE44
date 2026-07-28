@@ -1,13 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { transform } from "esbuild";
-import { legendsListingPlaces, LEGENDS_RECONCILIATION_NOTE } from "../src/data/legendsListings.js";
-import {
-  luxuryPresenceBuildings,
-  luxuryPresenceInventorySummary,
-  luxuryPresenceListings,
-} from "../src/data/luxuryPresenceInventory.js";
+import { build, transform } from "esbuild";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -18,6 +12,15 @@ const locations = JSON.parse(await fs.readFile(path.join(root, "src", "data", "l
 const happyHourInventory = await loadTsExport("src/data/happyHourInventory.ts", "happyHourInventory");
 const waterlooParkInventory = await loadTsExport("src/data/waterlooParkInventory.ts", "waterlooParkInventory");
 const waterlooParkCampaignPins = await loadTsExport("src/data/waterlooParkCampaignPins.ts", "waterlooParkCampaignPins");
+const {
+  legendsListingPlaces,
+  LEGENDS_RECONCILIATION_NOTE,
+} = await loadBundledModule("src/data/legendsListings.js");
+const {
+  luxuryPresenceBuildings,
+  luxuryPresenceInventorySummary,
+  luxuryPresenceListings,
+} = await loadBundledModule("src/data/luxuryPresenceInventory.js");
 
 async function loadTsExport(relativePath, exportName) {
   const source = await fs.readFile(path.join(root, relativePath), "utf8");
@@ -29,6 +32,32 @@ async function loadTsExport(relativePath, exportName) {
   });
   const module = await import(`data:text/javascript;base64,${Buffer.from(transformed.code).toString("base64")}`);
   return module[exportName] || [];
+}
+
+async function loadBundledModule(relativePath) {
+  const result = await build({
+    entryPoints: [path.join(root, relativePath)],
+    bundle: true,
+    format: "esm",
+    platform: "node",
+    target: "es2022",
+    write: false,
+    plugins: [{
+      name: "raw-import",
+      setup(esbuild) {
+        esbuild.onResolve({ filter: /\?raw$/ }, ({ path: importPath, resolveDir }) => ({
+          path: path.resolve(resolveDir, importPath.replace(/\?raw$/, "")),
+          namespace: "raw-file",
+        }));
+        esbuild.onLoad({ filter: /.*/, namespace: "raw-file" }, async ({ path: filePath }) => ({
+          contents: `export default ${JSON.stringify(await fs.readFile(filePath, "utf8"))};`,
+          loader: "js",
+        }));
+      },
+    }],
+  });
+  const code = result.outputFiles[0]?.text || "";
+  return import(`data:text/javascript;base64,${Buffer.from(code).toString("base64")}`);
 }
 
 function slug(value, fallback = "downtown-perks") {
@@ -480,16 +509,25 @@ const buildings = luxuryPresenceBuildings.map((building) => normalizeBase(buildi
   },
 }));
 
+function hasFiniteCoordinates(record) {
+  return record?.lat != null
+    && record?.lng != null
+    && record.lat !== ""
+    && record.lng !== ""
+    && Number.isFinite(Number(record.lat))
+    && Number.isFinite(Number(record.lng));
+}
+
 const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
   entityType: "perk",
   category: "Perks",
-  parentEntityId: rawMapEntities
-    .filter((entity) => slug(entity.name) === slug(venue.name))
+  parentEntityId: hasFiniteCoordinates(venue) ? rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name) && hasFiniteCoordinates(entity))
     .sort((left, right) => {
       const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
       const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
       return leftDistance - rightDistance;
-    })[0]?.id || "",
+    })[0]?.id || "" : "",
   source: "Happy Hour Inventory",
   updatedAt: today,
   description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
@@ -534,6 +572,7 @@ function distanceMeters(left, right) {
 
 function canonicalFamily(record) {
   if (["restaurant", "bar", "coffee", "retail", "wellness"].includes(record.entityType)) return "place";
+  if (record.entityType === "listing") return "place";
   return record.entityType;
 }
 

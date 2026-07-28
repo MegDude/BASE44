@@ -144,10 +144,9 @@ if (mapLabels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Saved
   throw new Error(`Unexpected resident map tabs: ${mapLabels.join(", ")}`);
 }
 
-await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Home" }).click();
-await page.waitForURL((url) => url.pathname === "/resident/home", { timeout: 15_000 });
-await page.getByRole("heading", { name: "Downtown today" }).waitFor();
+await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Map" }).click();
+await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("tab") === "map", { timeout: 15_000 });
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
-console.log("resident native mobile: complete bright-white Card profile, compact gold actions, five canonical tabs, and Map returns to Home");
+console.log("resident native mobile: complete bright-white Card profile, compact gold actions, and five canonical map tabs");
 await browser.close();

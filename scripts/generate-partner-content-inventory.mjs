@@ -61,7 +61,7 @@ async function fileExists(relativePath) {
     // CI and Codex commonly use sparse checkouts. A tracked production asset is
     // not missing merely because its blob was not materialized locally.
     try {
-      trackedFilesPromise ||= execFileAsync("git", ["ls-tree", "-r", "--name-only", "HEAD"], {
+      trackedFilesPromise ||= execFileAsync("git", ["ls-tree", "-r", "--name-only", "HEAD", "--", "public/"], {
         cwd: ROOT,
         maxBuffer: 16 * 1024 * 1024,
       }).then(({ stdout }) => new Set(stdout.split("\n").filter(Boolean)));
