@@ -91,7 +91,7 @@ function DetailSection({ section, onRelatedSelect, onAnalytics }) {
 
 export function DrawerActionFooter({ label, className = "", children }) {
   const anchorRef = useRef(null);
-  const [drawerHost, setDrawerHost] = useState(null);
+  const [drawerHost, setDrawerHost] = useState(undefined);
 
   useEffect(() => {
     setDrawerHost(anchorRef.current?.closest?.("#dp-active-map-drawer") || null);
@@ -106,7 +106,13 @@ export function DrawerActionFooter({ label, className = "", children }) {
   return (
     <>
       <span ref={anchorRef} className="dp-drawer-action-anchor" aria-hidden="true" />
-      {drawerHost ? createPortal(actions, drawerHost) : actions}
+      {drawerHost === undefined
+        ? null
+        : drawerHost?.dataset?.hasDrawerActions === "true"
+          ? null
+          : drawerHost
+            ? createPortal(actions, drawerHost)
+            : actions}
     </>
   );
 }
