@@ -227,3 +227,13 @@
   margin: 0;
   max-width: 62ch;
 }
+
+/* Final viewport authority: the persistent navigation owns the bottom strip
+   at every breakpoint, so contextual actions can never be clipped beneath it. */
+@media (min-width: 768px) and (min-height: 600px) {
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    inset: 0 0 var(--dp-bottom-nav-total-height, 64px) auto !important;
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+    max-height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+  }
+}
