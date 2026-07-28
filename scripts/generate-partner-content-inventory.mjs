@@ -3,8 +3,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 const ROOT = process.cwd();
+const execFileAsync = promisify(execFile);
+let trackedFilesPromise;
 const OUTPUT_DIR = path.join(ROOT, "inventory", "generated");
 const BASE_URL = (process.env.DP_CANONICAL_BASE_URL || "https://base-44-downtown-perks-live.vercel.app").replace(/\/$/, "");
 const APP_ROUTE_FILE = "src/App.jsx";
@@ -49,7 +53,108 @@ function titleFromPath(value) { return value === "/" ? "Home" : clean(value.spli
 function joinUrl(route) { return `${BASE_URL}${route.startsWith("/") ? route : `/${route}`}`; }
 
 async function fileExists(relativePath) {
-  try { await fs.access(path.join(ROOT, relativePath.replace(/^\//, ""))); return true; } catch { return false; }
+  const repositoryPath = relativePath.replace(/^\//, "");
+  try {
+    await fs.access(path.join(ROOT, repositoryPath));
+    return true;
+  } catch {
+    // CI and Codex commonly use sparse checkouts. A tracked production asset is
+    // not missing merely because its blob was not materialized locally.
+    try {
+      trackedFilesPromise ||= execFileAsync("git", ["ls-tree", "-r", "--name-only", "HEAD"], {
+        cwd: ROOT,
+        maxBuffer: 16 * 1024 * 1024,
+      }).then(({ stdout }) => new Set(stdout.split("\n").filter(Boolean)));
+      return (await trackedFilesPromise).has(repositoryPath);
+    } catch {
+      return false;
+    }
+  }
+}
+
+function normalizedAddress(value) {
+  return clean(value).toLowerCase().replace(/\b(street|st\.?)\b/g, "st").replace(/\b(road|rd\.?)\b/g, "rd").replace(/[^a-z0-9#]+/g, " ").trim();
+}
+
+function coordinatesAreNear(left, right, toleranceMeters = 35) {
+  const lat1 = Number(left.latitude);
+  const lng1 = Number(left.longitude);
+  const lat2 = Number(right.latitude);
+  const lng2 = Number(right.longitude);
+  if (![lat1, lng1, lat2, lng2].every(Number.isFinite)) return false;
+  const radians = (degrees) => degrees * Math.PI / 180;
+  const dLat = radians(lat2 - lat1);
+  const dLng = radians(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) <= toleranceMeters;
+}
+
+function entityFamily(type) {
+  if (["restaurant", "bar", "coffee", "retail", "wellness", "venue"].includes(type)) return "place";
+  return type;
+}
+
+function duplicateIssues(entities) {
+  const parents = new Map(entities.map((entity) => [entity.objectId, entity.objectId]));
+  const find = (id) => {
+    const parent = parents.get(id);
+    if (parent === id) return id;
+    const root = find(parent);
+    parents.set(id, root);
+    return root;
+  };
+  const union = (left, right) => {
+    const leftRoot = find(left);
+    const rightRoot = find(right);
+    if (leftRoot !== rightRoot) parents.set(rightRoot, leftRoot);
+  };
+  const byName = new Map();
+  const bySlug = new Map();
+  for (const entity of entities) {
+    const name = slugify(entity.objectName);
+    if (name) {
+      if (byName.has(name)) union(entity.objectId, byName.get(name));
+      else byName.set(name, entity.objectId);
+    }
+    if (entity.slug) {
+      if (bySlug.has(entity.slug)) union(entity.objectId, bySlug.get(entity.slug));
+      else bySlug.set(entity.slug, entity.objectId);
+    }
+  }
+  const groups = new Map();
+  for (const entity of entities) {
+    const root = find(entity.objectId);
+    groups.set(root, [...(groups.get(root) || []), entity]);
+  }
+  const issues = [];
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const suspiciousPairs = [];
+    for (let leftIndex = 0; leftIndex < group.length; leftIndex += 1) {
+      for (let rightIndex = leftIndex + 1; rightIndex < group.length; rightIndex += 1) {
+        const left = group[leftIndex];
+        const right = group[rightIndex];
+        if (entityFamily(left.objectType) !== entityFamily(right.objectType)) continue;
+        const leftAddress = normalizedAddress(left.address);
+        const rightAddress = normalizedAddress(right.address);
+        if ((leftAddress && rightAddress && leftAddress === rightAddress) || coordinatesAreNear(left, right)) {
+          suspiciousPairs.push(`${left.objectId} ↔ ${right.objectId}`);
+        }
+      }
+    }
+    if (!suspiciousPairs.length) continue;
+    issues.push({
+      issueId: `DUP-${String(issues.length + 1).padStart(5, "0")}`,
+      severity: "High",
+      objectType: "Entity",
+      objectId: group.map((entity) => entity.objectId).join(" | "),
+      issue: `Probable co-located canonical duplicate: ${group[0].objectName}`,
+      evidence: suspiciousPairs.join(" | "),
+      recommendedAction: "Resolve to one canonical identity and retain the other source IDs as aliases after editorial review.",
+    });
+  }
+  return issues;
 }
 
 async function listFiles(relativeDir, matcher = /./) {
@@ -282,25 +387,49 @@ async function main() {
   const media = [];
   for (const entity of entities) if (entity.primaryImage) media.push({ mediaId: `MED-${String(media.length + 1).padStart(5, "0")}`, entityId: entity.objectId, path: entity.primaryImage, mediaType: path.extname(entity.primaryImage).slice(1).toLowerCase() || "image", exists: await fileExists(`public/${entity.primaryImage.replace(/^\//, "")}`) ? "Yes" : "No", altText: `${entity.objectName} in ${entity.district || "Downtown Austin"}`, sourceFile: entity.sourceFiles, status: "Generated" });
   const issues = makeIssues({ pages, entities, routes, perksEvents, campaigns, relationships, media });
-  const duplicates = [];
-  for (const [field, getter] of [["slug", (x) => x.slug], ["name", (x) => x.objectName.toLowerCase()]]) {
-    const groups = new Map(); for (const entity of entities) { const key = getter(entity); groups.set(key, [...(groups.get(key) || []), entity]); }
-    for (const [key, group] of groups) if (key && group.length > 1) duplicates.push({ issueId: `DUP-${String(duplicates.length + 1).padStart(5, "0")}`, severity: "Medium", objectType: "Entity", objectId: group.map((x) => x.objectId).join(" | "), issue: `Duplicate ${field}: ${key}`, evidence: group.map((x) => x.sourceEvidence).join(" | "), recommendedAction: "Confirm canonical ID and merge aliases without deleting evidence." });
+  const duplicates = duplicateIssues(entities);
+  const canonicalIds = new Set(entities.map((entity) => entity.objectId));
+  const orphans = [];
+  for (const entity of entities) {
+    const parentId = clean(entity.rawRecord?.parentEntityId || entity.rawRecord?.hostEntityId);
+    if (parentId && !canonicalIds.has(parentId)) {
+      orphans.push({
+        issueId: `ORP-${String(orphans.length + 1).padStart(5, "0")}`,
+        severity: "High",
+        objectType: "Entity",
+        objectId: entity.objectId,
+        issue: "Canonical entity references a missing parent",
+        evidence: parentId,
+        recommendedAction: "Resolve the parent to a canonical entity ID or remove the invalid relationship before publishing.",
+      });
+    }
   }
-  const orphans = issues.filter((issue) => /no host|no workspace|no explicit stops/.test(issue.issue));
+  const inferredReferenceWarnings = issues.filter((issue) => /no host|no workspace|no explicit stops/.test(issue.issue));
   const brokenLinks = media.filter((item) => item.exists === "No").map((item, index) => ({ issueId: `LNK-${String(index + 1).padStart(5, "0")}`, severity: "High", objectType: "Media", objectId: item.entityId, issue: "Missing local media", evidence: item.path, recommendedAction: "Add the approved asset or replace the reference." }));
-  const errors = { generatedAt: new Date().toISOString(), blocking: [], warnings: issues, database: dbData.map(({ table, rows, status }) => ({ table, rowCount: rows.length, status })) };
+  const errors = {
+    generatedAt: new Date().toISOString(),
+    blocking: [...orphans, ...duplicates, ...brokenLinks],
+    warnings: issues,
+    database: dbData.map(({ table, rows, status }) => ({ table, rowCount: rows.length, status })),
+  };
   const metadata = {
     schemaVersion: "2.0.0", generatedAt: new Date().toISOString(), baseUrl: BASE_URL, sourceOfTruth: "Canonical BASE44 router and committed registries; Supabase joins are optional and server-side only.",
     routeCount: pages.length, redirectCount: redirects.length, workspaceCount: workspaceRows.length, entityCount: entities.length, pinCount: entities.filter((x) => x.pinVisible === "Yes").length,
     perkCount: perkEventRows.filter((x) => x.recordType === "perk").length, eventCount: perkEventRows.filter((x) => x.recordType === "event").length, campaignCount: campaignRows.length,
     routeCollectionCount: routeRows.length, relationshipCount: relationships.length, mediaCount: media.length, orphanCount: orphans.length, duplicateCount: duplicates.length, brokenLinkCount: brokenLinks.length,
-    sourceFileCount: sourceFiles.length, databaseTables: errors.database,
+    sourceFileCount: sourceFiles.length,
+    canonicalCountDefinition: "Unique records in production-map-inventory.json after canonical ID resolution; synthetic UI records and typed source-code references are excluded.",
+    canonicalCountReconciled: entities.length === sourceEntities.length && entities.length === entities.filter((entity) => entity.pinVisible === "Yes").length,
+    inferredReferenceWarningCount: inferredReferenceWarnings.length,
+    blockingIssueCount: errors.blocking.length,
+    databaseTables: errors.database,
     qualityGates: {
       unrestrictedMapQueriesAllowed: false, publicEntitiesRequireResidentLink: entities.every((x) => x.visibility !== "Public" || x.residentLink),
       ownedEntitiesRequirePartnerEditor: entities.every((x) => !x.workspaceId || x.partnerEditor), searchableObjectsRequireEmbeddingText: entities.every((x) => x.embeddingText),
       indexablePagesRequireSeoMetadata: pages.every((x) => x.indexability !== "Index" || (x.seoTitle && x.metaDescription)), workspacePagesNoindex: pages.filter((x) => x.authRequired === "Yes").every((x) => x.indexability === "Noindex"),
       adminPagesNoindex: pages.filter((x) => x.audience === "Admin").every((x) => x.indexability === "Noindex"), serviceRoleExported: false,
+      canonicalCountReconciled: entities.length === sourceEntities.length && entities.length === entities.filter((entity) => entity.pinVisible === "Yes").length,
+      noBlockingInventoryIssues: errors.blocking.length === 0,
     },
   };
   const contentInventory = { metadata, pages, entities: entities.map(({ rawRecord, ...row }) => row), relationships, copyLinks, seo: seoRows, routesCollections: routeRows, perksEvents: perkEventRows, campaigns: campaignRows, workspaces: workspaceRows, mapLayers, media, redirects, qualityIssues: issues };
