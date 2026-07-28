@@ -16,6 +16,9 @@ assert.match(markerSource, /zIndex/, "selected markers must retain stable priori
 assert.match(markerSource, /gmpClickable:\s*true/, "advanced markers must be provider-level clickable");
 assert.match(markerSource, /addEventListener\("gmp-click"[\s\S]*?content\.querySelector<HTMLElement>\("\.dp-map-pin"\)\?\.click\(\)/, "advanced markers must bridge provider clicks to their canonical pin control");
 assert.match(markerSource, /marker\.addListener\("click", onClick\)/, "legacy markers must preserve the same click contract");
+assert.match(mapSource, /data-accessible-marker-entity-id=\{item\.place\.id\}/, "visible provider markers need a canonical accessible control");
+assert.match(mapSource, /aria-label=\{`Open \$\{item\.place\.name\}`\}/, "accessible marker controls need the canonical entity name");
+assert.match(mapSource, /markerActionHandlersRef\.current\.onSelect\?\.\(item\.place\)/, "accessible marker controls must use the shared selection pipeline");
 
 assert.match(markerCss, /--dp-canonical-pin-size:\s*32px/, "all map pins must share the canonical 32px footprint");
 assert.match(markerCss, /--dp-canonical-pin-navy:\s*#0B1F33/i, "map pins must use the canonical navy");
