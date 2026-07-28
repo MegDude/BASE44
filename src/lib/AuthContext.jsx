@@ -10,6 +10,40 @@ import {
 
 const AuthContext = createContext();
 const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
+const PLATFORM_ROLES = new Set(["resident", "partner", "admin", "platform_admin", "super_admin"]);
+
+function buildSupabaseProfile(currentUser) {
+  if (!currentUser) return null;
+  const appMetadata = currentUser.app_metadata || {};
+  const userMetadata = currentUser.user_metadata || {};
+  const declaredRole = String(
+    appMetadata.platform_role ||
+    appMetadata.role ||
+    appMetadata.account_type ||
+    "resident",
+  ).toLowerCase();
+  const role = appMetadata.is_super_admin === true
+    ? "super_admin"
+    : PLATFORM_ROLES.has(declaredRole)
+      ? declaredRole
+      : "resident";
+  const isPlatformAdmin = role === "platform_admin" || role === "super_admin";
+
+  return {
+    id: currentUser.id,
+    email: currentUser.email || "",
+    full_name: userMetadata.full_name || (role === "super_admin" ? "Meg Dude" : currentUser.email) || "Downtown Perks Account",
+    organization_name: userMetadata.organization_name || (isPlatformAdmin ? "Downtown Perks" : "Downtown Perks Account"),
+    partner_type: isPlatformAdmin
+      ? "platform"
+      : userMetadata.partner_type || userMetadata.account_type || "resident",
+    role,
+    platform_role: role,
+    is_super_admin: role === "super_admin",
+    has_global_scope: isPlatformAdmin,
+    authProvider: "supabase",
+  };
+}
 
 function readPartnerSession() {
   if (typeof window === "undefined") return null;
@@ -49,8 +83,18 @@ export const AuthProvider = ({ children }) => {
     if (isProductionLike() && canUseProductionAccountAccess() && supabaseClient) {
       let subscription;
       hydrateSupabaseSession();
-      const authState = supabaseClient.auth.onAuthStateChange((_event, session) => {
-        applySupabaseSession(session);
+      const authState = supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (!session?.user) {
+          applySupabaseUser(null);
+          return;
+        }
+        // Re-read the Auth user after sign-in, refresh, or account updates so
+        // authoritative app_metadata roles are not taken from a stale session.
+        if (["SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"].includes(event)) {
+          window.setTimeout(() => hydrateSupabaseSession(), 0);
+          return;
+        }
+        applySupabaseUser(session.user);
       });
       subscription = authState.data?.subscription;
       return () => subscription?.unsubscribe?.();
@@ -60,8 +104,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const applySupabaseSession = (session) => {
-    const currentUser = session?.user;
+  const applySupabaseUser = (currentUser) => {
     if (!currentUser) {
       setIsLoadingAuth(false);
       setUser(null);
@@ -69,32 +112,38 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const partnerType = currentUser.user_metadata?.partner_type || currentUser.user_metadata?.account_type || "resident";
-    const role = String(currentUser.app_metadata?.role || currentUser.app_metadata?.account_type || "resident").toLowerCase();
-    const profile = {
-      id: currentUser.id,
-      email: currentUser.email || "",
-      full_name: currentUser.user_metadata?.full_name || currentUser.email || "Downtown Perks Account",
-      organization_name: currentUser.user_metadata?.organization_name || "Downtown Perks Account",
-      partner_type: partnerType,
-      role: ["resident", "partner", "admin", "platform_admin", "super_admin"].includes(role) ? role : "resident",
-      authProvider: "supabase",
-    };
+    const profile = buildSupabaseProfile(currentUser);
     setUser(profile);
     setIsAuthenticated(true);
     setIsLoadingAuth(false);
     setAuthError(null);
   };
 
+  const applySupabaseSession = (session) => {
+    applySupabaseUser(session?.user || null);
+  };
+
   const hydrateSupabaseSession = async () => {
     try {
       setIsLoadingAuth(true);
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (error) throw error;
-      applySupabaseSession(data?.session);
+      const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!sessionData?.session) {
+        applySupabaseUser(null);
+        return;
+      }
+
+      // getUser performs a server round trip and returns the latest trusted
+      // app_metadata. getSession alone reads browser storage and must not be
+      // authoritative for platform authorization.
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+      if (userError) throw userError;
+      applySupabaseUser(userData?.user || null);
     } catch (error) {
+      setUser(null);
+      setIsAuthenticated(false);
       setIsLoadingAuth(false);
-      setAuthError(error.message || "Supabase session could not be loaded.");
+      setAuthError(error.message || "Supabase session could not be verified.");
     }
   };
 
@@ -239,8 +288,9 @@ export const AuthProvider = ({ children }) => {
         setAuthError(message);
         return { type: "error", code: error.code || "sign_in_failed", confirmationRequired, message };
       }
-      applySupabaseSession(data?.session);
-      return { type: "authenticated", session: data?.session, user: data?.user };
+      const { data: verifiedUserData } = await supabaseClient.auth.getUser();
+      applySupabaseUser(verifiedUserData?.user || data?.user || null);
+      return { type: "authenticated", session: data?.session, user: verifiedUserData?.user || data?.user };
     }
 
     return signInPartner({ email, partner_type: "resident", organization_name: "Downtown Perks Resident" });

@@ -186,3 +186,44 @@
     animation-duration: 0.01ms !important;
   }
 }
+
+
+/* Legends Founding Partner profile — one quiet brand block across resident and partner drawers. */
+.dp-legends-founding-partner {
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  box-shadow: none;
+}
+
+.dp-legends-founding-partner > img {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+.dp-legends-founding-partner span {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.dp-legends-founding-partner small {
+  color: #8b6f36;
+  font: 600 0.6875rem/1.2 Inter, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dp-legends-founding-partner strong {
+  color: #0b1f33;
+  font: 600 1rem/1.25 Inter, sans-serif;
+}
+
+.dp-legends-founding-partner p {
+  color: #425466;
+  font: 400 0.8125rem/1.55 Inter, sans-serif;
+  margin: 0;
+  max-width: 62ch;
+}
