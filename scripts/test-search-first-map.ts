@@ -10,6 +10,9 @@ import {
   reconcileMarkerIds,
   sourceFromTrigger,
 } from "../src/lib/map/mapDiscovery";
+import {
+  normalizeDiscoveryControlQuery,
+} from "../src/lib/map/mapDiscoveryControls.js";
 
 const idleRequest = {
   source: "direct-search" as const,
@@ -71,7 +74,14 @@ const secondKey = buildMapSearchCacheKey({
 });
 assert.equal(firstKey, secondKey, "normalized searches must share a bounded cache entry");
 
+assert.equal(normalizeDiscoveryControlQuery("Nearby", "Nearby"), "", "Nearby is a discovery control, not a literal entity query");
+assert.equal(normalizeDiscoveryControlQuery("near me", "Nearby"), "", "near-me controls resolve spatially");
+assert.equal(normalizeDiscoveryControlQuery("Coffee nearby", "Coffee"), "Coffee nearby", "descriptive searches keep their text");
+
 const hookSource = await readFile(new URL("../src/hooks/useSearchDrivenMapEntities.js", import.meta.url), "utf8");
+assert.match(hookSource, /normalizeDiscoveryControlQuery\(scope\.query, scope\.filter\)/, "resolver normalizes semantic discovery labels before matching entities");
+assert.match(hookSource, /!isDiscoveryControlFilter\(normalizedFilter\)/, "semantic discovery labels are not emitted as backend entity categories");
+assert.match(hookSource, /normalizedFilter === "nearby"[\s\S]{0,120}\? "nearby"/, "Nearby remains an explicit bounded spatial intent");
 assert.match(hookSource, /const places = resultPlaces;/, "idle places must come only from resolved results");
 assert.doesNotMatch(hookSource, /setLoadedRegistry|initialEntityRequestCount:\s*current\.initialEntityRequestCount\s*\|\|\s*1/, "the hook must not hydrate the registry on mount");
 const catalogResolverSource = hookSource.slice(
@@ -101,6 +111,8 @@ assert.match(mapSource, /href=\{`\/map\?\$\{params\.toString\(\)\}`\}/, "each ma
 assert.match(mapSource, /hasResolvedMapScope[\s\S]{0,700}visibleMapResultIds\.has\(String\(id\)\)/, "resolved dropdown matches stay aligned with the pins visible on the map");
 assert.match(mapSource, /selectPlace\(catalogEntity, \{ catalogResult: true, perkId \}\)/, "selecting a dropdown match opens the resolved map entity and its perk");
 assert.match(mapSource, /hasAuthoritativeScopedResults[\s\S]{0,500}if \(hasAuthoritativeScopedResults\) return true;/, "resolved search pins are not removed by a second local text filter");
+assert.match(mapSource, /data-marker-entity-id/, "every rendered marker exposes its canonical entity id for interaction QA");
+assert.match(mapSource, /ariaLabel:[^\n]+`Open \$\{place\.name\}/, "every rendered marker has an Open {entity name} accessible label");
 assert.match(mapSource, /MAP_DISCOVERY_LIMITS\.maxVisibleMobile/, "explicit mobile searches request the complete governed mobile pin set");
 assert.doesNotMatch(
   mapSource,
