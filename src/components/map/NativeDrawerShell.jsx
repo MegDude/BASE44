@@ -97,6 +97,37 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     surface?.style.setProperty("border", "0", "important");
     surface?.style.setProperty("box-shadow", "none", "important");
     node.querySelector(".dp-map-detail-navigation-title")?.style.setProperty("display", "none", "important");
+
+    const detailHeader = node.querySelector(".dp-map-detail-header");
+    detailHeader?.style.setProperty("position", "relative", "important");
+    detailHeader?.style.setProperty("min-height", "58px", "important");
+
+    const grabber = node.querySelector(".dp-native-detail-grabber");
+    grabber?.style.setProperty("display", "grid", "important");
+    grabber?.style.setProperty("position", "absolute", "important");
+    grabber?.style.setProperty("top", "7px", "important");
+    grabber?.style.setProperty("right", "auto", "important");
+    grabber?.style.setProperty("bottom", "auto", "important");
+    grabber?.style.setProperty("left", "50%", "important");
+    grabber?.style.setProperty("z-index", "4", "important");
+    grabber?.style.setProperty("width", "96px", "important");
+    grabber?.style.setProperty("min-width", "96px", "important");
+    grabber?.style.setProperty("height", "44px", "important");
+    grabber?.style.setProperty("min-height", "44px", "important");
+    grabber?.style.setProperty("margin", "0", "important");
+    grabber?.style.setProperty("transform", "translateX(-50%)", "important");
+
+    const navigation = node.querySelector(".dp-map-detail-navigation");
+    navigation?.style.setProperty("pointer-events", "none", "important");
+
+    const close = node.querySelector(".dp-map-detail-close");
+    close?.style.setProperty("grid-column", "3", "important");
+    close?.style.setProperty("justify-self", "end", "important");
+    close?.style.setProperty("width", "44px", "important");
+    close?.style.setProperty("min-width", "44px", "important");
+    close?.style.setProperty("height", "44px", "important");
+    close?.style.setProperty("min-height", "44px", "important");
+    close?.style.setProperty("pointer-events", "auto", "important");
   }, [ref]);
 
   return (
