@@ -11,6 +11,7 @@ import {
   buildExperiencePublishRequest,
   createExperienceDraft,
 } from "@/lib/experiences/experienceSystem";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { supabaseClient } from "@/lib/supabase/client";
 
@@ -42,7 +43,11 @@ function ExperienceBuilder({ template, organizationId }) {
   const [draft, setDraft] = useState(() => createExperienceDraft(template, organizationId));
   const [publishState, setPublishState] = useState("idle");
   const [publishMessage, setPublishMessage] = useState("");
-  const update = (patch) => setDraft((current) => ({ ...current, ...patch }));
+  const idempotencyKeyRef = useRef("");
+  const update = (patch) => {
+    idempotencyKeyRef.current = "";
+    setDraft((current) => ({ ...current, ...patch }));
+  };
   const moveContent = (index, direction) => {
     const nextIndex = index + direction;
     if (nextIndex < 0 || nextIndex >= draft.content.length) return;
@@ -58,13 +63,20 @@ function ExperienceBuilder({ template, organizationId }) {
       const sessionResult = await supabaseClient?.auth.getSession();
       const token = sessionResult?.data?.session?.access_token;
       if (!token) throw new Error("Sign in to publish this experience.");
-      const response = await fetch(EXPERIENCE_API_CONTRACT.publish, {
+      if (!draft.organizationId) throw new Error("Choose an organization before publishing.");
+      if (!idempotencyKeyRef.current) {
+        idempotencyKeyRef.current = globalThis.crypto?.randomUUID?.()
+          || `${draft.organizationId}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      }
+      const response = await fetch(`${getPartnerContentApiBaseUrl()}${EXPERIENCE_API_CONTRACT.publish}`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          "Idempotency-Key": idempotencyKeyRef.current,
         },
+        cache: "no-store",
         body: JSON.stringify(buildExperiencePublishRequest(draft)),
       });
       const body = await response.json().catch(() => null);
@@ -77,6 +89,7 @@ function ExperienceBuilder({ template, organizationId }) {
         status: body.data.status,
         version: body.data.version,
       }));
+      idempotencyKeyRef.current = "";
       setPublishState("published");
       setPublishMessage(`Published and saved. Version ${body.data.version} is live.`);
     } catch (error) {
