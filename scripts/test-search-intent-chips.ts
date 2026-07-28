@@ -122,7 +122,7 @@ async function runPartnerChecks(browser) {
   const partnerPrimaryChips = page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip");
   await expect(partnerPrimaryChips).toHaveCount(7);
   await expect(page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip__icon svg")).toHaveCount(7);
-  await expect(page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip__label")).toHaveCount(0);
+  await expect(page.locator(".dp-search-intent-primary-rail .dp-compact-intent-chip__label")).toHaveCount(7);
   await expect(more).toBeInViewport();
   await more.click({ force: true });
   await expect(more).toHaveAttribute("aria-expanded", "true", { timeout: 5_000 });
