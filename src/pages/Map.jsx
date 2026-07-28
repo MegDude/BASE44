@@ -16530,10 +16530,10 @@ export default function MapPage() {
       collection: urlState.collection,
       filter: activeFilter,
     });
-    urlState.update(
+    navigateMapJourney(
       isRentalSelection
-        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: place.id, listingId: "", perkId: "" }
-        : { tab: "map", entityId: isPropertySelection ? publicPropertyId || place.id : place.id, listingId: publicListingId || "", perkId: nextPerkId },
+        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: nextEntityId, listingId: "", perkId: "" }
+        : { tab: "map", entityId: isPropertySelection ? publicPropertyId || nextEntityId : nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
     );
     const raw = place.raw || {};
     const trackingContext = {
