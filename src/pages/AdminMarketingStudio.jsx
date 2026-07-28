@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, Check, ChevronRight, Sparkles } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import { supabaseClient } from "@/lib/supabase/client";
+import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
 import {
   ADMIN_STUDIO_ROUTES,
   CAMPAIGN_CREATION_FLOW,
@@ -155,46 +157,76 @@ function SystemMap() {
   );
 }
 
-function readResidentRecords() {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(window.localStorage.getItem("dp_admin_resident_records") || "[]");
-  } catch {
-    return [];
-  }
-}
-
 function ResidentAdminPanel() {
-  const records = useMemo(() => readResidentRecords(), []);
-  const visibleRecords = records.length
-    ? records
-    : [{
-        id: "sample-resident",
-        fullName: "Sample Resident",
-        email: "resident@example.com",
-        buildingName: "Building review",
-        unitNumber: "Pending",
-        verificationStatus: "pending_building_review",
-        accessPath: "building",
-      }];
+  const [state, setState] = useState({ status: "loading", data: null, error: "" });
+
+  useEffect(() => {
+    let active = true;
+    async function loadAccounts() {
+      if (!supabaseClient) {
+        if (active) setState({ status: "error", data: null, error: "Production account access is not configured." });
+        return;
+      }
+      const { data } = await supabaseClient.auth.getSession();
+      const token = data?.session?.access_token;
+      if (!token) {
+        if (active) setState({ status: "error", data: null, error: "Sign in again to load account records." });
+        return;
+      }
+      try {
+        const response = await fetch(`${getPartnerContentApiBaseUrl()}/api/admin/accounts`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Account records could not be loaded.");
+        if (active) setState({ status: "ready", data: payload, error: "" });
+      } catch (error) {
+        if (active) setState({ status: "error", data: null, error: error.message || "Account records could not be loaded." });
+      }
+    }
+    loadAccounts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const records = state.data?.accounts || [];
+  const summary = state.data?.summary || {};
   return (
     <section className="dp-os-wire-card dp-os-resident-admin" aria-label="Resident access management">
       <span>Admin only</span>
-      <h2>Resident access manager.</h2>
-      <p>Review card access, building checks, unit details, and resident records from one quiet admin view.</p>
+      <h2>Account and access manager.</h2>
+      <p>Review confirmed accounts, role resolution, resident onboarding, partner provisioning, and listing access from the production account system.</p>
+      {state.status === "loading" ? <p role="status">Loading production account records…</p> : null}
+      {state.status === "error" ? <p role="alert">{state.error}</p> : null}
+      {state.status === "ready" ? (
+        <dl className="dp-os-resident-admin-summary">
+          <div><dt>Accounts</dt><dd>{summary.accounts || 0}</dd></div>
+          <div><dt>Residents</dt><dd>{summary.residents || 0}</dd></div>
+          <div><dt>Partner users</dt><dd>{summary.activePartnerUsers || 0}</dd></div>
+          <div><dt>Organizations</dt><dd>{summary.partnerOrganizations || 0}</dd></div>
+          <div><dt>Listings</dt><dd>{summary.partnerListings || 0}</dd></div>
+        </dl>
+      ) : null}
       <div className="dp-os-resident-admin-grid">
-        {visibleRecords.map((record) => (
+        {records.map((record) => (
           <article key={record.id}>
-            <strong>{record.fullName || "Resident"}</strong>
+            <strong>{record.fullName || record.email || "Account"}</strong>
             <p>{record.email || "No email yet"}</p>
             <dl>
-              <div><dt>Building</dt><dd>{record.buildingName || "Perks Card"}</dd></div>
-              <div><dt>Unit</dt><dd>{record.unitNumber || "Not provided"}</dd></div>
-              <div><dt>Status</dt><dd>{String(record.verificationStatus || record.accessPath || "saved").replace(/_/g, " ")}</dd></div>
+              <div><dt>Role</dt><dd>{String(record.platformRole || "resident").replace(/_/g, " ")}</dd></div>
+              <div><dt>Email</dt><dd>{record.emailConfirmed ? "Confirmed" : "Unconfirmed"}</dd></div>
+              <div><dt>Resident</dt><dd>{record.resident?.status || "No resident profile"}</dd></div>
+              <div><dt>Partner</dt><dd>{record.partner?.active ? record.partner.role : "No partner access"}</dd></div>
             </dl>
           </article>
         ))}
       </div>
+      {state.status === "ready" && records.length === 0 ? <p>No account records were returned.</p> : null}
       <Link to="/partner-workspace/residents">Open resident operations</Link>
     </section>
   );
