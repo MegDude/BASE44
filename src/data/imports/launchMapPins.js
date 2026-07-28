@@ -68,12 +68,13 @@ export function launchMapPinToPlace(pin) {
   ].filter(Boolean);
   const offerTitle = pin.offer?.offerTitle || pin.offer?.recommendedPerkOrOffer || "";
   const hasPerk = Boolean(offerTitle || pin.offer?.offerDescription);
+  const canonicalDisplayName = clean(pin.name) || clean(pin.publicDisplayTitle) || pin.pinId;
 
   return {
     id: pin.id || `launch-${pin.pinId}`,
     venueId: pin.pinId,
-    name: clean(pin.publicDisplayTitle) || clean(pin.name) || pin.pinId,
-    title: clean(pin.publicDisplayTitle) || clean(pin.name) || pin.pinId,
+    name: canonicalDisplayName,
+    title: canonicalDisplayName,
     type: kind,
     kind,
     entityType: kind,

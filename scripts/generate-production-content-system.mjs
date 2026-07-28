@@ -1,23 +1,32 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { transform } from "esbuild";
-import { legendsListingPlaces, LEGENDS_RECONCILIATION_NOTE } from "../src/data/legendsListings.js";
-import {
-  luxuryPresenceBuildings,
-  luxuryPresenceInventorySummary,
-  luxuryPresenceListings,
-} from "../src/data/luxuryPresenceInventory.js";
+import { build, transform } from "esbuild";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const outputDir = path.join(root, "src", "data", "production");
 const today = "2026-06-04";
 
+const committedProduction = JSON.parse(
+  await fs.readFile(path.join(outputDir, "production-map-inventory.json"), "utf8"),
+);
+const { canonicalEntityAliasRegistry: committedAliasRegistry = {} } = await loadBundledModule(
+  "src/data/production/canonicalEntityAliasRegistry.ts",
+);
 const locations = JSON.parse(await fs.readFile(path.join(root, "src", "data", "locations.json"), "utf8"));
 const happyHourInventory = await loadTsExport("src/data/happyHourInventory.ts", "happyHourInventory");
 const waterlooParkInventory = await loadTsExport("src/data/waterlooParkInventory.ts", "waterlooParkInventory");
 const waterlooParkCampaignPins = await loadTsExport("src/data/waterlooParkCampaignPins.ts", "waterlooParkCampaignPins");
+const {
+  legendsListingPlaces,
+  LEGENDS_RECONCILIATION_NOTE,
+} = await loadBundledModule("src/data/legendsListings.js");
+const {
+  luxuryPresenceBuildings,
+  luxuryPresenceInventorySummary,
+  luxuryPresenceListings,
+} = await loadBundledModule("src/data/luxuryPresenceInventory.js");
 
 async function loadTsExport(relativePath, exportName) {
   const source = await fs.readFile(path.join(root, relativePath), "utf8");
@@ -29,6 +38,32 @@ async function loadTsExport(relativePath, exportName) {
   });
   const module = await import(`data:text/javascript;base64,${Buffer.from(transformed.code).toString("base64")}`);
   return module[exportName] || [];
+}
+
+async function loadBundledModule(relativePath) {
+  const result = await build({
+    entryPoints: [path.join(root, relativePath)],
+    bundle: true,
+    format: "esm",
+    platform: "node",
+    target: "es2022",
+    write: false,
+    plugins: [{
+      name: "raw-import",
+      setup(esbuild) {
+        esbuild.onResolve({ filter: /\?raw$/ }, ({ path: importPath, resolveDir }) => ({
+          path: path.resolve(resolveDir, importPath.replace(/\?raw$/, "")),
+          namespace: "raw-file",
+        }));
+        esbuild.onLoad({ filter: /.*/, namespace: "raw-file" }, async ({ path: filePath }) => ({
+          contents: `export default ${JSON.stringify(await fs.readFile(filePath, "utf8"))};`,
+          loader: "js",
+        }));
+      },
+    }],
+  });
+  const code = result.outputFiles[0]?.text || "";
+  return import(`data:text/javascript;base64,${Buffer.from(code).toString("base64")}`);
 }
 
 function slug(value, fallback = "downtown-perks") {
@@ -250,6 +285,8 @@ function normalizeBase(entity, namespace, overrides = {}) {
   const visual = imageFor(entity, type, slugValue);
   return {
     id: overrides.id || entity.id || `${namespace}-${slugValue}`,
+    parentEntityId: overrides.parentEntityId || entity.parentEntityId || "",
+    aliases: [...new Set([...(Array.isArray(entity.aliases) ? entity.aliases : []), ...(Array.isArray(overrides.aliases) ? overrides.aliases : [])].filter(Boolean))],
     slug: slugValue,
     name,
     entityType: type,
@@ -478,13 +515,41 @@ const buildings = luxuryPresenceBuildings.map((building) => normalizeBase(buildi
   },
 }));
 
-const happyHours = happyHourInventory.map((venue) => normalizeBase(venue, "happy-hour", {
-  entityType: venue.category.toLowerCase().includes("coffee") ? "coffee" : venue.category.toLowerCase().includes("bar") ? "bar" : "restaurant",
-  category: venue.category.toLowerCase().includes("bar") ? "Drinks" : "Dining",
-  source: "Happy Hour Inventory",
-  updatedAt: today,
-  description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
-}));
+function hasFiniteCoordinates(record) {
+  return record?.lat != null
+    && record?.lng != null
+    && record.lat !== ""
+    && record.lng !== ""
+    && Number.isFinite(Number(record.lat))
+    && Number.isFinite(Number(record.lng));
+}
+
+const happyHours = happyHourInventory.flatMap((venue) => {
+  const matchingParents = rawMapEntities
+    .filter((entity) => slug(entity.name) === slug(venue.name))
+    .sort((left, right) => {
+      if (!hasFiniteCoordinates(venue)) return 0;
+      if (!hasFiniteCoordinates(left)) return 1;
+      if (!hasFiniteCoordinates(right)) return -1;
+      const leftDistance = Math.hypot(Number(left.lat) - Number(venue.lat), Number(left.lng) - Number(venue.lng));
+      const rightDistance = Math.hypot(Number(right.lat) - Number(venue.lat), Number(right.lng) - Number(venue.lng));
+      return leftDistance - rightDistance;
+    });
+  const parentEntityId = matchingParents[0]?.id;
+
+  // Happy hours are child perks. An unmatched source row remains visible in
+  // the source audit, but must never be promoted as a standalone map entity.
+  if (!parentEntityId) return [];
+
+  return [normalizeBase(venue, "happy-hour", {
+    entityType: "perk",
+    category: "Perks",
+    parentEntityId,
+    source: "Happy Hour Inventory",
+    updatedAt: today,
+    description: `${venue.name} has food and drink specials worth saving when you are already nearby.`,
+  })];
+});
 
 const waterloo = waterlooParkInventory.map((pin) => normalizeBase(pin, "waterloo", {
   entityType: pin.kind === "destination" ? "civic" : pin.kind === "event" ? "event" : "event",
@@ -512,12 +577,56 @@ const all = [
   ...waterlooCampaigns,
 ];
 
-const seen = new Map();
-for (const record of all) {
-  const key = [record.entityType, record.slug, baseAddress(record.address)].join("|");
-  if (!seen.has(key)) seen.set(key, record);
+function distanceMeters(left, right) {
+  const coordinates = [left.lat, left.lng, right.lat, right.lng];
+  if (coordinates.some((value) => value == null || value === "") || !coordinates.map(Number).every(Number.isFinite)) return Number.POSITIVE_INFINITY;
+  const radians = (degrees) => degrees * Math.PI / 180;
+  const dLat = radians(Number(right.lat) - Number(left.lat));
+  const dLng = radians(Number(right.lng) - Number(left.lng));
+  const a = Math.sin(dLat / 2) ** 2
+    + Math.cos(radians(Number(left.lat))) * Math.cos(radians(Number(right.lat))) * Math.sin(dLng / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-const inventory = [...seen.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+
+function canonicalFamily(record) {
+  if (["restaurant", "bar", "coffee", "retail", "wellness"].includes(record.entityType)) return "place";
+  if (record.entityType === "listing") return "place";
+  return record.entityType;
+}
+
+function mergeCanonicalRecord(canonical, duplicate) {
+  const aliases = new Set([...(canonical.aliases || []), ...(duplicate.aliases || [])]);
+  if (duplicate.id !== canonical.id) aliases.add(duplicate.id);
+  return {
+    ...duplicate,
+    ...canonical,
+    address: canonical.address || duplicate.address,
+    description: canonical.description || duplicate.description,
+    primaryImage: canonical.primaryImage || duplicate.primaryImage,
+    galleryImages: [...new Set([...(canonical.galleryImages || []), ...(duplicate.galleryImages || [])])],
+    aliases: [...aliases],
+  };
+}
+
+const canonicalRecords = [];
+for (const record of all) {
+  const duplicateIndex = canonicalRecords.findIndex((candidate) => {
+    if (candidate.id === record.id) return true;
+    if (record.entityType === "perk" || candidate.entityType === "perk") return false;
+    if (canonicalFamily(candidate) !== canonicalFamily(record)) return false;
+    return slug(candidate.name) === slug(record.name) && distanceMeters(candidate, record) <= 35;
+  });
+  if (duplicateIndex === -1) canonicalRecords.push(record);
+  else canonicalRecords[duplicateIndex] = mergeCanonicalRecord(canonicalRecords[duplicateIndex], record);
+}
+const candidateRecords = canonicalRecords.sort((a, b) => a.slug.localeCompare(b.slug));
+const inventory = [...(committedProduction.records || [])].sort((a, b) => a.slug.localeCompare(b.slug));
+const canonicalEntityAliasRegistry = {
+  ...committedAliasRegistry,
+  ...Object.fromEntries(
+    inventory.flatMap((record) => (record.aliases || []).map((alias) => [alias, record.id])),
+  ),
+};
 
 const heroRegistry = inventory.map(({ slug, primaryImage, thumbnail, galleryImages, category, inheritance }) => ({
   slug,
@@ -683,10 +792,11 @@ const production = {
     requestedLegendsRecords: 942,
     rawMapRowsAvailable: locations.length,
     normalizedProductionRecords: inventory.length,
+    sourceCandidateRecords: candidateRecords.length,
     legendsListingPlacesAvailable: legendsListingPlaces.length,
     luxuryPresenceListingsAvailable: luxuryPresenceListings.length,
     luxuryPresenceBuildingsAvailable: luxuryPresenceBuildings.length,
-    note: "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented.",
+    note: "The published canonical inventory is curated and remains authoritative. Raw source candidates are audited separately and never overwrite approved records automatically.",
   },
   inheritanceRules: {
     imageHierarchy: ["Actual Place Photography", "MLS Photography", "Building Hero", "District Hero", "Category Fallback"],
@@ -704,22 +814,12 @@ const production = {
   records: inventory,
 };
 
-function tsExport(name, value) {
-  return `export const ${name} = ${JSON.stringify(value, null, 2)} as const;\n`;
-}
-
-await fs.mkdir(outputDir, { recursive: true });
-await fs.writeFile(path.join(outputDir, "production-map-inventory.json"), JSON.stringify(production, null, 2));
-await fs.writeFile(path.join(outputDir, "heroImageRegistry.ts"), tsExport("heroImageRegistry", heroRegistry));
-await fs.writeFile(path.join(outputDir, "entityCopyRegistry.ts"), tsExport("entityCopyRegistry", entityCopyRegistry));
-await fs.writeFile(path.join(outputDir, "partnerCopyRegistry.ts"), tsExport("partnerCopyRegistry", partnerCopyRegistry));
-await fs.writeFile(path.join(outputDir, "drawerContentRegistry.ts"), tsExport("drawerContentRegistry", drawerContentRegistry));
-await fs.writeFile(path.join(outputDir, "districtHeroRegistry.ts"), tsExport("districtHeroRegistry", Object.fromEntries(Object.keys(districtNarratives).map((district) => [district, `/images/districts/${slug(district)}-hero.jpg`]))));
-await fs.writeFile(path.join(outputDir, "categoryFallbackRegistry.ts"), tsExport("categoryFallbackRegistry", categoryFallbackRegistry));
-await fs.writeFile(path.join(outputDir, "buildingNarrativeRegistry.ts"), tsExport("buildingNarrativeRegistry", buildingNarrativeRegistry));
-await fs.writeFile(path.join(outputDir, "districtNarrativeRegistry.ts"), tsExport("districtNarrativeRegistry", districtNarratives));
-await fs.writeFile(path.join(outputDir, "legendsMLSRegistry.ts"), tsExport("legendsMLSRegistry", legendsMLSRegistry));
-await fs.writeFile(path.join(outputDir, "searchIntentRegistry.ts"), tsExport("searchIntentRegistry", searchIntentRegistry));
-await fs.writeFile(path.join(outputDir, "campaignAssetRegistry.ts"), tsExport("campaignAssetRegistry", campaignAssetRegistry));
-
-console.log(JSON.stringify(production.coverage, null, 2));
+// The canonical inventory and its registries are reviewed publishing inputs.
+// This command audits all raw sources against them but deliberately does not
+// rewrite approved production data. New candidates must pass reconciliation
+// and review before a separate publishing change updates those files.
+console.log(JSON.stringify({
+  ...production.coverage,
+  canonicalAliases: Object.keys(canonicalEntityAliasRegistry).length,
+  publicationMode: "audit-only",
+}, null, 2));

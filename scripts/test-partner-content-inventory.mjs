@@ -27,6 +27,13 @@ const metadata = JSON.parse(await fs.readFile(path.join(generated, "inventory-me
 if (metadata.routeCount < 100) throw new Error(`Expected the complete router, found ${metadata.routeCount} routes.`);
 if (metadata.entityCount < 1000) throw new Error(`Expected the production entity registry, found ${metadata.entityCount} entities.`);
 if (!metadata.redirectCount) throw new Error("Redirect inventory is empty.");
+if (!metadata.canonicalCountReconciled) throw new Error("Canonical entity and marker counts are not reconciled.");
+if (metadata.orphanCount !== 0) throw new Error(`Canonical orphan records remain: ${metadata.orphanCount}.`);
+if (metadata.duplicateCount !== 0) throw new Error(`Probable canonical duplicate groups remain: ${metadata.duplicateCount}.`);
+if (metadata.brokenLinkCount !== 0) throw new Error(`Tracked media references are unresolved: ${metadata.brokenLinkCount}.`);
+if (metadata.blockingIssueCount !== 0 || !metadata.qualityGates.noBlockingInventoryIssues) {
+  throw new Error(`Blocking inventory issues remain: ${metadata.blockingIssueCount}.`);
+}
 if (!metadata.qualityGates.workspacePagesNoindex || !metadata.qualityGates.adminPagesNoindex) throw new Error("Private routes must be noindex.");
 if (metadata.qualityGates.serviceRoleExported) throw new Error("A service-role credential must never be exported.");
 if (/SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["'][^"']+/i.test(inventoryText)) throw new Error("Generated inventory appears to contain a service-role credential.");

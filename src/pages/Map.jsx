@@ -23,7 +23,6 @@ import {
   Gift,
   Heart,
   HeartPulse,
-  House,
   BadgePercent,
   Info,
   Landmark,
@@ -4048,6 +4047,46 @@ function getClusterTitle(cluster, mode) {
   }
 
   return "Places nearby";
+}
+
+function getClusterPresentationIdentity(place) {
+  if (!place) return "";
+  if (isRentalEntity(place) || isListingEntity(place)) return `listing:${place.id}`;
+  const raw = place.raw || {};
+  const parentId = place.parentEntityId
+    || place.hostEntityId
+    || raw.parentEntityId
+    || raw.hostEntityId;
+  if (parentId) return `entity:${parentId}`;
+  const canonicalName = String(place.name || place.title || "")
+    .toLowerCase()
+    .replace(/[—–-]\s*(guest guide anchor|nearby pick|guest dining campaign|campaign|activation)$/i, "")
+    .replace(/\bguest dining campaign\b/gi, "")
+    .replace(/\bhotel austin\b/gi, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  return `place:${canonicalName || place.id}`;
+}
+
+function getClusterPresentationPriority(place) {
+  if (!place) return 0;
+  if (isRentalEntity(place) || isListingEntity(place)) return 100;
+  if (isCampaignEntity(place)) return 10;
+  if (isEventEntity(place) || getCanonicalDetailEntityType(place) === "perk") return 20;
+  if (isHotelEntity(place) || isPropertyEntity(place) || isVenueEntity(place)) return 80;
+  return 50;
+}
+
+function getCanonicalClusterDrawerPlaces(places = []) {
+  const groups = new Map();
+  places.forEach((place) => {
+    const identity = getClusterPresentationIdentity(place);
+    const current = groups.get(identity);
+    if (!current || getClusterPresentationPriority(place) > getClusterPresentationPriority(current)) {
+      groups.set(identity, place);
+    }
+  });
+  return [...groups.values()];
 }
 
 function getClusterSubtitle(cluster, mode) {
@@ -10918,6 +10957,7 @@ function PartnerDrawerActions({ place, organizationId }) {
 
 function UniversalEntityActionRail({
   place,
+  entityType,
   mode,
   saved,
   rsvped,
@@ -10929,7 +10969,7 @@ function UniversalEntityActionRail({
   onExplore,
   onTrack,
 }) {
-  const kind = getResidentEntityKind(place);
+  const kind = entityType || getCanonicalDetailEntityType(place) || getResidentEntityKind(place);
   const entityId = encodeURIComponent(place?.id || place?.entityId || "");
   const directionsHref = directionsUrl(place);
   const track = (action, source = "universal_entity_action_rail") => onTrack?.(action, source);
@@ -12638,6 +12678,7 @@ function getResidentEntityKind(place) {
   const text = placeCoreText(place);
   const category = String(place?.category || "").toLowerCase();
   const type = String(place?.type || "").toLowerCase();
+  const explicitDetailType = String(place?.detailEntityType || place?.raw?.detailEntityType || "").toLowerCase();
   const isCivicLandmark = isDaaTourPlace(place) || /\b(civic|landmark|public art|public realm|park|trail|museum|library|lady bird|colorado river|congress bridge|waterloo|republic square|auditorium shores|shoal creek|waller creek)\b/i.test(text);
 
   if (isRentalEntity(place)) {
@@ -12658,6 +12699,13 @@ function getResidentEntityKind(place) {
 
   if (isBangersVenue(place)) {
     return "venue";
+  }
+
+  // Canonical detail identity outranks heuristic words and source factories.
+  // Some benefits originate in an event feed and retain an event-shaped source
+  // id, but their approved public identity is still a perk.
+  if (explicitDetailType === "perk") {
+    return "perk";
   }
 
   if (isHappyHourEntity(place)) {
@@ -13337,6 +13385,21 @@ function GoogleMapCanvas({
   return (
     <div className="dp-google-map-shell h-full w-full">
       <div ref={containerRef} className="dp-google-map-canvas h-full w-full" role="application" aria-label="Downtown Austin map" />
+      <div className="sr-only" role="group" aria-label="Visible map places">
+        {mapItems.filter((item) => item.type !== "cluster" && item.place?.id).map((item) => (
+          <button
+            key={`accessible-marker-${item.place.id}`}
+            type="button"
+            tabIndex={-1}
+            data-accessible-marker-entity-id={item.place.id}
+            aria-label={`Open ${item.place.name || "map place"}`}
+            aria-pressed={item.place.id === selectedId}
+            onClick={() => markerActionHandlersRef.current.onSelect?.(item.place)}
+          >
+            Open {item.place.name || "map place"}
+          </button>
+        ))}
+      </div>
       {loadState === "loading" && (
         <div className="dp-google-map-state" role="status">
           <span>Loading downtown map...</span>
@@ -14376,6 +14439,7 @@ export default function MapPage() {
   }, []);
   const [activeCampaignStep, setActiveCampaignStep] = useState(urlState.campaignId || "campaign-after-work-dining");
   const [clusterDrawer, setClusterDrawer] = useState(null);
+  const [clusterDrawerState, setClusterDrawerState] = useState("medium");
   const [mapZoom, setMapZoom] = useState(initialMapView.zoom);
   const [viewportBounds, setViewportBounds] = useState(null);
   const mapZoomRef = useRef(initialMapView.zoom);
@@ -14885,6 +14949,7 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!urlState.perkId || !selected) return;
+    if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     const raw = selected.raw || {};
     const validIds = new Set([
       selected.id,
@@ -14896,9 +14961,9 @@ export default function MapPage() {
       raw.perks?.[0]?.id,
     ].filter(Boolean).map(String));
     if (!validIds.has(String(urlState.perkId))) urlState.update({ perkId: "" });
-  }, [selected, urlState]);
+  }, [selected, selectedId, selectedPlaceOverride, urlState]);
 
-  const clusterPlacesForDrawer = clusterDrawer?.places || [];
+  const clusterPlacesForDrawer = getCanonicalClusterDrawerPlaces(clusterDrawer?.places || []);
 
   const hasActiveCategoryScope = activeFilter !== "All" || !isAllNeighborhoodScope(district) || Boolean(effectiveSearch) || Boolean(urlState.collection || urlState.layer);
   const isDefaultDiscoverScope = activeFilter === "All" && isAllNeighborhoodScope(district) && !effectiveSearch;
@@ -16484,8 +16549,6 @@ export default function MapPage() {
     const isRentalSelection = isRentalEntity(place);
     const isCatalogSelection = Boolean(selection.catalogResult);
     const isListingSelection = !isCatalogSelection && isUnitLevelListingPlace(place);
-    const isPropertySelection = isListingSelection || Boolean(getLuxuryPresenceBuilding(place)) || isPropertyEntity(place);
-    const publicPropertyId = isCatalogSelection ? place.id : isPropertySelection ? resolvePropertyUrlEntityId(place.id) : "";
     const publicListingId = isListingSelection ? resolvePropertyListingUrlId(place.id) : "";
     const nextEntityId = canonicalSelectedId;
     const nextPerkId = selection.perkId || "";
@@ -16508,10 +16571,10 @@ export default function MapPage() {
       collection: urlState.collection,
       filter: activeFilter,
     });
-    urlState.update(
+    navigateMapJourney(
       isRentalSelection
-        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: place.id, listingId: "", perkId: "" }
-        : { tab: "map", entityId: isPropertySelection ? publicPropertyId || place.id : place.id, listingId: publicListingId || "", perkId: nextPerkId },
+        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: nextEntityId, listingId: "", perkId: "" }
+        : { tab: "map", entityId: nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
     );
     const raw = place.raw || {};
     const trackingContext = {
@@ -16845,6 +16908,7 @@ export default function MapPage() {
 
   function openClusterDrawer(cluster) {
     setSelectedId("");
+    setClusterDrawerState("medium");
     setClusterDrawer(cluster);
     setConsoleCollapsed(!consoleHasActiveWork);
     setActiveBottomTab("map");
@@ -18216,16 +18280,6 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Home"
-                  onClick={() => navigate("/resident/home")}
-                  aria-selected={false}
-                >
-                  <House className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
-                </button>
-                <button
-                  type="button"
-                  role="tab"
                   aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
@@ -18275,6 +18329,21 @@ export default function MapPage() {
                 >
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-label="Saved"
+                  onClick={() => {
+                    setConsoleCollapsed(true);
+                    setActiveBottomTab("saved");
+                    navigate("/map?mode=resident&tab=saved&filter=Saved");
+                  }}
+                  aria-pressed={activeBottomTab === "saved"}
+                  aria-selected={activeBottomTab === "saved"}
+                >
+                  <Bookmark className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Saved</span>
                 </button>
                 <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
                   <CreditCard className="h-4 w-4" />
@@ -18628,43 +18697,46 @@ export default function MapPage() {
 
       <AnimatePresence>
         {clusterDrawer && urlState.tab === "map" && (!selected || selectedDrawerClosed) && (
-          <motion.aside
+          <NativeDrawerShell
+            id="dp-active-map-drawer"
             ref={configureMobilePanelSurface}
             initial={{ opacity: 0, y: 44 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 44 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="dp-native-drawer dp-panel-shell dp-map-drawer-shell absolute inset-x-0 bottom-0 z-[640] mx-auto flex max-h-[min(88dvh,calc(100dvh-72px))] min-h-0 w-full max-w-3xl flex-col overflow-hidden rounded-t-[12px] md:max-h-[68dvh] md:rounded-t-[12px]"
-            data-drawer-state="expanded"
-            style={MAP_DRAWER_SURFACE_STYLE}
+            className="dp-panel-shell dp-map-drawer-shell dp-context-list-drawer"
+            drawerState={clusterDrawerState}
+            panelKind="results"
+            data-panel-kind="results"
+            data-panel-layout="context-list"
+            data-sheet-state={clusterDrawerState}
             data-mobile-panel-surface="true"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Grouped map places"
+            aria-labelledby="dp-cluster-results-title"
+            onDrawerStateChange={setClusterDrawerState}
+            onRequestClose={() => {
+              setClusterDrawer(null);
+              setActiveBottomTab("map");
+              urlState.update({ entityId: "", drawerClosed: "" });
+            }}
+            header={<MapDetailHeader
+              place={{ name: getClusterTitle(clusterDrawer, urlState.mode) }}
+              navigationTitle={getClusterTitle(clusterDrawer, urlState.mode)}
+              panelState={clusterDrawerState}
+              onPanelStateChange={setClusterDrawerState}
+              canGoBack={false}
+              onClose={() => {
+                setClusterDrawer(null);
+                setActiveBottomTab("map");
+                urlState.update({ entityId: "", drawerClosed: "" });
+              }}
+            />}
+            scrollClassName="dp-grouped-list dp-context-list-scroll"
           >
-            <div className="dp-panel-header shrink-0">
-              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <div className="dp-panel-header-copy">
-                <h2 className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
+              <section className="dp-context-list-heading">
+                <h2 id="dp-cluster-results-title" className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
                 <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setClusterDrawer(null);
-                  setActiveBottomTab("map");
-                  urlState.update({ entityId: "", drawerClosed: "" });
-                }}
-                className="dp-panel-close"
-                aria-label="Close"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="dp-grouped-list min-h-0 flex-1">
+                <span>{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</span>
+              </section>
               {clusterPlacesForDrawer.map((place) => {
                 const listing = getLegendsListing(place);
                 const explicitOffer = getExplicitGroupedOffer(place);
@@ -18694,8 +18766,7 @@ export default function MapPage() {
                   </button>
                 );
               })}
-            </div>
-          </motion.aside>
+          </NativeDrawerShell>
         )}
       </AnimatePresence>
 
@@ -18709,8 +18780,8 @@ export default function MapPage() {
             exit={{ opacity: 0, y: "100%" }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className={isInKindNetworkEntity(selected)
-              ? "dp-native-drawer dp-map-detail-sheet dp-inkind-partner-drawer dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel"
-              : `dp-native-drawer dp-map-detail-sheet dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""} ${shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "dp-partner-destination-sheet" : ""}`}
+              ? "dp-map-detail-sheet dp-inkind-partner-drawer dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel"
+              : `dp-map-detail-sheet dp-map-panel dp-panel-shell dp-detail-drawer dp-destination-drawer dp-detail-framework dp-map-drawer-panel dp-ios-fullscreen-map-panel ${usesCleanResidentialEntityDrawer(selected) ? "dp-entity-drawer-shell" : ""} ${shouldUsePartnerIntelligenceDrawer(selected, urlState.mode) ? "dp-partner-destination-sheet" : ""}`}
             data-panel-kind={getMapDrawerPanelKind(selected, urlState.mode, Boolean(urlState.perkId))}
             data-panel-layout="detail"
             data-drawer-state={detailDrawerState}
@@ -18749,6 +18820,7 @@ export default function MapPage() {
             />}
             actions={<UniversalEntityActionRail
               place={selected}
+              entityType={getCanonicalDetailEntityType(selected, Boolean(urlState.perkId))}
               mode={urlState.mode}
               saved={savedIds.has(selected.id)}
               rsvped={(Array.isArray(eventRsvps) ? eventRsvps : []).some((item) => item.id === selected.id)}

@@ -35,7 +35,7 @@ await page.goto(`${baseUrl}/resident/home`, { waitUntil: "domcontentloaded", tim
 await page.waitForSelector(".dp-resident-native-tabs", { state: "visible", timeout: 15_000 });
 
 const labels = await page.locator(".dp-resident-native-tabs :is(a,button)").allTextContents();
-if (labels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+if (labels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Saved|Card") {
   throw new Error(`Unexpected resident tabs: ${labels.join(", ")}`);
 }
 
@@ -140,14 +140,13 @@ await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("
 await page.waitForSelector(".dp-map-bottom-nav", { state: "visible", timeout: 15_000 });
 
 const mapLabels = await page.locator(".dp-map-bottom-nav [role='tab']").allTextContents();
-if (mapLabels.map((label) => label.trim()).join("|") !== "Home|Map|Perks|Events|Card") {
+if (mapLabels.map((label) => label.trim()).join("|") !== "Map|Perks|Events|Saved|Card") {
   throw new Error(`Unexpected resident map tabs: ${mapLabels.join(", ")}`);
 }
 
-await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Home" }).click();
-await page.waitForURL((url) => url.pathname === "/resident/home", { timeout: 15_000 });
-await page.getByRole("heading", { name: "Downtown today" }).waitFor();
+await page.locator(".dp-map-bottom-nav").getByRole("tab", { name: "Map" }).click();
+await page.waitForURL((url) => url.pathname === "/map" && url.searchParams.get("tab") === "map", { timeout: 15_000 });
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
-console.log("resident native mobile: complete bright-white Card profile, compact gold actions, five canonical tabs, and Map returns to Home");
+console.log("resident native mobile: complete bright-white Card profile, compact gold actions, and five canonical map tabs");
 await browser.close();

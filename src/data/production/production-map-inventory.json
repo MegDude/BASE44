@@ -7,11 +7,17 @@
     "requestedMapEntities": 466,
     "requestedLegendsRecords": 942,
     "rawMapRowsAvailable": 1607,
-    "normalizedProductionRecords": 1487,
+    "normalizedProductionRecords": 1473,
     "legendsListingPlacesAvailable": 61,
     "luxuryPresenceListingsAvailable": 14,
     "luxuryPresenceBuildingsAvailable": 11,
-    "note": "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented."
+    "note": "Generated from committed local source data only. Missing target records should be imported from the production feed; MLS facts were not invented.",
+    "reconciliation": {
+      "originalRecordCount": 1485,
+      "canonicalRecordCount": 1473,
+      "aliasCount": 11,
+      "rule": "Exact IDs and co-located same-name identities resolve to one canonical record; happy-hour records remain child perks."
+    }
   },
   "inheritanceRules": {
     "imageHierarchy": [
@@ -3746,8 +3752,8 @@
       "id": "happy-hour-24-diner",
       "slug": "24-diner",
       "name": "24 Diner",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Restaurant",
       "district": "West End",
       "address": "600 N Lamar Blvd",
@@ -3781,7 +3787,8 @@
         "title": "24 Diner | Downtown Perks",
         "description": "24 Diner has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "24 Diner Dining West End 600 N Lamar Blvd Restaurant 24 Diner has food and drink specials worth saving when you are already nearby."
+      "searchText": "24 Diner Dining West End 600 N Lamar Blvd Restaurant 24 Diner has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-960-24-diner"
     },
     {
       "id": "map-1252-2nd-st-market",
@@ -5951,54 +5958,10 @@
         "title": "311 W 5th ST # 1005 | Downtown Perks",
         "description": "Republic Square Residence with Iconic Parkside Views. An exceptional corner residence overlooking Republic Square Park."
       },
-      "searchText": "311 W 5th ST # 1005 Property Downtown Core 311 W 5th ST # 1005 Residential Property residential_property Republic Square Residence with Iconic Parkside Views. An exceptional corner residence overlooking Republic Square Park."
-    },
-    {
-      "id": "map-1593-311-w-5th-st-1005",
-      "slug": "311-w-5th-st-1005",
-      "name": "311 W 5th St #1005",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 West 5th Street #1005",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "Views, Entertainment and Fun in the heart of downtown Austin with beautiful park and city views with gorgeous sunsets.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th St #1005 | Downtown Perks",
-        "description": "Views, Entertainment and Fun in the heart of downtown Austin with beautiful park and city views with gorgeous sunsets."
-      },
-      "searchText": "311 W 5th St #1005 Property Downtown Core 311 West 5th Street #1005 Residential Property residential_property Views, Entertainment and Fun in the heart of downtown Austin with beautiful park and city views with gorgeous sunsets."
+      "searchText": "311 W 5th ST # 1005 Property Downtown Core 311 W 5th ST # 1005 Residential Property residential_property Republic Square Residence with Iconic Parkside Views. An exceptional corner residence overlooking Republic Square Park.",
+      "aliases": [
+        "map-1593-311-w-5th-st-1005"
+      ]
     },
     {
       "id": "map-1564-311-w-5th-st-1008",
@@ -6045,54 +6008,10 @@
         "title": "311 W 5th ST # 1008 | Downtown Perks",
         "description": "Experience elevated downtown living at the iconic and exclusive Plaza Lofts. Nestled on the 10th floor, Unit 1008."
       },
-      "searchText": "311 W 5th ST # 1008 Property Downtown Core 311 W 5th ST # 1008 Residential Property residential_property Experience elevated downtown living at the iconic and exclusive Plaza Lofts. Nestled on the 10th floor, Unit 1008."
-    },
-    {
-      "id": "map-1603-311-w-5th-st-1008",
-      "slug": "311-w-5th-st-1008",
-      "name": "311 W 5th St, #1008",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 West 5th Street, Unit 1008",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "Beautiful modern loft in 78701. Featuring 1 bedroom 1.5 baths with open floor plan, soaring 11ft ceilings with.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th St, #1008 | Downtown Perks",
-        "description": "Beautiful modern loft in 78701. Featuring 1 bedroom 1.5 baths with open floor plan, soaring 11ft ceilings with."
-      },
-      "searchText": "311 W 5th St, #1008 Property Downtown Core 311 West 5th Street, Unit 1008 Residential Property residential_property Beautiful modern loft in 78701. Featuring 1 bedroom 1.5 baths with open floor plan, soaring 11ft ceilings with."
+      "searchText": "311 W 5th ST # 1008 Property Downtown Core 311 W 5th ST # 1008 Residential Property residential_property Experience elevated downtown living at the iconic and exclusive Plaza Lofts. Nestled on the 10th floor, Unit 1008.",
+      "aliases": [
+        "map-1603-311-w-5th-st-1008"
+      ]
     },
     {
       "id": "map-1559-311-w-5th-st-703",
@@ -6235,54 +6154,10 @@
         "title": "311 W 5th ST # 806 | Downtown Perks",
         "description": "Call/Text Emmaline for a Private Tour Plaza Lofts #806 - Fully Furnished Lease Available September 1 | Listing Special."
       },
-      "searchText": "311 W 5th ST # 806 Property Downtown Core 311 W 5th ST # 806 Residential Property residential_property Call/Text Emmaline for a Private Tour Plaza Lofts #806 - Fully Furnished Lease Available September 1 | Listing Special."
-    },
-    {
-      "id": "map-1604-311-w-5th-st-806",
-      "slug": "311-w-5th-st-806",
-      "name": "311 W 5th St, #806",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 West 5th Street, Unit 806",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "Enjoy easy living in this incredibly spacious studio condo in the heart of downtown Austin! This 1 bed/1 bath.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th St, #806 | Downtown Perks",
-        "description": "Enjoy easy living in this incredibly spacious studio condo in the heart of downtown Austin! This 1 bed/1 bath."
-      },
-      "searchText": "311 W 5th St, #806 Property Downtown Core 311 West 5th Street, Unit 806 Residential Property residential_property Enjoy easy living in this incredibly spacious studio condo in the heart of downtown Austin! This 1 bed/1 bath."
+      "searchText": "311 W 5th ST # 806 Property Downtown Core 311 W 5th ST # 806 Residential Property residential_property Call/Text Emmaline for a Private Tour Plaza Lofts #806 - Fully Furnished Lease Available September 1 | Listing Special.",
+      "aliases": [
+        "map-1604-311-w-5th-st-806"
+      ]
     },
     {
       "id": "map-1569-311-w-5th-st-807",
@@ -6754,54 +6629,10 @@
         "title": "311 W 5th ST Unit: 806 | Downtown Perks",
         "description": "NEW PRICE and ONE MONTH FREE! Perfectly located and fully furnished luxury lease in the Plaza Lofts downtown Austin."
       },
-      "searchText": "311 W 5th ST Unit: 806 Property Downtown Core 311 W 5th ST # 806 Residential Property residential_property NEW PRICE and ONE MONTH FREE! Perfectly located and fully furnished luxury lease in the Plaza Lofts downtown Austin."
-    },
-    {
-      "id": "map-1594-311-w-5th-st-unit-806",
-      "slug": "311-w-5th-st-unit-806",
-      "name": "311 W 5th ST Unit: 806",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 W 5th ST Unit: 806",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "Great lease in the Plaza Lofts downtown Austin with city and hill country views. Location is ideal with this.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th ST Unit: 806 | Downtown Perks",
-        "description": "Great lease in the Plaza Lofts downtown Austin with city and hill country views. Location is ideal with this."
-      },
-      "searchText": "311 W 5th ST Unit: 806 Property Downtown Core 311 W 5th ST Unit: 806 Residential Property residential_property Great lease in the Plaza Lofts downtown Austin with city and hill country views. Location is ideal with this."
+      "searchText": "311 W 5th ST Unit: 806 Property Downtown Core 311 W 5th ST # 806 Residential Property residential_property NEW PRICE and ONE MONTH FREE! Perfectly located and fully furnished luxury lease in the Plaza Lofts downtown Austin.",
+      "aliases": [
+        "map-1594-311-w-5th-st-unit-806"
+      ]
     },
     {
       "id": "map-1600-311-w-5th-st-unit-902",
@@ -6895,101 +6726,11 @@
         "title": "311 W 5th ST W # 902 | Downtown Perks",
         "description": "PRICE EDIT Elegant Downtown Loft Overlooking Republic Square Park Live at the intersection of downtown sophistication."
       },
-      "searchText": "311 W 5th ST W # 902 Property Downtown Core 311 W 5th ST W # 902 Residential Property residential_property PRICE EDIT Elegant Downtown Loft Overlooking Republic Square Park Live at the intersection of downtown sophistication."
-    },
-    {
-      "id": "map-1568-311-w-5th-st-w-902",
-      "slug": "311-w-5th-st-w-902",
-      "name": "311 W 5th ST W # 902",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 W 5th ST # 902",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "Live at the intersection of downtown sophistication and timeless design in this stunning 2BD | 2BA corner loft.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th ST W # 902 | Downtown Perks",
-        "description": "Live at the intersection of downtown sophistication and timeless design in this stunning 2BD | 2BA corner loft."
-      },
-      "searchText": "311 W 5th ST W # 902 Property Downtown Core 311 W 5th ST # 902 Residential Property residential_property Live at the intersection of downtown sophistication and timeless design in this stunning 2BD | 2BA corner loft."
-    },
-    {
-      "id": "map-1597-311-w-5th-st-w-902",
-      "slug": "311-w-5th-st-w-902",
-      "name": "311 W 5th St W #902",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "311 West 5th Street West Unit 902",
-      "lat": 30.267885,
-      "lng": -97.7465,
-      "status": "active",
-      "source": "Legends Property Export (2026-02-27)",
-      "updatedAt": "2026-06-04",
-      "description": "&bull; Dedicated Concierge &bull; Secure &bull; Rooftop Pool &bull; On-Site Gym &bull; Republic Square Park &bull;.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "311 W 5th St W #902 | Downtown Perks",
-        "description": "&bull; Dedicated Concierge &bull; Secure &bull; Rooftop Pool &bull; On-Site Gym &bull; Republic Square Park &bull;."
-      },
-      "searchText": "311 W 5th St W #902 Property Downtown Core 311 West 5th Street West Unit 902 Residential Property residential_property &bull; Dedicated Concierge &bull; Secure &bull; Rooftop Pool &bull; On-Site Gym &bull; Republic Square Park &bull;."
+      "searchText": "311 W 5th ST W # 902 Property Downtown Core 311 W 5th ST W # 902 Residential Property residential_property PRICE EDIT Elegant Downtown Loft Overlooking Republic Square Park Live at the intersection of downtown sophistication.",
+      "aliases": [
+        "map-1568-311-w-5th-st-w-902",
+        "map-1597-311-w-5th-st-w-902"
+      ]
     },
     {
       "id": "map-1581-311-w-5th-st-w-unit-902",
@@ -13520,8 +13261,8 @@
       "id": "happy-hour-77-degrees-rooftop",
       "slug": "77-degrees-rooftop",
       "name": "77 Degrees Rooftop",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Rooftop",
       "district": "The Domain",
       "address": "",
@@ -13555,7 +13296,8 @@
         "title": "77 Degrees Rooftop | Downtown Perks",
         "description": "77 Degrees Rooftop has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "77 Degrees Rooftop Dining The Domain Rooftop 77 Degrees Rooftop has food and drink specials worth saving when you are already nearby."
+      "searchText": "77 Degrees Rooftop Dining The Domain Rooftop 77 Degrees Rooftop has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "luxury-presence-800-brazos-st-1111-4696550",
@@ -14861,8 +14603,8 @@
       "id": "happy-hour-aba-austin",
       "slug": "aba-austin",
       "name": "Aba Austin",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Mediterranean",
       "district": "Congress",
       "address": "",
@@ -14896,7 +14638,8 @@
         "title": "Aba Austin | Downtown Perks",
         "description": "Aba Austin has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Aba Austin Dining Congress Mediterranean Aba Austin has food and drink specials worth saving when you are already nearby."
+      "searchText": "Aba Austin Dining Congress Mediterranean Aba Austin has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-516-accenture",
@@ -15562,7 +15305,7 @@
       "category": "Residential",
       "subcategory": "Residential Property",
       "district": "Downtown Core",
-      "address": "",
+      "address": "1620, East Riverside Drive, Austin, TX, 78741",
       "lat": 30.245961,
       "lng": -97.729846,
       "status": "active",
@@ -15593,48 +15336,10 @@
         "title": "AMLI South Shore | Downtown Perks",
         "description": "Residential Property listing in Downtown Austin."
       },
-      "searchText": "AMLI South Shore Residential Downtown Core Residential Property residential_property Residential Property listing in Downtown Austin."
-    },
-    {
-      "id": "map-691-amli-south-shore",
-      "slug": "amli-south-shore",
-      "name": "AMLI South Shore",
-      "entityType": "building",
-      "category": "Residential",
-      "subcategory": "Residential Property",
-      "district": "Downtown Core",
-      "address": "1620, East Riverside Drive, Austin, TX, 78741",
-      "lat": 30.245976,
-      "lng": -97.729757,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Residential Property listing in Downtown Austin.",
-      "primaryImage": "/images/fallbacks/residential.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/residential-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Listings"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Explore Nearby"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "AMLI South Shore | Downtown Perks",
-        "description": "Residential Property listing in Downtown Austin."
-      },
-      "searchText": "AMLI South Shore Residential Downtown Core 1620, East Riverside Drive, Austin, TX, 78741 Residential Property residential_property Residential Property listing in Downtown Austin."
+      "searchText": "AMLI South Shore Residential Downtown Core Residential Property residential_property Residential Property listing in Downtown Austin.",
+      "aliases": [
+        "map-691-amli-south-shore"
+      ]
     },
     {
       "id": "map-692-amli-south-shore-2",
@@ -16419,8 +16124,8 @@
       "id": "happy-hour-aris",
       "slug": "aris",
       "name": "Aris",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Steakhouse",
       "district": "West 6th",
       "address": "1111 W 6th St",
@@ -16454,7 +16159,8 @@
         "title": "Aris | Downtown Perks",
         "description": "Aris has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Aris Dining West 6th 1111 W 6th St Steakhouse Aris has food and drink specials worth saving when you are already nearby."
+      "searchText": "Aris Dining West 6th 1111 W 6th St Steakhouse Aris has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-967-arlo-grey",
@@ -18588,61 +18294,17 @@
         "title": "Banger's Sausage House and Beer Garden | Downtown Perks",
         "description": "Bar / Nightlife listing in Downtown Austin."
       },
-      "searchText": "Banger's Sausage House and Beer Garden Drinks Rainey 79, Rainey Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
-    },
-    {
-      "id": "map-663-banger-s-sausage-house-and-beer-garden",
-      "slug": "banger-s-sausage-house-and-beer-garden",
-      "name": "Banger’s Sausage House & Beer Garden",
-      "entityType": "listing",
-      "category": "Property",
-      "subcategory": "Other Relevant Listing",
-      "district": "Rainey",
-      "address": "79, Rainey Street, Austin, TX, 78701",
-      "lat": 30.258976,
-      "lng": -97.738494,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Other Relevant Listing listing in Downtown Austin.",
-      "primaryImage": "/images/fallbacks/property.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/property-thumb.jpg",
-      "actions": [
-        {
-          "label": "View Property"
-        },
-        {
-          "label": "Schedule Tour"
-        },
-        {
-          "label": "Save Property"
-        },
-        {
-          "label": "Explore Nearby"
-        },
-        {
-          "label": "Contact Legends"
-        }
-      ],
-      "inheritance": {
-        "district": "Rainey",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "Banger’s Sausage House & Beer Garden | Downtown Perks",
-        "description": "Other Relevant Listing listing in Downtown Austin."
-      },
-      "searchText": "Banger’s Sausage House & Beer Garden Property Rainey 79, Rainey Street, Austin, TX, 78701 Other Relevant Listing other_relevant Other Relevant Listing listing in Downtown Austin."
+      "searchText": "Banger's Sausage House and Beer Garden Drinks Rainey 79, Rainey Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin.",
+      "aliases": [
+        "map-663-banger-s-sausage-house-and-beer-garden"
+      ]
     },
     {
       "id": "happy-hour-banger-s-sausage-house-beer-garden",
       "slug": "banger-s-sausage-house-and-beer-garden",
       "name": "Banger's Sausage House & Beer Garden",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Beer Garden",
       "district": "Rainey",
       "address": "79 Rainey St",
@@ -18676,7 +18338,8 @@
         "title": "Banger's Sausage House & Beer Garden | Downtown Perks",
         "description": "Banger's Sausage House & Beer Garden has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Banger's Sausage House & Beer Garden Dining Rainey 79 Rainey St Beer Garden Banger's Sausage House & Beer Garden has food and drink specials worth saving when you are already nearby."
+      "searchText": "Banger's Sausage House & Beer Garden Dining Rainey 79 Rainey St Beer Garden Banger's Sausage House & Beer Garden has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-7-banger-s-sausage-house-and-beer-garden"
     },
     {
       "id": "map-8-bar-508-mezcalerita",
@@ -18764,8 +18427,8 @@
       "id": "happy-hour-bar-peached",
       "slug": "bar-peached",
       "name": "Bar Peached",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Asian Fusion",
       "district": "West 6th",
       "address": "1315 W 6th St",
@@ -18799,7 +18462,8 @@
         "title": "Bar Peached | Downtown Perks",
         "description": "Bar Peached has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Bar Peached Dining West 6th 1315 W 6th St Asian Fusion Bar Peached has food and drink specials worth saving when you are already nearby."
+      "searchText": "Bar Peached Dining West 6th 1315 W 6th St Asian Fusion Bar Peached has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-525-barbara-jordan-state-office-building",
@@ -18887,8 +18551,8 @@
       "id": "happy-hour-barchi-sushi",
       "slug": "barchi-sushi",
       "name": "Barchi Sushi",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Sushi",
       "district": "Downtown Core",
       "address": "206 Colorado St",
@@ -18922,14 +18586,15 @@
         "title": "Barchi Sushi | Downtown Perks",
         "description": "Barchi Sushi has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Barchi Sushi Dining Downtown Core 206 Colorado St Sushi Barchi Sushi has food and drink specials worth saving when you are already nearby."
+      "searchText": "Barchi Sushi Dining Downtown Core 206 Colorado St Sushi Barchi Sushi has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "happy-hour-barley-swine",
       "slug": "barley-swine",
       "name": "Barley Swine",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Restaurant",
       "district": "Downtown",
       "address": "",
@@ -18963,7 +18628,8 @@
         "title": "Barley Swine | Downtown Perks",
         "description": "Barley Swine has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Barley Swine Dining Downtown Restaurant Barley Swine has food and drink specials worth saving when you are already nearby."
+      "searchText": "Barley Swine Dining Downtown Restaurant Barley Swine has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-10-barracuda",
@@ -19461,8 +19127,8 @@
       "id": "happy-hour-better-half-coffee-cocktails",
       "slug": "better-half-coffee-and-cocktails",
       "name": "Better Half Coffee & Cocktails",
-      "entityType": "coffee",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Coffee + Cocktails",
       "district": "West Austin",
       "address": "406 Walsh St",
@@ -19496,7 +19162,8 @@
         "title": "Better Half Coffee & Cocktails | Downtown Perks",
         "description": "Better Half Coffee & Cocktails has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Better Half Coffee & Cocktails Dining West Austin 406 Walsh St Coffee + Cocktails Better Half Coffee & Cocktails has food and drink specials worth saving when you are already nearby."
+      "searchText": "Better Half Coffee & Cocktails Dining West Austin 406 Walsh St Coffee + Cocktails Better Half Coffee & Cocktails has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-237-better-half-coffee-and-cocktails"
     },
     {
       "id": "map-1289-big-top",
@@ -19625,8 +19292,8 @@
       "id": "happy-hour-bill-s-oyster",
       "slug": "bill-s-oyster",
       "name": "Bill's Oyster",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Oyster Bar",
       "district": "2nd Street",
       "address": "205 W 3rd St",
@@ -19660,7 +19327,8 @@
         "title": "Bill's Oyster | Downtown Perks",
         "description": "Bill's Oyster has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Bill's Oyster Drinks 2nd Street 205 W 3rd St Oyster Bar Bill's Oyster has food and drink specials worth saving when you are already nearby."
+      "searchText": "Bill's Oyster Drinks 2nd Street 205 W 3rd St Oyster Bar Bill's Oyster has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-979-bill-s-oyster"
     },
     {
       "id": "map-1290-bird-s-barbershop",
@@ -23286,8 +22954,8 @@
       "id": "happy-hour-cheer-up-charlie-s",
       "slug": "cheer-up-charlie-s",
       "name": "Cheer Up Charlie's",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Bar",
       "district": "Red River",
       "address": "900 Red River St",
@@ -23321,7 +22989,8 @@
         "title": "Cheer Up Charlie's | Downtown Perks",
         "description": "Cheer Up Charlie's has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Cheer Up Charlie's Drinks Red River 900 Red River St Bar Cheer Up Charlie's has food and drink specials worth saving when you are already nearby."
+      "searchText": "Cheer Up Charlie's Drinks Red River 900 Red River St Bar Cheer Up Charlie's has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-24-cheer-up-charlies",
@@ -26648,8 +26317,8 @@
       "id": "happy-hour-cru-food-wine-bar-the-domain",
       "slug": "cr-food-and-wine-bar-the-domain",
       "name": "CRÚ Food & Wine Bar - The Domain",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Wine Bar",
       "district": "The Domain",
       "address": "",
@@ -26683,7 +26352,8 @@
         "title": "CRÚ Food & Wine Bar - The Domain | Downtown Perks",
         "description": "CRÚ Food & Wine Bar - The Domain has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "CRÚ Food & Wine Bar - The Domain Drinks The Domain Wine Bar CRÚ Food & Wine Bar - The Domain has food and drink specials worth saving when you are already nearby."
+      "searchText": "CRÚ Food & Wine Bar - The Domain Drinks The Domain Wine Bar CRÚ Food & Wine Bar - The Domain has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-542-crescent-luxury-apartments",
@@ -26935,8 +26605,8 @@
       "id": "happy-hour-culinary-dropout",
       "slug": "culinary-dropout",
       "name": "Culinary Dropout",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Restaurant",
       "district": "The Domain",
       "address": "",
@@ -26970,7 +26640,8 @@
         "title": "Culinary Dropout | Downtown Perks",
         "description": "Culinary Dropout has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Culinary Dropout Dining The Domain Restaurant Culinary Dropout has food and drink specials worth saving when you are already nearby."
+      "searchText": "Culinary Dropout Dining The Domain Restaurant Culinary Dropout has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-544-cushman-and-wakefield",
@@ -27392,8 +27063,8 @@
       "id": "happy-hour-dean-s-italian-steakhouse",
       "slug": "dean-s-italian-steakhouse",
       "name": "Dean's Italian Steakhouse",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Steakhouse",
       "district": "2nd Street",
       "address": "110 E 2nd St",
@@ -27427,7 +27098,8 @@
         "title": "Dean's Italian Steakhouse | Downtown Perks",
         "description": "Dean's Italian Steakhouse has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Dean's Italian Steakhouse Dining 2nd Street 110 E 2nd St Steakhouse Dean's Italian Steakhouse has food and drink specials worth saving when you are already nearby."
+      "searchText": "Dean's Italian Steakhouse Dining 2nd Street 110 E 2nd St Steakhouse Dean's Italian Steakhouse has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-1502-dell-technologies-plaza",
@@ -27720,8 +27392,8 @@
       "id": "happy-hour-devil-may-care",
       "slug": "devil-may-care",
       "name": "Devil May Care",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Cocktail Lounge",
       "district": "West 6th",
       "address": "500 W 6th St",
@@ -27755,7 +27427,8 @@
         "title": "Devil May Care | Downtown Perks",
         "description": "Devil May Care has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Devil May Care Dining West 6th 500 W 6th St Cocktail Lounge Devil May Care has food and drink specials worth saving when you are already nearby."
+      "searchText": "Devil May Care Dining West 6th 500 W 6th St Cocktail Lounge Devil May Care has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-36-devil-may-care"
     },
     {
       "id": "map-547-dewitt-c-greer-building",
@@ -28663,8 +28336,8 @@
       "id": "happy-hour-dumont-s-down-low",
       "slug": "dumont-s-down-low",
       "name": "Dumont's Down Low",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Whiskey Bar",
       "district": "Warehouse",
       "address": "214 W 4th St",
@@ -28698,7 +28371,8 @@
         "title": "Dumont's Down Low | Downtown Perks",
         "description": "Dumont's Down Low has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Dumont's Down Low Drinks Warehouse 214 W 4th St Whiskey Bar Dumont's Down Low has food and drink specials worth saving when you are already nearby."
+      "searchText": "Dumont's Down Low Drinks Warehouse 214 W 4th St Whiskey Bar Dumont's Down Low has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-41-dumont-s-down-low"
     },
     {
       "id": "map-1504-duncan-neighborhood-park",
@@ -31047,8 +30721,8 @@
       "id": "happy-hour-fixe-southern-house",
       "slug": "fixe-southern-house",
       "name": "Fixe Southern House",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Southern",
       "district": "Downtown Core",
       "address": "500 W 5th St",
@@ -31082,7 +30756,8 @@
         "title": "Fixe Southern House | Downtown Perks",
         "description": "Fixe Southern House has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Fixe Southern House Dining Downtown Core 500 W 5th St Southern Fixe Southern House has food and drink specials worth saving when you are already nearby."
+      "searchText": "Fixe Southern House Dining Downtown Core 500 W 5th St Southern Fixe Southern House has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1038-fixe-southern-house"
     },
     {
       "id": "map-552-fjord",
@@ -32652,8 +32327,8 @@
       "id": "happy-hour-guero-s-taco-bar",
       "slug": "g-ero-s-taco-bar",
       "name": "Güero's Taco Bar",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Mexican",
       "district": "Congress",
       "address": "",
@@ -32687,7 +32362,8 @@
         "title": "Güero's Taco Bar | Downtown Perks",
         "description": "Güero's Taco Bar has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Güero's Taco Bar Dining Congress Mexican Güero's Taco Bar has food and drink specials worth saving when you are already nearby."
+      "searchText": "Güero's Taco Bar Dining Congress Mexican Güero's Taco Bar has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1057-guero-s-taco-bar"
     },
     {
       "id": "map-731-gables",
@@ -33234,8 +32910,8 @@
       "id": "happy-hour-geraldine-s",
       "slug": "geraldine-s",
       "name": "Geraldine's",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Rooftop Dining",
       "district": "Rainey",
       "address": "605 Davis St",
@@ -33269,7 +32945,8 @@
         "title": "Geraldine's | Downtown Perks",
         "description": "Geraldine's has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Geraldine's Dining Rainey 605 Davis St Rooftop Dining Geraldine's has food and drink specials worth saving when you are already nearby."
+      "searchText": "Geraldine's Dining Rainey 605 Davis St Rooftop Dining Geraldine's has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1051-geraldine-s"
     },
     {
       "id": "map-196-german-texans-heritage-society",
@@ -33884,48 +33561,10 @@
         "title": "Green Light Social | Downtown Perks",
         "description": "Bar / Nightlife listing in Downtown Austin."
       },
-      "searchText": "Green Light Social Drinks West 6th 720, West 6th Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
-    },
-    {
-      "id": "map-60-green-light-social",
-      "slug": "green-light-social",
-      "name": "Green Light Social",
-      "entityType": "bar",
-      "category": "Drinks",
-      "subcategory": "Bar / Nightlife",
-      "district": "West 6th",
-      "address": "720, West 6th Street, 78701",
-      "lat": 30.270363,
-      "lng": -97.750394,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Bar / Nightlife listing in Downtown Austin.",
-      "primaryImage": "/images/fallbacks/drinks.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/drinks-thumb.jpg",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Directions"
-        },
-        {
-          "label": "Website"
-        }
-      ],
-      "inheritance": {
-        "district": "West 6th",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "Green Light Social | Downtown Perks",
-        "description": "Bar / Nightlife listing in Downtown Austin."
-      },
-      "searchText": "Green Light Social Drinks West 6th 720, West 6th Street, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
+      "searchText": "Green Light Social Drinks West 6th 720, West 6th Street, Austin, TX, 78701 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin.",
+      "aliases": [
+        "map-60-green-light-social"
+      ]
     },
     {
       "id": "map-1054-green-mesquite-bbq",
@@ -34464,8 +34103,8 @@
       "id": "happy-hour-halcyon",
       "slug": "halcyon",
       "name": "Halcyon",
-      "entityType": "coffee",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Coffee Bar",
       "district": "Warehouse",
       "address": "218 W 4th St",
@@ -34499,7 +34138,8 @@
         "title": "Halcyon | Downtown Perks",
         "description": "Halcyon has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Halcyon Drinks Warehouse 218 W 4th St Coffee Bar Halcyon has food and drink specials worth saving when you are already nearby."
+      "searchText": "Halcyon Drinks Warehouse 218 W 4th St Coffee Bar Halcyon has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-253-halcyon"
     },
     {
       "id": "map-61-half-step",
@@ -34546,8 +34186,8 @@
       "id": "happy-hour-half-step",
       "slug": "half-step",
       "name": "Half Step",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Cocktail Bar",
       "district": "Rainey",
       "address": "75 1/2 Rainey St",
@@ -34581,7 +34221,8 @@
         "title": "Half Step | Downtown Perks",
         "description": "Half Step has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Half Step Drinks Rainey 75 1/2 Rainey St Cocktail Bar Half Step has food and drink specials worth saving when you are already nearby."
+      "searchText": "Half Step Drinks Rainey 75 1/2 Rainey St Cocktail Bar Half Step has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-61-half-step"
     },
     {
       "id": "map-470-hampton-inn-and-suites-austin-at-the-university-capitol",
@@ -35403,48 +35044,10 @@
         "title": "Historic Scoot Inn | Downtown Perks",
         "description": "Bar / Nightlife listing in Downtown Austin."
       },
-      "searchText": "Historic Scoot Inn Drinks Downtown Core 1308, East 4th Street, Austin, TX, 78702 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin."
-    },
-    {
-      "id": "map-1064-historic-scoot-inn",
-      "slug": "historic-scoot-inn",
-      "name": "Historic Scoot Inn",
-      "entityType": "restaurant",
-      "category": "Dining",
-      "subcategory": "Restaurant / Food",
-      "district": "Downtown Core",
-      "address": "1308, E 4th St, Austin, TX, 78702",
-      "lat": 30.262123,
-      "lng": -97.729391,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Restaurant / Food listing in Downtown Austin.",
-      "primaryImage": "/images/fallbacks/dining.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Reserve"
-        },
-        {
-          "label": "Directions"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "Historic Scoot Inn | Downtown Perks",
-        "description": "Restaurant / Food listing in Downtown Austin."
-      },
-      "searchText": "Historic Scoot Inn Dining Downtown Core 1308, E 4th St, Austin, TX, 78702 Restaurant / Food restaurant_food Restaurant / Food listing in Downtown Austin."
+      "searchText": "Historic Scoot Inn Drinks Downtown Core 1308, East 4th Street, Austin, TX, 78702 Bar / Nightlife bar_nightlife Bar / Nightlife listing in Downtown Austin.",
+      "aliases": [
+        "map-1064-historic-scoot-inn"
+      ]
     },
     {
       "id": "map-564-hntb",
@@ -39929,8 +39532,8 @@
       "id": "happy-hour-la-condesa",
       "slug": "la-condesa",
       "name": "La Condesa",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Mexican",
       "district": "2nd Street",
       "address": "400 W 2nd St",
@@ -39964,48 +39567,9 @@
         "title": "La Condesa | Downtown Perks",
         "description": "La Condesa has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "La Condesa Dining 2nd Street 400 W 2nd St Mexican La Condesa has food and drink specials worth saving when you are already nearby."
-    },
-    {
-      "id": "happy-hour-la-condesa",
-      "slug": "la-condesa",
-      "name": "La Condesa",
-      "entityType": "restaurant",
-      "category": "Dining",
-      "subcategory": "Mexican",
-      "district": "Downtown",
-      "address": "",
-      "lat": 30.26522,
-      "lng": -97.74765,
-      "status": "active",
-      "source": "Happy Hour Inventory",
-      "updatedAt": "2026-06-04",
-      "description": "La Condesa has food and drink specials worth saving when you are already nearby.",
-      "primaryImage": "/images/fallbacks/dining.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/dining-thumb.jpg",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Reserve"
-        },
-        {
-          "label": "Directions"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "La Condesa | Downtown Perks",
-        "description": "La Condesa has food and drink specials worth saving when you are already nearby."
-      },
-      "searchText": "La Condesa Dining Downtown Mexican La Condesa has food and drink specials worth saving when you are already nearby."
+      "searchText": "La Condesa Dining 2nd Street 400 W 2nd St Mexican La Condesa has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1100-la-condesa",
+      "aliases": []
     },
     {
       "id": "map-1364-la-patisserie",
@@ -40339,8 +39903,8 @@
       "id": "happy-hour-lambert-s",
       "slug": "lambert-s",
       "name": "Lambert's",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "BBQ",
       "district": "2nd Street",
       "address": "401 W 2nd St",
@@ -40374,7 +39938,8 @@
         "title": "Lambert's | Downtown Perks",
         "description": "Lambert's has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Lambert's Dining 2nd Street 401 W 2nd St BBQ Lambert's has food and drink specials worth saving when you are already nearby."
+      "searchText": "Lambert's Dining 2nd Street 401 W 2nd St BBQ Lambert's has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-1102-lamberts",
@@ -40626,8 +40191,8 @@
       "id": "happy-hour-las-perlas",
       "slug": "las-perlas",
       "name": "Las Perlas",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Mezcal Bar",
       "district": "Red River",
       "address": "405 E 7th St",
@@ -40661,7 +40226,8 @@
         "title": "Las Perlas | Downtown Perks",
         "description": "Las Perlas has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Las Perlas Drinks Red River 405 E 7th St Mezcal Bar Las Perlas has food and drink specials worth saving when you are already nearby."
+      "searchText": "Las Perlas Drinks Red River 405 E 7th St Mezcal Bar Las Perlas has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-81-las-perlas"
     },
     {
       "id": "map-1103-las-trancas",
@@ -42676,8 +42242,8 @@
       "id": "happy-hour-maiko-sushi-lounge",
       "slug": "maiko-sushi-lounge",
       "name": "Maiko Sushi Lounge",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Sushi",
       "district": "West 6th",
       "address": "311 W 6th St",
@@ -42711,7 +42277,8 @@
         "title": "Maiko Sushi Lounge | Downtown Perks",
         "description": "Maiko Sushi Lounge has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Maiko Sushi Lounge Dining West 6th 311 W 6th St Sushi Maiko Sushi Lounge has food and drink specials worth saving when you are already nearby."
+      "searchText": "Maiko Sushi Lounge Dining West 6th 311 W 6th St Sushi Maiko Sushi Lounge has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-90-mala-vida",
@@ -45513,8 +45080,8 @@
       "id": "happy-hour-north-italia",
       "slug": "north-italia",
       "name": "North Italia",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Italian",
       "district": "2nd Street",
       "address": "500 W 2nd St",
@@ -45548,7 +45115,8 @@
         "title": "North Italia | Downtown Perks",
         "description": "North Italia has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "North Italia Dining 2nd Street 500 W 2nd St Italian North Italia has food and drink specials worth saving when you are already nearby."
+      "searchText": "North Italia Dining 2nd Street 500 W 2nd St Italian North Italia has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1131-north-italia"
     },
     {
       "id": "map-668-norwood-estate-dog-park",
@@ -45724,8 +45292,8 @@
       "id": "happy-hour-numero-28",
       "slug": "numero-28",
       "name": "Numero 28",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Italian",
       "district": "2nd Street",
       "address": "452 W 2nd St",
@@ -45759,7 +45327,8 @@
         "title": "Numero 28 | Downtown Perks",
         "description": "Numero 28 has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Numero 28 Dining 2nd Street 452 W 2nd St Italian Numero 28 has food and drink specials worth saving when you are already nearby."
+      "searchText": "Numero 28 Dining 2nd Street 452 W 2nd St Italian Numero 28 has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-208-o-henry-museum",
@@ -47241,8 +46810,8 @@
       "id": "happy-hour-peche",
       "slug": "p-ch",
       "name": "Péché",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Cocktail Lounge",
       "district": "Warehouse",
       "address": "208 W 4th St",
@@ -47276,7 +46845,8 @@
         "title": "Péché | Downtown Perks",
         "description": "Péché has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Péché Dining Warehouse 208 W 4th St Cocktail Lounge Péché has food and drink specials worth saving when you are already nearby."
+      "searchText": "Péché Dining Warehouse 208 W 4th St Cocktail Lounge Péché has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1154-p-ch"
     },
     {
       "id": "map-1139-p-f-chang-s",
@@ -47446,8 +47016,8 @@
       "id": "happy-hour-p6",
       "slug": "p6",
       "name": "P6",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Rooftop",
       "district": "Waterfront",
       "address": "111 E Cesar Chavez",
@@ -47481,7 +47051,8 @@
         "title": "P6 | Downtown Perks",
         "description": "P6 has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "P6 Dining Waterfront 111 E Cesar Chavez Rooftop P6 has food and drink specials worth saving when you are already nearby."
+      "searchText": "P6 Dining Waterfront 111 E Cesar Chavez Rooftop P6 has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-1140-p6-rooftop-bar",
@@ -48471,8 +48042,8 @@
       "id": "happy-hour-pelon-s",
       "slug": "pelon-s",
       "name": "Pelon's",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Mexican",
       "district": "Red River",
       "address": "802 Red River St",
@@ -48506,7 +48077,8 @@
         "title": "Pelon's | Downtown Perks",
         "description": "Pelon's has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Pelon's Dining Red River 802 Red River St Mexican Pelon's has food and drink specials worth saving when you are already nearby."
+      "searchText": "Pelon's Dining Red River 802 Red River St Mexican Pelon's has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-1144-pelons-tex-mex",
@@ -48840,8 +48412,8 @@
       "id": "happy-hour-perry-s-steakhouse",
       "slug": "perry-s-steakhouse",
       "name": "Perry's Steakhouse",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Steakhouse",
       "district": "Downtown Core",
       "address": "114 W 7th St",
@@ -48875,7 +48447,8 @@
         "title": "Perry's Steakhouse | Downtown Perks",
         "description": "Perry's Steakhouse has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Perry's Steakhouse Dining Downtown Core 114 W 7th St Steakhouse Perry's Steakhouse has food and drink specials worth saving when you are already nearby."
+      "searchText": "Perry's Steakhouse Dining Downtown Core 114 W 7th St Steakhouse Perry's Steakhouse has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1147-perry-s-steakhouse"
     },
     {
       "id": "map-106-pete-s-dueling-piano-bar",
@@ -52620,8 +52193,8 @@
       "id": "happy-hour-roosevelt-room",
       "slug": "roosevelt-room",
       "name": "Roosevelt Room",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Cocktail Bar",
       "district": "Warehouse",
       "address": "307 W 5th St",
@@ -52655,7 +52228,8 @@
         "title": "Roosevelt Room | Downtown Perks",
         "description": "Roosevelt Room has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Roosevelt Room Drinks Warehouse 307 W 5th St Cocktail Bar Roosevelt Room has food and drink specials worth saving when you are already nearby."
+      "searchText": "Roosevelt Room Drinks Warehouse 307 W 5th St Cocktail Bar Roosevelt Room has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": ""
     },
     {
       "id": "map-1167-roppolo-s-pizza",
@@ -53850,8 +53424,8 @@
       "id": "happy-hour-scholz-garten",
       "slug": "scholz-garten",
       "name": "Scholz Garten",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Beer Garden",
       "district": "Red River",
       "address": "1607 San Jacinto Blvd",
@@ -53885,7 +53459,8 @@
         "title": "Scholz Garten | Downtown Perks",
         "description": "Scholz Garten has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Scholz Garten Dining Red River 1607 San Jacinto Blvd Beer Garden Scholz Garten has food and drink specials worth saving when you are already nearby."
+      "searchText": "Scholz Garten Dining Red River 1607 San Jacinto Blvd Beer Garden Scholz Garten has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-124-scholz-garten"
     },
     {
       "id": "map-1420-scruff-s-barbershop",
@@ -56160,8 +55735,8 @@
       "id": "happy-hour-speakeasy",
       "slug": "speakeasy",
       "name": "Speakeasy",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Cocktail Bar",
       "district": "Warehouse District",
       "address": "412 Congress Ave",
@@ -56195,7 +55770,8 @@
         "title": "Speakeasy | Downtown Perks",
         "description": "Speakeasy has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Speakeasy Drinks Congress 412 Congress Ave Cocktail Bar Speakeasy has food and drink specials worth saving when you are already nearby."
+      "searchText": "Speakeasy Drinks Congress 412 Congress Ave Cocktail Bar Speakeasy has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-131-speakeasy"
     },
     {
       "id": "map-1428-spec-s",
@@ -56490,8 +56066,8 @@
       "id": "happy-hour-star-bar",
       "slug": "star-bar",
       "name": "Star Bar",
-      "entityType": "bar",
-      "category": "Drinks",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Sports Bar",
       "district": "West 6th",
       "address": "600 W 6th St",
@@ -56525,7 +56101,8 @@
         "title": "Star Bar | Downtown Perks",
         "description": "Star Bar has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Star Bar Drinks West 6th 600 W 6th St Sports Bar Star Bar has food and drink specials worth saving when you are already nearby."
+      "searchText": "Star Bar Drinks West 6th 600 W 6th St Sports Bar Star Bar has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-134-star-bar"
     },
     {
       "id": "map-284-starbucks",
@@ -58663,7 +58240,10 @@
         "title": "Target | Downtown Perks",
         "description": "Retail / Business listing operated by Target."
       },
-      "searchText": "Target Retail Downtown Core 2025, Guadalupe Street, Austin, TX, 78705 Retail / Business retail_business Retail / Business listing operated by Target."
+      "searchText": "Target Retail Downtown Core 2025, Guadalupe Street, Austin, TX, 78705 Retail / Business retail_business Retail / Business listing operated by Target.",
+      "aliases": [
+        "map-1437-target"
+      ]
     },
     {
       "id": "map-1436-target",
@@ -58705,47 +58285,6 @@
         "description": "Retail / Business listing operated by Target."
       },
       "searchText": "Target Retail Downtown Core 901, East 5th Street, Austin, TX, 78702-4075 Retail / Business retail_business Retail / Business listing operated by Target."
-    },
-    {
-      "id": "map-1437-target",
-      "slug": "target",
-      "name": "Target",
-      "entityType": "retail",
-      "category": "Retail",
-      "subcategory": "Retail / Business",
-      "district": "Downtown Core",
-      "address": "2025, Guadalupe Street, 78705",
-      "lat": 30.283415,
-      "lng": -97.74174,
-      "status": "active",
-      "source": "OpenStreetMap / Overpass",
-      "updatedAt": "2026-06-04",
-      "description": "Retail / Business listing operated by Target.",
-      "primaryImage": "/images/fallbacks/retail.jpg",
-      "galleryImages": [],
-      "thumbnail": "/images/fallbacks/retail-thumb.jpg",
-      "actions": [
-        {
-          "label": "Save"
-        },
-        {
-          "label": "Directions"
-        },
-        {
-          "label": "Website"
-        }
-      ],
-      "inheritance": {
-        "district": "Downtown Core",
-        "imageStrategy": "category-fallback",
-        "buildingSlug": "",
-        "mlsOverridesImage": false
-      },
-      "seo": {
-        "title": "Target | Downtown Perks",
-        "description": "Retail / Business listing operated by Target."
-      },
-      "searchText": "Target Retail Downtown Core 2025, Guadalupe Street, 78705 Retail / Business retail_business Retail / Business listing operated by Target."
     },
     {
       "id": "map-1203-taverna",
@@ -59038,8 +58577,8 @@
       "id": "happy-hour-tenten",
       "slug": "tenten",
       "name": "Tenten",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Sushi",
       "district": "West 6th",
       "address": "501 W 6th St",
@@ -59073,7 +58612,8 @@
         "title": "Tenten | Downtown Perks",
         "description": "Tenten has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Tenten Dining West 6th 501 W 6th St Sushi Tenten has food and drink specials worth saving when you are already nearby."
+      "searchText": "Tenten Dining West 6th 501 W 6th St Sushi Tenten has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1204-tenten"
     },
     {
       "id": "map-1205-terry-black-s-bbq",
@@ -65002,8 +64542,8 @@
       "id": "happy-hour-truluck-s",
       "slug": "truluck-s",
       "name": "Truluck's",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Seafood",
       "district": "Downtown Core",
       "address": "400 Colorado St",
@@ -65037,7 +64577,8 @@
         "title": "Truluck's | Downtown Perks",
         "description": "Truluck's has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Truluck's Dining Downtown Core 400 Colorado St Seafood Truluck's has food and drink specials worth saving when you are already nearby."
+      "searchText": "Truluck's Dining Downtown Core 400 Colorado St Seafood Truluck's has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1225-truluck-s"
     },
     {
       "id": "map-301-try-hard-coffee-roastere",
@@ -65945,8 +65486,8 @@
       "id": "happy-hour-verbena",
       "slug": "verbena",
       "name": "Verbena",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "American",
       "district": "West 6th",
       "address": "612 W 6th St",
@@ -65980,7 +65521,8 @@
         "title": "Verbena | Downtown Perks",
         "description": "Verbena has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Verbena Dining West 6th 612 W 6th St American Verbena has food and drink specials worth saving when you are already nearby."
+      "searchText": "Verbena Dining West 6th 612 W 6th St American Verbena has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1233-verbena"
     },
     {
       "id": "map-1466-verizon",
@@ -68983,8 +68525,8 @@
       "id": "happy-hour-wu-chow",
       "slug": "wu-chow",
       "name": "Wu Chow",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Chinese",
       "district": "Downtown Core",
       "address": "500 W 5th St",
@@ -69018,7 +68560,8 @@
         "title": "Wu Chow | Downtown Perks",
         "description": "Wu Chow has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Wu Chow Dining Downtown Core 500 W 5th St Chinese Wu Chow has food and drink specials worth saving when you are already nearby."
+      "searchText": "Wu Chow Dining Downtown Core 500 W 5th St Chinese Wu Chow has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1246-wu-chow"
     },
     {
       "id": "map-1481-yard-dog",
@@ -69434,8 +68977,8 @@
       "id": "happy-hour-zanzibar",
       "slug": "zanzibar",
       "name": "Zanzibar",
-      "entityType": "restaurant",
-      "category": "Dining",
+      "entityType": "perk",
+      "category": "Perks",
       "subcategory": "Rooftop",
       "district": "Downtown",
       "address": "",
@@ -69469,7 +69012,8 @@
         "title": "Zanzibar | Downtown Perks",
         "description": "Zanzibar has food and drink specials worth saving when you are already nearby."
       },
-      "searchText": "Zanzibar Dining Downtown Rooftop Zanzibar has food and drink specials worth saving when you are already nearby."
+      "searchText": "Zanzibar Dining Downtown Rooftop Zanzibar has food and drink specials worth saving when you are already nearby.",
+      "parentEntityId": "map-1247-zanzibar"
     },
     {
       "id": "map-1483-zeke-s",

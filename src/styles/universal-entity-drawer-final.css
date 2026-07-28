@@ -120,26 +120,27 @@
 
 @media (max-width: 767px), (max-height: 599px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: auto 0 0 !important;
+    inset: auto 0 var(--dp-entity-drawer-nav-clearance) !important;
     width: 100dvw !important;
     max-width: 100dvw !important;
     min-height: 0 !important;
-    max-height: 100dvh !important;
+    max-height: calc(100dvh - var(--dp-entity-drawer-nav-clearance)) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="peek"] {
-    height: calc(96px + var(--dp-entity-drawer-nav-clearance)) !important;
+    height: 96px !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="medium"] {
-    height: min(calc(45dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+    height: 45dvh !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="expanded"] {
-    height: min(calc(85dvh + var(--dp-entity-drawer-nav-clearance)), 100dvh) !important;
+    height: min(85dvh, calc(100dvh - var(--dp-entity-drawer-nav-clearance))) !important;
   }
 
   .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
+    bottom: 0 !important;
     height: 100dvh !important;
   }
 
@@ -151,7 +152,7 @@
   }
 
   .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
-    margin-bottom: var(--dp-entity-drawer-nav-clearance) !important;
+    margin-bottom: 0 !important;
     padding-bottom: 10px !important;
   }
 
@@ -163,11 +164,11 @@
 
 @media (min-width: 768px) and (min-height: 600px) {
   .dp-map-page #dp-active-map-drawer.dp-native-drawer {
-    inset: 0 0 0 auto !important;
+    inset: 0 0 var(--dp-bottom-nav-total-height, 64px) auto !important;
     width: min(480px, 42vw) !important;
     max-width: 480px !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+    max-height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
   }
 
   .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
@@ -186,7 +187,6 @@
     animation-duration: 0.01ms !important;
   }
 }
-
 
 /* Legends Founding Partner profile — one quiet brand block across resident and partner drawers. */
 .dp-legends-founding-partner {
@@ -226,4 +226,15 @@
   font: 400 0.8125rem/1.55 Inter, sans-serif;
   margin: 0;
   max-width: 62ch;
+}
+
+/* Final viewport authority: the persistent navigation owns the bottom strip
+   at every breakpoint, so contextual actions can never be clipped beneath it. */
+@media (min-width: 768px) and (min-height: 600px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer.dp-panel-shell.dp-detail-drawer.dp-destination-drawer.dp-map-drawer-panel {
+    inset: 0 0 var(--dp-bottom-nav-total-height, 64px) auto !important;
+    height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--dp-bottom-nav-total-height, 64px)) !important;
+  }
 }
