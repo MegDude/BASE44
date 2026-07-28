@@ -31,6 +31,19 @@ test.describe("adaptive map surface", () => {
     await expect(page.locator(".dp-map-page-embedded")).toHaveCount(0);
   });
 
+  test("resident navigation exposes exactly one dialog at a time", async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto("/map?mode=resident&tab=map&filter=Perks");
+    await expect(page.getByRole("dialog", { name: "Active perks" })).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(1);
+
+    await page.getByRole("tab", { name: "Events", exact: true }).click();
+    await expect(page).toHaveURL(/tab=events.*filter=Events/);
+    await expect(page.getByRole("dialog", { name: "Active perks" })).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: "Map results" })).toBeVisible();
+    await expect(page.getByRole("dialog")).toHaveCount(1);
+  });
+
   test("mobile panel and bottom navigation form one edge-to-edge surface", async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto("/map?mode=partner&tab=map&filter=All&routeId=inkind-dining-market&stopId=inkind-peche&entityId=inkind-peche");
