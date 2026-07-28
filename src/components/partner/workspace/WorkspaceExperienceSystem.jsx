@@ -6,11 +6,10 @@ import { MapSurveyPrompt } from "@/components/map/MapSurveyModule";
 import { useWorkspaceSheet } from "@/components/partner/workspace/WorkspaceSheetSystem";
 import {
   EXPERIENCE_BUILDER_STEPS,
-  EXPERIENCE_API_CONTRACT,
   EXPERIENCE_TEMPLATES,
-  buildExperiencePublishRequest,
   createExperienceDraft,
 } from "@/lib/experiences/experienceSystem";
+import { publishExperience } from "@/lib/experiences/experiencePublisher";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 
 const GOALS = [
@@ -39,6 +38,7 @@ function ExperienceBuilder({ template, organizationId }) {
   const { closeSheet } = useWorkspaceSheet();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState(() => createExperienceDraft(template, organizationId));
+  const publishIdempotencyKey = useRef(crypto.randomUUID());
   const [publishState, setPublishState] = useState("idle");
   const [publishMessage, setPublishMessage] = useState("");
   const update = (patch) => setDraft((current) => ({ ...current, ...patch }));
@@ -54,17 +54,12 @@ function ExperienceBuilder({ template, organizationId }) {
     setPublishState("publishing");
     setPublishMessage("");
     try {
-      const response = await fetch(EXPERIENCE_API_CONTRACT.publish, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buildExperiencePublishRequest(draft)),
-      });
-      if (!response.ok) throw new Error("publish unavailable");
+      const result = await publishExperience(draft, publishIdempotencyKey.current);
       setPublishState("published");
-      setPublishMessage("Published. The experience is ready for its configured placements.");
-    } catch {
+      setPublishMessage(result.idempotentReplay ? "Already published. The existing experience is ready." : "Published. The experience is ready for its configured placements.");
+    } catch (error) {
       setPublishState("error");
-      setPublishMessage("Publishing is unavailable. Nothing was sent, and this draft remains open in this session.");
+      setPublishMessage(error instanceof Error ? error.message : "Publishing is unavailable. Your draft remains open.");
     }
   };
 
