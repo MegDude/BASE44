@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { inject } from '@vercel/analytics'
+import { injectSpeedInsights } from '@vercel/speed-insights'
 import App from '@/App.jsx'
 import '@/index.css'
 import '@/styles/map-glass-final.css'
@@ -143,6 +145,9 @@ import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
+
+inject()
+injectSpeedInsights()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
