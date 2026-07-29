@@ -140,6 +140,7 @@ import "@/styles/map-drawer-single-line-titles-final.css"
 import "@/styles/map-drawer-scroll-footer-final.css"
 import "@/styles/map-detail-panel-live-final.css"
 import "@/styles/map-bottom-drawer-contract-final.css"
+import "@/styles/building-experience-ios-native-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
