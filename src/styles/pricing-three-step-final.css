@@ -61,6 +61,12 @@ html body #root main.dp-pricing-page .dp-pricing-calculator-controls {
   box-shadow: none !important;
 }
 
+/* Pricing is an editorial decision page: square controls, no decorative UI
+   markers, and one consistent text edge. */
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(button, a) {
+  border-radius: 0 !important;
+}
+
 html body #root main.dp-pricing-page fieldset.dp-pricing-decision {
   min-width: 0 !important;
   margin: 0 !important;
@@ -95,7 +101,7 @@ html body #root main.dp-pricing-page fieldset.dp-pricing-decision > legend > spa
   width: 24px !important;
   height: 24px !important;
   border: 1px solid var(--dp-pricing-line) !important;
-  border-radius: 50% !important;
+  border-radius: 0 !important;
   color: var(--dp-pricing-gold) !important;
   font-size: 12px !important;
 }
@@ -111,7 +117,7 @@ html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
   display: block !important;
   min-width: 0 !important;
   min-height: 64px !important;
-  padding: 10px 26px 10px 2px !important;
+  padding: 12px 8px 12px 0 !important;
   text-align: left !important;
   background: #fff !important;
   color: var(--dp-pricing-ink) !important;
@@ -119,22 +125,7 @@ html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
   border-bottom: 1px solid var(--dp-pricing-line) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-}
-
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 3px;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border: 1.5px solid rgba(11, 31, 51, .3);
-  border-radius: 50%;
-}
-
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button[data-active="true"]::after {
-  border: 3px solid var(--dp-pricing-gold);
+  transition: color 160ms ease, border-color 160ms ease !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid.dp-pricing-partner-type-grid > button,
@@ -143,24 +134,28 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-ty
   box-shadow: none !important;
 }
 
-html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid.dp-pricing-partner-type-grid > button::after {
-  width: 8px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
-  background: transparent !important;
+html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button[data-active="true"] {
+  border-bottom-color: var(--dp-pricing-gold) !important;
+  color: var(--dp-pricing-ink) !important;
 }
 
 html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button strong,
 html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button small {
   display: block !important;
   min-width: 0 !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
+  text-align: left !important;
 }
 
 html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button strong { font-size: 15px !important; }
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button small { color: var(--dp-pricing-muted) !important; font-size: 12px !important; }
+html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button small {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: var(--dp-pricing-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
 
 html body #root main.dp-pricing-page .dp-pricing-plan-selector {
   display: flex !important;
@@ -184,6 +179,7 @@ html body #root main.dp-pricing-page .dp-pricing-plan-selector > button {
   background: transparent !important;
   color: var(--dp-pricing-ink) !important;
   box-shadow: none !important;
+  text-align: left !important;
 }
 
 html body #root main.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] {
@@ -264,6 +260,7 @@ html body #root main.dp-pricing-page .dp-pricing-selected > span { display: bloc
 html body #root#root main.dp-pricing-page .dp-pricing-selected > span { box-shadow: none !important; }
 html body #root main.dp-pricing-page .dp-pricing-selected button { display: block !important; width: 100% !important; min-height: 40px !important; padding: 8px 0 !important; text-align: left !important; background: #fff !important; border: 0 !important; border-bottom: 1px solid var(--dp-pricing-line) !important; border-radius: 0 !important; color: var(--dp-pricing-ink) !important; }
 html body #root main.dp-pricing-page .dp-pricing-button { min-height: 48px !important; border-radius: 10px !important; box-shadow: none !important; }
+html body #root main.dp-pricing-page .dp-pricing-button { border-radius: 0 !important; }
 
 @media (max-width: 767px) {
   html body #root main.dp-pricing-page .dp-pricing-container { width: min(100% - 32px, 620px) !important; }
@@ -274,7 +271,10 @@ html body #root main.dp-pricing-page .dp-pricing-button { min-height: 48px !impo
 }
 
 @media (max-width: 430px) {
-  html body #root main.dp-pricing-page .dp-pricing-partner-type-grid { gap: 0 12px !important; }
+  html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
+    min-height: 72px !important;
+    padding-right: 8px !important;
+  }
   html body #root main.dp-pricing-page .dp-pricing-selected-plan ul { grid-template-columns: 1fr !important; }
   html body #root main.dp-pricing-page .dp-pricing-upgrade-list > button { min-height: 72px !important; }
 }
