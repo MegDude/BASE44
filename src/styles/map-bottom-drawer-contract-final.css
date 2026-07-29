@@ -16,6 +16,7 @@ html body #root .dp-map-page :is(
   .dp-detail-drawer,
   .dp-destination-drawer,
   .dp-map-list-drawer,
+  .dp-map-drawer-shell,
   .dp-cluster-drawer,
   .dp-partner-activity-drawer,
   .dp-native-sheet,
@@ -46,6 +47,7 @@ html body #root .dp-map-page :is(
   .dp-detail-drawer,
   .dp-destination-drawer,
   .dp-map-list-drawer,
+  .dp-map-drawer-shell,
   .dp-cluster-drawer,
   .dp-partner-activity-drawer,
   .dp-native-sheet,
@@ -64,6 +66,7 @@ html body #root .dp-map-page :is(
   .dp-detail-drawer,
   .dp-destination-drawer,
   .dp-map-list-drawer,
+  .dp-map-drawer-shell,
   .dp-cluster-drawer,
   .dp-partner-activity-drawer,
   .dp-native-sheet,
@@ -82,6 +85,7 @@ html body #root .dp-map-page :is(
   .dp-detail-drawer,
   .dp-destination-drawer,
   .dp-map-list-drawer,
+  .dp-map-drawer-shell,
   .dp-cluster-drawer,
   .dp-partner-activity-drawer,
   .dp-native-sheet,
@@ -101,7 +105,24 @@ html body #root .dp-map-page .dp-route-experience-sheet .dp-native-drawer-action
   align-items: center !important;
   gap: 8px !important;
   min-height: 56px !important;
-  padding: 6px max(16px, env(safe-area-inset-right, 0px)) !important;
+  padding-top: 6px !important;
+  padding-right: max(16px, env(safe-area-inset-right, 0px)) !important;
+  padding-bottom: 6px !important;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)) !important;
+}
+
+html body #root .dp-map-page .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport,
+html body #root .dp-map-page .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-actions {
+  margin-bottom: 0 !important;
+}
+
+html body #root .dp-map-page .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-underlay {
+  display: none !important;
+  height: 0 !important;
+}
+
+html body #root .dp-map-page .dp-native-drawer:not(:has(> .dp-native-drawer-surface)) {
+  padding-bottom: 0 !important;
 }
 
 html body #root .dp-map-page .dp-route-experience-sheet .dp-route-primary-action,
@@ -210,4 +231,26 @@ html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data
 
 html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data-drawer-state="full"] {
   height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+}
+
+
+/* Final authority for legacy desktop list/result drawers that do not use the
+   canonical active-drawer ID. This intentionally outranks the repeated-ID
+   legacy rule until those drawers share one DOM contract. */
+@media (min-width: 768px) and (min-height: 600px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-map-drawer-shell {
+    position: fixed !important;
+    inset: auto 0 var(--dp-map-bottom-sheet-gap) 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    height: var(--dp-map-sheet-medium-height) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(11, 31, 51, 0.10) !important;
+    border-bottom: 0 !important;
+    border-radius: 16px 16px 0 0 !important;
+    background: #fff !important;
+  }
 }
