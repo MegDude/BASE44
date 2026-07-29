@@ -4,6 +4,7 @@ import { ArrowRight, Check, ChevronRight, Sparkles } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { supabaseClient } from "@/lib/supabase/client";
 import { getPartnerContentApiBaseUrl } from "@/lib/partner/partnerMapContentClient";
+import { AdminScopeSwitcher } from "@/components/admin/AdminScopeSwitcher";
 import {
   ADMIN_STUDIO_ROUTES,
   CAMPAIGN_CREATION_FLOW,
@@ -38,7 +39,7 @@ function StudioShell({ activeRoute }) {
     <aside className="dp-os-studio-rail" aria-label="Admin Marketing Studio navigation">
       <Link to="/admin-studio/command-center" className="dp-os-studio-brand">
         <span>DP</span>
-        <strong>Marketing Studio</strong>
+        <strong>Admin Workspace</strong>
       </Link>
       <nav>
         {ADMIN_STUDIO_ROUTES.map((route) => {
@@ -253,11 +254,12 @@ export default function AdminMarketingStudio() {
     <div className="dp-os-studio-page">
       <StudioShell activeRoute={activeRoute} />
       <main className="dp-os-studio-main">
+        <AdminScopeSwitcher />
         <header className="dp-os-studio-hero">
           <div>
-            <span className="dp-os-kicker">Downtown Perks OS</span>
-            <h1>Premium control layer for downtown discovery.</h1>
-            <p>One native-feeling system for resident decisions, partner launches, admin governance, and public storytelling.</p>
+            <span className="dp-os-kicker">Downtown Perks · Admin Workspace</span>
+            <h1>Platform operations in one authorized workspace.</h1>
+            <p>Review organizations, people, places, campaigns, publishing, and data health without leaving the Downtown Perks platform shell.</p>
           </div>
           <div className="dp-os-studio-hero__actions">
             <button type="button" onClick={() => navigate("/partner-workspace/campaigns?intent=new")}>Build campaign <ArrowRight aria-hidden="true" /></button>
