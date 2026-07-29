@@ -396,6 +396,22 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
   const rawNormalized = raw.toLowerCase();
   const rawSlug = normalizePropertyId(raw);
   const legacyOsm = parseLegacyOsmEntityId(raw);
+  const canonicalId = resolveMapEntityAlias(raw);
+  const canonicalNormalized = canonicalId.toLowerCase();
+  const canonicalSlug = normalizePropertyId(canonicalId);
+  const canonicalMatch = canonicalId && canonicalNormalized !== rawNormalized
+    ? entities.find((entity) => {
+        return [
+          entity?.id,
+          entity?.entityId,
+          entity?.raw?.id,
+          entity?.raw?.entityId,
+          entity?.slug,
+          entity?.raw?.slug,
+        ].some((value) => String(value || "").toLowerCase() === canonicalNormalized || normalizePropertyId(value) === canonicalSlug);
+      })
+    : null;
+  if (canonicalMatch) return canonicalMatch;
   const exactMatch = entities.find((entity) => {
     return [
       entity?.id,
@@ -421,7 +437,7 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
     if (slugMatch) return slugMatch;
   }
 
-  const id = resolveMapEntityAlias(entityId);
+  const id = canonicalId;
   if (!id) return null;
   const normalized = id.toLowerCase();
   const normalizedSlug = normalizePropertyId(id);

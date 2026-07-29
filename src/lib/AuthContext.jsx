@@ -316,6 +316,7 @@ export const AuthProvider = ({ children }) => {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}${redirectPath}`,
+          shouldCreateUser: false,
           data: {
             full_name: fullName,
             organization_name: "Downtown Perks Resident",

@@ -116,7 +116,9 @@
     "test:super-admin-auth": "node scripts/test-super-admin-auth-contract.mjs",
     "test:legends-logo-pin": "node scripts/test-legends-logo-pin-contract.mjs",
     "test:legends-listing-identity": "node scripts/test-legends-listing-identity-contract.mjs",
-    "test:consolidated-recovery": "node scripts/test-consolidated-recovery.mjs"
+    "test:consolidated-recovery": "node scripts/test-consolidated-recovery.mjs",
+    "test:map-marker-stability": "node scripts/test-map-marker-stability-contract.mjs",
+    "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.35",

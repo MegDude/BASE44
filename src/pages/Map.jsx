@@ -67,6 +67,7 @@ import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyL
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
 import { resolveEntityPanelArchetype, resolveEntityPanelContent } from "../lib/map/entityPanelArchetypes";
 import { resolveEntityPin } from "../lib/map/entityPinResolver";
+import { createCanonicalMarkerRecord, resolveCanonicalMarkerEntityId } from "../lib/map/canonicalMarkerRecords";
 import { getCanonicalMapGlyph, LEGENDS_PIN_ASSET, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
 import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from "@/utils/nearbyRecommendations";
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
@@ -3195,7 +3196,7 @@ function getEntityIdentity(place, mode = "resident") {
 
   if (isBangersVenue(place)) {
     return {
-      id: place?.id,
+      id: resolveMapEntityAlias(place?.id || place?.raw?.id),
       entityType: "venue",
       displayTypeLabel: `Restaurant & beer garden · ${district}`,
       displayTitle: "Banger's Sausage House & Beer Garden",
@@ -3539,14 +3540,29 @@ function isLegendsPropertyPanel(place) {
   return Boolean(getLegendsListing(place) || getLuxuryPresenceBuilding(place) || String(place?.brand || place?.raw?.brand || "").toLowerCase().includes("legends"));
 }
 
+function getCanonicalMarkerRecord(place, options = {}) {
+  return createCanonicalMarkerRecord(place || {}, options);
+}
+
 function getPlaceCoords(place) {
-  if (Array.isArray(place?.coords) && place.coords.length >= 2) {
-    const lat = Number(place.coords[0]);
-    const lng = Number(place.coords[1]);
-    return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
-  }
-  if (Number.isFinite(place?.latitude) && Number.isFinite(place?.longitude)) return [place.latitude, place.longitude];
-  return null;
+  const markerRecord = getCanonicalMarkerRecord(place);
+  return markerRecord ? [markerRecord.latitude, markerRecord.longitude] : null;
+}
+
+function getPlaceMarkerId(place) {
+  return getCanonicalMarkerRecord(place)?.markerId || "";
+}
+
+function isSelectedMarkerPlace(place, selectedId) {
+  if (!place || !selectedId) return false;
+  const selectedCanonicalId = resolveCanonicalMarkerEntityId({ id: selectedId }) || resolveMapEntityAlias(selectedId) || String(selectedId);
+  const markerRecord = getCanonicalMarkerRecord(place);
+  return Boolean(
+    markerRecord &&
+      (markerRecord.markerId === selectedCanonicalId ||
+        markerRecord.entityId === selectedCanonicalId ||
+        String(place.id) === String(selectedId)),
+  );
 }
 
 function dedupePlacesById(places) {
@@ -3608,6 +3624,9 @@ function getMapPinCanonicalKeys(place) {
   const mls = normalizeMapPinKey(listing?.mlsNumber || listing?.mls_number || place?.raw?.mls_number || place?.raw?.mlsNumber || "");
   const keys = [];
 
+  const markerRecord = getCanonicalMarkerRecord(place);
+  if (markerRecord?.markerId) keys.push(`marker:${markerRecord.markerId}`);
+  if (markerRecord?.entityId) keys.push(`entity:${markerRecord.entityId}`);
   if (id) keys.push(`id:${id}`);
   if (mls) keys.push(`mls:${mls}`);
   if (title && address) keys.push(`title-address:${title}|${address}`);
@@ -3885,13 +3904,6 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const pin = resolveEntityPin(place);
-  if (pin.asset && normalizeMapIconKey(pin.label) === "legends") {
-    return {
-      url: pin.asset,
-      scaledSize: new maps.Size(size, size),
-      anchor: new maps.Point(size / 2, size / 2),
-    };
-  }
   const paths = mapIconSvgInner(getCanonicalMapGlyph(pin));
   const fill = selected ? "#C8A96A" : "#0B1F33";
   const stroke = selected ? "#0B1F33" : "#C8A96A";
@@ -3976,16 +3988,15 @@ function clusterPlaces(places, zoom, selectedId) {
   const loosePlaces = [];
 
   validPlaces.forEach((place) => {
-    if (place.id === selectedId) {
-      loosePlaces.push({ type: "place", id: place.id, place });
+    if (isSelectedMarkerPlace(place, selectedId)) {
+      loosePlaces.push({ type: "place", id: getPlaceMarkerId(place) || place.id, place });
       return;
     }
 
     const listing = getLegendsListing(place);
     const buildingKey = listing ? baseAddressText(listing.address || place.address || place.raw?.address || place.name) : "";
     if (buildingKey) {
-      const lat = Number(place.latitude);
-      const lng = Number(place.longitude);
+      const [lat, lng] = getPlaceCoords(place);
       const cell = buildingCells.get(buildingKey) || { key: `building-${buildingKey}`, places: [], latitude: 0, longitude: 0 };
       cell.places.push(place);
       cell.latitude += lat;
@@ -3999,7 +4010,7 @@ function clusterPlaces(places, zoom, selectedId) {
 
   const buildingClusters = Array.from(buildingCells.values()).flatMap((cell) => {
     if (cell.places.length < 2) {
-      return cell.places.map((place) => ({ type: "place", id: place.id, place }));
+      return cell.places.map((place) => ({ type: "place", id: getPlaceMarkerId(place) || place.id, place }));
     }
 
     return {
@@ -4015,7 +4026,7 @@ function clusterPlaces(places, zoom, selectedId) {
   if (!cellSize) {
     return [
       ...loosePlaces,
-      ...placesForGeoClustering.map((place) => ({ type: "place", id: place.id, place })),
+      ...placesForGeoClustering.map((place) => ({ type: "place", id: getPlaceMarkerId(place) || place.id, place })),
       ...buildingClusters,
     ];
   }
@@ -4023,8 +4034,7 @@ function clusterPlaces(places, zoom, selectedId) {
   const cells = new Map();
 
   placesForGeoClustering.forEach((place) => {
-    const lat = Number(place.latitude);
-    const lng = Number(place.longitude);
+    const [lat, lng] = getPlaceCoords(place);
     const key = `${Math.round(lat / cellSize)}:${Math.round(lng / cellSize)}`;
     const cell = cells.get(key) || { key, places: [], latitude: 0, longitude: 0 };
     cell.places.push(place);
@@ -4035,7 +4045,7 @@ function clusterPlaces(places, zoom, selectedId) {
 
   const clusters = Array.from(cells.values()).flatMap((cell) => {
     if (cell.places.length < 2) {
-      return cell.places.map((place) => ({ type: "place", id: place.id, place }));
+      return cell.places.map((place) => ({ type: "place", id: getPlaceMarkerId(place) || place.id, place }));
     }
 
     return {
@@ -9776,19 +9786,42 @@ function HappyHourDetails({ place, savedIds, onSave, onUse }) {
   const happyHour = place.raw?.happyHour || place.happyHour || {};
   const days = happyHour.days || "This week";
   const time = String(happyHour.time || "").trim();
-  const offer = happyHour.offer || "Food and drink specials nearby";
+  const offer = String(happyHour.offer || "").trim();
   const details = happyHour.details || place.raw?.summary || "A nearby happy hour for residents looking for an easy place to start.";
   const rawRedemption = String(happyHour.redemption || "").trim();
   const redemption = /\bsave\b.*\bdirections\b|\bdirections\b.*\bsave\b|what else is nearby/i.test(rawRedemption) ? "" : rawRedemption;
   const normalizedOffer = String(offer || "").trim().toLowerCase();
+  const isGenericOffer = !normalizedOffer || /^(food and drink specials nearby|resident perk|specials available|happy hour)$/i.test(normalizedOffer);
+  const isVerifiedOffer = !isGenericOffer && (
+    happyHour.verified === true ||
+    happyHour.isVerified === true ||
+    String(happyHour.status || "").toLowerCase() === "active" ||
+    Boolean(happyHour.validThrough || happyHour.endsAt || happyHour.endDate)
+  );
   const normalizedDetails = String(details || "").trim().toLowerCase();
   const normalizedRedemption = String(redemption || "").trim().toLowerCase();
   const shouldShowDetails = normalizedDetails && normalizedDetails !== normalizedOffer;
   const shouldShowRedemption = normalizedRedemption && normalizedRedemption !== normalizedOffer && normalizedRedemption !== normalizedDetails;
   const isSaved = savedIds?.has?.(place?.id);
 
+  if (!isVerifiedOffer) {
+    return (
+      <DestinationSection title="Venue details" className="dp-venue-details-section">
+        {details && <p className="dp-destination-section-copy">{details}</p>}
+        {time && (
+          <div className="dp-quiet-facts" aria-label={`${place.name} venue details`}>
+            <div>
+              <span>{days}</span>
+              <strong>{time}</strong>
+            </div>
+          </div>
+        )}
+      </DestinationSection>
+    );
+  }
+
   return (
-    <DestinationSection title={isBangersVenue(place) ? "Resident perk" : "Happy Hour"} className="dp-happy-hour-section">
+    <DestinationSection title={isBangersVenue(place) ? "Verified resident offer" : "Verified happy hour"} className="dp-happy-hour-section">
       {shouldShowDetails && <p className="dp-destination-section-copy">{details}</p>}
       <div className="dp-quiet-facts" aria-label={`${place.name} happy hour details`}>
         {time && (
@@ -13114,6 +13147,11 @@ function GoogleMapCanvas({
     if (userNavigatedRef.current) return;
     const focusId = String(selectedId || selected.id || selected.entityId || selected.slug || selected.name || "");
     if (!focusId || lastSelectedFocusRef.current === focusId) return;
+    const selectionRequestedMapFocus = Boolean(selected?.mapFocusRequested || selected?.focusOnMap || selected?.shouldFocusMap);
+    if (!selectionRequestedMapFocus) {
+      lastSelectedFocusRef.current = focusId;
+      return;
+    }
     const coords = getPlaceCoords(selected);
     if (!coords) return;
     lastSelectedFocusRef.current = focusId;
@@ -13281,32 +13319,35 @@ function GoogleMapCanvas({
       const place = routeStopNumberById.has(item.place?.id)
         ? { ...item.place, routeStopNumber: routeStopNumberById.get(item.place.id) }
         : item.place;
-      const coords = getPlaceCoords(place);
-      if (!coords) {
+      const markerRecord = getCanonicalMarkerRecord(place, { audienceMode: place?.audienceMode || place?.mode });
+      const coords = markerRecord ? [markerRecord.latitude, markerRecord.longitude] : null;
+      if (!markerRecord || !coords) {
         if (import.meta.env.DEV) console.warn("[Downtown Perks] Invalid map coordinates", { id: place?.id, name: place?.name });
         return;
       }
-      const key = `pin:${place.id}`;
+      const key = `pin:${markerRecord.markerId}`;
+      const markerSelected = isSelectedMarkerPlace(place, selectedId);
       nextKeys.add(key);
 
       const existing = registry.get(key);
       const wrapper = existing?.element || document.createElement("div");
       wrapper.className = "dp-google-map-marker-shell";
-      wrapper.dataset.markerEntityId = String(place.id);
-      wrapper.dataset.entityId = String(place.id);
-      applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: place.id === selectedId });
+      wrapper.dataset.markerEntityId = markerRecord.markerId;
+      wrapper.dataset.entityId = markerRecord.entityId;
+      wrapper.dataset.sourceVersion = markerRecord.sourceVersion;
+      applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: markerSelected });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
         pin: resolveEntityPin(place),
         ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
-        selected: place.id === selectedId,
-        pulsing: place.id === pulsingPinId,
+        selected: markerSelected,
+        pulsing: markerRecord.markerId === pulsingPinId || place.id === pulsingPinId,
         classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
         zoom: markerRenderZoom,
       });
       const button = wrapper.querySelector(".dp-map-pin");
-      button?.setAttribute("data-marker-entity-id", String(place.id));
-      button?.setAttribute("data-entity-id", String(place.id));
+      button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
+      button?.setAttribute("data-entity-id", markerRecord.entityId);
       button?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -13324,8 +13365,8 @@ function GoogleMapCanvas({
         position: { lat: coords[0], lng: coords[1] },
         content: wrapper,
         title: place.name,
-        icon: legacyDowntownMarkerIcon(maps, place, place.id === selectedId, markerRenderZoom),
-        zIndex: place.id === selectedId
+        icon: legacyDowntownMarkerIcon(maps, place, markerSelected, markerRenderZoom),
+        zIndex: markerSelected
           ? 1000
           : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
             ? 750

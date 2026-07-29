@@ -6,6 +6,7 @@ export const canonicalEntityAliasRegistry = {
   "map-1568-311-w-5th-st-w-902": "map-1566-311-w-5th-st-w-902",
   "map-1597-311-w-5th-st-w-902": "map-1566-311-w-5th-st-w-902",
   "map-691-amli-south-shore": "map-690-amli-south-shore",
+  "partner-bangers": "map-7-banger-s-sausage-house-and-beer-garden",
   "map-663-banger-s-sausage-house-and-beer-garden": "map-7-banger-s-sausage-house-and-beer-garden",
   "map-60-green-light-social": "map-59-green-light-social",
   "map-1064-historic-scoot-inn": "map-65-historic-scoot-inn",
