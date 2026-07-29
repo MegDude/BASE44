@@ -18222,7 +18222,7 @@ export default function MapPage() {
             aria-label="Partner scanner"
           >
             <div className="dp-panel-header flex shrink-0 items-center justify-between gap-2 px-3 py-2 sm:px-4 md:py-2.5">
-              <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+              <button type="button" onClick={restorePreviousMapPanel} className="dp-panel-back" aria-label="Back to previous panel">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
               <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">
@@ -18528,7 +18528,7 @@ export default function MapPage() {
             <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
               {isLegendsDirectoryLayer ? (
                 <>
-                  <MapPanelButton action="back" label="Map" ariaLabel="Return to map" variant="secondary" size="sm" className="dp-map-directory-back" onPress={closeDirectoryToMap}>
+                  <MapPanelButton action="back" label="Back" ariaLabel="Return to previous panel" variant="secondary" size="sm" className="dp-map-directory-back" onPress={restorePreviousMapPanel}>
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   </MapPanelButton>
                   <MapPanelButton action="close" label="Close" ariaLabel="Close Legends Real Estate listings panel" variant="icon" size="sm" className="dp-map-directory-close" onPress={closeDirectoryToMap}>
