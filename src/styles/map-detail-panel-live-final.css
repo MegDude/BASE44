@@ -143,6 +143,7 @@ html body #root .dp-map-page :is(
   -webkit-overflow-scrolling: touch !important;
 }
 
+/* Nested sections participate in the parent sheet's vertical document flow. */
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
   .dp-map-detail-scroll,
   .dp-map-sheet-scroll,
