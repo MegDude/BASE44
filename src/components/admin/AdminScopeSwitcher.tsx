@@ -3,6 +3,7 @@ import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuthorizedAdminScope, type AdminScope, type AdminScopeResponse } from "@/lib/admin/adminScopeClient";
+import { writePartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 
 const EMPTY: AdminScopeResponse = { role: "", organizations: [], portfolios: [], listings: [], activeScope: {} };
 type ScopeResult = {
@@ -55,6 +56,7 @@ export function AdminScopeSwitcher() {
     ["organizationId", "portfolioId", "listingId"].forEach((key) => nextParams.delete(key));
     Object.entries(next).forEach(([key, value]) => { if (value) nextParams.set(key, value); });
     sessionStorage.setItem("dp_admin_workspace:scope", JSON.stringify(next));
+    writePartnerWorkspaceScope(next);
     navigate(`${location.pathname}?${nextParams.toString()}`, { replace: false });
     setOpen(false);
   }
