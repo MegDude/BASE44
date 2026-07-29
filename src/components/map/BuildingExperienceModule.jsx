@@ -4,29 +4,28 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CalendarDays, ChevronRight, MapPin, Route, Sparkles } from "lucide-react";
 import { formatDistanceLabel } from "@/utils/nearbyRecommendations";
 
-const SECTION_LABELS = {
-  resident: {
-    overview: "Overview",
-    perks: "Perks",
-    collections: "Ideas",
-    campaigns: "Programs",
-    amenities: "Amenities",
-    events: "Events",
-    routes: "Walks",
-    nearby: "Nearby",
-    guide: "Guide",
-  },
-  partner: {
-    overview: "Overview",
-    perks: "Offers",
-    collections: "Ideas",
-    campaigns: "Campaigns",
-    amenities: "Amenities",
-    events: "Events",
-    routes: "Routes",
-    nearby: "Nearby",
-    guide: "Profile",
-  },
+const RESIDENT_SECTION_LABELS = {
+  overview: "Overview",
+  perks: "Perks",
+  collections: "Ideas",
+  campaigns: "Programs",
+  amenities: "Amenities",
+  events: "Events",
+  routes: "Walks",
+  nearby: "Nearby",
+  guide: "Guide",
+};
+
+const PARTNER_SECTION_LABELS = {
+  overview: "Overview",
+  perks: "Offers",
+  collections: "Ideas",
+  campaigns: "Campaigns",
+  amenities: "Amenities",
+  events: "Events",
+  routes: "Routes",
+  nearby: "Nearby",
+  guide: "Profile",
 };
 
 function partnerIdentityLabel(value) {
@@ -93,7 +92,7 @@ function EmptyState({ children, action }) {
 
 export default function BuildingExperienceModule({ building, experience, mode = "resident", onSelect, onExplore, onOpenRoute }) {
   const isPartner = mode === "partner";
-  const labels = isPartner ? SECTION_LABELS.partner : SECTION_LABELS.resident;
+  const labels = isPartner ? PARTNER_SECTION_LABELS : RESIDENT_SECTION_LABELS;
   const entityId = building.id || building.entityId || building.slug || "property";
   const campaignRoute = withQuery("/partner-workspace/campaigns", { entityId, intent: "new" });
   const offerRoute = withQuery("/partner-workspace/offers", { entityId, intent: "new" });
