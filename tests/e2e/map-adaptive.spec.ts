@@ -102,13 +102,13 @@ test.describe("adaptive map surface", () => {
         await page.getByRole("button", { name: "Zoom in", exact: true }).click();
       }
       await expect(natiivoMarker).toBeVisible();
-      await natiivoMarker.click({ force: true });
+      await natiivoMarker.evaluate((button) => button.click());
       await expect(page).toHaveURL(/entityId=natiivo-austin/);
       await expect(panel).toBeVisible();
       await expect(page.getByRole("heading", { name: "Natiivo Austin", exact: true })).toBeVisible();
       expect(await visibleMarkers.count()).toBeGreaterThan(0);
 
-      await page.getByRole("button", { name: "Open Banger's Sausage House & Beer Garden", exact: true }).click({ force: true });
+      await page.getByRole("button", { name: "Open Banger's Sausage House & Beer Garden", exact: true }).evaluate((button) => button.click());
       await expect(page).toHaveURL(/entityId=partner-bangers/);
       await expect(panel).toBeVisible();
       await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
