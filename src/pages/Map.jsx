@@ -240,16 +240,16 @@ const LEGENDS_BRAND_LINE = "Legends Real Estate";
 const LEGENDS_PIN_LOGO = LEGENDS_PIN_ASSET;
 const LEGENDS_PIN_ALT = "Legends Real Estate logo";
 const MAP_DRAWER_SURFACE_STYLE = {
-  backgroundColor: "rgba(255, 255, 255, 0.97)",
+  backgroundColor: "#ffffff",
   backgroundImage: "none",
   border: "1px solid rgba(11, 31, 51, 0.09)",
   borderBottom: 0,
-  borderRadius: "16px 16px 0 0",
-  boxShadow: "0 -10px 30px rgba(11, 31, 51, 0.10)",
+  borderRadius: 0,
+  boxShadow: "none",
   color: "#0B1F33",
   WebkitTextFillColor: "#0B1F33",
-  WebkitBackdropFilter: "blur(14px) saturate(120%)",
-  backdropFilter: "blur(14px) saturate(120%)",
+  WebkitBackdropFilter: "none",
+  backdropFilter: "none",
 };
 const FILTERS = [
   "All",
@@ -18546,9 +18546,66 @@ export default function MapPage() {
             </div>
 
             <div
-              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "hidden" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
+              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "dp-map-directory-body flex-1 overflow-y-auto" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
               data-panel-body
             >
+              {isLegendsDirectoryLayer && (
+                <>
+                  <section className="dp-map-directory-header">
+                    <p className="dp-map-directory-eyebrow">LEGENDS REAL ESTATE</p>
+                    <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
+                    <span className="dp-map-directory-subtitle">
+                      Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
+                    </span>
+                    <strong className="dp-map-directory-count">
+                      {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "listing" : "listings"}
+                    </strong>
+                  </section>
+                  <div className="dp-map-directory-list">
+                    {legendsDirectoryPlaces.map((place) => (
+                      isRentalEntity(place) ? (
+                        <LegendsRentalResultRow
+                          key={place.id}
+                          place={place}
+                          selected={place.id === selectedId}
+                          onSelect={() => selectPlace(place)}
+                        />
+                      ) : (
+                        (() => {
+                          const row = getLegendsDirectoryRowCopy(place);
+                          return (
+                            <button
+                              key={place.id}
+                              type="button"
+                              className="dp-legends-result-row"
+                              data-action="select"
+                              data-selected={place.id === selectedId ? "true" : "false"}
+                              onClick={() => selectPlace(place)}
+                              aria-label={`View ${row.title}`}
+                            >
+                              <span className="dp-legends-result-pin" aria-hidden="true">
+                                <PinBadge place={place} selected={place.id === selectedId} size="sm" />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="dp-legends-result-meta">{row.meta}</span>
+                                <span className="dp-legends-result-title">{row.title}</span>
+                                <span className="dp-legends-result-address">{row.address}</span>
+                                <span className="dp-legends-result-details">{row.details}</span>
+                              </span>
+                              <span className="dp-legends-result-action">View</span>
+                            </button>
+                          );
+                        })()
+                      )
+                    ))}
+                    {!legendsDirectoryPlaces.length && (
+                      <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
+                        No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
               {urlState.mode === "partner" && activePartnerPanel === "activity" && renderActivityPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "reports" && renderReportsPanel()}
               {urlState.mode === "partner" && activePartnerPanel === "campaigns" && renderCampaignPanel()}
@@ -18582,63 +18639,7 @@ export default function MapPage() {
               )}
             </div>
 
-            {isLegendsDirectoryLayer ? (
-              <>
-                <section className="dp-map-directory-header">
-                  <p className="dp-map-directory-eyebrow">LEGENDS REAL ESTATE</p>
-                  <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
-                  <span className="dp-map-directory-subtitle">
-                    Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
-                  </span>
-                  <strong className="dp-map-directory-count">
-                    {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "listing" : "listings"}
-                  </strong>
-                </section>
-                <div className="dp-map-directory-list">
-                  {legendsDirectoryPlaces.map((place) => (
-                    isRentalEntity(place) ? (
-                      <LegendsRentalResultRow
-                        key={place.id}
-                        place={place}
-                        selected={place.id === selectedId}
-                        onSelect={() => selectPlace(place)}
-                      />
-                    ) : (
-                      (() => {
-                        const row = getLegendsDirectoryRowCopy(place);
-                        return (
-                          <button
-                            key={place.id}
-                            type="button"
-                            className="dp-legends-result-row"
-                            data-action="select"
-                            data-selected={place.id === selectedId ? "true" : "false"}
-                            onClick={() => selectPlace(place)}
-                            aria-label={`View ${row.title}`}
-                          >
-                            <span className="dp-legends-result-pin" aria-hidden="true">
-                              <PinBadge place={place} selected={place.id === selectedId} size="sm" />
-                            </span>
-                            <span className="min-w-0">
-                              <span className="dp-legends-result-meta">{row.meta}</span>
-                              <span className="dp-legends-result-title">{row.title}</span>
-                              <span className="dp-legends-result-address">{row.address}</span>
-                              <span className="dp-legends-result-details">{row.details}</span>
-                            </span>
-                            <span className="dp-legends-result-action">View</span>
-                          </button>
-                        );
-                      })()
-                    )
-                  ))}
-                  {!legendsDirectoryPlaces.length && (
-                    <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                      No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : urlState.mode !== "partner" && isResidentSavedDrawer ? (
+            {isLegendsDirectoryLayer ? null : urlState.mode !== "partner" && isResidentSavedDrawer ? (
               renderSavedCollectionPanel()
             ) : urlState.mode !== "partner" && activeBottomTab === "info" ? (
               <div className="dp-resident-tab-panel dp-resident-info-tab-panel min-h-0 flex-1 overflow-hidden">

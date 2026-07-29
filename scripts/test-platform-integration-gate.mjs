@@ -15,6 +15,9 @@ const panel = read('src/components/map/CanonicalDetailPanel.jsx');
 const fixedActions = read('src/styles/detail-panel-fixed-actions-final.css');
 const drawerGeometry = read('src/styles/native-drawer-geometry-final.css');
 const panelCohesion = read('src/styles/platform-panel-cohesion-final.css');
+const canonicalSurface = read('src/styles/canonical-surface-system.css');
+const map = read('src/pages/Map.jsx');
+const mapIconRegistry = read('src/lib/map/mapIconRegistry.ts');
 const savedApi = read('api/resident/saved.js');
 
 requireMatch('routes', app, /partners\/sign-in/, 'partner sign-in route is missing');
@@ -72,6 +75,15 @@ for (const selector of [
 requireMatch('panel cohesion', panelCohesion, /background:\s*var\(--dp-cohesion-white\)\s*!important/, 'bright-white surface lock is missing');
 requireMatch('panel cohesion', panelCohesion, /box-shadow:\s*none\s*!important/, 'decorative shadow removal is missing');
 requireMatch('panel cohesion', panelCohesion, /border-radius:\s*0\s*!important/, 'filled card and capsule shape removal is missing');
+requireMatch('panel cohesion', canonicalSurface, /--dp-sheet-shadow:\s*none/, 'canonical surface tokens reintroduce a decorative sheet shadow');
+requireMatch('panel cohesion', canonicalSurface, /\.dp-native-drawer,[\s\S]*?box-shadow:\s*none\s*!important/, 'canonical drawers can override the shadow-free panel contract');
+requireMatch('panel cohesion', canonicalSurface, /@media \(max-width:\s*767px\)[\s\S]*?\.dp-native-drawer,[\s\S]*?border-radius:\s*0\s*!important/, 'canonical mobile sheets can override the sharp panel geometry');
+
+requireMatch('Legends directory', map, /resolveCanonicalLegendsDirectoryPlaces/, 'canonical Legends listing resolver is missing');
+requireMatch('Legends directory', map, /\{legendsDirectoryPlaces\.length\} active[\s\S]*?legendsDirectoryPlaces\.map/, 'Legends count and rows do not use the same resolved array');
+requireMatch('Legends directory', map, /dp-panel-body dp-panel-scroll[\s\S]*?isLegendsDirectoryLayer && \([\s\S]*?dp-map-directory-header[\s\S]*?dp-map-directory-list/, 'Legends content is not inside the directory scroll body');
+requireMatch('Legends directory', mapIconRegistry, /\/pins\/downtown-perks\/legends-logo-gold\.svg/, 'canonical Legends pin artwork is missing');
+requireMatch('map drawer', map, /const MAP_DRAWER_SURFACE_STYLE = \{[\s\S]*?backgroundColor:\s*"#ffffff"[\s\S]*?borderRadius:\s*0[\s\S]*?boxShadow:\s*"none"[\s\S]*?backdropFilter:\s*"none"/, 'inline drawer styles can reintroduce tint, rounded corners, shadow, or blur');
 
 const actionsImport = main.indexOf('detail-panel-fixed-actions-final.css');
 const geometryImport = main.indexOf('native-drawer-geometry-final.css');
