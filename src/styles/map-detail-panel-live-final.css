@@ -494,7 +494,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 
 
 /* Absolute final authority for legacy sheet motion and nested overflow.
-   Remove with the legacy cohesion bundle, not independently. */
+   This boundary is removed only with the legacy cohesion bundle. */
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
   .dp-native-drawer,
   .dp-map-sheet,
