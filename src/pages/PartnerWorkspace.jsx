@@ -645,6 +645,7 @@ function PartnerWorkspaceContent() {
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [authorizedAdminScope, setAuthorizedAdminScope] = useState({});
   const requestedScope = readPartnerWorkspaceScope(location.search, !hasPrivilegedWorkspaceAccess);
   const normalizedOrganizationName = String(
     user.organization_name || user.partner_name || activation?.organizationName || "",
@@ -659,15 +660,16 @@ function PartnerWorkspaceContent() {
   ));
   const workspaceScope = hasPrivilegedWorkspaceAccess
     ? {
-        ...requestedScope,
-        type: requestedScope.listingId
+        ...authorizedAdminScope,
+        range: requestedScope.range,
+        type: authorizedAdminScope.listingId
           ? "listing"
-          : requestedScope.portfolioId
+          : authorizedAdminScope.portfolioId
             ? "portfolio"
-            : requestedScope.organizationId
+            : authorizedAdminScope.organizationId
               ? "organization"
               : "unscoped",
-        listingIds: requestedScope.listingId ? [requestedScope.listingId] : [],
+        listingIds: authorizedAdminScope.listingId ? [authorizedAdminScope.listingId] : [],
       }
     : resolvePartnerWorkspaceScope({
           ...requestedScope,
@@ -832,6 +834,7 @@ function PartnerWorkspaceContent() {
           scope={workspaceScope}
           accessMode={hasPrivilegedWorkspaceAccess ? "admin" : "partner"}
           organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name}
+          onAdminScopeResolved={setAuthorizedAdminScope}
         />
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} scope={workspaceScope} organizationId={activeOrganizationId} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
@@ -841,8 +844,8 @@ function PartnerWorkspaceContent() {
           {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" scope={workspaceScope} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />}
-          {tab === "offers" && <PerksManager key="offers" user={user} scope={workspaceScope} />}
-          {tab === "events" && <EventsManager key="events" user={user} scope={workspaceScope} />}
+          {tab === "offers" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-offers" tabId="offers" /> : <PerksManager key="offers" user={user} scope={workspaceScope} />)}
+          {tab === "events" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-events" tabId="events" /> : <EventsManager key="events" user={user} scope={workspaceScope} />)}
           {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
