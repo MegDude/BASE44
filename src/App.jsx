@@ -27,7 +27,6 @@ const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
 const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
-const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
 const InteractionSystemPreview = lazy(() => import("./pages/InteractionSystemPreview"));
 const MicrositeDirectory = lazy(() => import("./components/microsites/MicrositeDirectory"));
 const PartnerMicrositePage = lazy(() => import("./components/microsites/PartnerMicrositePage"));
@@ -89,7 +88,7 @@ function AdminProtectedRoute({ children }) {
 function ProtectedAdminStudio() {
   return (
     <AdminProtectedRoute>
-      <AdminMarketingStudio />
+      <Navigate to="/partner-workspace/overview" replace />
     </AdminProtectedRoute>
   );
 }
