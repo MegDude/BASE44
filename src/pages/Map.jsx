@@ -3980,7 +3980,7 @@ function getClusterCellSize(zoom) {
   return 0.01;
 }
 
-function clusterPlaces(places, zoom, selectedId) {
+function clusterPlaces(places, zoom, selectedId, preservedMarkerIds = new Set()) {
   const validPlaces = places.filter((place) => getPlaceCoords(place));
   const cellSize = getClusterCellSize(zoom);
   const buildingCells = new Map();
@@ -3988,8 +3988,9 @@ function clusterPlaces(places, zoom, selectedId) {
   const loosePlaces = [];
 
   validPlaces.forEach((place) => {
-    if (isSelectedMarkerPlace(place, selectedId)) {
-      loosePlaces.push({ type: "place", id: getPlaceMarkerId(place) || place.id, place });
+    const markerId = getPlaceMarkerId(place) || place.id;
+    if (isSelectedMarkerPlace(place, selectedId) || preservedMarkerIds.has(markerId) || preservedMarkerIds.has(place.id)) {
+      loosePlaces.push({ type: "place", id: markerId, place });
       return;
     }
 
@@ -13446,7 +13447,11 @@ function GoogleMapCanvas({
             data-accessible-marker-entity-id={item.place.id}
             aria-label={`Open ${item.place.name || "map place"}`}
             aria-pressed={item.place.id === selectedId}
-            onClick={() => markerActionHandlersRef.current.onSelect?.(item.place)}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={(event) => {
+              event.stopPropagation();
+              markerActionHandlersRef.current.onSelect?.(item.place);
+            }}
           >
             Open {item.place.name || "map place"}
           </button>
@@ -14307,6 +14312,8 @@ export default function MapPage() {
   };
   const [selectedId, setSelectedId] = useState(urlState.entityId);
   const [selectedPlaceOverride, setSelectedPlaceOverride] = useState(null);
+  const selectionTransitionRef = useRef(null);
+  const selectionDatasetRef = useRef([]);
   const drawerTriggerRef = useRef(null);
   const inKindParentRef = useRef(null);
   const savedIdList = useSavedStore((state) => state.savedIds);
@@ -14648,6 +14655,8 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!urlState.entityId) {
+      selectionTransitionRef.current = null;
+      selectionDatasetRef.current = [];
       setSelectedId("");
       setSelectedPlaceOverride(null);
       setSelectedDrawerClosed(true);
@@ -14657,11 +14666,15 @@ export default function MapPage() {
       return;
     }
     const nextSelectedId = resolveMapEntityAlias(urlState.entityId);
+    const transition = selectionTransitionRef.current;
+    const transitionPlace =
+      transition && transition.entityId === nextSelectedId ? transition.place : null;
     setSelectedId(nextSelectedId);
-    setSelectedPlaceOverride(null);
+    setSelectedPlaceOverride((current) =>
+      current && resolveMapEntityAlias(current.id) === nextSelectedId ? current : transitionPlace,
+    );
     setMapAnswer(null);
     setEntityAnswer(null);
-    setSearch("");
     setSelectedDrawerClosed(false);
   }, [urlState.entityId]);
 
@@ -14941,12 +14954,16 @@ export default function MapPage() {
   const selected = useMemo(
     () => {
       if (!selectedId) return null;
-      const overrideId = selectedPlaceOverride?.id ? resolveMapEntityAlias(selectedPlaceOverride.id) : "";
-      const override = overrideId && overrideId === selectedId ? selectedPlaceOverride : null;
+      const transition = selectionTransitionRef.current;
+      const transitionPlace =
+        transition && transition.entityId === selectedId ? transition.place : null;
+      const overrideSource = selectedPlaceOverride || transitionPlace;
+      const overrideId = overrideSource?.id ? resolveMapEntityAlias(overrideSource.id) : "";
+      const override = overrideId && overrideId === selectedId ? overrideSource : null;
       const listingCandidate = urlState.listingId
         ? resolveListingEntityFromCollection(urlState.listingId, luxuryPresenceListingPlaces) || resolveListingEntityFromCollection(urlState.listingId, places)
         : null;
-      const candidate = listingCandidate || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      const candidate = listingCandidate || override || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || null;
       if (!candidate) return null;
       const isExplicitSelectionOverride = Boolean(override && resolveMapEntityAlias(candidate.id) === overrideId);
       const isSelectedHospitalityEntity = isHospitalityNetworkEntity(candidate);
@@ -14989,6 +15006,7 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!selectedId || !selected) return;
+    if (selectionTransitionRef.current?.entityId === selectedId) return;
     if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     if (activeFilter === "All" && !urlState.collection && !effectiveSearch) return;
     if (matchesFilter(selected, activeFilter, savedIds)) return;
@@ -15203,7 +15221,8 @@ export default function MapPage() {
         .slice(0, 5)
       : [];
 
-    return dedupeMapPinPlaces([...legendsTopListingPins, ...selectedMarkerPlaces]);
+    const stableSelectionPlaces = selectionTransitionRef.current ? selectionDatasetRef.current : [];
+    return dedupeMapPinPlaces([...legendsTopListingPins, ...stableSelectionPlaces, ...selectedMarkerPlaces]);
   }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, markerLayoutContext.zoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
   const mappablePlaces = useMemo(
     () => mapPlaces.filter((place) => place?.hasExactMarker !== false || Boolean(getPlaceCoords(place))),
@@ -15249,12 +15268,16 @@ export default function MapPage() {
     [discoverDisplayPlaces],
   );
   const stableClusterZoom = markerLayoutContext.zoom;
-  const clusteredMapItems = useMemo(
-    () => activeCollectionRoute?.stops?.length
-      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
-      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
-    [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom],
-  );
+  const clusteredMapItems = useMemo(() => {
+    const preservedMarkerIds = new Set(
+      (selectionTransitionRef.current ? selectionDatasetRef.current : [])
+        .flatMap((place) => [place?.id, getPlaceMarkerId(place)])
+        .filter(Boolean),
+    );
+    return activeCollectionRoute?.stops?.length
+      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId, preservedMarkerIds)
+      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId, preservedMarkerIds);
+  }, [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom]);
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {
     if (!selectedId) return;
@@ -16517,6 +16540,7 @@ export default function MapPage() {
   useEffect(() => {
     if (!selectedId) return;
     if (selected) return;
+    if (selectionTransitionRef.current?.entityId === selectedId) return;
     if (!places.length && !luxuryPresenceListingPlaces.length) return;
     if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     if (/^(republic-austin|daa-stop|waterloo|parking)/i.test(selectedId)) return;
@@ -16600,13 +16624,14 @@ export default function MapPage() {
     setActiveBottomTab("map");
     setClusterDrawer(null);
     setConsoleCollapsed(true);
-    setSearch("");
     setMapAnswer(null);
     setEntityAnswer(null);
     setEntityAssistantLoading(false);
     setSelectedDrawerClosed(false);
     setSelectedDrawerMinimized(false);
     setPulsingPinId(nextEntityId);
+    selectionDatasetRef.current = mapPlaces;
+    selectionTransitionRef.current = { entityId: nextEntityId, place };
     setSelectedPlaceOverride(place);
     setSelectedId(nextEntityId);
     recordMapUserAction("select_pin", {
@@ -19321,7 +19346,7 @@ export default function MapPage() {
                         <BuildingLocalServicesRail place={selected} places={places} onSelect={selectPlace} />
                       </motion.div>
                     )}
-                    {urlState.mode === "resident" && isHappyHourEntity(selected) && (
+                    {urlState.mode === "resident" && (isHappyHourEntity(selected) || isBangersVenue(selected)) && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.18 }}>
                         <HappyHourDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} onUse={() => openResidentQrModal(selected, "use_perk", "happy_hour_details")} />
                       </motion.div>
@@ -19359,7 +19384,7 @@ export default function MapPage() {
                         />
                       </motion.div>
                     )}
-                    {urlState.mode === "resident" && (hasActivePerkData(selected) || isProperty) && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
+                    {urlState.mode === "resident" && (hasActivePerkData(selected) || isProperty) && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isBangersVenue(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.18 }}>
                         <ResidentPerkDetails
                           place={selected}
