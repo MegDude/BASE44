@@ -98,6 +98,11 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-scroll {
   background: var(--dp-detail-white) !important;
 }
 
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-panel-content.dp-destination-content.dp-detail-content,
+html body #root .dp-map-page #dp-active-map-drawer .dp-map-panel-content.dp-partner-detail-content {
+  display: block !important;
+}
+
 html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-content,
 html body #root .dp-map-page #dp-active-map-drawer .dp-partner-destination-detail {
   display: block !important;
