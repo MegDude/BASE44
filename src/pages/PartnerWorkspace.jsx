@@ -807,7 +807,6 @@ function PartnerWorkspaceContent() {
           <div className="dp-workspace-sidebar-head">
             <span>Workspace</span>
             <div className="dp-workspace-surface-controls">
-              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Go back from workspace navigation"><ChevronLeft aria-hidden="true" /><span>Back</span></button>
               <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /><span>Close</span></button>
             </div>
           </div>

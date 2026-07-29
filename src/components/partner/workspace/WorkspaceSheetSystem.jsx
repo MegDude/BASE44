@@ -65,10 +65,6 @@ export function WorkspaceSheetHost() {
 
   if (!sheet || typeof document === "undefined") return null;
   const titleId = "dp-workspace-sheet-title";
-  const goBack = () => {
-    if (typeof sheet.onBack === "function") sheet.onBack();
-    else context.closeSheet();
-  };
   return createPortal(
     <div className="dp-workspace-sheet-layer" data-state={sheet.state || "summary"}>
       <button className="dp-workspace-sheet-backdrop" type="button" aria-label="Close sheet" onClick={context.closeSheet} />
@@ -80,7 +76,7 @@ export function WorkspaceSheetHost() {
             <h2 id={titleId}>{sheet.title}</h2>
           </div>
           <div className="dp-workspace-surface-controls">
-            <button type="button" onClick={goBack} aria-label={`Go back from ${sheet.title}`}><ChevronLeft aria-hidden="true" /><span>Back</span></button>
+            {typeof sheet.onBack === "function" ? <button type="button" onClick={sheet.onBack} aria-label={`Go back from ${sheet.title}`}><ChevronLeft aria-hidden="true" /><span>Back</span></button> : null}
             <button ref={closeButtonRef} type="button" onClick={context.closeSheet} aria-label={`Close ${sheet.title}`}><X aria-hidden="true" /><span>Close</span></button>
           </div>
         </header>

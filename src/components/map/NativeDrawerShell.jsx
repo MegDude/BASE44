@@ -82,6 +82,11 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     else if (drawerState === "expanded") onDrawerStateChange?.("medium");
     else onRequestClose?.();
   }, [drawerState, onDrawerStateChange, onKeyDown, onRequestClose]);
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
   const setShellRef = useCallback((node) => {
     shellRef.current = node;
     if (typeof ref === "function") ref(node);

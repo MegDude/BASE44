@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactNode } from "react";
+import { useEffect, useRef, type PropsWithChildren, type ReactNode } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import type { DrawerSnapState } from "./mobileTabRegistry";
 
@@ -15,11 +15,44 @@ type Props = PropsWithChildren<{
 const states: DrawerSnapState[] = ["collapsed", "medium", "expanded", "full"];
 
 export default function MobileTabDrawerShell({ title, subtitle, state = "medium", actions, onClose, onBack, onStateChange, children }: Props) {
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const stateRef = useRef(state);
+  const closeRef = useRef(onClose);
+  const stateChangeRef = useRef(onStateChange);
+
+  useEffect(() => {
+    stateRef.current = state;
+    closeRef.current = onClose;
+    stateChangeRef.current = onStateChange;
+  }, [onClose, onStateChange, state]);
+
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (stateRef.current === "full") stateChangeRef.current?.("expanded");
+      else if (stateRef.current === "expanded") stateChangeRef.current?.("medium");
+      else closeRef.current();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus?.({ preventScroll: true });
+    };
+  }, []);
+
   return (
     <section className="dp-mobile-tab-drawer" data-drawer-state={state} role="dialog" aria-modal={state === "full"} aria-labelledby="dp-mobile-tab-title">
       <button type="button" className="dp-mobile-tab-drag-handle" aria-label={`Drawer size: ${state}. Activate to expand.`} onClick={() => onStateChange?.(states[Math.min(states.indexOf(state) + 1, states.length - 1)])}><span /></button>
       <header className="dp-mobile-tab-header">
-        <button type="button" onClick={onBack || onClose} aria-label="Return to map"><ArrowLeft aria-hidden="true" /></button>
+        {onBack ? <button type="button" onClick={onBack} aria-label={`Go back from ${title}`}><ArrowLeft aria-hidden="true" /></button> : <span aria-hidden="true" />}
         <div><h2 id="dp-mobile-tab-title">{title}</h2>{subtitle ? <p>{subtitle}</p> : null}</div>
         <button type="button" onClick={onClose} aria-label={`Close ${title}`}><X aria-hidden="true" /></button>
       </header>
