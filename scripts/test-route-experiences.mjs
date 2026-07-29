@@ -50,6 +50,26 @@ const waterlooStops = page.locator(".dp-route-stop-list > li > button");
 const waterlooStopCount = await waterlooStops.count();
 if (waterlooStopCount !== 6) throw new Error(`Waterloo: expected 6 stops, found ${waterlooStopCount}`);
 
+const routeGeometry = await page.locator(".dp-route-experience-sheet").evaluate((sheet) => {
+  const contentViewport = sheet.querySelector(".dp-native-drawer-content-viewport");
+  const footer = sheet.querySelector(".dp-native-drawer-actions");
+  const primaryAction = sheet.querySelector(".dp-route-primary-action");
+  return {
+    sheet: sheet.getBoundingClientRect().toJSON(),
+    content: contentViewport?.getBoundingClientRect().toJSON(),
+    footer: footer?.getBoundingClientRect().toJSON(),
+    primaryAction: primaryAction?.getBoundingClientRect().toJSON(),
+  };
+});
+if (!routeGeometry.footer || routeGeometry.footer.height > 60) throw new Error("Waterloo: route action footer is too tall");
+if (!routeGeometry.content || routeGeometry.content.bottom > routeGeometry.footer.top + 1) throw new Error("Waterloo: route content is hidden behind the action footer");
+if (!routeGeometry.primaryAction || routeGeometry.primaryAction.width > 281) throw new Error("Waterloo: route primary action is too wide");
+
+await page.getByRole("button", { name: "Minimise route to show map" }).tap();
+await page.locator(".dp-route-experience-sheet[data-drawer-state='peek']").waitFor({ state: "visible", timeout: 5_000 });
+await page.getByRole("button", { name: "Show route stops" }).tap();
+await page.locator(".dp-route-experience-sheet[data-drawer-state='medium']").waitFor({ state: "visible", timeout: 5_000 });
+
 await page.getByRole("button", { name: "Start walk" }).tap();
 await page.waitForURL(/routeState=active/);
 const activeUrl = new URL(page.url());
