@@ -3980,7 +3980,7 @@ function getClusterCellSize(zoom) {
   return 0.01;
 }
 
-function clusterPlaces(places, zoom, selectedId) {
+function clusterPlaces(places, zoom, selectedId, preservedMarkerIds = new Set()) {
   const validPlaces = places.filter((place) => getPlaceCoords(place));
   const cellSize = getClusterCellSize(zoom);
   const buildingCells = new Map();
@@ -3988,8 +3988,9 @@ function clusterPlaces(places, zoom, selectedId) {
   const loosePlaces = [];
 
   validPlaces.forEach((place) => {
-    if (isSelectedMarkerPlace(place, selectedId)) {
-      loosePlaces.push({ type: "place", id: getPlaceMarkerId(place) || place.id, place });
+    const markerId = getPlaceMarkerId(place) || place.id;
+    if (isSelectedMarkerPlace(place, selectedId) || preservedMarkerIds.has(markerId) || preservedMarkerIds.has(place.id)) {
+      loosePlaces.push({ type: "place", id: markerId, place });
       return;
     }
 
@@ -15267,12 +15268,16 @@ export default function MapPage() {
     [discoverDisplayPlaces],
   );
   const stableClusterZoom = markerLayoutContext.zoom;
-  const clusteredMapItems = useMemo(
-    () => activeCollectionRoute?.stops?.length
-      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId)
-      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId),
-    [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom],
-  );
+  const clusteredMapItems = useMemo(() => {
+    const preservedMarkerIds = new Set(
+      (selectionTransitionRef.current ? selectionDatasetRef.current : [])
+        .flatMap((place) => [place?.id, getPlaceMarkerId(place)])
+        .filter(Boolean),
+    );
+    return activeCollectionRoute?.stops?.length
+      ? clusterPlaces(activeCollectionRoute.stops, stableClusterZoom, selectedId, preservedMarkerIds)
+      : clusterPlaces(mappablePlaces, stableClusterZoom, selectedId, preservedMarkerIds);
+  }, [activeCollectionRoute, mappablePlaces, selectedId, stableClusterZoom]);
   const isStreetLevelMapView = mapZoom >= STREET_LEVEL_ZOOM || (viewportBounds?.zoom || 0) >= STREET_LEVEL_ZOOM;
   useEffect(() => {
     if (!selectedId) return;
