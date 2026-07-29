@@ -483,5 +483,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     height: min(82dvh, calc(100dvh - 72px)) !important;
     min-height: 0 !important;
     max-height: min(82dvh, calc(100dvh - 72px)) !important;
+    transform: none !important;
+    translate: none !important;
   }
 }
