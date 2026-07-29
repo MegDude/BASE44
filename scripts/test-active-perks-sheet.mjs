@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
+// Both canonical and legacy Perks entry routes must remain functional.
 const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
 const sheetSource = await readFile(new URL("../src/components/map/ActivePerksSheet.jsx", import.meta.url), "utf8");
 const panelNavigationSource = await readFile(new URL("../src/hooks/useMapPanelNavigation.ts", import.meta.url), "utf8");
