@@ -82,50 +82,89 @@ test.describe("adaptive map surface", () => {
     expect(geometry?.navZIndex).toBeGreaterThan(geometry?.panelZIndex || 0);
   });
 
-  test("Banger's destination follows semantic order and owns one scroll region", async ({ page }) => {
-    await page.setViewportSize({ width: 393, height: 852 });
-    await page.goto("/map?mode=resident&tab=map&entityId=partner-bangers");
+  for (const viewport of [
+    { name: "iphone-15", width: 393, height: 852 },
+    { name: "desktop", width: 1440, height: 900 },
+  ]) {
+    test(`marker selection stays stable at ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/map?mode=resident&tab=map&entityId=partner-bangers");
 
-    const panel = page.locator("#dp-active-map-drawer");
-    const title = page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" });
-    await expect(panel).toBeVisible();
-    await expect(title).toBeVisible();
+      const panel = page.locator("#dp-active-map-drawer");
+      const visibleMarkers = page.locator("[data-accessible-marker-entity-id]");
+      await expect(panel).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
+      const initialMarkerCount = await visibleMarkers.count();
+      expect(initialMarkerCount).toBeGreaterThan(0);
 
-    const geometry = await panel.evaluate((drawer) => {
-      const content = drawer.querySelector<HTMLElement>(
-        ".dp-map-panel-content.dp-destination-content.dp-detail-content",
-      );
-      const scroll = drawer.querySelector<HTMLElement>(".dp-map-detail-scroll");
-      const hero = drawer.querySelector<HTMLElement>(".dp-destination-hero");
-      const identity = drawer.querySelector<HTMLElement>(".dp-entity-identity");
-      const details = drawer.querySelector<HTMLElement>(
-        ".dp-venue-details-section, .dp-happy-hour-section, .dp-partner-destination-section",
-      );
-      const nearby = drawer.querySelector<HTMLElement>(".dp-discovery-context-section, .dp-partner-nearby-list");
-      if (!content || !scroll || !hero || !identity || !details) return null;
+      await page.getByRole("button", { name: "Open Natiivo Austin", exact: true }).click();
+      await expect(page).toHaveURL(/entityId=natiivo-austin/);
+      await expect(panel).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Natiivo Austin", exact: true })).toBeVisible();
+      expect(await visibleMarkers.count()).toBeGreaterThan(0);
 
-      return {
-        contentDisplay: getComputedStyle(content).display,
-        scrollOverflowY: getComputedStyle(scroll).overflowY,
-        scrollHeight: scroll.scrollHeight,
-        clientHeight: scroll.clientHeight,
-        heroTop: hero.getBoundingClientRect().top,
-        identityTop: identity.getBoundingClientRect().top,
-        detailsTop: details.getBoundingClientRect().top,
-        nearbyTop: nearby?.getBoundingClientRect().top ?? null,
-      };
+      await page.getByRole("button", { name: "Open Banger's Sausage House & Beer Garden", exact: true }).click();
+      await expect(page).toHaveURL(/entityId=partner-bangers/);
+      await expect(panel).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
+      expect(await visibleMarkers.count()).toBeGreaterThan(0);
     });
 
-    expect(geometry).not.toBeNull();
-    expect(geometry?.contentDisplay).toBe("block");
-    expect(geometry?.scrollOverflowY).toBe("auto");
-    expect(geometry?.scrollHeight || 0).toBeGreaterThanOrEqual(geometry?.clientHeight || 0);
-    expect(geometry?.heroTop || 0).toBeLessThan(geometry?.identityTop || 0);
-    expect(geometry?.identityTop || 0).toBeLessThan(geometry?.detailsTop || 0);
-    if (geometry?.nearbyTop !== null) {
-      expect(geometry?.detailsTop || 0).toBeLessThan(geometry?.nearbyTop || 0);
-    }
-    await expect(page.getByRole("heading", { name: "Venue details" })).toBeVisible();
-    await expect(page.getByText("Food and drink specials nearby", { exact: true })).toHaveCount(0);
-  });
+    test(`Banger's destination follows semantic order and owns one scroll region at ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/map?mode=resident&tab=map&entityId=partner-bangers");
+
+      const panel = page.locator("#dp-active-map-drawer");
+      const title = page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" });
+      await expect(panel).toBeVisible();
+      await expect(title).toBeVisible();
+
+      const geometry = await panel.evaluate((drawer) => {
+        const content = drawer.querySelector<HTMLElement>(
+          ".dp-map-panel-content.dp-destination-content.dp-detail-content",
+        );
+        const scroll = drawer.querySelector<HTMLElement>(".dp-map-detail-scroll");
+        const hero = drawer.querySelector<HTMLElement>(".dp-destination-hero");
+        const identity = drawer.querySelector<HTMLElement>(".dp-entity-identity");
+        const details = drawer.querySelector<HTMLElement>(
+          ".dp-venue-details-section, .dp-happy-hour-section, .dp-partner-destination-section",
+        );
+        const nearby = drawer.querySelector<HTMLElement>(".dp-discovery-context-section, .dp-partner-nearby-list");
+        if (!content || !scroll || !hero || !identity || !details) return null;
+
+        const overflowProbe = document.createElement("div");
+        overflowProbe.dataset.e2eOverflowProbe = "true";
+        overflowProbe.setAttribute("aria-hidden", "true");
+        overflowProbe.style.height = `${scroll.clientHeight + 200}px`;
+        overflowProbe.style.pointerEvents = "none";
+        content.appendChild(overflowProbe);
+
+        return {
+          contentDisplay: getComputedStyle(content).display,
+          scrollOverflowY: getComputedStyle(scroll).overflowY,
+          scrollHeight: scroll.scrollHeight,
+          clientHeight: scroll.clientHeight,
+          bodyOverflowY: getComputedStyle(document.body).overflowY,
+          heroTop: hero.getBoundingClientRect().top,
+          identityTop: identity.getBoundingClientRect().top,
+          detailsTop: details.getBoundingClientRect().top,
+          nearbyTop: nearby?.getBoundingClientRect().top ?? null,
+        };
+      });
+
+      expect(geometry).not.toBeNull();
+      expect(geometry?.contentDisplay).toBe("block");
+      expect(geometry?.scrollOverflowY).toBe("auto");
+      expect(geometry?.scrollHeight || 0).toBeGreaterThan(geometry?.clientHeight || 0);
+      expect(geometry?.bodyOverflowY).not.toBe("auto");
+      expect(geometry?.heroTop || 0).toBeLessThan(geometry?.identityTop || 0);
+      expect(geometry?.identityTop || 0).toBeLessThan(geometry?.detailsTop || 0);
+      if (geometry?.nearbyTop !== null) {
+        expect(geometry?.detailsTop || 0).toBeLessThan(geometry?.nearbyTop || 0);
+      }
+      await expect(page.getByRole("heading", { name: "Venue details" })).toBeVisible();
+      await expect(page.getByText("Food and drink specials nearby", { exact: true })).toHaveCount(0);
+    });
+  }
+
 });
