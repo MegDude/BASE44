@@ -21,9 +21,10 @@ assert.match(mapSource, /pin:\s*resolveEntityPin\(place\)/, "perk rows must use 
 assert.match(mapSource, /aria-label="Home"[\s\S]*?navigate\("\/resident\/home"\)/, "resident navigation must retain the Home tab");
 assert.match(mapSource, /aria-label="Home"[\s\S]*?aria-label="Map"[\s\S]*?aria-label="Perks"[\s\S]*?aria-label="Events"[\s\S]*?aria-label="Card"/, "resident navigation must preserve Home, Map, Perks, Events, Card order");
 assert.match(mapSource, /urlState\.panelTab\s*\? urlState\.panelTab/, "normalized resident panel routes must hydrate the active tab from panelTab");
-assert.match(mapSource, /urlState\.panelTab === "perks" && activeBottomTab === "perks" && !selected/, "the normalized Perks panel must render the active perks sheet");
-assert.match(mapSource, /urlState\.panelTab === "perks" && activeBottomTab === "perks"/, "the Perks tab must expose its selected state from the normalized panel route");
-assert.match(mapSource, /if \(urlState\.panelTab === "perks" && activeBottomTab === "perks" && !selectedId\)/, "the selected Perks tab must retain its drawer toggle behavior");
+assert.match(mapSource, /const isResidentPerksPanel = urlState\.mode === "resident" && \([\s\S]*?urlState\.panelTab === "perks"[\s\S]*?urlState\.tab === "map" && activeFilter === "Perks"[\s\S]*?\);/, "Perks must support normalized panel and legacy filtered-map routes");
+assert.match(mapSource, /isResidentPerksPanel && activeBottomTab === "perks" && !selected/, "both Perks entry routes must render the active perks sheet");
+assert.match(mapSource, /aria-selected=\{isResidentPerksPanel && activeBottomTab === "perks"\}/, "the Perks tab must expose its selected state for both entry routes");
+assert.match(mapSource, /if \(isResidentPerksPanel && activeBottomTab === "perks" && !selectedId\)/, "the selected Perks tab must retain its drawer toggle behavior");
 
 assert.match(sheetSource, /<NativeDrawerShell/);
 assert.match(shellSource, /role="dialog"/);
