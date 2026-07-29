@@ -7,6 +7,8 @@ const buildingModuleSource = fs.readFileSync("src/components/map/BuildingExperie
 const buildingStyles = fs.readFileSync("src/styles/building-experience-engine.css", "utf8");
 const nativeBuildingStyles = fs.readFileSync("src/styles/building-experience-ios-native-final.css", "utf8");
 const mainSource = fs.readFileSync("src/main.jsx", "utf8");
+const workspaceExperienceSource = fs.readFileSync("src/components/partner/workspace/WorkspaceExperienceSystem.jsx", "utf8");
+const partnerWorkspaceSource = fs.readFileSync("src/pages/PartnerWorkspace.jsx", "utf8");
 
 const building = {
   id: "test-building",
@@ -57,6 +59,9 @@ assert.match(buildingModuleSource, /disabled=\{!onOpenRoute\}/, "route rows must
 assert.match(buildingModuleSource, /withQuery\(campaignRoute, \{ suggestion: campaign\.title \}\)/, "campaign recommendations must open prefilled campaign setup");
 assert.match(buildingModuleSource, /Create the first offer/, "partner offer empty state must lead to offer creation");
 assert.match(buildingModuleSource, /Create the first event/, "partner event empty state must lead to event creation");
+assert.match(workspaceExperienceSource, /params\.get\("suggestion"\)[\s\S]*?params\.get\("entityId"\)/, "campaign setup must consume the building recommendation and entity scope");
+assert.match(workspaceExperienceSource, /intent !== "new"[\s\S]*?start\(requestedTemplate, \{ entityId, suggestedTitle: suggestion \}\)/, "campaign setup must open the requested prefilled builder");
+assert.match(partnerWorkspaceSource, /eventIntent === "new"[\s\S]*?setShowForm\(true\)/, "event creation links must open the event form");
 assert.match(buildingStyles, /--dp-building-font:\s*"Inter"/, "building panels must use the canonical product typeface");
 assert.doesNotMatch(buildingStyles, /font:[^;]*Inter,\s*sans-serif/, "building typography must resolve through the shared font token");
 assert.ok(mainSource.indexOf("building-experience-ios-native-final.css") > mainSource.indexOf("map-bottom-drawer-contract-final.css"), "native building surface must load after shared drawer geometry");
