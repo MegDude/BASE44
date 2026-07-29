@@ -9,6 +9,7 @@ import {
   Map as MapIcon,
   QrCode,
   UserRound,
+  X,
 } from "lucide-react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ResidentMobileTabBar } from "@/components/resident/ResidentMobileTabBar";
@@ -216,6 +217,14 @@ export default function ResidentHome() {
     if (["home", "perks", "card"].includes(tabId)) openPanel(tabId as HomePanel);
   }
 
+  function closeResidentHome() {
+    if (location.key !== "default") {
+      navigate(-1);
+      return;
+    }
+    navigate("/map?mode=resident&tab=map&filter=All");
+  }
+
   function requireResidentAccount(action: () => void) {
     if (isAuthenticated) {
       action();
@@ -278,6 +287,9 @@ export default function ResidentHome() {
             <ArrowLeft aria-hidden="true" /><span>Back</span>
           </button>
         )}
+        <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home">
+          <X aria-hidden="true" />
+        </button>
       </header>
 
       {panel === "home" ? (

@@ -40,6 +40,7 @@
     "test:partner-native-mobile": "node scripts/test-partner-native-mobile.mjs",
     "test:active-perks-sheet": "node scripts/test-active-perks-sheet.mjs",
     "test:native-drawer-geometry": "node scripts/test-native-drawer-geometry.mjs",
+    "test:panel-navigation": "node scripts/test-panel-navigation-contract.mjs",
     "test:perk-identity-header": "node scripts/test-perk-identity-header.mjs",
     "test:resident-qr-modal": "node scripts/test-resident-qr-modal.mjs",
     "test:resident-home-borderless": "node scripts/test-resident-home-borderless.mjs",
