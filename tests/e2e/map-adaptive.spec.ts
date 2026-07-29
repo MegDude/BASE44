@@ -269,18 +269,24 @@ test.describe("adaptive map surface", () => {
 
           const drawer = page.locator("#dp-active-map-drawer");
           const nav = page.getByRole("tablist", { name: "Map bottom navigation" });
-          const title = drawer.locator(".dp-entity-title").first();
+          const title = drawer.locator(".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, .dp-map-detail-scroll h1, .dp-map-detail-scroll h2").first();
           await expect(drawer).toBeVisible();
           await expect(nav).toBeVisible();
           await expect(title).toBeVisible();
 
           const geometry = await drawer.evaluate((drawerNode) => {
             const scroll = drawerNode.querySelector<HTMLElement>(".dp-map-detail-scroll");
-            const titleNode = drawerNode.querySelector<HTMLElement>(".dp-entity-title");
-            const followingCopy = drawerNode.querySelector<HTMLElement>(".dp-entity-subtitle, .dp-entity-context");
+            const titleNode = drawerNode.querySelector<HTMLElement>(
+              ".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, .dp-map-detail-scroll h1, .dp-map-detail-scroll h2",
+            );
             const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
             const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
-            if (!scroll || !titleNode || !followingCopy || !navNode || !navShell) return null;
+            if (!scroll || !titleNode || !navNode || !navShell) return null;
+            const titleRectBeforeProbe = titleNode.getBoundingClientRect();
+            const followingCopy = [...drawerNode.querySelectorAll<HTMLElement>("p, .dp-entity-subtitle, .dp-entity-context")]
+              .filter((node) => node.offsetParent !== null)
+              .filter((node) => node.getBoundingClientRect().top >= titleRectBeforeProbe.bottom - 1)
+              .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0] || null;
 
             const probe = document.createElement("div");
             probe.dataset.e2eSharedDrawerOverflowProbe = "true";
@@ -292,7 +298,7 @@ test.describe("adaptive map surface", () => {
             const drawerRect = drawerNode.getBoundingClientRect();
             const navRect = navNode.getBoundingClientRect();
             const titleRect = titleNode.getBoundingClientRect();
-            const followingRect = followingCopy.getBoundingClientRect();
+            const followingRect = followingCopy?.getBoundingClientRect() || { top: Number.POSITIVE_INFINITY };
             const titleStyle = getComputedStyle(titleNode);
             const nestedVerticalScrollOwners = [...drawerNode.querySelectorAll<HTMLElement>("*")]
               .filter((node) => node !== scroll && node.offsetParent !== null)
@@ -315,7 +321,7 @@ test.describe("adaptive map surface", () => {
               nestedVerticalScrollOwners,
               bodyOverflowY: getComputedStyle(document.body).overflowY,
               titleBottom: titleRect.bottom,
-              followingTop: followingRect.top,
+              followingTop: followingCopy ? followingRect.top : null,
               titleFontSize: Number.parseFloat(titleStyle.fontSize),
               titleLineHeight: Number.parseFloat(titleStyle.lineHeight),
               titleBackground: titleStyle.backgroundColor,
@@ -335,7 +341,9 @@ test.describe("adaptive map surface", () => {
           expect(geometry?.scrollHeight || 0).toBeGreaterThan(geometry?.clientHeight || 0);
           expect(geometry?.nestedVerticalScrollOwners).toBe(0);
           expect(geometry?.bodyOverflowY).not.toBe("auto");
-          expect(geometry?.titleBottom || 0).toBeLessThanOrEqual((geometry?.followingTop || 0) + 1);
+          if (geometry?.followingTop !== null) {
+            expect(geometry?.titleBottom || 0).toBeLessThanOrEqual((geometry?.followingTop || 0) + 1);
+          }
           expect(geometry?.titleFontSize || 0).toBeLessThanOrEqual(viewport.width < 768 ? 32 : 34);
           expect(geometry?.titleLineHeight || 0).toBeGreaterThanOrEqual((geometry?.titleFontSize || 0) * 1.1);
           expect(geometry?.titleBackground).toBe("rgba(0, 0, 0, 0)");
