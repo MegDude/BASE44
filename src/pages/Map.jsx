@@ -14658,10 +14658,11 @@ export default function MapPage() {
     }
     const nextSelectedId = resolveMapEntityAlias(urlState.entityId);
     setSelectedId(nextSelectedId);
-    setSelectedPlaceOverride(null);
+    setSelectedPlaceOverride((current) =>
+      current && resolveMapEntityAlias(current.id) === nextSelectedId ? current : null,
+    );
     setMapAnswer(null);
     setEntityAnswer(null);
-    setSearch("");
     setSelectedDrawerClosed(false);
   }, [urlState.entityId]);
 
@@ -16600,7 +16601,6 @@ export default function MapPage() {
     setActiveBottomTab("map");
     setClusterDrawer(null);
     setConsoleCollapsed(true);
-    setSearch("");
     setMapAnswer(null);
     setEntityAnswer(null);
     setEntityAssistantLoading(false);
