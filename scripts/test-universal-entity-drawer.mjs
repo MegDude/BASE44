@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const mapSource = readFileSync("src/pages/Map.jsx", "utf8");
+const residentHomeSource = readFileSync("src/pages/ResidentHome.tsx", "utf8");
 const shellSource = readFileSync("src/components/map/NativeDrawerShell.jsx", "utf8");
 const stateSource = readFileSync("src/lib/map/nativeDrawerState.js", "utf8");
 const navigationSource = readFileSync("src/hooks/useMapPanelNavigation.ts", "utf8");
@@ -24,7 +25,8 @@ assert.match(launchPinsSource, /const canonicalDisplayName = clean\(pin\.name\)/
 assert.match(mapSource, /actions=\{<UniversalEntityActionRail/, "Selected entities do not use the shared fixed action rail");
 assert.match(mapSource, /entityType=\{getCanonicalDetailEntityType\(selected, Boolean\(urlState\.perkId\)\)\}/, "The fixed action rail is not driven by the canonical drawer identity");
 assert.match(mapSource, /if \(explicitDetailType === "perk"\)[\s\S]*?return "perk"/, "Explicit perk identity can still be misclassified as an event");
-assert.match(mapSource, /aria-label="Saved"[\s\S]*?tab=saved&filter=Saved/, "Resident Saved access is missing from the map navigation");
+assert.match(residentHomeSource, /Open saved[\s\S]*?openPanel\("perks"\)/, "Resident Home must retain direct Saved access while the five-item map dock retains Home");
+assert.match(residentHomeSource, /tab=perks&filter=Saved&entityId=/, "Saved records must resolve back into the canonical map selection route");
 assert.match(mapSource, /function selectPlace[\s\S]*?navigateMapJourney\([\s\S]*?entityId: nextEntityId/, "map selections do not write the canonical entity ID through the shared URL state pipeline");
 assert.doesNotMatch(mapSource, /entityId: isPropertySelection \? publicPropertyId/, "map selections can still substitute a presentation/property identifier for the canonical selected entity");
 assert.match(mapSource, /if \(!urlState\.perkId \|\| !selected\) return;[\s\S]*?selectedPlaceOverride[\s\S]*?return;/, "stale perk cleanup can still overwrite a newly selected canonical entity URL");

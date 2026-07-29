@@ -8,8 +8,8 @@ const markerFactory = await readFile(new URL("../src/components/map/markers/Mark
 const iconRegistry = await readFile(new URL("../src/lib/map/mapIconRegistry.ts", import.meta.url), "utf8");
 const pinResolver = await readFile(new URL("../src/lib/map/entityPinResolver.ts", import.meta.url), "utf8");
 
-assert.match(mapSource, /clusterPlaces\(activeCollectionRoute\.stops, stableClusterZoom, selectedId\)/, "route stops must use collision-safe clustering");
-assert.match(mapSource, /clusterPlaces\(mappablePlaces, stableClusterZoom, selectedId\)/, "focused results must use collision-safe clustering");
+assert.match(mapSource, /clusterPlaces\(activeCollectionRoute\.stops, stableClusterZoom, selectedId, preservedMarkerIds\)/, "route stops must use collision-safe clustering");
+assert.match(mapSource, /clusterPlaces\(mappablePlaces, stableClusterZoom, selectedId, preservedMarkerIds\)/, "focused results must use collision-safe clustering");
 assert.doesNotMatch(mapSource, /shouldShowIndividualPins\s*\?\s*mappablePlaces\.map/, "focused searches must not bypass clustering");
 assert.match(markerSource, /OPTIONAL_AND_HIDES_LOWER_PRIORITY/, "advanced markers must hide lower-priority collisions");
 assert.match(markerSource, /zIndex/, "selected markers must retain stable priority");

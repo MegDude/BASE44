@@ -10,7 +10,7 @@ const main = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8")
 
 assert.match(map, /const returnToMap = onBack \|\| onClose;/, "detail drawers must provide a Back fallback when there is no deeper panel history");
 assert.match(map, /data-map-drawer-back="true"/, "detail drawers must expose a stable Back control hook");
-assert.match(map, /header=\{<MapSheetToolbar[\s\S]*?onRequestClose=\{onClose\}/, "native sheets must own visible Back/Close controls outside the scrolling content");
+assert.match(map, /header=\{<>[\s\S]*?<MapSheetToolbar[\s\S]*?onClose=\{onClose\}[\s\S]*?<\/>\}/, "native sheets must own visible Back/Close controls outside the scrolling content");
 assert.doesNotMatch(map, /\{canGoBack \? \([\s\S]*?dp-map-detail-header-spacer/, "detail drawers must not hide Back when opened directly from the map");
 assert.match(map, /aria-label="Home"[\s\S]*?navigate\("\/resident\/home"\)/, "resident bottom navigation must retain Home");
 assert.match(map, /grid-cols-5/, "resident navigation must remain a five-item dock");

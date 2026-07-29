@@ -3905,6 +3905,16 @@ function legacyDowntownMarkerIcon(maps, place, selected = false, zoom = 16) {
   const size = getZoomMarkerMetrics(zoom, { selected }).pinSize;
   const stopNumber = Number(place?.routeStopNumber || 0);
   const pin = resolveEntityPin(place);
+  // Google Maps' legacy marker renderer cannot preserve the Advanced Marker
+  // logo node. Legends is the single approved branded exception, so retain
+  // its dedicated asset here while all other entities use the canonical glyph.
+  if (pin.asset && normalizeMapIconKey(pin.label) === "legends") {
+    return {
+      url: pin.asset,
+      scaledSize: new maps.Size(size, size),
+      anchor: new maps.Point(size / 2, size / 2),
+    };
+  }
   const paths = mapIconSvgInner(getCanonicalMapGlyph(pin));
   const fill = selected ? "#C8A96A" : "#0B1F33";
   const stroke = selected ? "#0B1F33" : "#C8A96A";
