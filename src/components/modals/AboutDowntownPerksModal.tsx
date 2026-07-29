@@ -16,7 +16,6 @@ import {
   Sparkles,
   Store,
   Users,
-  ArrowLeft,
   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -199,15 +198,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
             transition={{ duration, ease }}
           >
             <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-[#0B1F33]/8 bg-white/92 px-4 backdrop-blur-xl">
-              <button
-                type="button"
-                onClick={onClose}
-                className="dp-modal-back inline-flex items-center gap-1.5"
-                aria-label="Back from Downtown Perks overview"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Back
-              </button>
+              <span aria-hidden="true" />
               <p className="dp-modal-kicker">How Downtown Perks works</p>
               <button
                 type="button"
