@@ -13446,7 +13446,11 @@ function GoogleMapCanvas({
             data-accessible-marker-entity-id={item.place.id}
             aria-label={`Open ${item.place.name || "map place"}`}
             aria-pressed={item.place.id === selectedId}
-            onClick={() => markerActionHandlersRef.current.onSelect?.(item.place)}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={(event) => {
+              event.stopPropagation();
+              markerActionHandlersRef.current.onSelect?.(item.place);
+            }}
           >
             Open {item.place.name || "map place"}
           </button>
