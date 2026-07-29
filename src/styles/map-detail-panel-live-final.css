@@ -461,3 +461,27 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-partner-nearby-list small
     padding-inline: 18px !important;
   }
 }
+
+
+/* Final map-surface system seam: sheets terminate under the persistent
+   navigation chrome, so the drawer and nav read as one iOS-native surface. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-native-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-qr-modal,
+  .dp-context-list-drawer
+) {
+  top: auto !important;
+  bottom: calc(var(--dp-map-native-bottom-nav-height, 64px) - 10px) !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
+    top: auto !important;
+    bottom: calc(var(--dp-map-native-bottom-nav-height, 64px) - 10px) !important;
+    height: min(82dvh, calc(100dvh - 72px)) !important;
+    min-height: 0 !important;
+    max-height: min(82dvh, calc(100dvh - 72px)) !important;
+  }
+}
