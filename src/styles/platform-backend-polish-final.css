@@ -1,0 +1,104 @@
+/* Final platform/backend polish lock.
+   Keeps the white, rectangular platform system while restoring clear action
+   hierarchy that the broad cohesion reset can flatten too aggressively. */
+
+html body #root#root#root .dp-partner-workspace-page,
+html body #root#root#root .dp-os-studio-page {
+  background: #ffffff !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(.dp-workspace-shell, .dp-workspace-main, .dp-workspace-content, .dp-standard-workspace-overview, .dp-operating-overview),
+html body #root#root#root .dp-os-studio-page :is(.dp-os-studio-main, .dp-os-system-map, .dp-os-resident-admin) {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  .dp-operating-header,
+  .dp-os-next-action,
+  .dp-workspace-context,
+  .dp-os-summary-strip,
+  .dp-operating-section,
+  .dp-operating-analysis,
+  .dp-work-activity-panel,
+  .dp-overview-analytics-link,
+  .dp-workspace-overview-section,
+  .dp-workspace-registry-panel,
+  .dp-workspace-reports,
+  .dp-workspace-analytics,
+  .dp-profile-editor,
+  .dp-profile-preview
+),
+html body #root#root#root .dp-os-studio-page :is(.dp-os-wire-card, .dp-os-active-panel, .dp-os-status-grid article, .dp-os-system-map article, .dp-os-resident-admin article) {
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-link-row a,
+  .dp-workspace-context-actions button,
+  .dp-workspace-panel-actions a,
+  .dp-workspace-analytics-actions a,
+  .dp-current-work-grid a,
+  .dp-work-empty a,
+  .dp-overview-analytics-link a,
+  .dp-os-next-action a,
+  .dp-workspace-category-link,
+  .dp-workspace-lifecycle-card
+),
+html body #root#root#root .dp-os-studio-page :is(button, a, [role="button"]) {
+  display: inline-flex !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.18) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(
+  .dp-workspace-link-row a,
+  .dp-workspace-context-actions button,
+  .dp-workspace-panel-actions a,
+  .dp-workspace-analytics-actions a,
+  .dp-current-work-grid a,
+  .dp-work-empty a,
+  .dp-overview-analytics-link a,
+  .dp-os-next-action a,
+  .dp-workspace-category-link,
+  .dp-workspace-lifecycle-card
+):is(:hover, :focus-visible),
+html body #root#root#root .dp-os-studio-page :is(button, a, [role="button"]):is(:hover, :focus-visible) {
+  border-bottom-color: #c8a96a !important;
+  color: #0b1f33 !important;
+  outline: 2px solid rgba(200, 169, 106, 0.20) !important;
+  outline-offset: 2px !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page .dp-workspace-nav-group a:is(.is-active, [aria-current="page"]),
+html body #root#root#root .dp-partner-workspace-page :is(.dp-partner-native-tabs, .dp-workspace-experiences__tabs) :is(a, button):is(.is-active, [aria-selected="true"], [aria-current="page"]) {
+  border-color: #c8a96a !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: inset 0 -2px 0 #c8a96a !important;
+}
+
+html body #root#root#root .dp-partner-workspace-page :is(.dp-operating-status, .dp-workspace-status-chip, .dp-seo-period-note) {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(200, 169, 106, 0.55) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+}
