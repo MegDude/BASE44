@@ -17671,7 +17671,7 @@ export default function MapPage() {
     setFiltersOpen(false);
     setNeighborhoodsOpen(false);
     setSecondaryRailOpen(false);
-    setActiveBottomTab("map");
+    setActiveBottomTab(tab === "pass" ? "card" : "map");
     setConsoleCollapsed(Boolean(options.collapseConsole));
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }

@@ -640,7 +640,31 @@ function PartnerWorkspaceContent() {
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const requestedScope = readPartnerWorkspaceScope(location.search);
-  const workspaceScope = resolvePartnerWorkspaceScope(requestedScope);
+  const normalizedOrganizationName = String(
+    user.organization_name || user.partner_name || activation?.organizationName || "",
+  ).trim().toLowerCase();
+  const authorizedPartnerOrganization = demoOrganizations.find((organization) => (
+    [
+      user.organization_id,
+      user.organizationId,
+      activation?.organizationId,
+    ].filter(Boolean).includes(organization.id)
+    || organization.name.trim().toLowerCase() === normalizedOrganizationName
+  ));
+  const workspaceScope = resolvePartnerWorkspaceScope(
+    hasPrivilegedWorkspaceAccess
+      ? requestedScope
+      : {
+          ...requestedScope,
+          organizationId: authorizedPartnerOrganization?.id,
+          portfolioId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+            ? requestedScope.portfolioId
+            : undefined,
+          listingId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+            ? requestedScope.listingId
+            : undefined,
+        },
+  );
   const activeOrganizationId = workspaceScope.organizationId || "";
 
   useEffect(() => {
@@ -700,6 +724,11 @@ function PartnerWorkspaceContent() {
     setTab(getWorkspaceTabFromPath(location.pathname));
     setMobileNavOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (tab !== "residents" || hasPrivilegedWorkspaceAccess) return;
+    navigate(withPartnerWorkspaceScope("/partner-workspace/overview", workspaceScope), { replace: true });
+  }, [hasPrivilegedWorkspaceAccess, navigate, tab, workspaceScope]);
 
   function handleSignIn() {
     if (!accountAccessEnabled) return;
@@ -798,7 +827,11 @@ function PartnerWorkspaceContent() {
 
         <main className="dp-workspace-main">
           <div className="dp-workspace-content">
-        <WorkspaceScopeSwitcher scope={workspaceScope} />
+        <WorkspaceScopeSwitcher
+          scope={workspaceScope}
+          accessMode={hasPrivilegedWorkspaceAccess ? "admin" : "partner"}
+          organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name}
+        />
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} scope={workspaceScope} organizationId={activeOrganizationId} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
@@ -816,7 +849,7 @@ function PartnerWorkspaceContent() {
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
-          {tab === "residents" && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
+          {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
           {tab === "reports" && <WorkspaceReports key="reports" />}

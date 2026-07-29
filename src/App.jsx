@@ -16,6 +16,7 @@ const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
+const ResidentHome = lazy(() => import("./pages/ResidentHome"));
 const ResidentGovernance = lazy(() => import("./pages/ResidentGovernance"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
@@ -171,9 +172,9 @@ function ProductRoutes() {
           <Route path="/onboarding" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/onboarding/:step" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/resident" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
-          <Route path="/resident/home" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
+          <Route path="/resident/home" element={<ResidentHome />} />
           <Route path="/resident/onboarding" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
-          <Route path="/resident/card" element={<Navigate to="/map?mode=resident&tab=card&filter=Featured&collection=downtown-perks-featured" replace />} />
+          <Route path="/resident/card" element={<Navigate to="/map?mode=resident&tab=pass" replace />} />
           <Route path="/resident/saved" element={<Navigate to="/map?mode=resident&tab=saved&filter=Featured&collection=downtown-perks-featured" replace />} />
           <Route path="/resident/events" element={<Navigate to="/map?mode=resident&tab=events&filter=Events&collection=events-nearby" replace />} />
           <Route path="/resident/perks" element={<Navigate to="/map?mode=resident&tab=perks&filter=Perks&collection=resident-benefits" replace />} />
@@ -220,7 +221,7 @@ function ProductRoutes() {
           <Route path="/perks" element={<Navigate to="/map?mode=resident&tab=map&filter=Perks" replace />} />
           <Route path="/properties" element={<Navigate to="/map?mode=resident&tab=map&filter=Properties" replace />} />
           <Route path="/hotels" element={<Navigate to="/map?mode=resident&tab=map&filter=Hotels" replace />} />
-          <Route path="/card" element={<Navigate to="/map?mode=resident&tab=card&filter=Featured&collection=downtown-perks-featured" replace />} />
+          <Route path="/card" element={<Navigate to="/map?mode=resident&tab=pass" replace />} />
           <Route path="/sign-in" element={<RedirectWithSearch to="/residents/login" />} />
           <Route path="/auth/callback" element={<Suspense fallback={<MarketingFallback />}><AuthCallbackPage /></Suspense>} />
           <Route path="/about" element={<Suspense fallback={<MarketingFallback />}><AboutPage /></Suspense>} />
