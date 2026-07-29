@@ -9,7 +9,7 @@ const ENTRY_OPTIONS = [
     eyebrow: "Resident mode",
     title: "Open the live map, saved places, and your perks card.",
     body: "Use the resident surface when you want the day-to-day downtown product: search, explore, save, and move.",
-    to: "/resident-app",
+    to: "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured",
     icon: UserRound,
   },
   {
@@ -17,7 +17,7 @@ const ENTRY_OPTIONS = [
     eyebrow: "Partner mode",
     title: "Manage building, venue, or hospitality performance.",
     body: "Use the partner surface to track activity, keep offers current, and understand what residents are opening and using.",
-    to: "/dashboard/partner",
+    to: "/partner-workspace/overview",
     icon: Building2,
   },
 ];

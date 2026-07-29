@@ -172,6 +172,7 @@ function ProductRoutes() {
           <Route path="/onboarding" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/onboarding/:step" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/resident" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
+          <Route path="/resident-app" element={<Navigate to="/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured" replace />} />
           <Route path="/resident/home" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/resident/onboarding" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/resident/card" element={<Navigate to="/map?mode=resident&tab=card&filter=Featured&collection=downtown-perks-featured" replace />} />
@@ -213,6 +214,9 @@ function ProductRoutes() {
           />
           <Route path="/admin/content-index" element={<AdminProtectedRoute><AdminContentIndex /></AdminProtectedRoute>} />
           <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
+          <Route path="/dashboard" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
+          <Route path="/dashboard/partner" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/partner-dashboard" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
           <Route path="/residents" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/explore" element={<Navigate to="/map?mode=resident&tab=map&filter=All" replace />} />
           <Route path="/events" element={<Navigate to="/map?mode=resident&tab=map&filter=Events" replace />} />

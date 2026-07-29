@@ -1,0 +1,51 @@
+/* Final map shell ownership contract.
+   One bottom nav and one drawer shell own mobile geometry; older resident,
+   partner, and native recovery styles may skin internals but cannot compete
+   for viewport placement. */
+
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root#root#root .dp-map-page.dp-map-page {
+    --dp-map-shell-nav-overlap: 10px;
+    --dp-map-shell-nav-clearance: calc(var(--dp-bottom-nav-total-height, 64px) - var(--dp-map-shell-nav-overlap));
+  }
+
+  html body #root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav-shell.dp-map-bottom-nav-shell,
+  html body #root#root#root .dp-map-page.dp-map-page .pointer-events-none.fixed.inset-x-0.bottom-0:has(.dp-map-bottom-nav) {
+    position: fixed !important;
+    inset-inline: 0 !important;
+    bottom: 0 !important;
+    z-index: 1200 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding-inline: 0 !important;
+  }
+
+  html body #root#root#root .dp-map-page.dp-map-page nav.dp-map-bottom-nav.dp-map-bottom-nav,
+  html body #root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-inline: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  html body #root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer,
+  html body #root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    position: fixed !important;
+    inset: auto 0 var(--dp-map-shell-nav-clearance) 0 !important;
+    z-index: 900 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    transform-origin: bottom center !important;
+  }
+
+  html body #root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer[data-drawer-state="expanded"] {
+    height: min(85dvh, calc(100dvh - var(--dp-map-shell-nav-clearance))) !important;
+  }
+
+  html body #root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
+    inset: 0 0 0 0 !important;
+    z-index: 1300 !important;
+    height: 100dvh !important;
+  }
+}

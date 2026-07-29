@@ -206,8 +206,6 @@ export default function Navbar() {
     location.pathname.startsWith("/partner-workspace") ||
     location.pathname.startsWith("/brands") ||
     location.pathname === "/reports" ||
-    location.pathname === "/dashboard/partner" ||
-    location.pathname === "/partner-dashboard" ||
     ((location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map") && location.search.includes("mode=partner"));
 
   const isAppMapPath = location.pathname === "/app" || location.pathname === "/app/map" || location.pathname === "/map";

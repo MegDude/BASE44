@@ -176,7 +176,7 @@ export const PARTNER_PAGE_DECK: Record<DowntownPerksPartnerType, any> = {
         "Downtown Perks gives your building a simple neighborhood layer residents can actually use.",
       ],
       primaryCta: { label: "Bring this to your property", href: "/partners/apply?type=properties" },
-      secondaryCta: { label: "View resident flow", href: "/resident-app" },
+      secondaryCta: { label: "View resident flow", href: "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured" },
     },
     included: [
       "QR access across lobby, leasing, welcome packet, and resident communications",
