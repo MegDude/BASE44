@@ -107,7 +107,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-scroll {
 
 /* All canonical map drawers, browse panels and focused tasks share one
    bottom-sheet geometry and one internal vertical scroll owner. */
-html body #root .dp-map-page :is(
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
   .dp-native-drawer,
   .dp-map-sheet,
   .dp-pass-panel,
@@ -141,6 +141,51 @@ html body #root .dp-map-page :is(
   scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
   touch-action: pan-y !important;
   -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-map-detail-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-panel-scroll,
+  .dp-map-directory-list,
+  .dp-resident-qr-content-viewport,
+  .dp-resident-tab-panel-list
+) :is(.overflow-y-auto, [class*="overflow-y-auto"], [style*="overflow-y"]) {
+  max-height: none !important;
+  overflow-y: visible !important;
+  overscroll-behavior-y: auto !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer :is(
+  .dp-entity-title,
+  .dp-destination-title,
+  .dp-detail-title,
+  .dp-map-panel-title,
+  .dp-native-detail-panel__summary > h2,
+  .dp-entity-panel-header > h1,
+  .dp-entity-panel-header > h2,
+  .dp-entity-summary > h1,
+  .dp-entity-summary > h2,
+  .dp-panel-detail-identity > h1,
+  .dp-panel-detail-identity > h2
+) {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: clamp(24px, 6.6vw, 32px) !important;
+  font-weight: 650 !important;
+  line-height: 1.14 !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  text-wrap: balance !important;
+  overflow-wrap: break-word !important;
 }
 
 /* The legacy cohesion bundle contains a 14-ID flex declaration. This final,
@@ -379,7 +424,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-partner-nearby-list small
 }
 
 @media (min-width: 768px) {
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
     inset: auto 0 0 !important;
     width: min(760px, calc(100vw - 48px)) !important;
     max-width: 760px !important;
