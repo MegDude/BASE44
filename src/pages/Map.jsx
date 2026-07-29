@@ -14307,6 +14307,7 @@ export default function MapPage() {
   };
   const [selectedId, setSelectedId] = useState(urlState.entityId);
   const [selectedPlaceOverride, setSelectedPlaceOverride] = useState(null);
+  const selectionTransitionRef = useRef(null);
   const drawerTriggerRef = useRef(null);
   const inKindParentRef = useRef(null);
   const savedIdList = useSavedStore((state) => state.savedIds);
@@ -14648,6 +14649,7 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!urlState.entityId) {
+      selectionTransitionRef.current = null;
       setSelectedId("");
       setSelectedPlaceOverride(null);
       setSelectedDrawerClosed(true);
@@ -14657,9 +14659,12 @@ export default function MapPage() {
       return;
     }
     const nextSelectedId = resolveMapEntityAlias(urlState.entityId);
+    const transition = selectionTransitionRef.current;
+    const transitionPlace =
+      transition && transition.entityId === nextSelectedId ? transition.place : null;
     setSelectedId(nextSelectedId);
     setSelectedPlaceOverride((current) =>
-      current && resolveMapEntityAlias(current.id) === nextSelectedId ? current : null,
+      current && resolveMapEntityAlias(current.id) === nextSelectedId ? current : transitionPlace,
     );
     setMapAnswer(null);
     setEntityAnswer(null);
@@ -14942,12 +14947,16 @@ export default function MapPage() {
   const selected = useMemo(
     () => {
       if (!selectedId) return null;
-      const overrideId = selectedPlaceOverride?.id ? resolveMapEntityAlias(selectedPlaceOverride.id) : "";
-      const override = overrideId && overrideId === selectedId ? selectedPlaceOverride : null;
+      const transition = selectionTransitionRef.current;
+      const transitionPlace =
+        transition && transition.entityId === selectedId ? transition.place : null;
+      const overrideSource = selectedPlaceOverride || transitionPlace;
+      const overrideId = overrideSource?.id ? resolveMapEntityAlias(overrideSource.id) : "";
+      const override = overrideId && overrideId === selectedId ? overrideSource : null;
       const listingCandidate = urlState.listingId
         ? resolveListingEntityFromCollection(urlState.listingId, luxuryPresenceListingPlaces) || resolveListingEntityFromCollection(urlState.listingId, places)
         : null;
-      const candidate = listingCandidate || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || override || null;
+      const candidate = listingCandidate || override || resolveMapEntityFromCollection(selectedId, places) || resolveMapEntityFromCollection(selectedId, hospitalityContentLibraryEntities) || resolveMapEntityFromCollection(selectedId, residentialMixedUseEntities) || resolveMapEntityFromCollection(selectedId, luxuryPresenceListingPlaces) || null;
       if (!candidate) return null;
       const isExplicitSelectionOverride = Boolean(override && resolveMapEntityAlias(candidate.id) === overrideId);
       const isSelectedHospitalityEntity = isHospitalityNetworkEntity(candidate);
@@ -14990,6 +14999,7 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!selectedId || !selected) return;
+    if (selectionTransitionRef.current?.entityId === selectedId) return;
     if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     if (activeFilter === "All" && !urlState.collection && !effectiveSearch) return;
     if (matchesFilter(selected, activeFilter, savedIds)) return;
@@ -16518,6 +16528,7 @@ export default function MapPage() {
   useEffect(() => {
     if (!selectedId) return;
     if (selected) return;
+    if (selectionTransitionRef.current?.entityId === selectedId) return;
     if (!places.length && !luxuryPresenceListingPlaces.length) return;
     if (selectedPlaceOverride && resolveMapEntityAlias(selectedPlaceOverride.id) === selectedId) return;
     if (/^(republic-austin|daa-stop|waterloo|parking)/i.test(selectedId)) return;
@@ -16607,6 +16618,7 @@ export default function MapPage() {
     setSelectedDrawerClosed(false);
     setSelectedDrawerMinimized(false);
     setPulsingPinId(nextEntityId);
+    selectionTransitionRef.current = { entityId: nextEntityId, place };
     setSelectedPlaceOverride(place);
     setSelectedId(nextEntityId);
     recordMapUserAction("select_pin", {
