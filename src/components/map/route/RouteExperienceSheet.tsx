@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ChevronDown, Ellipsis, Map, Navigation, X } from "lucide-react";
+import { ChevronDown, Ellipsis, Map, Navigation, X } from "lucide-react";
 import { RouteDetails } from "./RouteDetails";
 import { RouteProgress } from "./RouteProgress";
 import { RouteRelatedList } from "./RouteRelatedList";
@@ -89,6 +89,8 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
       className={`dp-route-experience-sheet is-${sheetState}`}
       drawerState={sheetState}
       panelKind="route"
+      onDrawerStateChange={setSheetState}
+      onRequestClose={onExit}
       aria-labelledby={`dp-route-sheet-title-${route.id}`}
       data-sheet-state={sheetState}
       scrollClassName="dp-route-sheet-scroll"
@@ -99,7 +101,6 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
             <div><span>{publicLabel} · {route.neighborhood || "Downtown Austin"}</span><strong id={`dp-route-sheet-title-${route.id}`}>{route.shortTitle || route.title}</strong></div>
             <div>
               <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-label="More route actions" aria-expanded={menuOpen}><Ellipsis aria-hidden="true" /></button>
-              <button type="button" onClick={onExit} aria-label="Return to map"><ArrowLeft aria-hidden="true" /></button>
               <button type="button" onClick={onExit} aria-label="Close route"><X aria-hidden="true" /></button>
             </div>
             {menuOpen ? (
