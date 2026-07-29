@@ -28,6 +28,7 @@ import {
   markLocalRecord,
 } from "@/lib/productionGuards";
 import { canViewEverything } from "@/lib/auth/session";
+import { useAuth } from "@/lib/AuthContext";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
 import { queryAgent } from "@/services/agent/agentClient";
@@ -629,7 +630,12 @@ export default function PartnerWorkspace() {
 
 function PartnerWorkspaceContent() {
   const location = useLocation();
-  const [user, setUser] = useState(() => ({ ...PUBLIC_PARTNER_USER, ...(getStoredProfile() || {}) }));
+  const { user: authenticatedUser } = useAuth();
+  const [user, setUser] = useState(() => ({
+    ...PUBLIC_PARTNER_USER,
+    ...(getStoredProfile() || {}),
+    ...(authenticatedUser || {}),
+  }));
   const [tab, setTab] = useState(() => getWorkspaceTabFromPath(location.pathname));
   const [activation, setActivation] = useState(() => getWorkspaceActivation());
   const navigate = useNavigate();
@@ -691,34 +697,22 @@ function PartnerWorkspaceContent() {
   }, [location.search]);
 
   useEffect(() => {
-    base44.auth.me()
-      .then((u) => setUser((currentUser) => {
-        const activeWorkspace = getWorkspaceActivation();
-        return {
-          ...PUBLIC_PARTNER_USER,
-          ...currentUser,
-          ...(u || {}),
-          ...(getStoredProfile() || {}),
-          ...(activeWorkspace ? {
-            partner_name: activeWorkspace.organizationName,
-            organization_name: activeWorkspace.organizationName,
-            partner_type: activeWorkspace.partnerType,
-          } : {}),
-        };
-      }))
-      .catch(() => setUser((currentUser) => {
-        const activeWorkspace = getWorkspaceActivation();
-        return {
-          ...currentUser,
-          ...(getStoredProfile() || {}),
-          ...(activeWorkspace ? {
-            partner_name: activeWorkspace.organizationName,
-            organization_name: activeWorkspace.organizationName,
-            partner_type: activeWorkspace.partnerType,
-          } : {}),
-        };
-      }));
-  }, []);
+    if (!authenticatedUser) return;
+    setUser((currentUser) => {
+      const activeWorkspace = getWorkspaceActivation();
+      return {
+        ...PUBLIC_PARTNER_USER,
+        ...currentUser,
+        ...(getStoredProfile() || {}),
+        ...authenticatedUser,
+        ...(activeWorkspace ? {
+          partner_name: activeWorkspace.organizationName,
+          organization_name: activeWorkspace.organizationName,
+          partner_type: activeWorkspace.partnerType,
+        } : {}),
+      };
+    });
+  }, [authenticatedUser]);
 
   useEffect(() => {
     setTab(getWorkspaceTabFromPath(location.pathname));
