@@ -47,6 +47,9 @@ const ENTITY_TYPES = new Set<CanonicalMarkerEntityType>([
   "parking",
 ]);
 
+/** Keeps marker object identity stable across camera, drawer and selection state. */
+const canonicalMarkerRecordCache = new Map<string, CanonicalMarkerRecord>();
+
 function stableSlug(value: unknown, fallback = ""): string {
   return normalizePropertyId(value) || fallback;
 }
@@ -134,10 +137,14 @@ function resolveParkingParentId(entity: Record<string, any> = {}): string {
       entity.property_id ||
       entity.buildingId ||
       entity.building_id ||
+      entity.parentId ||
+      entity.parent_id ||
       raw.propertyId ||
       raw.property_id ||
       raw.buildingId ||
       raw.building_id ||
+      raw.parentId ||
+      raw.parent_id ||
       "",
   ).trim();
 }
@@ -203,8 +210,20 @@ export function createCanonicalMarkerRecord(
   const markerId = childLocationId && childLocationId !== entityId ? `${entityId}:${childLocationId}` : entityId;
   const iconVariant = String(entity.iconVariant || entity.pinKey || entity.pin || entity.category_key || entity.category || entityType || "default");
   const visibility = entity.audienceVisibility || raw.audienceVisibility || {};
-  const residentVisible = visibility.resident !== false && (!options.audienceMode || options.audienceMode === "resident" || visibility.partner !== true);
-  const partnerVisible = visibility.partner !== false;
+  const sourceVersion = String(options.sourceVersion || entity.sourceVersion || raw.sourceVersion || entity.updatedAt || entity.updated_at || raw.updatedAt || raw.updated_at || "static");
+  const cacheKey = [
+    markerId,
+    entityId,
+    entityType,
+    coordinate.latitude,
+    coordinate.longitude,
+    iconVariant,
+    sourceVersion,
+    visibility.resident !== false,
+    visibility.partner !== false,
+  ].join("|");
+  const cached = canonicalMarkerRecordCache.get(cacheKey);
+  if (cached) return cached;
 
   const record: CanonicalMarkerRecord = Object.freeze({
     markerId,
@@ -214,12 +233,13 @@ export function createCanonicalMarkerRecord(
     longitude: coordinate.longitude,
     iconVariant,
     audienceVisibility: Object.freeze({
-      resident: residentVisible,
-      partner: partnerVisible,
+      resident: visibility.resident !== false,
+      partner: visibility.partner !== false,
     }),
-    sourceVersion: String(options.sourceVersion || entity.sourceVersion || raw.sourceVersion || entity.updatedAt || entity.updated_at || raw.updatedAt || raw.updated_at || "static"),
+    sourceVersion,
   });
 
+  canonicalMarkerRecordCache.set(cacheKey, record);
   return record;
 }
 
