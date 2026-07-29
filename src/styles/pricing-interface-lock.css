@@ -1,0 +1,60 @@
+/* Last-loaded pricing contract. Keep the selection rail crisp and independent
+   of the platform's reusable rounded-control styles. */
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button,
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button[data-active="true"] {
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 10px 12px 12px 0 !important;
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button[data-active="true"] {
+  border-bottom-color: #c8a96a !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button :is(strong, small) {
+  display: block !important;
+  overflow: visible !important;
+  color: inherit !important;
+  text-align: left !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button small {
+  margin-top: 3px !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups {
+    display: flex !important;
+    overflow-x: auto !important;
+  }
+
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button {
+    flex: 0 0 132px !important;
+  }
+}
