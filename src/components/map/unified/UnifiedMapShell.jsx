@@ -4,8 +4,7 @@
  * Single source of truth for all map surfaces
  */
 
-import { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { getValidMapCenter } from '@/lib/mapValidation';
 import { resolveEntityPin } from '@/lib/map/entityPinResolver';
 import L from 'leaflet';
@@ -22,27 +21,6 @@ function getFallbackPinIcon(item, selected) {
     iconAnchor: [17, 17],
     popupAnchor: [0, -18],
   });
-}
-
-function MapFlyTo({ position }) {
-  const map = useMap();
-  useEffect(() => {
-    if (
-      position &&
-      Array.isArray(position) &&
-      position.length === 2 &&
-      Number.isFinite(position[0]) &&
-      Number.isFinite(position[1]) &&
-      map.getContainer() // Only fly if map is ready
-    ) {
-      try {
-        map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
-      } catch (error) {
-        console.warn('Map flyTo error:', error);
-      }
-    }
-  }, [position, map]);
-  return null;
 }
 
 export default function UnifiedMapShell({
@@ -102,8 +80,6 @@ export default function UnifiedMapShell({
         crossOrigin
       />
 
-      <MapFlyTo position={mapCenter} />
-
       {/* Heatmap and other layers */}
       {children}
 
@@ -119,7 +95,7 @@ export default function UnifiedMapShell({
 
         return (
           <Marker
-            key={item.id}
+            key={item.markerId || item.id}
             position={position}
             icon={icon}
             eventHandlers={{
