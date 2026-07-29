@@ -172,4 +172,101 @@ test.describe("adaptive map surface", () => {
     });
   }
 
+  const drawerFixtures = [
+    { name: "venue", url: "/map?mode=resident&tab=map&entityId=partner-bangers" },
+    { name: "property", url: "/map?mode=resident&tab=map&entityId=natiivo-austin" },
+    { name: "partner perk", url: "/map?mode=partner&tab=map&filter=All&routeId=inkind-dining-market&stopId=inkind-peche&entityId=inkind-peche" },
+  ];
+
+  for (const viewport of [
+    { name: "iphone-15", width: 393, height: 852 },
+    { name: "desktop", width: 1440, height: 900 },
+  ]) {
+    test(`shared drawer system holds across panel types at ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+      for (const fixture of drawerFixtures) {
+        await test.step(fixture.name, async () => {
+          await page.goto(fixture.url);
+
+          const drawer = page.locator("#dp-active-map-drawer");
+          const nav = page.getByRole("tablist", { name: "Map bottom navigation" });
+          const title = drawer.locator(".dp-entity-title").first();
+          await expect(drawer).toBeVisible();
+          await expect(nav).toBeVisible();
+          await expect(title).toBeVisible();
+
+          const geometry = await drawer.evaluate((drawerNode) => {
+            const scroll = drawerNode.querySelector<HTMLElement>(".dp-map-detail-scroll");
+            const titleNode = drawerNode.querySelector<HTMLElement>(".dp-entity-title");
+            const followingCopy = drawerNode.querySelector<HTMLElement>(".dp-entity-subtitle, .dp-entity-context");
+            const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
+            const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
+            if (!scroll || !titleNode || !followingCopy || !navNode || !navShell) return null;
+
+            const probe = document.createElement("div");
+            probe.dataset.e2eSharedDrawerOverflowProbe = "true";
+            probe.setAttribute("aria-hidden", "true");
+            probe.style.height = `${scroll.clientHeight + 160}px`;
+            probe.style.pointerEvents = "none";
+            scroll.firstElementChild?.appendChild(probe);
+
+            const drawerRect = drawerNode.getBoundingClientRect();
+            const navRect = navNode.getBoundingClientRect();
+            const titleRect = titleNode.getBoundingClientRect();
+            const followingRect = followingCopy.getBoundingClientRect();
+            const titleStyle = getComputedStyle(titleNode);
+            const nestedVerticalScrollOwners = [...drawerNode.querySelectorAll<HTMLElement>("*")]
+              .filter((node) => node !== scroll && node.offsetParent !== null)
+              .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
+              .length;
+
+            return {
+              drawerLeft: drawerRect.left,
+              drawerRight: drawerRect.right,
+              drawerTop: drawerRect.top,
+              drawerBottom: drawerRect.bottom,
+              drawerPosition: getComputedStyle(drawerNode).position,
+              navTop: navRect.top,
+              navBottom: navRect.bottom,
+              navZIndex: Number.parseInt(getComputedStyle(navShell).zIndex, 10),
+              drawerZIndex: Number.parseInt(getComputedStyle(drawerNode).zIndex, 10),
+              scrollOverflowY: getComputedStyle(scroll).overflowY,
+              scrollHeight: scroll.scrollHeight,
+              clientHeight: scroll.clientHeight,
+              nestedVerticalScrollOwners,
+              bodyOverflowY: getComputedStyle(document.body).overflowY,
+              titleBottom: titleRect.bottom,
+              followingTop: followingRect.top,
+              titleFontSize: Number.parseFloat(titleStyle.fontSize),
+              titleLineHeight: Number.parseFloat(titleStyle.lineHeight),
+              titleBackground: titleStyle.backgroundColor,
+              titleBoxShadow: titleStyle.boxShadow,
+              titleWhiteSpace: titleStyle.whiteSpace,
+            };
+          });
+
+          expect(geometry).not.toBeNull();
+          expect(geometry?.drawerPosition).toBe("fixed");
+          expect(geometry?.drawerTop || 0).toBeGreaterThan(0);
+          expect(geometry?.drawerBottom || 0).toBeGreaterThanOrEqual(geometry?.navTop || 0);
+          expect(geometry?.drawerBottom || 0).toBeLessThanOrEqual((geometry?.navBottom || viewport.height) + 1);
+          expect(geometry?.drawerLeft || 0).toBeCloseTo(viewport.width - (geometry?.drawerRight || viewport.width), 0);
+          expect(geometry?.navZIndex || 0).toBeGreaterThan(geometry?.drawerZIndex || 0);
+          expect(geometry?.scrollOverflowY).toBe("auto");
+          expect(geometry?.scrollHeight || 0).toBeGreaterThan(geometry?.clientHeight || 0);
+          expect(geometry?.nestedVerticalScrollOwners).toBe(0);
+          expect(geometry?.bodyOverflowY).not.toBe("auto");
+          expect(geometry?.titleBottom || 0).toBeLessThanOrEqual((geometry?.followingTop || 0) + 1);
+          expect(geometry?.titleFontSize || 0).toBeLessThanOrEqual(viewport.width < 768 ? 32 : 34);
+          expect(geometry?.titleLineHeight || 0).toBeGreaterThanOrEqual((geometry?.titleFontSize || 0) * 1.1);
+          expect(geometry?.titleBackground).toBe("rgba(0, 0, 0, 0)");
+          expect(geometry?.titleBoxShadow).toBe("none");
+          expect(geometry?.titleWhiteSpace).toBe("normal");
+        });
+      }
+    });
+  }
+
+
 });
