@@ -9,7 +9,7 @@ test("legacy reports route preserves context and requires partner authentication
     `/partners/sign-in\\?returnTo=.*partner-workspace%2Freports.*organizationId%3D${organizationId}`,
   ));
   await expect(page.locator('[data-workspace-view="reports"]')).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Partner sign in" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
 });
 
 test("Ask the Map preserves organization context behind partner authentication", async ({ page }) => {
@@ -19,5 +19,5 @@ test("Ask the Map preserves organization context behind partner authentication",
     `/partners/sign-in\\?returnTo=.*partner-workspace%2Fassistant.*organizationId%3D${organizationId}`,
   ));
   await expect(page.locator('[data-workspace-view="assistant"]')).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Partner sign in" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to Downtown Perks." })).toBeVisible();
 });
