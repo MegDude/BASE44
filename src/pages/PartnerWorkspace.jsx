@@ -645,7 +645,7 @@ function PartnerWorkspaceContent() {
   const hasPrivilegedWorkspaceAccess = canViewEverything(user);
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const requestedScope = readPartnerWorkspaceScope(location.search);
+  const requestedScope = readPartnerWorkspaceScope(location.search, !hasPrivilegedWorkspaceAccess);
   const normalizedOrganizationName = String(
     user.organization_name || user.partner_name || activation?.organizationName || "",
   ).trim().toLowerCase();
@@ -657,10 +657,19 @@ function PartnerWorkspaceContent() {
     ].filter(Boolean).includes(organization.id)
     || organization.name.trim().toLowerCase() === normalizedOrganizationName
   ));
-  const workspaceScope = resolvePartnerWorkspaceScope(
-    hasPrivilegedWorkspaceAccess
-      ? requestedScope
-      : {
+  const workspaceScope = hasPrivilegedWorkspaceAccess
+    ? {
+        ...requestedScope,
+        type: requestedScope.listingId
+          ? "listing"
+          : requestedScope.portfolioId
+            ? "portfolio"
+            : requestedScope.organizationId
+              ? "organization"
+              : "unscoped",
+        listingIds: requestedScope.listingId ? [requestedScope.listingId] : [],
+      }
+    : resolvePartnerWorkspaceScope({
           ...requestedScope,
           organizationId: authorizedPartnerOrganization?.id,
           portfolioId: requestedScope.organizationId === authorizedPartnerOrganization?.id
@@ -669,8 +678,7 @@ function PartnerWorkspaceContent() {
           listingId: requestedScope.organizationId === authorizedPartnerOrganization?.id
             ? requestedScope.listingId
             : undefined,
-        },
-  );
+        });
   const activeOrganizationId = workspaceScope.organizationId || "";
 
   useEffect(() => {
