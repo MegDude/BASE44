@@ -97,7 +97,12 @@ test.describe("adaptive map surface", () => {
       const initialMarkerCount = await visibleMarkers.count();
       expect(initialMarkerCount).toBeGreaterThan(0);
 
-      await page.getByRole("button", { name: "Open Natiivo Austin", exact: true }).click();
+      const natiivoMarker = page.getByRole("button", { name: "Open Natiivo Austin", exact: true });
+      if (!(await natiivoMarker.isVisible())) {
+        await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+      }
+      await expect(natiivoMarker).toBeVisible();
+      await natiivoMarker.click();
       await expect(page).toHaveURL(/entityId=natiivo-austin/);
       await expect(panel).toBeVisible();
       await expect(page.getByRole("heading", { name: "Natiivo Austin", exact: true })).toBeVisible();
