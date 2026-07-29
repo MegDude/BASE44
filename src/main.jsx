@@ -145,6 +145,7 @@ import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
+import "@/styles/pricing-interface-lock.css"
 
 inject()
 injectSpeedInsights()
