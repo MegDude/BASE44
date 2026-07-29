@@ -20,6 +20,11 @@ assert.match(mapSource, /function getPlaceCoords\(place\) \{[\s\S]*?getCanonical
 assert.match(mapSource, /const key = `pin:\$\{markerRecord\.markerId\}`;/, "Google markers must use permanent canonical marker IDs as registry keys");
 assert.match(mapSource, /data-marker-entity-id", markerRecord\.markerId/, "marker DOM IDs must match canonical marker IDs");
 assert.match(mapSource, /data-entity-id", markerRecord\.entityId/, "drawer entity IDs must resolve to the same canonical entity ID");
+assert.match(mapSource, /markerPositionKey = \(position\) => `\$\{Number\(position\?\.lat\)\.toFixed\(7\)\}:\$\{Number\(position\?\.lng\)\.toFixed\(7\)\}`/, "marker lifecycle must compare exact normalized coordinate keys before moving provider markers");
+assert.match(mapSource, /const positionChanged = marker\.__dpLastPositionKey !== nextPositionKey/, "marker lifecycle must detect unchanged coordinates before updating provider position");
+assert.match(mapSource, /if \(positionChanged\) marker\.position = position;/, "advanced markers must not reset position when canonical coordinates are unchanged");
+assert.match(mapSource, /if \(positionChanged\) marker\.setPosition\?\.\(position\);/, "legacy markers must not reset position when canonical coordinates are unchanged");
+assert.match(mapSource, /entry\.marker\.__dpLastPositionKey = markerPositionKey\(markerOptions\.position\)/, "new marker instances must store their first canonical coordinate key");
 assert.match(mapSource, /isSelectedMarkerPlace\(place, selectedId\)/, "selection state must resolve through canonical marker identity");
 assert.match(mapSource, /selectionRequestedMapFocus/, "ordinary marker selection must not pan or zoom the map");
 const googleMarkerLifecycleSource = mapSource.slice(
