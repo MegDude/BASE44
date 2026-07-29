@@ -1,4 +1,4 @@
-import { ArrowLeft, Star, X } from "lucide-react";
+import { Star, X } from "lucide-react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
@@ -91,6 +91,7 @@ export default function ActivePerksSheet({
       className={`dp-active-perks-sheet is-${safeState}`}
       drawerState={safeState}
       panelKind="list"
+      onRequestClose={onClose}
       aria-label="Active perks"
       initial={{ opacity: 0, y: 44 }}
       animate={{ opacity: 1, y: 0 }}
@@ -113,9 +114,6 @@ export default function ActivePerksSheet({
             <span aria-hidden="true" />
           </button>
           <header className="dp-active-perks-header">
-            <button type="button" className="dp-active-perks-back" onClick={onClose} aria-label="Return to map">
-              <ArrowLeft aria-hidden="true" />
-            </button>
             <div>
               <p>Resident benefits</p>
               <h2>Active perks</h2>
