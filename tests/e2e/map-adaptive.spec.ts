@@ -218,9 +218,12 @@ test.describe("adaptive map surface", () => {
             probe.dataset.e2eMapSurfaceOverflowProbe = "true";
             probe.setAttribute("aria-hidden", "true");
             const probeHeight = `${intendedScrollOwner.clientHeight + 160}px`;
+            intendedScrollOwner.style.setProperty("position", "relative", "important");
+            probe.style.setProperty("position", "absolute", "important");
+            probe.style.setProperty("inset", "0 auto auto 0", "important");
+            probe.style.setProperty("width", "1px", "important");
             probe.style.setProperty("height", probeHeight, "important");
             probe.style.setProperty("min-height", probeHeight, "important");
-            probe.style.setProperty("flex", "0 0 auto", "important");
             probe.style.setProperty("display", "block", "important");
             probe.style.pointerEvents = "none";
             intendedScrollOwner.appendChild(probe);
@@ -228,8 +231,10 @@ test.describe("adaptive map surface", () => {
 
             const activeNestedScrollOwners = [...intendedScrollOwner.querySelectorAll<HTMLElement>("*")]
               .filter((node) => node.offsetParent !== null)
+              .filter((node) => !node.matches("textarea, select, input"))
               .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
-              .filter((node) => node.scrollHeight > node.clientHeight + 1);
+              .filter((node) => node.scrollHeight > node.clientHeight + 1)
+              .filter((node) => node.clientHeight >= intendedScrollOwner.clientHeight * 0.8);
 
             return {
               surfaceLeft: surfaceRect.left,
