@@ -138,6 +138,7 @@ import "@/styles/universal-entity-drawer-final.css"
 import "@/styles/search-intent-label-contrast-final.css"
 import "@/styles/map-drawer-single-line-titles-final.css"
 import "@/styles/map-drawer-scroll-footer-final.css"
+import "@/styles/map-detail-panel-live-final.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
