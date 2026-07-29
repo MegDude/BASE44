@@ -78,6 +78,7 @@ import { toggleSavedEntity, useSavedEntitiesRealtime, useSavedStore } from "@/fe
 import { createResidentQrSession } from "@/features/resident/resident-pass/createQrSession";
 import { getDaaCheckIn, recordDaaCheckIn } from "@/lib/daaCheckIns";
 import { trackingEvents } from "@/lib/analytics/track";
+import { buildGoogleCalendarUrl, calendarEntityFromMapEntity } from "@/lib/calendar/googleCalendar";
 import { queryAgent } from "@/services/agent/agentClient";
 import { legendsListingPlaces } from "@/data/legendsListings";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
@@ -852,6 +853,7 @@ const NEIGHBORHOODS = [
 
 const RESIDENT_SEARCH_FILTERS = [
   { label: "All", filter: "All" },
+  { label: "Dining", filter: "Dining" },
   { label: "Fitness", filter: "Fitness" },
   { label: "Wellness", filter: "Wellness" },
   { label: "Nightlife", filter: "Nightlife" },
@@ -5805,6 +5807,16 @@ function buildCanonicalPerkModel(place, places = []) {
   const terms = asCleanArray(structured.terms || fallback.terms);
   const isAvailableSundays = /\bsundays?\b/i.test(schedule);
   const isExpired = structured.status === "expired";
+  const calendarActionHref = buildGoogleCalendarUrl(
+    calendarEntityFromMapEntity(place, {
+      title: `${venueName}: ${title}`,
+      oneSentence: summary,
+      address: place?.address || raw.address || participating[0]?.address,
+      start: structured.validFrom || place?.validFrom || raw.validFrom || place?.start || raw.start,
+      end: structured.validUntil || place?.validUntil || raw.validUntil || place?.end || raw.end,
+    }),
+    typeof window === "undefined" ? "" : window.location.href,
+  );
   const relatedItems = getNearbyRecommendationCards(place, places, "resident", 6)
     .filter((item) => !participating.some((candidate) => candidate.id === item.id))
     .slice(0, 5);
@@ -5833,6 +5845,7 @@ function buildCanonicalPerkModel(place, places = []) {
     primaryAction: isExpired
       ? { label: "Perk unavailable", disabled: true }
       : { label: structured.redemptionMethod === "external" ? "View perk" : "Use perk" },
+    calendarAction: calendarActionHref ? { label: "Google Calendar", href: calendarActionHref } : null,
     sections: [
       { id: "benefit", title: "Benefit", body: cleanDisplayCopy(structured.benefit || fallback.value), emphasis: true },
       participating.length > 0 ? {
@@ -5908,6 +5921,10 @@ function buildCanonicalCampaignModel(place, places = []) {
 function buildCanonicalEventModel(place, places = []) {
   const profile = getEventProfile(place);
   const similar = getNearbyRecommendationCards(place, places.filter((candidate) => isEventEntity(candidate)), "resident", 5);
+  const calendarActionHref = buildGoogleCalendarUrl(
+    calendarEntityFromMapEntity(place, profile),
+    typeof window === "undefined" ? "" : window.location.href,
+  );
   return {
     entityType: "event",
     titleId: `canonical-detail-title-${place.id}`,
@@ -5923,6 +5940,7 @@ function buildCanonicalEventModel(place, places = []) {
     primaryAction: profile.url && /\b(book|ticket|reserve|register|event page)\b/i.test(profile.primaryAction)
       ? { label: profile.primaryAction, href: profile.url, external: true }
       : { label: "RSVP" },
+    calendarAction: calendarActionHref ? { label: "Google Calendar", href: calendarActionHref } : null,
     sections: [
       profile.about && profile.about !== profile.oneSentence ? { id: "about", title: "About", body: profile.about } : null,
       profile.schedule.length ? { id: "schedule", kind: "steps", title: "Schedule", items: profile.schedule.map((item) => [item.label || item.isoDate, item.className, item.duration || item.room].filter(Boolean).join(" · ")) } : null,
