@@ -44,7 +44,7 @@ assert.ok(experience.nearby.some((place) => place.id === "coffee"));
 assert.equal(experience.analytics.relationshipIds.buildingId, building.id);
 assert.ok(experience.analytics.events.includes("route_started"));
 for (const section of ["overview", "perks", "collections", "campaigns", "amenities", "events", "routes", "nearby", "guide"]) {
-  assert.match(buildingModuleSource, new RegExp(`id="${section}" controlId=`), `${section} must have an instance-scoped section target`);
+  assert.match(buildingModuleSource, new RegExp(`id="${section}"\\s+controlId=`), `${section} must have an instance-scoped section target`);
 }
 assert.match(buildingModuleSource, /experience\.collections\?\.length[\s\S]*?items\.push\("collections"\)/, "collection content must add a visible navigation destination");
 assert.match(buildingModuleSource, /experience\.routes\?\.length[\s\S]*?items\.push\("routes"\)/, "walking routes must add a visible navigation destination");
