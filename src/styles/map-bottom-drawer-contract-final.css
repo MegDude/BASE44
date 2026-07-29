@@ -153,3 +153,31 @@ html body #root .dp-map-page .dp-route-experience-sheet.is-peek .dp-route-sheet-
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* The earlier desktop entity authority uses repeated IDs. Match it deliberately
+   so the canonical drawer cannot revert to a right-hand rail after hydration. */
+@media (min-width: 768px) and (min-height: 600px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer {
+    inset: auto 0 var(--dp-map-bottom-sheet-gap) 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    height: var(--dp-map-sheet-medium-height) !important;
+    max-height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+    border: 1px solid rgba(11, 31, 51, 0.10) !important;
+    border-bottom: 0 !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer[data-drawer-state="peek"] {
+    height: var(--dp-map-sheet-peek-height) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer[data-drawer-state="expanded"] {
+    height: var(--dp-map-sheet-expanded-height) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer[data-drawer-state="full"] {
+    height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+  }
+}
