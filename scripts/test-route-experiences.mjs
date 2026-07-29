@@ -70,7 +70,7 @@ await page.locator(".dp-route-experience-sheet[data-drawer-state='peek']").waitF
 await page.getByRole("button", { name: "Show route stops" }).tap();
 await page.locator(".dp-route-experience-sheet[data-drawer-state='medium']").waitFor({ state: "visible", timeout: 5_000 });
 
-await page.getByRole("button", { name: "Start walk" }).tap();
+await page.locator(".dp-route-primary-action").tap();
 await page.waitForURL(/routeState=active/);
 const activeUrl = new URL(page.url());
 if (activeUrl.searchParams.get("routeId") !== "waterloo-greenway") throw new Error("Waterloo: canonical routeId was lost");
