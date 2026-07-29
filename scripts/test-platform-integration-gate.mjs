@@ -47,9 +47,17 @@ requireMatch('admin studio', adminStudio, /to="\/partners\/sign-in"/, 'anonymous
 requireMatch('admin studio', adminStudio, /to="\/partner-workspace\/overview"/, 'non-admin users are not returned to the partner workspace');
 
 requireMatch('resident saved API', savedApi, /requireResidentProfile\(req\)/, 'resident identity is not derived from authentication');
-requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'deployed saved-entity RPC compatibility is missing');
-requireMatch('resident saved API', savedApi, /set_resident_saved_entity/, 'migration saved-entity RPC compatibility is missing');
-requireMatch('resident saved API', savedApi, /PGRST202/, 'missing-RPC fallback is not constrained to PostgREST schema errors');
+requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'deployed saved-entity RPC is missing');
+requireMatch('resident saved API', savedApi, /p_auth_user_id:\s*user\.id/, 'saved API does not derive the RPC user from authenticated identity');
+requireMatch('resident saved API', savedApi, /p_idempotency_key:/, 'saved API does not provide an idempotency key');
+requireMatch('resident saved API', savedApi, /p_source_route:/, 'saved API does not preserve source route context');
+requireMatch('resident saved API', savedApi, /randomUUID\(\)/, 'saved API does not generate a fallback idempotency key');
+if (/set_resident_saved_entity/.test(savedApi.replace(/dp_set_resident_saved_entity/g, ''))) {
+  failures.push('resident saved API: obsolete unprefixed RPC fallback remains');
+}
+if (/PGRST202/.test(savedApi)) {
+  failures.push('resident saved API: obsolete missing-RPC fallback remains');
+}
 
 requireMatch('detail panel', panel, /dp-native-detail-panel__actions/, 'canonical action footer is missing');
 requireMatch('detail panel', panel, /aria-pressed=\{saved\}/, 'save state is not accessible');
