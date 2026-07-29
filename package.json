@@ -124,6 +124,7 @@
     "test:admin-workspace-scope": "node scripts/test-admin-workspace-scope.mjs",
     "audit:backend-baseline": "node scripts/audit-backend-baseline.mjs",
     "test:backend-baseline": "node scripts/test-backend-baseline-audit.mjs",
+    "test:backend-v2-foundation": "node scripts/test-backend-v2-foundation.mjs",
     "test:map-marker-stability": "node scripts/test-map-marker-stability-contract.mjs",
     "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs"
   },

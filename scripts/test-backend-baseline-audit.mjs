@@ -27,7 +27,12 @@ for (const flag of [
   "partner_reporting_v2",
   "imports_v2",
 ]) {
-  assert.equal(baseline.featureFlags[flag]?.implemented, false, `${flag} must not be inferred from the auditor's own source`);
+  assert.equal(typeof baseline.featureFlags[flag]?.implemented, "boolean");
+}
+
+const featureRegistry = readFileSync("src/lib/api/backendFeatureFlags.js", "utf8");
+for (const flag of Object.keys(baseline.featureFlags)) {
+  assert.equal(baseline.featureFlags[flag].implemented, featureRegistry.includes(flag));
 }
 
 assert.equal(baseline.requiredDomainStatus.events.present, true);
