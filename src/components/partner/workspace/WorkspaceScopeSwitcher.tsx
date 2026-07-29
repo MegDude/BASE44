@@ -67,23 +67,24 @@ export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
 
   const scopeTitle = selectedListing?.name || selectedPortfolio?.name || selectedOrganization?.name || "Choose an organization";
   const scopeDetail = selectedListing
-    ? "One place"
+    ? "Single place"
     : selectedPortfolio
       ? "Portfolio view"
       : selectedOrganization
         ? "Organization view"
         : "No workspace selected";
+  const hasSecondaryScope = Boolean((scope.organizationId && portfolios.length) || (scope.organizationId && listings.length > 1));
 
   return (
     <section className="dp-workspace-scope" aria-label="Choose workspace scope">
       <div className="dp-workspace-scope__summary">
-        <p>Workspace</p>
+        <p>Active workspace</p>
         <strong>{scopeTitle}</strong>
         <span>{scopeDetail}</span>
       </div>
 
-      <div className="dp-workspace-scope__controls">
-        <label id={organizationLabelId}>
+      <div className="dp-workspace-scope__controls" data-control-count={hasSecondaryScope ? "multiple" : "single"}>
+        <label id={organizationLabelId} className="dp-workspace-scope__field dp-workspace-scope__field--organization">
           <span>Organization</span>
           <select
             aria-labelledby={organizationLabelId}
@@ -98,7 +99,7 @@ export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
         </label>
 
         {scope.organizationId && portfolios.length ? (
-          <label id={portfolioLabelId}>
+          <label id={portfolioLabelId} className="dp-workspace-scope__field">
             <span>Portfolio</span>
             <select
               aria-labelledby={portfolioLabelId}
@@ -114,7 +115,7 @@ export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
         ) : null}
 
         {scope.organizationId && listings.length > 1 ? (
-          <label id={listingLabelId}>
+          <label id={listingLabelId} className="dp-workspace-scope__field">
             <span>Place or listing</span>
             <select
               aria-labelledby={listingLabelId}
