@@ -261,7 +261,12 @@ test.describe("adaptive map surface", () => {
           expect(system?.surfaceTop || 0).toBeGreaterThan(0);
           expect(system?.surfaceBottom || 0).toBeGreaterThanOrEqual(system?.navTop || 0);
           expect(system?.surfaceBottom || 0).toBeLessThanOrEqual((system?.navBottom || viewport.height) + 1);
-          expect(system?.surfaceLeft || 0).toBeCloseTo(viewport.width - (system?.surfaceRight || viewport.width), 0);
+          expect(system?.surfaceLeft ?? -1).toBeGreaterThanOrEqual(-1);
+          expect(system?.surfaceRight ?? viewport.width + 1).toBeLessThanOrEqual(viewport.width + 1);
+          expect(system?.surfaceRight || 0).toBeCloseTo(viewport.width, 0);
+          if (viewport.width < 768) {
+            expect((system?.surfaceRight || 0) - (system?.surfaceLeft || 0)).toBeCloseTo(viewport.width, 0);
+          }
           expect(system?.navZIndex || 0).toBeGreaterThan(system?.surfaceZIndex || 0);
           expect(system?.verticalScrollOwners).toBe(1);
           expect(system?.scrollOwnerOverflowY).toBe("auto");
@@ -362,7 +367,12 @@ test.describe("adaptive map surface", () => {
           expect(geometry?.drawerTop || 0).toBeGreaterThan(0);
           expect(geometry?.drawerBottom || 0).toBeGreaterThanOrEqual(geometry?.navTop || 0);
           expect(geometry?.drawerBottom || 0).toBeLessThanOrEqual((geometry?.navBottom || viewport.height) + 1);
-          expect(geometry?.drawerLeft || 0).toBeCloseTo(viewport.width - (geometry?.drawerRight || viewport.width), 0);
+          expect(geometry?.drawerLeft ?? -1).toBeGreaterThanOrEqual(-1);
+          expect(geometry?.drawerRight ?? viewport.width + 1).toBeLessThanOrEqual(viewport.width + 1);
+          expect(geometry?.drawerRight || 0).toBeCloseTo(viewport.width, 0);
+          if (viewport.width < 768) {
+            expect((geometry?.drawerRight || 0) - (geometry?.drawerLeft || 0)).toBeCloseTo(viewport.width, 0);
+          }
           expect(geometry?.navZIndex || 0).toBeGreaterThan(geometry?.drawerZIndex || 0);
           expect(geometry?.scrollOverflowY).toBe("auto");
           expect(geometry?.scrollHeight || 0).toBeGreaterThan(geometry?.clientHeight || 0);
