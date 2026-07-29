@@ -807,11 +807,11 @@ function PartnerWorkspaceContent() {
           {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" scope={workspaceScope} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
           {tab === "campaigns" && <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />}
-          {tab === "offers" && <PerksManager key="offers" user={user} />}
-          {tab === "events" && <EventsManager key="events" user={user} />}
+          {tab === "offers" && <PerksManager key="offers" user={user} scope={workspaceScope} />}
+          {tab === "events" && <EventsManager key="events" user={user} scope={workspaceScope} />}
           {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
-          {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}`} organizationId={activeOrganizationId} />}
+          {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
           {tab === "governance" && <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
@@ -1628,7 +1628,7 @@ function NativeMobileWorkspaceDashboard({
   const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
   const heroSource = isLegends
     ? "Source: SEO Snapshot"
-    : `${potentialReach.labels} · ${potentialReach.note}`;
+    : "No verified audience total is connected";
   const kpis = isLegends
     ? [
         [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "SEO Snapshot"],
@@ -1680,8 +1680,8 @@ function NativeMobileWorkspaceDashboard({
         metrics: [["Places", ownedEntities.length], ["Offers", activePerks.length], ["Events", upcomingEvents.length]],
       }
     : {
-        image: "/images/workspace-media/listing-preview.avif",
-        alt: "Downtown Austin residential listing prepared for a map preview.",
+        image: heroMedia.src,
+        alt: heroMedia.alt,
         title: isLegends ? "Downtown property comparison" : `${organization?.name || "Partner"} map campaign`,
         status: isLegends ? "Recommended" : "Live",
         metrics: isLegends
@@ -1694,7 +1694,7 @@ function NativeMobileWorkspaceDashboard({
     ? `${ownedEntities.length} restaurant records are connected. Publish the shared reward before describing campaign performance.`
     : isLegends
       ? "Non-branded searches are already finding Legends listings. A side-by-side property guide is the clearest next step."
-      : "No verified user activity is connected yet. Use DANA, The Shore, and Legends as potential distribution sources, not measured reach.";
+      : "No verified user activity is connected to this workspace yet. Treat potential distribution only as a planning assumption, not measured reach.";
 
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
@@ -1794,9 +1794,9 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
   const selectedOrganizationId = organizationId;
 
   useEffect(() => {
-    listWorkspaceItems("Perk", "perks", user.email).then(setPerks);
-    listWorkspaceItems("Event", "events", user.email).then(setEvents);
-  }, [user.email]);
+    listWorkspaceItems("Perk", "perks", user.email).then((items) => setPerks((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
+    listWorkspaceItems("Event", "events", user.email).then((items) => setEvents((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
+  }, [user.email, selectedOrganizationId, scope?.listingId]);
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
   const ownedEntities = selectedOrganization
@@ -2736,7 +2736,9 @@ function DaaInsightRail({ section, activeLabel, onSelect }) {
 
 // ─── PERKS MANAGER ────────────────────────────────────────────────────────────
 
-function PerksManager({ user }) {
+function PerksManager({ user, scope }) {
+  const organizationId = scope?.organizationId || "";
+  const listingId = scope?.listingId || "";
   const [perks, setPerks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("intent") === "new");
@@ -2745,11 +2747,11 @@ function PerksManager({ user }) {
   const load = () => {
     setLoading(true);
     listWorkspaceItems("Perk", "perks", user.email)
-      .then(data => { setPerks(data || []); setLoading(false); })
-      .catch(() => { setPerks(getStoredItems("perks", user.email)); setLoading(false); });
+      .then(data => { setPerks((data || []).filter((item) => item.organization_id === organizationId && (!listingId || item.listing_id === listingId))); setLoading(false); })
+      .catch(() => { setPerks([]); setLoading(false); });
   };
 
-  useEffect(() => { load(); }, [user.email]);
+  useEffect(() => { load(); }, [user.email, organizationId, listingId]);
 
   function setPublisherIntent(open) {
     if (typeof window === "undefined") return;
@@ -2779,7 +2781,7 @@ function PerksManager({ user }) {
       </div>
 
       {showForm && (
-        <PerkForm user={user} perk={editing} onClose={closePublisher} onSave={() => { closePublisher(); load(); }} />
+        <PerkForm user={user} perk={editing} scope={scope} onClose={closePublisher} onSave={() => { closePublisher(); load(); }} />
       )}
 
       {loading ? (
@@ -2819,7 +2821,7 @@ function PerksManager({ user }) {
   );
 }
 
-function PerkForm({ user, perk, onClose, onSave }) {
+function PerkForm({ user, perk, scope, onClose, onSave }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     title: perk?.title || "",
@@ -2846,9 +2848,9 @@ function PerkForm({ user, perk, onClose, onSave }) {
     setSaving(true);
     try {
       if (perk?.id) {
-        await updateWorkspaceItem("Perk", "perks", user.email, perk.id, form);
+        await updateWorkspaceItem("Perk", "perks", user.email, perk.id, { ...form, organization_id: scope?.organizationId, listing_id: scope?.listingId || undefined });
       } else {
-        await createWorkspaceItem("Perk", "perks", user.email, form);
+        await createWorkspaceItem("Perk", "perks", user.email, { ...form, organization_id: scope?.organizationId, listing_id: scope?.listingId || undefined });
       }
       onSave();
     } finally {
@@ -2906,7 +2908,9 @@ function PublisherSelect({ label, value, onChange, options }) {
 
 // ─── EVENTS MANAGER ───────────────────────────────────────────────────────────
 
-function EventsManager({ user }) {
+function EventsManager({ user, scope }) {
+  const organizationId = scope?.organizationId || "";
+  const listingId = scope?.listingId || "";
   const location = useLocation();
   const eventIntent = new URLSearchParams(location.search).get("intent") || "";
   const [events, setEvents] = useState([]);
@@ -2923,11 +2927,11 @@ function EventsManager({ user }) {
   const load = () => {
     setLoading(true);
     listWorkspaceItems("Event", "events", user.email)
-      .then(data => { setEvents(data || []); setLoading(false); })
-      .catch(() => { setEvents(getStoredItems("events", user.email)); setLoading(false); });
+      .then(data => { setEvents((data || []).filter((item) => item.organization_id === organizationId && (!listingId || item.listing_id === listingId))); setLoading(false); })
+      .catch(() => { setEvents([]); setLoading(false); });
   };
 
-  useEffect(() => { load(); }, [user.email]);
+  useEffect(() => { load(); }, [user.email, organizationId, listingId]);
 
   async function handleDelete(id) {
     await deleteWorkspaceItem("Event", "events", user.email, id);
@@ -2947,7 +2951,7 @@ function EventsManager({ user }) {
       </div>
 
       {showForm && (
-        <EventForm user={user} event={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
+        <EventForm user={user} event={editing} scope={scope} onClose={() => { setShowForm(false); setEditing(null); }} onSave={() => { setShowForm(false); setEditing(null); load(); }} />
       )}
 
       {loading ? (
@@ -2987,7 +2991,7 @@ function EventsManager({ user }) {
   );
 }
 
-function EventForm({ user, event, onClose, onSave }) {
+function EventForm({ user, event, scope, onClose, onSave }) {
   const [form, setForm] = useState({
     title: event?.title || "",
     venue_name: event?.venue_name || "",
@@ -3007,9 +3011,9 @@ function EventForm({ user, event, onClose, onSave }) {
     const data = { ...form, capacity: form.capacity ? Number(form.capacity) : undefined };
     try {
       if (event?.id) {
-        await updateWorkspaceItem("Event", "events", user.email, event.id, data);
+        await updateWorkspaceItem("Event", "events", user.email, event.id, { ...data, organization_id: scope?.organizationId, listing_id: scope?.listingId || undefined });
       } else {
-        await createWorkspaceItem("Event", "events", user.email, data);
+        await createWorkspaceItem("Event", "events", user.email, { ...data, organization_id: scope?.organizationId, listing_id: scope?.listingId || undefined });
       }
       onSave();
     } finally {
