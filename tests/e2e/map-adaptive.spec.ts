@@ -81,4 +81,44 @@ test.describe("adaptive map surface", () => {
     expect(geometry?.overlap).toBeLessThanOrEqual(12);
     expect(geometry?.navZIndex).toBeGreaterThan(geometry?.panelZIndex || 0);
   });
+
+  test("Banger's destination follows semantic order and owns one scroll region", async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto("/map?mode=resident&tab=map&entityId=partner-bangers");
+
+    const panel = page.locator("#dp-active-map-drawer");
+    const title = page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" });
+    await expect(panel).toBeVisible();
+    await expect(title).toBeVisible();
+
+    const geometry = await panel.evaluate((drawer) => {
+      const content = drawer.querySelector<HTMLElement>(
+        ".dp-map-panel-content.dp-destination-content.dp-detail-content",
+      );
+      const scroll = drawer.querySelector<HTMLElement>(".dp-map-detail-scroll");
+      const hero = drawer.querySelector<HTMLElement>(".dp-destination-hero");
+      const identity = drawer.querySelector<HTMLElement>(".dp-entity-identity");
+      const details = drawer.querySelector<HTMLElement>(".dp-happy-hour-section, .dp-partner-destination-section");
+      const nearby = drawer.querySelector<HTMLElement>(".dp-discovery-context-section, .dp-partner-nearby-list");
+      if (!content || !scroll || !hero || !identity || !details || !nearby) return null;
+
+      return {
+        contentDisplay: getComputedStyle(content).display,
+        scrollOverflowY: getComputedStyle(scroll).overflowY,
+        scrollable: scroll.scrollHeight > scroll.clientHeight,
+        heroTop: hero.getBoundingClientRect().top,
+        identityTop: identity.getBoundingClientRect().top,
+        detailsTop: details.getBoundingClientRect().top,
+        nearbyTop: nearby.getBoundingClientRect().top,
+      };
+    });
+
+    expect(geometry).not.toBeNull();
+    expect(geometry?.contentDisplay).toBe("block");
+    expect(geometry?.scrollOverflowY).toBe("auto");
+    expect(geometry?.scrollable).toBe(true);
+    expect(geometry?.heroTop || 0).toBeLessThan(geometry?.identityTop || 0);
+    expect(geometry?.identityTop || 0).toBeLessThan(geometry?.detailsTop || 0);
+    expect(geometry?.detailsTop || 0).toBeLessThan(geometry?.nearbyTop || 0);
+  });
 });
