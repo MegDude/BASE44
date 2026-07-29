@@ -19321,7 +19321,7 @@ export default function MapPage() {
                         <BuildingLocalServicesRail place={selected} places={places} onSelect={selectPlace} />
                       </motion.div>
                     )}
-                    {urlState.mode === "resident" && isHappyHourEntity(selected) && (
+                    {urlState.mode === "resident" && (isHappyHourEntity(selected) || isBangersVenue(selected)) && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.36, duration: 0.18 }}>
                         <HappyHourDetails place={selected} savedIds={savedIds} onSave={() => toggleSaved(selected)} onUse={() => openResidentQrModal(selected, "use_perk", "happy_hour_details")} />
                       </motion.div>
@@ -19359,7 +19359,7 @@ export default function MapPage() {
                         />
                       </motion.div>
                     )}
-                    {urlState.mode === "resident" && (hasActivePerkData(selected) || isProperty) && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
+                    {urlState.mode === "resident" && (hasActivePerkData(selected) || isProperty) && !isCampaign && !isRental && !legendsResidentialContent && !isHappyHourEntity(selected) && !isBangersVenue(selected) && !isParking && !isInKindDining && !isBatheEntity(selected) && !isDaaStop && (
                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.18 }}>
                         <ResidentPerkDetails
                           place={selected}
