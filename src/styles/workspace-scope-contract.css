@@ -155,6 +155,18 @@
   color: #9a7937;
 }
 
+.dp-workspace-scope__admin-link {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9a7937;
+  font: 700 12px/1.2 Inter, sans-serif;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .dp-workspace-scope > div strong {
   display: block;
   font: 650 14px/1.35 Inter, sans-serif;
