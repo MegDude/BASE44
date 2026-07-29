@@ -121,6 +121,7 @@
     "test:legends-listing-identity": "node scripts/test-legends-listing-identity-contract.mjs",
     "test:consolidated-recovery": "node scripts/test-consolidated-recovery.mjs",
     "test:member-calendar-map-profile": "node scripts/test-member-calendar-map-profile.mjs",
+    "test:admin-workspace-scope": "node scripts/test-admin-workspace-scope.mjs",
     "test:map-marker-stability": "node scripts/test-map-marker-stability-contract.mjs",
     "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs"
   },
