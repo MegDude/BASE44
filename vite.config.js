@@ -1,7 +1,10 @@
 import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
-import { pathToFileURL } from 'node:url'
+import path from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_BASE44_APP_ID = "cbef744a8545c389ef439ea6";
 const DEFAULT_BASE44_APP_BASE_URL = "https://downtown-perks-live.base44.app";
@@ -14,8 +17,6 @@ function normalizeGoogleMapsEnv(mode) {
   const googleMapsApiKey =
     process.env.VITE_GOOGLE_MAPS_API_KEY ||
     env.VITE_GOOGLE_MAPS_API_KEY ||
-    process.env.GOOGLE_MAPS_API_KEY ||
-    env.GOOGLE_MAPS_API_KEY ||
     "";
   const googleMapsMapId =
     process.env.VITE_GOOGLE_MAP_ID ||
@@ -34,7 +35,7 @@ function assertProductionGoogleMapsEnv(mode, googleMapsApiKey) {
   if (mode !== "production") return;
   if (!/^AIza[0-9A-Za-z_-]{30,}$/.test(String(googleMapsApiKey || "").trim())) {
     throw new Error(
-      "Production map build blocked: configure a valid VITE_GOOGLE_MAPS_API_KEY or GOOGLE_MAPS_API_KEY.",
+      "Production map build blocked: configure a valid VITE_GOOGLE_MAPS_API_KEY.",
     );
   }
 }
@@ -254,6 +255,11 @@ export default defineConfig(({ mode }) => {
   return {
   logLevel: 'error', // Suppress warnings, only show errors
   publicDir: process.env.DP_SKIP_PUBLIC_COPY === "true" ? false : undefined,
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   define: {
     "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
     "import.meta.env.VITE_GOOGLE_MAP_ID": JSON.stringify(googleMapsMapId),

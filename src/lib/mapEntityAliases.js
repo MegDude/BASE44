@@ -365,6 +365,7 @@ export const mapEntityAliases = {
   "fine-eyewear-dana": "campaign-see-austin-differently-fine-eyewear",
   "dana-fine-eyewear": "campaign-see-austin-differently-fine-eyewear",
   "fine-eyewear": "partner-fine-eyewear",
+  "partner-four-seasons": "four-seasons-austin",
   "fine-eyewear-style-stop": "perk-fine-eyewear-style-stop",
   "inspired-closets": "inspired-closets-austin",
   "inspired-closets-residential-services-activation": "inspired-closets-austin-residential-services-activation",
