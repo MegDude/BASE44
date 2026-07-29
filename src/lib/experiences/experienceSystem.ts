@@ -131,6 +131,7 @@ export interface ExperienceTemplate {
 
 export interface ExperienceDraft {
   organizationId: string;
+  entityId?: string;
   templateId: string;
   title: string;
   type: ExperienceType;
@@ -204,5 +205,6 @@ export function buildExperiencePublishRequest(draft: ExperienceDraft) {
     interactions: draft.interactions,
     timing: draft.timing,
     organizationId: draft.organizationId,
+    ...(draft.entityId ? { entityId: draft.entityId } : {}),
   };
 }

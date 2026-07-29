@@ -5,6 +5,10 @@ import { createBuildingExperience } from "../src/lib/buildingExperienceEngine.js
 
 const buildingModuleSource = fs.readFileSync("src/components/map/BuildingExperienceModule.jsx", "utf8");
 const buildingStyles = fs.readFileSync("src/styles/building-experience-engine.css", "utf8");
+const nativeBuildingStyles = fs.readFileSync("src/styles/building-experience-ios-native-final.css", "utf8");
+const mainSource = fs.readFileSync("src/main.jsx", "utf8");
+const workspaceExperienceSource = fs.readFileSync("src/components/partner/workspace/WorkspaceExperienceSystem.jsx", "utf8");
+const partnerWorkspaceSource = fs.readFileSync("src/pages/PartnerWorkspace.jsx", "utf8");
 
 const building = {
   id: "test-building",
@@ -41,14 +45,31 @@ assert.ok(experience.collections.some((collection) => collection.id === "everyda
 assert.ok(experience.nearby.some((place) => place.id === "coffee"));
 assert.equal(experience.analytics.relationshipIds.buildingId, building.id);
 assert.ok(experience.analytics.events.includes("route_started"));
-for (const section of ["overview", "perks", "campaigns", "amenities", "events", "nearby", "guide"]) {
-  assert.match(buildingModuleSource, new RegExp(`id="${section}" controlId=`), `${section} must have an instance-scoped section target`);
+for (const section of ["overview", "perks", "collections", "campaigns", "amenities", "events", "routes", "nearby", "guide"]) {
+  assert.match(buildingModuleSource, new RegExp(`id="${section}"\\s+controlId=`), `${section} must have an instance-scoped section target`);
 }
+assert.match(buildingModuleSource, /experience\.collections\?\.length[\s\S]*?items\.push\("collections"\)/, "collection content must add a visible navigation destination");
+assert.match(buildingModuleSource, /experience\.routes\?\.length[\s\S]*?items\.push\("routes"\)/, "walking routes must add a visible navigation destination");
 assert.match(buildingModuleSource, /data-building-nav=\{id\}[\s\S]*?aria-controls=\{`\$\{sectionPrefix\}-\$\{id\}`\}/, "each building navigation control must reference its section");
 assert.match(buildingModuleSource, /scrollRoot\.scrollTo\(\{/, "building navigation must scroll the active panel rather than the page");
 assert.match(buildingModuleSource, /event\.key === "Home"[\s\S]*?event\.key === "End"[\s\S]*?event\.key === "ArrowRight"[\s\S]*?event\.key === "ArrowLeft"/, "building navigation must support rail keyboard controls");
+assert.match(buildingModuleSource, /disabled=\{!onSelect\}/, "place rows must not appear actionable when selection is unavailable");
+assert.match(buildingModuleSource, /disabled=\{!onExplore\}/, "discovery actions must not appear actionable when exploration is unavailable");
+assert.match(buildingModuleSource, /disabled=\{!onOpenRoute\}/, "route rows must not appear actionable when route opening is unavailable");
+assert.match(buildingModuleSource, /withQuery\(campaignRoute, \{ suggestion: campaign\.title \}\)/, "campaign recommendations must open prefilled campaign setup");
+assert.match(buildingModuleSource, /Create the first offer/, "partner offer empty state must lead to offer creation");
+assert.match(buildingModuleSource, /Create the first event/, "partner event empty state must lead to event creation");
+assert.match(workspaceExperienceSource, /params\.get\("suggestion"\)[\s\S]*?params\.get\("entityId"\)/, "campaign setup must consume the building recommendation and entity scope");
+assert.match(workspaceExperienceSource, /intent !== "new"[\s\S]*?start\(requestedTemplate, \{ entityId, suggestedTitle: suggestion \}\)/, "campaign setup must open the requested prefilled builder");
+assert.match(partnerWorkspaceSource, /eventIntent === "new"[\s\S]*?setShowForm\(true\)/, "event creation links must open the event form");
 assert.match(buildingStyles, /--dp-building-font:\s*"Inter"/, "building panels must use the canonical product typeface");
 assert.doesNotMatch(buildingStyles, /font:[^;]*Inter,\s*sans-serif/, "building typography must resolve through the shared font token");
+assert.ok(mainSource.indexOf("building-experience-ios-native-final.css") > mainSource.indexOf("map-bottom-drawer-contract-final.css"), "native building surface must load after shared drawer geometry");
+assert.match(nativeBuildingStyles, /position:\s*sticky\s*!important/, "building section navigation must remain available while the drawer scrolls");
+assert.match(nativeBuildingStyles, /min-height:\s*48px\s*!important/, "building tabs must use an iOS-size control height");
+assert.match(nativeBuildingStyles, /min-height:\s*58px\s*!important/, "building rows must use a comfortable mobile touch target");
+assert.match(nativeBuildingStyles, /background:\s*#ffffff\s*!important/, "building content must stay on a bright-white surface");
+assert.doesNotMatch(nativeBuildingStyles, /linear-gradient|radial-gradient/i, "building drawer must not use gradients");
 
 const residentialRows = parse(fs.readFileSync("src/data/imports/downtown_perks_residential_mixed_use_copy_deck.csv", "utf8"), {
   columns: true,

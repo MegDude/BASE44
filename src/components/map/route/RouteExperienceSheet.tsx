@@ -6,10 +6,9 @@ import { RouteRelatedList } from "./RouteRelatedList";
 import { RouteStopList } from "./RouteStopList";
 import type { RouteAccessibility } from "@/types/routeExperience";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
-import { nextDrawerState } from "@/lib/map/nativeDrawerState";
 import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
-type SheetState = "medium" | "expanded" | "full";
+type SheetState = "peek" | "medium" | "expanded" | "full";
 
 type RouteStop = {
   id: string;
@@ -78,7 +77,11 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
   const directionsHref = useMemo(() => walkingDirectionsUrl(route.stops), [route.stops]);
   const publicLabel = route.routeType || "route";
   const primaryLabel = isStarted ? (selectedStopId ? "View stop" : "Continue walk") : `Start ${publicLabel}`;
-  const cycleSheet = () => setSheetState((current) => nextDrawerState(current, "detail") as SheetState);
+  const cycleSheet = () => setSheetState((current) => {
+    const states: SheetState[] = ["peek", "medium", "expanded", "full"];
+    return states[(states.indexOf(current) + 1) % states.length];
+  });
+  const toggleMapVisibility = () => setSheetState((current) => current === "peek" ? "medium" : "peek");
 
   if (!route.stops.length) return null;
   return (
@@ -110,7 +113,7 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
       actions={(
         <>
           <button type="button" className="dp-route-primary-action" onClick={() => onPrimaryAction(activeStop)}>{primaryLabel}</button>
-          <button type="button" className="dp-route-sheet-size" onClick={() => setSheetState(sheetState === "full" ? "medium" : "full")} aria-label={sheetState === "full" ? "Show less route information" : "Show all route information"}>
+          <button type="button" className="dp-route-sheet-size" onClick={toggleMapVisibility} aria-label={sheetState === "peek" ? "Show route stops" : "Minimise route to show map"} aria-expanded={sheetState !== "peek"}>
             <ChevronDown aria-hidden="true" />
           </button>
         </>

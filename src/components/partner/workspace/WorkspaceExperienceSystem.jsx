@@ -1,7 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, MoveDown, MoveUp, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MapSurveyPrompt } from "@/components/map/MapSurveyModule";
 import { useWorkspaceSheet } from "@/components/partner/workspace/WorkspaceSheetSystem";
 import {
@@ -34,10 +34,14 @@ function BuilderChoiceList({ legend, options, selected, onToggle, single = false
   })}</fieldset>;
 }
 
-function ExperienceBuilder({ template, organizationId }) {
+function ExperienceBuilder({ template, organizationId, entityId = "", suggestedTitle = "" }) {
   const { closeSheet } = useWorkspaceSheet();
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState(() => createExperienceDraft(template, organizationId));
+  const [draft, setDraft] = useState(() => ({
+    ...createExperienceDraft(template, organizationId),
+    ...(entityId ? { entityId } : {}),
+    ...(suggestedTitle ? { title: suggestedTitle } : {}),
+  }));
   const publishIdempotencyKey = useRef(crypto.randomUUID());
   const [publishState, setPublishState] = useState("idle");
   const [publishMessage, setPublishMessage] = useState("");
@@ -84,14 +88,40 @@ function ExperienceBuilder({ template, organizationId }) {
 
 export function WorkspaceExperienceSystem({ organizationId, view = "campaigns" }) {
   const { openSheet } = useWorkspaceSheet();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const intent = params.get("intent") || "";
+  const suggestion = params.get("suggestion") || params.get("prompt") || "";
+  const entityId = params.get("entityId") || "";
   const firstTemplateButtonRef = useRef(null);
+  const autoOpenedRef = useRef(false);
   const surveyOnly = view === "surveys";
   const templates = useMemo(() => surveyOnly ? EXPERIENCE_TEMPLATES.filter((item) => item.type === "survey") : EXPERIENCE_TEMPLATES, [surveyOnly]);
   const groups = useMemo(() => [...new Set(templates.map((item) => item.group))], [templates]);
   const [activeGroup, setActiveGroup] = useState(groups[0]);
   const visible = templates.filter((item) => item.group === activeGroup);
-  const start = (template) => openSheet({ eyebrow: surveyOnly ? "Survey" : "Experience", title: template.label, state: "full", content: <ExperienceBuilder template={template} organizationId={organizationId} /> });
+  const start = (template, options = {}) => openSheet({
+    eyebrow: surveyOnly ? "Survey" : "Experience",
+    title: options.suggestedTitle || template.label,
+    state: "full",
+    content: <ExperienceBuilder
+      template={template}
+      organizationId={organizationId}
+      entityId={options.entityId || ""}
+      suggestedTitle={options.suggestedTitle || ""}
+    />,
+  });
   const defaultTemplate = visible[0] || templates[0];
+  const requestedTemplate = templates.find((template) => {
+    const search = suggestion.toLowerCase();
+    return search && `${template.label} ${template.description} ${template.group}`.toLowerCase().includes(search);
+  }) || defaultTemplate;
+
+  useEffect(() => {
+    if (autoOpenedRef.current || intent !== "new" || !requestedTemplate) return;
+    autoOpenedRef.current = true;
+    start(requestedTemplate, { entityId, suggestedTitle: suggestion });
+  }, [entityId, intent, requestedTemplate, suggestion]);
   const startDefaultTemplate = () => firstTemplateButtonRef.current?.click();
 
   return <motion.section className="dp-workspace-experiences" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} aria-labelledby="workspace-experiences-title">
