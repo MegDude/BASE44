@@ -15,9 +15,10 @@ type WorkspaceScopeSwitcherProps = {
   scope: PartnerWorkspaceScope;
   accessMode: "admin" | "partner";
   organizationName?: string;
+  onAdminScopeResolved?: (scope: PartnerWorkspaceScope) => void;
 };
 
-export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName }: WorkspaceScopeSwitcherProps) {
+export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, onAdminScopeResolved }: WorkspaceScopeSwitcherProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const portfolioLabelId = useId();
@@ -34,7 +35,7 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName }: 
           <strong>Authorized platform scope</strong>
           <span>Organizations, portfolios, and listings from your verified access.</span>
         </div>
-        <AdminScopeSwitcher />
+        <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
         <div className="dp-workspace-scope__admin-actions">
           <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
             People & access
