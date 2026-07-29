@@ -811,7 +811,7 @@ function PartnerWorkspaceContent() {
           {tab === "events" && <EventsManager key="events" user={user} scope={workspaceScope} />}
           {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
-          {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}`} organizationId={activeOrganizationId} />}
+          {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
           {tab === "governance" && <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
