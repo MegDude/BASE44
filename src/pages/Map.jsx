@@ -17873,11 +17873,7 @@ export default function MapPage() {
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
     activeFilter === "Listings";
-  const showBottomNavigation = !urlState.embed && (
-    ["map", "pass"].includes(urlState.tab) ||
-    (urlState.mode === "resident" && ["perks", "events", "saved"].includes(urlState.tab)) ||
-    Boolean(urlState.panelTab)
-  );
+  const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab));
   useBottomNavigationGeometry(showBottomNavigation);
   const mapPanelNavigationTitle = urlState.mode === "partner"
     ? ({ activity: "Activity", reports: "Reports", campaigns: "Campaigns", info: "Partner guide", civic: "Civic" }[activePartnerPanel] || activeFilter || "Partner map")
@@ -18385,7 +18381,7 @@ export default function MapPage() {
                   role="tab"
                   aria-label="Perks"
                   onClick={() => {
-                    if (urlState.tab === "perks" && activeBottomTab === "perks" && !selectedId) {
+                    if (urlState.panelTab === "perks" && activeBottomTab === "perks" && !selectedId) {
                       updateActivePerksDrawerState(activePerksDrawerState === "peek" ? "expanded" : "peek");
                       return;
                     }
@@ -18395,8 +18391,8 @@ export default function MapPage() {
                     updateActivePerksDrawerState("expanded");
                     navigate("/map?mode=resident&tab=perks&filter=Perks");
                   }}
-                  aria-pressed={urlState.tab === "perks" && activeBottomTab === "perks"}
-                  aria-selected={urlState.tab === "perks" && activeBottomTab === "perks"}
+                  aria-pressed={urlState.panelTab === "perks" && activeBottomTab === "perks"}
+                  aria-selected={urlState.panelTab === "perks" && activeBottomTab === "perks"}
                 >
                   <Gift className="h-4 w-4" />
                   <span className="dp-native-tab-label">Perks</span>
@@ -18411,8 +18407,8 @@ export default function MapPage() {
                     setActiveBottomTab("events");
                     navigate("/map?mode=resident&tab=events&filter=Events");
                   }}
-                  aria-pressed={urlState.tab === "events" && activeBottomTab === "events"}
-                  aria-selected={urlState.tab === "events" && activeBottomTab === "events"}
+                  aria-pressed={urlState.panelTab === "events" && activeBottomTab === "events"}
+                  aria-selected={urlState.panelTab === "events" && activeBottomTab === "events"}
                 >
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
@@ -18482,7 +18478,7 @@ export default function MapPage() {
         </div>
       )}
 
-      {urlState.mode === "resident" && ["map", "perks"].includes(urlState.tab) && activeBottomTab === "perks" && !selected && (
+      {urlState.mode === "resident" && urlState.panelTab === "perks" && activeBottomTab === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
