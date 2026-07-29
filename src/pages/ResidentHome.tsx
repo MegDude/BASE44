@@ -32,8 +32,11 @@ import {
   subscribeToResidentCivicInbox,
   type ResidentGovernanceResponse,
 } from "@/lib/governance/governanceClient";
+import { getMemberHub, type MemberHub } from "@/lib/resident/memberHubClient";
 
 const RESIDENT_ACCESS_KEY = "dp_resident_access:current";
+
+const EMPTY_MEMBER_HUB: MemberHub = { saved: [], activePerks: [], upcomingBookings: [] };
 
 const EMPTY_CIVIC: ResidentGovernanceResponse = {
   initiatives: [],
@@ -141,6 +144,8 @@ export default function ResidentHome() {
   const [liveActivityStatus, setLiveActivityStatus] = useState<"loading" | "ready" | "empty" | "unavailable">("loading");
   const [civic, setCivic] = useState<ResidentGovernanceResponse>(EMPTY_CIVIC);
   const [passOpen, setPassOpen] = useState(false);
+  const [memberHub, setMemberHub] = useState<MemberHub>(EMPTY_MEMBER_HUB);
+  const [memberHubStatus, setMemberHubStatus] = useState<"idle" | "loading" | "ready" | "unavailable">("idle");
   useSavedEntitiesRealtime();
 
   async function refreshCivic() {
@@ -202,6 +207,26 @@ export default function ResidentHome() {
       .catch(() => undefined);
     return () => { active = false; };
   }, [isAuthenticated, isLoadingAuth, user]);
+
+  useEffect(() => {
+    if (isLoadingAuth) return undefined;
+    if (!isAuthenticated) {
+      setMemberHub(EMPTY_MEMBER_HUB);
+      setMemberHubStatus("idle");
+      return undefined;
+    }
+    const controller = new AbortController();
+    setMemberHubStatus("loading");
+    getMemberHub(controller.signal)
+      .then((result) => {
+        setMemberHub(result);
+        setMemberHubStatus("ready");
+      })
+      .catch((error) => {
+        if (error?.name !== "AbortError") setMemberHubStatus("unavailable");
+      });
+    return () => controller.abort();
+  }, [isAuthenticated, isLoadingAuth]);
 
   const savedPerks = savedIds.map((id) => ({ id, name: readableSavedName(id) }));
 
@@ -379,6 +404,18 @@ export default function ResidentHome() {
                 <div className="dp-resident-section-title"><div><p>Resident profile</p><h2 id="resident-profile-title">Everything connected to your card.</h2></div></div>
                 <p className="dp-resident-profile-summary">Review your contact details, home, membership, preferences, and personal map in one place.</p>
                 {renderProfileDetails("resident-card-profile")}
+                <section className="dp-resident-member-hub" aria-labelledby="resident-member-hub-title">
+                  <div className="dp-resident-section-title"><div><p>Member activity</p><h2 id="resident-member-hub-title">Saved, active, and upcoming.</h2></div></div>
+                  {memberHubStatus === "loading" ? <p role="status">Loading your member activity…</p> : null}
+                  {memberHubStatus === "unavailable" ? <p role="status">Your member activity is temporarily unavailable. Your account details remain connected.</p> : null}
+                  {memberHubStatus === "ready" ? (
+                    <div className="dp-resident-member-hub__groups">
+                      <Link to="/map?mode=resident&tab=saved&filter=Saved"><Bookmark aria-hidden="true" /><span><strong>Saved events and places</strong><small>{memberHub.saved.length} saved</small></span><ChevronRight aria-hidden="true" /></Link>
+                      <Link to="/map?mode=resident&tab=perks&filter=Perks"><CreditCard aria-hidden="true" /><span><strong>Active perks</strong><small>{memberHub.activePerks.length} active</small></span><ChevronRight aria-hidden="true" /></Link>
+                      <Link to="/map?mode=resident&tab=events&filter=Events"><CalendarDays aria-hidden="true" /><span><strong>Upcoming bookings</strong><small>{memberHub.upcomingBookings.length} upcoming</small></span><ChevronRight aria-hidden="true" /></Link>
+                    </div>
+                  ) : null}
+                </section>
                 <div className="dp-resident-profile-actions"><Link to={`/map?mode=resident&tab=card&filter=Perks&residentId=${encodeURIComponent(resident.id || "")}`}>Open on map</Link><Link to="/residents/welcome">Update details</Link><Link to="/card">Manage access</Link><button type="button" onClick={() => logout(true, "/residents/login")}>Sign out</button></div>
               </section>
             </>
