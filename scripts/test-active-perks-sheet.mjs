@@ -18,6 +18,12 @@ assert.match(mapSource, /openResidentQrModal\(item\.place/, "Redeem must use the
 assert.match(mapSource, /toggleSaved\(item\.place\)/, "Save must use the existing saved-place workflow");
 assert.match(mapSource, /pin:\s*resolveEntityPin\(place\)/, "perk rows must use the canonical map icon resolver");
 
+assert.match(mapSource, /aria-label="Home"[\s\S]*?navigate\("\/resident\/home"\)/, "resident navigation must retain the Home tab");
+assert.match(mapSource, /aria-label="Home"[\s\S]*?aria-label="Map"[\s\S]*?aria-label="Perks"[\s\S]*?aria-label="Events"[\s\S]*?aria-label="Card"/, "resident navigation must preserve Home, Map, Perks, Events, Card order");
+assert.match(mapSource, /\["perks", "events", "saved"\]\.includes\(urlState\.tab\)\s*\? urlState\.tab/, "canonical resident panel routes must hydrate the active tab");
+assert.match(mapSource, /\["map", "perks"\]\.includes\(urlState\.tab\) && activeBottomTab === "perks"/, "the canonical Perks route must render the active perks sheet");
+assert.match(mapSource, /urlState\.tab === "perks" && activeBottomTab === "perks"/, "the Perks tab must expose its selected state on the canonical route");
+
 assert.match(sheetSource, /<NativeDrawerShell/);
 assert.match(shellSource, /role="dialog"/);
 assert.match(shellSource, /aria-modal="false"/);
