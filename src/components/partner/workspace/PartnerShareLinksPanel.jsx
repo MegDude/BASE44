@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, Copy, Download, ExternalLink, Pause, Play, QrCode } from "lucide-react";
-import { demoOrganizations, getOrganizationEntities } from "@/config/workspaceArchitecture";
+import { demoOrganizations, getScopedOrganizationEntities } from "@/config/workspaceArchitecture";
 import { createPartnerShareLink, listPartnerShareLinks, updatePartnerShareLink } from "@/lib/partner/partnerShareLinksClient";
 import "@/styles/partner-share-links-final.css";
 
@@ -25,9 +25,12 @@ function labelFor(value) {
   return value ? value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase()) : "—";
 }
 
-export function PartnerShareLinksPanel({ organizationId }) {
+export function PartnerShareLinksPanel({ organizationId, scope = {} }) {
   const organization = demoOrganizations.find((item) => item.id === organizationId);
-  const entities = useMemo(() => getOrganizationEntities(organizationId), [organizationId]);
+  const entities = useMemo(
+    () => getScopedOrganizationEntities(organizationId, scope.portfolioId, scope.listingId),
+    [organizationId, scope.portfolioId, scope.listingId],
+  );
   const recommendation = useMemo(() => recommendationFor(organization, entities), [organization, entities]);
   const defaultPath = entities[0]?.map_filter
     ? `/map?mode=resident&tab=map&filter=${encodeURIComponent(entities[0].map_filter)}`
