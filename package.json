@@ -94,6 +94,7 @@
     "test:workspace-deep-polish": "node scripts/test-partner-workspace-deep-polish.mjs",
     "test:workspace-navigation": "node scripts/test-workspace-navigation-contract.mjs",
     "test:workspace-scope": "tsx scripts/test-partner-workspace-scope.ts",
+    "test:workspace-profile-isolation": "node scripts/test-workspace-profile-isolation.mjs",
     "test:partner-analytics-intelligence": "tsx scripts/test-partner-analytics-intelligence.ts",
     "test:panel-state-contract": "node scripts/test-polished-panel-state-contract.mjs",
     "test:viewport-containment": "node scripts/test-viewport-containment-contract.mjs",
