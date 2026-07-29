@@ -1,0 +1,63 @@
+import {
+  requireAuthenticatedUser,
+  requireTransactionDatabase,
+  sendTransactionError,
+  TransactionApiError,
+} from "../../src/lib/api/transactionAuth.js";
+
+const ADMIN_ROLES = new Set(["admin", "platform_admin", "super_admin"]);
+const clean = (value, max = 180) => String(value || "").trim().slice(0, max);
+
+function platformRole(user) {
+  const app = user?.app_metadata || {};
+  if (app.is_super_admin === true) return "super_admin";
+  return clean(app.platform_role || app.role || user?.user_metadata?.platform_role || user?.user_metadata?.role, 80).toLowerCase();
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
+  try {
+    const database = requireTransactionDatabase();
+    const user = await requireAuthenticatedUser(req);
+    const role = platformRole(user);
+    if (!ADMIN_ROLES.has(role)) throw new TransactionApiError(403, "ADMIN_ACCESS_REQUIRED", "Administrator access is required.");
+
+    let organizationQuery = database.from("partner_organizations").select("id,name,external_id,status,legacy_partner_id").order("name");
+    if (role !== "super_admin") {
+      const { data: memberships, error: membershipError } = await database.from("partner_users").select("partner_id,role,active").eq("auth_user_id", user.id).eq("active", true);
+      if (membershipError) throw membershipError;
+      const partnerIds = [...new Set((memberships || []).map((item) => item.partner_id).filter(Boolean))];
+      if (!partnerIds.length) return res.status(200).setHeader("Cache-Control", "private, no-store").json({ role, organizations: [], portfolios: [], listings: [], activeScope: {} });
+      organizationQuery = organizationQuery.in("legacy_partner_id", partnerIds);
+    }
+
+    const { data: organizations, error: organizationError } = await organizationQuery;
+    if (organizationError) throw organizationError;
+    const organizationIds = (organizations || []).map((item) => item.id);
+    const [{ data: portfolios, error: portfolioError }, { data: listings, error: listingError }] = organizationIds.length
+      ? await Promise.all([
+          database.from("partner_portfolios").select("id,organization_id,name,status").in("organization_id", organizationIds).order("name"),
+          database.from("partner_listings").select("id,organization_id,portfolio_id,name,address,status,entity_id").in("organization_id", organizationIds).order("name"),
+        ])
+      : [{ data: [], error: null }, { data: [], error: null }];
+    if (portfolioError) throw portfolioError;
+    if (listingError) throw listingError;
+
+    const requestedOrganizationId = clean(req.query?.organizationId);
+    const requestedPortfolioId = clean(req.query?.portfolioId);
+    const requestedListingId = clean(req.query?.listingId);
+    const organization = (organizations || []).find((item) => item.id === requestedOrganizationId);
+    const portfolio = organization && (portfolios || []).find((item) => item.id === requestedPortfolioId && item.organization_id === organization.id);
+    const listing = organization && (listings || []).find((item) => item.id === requestedListingId && item.organization_id === organization.id && (!portfolio || !item.portfolio_id || item.portfolio_id === portfolio.id));
+
+    return res.status(200).setHeader("Cache-Control", "private, no-store").json({
+      role,
+      organizations: organizations || [],
+      portfolios: portfolios || [],
+      listings: listings || [],
+      activeScope: { organizationId: organization?.id, portfolioId: portfolio?.id, listingId: listing?.id },
+    });
+  } catch (error) {
+    return sendTransactionError(res, error);
+  }
+}
