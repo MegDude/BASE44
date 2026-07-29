@@ -155,6 +155,68 @@
   color: #9a7937;
 }
 
+.dp-workspace-scope__admin-actions {
+  display: grid;
+  align-items: end;
+  gap: 8px;
+}
+
+.dp-admin-scope__trigger {
+  display: grid;
+  width: 100%;
+  min-width: 220px;
+  min-height: 52px;
+  align-content: center;
+  gap: 3px;
+  padding: 7px 38px 7px 12px;
+  border: 1px solid rgba(11, 31, 51, .15);
+  border-radius: 12px;
+  background: #fff;
+  color: #0b1f33;
+  text-align: left;
+}
+
+.dp-admin-scope__trigger span { color: rgba(11, 31, 51, .58); font: 650 10px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .06em; }
+.dp-admin-scope__trigger strong { font: 650 14px/1.25 Inter, sans-serif; }
+.dp-admin-scope__trigger:focus-visible { outline: 2px solid #c8a96a; outline-offset: 2px; }
+
+.dp-admin-scope__sheet {
+  position: fixed;
+  z-index: 121;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: min(520px, calc(100vw - 32px));
+  max-height: min(680px, calc(100dvh - 40px));
+  overflow: hidden;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.dp-admin-scope__backdrop {
+  position: fixed;
+  z-index: 120;
+  inset: 0;
+  background: rgba(4, 15, 27, .34);
+  backdrop-filter: blur(4px);
+}
+
+.dp-admin-scope__sheet > header { display: flex; align-items: center; justify-content: space-between; }
+.dp-admin-scope__sheet > header button { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: #f4f6f8; color: #0b1f33; }
+.dp-admin-scope__sheet > header svg { width: 18px; }
+.dp-admin-scope__sheet header p { margin: 0 0 3px; color: #9a7937; font: 700 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.dp-admin-scope__search { display: flex; min-height: 48px; align-items: center; gap: 10px; margin-top: 18px; padding: 0 14px; border: 1px solid rgba(11, 31, 51, .15); border-radius: 12px; background: #f7f8f9; }
+.dp-admin-scope__search svg { width: 18px; color: rgba(11, 31, 51, .55); }
+.dp-admin-scope__search input { width: 100%; border: 0; outline: 0; background: transparent; color: #0b1f33; font: 500 14px/1.3 Inter, sans-serif; }
+.dp-admin-scope__results { display: grid; gap: 2px; max-height: 430px; overflow-y: auto; margin-top: 12px; }
+.dp-admin-scope__results > button { min-height: 62px; padding: 10px 12px; border: 0; border-radius: 12px; background: #fff; color: #0b1f33; text-align: left; }
+.dp-admin-scope__results > button:hover { background: #f5f6f7; }
+.dp-admin-scope__results > button span { display: grid; gap: 2px; }
+.dp-admin-scope__results em { color: #9a7937; font: 700 10px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .06em; }
+.dp-admin-scope__results strong { font: 650 14px/1.3 Inter, sans-serif; }
+.dp-admin-scope__results small { color: rgba(11, 31, 51, .6); font: 500 12px/1.35 Inter, sans-serif; }
+
 .dp-workspace-scope__admin-link {
   min-height: 44px;
   padding: 0;
@@ -226,5 +288,19 @@
     margin: 8px auto 0;
     border-radius: 999px;
     background: rgba(11, 31, 51, .18);
+  }
+
+  .dp-admin-scope,
+  .dp-admin-scope__trigger { width: 100%; }
+
+  .dp-admin-scope__sheet {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 52px);
+    transform: translate(-50%, 0);
+    border-radius: 22px 22px 0 0;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
   }
 }
