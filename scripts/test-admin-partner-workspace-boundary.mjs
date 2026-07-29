@@ -18,6 +18,8 @@ assert.match(switcher, /<AdminScopeSwitcher \/>/, "admin mode does not use the a
 assert.match(adminScopeClient, /\/api\/admin\/scope/, "admin scope is not sourced from the protected backend contract");
 assert.match(adminScopeClient, /Authorization: `Bearer \$\{token\}`/, "admin scope request is missing verified session authorization");
 assert.match(adminScope, /DialogPrimitive\.Content/, "organization selection does not use the accessible shared dialog primitive");
+assert.match(adminScope, /writePartnerWorkspaceScope\(next\)/, "admin scope does not update the canonical workspace scope");
+assert.match(workspace, /hasPrivilegedWorkspaceAccess[\s\S]*\.\.\.requestedScope[\s\S]*type:/, "authorized production scope is still resolved against demo inventory");
 assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not link to the in-shell people directory");
 assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
 assert.match(app, /<Navigate to="\/partner-workspace\/overview" replace \/>/, "legacy admin routes do not converge on the canonical workspace");
