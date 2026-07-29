@@ -181,3 +181,33 @@ html body #root .dp-map-page .dp-route-experience-sheet.is-peek .dp-route-sheet-
     height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
   }
 }
+
+
+/* Tab drawers and selection cards use the same origin and safe viewport on
+   wide screens too; no map context opens as a side rail. */
+html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card) {
+  position: fixed !important;
+  inset: auto 0 var(--dp-map-bottom-sheet-gap) 0 !important;
+  width: 100dvw !important;
+  max-width: 100dvw !important;
+  height: var(--dp-map-sheet-medium-height) !important;
+  max-height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, 0.10) !important;
+  border-bottom: 0 !important;
+  border-radius: 16px 16px 0 0 !important;
+  background: #fff !important;
+}
+
+html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data-drawer-state="collapsed"] {
+  height: var(--dp-map-sheet-peek-height) !important;
+}
+
+html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data-drawer-state="expanded"] {
+  height: var(--dp-map-sheet-expanded-height) !important;
+}
+
+html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data-drawer-state="full"] {
+  height: calc(100dvh - var(--dp-map-bottom-sheet-gap)) !important;
+}
