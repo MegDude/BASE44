@@ -16,7 +16,7 @@ type ScopeResult = {
   detail: string;
 };
 
-export function AdminScopeSwitcher() {
+export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (scope: AdminScope) => void }) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -34,10 +34,14 @@ export function AdminScopeSwitcher() {
     const controller = new AbortController();
     setStatus("loading");
     getAuthorizedAdminScope(requested, controller.signal)
-      .then((next) => { setData(next); setStatus("ready"); })
+      .then((next) => {
+        setData(next);
+        setStatus("ready");
+        onScopeResolved?.(next.activeScope);
+      })
       .catch(() => setStatus("error"));
     return () => controller.abort();
-  }, [requested]);
+  }, [onScopeResolved, requested]);
 
   const organization = data.organizations.find((item) => item.id === data.activeScope.organizationId);
   const portfolio = data.portfolios.find((item) => item.id === data.activeScope.portfolioId);
