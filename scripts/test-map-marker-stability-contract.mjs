@@ -14,6 +14,11 @@ assert.match(markerRecordSource, /return null;[\s\S]*?invalid-coordinate/, "inva
 assert.match(markerRecordSource, /property-the-shore[\s\S]*?return "the-shore";/, "The Shore aliases must resolve to canonical the-shore");
 assert.match(markerRecordSource, /entityType === "parking"[\s\S]*?resolveParkingParentId[\s\S]*?markerId = childLocationId[\s\S]*?`\$\{entityId\}:\$\{childLocationId\}`/, "parking must be modeled as a child marker of its canonical parent entity");
 assert.match(markerRecordSource, /entityType === "listing"[\s\S]*?listing\.mlsNumber/, "listing markers must use a stable child location/listing identifier");
+assert.match(markerRecordSource, /const canonicalMarkerRecordCache = new Map<string, CanonicalMarkerRecord>\(\)/, "canonical marker records must be cached by immutable source fields");
+assert.match(markerRecordSource, /const cacheKey = \[[\s\S]*?coordinate\.latitude,[\s\S]*?coordinate\.longitude,[\s\S]*?sourceVersion,[\s\S]*?\]\.join\("\\|"\)/, "record cache identity must include canonical ID, immutable coordinates, icon and source version");
+assert.match(markerRecordSource, /const cached = canonicalMarkerRecordCache\.get\(cacheKey\);[\s\S]*?if \(cached\) return cached;/, "unchanged sources must preserve the existing frozen marker object");
+assert.match(markerRecordSource, /canonicalMarkerRecordCache\.set\(cacheKey, record\)/, "new marker records must only be stored after frozen creation");
+assert.doesNotMatch(markerRecordSource, /visibility\.resident !== false && \(!options\.audienceMode/, "audience mode must not reinterpret a shared entity's resident visibility");
 
 assert.match(mapSource, /function getPlaceCoords\(place\) \{[\s\S]*?getCanonicalMarkerRecord\(place\)[\s\S]*?markerRecord\.latitude[\s\S]*?markerRecord\.longitude/, "map coordinates must flow from canonical marker records");
 assert.match(mapSource, /const key = `pin:\$\{markerRecord\.markerId\}`;/, "Google markers must use permanent canonical marker IDs as registry keys");
