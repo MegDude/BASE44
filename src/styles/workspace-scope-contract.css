@@ -1,7 +1,7 @@
 .dp-partner-workspace-page .dp-workspace-scope {
   display: grid;
-  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.6fr);
-  gap: 24px;
+  grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.7fr);
+  gap: 20px;
   align-items: end;
   width: 100%;
   margin: 0 0 28px;
@@ -15,7 +15,9 @@
   font-family: Inter, system-ui, sans-serif;
 }
 
-.dp-workspace-scope__summary {
+.dp-workspace-scope__summary,
+.dp-workspace-scope__controls,
+.dp-workspace-scope__field {
   min-width: 0;
 }
 
@@ -33,7 +35,7 @@
   display: block;
   overflow: hidden;
   color: #0b1f33;
-  font: 650 16px/1.35 Inter, system-ui, sans-serif;
+  font: 700 16px/1.35 Inter, system-ui, sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -47,17 +49,23 @@
 
 .dp-workspace-scope__controls {
   display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
-  gap: 18px;
-  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
 }
 
-.dp-workspace-scope label {
-  min-width: 0;
+.dp-workspace-scope__controls[data-control-count="single"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dp-workspace-scope__field {
+  display: block;
 }
 
 .dp-partner-workspace-page .dp-workspace-scope select {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   min-height: 46px;
   padding: 0 36px 0 12px;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
@@ -66,6 +74,7 @@
   color: #0b1f33;
   font: 600 14px/1.2 Inter, system-ui, sans-serif;
   box-shadow: none !important;
+  text-overflow: ellipsis;
 }
 
 .dp-partner-workspace-page .dp-workspace-scope select:hover {
@@ -81,31 +90,38 @@
 @media (max-width: 980px) {
   .dp-partner-workspace-page .dp-workspace-scope {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
 
   .dp-workspace-scope__controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .dp-workspace-scope__field--organization:last-child {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 760px) {
   .dp-partner-workspace-page .dp-workspace-scope {
-    gap: 14px;
+    gap: 12px;
     margin-bottom: 22px;
     padding-bottom: 16px;
   }
 
   .dp-workspace-scope__summary strong {
     white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  .dp-workspace-scope__controls {
+  .dp-workspace-scope__controls,
+  .dp-workspace-scope__controls[data-control-count="single"] {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .dp-partner-workspace-page .dp-workspace-scope select {
     min-height: 48px;
+    font-size: 16px;
   }
 }
