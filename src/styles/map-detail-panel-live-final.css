@@ -483,7 +483,10 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     height: min(82dvh, calc(100dvh - 72px)) !important;
     min-height: 0 !important;
     max-height: min(82dvh, calc(100dvh - 72px)) !important;
-    transform: none !important;
+    left: 50% !important;
+    right: auto !important;
+    margin-inline: 0 !important;
+    transform: translateX(-50%) !important;
     translate: none !important;
   }
 }
@@ -498,10 +501,10 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   .dp-resident-qr-modal,
   .dp-context-list-drawer
 ) {
-  left: 0 !important;
-  right: 0 !important;
-  margin-inline: auto !important;
-  transform: none !important;
+  left: 50% !important;
+  right: auto !important;
+  margin-inline: 0 !important;
+  transform: translateX(-50%) !important;
   translate: none !important;
 }
 
