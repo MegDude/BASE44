@@ -18462,7 +18462,7 @@ export default function MapPage() {
         </div>
       )}
 
-      {urlState.mode === "resident" && urlState.tab === "perks" && activeBottomTab === "perks" && !selected && (
+      {urlState.mode === "resident" && ["map", "perks"].includes(urlState.tab) && activeBottomTab === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
