@@ -151,7 +151,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   .dp-map-directory-list,
   .dp-resident-qr-content-viewport,
   .dp-resident-tab-panel-list
-) :is(.overflow-y-auto, [class*="overflow-y-auto"], [style*="overflow-y"]) {
+) * {
   max-height: none !important;
   overflow-y: visible !important;
   overscroll-behavior-y: auto !important;
