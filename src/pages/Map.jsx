@@ -14312,6 +14312,7 @@ export default function MapPage() {
   const [selectedId, setSelectedId] = useState(urlState.entityId);
   const [selectedPlaceOverride, setSelectedPlaceOverride] = useState(null);
   const selectionTransitionRef = useRef(null);
+  const selectionDatasetRef = useRef([]);
   const drawerTriggerRef = useRef(null);
   const inKindParentRef = useRef(null);
   const savedIdList = useSavedStore((state) => state.savedIds);
@@ -14654,6 +14655,7 @@ export default function MapPage() {
   useEffect(() => {
     if (!urlState.entityId) {
       selectionTransitionRef.current = null;
+      selectionDatasetRef.current = [];
       setSelectedId("");
       setSelectedPlaceOverride(null);
       setSelectedDrawerClosed(true);
@@ -15218,7 +15220,8 @@ export default function MapPage() {
         .slice(0, 5)
       : [];
 
-    return dedupeMapPinPlaces([...legendsTopListingPins, ...selectedMarkerPlaces]);
+    const stableSelectionPlaces = selectionTransitionRef.current ? selectionDatasetRef.current : [];
+    return dedupeMapPinPlaces([...legendsTopListingPins, ...stableSelectionPlaces, ...selectedMarkerPlaces]);
   }, [activeCollectionRoute, activeFilter, discoverDisplayPlaces, effectiveSearch, governedMarkerCandidates.places, isDefaultDiscoverScope, markerLayoutContext.zoom, savedIds, selectedId, urlState.collection, urlState.intent, urlState.mode, userHasNavigatedMap]);
   const mappablePlaces = useMemo(
     () => mapPlaces.filter((place) => place?.hasExactMarker !== false || Boolean(getPlaceCoords(place))),
@@ -16622,6 +16625,7 @@ export default function MapPage() {
     setSelectedDrawerClosed(false);
     setSelectedDrawerMinimized(false);
     setPulsingPinId(nextEntityId);
+    selectionDatasetRef.current = mapPlaces;
     selectionTransitionRef.current = { entityId: nextEntityId, place };
     setSelectedPlaceOverride(place);
     setSelectedId(nextEntityId);
