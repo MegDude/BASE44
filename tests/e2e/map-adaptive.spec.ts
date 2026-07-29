@@ -203,7 +203,8 @@ test.describe("adaptive map surface", () => {
             const navRect = navNode.getBoundingClientRect();
             const visibleScrollOwners = [...surfaceNode.querySelectorAll<HTMLElement>("*")]
               .filter((node) => node.offsetParent !== null)
-              .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY));
+              .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
+              .filter((node) => node.scrollHeight > node.clientHeight + 1);
 
             return {
               surfaceLeft: surfaceRect.left,
