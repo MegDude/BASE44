@@ -284,9 +284,12 @@ export default function PricingPage() {
     const nextPlans = getPlansForPartnerType(type);
     setPartnerType(type);
     setSelectedPlanId(nextPlans[0]?.id || "");
-    if (type === "Resident") {
-      setSelectedModuleIds([]);
-    }
+    // Add-ons belong to the plan path, not to a browser session. Clearing them
+    // prevents a venue selection from carrying into an unrelated property or
+    // resident decision.
+    setSelectedModuleIds([]);
+    setComparePlansOpen(false);
+    setShowAllUpgrades(false);
     trackPricingEvent("partner_type_changed", { partnerType: type });
   }
 
@@ -339,8 +342,8 @@ export default function PricingPage() {
         <div className="dp-pricing-container">
           <SectionHeader
             eyebrow="Pricing"
-            title="Choose what fits."
-            copy="Choose who you are, select a plan, and add upgrades only if you need them."
+            title="Pricing that stays out of the way."
+            copy="Start with your role, choose a plan, then add only the capabilities you need."
           />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
@@ -393,7 +396,7 @@ export default function PricingPage() {
                       </>
                     )}
                   </fieldset>
-                  <fieldset className="dp-pricing-decision" data-step="3">
+                  {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision" data-step="3">
                     <legend><span>3</span> Optional upgrades</legend>
                     <p className="dp-pricing-decision-copy">Add these now or later from your workspace.</p>
                     <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
@@ -407,7 +410,7 @@ export default function PricingPage() {
                       })}
                     </div>
                     {activeUpgradeModules.length > 4 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 4} more`}</button> : null}
-                  </fieldset>
+                  </fieldset> : null}
                 </>
               )}
             </div>
@@ -425,10 +428,10 @@ export default function PricingPage() {
               </dl>
               {!isResident ? <div className="dp-pricing-selected" aria-label="Selected upgrades">{selectedModules.length > 0 ? selectedModules.map((module) => <button key={module.id} type="button" onClick={() => toggleModule(module.id)}>{displayModule(module).label}</button>) : <span>No upgrades selected.</span>}</div> : null}
               <p className="dp-pricing-checkout-note">
-                {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Review your selection, then add the account details Stripe needs for a secure checkout.")}
+                {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Continue to create your account. Payment details are requested only when they apply.")}
               </p>
               <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>
-                {isResident ? "Get Perks Card" : "Continue"} <ArrowRight aria-hidden="true" />
+                {isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" />
               </button>
             </aside>
           </div>
