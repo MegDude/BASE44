@@ -172,6 +172,72 @@ test.describe("adaptive map surface", () => {
     });
   }
 
+  const mapSurfaceFixtures = [
+    { name: "resident browse", url: "/map?mode=resident&tab=events&filter=Events" },
+    { name: "resident card", url: "/map?mode=resident&tab=pass" },
+    { name: "partner scanner", url: "/map?mode=partner&tab=pass" },
+  ];
+
+  for (const viewport of [
+    { name: "iphone-15", width: 393, height: 852 },
+    { name: "desktop", width: 1440, height: 900 },
+  ]) {
+    test(`browse and focused map surfaces share bottom-sheet geometry at ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+      for (const fixture of mapSurfaceFixtures) {
+        await test.step(fixture.name, async () => {
+          await page.goto(fixture.url);
+
+          const surface = page.getByRole("dialog").first();
+          const nav = page.getByRole("tablist", { name: "Map bottom navigation" });
+          await expect(surface).toBeVisible();
+          await expect(nav).toBeVisible();
+
+          const system = await surface.evaluate((surfaceNode) => {
+            const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
+            const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
+            if (!navNode || !navShell) return null;
+
+            const surfaceRect = surfaceNode.getBoundingClientRect();
+            const navRect = navNode.getBoundingClientRect();
+            const visibleScrollOwners = [...surfaceNode.querySelectorAll<HTMLElement>("*")]
+              .filter((node) => node.offsetParent !== null)
+              .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY));
+
+            return {
+              surfaceLeft: surfaceRect.left,
+              surfaceRight: surfaceRect.right,
+              surfaceTop: surfaceRect.top,
+              surfaceBottom: surfaceRect.bottom,
+              surfacePosition: getComputedStyle(surfaceNode).position,
+              navTop: navRect.top,
+              navBottom: navRect.bottom,
+              navZIndex: Number.parseInt(getComputedStyle(navShell).zIndex, 10),
+              surfaceZIndex: Number.parseInt(getComputedStyle(surfaceNode).zIndex, 10),
+              verticalScrollOwners: visibleScrollOwners.length,
+              scrollOwnerOverscroll: visibleScrollOwners[0]
+                ? getComputedStyle(visibleScrollOwners[0]).overscrollBehaviorY
+                : null,
+              bodyOverflowY: getComputedStyle(document.body).overflowY,
+            };
+          });
+
+          expect(system).not.toBeNull();
+          expect(system?.surfacePosition).toBe("fixed");
+          expect(system?.surfaceTop || 0).toBeGreaterThan(0);
+          expect(system?.surfaceBottom || 0).toBeGreaterThanOrEqual(system?.navTop || 0);
+          expect(system?.surfaceBottom || 0).toBeLessThanOrEqual((system?.navBottom || viewport.height) + 1);
+          expect(system?.surfaceLeft || 0).toBeCloseTo(viewport.width - (system?.surfaceRight || viewport.width), 0);
+          expect(system?.navZIndex || 0).toBeGreaterThan(system?.surfaceZIndex || 0);
+          expect(system?.verticalScrollOwners).toBe(1);
+          expect(system?.scrollOwnerOverscroll).toBe("contain");
+          expect(system?.bodyOverflowY).not.toBe("auto");
+        });
+      }
+    });
+  }
+
   const drawerFixtures = [
     { name: "venue", url: "/map?mode=resident&tab=map&entityId=partner-bangers" },
     { name: "property", url: "/map?mode=resident&tab=map&entityId=natiivo-austin" },
