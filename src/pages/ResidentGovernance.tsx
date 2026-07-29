@@ -22,8 +22,8 @@ export default function ResidentGovernance() {
   const [error, setError] = useState("");
   const [question, setQuestion] = useState("");
   const [message, setMessage] = useState("");
-  const organizationId = data.consultations[0]?.organization_id || data.initiatives[0]?.organization_id || data.meetings[0]?.organization_id;
   const visibleConsultations = actionId ? data.consultations.filter((item) => item.id === actionId) : data.consultations;
+  const organizationId = visibleConsultations[0]?.organization_id || data.initiatives[0]?.organization_id || data.meetings[0]?.organization_id;
   const hasPublishedContent = Boolean(data.updates?.length || visibleConsultations.length || data.initiatives.length || data.meetings.length || data.questions.length);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function ResidentGovernance() {
 
         <nav className="dp-governance-actions" aria-label="Civic actions">
           <Link to="/map?mode=resident&tab=map&filter=Civic"><Map aria-hidden="true" /><span><strong>Open civic map</strong><small>Places, projects and events</small></span><ChevronRight aria-hidden="true" /></Link>
-          {organizationId ? <a href={data.consultations[0] ? "#current-consultation" : "#ask-a-question"}><Send aria-hidden="true" /><span><strong>{data.consultations[0] ? "Answer a question" : "Send a question"}</strong><small>Share what matters to you</small></span><ChevronRight aria-hidden="true" /></a> : <Link to="/map?mode=resident&tab=map&filter=Civic"><Send aria-hidden="true" /><span><strong>Choose a civic place</strong><small>Send a question to the right team</small></span><ChevronRight aria-hidden="true" /></Link>}
+          {organizationId ? <a href={visibleConsultations[0] ? "#current-consultation" : "#ask-a-question"}><Send aria-hidden="true" /><span><strong>{visibleConsultations[0] ? "Answer a question" : "Send a question"}</strong><small>Share what matters to you</small></span><ChevronRight aria-hidden="true" /></a> : <Link to="/map?mode=resident&tab=map&filter=Civic"><Send aria-hidden="true" /><span><strong>Choose a civic place</strong><small>Send a question to the right team</small></span><ChevronRight aria-hidden="true" /></Link>}
         </nav>
 
         {loading ? <p className="dp-governance-state" role="status">Loading verified community updates…</p> : null}

@@ -60,7 +60,8 @@ async function authorizedHeaders(idempotencyKey?: string) {
 }
 
 async function governanceRequest<T>(path: string, init?: RequestInit, idempotencyKey?: string): Promise<T> {
-  const baseUrl = getPartnerContentApiBaseUrl();
+  const isLocalBrowser = typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  const baseUrl = typeof window !== "undefined" && !isLocalBrowser ? window.location.origin : getPartnerContentApiBaseUrl();
   if (!baseUrl) throw new Error("Community updates are not connected on this preview.");
   let response: Response;
   try {
