@@ -2907,10 +2907,18 @@ function PublisherSelect({ label, value, onChange, options }) {
 // ─── EVENTS MANAGER ───────────────────────────────────────────────────────────
 
 function EventsManager({ user }) {
+  const location = useLocation();
+  const eventIntent = new URLSearchParams(location.search).get("intent") || "";
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(() => eventIntent === "new");
   const [editing, setEditing] = useState(null);
+
+  useEffect(() => {
+    if (eventIntent !== "new") return;
+    setEditing(null);
+    setShowForm(true);
+  }, [eventIntent]);
 
   const load = () => {
     setLoading(true);
