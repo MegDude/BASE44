@@ -106,55 +106,66 @@ html body #root main.dp-pricing-page fieldset.dp-pricing-decision > legend > spa
   font-size: 12px !important;
 }
 
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid {
+/* A plain, compact editorial list. It intentionally has no shared legacy
+   choice-grid class, which is where the card, pill, and dot regressions came from. */
+html body #root main.dp-pricing-page .dp-pricing-role-list {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0 18px !important;
-}
-
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
-  position: relative !important;
-  display: block !important;
-  min-width: 0 !important;
-  min-height: 64px !important;
-  padding: 12px 8px 12px 0 !important;
-  text-align: left !important;
-  background: #fff !important;
-  color: var(--dp-pricing-ink) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
   border: 0 !important;
-  border-bottom: 1px solid var(--dp-pricing-line) !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  transition: color 160ms ease, border-color 160ms ease !important;
 }
 
-html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid.dp-pricing-partner-type-grid > button,
-html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid.dp-pricing-partner-type-grid > button[data-active="true"] {
+html body #root main.dp-pricing-page .dp-pricing-role-list > button {
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 9px 0 !important;
+  appearance: none !important;
+  background: transparent !important;
+  border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-}
-
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button[data-active="true"] {
-  border-bottom-color: var(--dp-pricing-gold) !important;
   color: var(--dp-pricing-ink) !important;
+  text-align: left !important;
+  transform: none !important;
 }
 
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button strong,
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button small {
+html body #root main.dp-pricing-page .dp-pricing-role-list > button::before,
+html body #root main.dp-pricing-page .dp-pricing-role-list > button::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body #root main.dp-pricing-page .dp-pricing-role-list > button:focus-visible {
+  outline: 2px solid var(--dp-pricing-gold) !important;
+  outline-offset: 3px !important;
+}
+
+html body #root main.dp-pricing-page .dp-pricing-role-list > button[data-active="true"] strong {
+  color: var(--dp-pricing-gold) !important;
+}
+
+html body #root main.dp-pricing-page .dp-pricing-role-list > button strong,
+html body #root main.dp-pricing-page .dp-pricing-role-list > button small {
   display: block !important;
   min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   text-align: left !important;
 }
 
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button strong { font-size: 15px !important; }
-html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button small {
-  display: -webkit-box !important;
-  overflow: hidden !important;
+html body #root main.dp-pricing-page .dp-pricing-role-list > button strong { font-size: 15px !important; line-height: 1.25 !important; }
+html body #root main.dp-pricing-page .dp-pricing-role-list > button small {
+  overflow: visible !important;
+  margin-top: 2px !important;
   color: var(--dp-pricing-muted) !important;
   font-size: 12px !important;
   line-height: 1.35 !important;
-  -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 2 !important;
+  white-space: normal !important;
 }
 
 html body #root main.dp-pricing-page .dp-pricing-plan-selector {
@@ -271,10 +282,6 @@ html body #root main.dp-pricing-page .dp-pricing-button { border-radius: 0 !impo
 }
 
 @media (max-width: 430px) {
-  html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
-    min-height: 72px !important;
-    padding-right: 8px !important;
-  }
   html body #root main.dp-pricing-page .dp-pricing-selected-plan ul { grid-template-columns: 1fr !important; }
   html body #root main.dp-pricing-page .dp-pricing-upgrade-list > button { min-height: 72px !important; }
 }
