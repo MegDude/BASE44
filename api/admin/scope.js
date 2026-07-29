@@ -15,6 +15,7 @@ function platformRole(user) {
 }
 
 export default async function handler(req, res) {
+  res.setHeader("Cache-Control", "private, no-store");
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
   try {
     const database = requireTransactionDatabase();
@@ -27,7 +28,7 @@ export default async function handler(req, res) {
       const { data: memberships, error: membershipError } = await database.from("partner_users").select("partner_id,role,active").eq("auth_user_id", user.id).eq("active", true);
       if (membershipError) throw membershipError;
       const partnerIds = [...new Set((memberships || []).map((item) => item.partner_id).filter(Boolean))];
-      if (!partnerIds.length) return res.status(200).setHeader("Cache-Control", "private, no-store").json({ role, organizations: [], portfolios: [], listings: [], activeScope: {} });
+      if (!partnerIds.length) return res.status(200).json({ role, organizations: [], portfolios: [], listings: [], activeScope: {} });
       organizationQuery = organizationQuery.in("legacy_partner_id", partnerIds);
     }
 
@@ -50,7 +51,7 @@ export default async function handler(req, res) {
     const portfolio = organization && (portfolios || []).find((item) => item.id === requestedPortfolioId && item.organization_id === organization.id);
     const listing = organization && (listings || []).find((item) => item.id === requestedListingId && item.organization_id === organization.id && (!portfolio || !item.portfolio_id || item.portfolio_id === portfolio.id));
 
-    return res.status(200).setHeader("Cache-Control", "private, no-store").json({
+    return res.status(200).json({
       role,
       organizations: organizations || [],
       portfolios: portfolios || [],
