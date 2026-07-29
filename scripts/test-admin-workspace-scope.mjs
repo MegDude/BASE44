@@ -11,7 +11,11 @@ assert.match(api, /ADMIN_ACCESS_REQUIRED/);
 assert.match(api, /role !== "super_admin"/);
 assert.match(api, /partner_users/);
 assert.match(api, /activeScope/);
-assert.match(api, /private, no-store/);
+assert.match(
+  api,
+  /export default async function handler\(req, res\) \{\s+res\.setHeader\("Cache-Control", "private, no-store"\);/,
+  "the private cache policy must be applied before method, authentication, and authorization responses",
+);
 assert.match(switcher, /Search organization, portfolio, or listing/);
 assert.match(switcher, /sessionStorage/);
 assert.match(switcher, /role="dialog"/);
