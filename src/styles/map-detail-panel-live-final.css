@@ -9,6 +9,13 @@
   --dp-detail-muted: rgba(11, 31, 51, 0.62);
 }
 
+html:has(.dp-map-page),
+body:has(.dp-map-page) {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
 html body #root .dp-map-page #dp-active-map-drawer.dp-map-detail-sheet {
   width: min(100%, 760px) !important;
   max-width: 760px !important;
@@ -139,8 +146,8 @@ html body #root .dp-map-page :is(
 /* The legacy cohesion bundle contains a 14-ID flex declaration. This final,
    intentionally authoritative boundary restores semantic DOM flow without
    reintroducing per-section order values. */
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-map-panel-content.dp-destination-content.dp-detail-content,
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-map-panel-content.dp-partner-detail-content {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-map-panel-content.dp-destination-content.dp-detail-content,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer#dp-active-map-drawer .dp-map-panel-content.dp-partner-detail-content {
   display: block !important;
 }
 
@@ -200,7 +207,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-entity-meta {
   text-transform: uppercase !important;
 }
 
-html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
   display: block !important;
   width: 100% !important;
   min-width: 0 !important;
@@ -372,7 +379,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-partner-nearby-list small
 }
 
 @media (min-width: 768px) {
-  html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
     inset: auto 0 0 !important;
     width: min(760px, calc(100vw - 48px)) !important;
     max-width: 760px !important;
@@ -382,7 +389,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-partner-nearby-list small
     margin-inline: auto !important;
   }
 
-  html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
     font-size: clamp(28px, 2.5vw, 34px) !important;
     line-height: 1.14 !important;
   }
