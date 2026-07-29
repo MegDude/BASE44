@@ -85,6 +85,12 @@ requireMatch('Legends directory', map, /dp-panel-body dp-panel-scroll[\s\S]*?isL
 requireMatch('Legends directory', mapIconRegistry, /\/pins\/downtown-perks\/legends-logo-gold\.svg/, 'canonical Legends pin artwork is missing');
 requireMatch('map drawer', map, /const MAP_DRAWER_SURFACE_STYLE = \{[\s\S]*?backgroundColor:\s*"#ffffff"[\s\S]*?borderRadius:\s*0[\s\S]*?boxShadow:\s*"none"[\s\S]*?backdropFilter:\s*"none"/, 'inline drawer styles can reintroduce tint, rounded corners, shadow, or blur');
 
+requireMatch('panel navigation', map, /ariaLabel="Return to previous panel"[\s\S]*?onPress=\{restorePreviousMapPanel\}/, 'Legends Back does not restore prior panel state');
+requireMatch('panel navigation', map, /onClick=\{restorePreviousMapPanel\} className="dp-panel-back" aria-label="Back to previous panel"/, 'shared drawer Back does not restore prior panel state');
+requireMatch('panel navigation', map, /onClick=\{goBackToMap\}[\s\S]*?className="dp-panel-close/, 'shared drawer Close does not dismiss to the map');
+requireMatch('panel cohesion', canonicalSurface, /\.dp-map-page :is\(\.dp-native-drawer,[\s\S]*?box-shadow:\s*none\s*!important/, 'map drawer surface authority is not scoped to the map');
+if (/^\.dp-native-drawer,\s*\.dp-detail-drawer,\s*\.dp-panel-shell/m.test(canonicalSurface)) failures.push('panel cohesion: map drawer authority leaks into unrelated platform panel shells');
+
 const actionsImport = main.indexOf('detail-panel-fixed-actions-final.css');
 const geometryImport = main.indexOf('native-drawer-geometry-final.css');
 const cohesionImport = main.indexOf('platform-panel-cohesion-final.css');
