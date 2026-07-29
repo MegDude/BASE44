@@ -487,3 +487,46 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
     translate: none !important;
   }
 }
+
+
+/* Absolute final authority for legacy sheet motion and nested overflow.
+   Remove with the legacy cohesion bundle, not independently. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-native-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-qr-modal,
+  .dp-context-list-drawer
+) {
+  left: 0 !important;
+  right: 0 !important;
+  margin-inline: auto !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page :is(
+  .dp-map-detail-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-panel-scroll,
+  .dp-map-directory-list,
+  .dp-resident-qr-content-viewport,
+  .dp-resident-tab-panel-list
+) * {
+  max-height: none !important;
+  overflow-y: visible !important;
+  overscroll-behavior-y: auto !important;
+}
+
+@media (min-width: 768px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer[data-panel-layout="detail"] {
+    top: max(72px, 18dvh) !important;
+    bottom: calc(var(--dp-map-native-bottom-nav-height, 64px) - 10px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    transform: none !important;
+    translate: none !important;
+  }
+}
