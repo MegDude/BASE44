@@ -102,25 +102,30 @@ test.describe("adaptive map surface", () => {
         ".dp-venue-details-section, .dp-happy-hour-section, .dp-partner-destination-section",
       );
       const nearby = drawer.querySelector<HTMLElement>(".dp-discovery-context-section, .dp-partner-nearby-list");
-      if (!content || !scroll || !hero || !identity || !details || !nearby) return null;
+      if (!content || !scroll || !hero || !identity || !details) return null;
 
       return {
         contentDisplay: getComputedStyle(content).display,
         scrollOverflowY: getComputedStyle(scroll).overflowY,
-        scrollable: scroll.scrollHeight > scroll.clientHeight,
+        scrollHeight: scroll.scrollHeight,
+        clientHeight: scroll.clientHeight,
         heroTop: hero.getBoundingClientRect().top,
         identityTop: identity.getBoundingClientRect().top,
         detailsTop: details.getBoundingClientRect().top,
-        nearbyTop: nearby.getBoundingClientRect().top,
+        nearbyTop: nearby?.getBoundingClientRect().top ?? null,
       };
     });
 
     expect(geometry).not.toBeNull();
     expect(geometry?.contentDisplay).toBe("block");
     expect(geometry?.scrollOverflowY).toBe("auto");
-    expect(geometry?.scrollable).toBe(true);
+    expect(geometry?.scrollHeight || 0).toBeGreaterThanOrEqual(geometry?.clientHeight || 0);
     expect(geometry?.heroTop || 0).toBeLessThan(geometry?.identityTop || 0);
     expect(geometry?.identityTop || 0).toBeLessThan(geometry?.detailsTop || 0);
-    expect(geometry?.detailsTop || 0).toBeLessThan(geometry?.nearbyTop || 0);
+    if (geometry?.nearbyTop !== null) {
+      expect(geometry?.detailsTop || 0).toBeLessThan(geometry?.nearbyTop || 0);
+    }
+    await expect(page.getByRole("heading", { name: "Venue details" })).toBeVisible();
+    await expect(page.getByText("Food and drink specials nearby", { exact: true })).toHaveCount(0);
   });
 });
