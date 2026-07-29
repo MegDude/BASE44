@@ -1,0 +1,460 @@
+/* Building experience inside canonical map drawers.
+   Continuous white surface, one scroll owner, iOS-size controls, and no nested card UI. */
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-host,
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 12 !important;
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  gap: 22px !important;
+  margin: 0 !important;
+  padding: 0 20px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.10) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: none !important;
+  scrollbar-width: none !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+  backdrop-filter: saturate(180%) blur(18px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(18px) !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav::-webkit-scrollbar {
+  display: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav > button {
+  appearance: none !important;
+  position: relative !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  min-width: max-content !important;
+  min-height: 48px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  font: 650 13px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  scroll-snap-align: center !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav > button.is-active {
+  color: #0b1f33 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav__indicator {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 2px !important;
+  border-radius: 0 !important;
+  background: #c8a96a !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav > button:focus-visible,
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience :is(button, a):focus-visible {
+  outline: 2px solid #c8a96a !important;
+  outline-offset: -2px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-section {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 22px 20px !important;
+  scroll-margin-top: 48px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.09) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-section:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-section-header {
+  display: flex !important;
+  min-width: 0 !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-section-header > div {
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-section h3 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font: 650 19px/1.18 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-section header p {
+  max-width: 48ch !important;
+  margin: 6px 0 0 !important;
+  color: rgba(11, 31, 51, 0.62) !important;
+  font: 400 14px/1.45 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-section-action {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  min-height: 36px !important;
+  align-items: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(200, 169, 106, 0.7) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  font: 650 12px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  text-decoration: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-status-line {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: #ffffff !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-status-line > div {
+  display: grid !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  padding: 14px 12px !important;
+  border-right: 1px solid rgba(11, 31, 51, 0.08) !important;
+  text-align: center !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-status-line > div:last-child {
+  border-right: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-status-line dt {
+  color: rgba(11, 31, 51, 0.54) !important;
+  font: 600 11px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-status-line dd {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font: 650 20px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-identity-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px 14px !important;
+  margin: 16px 0 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-identity-list li {
+  position: relative !important;
+  padding-left: 12px !important;
+  color: rgba(11, 31, 51, 0.68) !important;
+  font: 500 13px/1.35 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-identity-list li::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0.52em !important;
+  left: 0 !important;
+  width: 4px !important;
+  height: 4px !important;
+  background: #c8a96a !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-row-list,
+  .dp-building-collection-list,
+  .dp-building-campaign-list,
+  .dp-building-route-list
+) {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: #ffffff !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-campaign-list > article,
+  .dp-building-route-list > button
+) {
+  appearance: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 18px !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-height: 58px !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 11px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-campaign-list > :is(a, article),
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-route-list > button {
+  grid-template-columns: 22px minmax(0, 1fr) 18px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-campaign-list > article,
+  .dp-building-route-list > button
+):last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-route-list > button
+):active {
+  background: rgba(11, 31, 51, 0.035) !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-route-list > button
+):disabled {
+  cursor: default !important;
+  opacity: 0.52 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-campaign-list > article,
+  .dp-building-route-list > button
+) > span {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-campaign-list > article,
+  .dp-building-route-list > button
+) strong {
+  color: #0b1f33 !important;
+  font: 600 14px/1.3 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-campaign-list > article,
+  .dp-building-route-list > button
+) small {
+  color: rgba(11, 31, 51, 0.56) !important;
+  font: 400 12px/1.3 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(
+  .dp-building-place-row,
+  .dp-building-collection-list > button,
+  .dp-building-campaign-list > a,
+  .dp-building-route-list > button
+) > svg:last-child {
+  width: 17px !important;
+  height: 17px !important;
+  color: rgba(11, 31, 51, 0.36) !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-campaign-list > :is(a, article) > svg:first-child,
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-route-list > button > svg:first-child {
+  width: 19px !important;
+  height: 19px !important;
+  color: #c8a96a !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups > article {
+  display: grid !important;
+  grid-template-columns: minmax(88px, 0.3fr) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  margin: 0 !important;
+  padding: 14px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups > article:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups h4 {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font: 650 13px/1.35 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups ul {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups li {
+  color: rgba(11, 31, 51, 0.66) !important;
+  font: 400 13px/1.35 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-empty-state {
+  display: grid !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 14px 0 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: #ffffff !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-empty-state p,
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-guide-copy,
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-guide-list {
+  margin: 0 !important;
+  color: rgba(11, 31, 51, 0.64) !important;
+  font: 400 14px/1.5 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-empty-state :is(a, button),
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-guide-actions :is(a, button) {
+  appearance: none !important;
+  display: inline-flex !important;
+  width: max-content !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(200, 169, 106, 0.7) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0b1f33 !important;
+  font: 650 13px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  text-decoration: none !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-guide-list {
+  display: grid !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+  padding-left: 20px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-building-guide-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px 20px !important;
+  margin-top: 16px !important;
+}
+
+@media (max-width: 420px) {
+  html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-nav {
+    gap: 20px !important;
+    padding-inline: 16px !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience-section {
+    padding: 20px 16px !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer .dp-building-section-header {
+    gap: 12px !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer .dp-building-amenity-groups > article {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .dp-map-page #dp-active-map-drawer .dp-building-experience * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
