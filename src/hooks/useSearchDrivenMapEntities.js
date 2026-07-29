@@ -826,6 +826,10 @@ export function useSearchDrivenMapEntities() {
       putCache(cacheRef, result.queryKey, result);
       const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
       await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
+      if (controller.signal.aborted || activeRequestRef.current.id !== requestId || activeRequestRef.current.key !== queryKey) {
+        setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
+        return null;
+      }
       setResultState(result);
       setRequestStatus("success");
       setMetrics((current) => ({
@@ -852,6 +856,10 @@ export function useSearchDrivenMapEntities() {
         putCache(cacheRef, result.queryKey, result);
         const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
         await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
+        if (controller.signal.aborted || activeRequestRef.current.id !== requestId || activeRequestRef.current.key !== queryKey) {
+          setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
+          return null;
+        }
         setResultState(result);
         setRequestStatus("success");
         setMetrics((current) => ({
