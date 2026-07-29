@@ -17873,7 +17873,11 @@ export default function MapPage() {
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
     activeFilter === "Listings";
-  const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab));
+  const showBottomNavigation = !urlState.embed && (
+    ["map", "pass"].includes(urlState.tab) ||
+    (urlState.mode === "resident" && ["perks", "events", "saved"].includes(urlState.tab)) ||
+    Boolean(urlState.panelTab)
+  );
   useBottomNavigationGeometry(showBottomNavigation);
   const mapPanelNavigationTitle = urlState.mode === "partner"
     ? ({ activity: "Activity", reports: "Reports", campaigns: "Campaigns", info: "Partner guide", civic: "Civic" }[activePartnerPanel] || activeFilter || "Partner map")
@@ -18381,7 +18385,7 @@ export default function MapPage() {
                   role="tab"
                   aria-label="Perks"
                   onClick={() => {
-                    if (activeBottomTab === "perks" && !selectedId) {
+                    if (urlState.tab === "perks" && activeBottomTab === "perks" && !selectedId) {
                       updateActivePerksDrawerState(activePerksDrawerState === "peek" ? "expanded" : "peek");
                       return;
                     }
