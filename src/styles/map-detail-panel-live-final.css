@@ -98,6 +98,44 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-map-detail-scroll {
   background: var(--dp-detail-white) !important;
 }
 
+/* All canonical map drawers, browse panels and focused tasks share one
+   bottom-sheet geometry and one internal vertical scroll owner. */
+html body #root .dp-map-page :is(
+  .dp-native-drawer,
+  .dp-map-sheet,
+  .dp-pass-panel,
+  .dp-resident-qr-modal,
+  .dp-context-list-drawer
+) {
+  position: fixed !important;
+  inset: auto 0 0 !important;
+  width: min(100%, 760px) !important;
+  max-width: 760px !important;
+  max-height: min(88dvh, calc(100dvh - 64px)) !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-map-detail-scroll,
+  .dp-map-sheet-scroll,
+  .dp-pass-panel-body,
+  .dp-panel-scroll,
+  .dp-map-directory-list,
+  .dp-resident-qr-content-viewport
+) {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
 /* The legacy cohesion bundle contains a 14-ID flex declaration. This final,
    intentionally authoritative boundary restores semantic DOM flow without
    reintroducing per-section order values. */
