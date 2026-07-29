@@ -14,12 +14,14 @@ assert.match(workspace, /useAuth\(\)/, "workspace does not use the verified appl
 assert.match(workspace, /\.\.\.authenticatedUser/, "verified session claims do not take precedence in the workspace");
 assert.match(switcher, /if \(accessMode === "admin"\)/, "all-organization selector is not admin-gated");
 assert.match(switcher, /Admin workspace/, "admin mode is not explicitly identified");
-assert.match(switcher, /<AdminScopeSwitcher \/>/, "admin mode does not use the authorized scope selector");
+assert.match(switcher, /<AdminScopeSwitcher onScopeResolved=\{onAdminScopeResolved\} \/>/, "admin mode does not use the authorized scope selector");
 assert.match(adminScopeClient, /\/api\/admin\/scope/, "admin scope is not sourced from the protected backend contract");
 assert.match(adminScopeClient, /Authorization: `Bearer \$\{token\}`/, "admin scope request is missing verified session authorization");
 assert.match(adminScope, /DialogPrimitive\.Content/, "organization selection does not use the accessible shared dialog primitive");
 assert.match(adminScope, /writePartnerWorkspaceScope\(next\)/, "admin scope does not update the canonical workspace scope");
-assert.match(workspace, /hasPrivilegedWorkspaceAccess[\s\S]*\.\.\.requestedScope[\s\S]*type:/, "authorized production scope is still resolved against demo inventory");
+assert.match(adminScope, /onScopeResolved\?\.\(next\.activeScope\)/, "backend-validated active scope is not propagated to the workspace");
+assert.match(workspace, /\.\.\.authorizedAdminScope[\s\S]*type:/, "workspace content does not use the backend-authorized production scope");
+assert.match(workspace, /hasPrivilegedWorkspaceAccess \? <WorkspaceRegistryPanel key="admin-offers"/, "unsafe partner offer mutations remain exposed to admin scope");
 assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not link to the in-shell people directory");
 assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
 assert.match(app, /<Navigate to="\/partner-workspace\/overview" replace \/>/, "legacy admin routes do not converge on the canonical workspace");
