@@ -73,7 +73,7 @@ export default function ForBuildings() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="dp-partner-marketing-page min-h-screen bg-background">
 
       {/* Hero */}
       <section className="pt-32 pb-12 px-5">
@@ -88,9 +88,9 @@ export default function ForBuildings() {
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
               <h1 className="font-heading text-4xl md:text-4xl font-medium leading-[1.08] tracking-normal">
-                A Smarter
+                A Better Amenity
                 <br />
-                <em className="text-primary">Building Amenity</em>
+                <em className="text-primary">Starts Nearby</em>
               </h1>
               <p className="text-muted-foreground text-[15px] leading-relaxed md:pb-1">
                 Downtown Perks gives residents a better way to use the neighborhood around them while giving your property a stronger amenity, clearer communication, and added leasing value.
@@ -228,6 +228,6 @@ export default function ForBuildings() {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

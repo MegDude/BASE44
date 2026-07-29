@@ -1,0 +1,82 @@
+/*
+ * Public marketing type authority.
+ * Loaded last so resident and partner marketing surfaces share one readable
+ * editorial system without affecting the map or authenticated workspaces.
+ */
+:root {
+  --dp-public-ink: #132238;
+  --dp-public-copy: #31445a;
+  --dp-public-muted: #52657a;
+  --dp-public-gold: #c8a96a;
+}
+
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) {
+  color: var(--dp-public-ink) !important;
+  background: #fff !important;
+}
+
+/* Eyebrows need breathing room: no compressed caps or clipped line-height. */
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(.dp-label, .dp-editorial-context, [class*="eyebrow"]) {
+  display: block !important;
+  color: var(--dp-public-gold) !important;
+  -webkit-text-fill-color: var(--dp-public-gold) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+/* Stronger contrast on every light public surface. */
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(p, li, dd, input, textarea, select) {
+  color: var(--dp-public-copy) !important;
+  -webkit-text-fill-color: var(--dp-public-copy) !important;
+}
+
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(h1, h2, h3, h4, strong, dt) {
+  color: var(--dp-public-ink) !important;
+  -webkit-text-fill-color: var(--dp-public-ink) !important;
+}
+
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(.text-muted-foreground, [class*="muted"]) {
+  color: var(--dp-public-muted) !important;
+  -webkit-text-fill-color: var(--dp-public-muted) !important;
+}
+
+/* Two-line editorial headline rule, shared by resident and partner marketing. */
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(h1, .dp-marketing-hero-copy h1, .dp-partner-access-title) {
+  max-width: 16ch !important;
+  font-size: clamp(48px, 6vw, 76px) !important;
+  font-weight: 500 !important;
+  line-height: .98 !important;
+  letter-spacing: -.035em !important;
+  text-wrap: balance !important;
+}
+
+html body #root#root .dp-home-page :is(h2, .dp-marketing-value-panel h2, .dp-marketing-section-head h2) {
+  max-width: 18ch !important;
+  font-size: clamp(34px, 4vw, 52px) !important;
+  line-height: 1.01 !important;
+  letter-spacing: -.028em !important;
+  text-wrap: balance !important;
+}
+
+/* Correct gold: retain it for signal, never for body copy. */
+html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(.text-\[\#BFA46A\], .text-\[\#B8963E\], [class*="gold"]) {
+  color: var(--dp-public-gold) !important;
+  -webkit-text-fill-color: var(--dp-public-gold) !important;
+}
+
+@media (max-width: 640px) {
+  html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page, .dp-marketing-page, .dp-partner-marketing-page) :is(h1, .dp-marketing-hero-copy h1, .dp-partner-access-title) {
+    max-width: 12.5ch !important;
+    font-size: clamp(44px, 13vw, 58px) !important;
+    line-height: .96 !important;
+  }
+
+  html body #root#root .dp-home-page :is(h2, .dp-marketing-value-panel h2, .dp-marketing-section-head h2) {
+    font-size: clamp(32px, 9.5vw, 42px) !important;
+  }
+}
