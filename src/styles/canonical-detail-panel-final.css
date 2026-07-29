@@ -202,3 +202,18 @@ html body #root .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] .dp
   html body #root .dp-map-page #dp-active-map-drawer.dp-map-detail-sheet,
   .dp-native-detail-terms > summary svg { transition: none !important; }
 }
+
+.dp-native-detail-panel__calendar {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #0b1f33;
+  background: #fff;
+  border: 1px solid rgba(11, 31, 51, 0.12);
+  text-decoration: none;
+}
+.dp-native-detail-panel__calendar svg { width: 18px; height: 18px; }
+@media (max-width: 430px) { .dp-native-detail-panel__calendar span { font-size: 12px; } }
