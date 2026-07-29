@@ -217,9 +217,11 @@ test.describe("adaptive map surface", () => {
             const probe = document.createElement("div");
             probe.dataset.e2eMapSurfaceOverflowProbe = "true";
             probe.setAttribute("aria-hidden", "true");
-            probe.style.height = `${intendedScrollOwner.clientHeight + 160}px`;
-            probe.style.minHeight = probe.style.height;
-            probe.style.flex = "0 0 auto";
+            const probeHeight = `${intendedScrollOwner.clientHeight + 160}px`;
+            probe.style.setProperty("height", probeHeight, "important");
+            probe.style.setProperty("min-height", probeHeight, "important");
+            probe.style.setProperty("flex", "0 0 auto", "important");
+            probe.style.setProperty("display", "block", "important");
             probe.style.pointerEvents = "none";
             intendedScrollOwner.appendChild(probe);
             intendedScrollOwner.scrollTop = 1;
