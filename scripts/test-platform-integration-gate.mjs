@@ -88,7 +88,7 @@ requireMatch('Legends directory', map, /dp-panel-body dp-panel-scroll[\s\S]*?isL
 requireMatch('Legends directory', mapIconRegistry, /\/pins\/downtown-perks\/legends-logo-gold\.svg/, 'canonical Legends pin artwork is missing');
 requireMatch('map drawer', map, /const MAP_DRAWER_SURFACE_STYLE = \{[\s\S]*?backgroundColor:\s*"#ffffff"[\s\S]*?borderRadius:\s*0[\s\S]*?boxShadow:\s*"none"[\s\S]*?backdropFilter:\s*"none"/, 'inline drawer styles can reintroduce tint, rounded corners, shadow, or blur');
 requireMatch('resident navigation', map, /aria-label="Home" onClick=\{\(\) => navigate\("\/resident\/home"\)\}/, 'resident Home tab is missing from bottom navigation');
-requireMatch('resident navigation', map, /urlState\.tab === "perks" && activeBottomTab === "perks"[\s\S]*?<ActivePerksSheet/, 'resident Perks route cannot mount its drawer');
+requireMatch('resident navigation', map, /\["map", "perks"\]\.includes\(urlState\.tab\) && activeBottomTab === "perks"[\s\S]*?<ActivePerksSheet/, 'resident Perks route and legacy map-filter URL cannot mount the drawer');
 requireMatch('resident navigation', map, /\["map", "perks", "events", "saved"\]\.includes\(urlState\.tab\)/, 'resident drawer routes are excluded from the shared panel renderer');
 requireMatch('panel navigation', map, /ariaLabel="Return to previous panel"[\s\S]*?onPress=\{restorePreviousMapPanel\}/, 'Legends Back does not restore prior panel state');
 requireMatch('panel navigation', map, /onClick=\{restorePreviousMapPanel\} className="dp-panel-back" aria-label="Back to previous panel"/, 'shared drawer Back does not restore prior panel state');
