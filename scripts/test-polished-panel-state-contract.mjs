@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 
 const read = (path) => readFileSync(path, "utf8");
 const map = read("src/pages/Map.jsx");
+const nativeDrawer = read("src/components/map/NativeDrawerShell.jsx");
 const perks = read("src/components/map/ActivePerksSheet.jsx");
 const routeSheet = read("src/components/map/route/RouteExperienceSheet.tsx");
 const mobileTabSheet = read("src/components/map/MobileTabDrawerShell.tsx");
@@ -19,6 +20,8 @@ const activePerks = read("src/styles/active-perks-sheet.css");
 const workspaceLock = read("src/styles/interface-density-regression-lock.css");
 const drawerState = read("src/lib/map/nativeDrawerState.js");
 
+assert.match(nativeDrawer, /window\.addEventListener\("keydown", handleKeyDown\)/);
+assert.match(nativeDrawer, /window\.removeEventListener\("keydown", handleKeyDown\)/);
 assert.match(map, /normalizeDrawerState\(savedState, "list"\)/);
 assert.match(drawerState, /DETAIL_DRAWER_STATES = \["medium", "expanded", "full"\]/);
 assert.match(map, /normalizeDrawerState\(nextState, "detail"\)/);
