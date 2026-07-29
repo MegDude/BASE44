@@ -7,6 +7,7 @@ export type DowntownPerksRole =
   | "broker"
   | "civic"
   | "admin"
+  | "platform_admin"
   | "super_admin";
 
 export type SessionClaims = {
@@ -62,7 +63,10 @@ export function isSuperAdminSession(session: SessionClaims = {}) {
 }
 
 export function isAdminSession(session: SessionClaims = {}) {
-  return session.role === "admin" || isSuperAdminSession(session);
+  return session.role === "admin"
+    || session.role === "platform_admin"
+    || session.platformRole === "platform_admin"
+    || isSuperAdminSession(session);
 }
 
 export function canViewEverything(session: SessionClaims | Record<string, unknown> = {}) {

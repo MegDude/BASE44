@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   demoOrganizations,
   getOrganizationListings,
@@ -13,9 +13,11 @@ import {
 
 type WorkspaceScopeSwitcherProps = {
   scope: PartnerWorkspaceScope;
+  accessMode: "admin" | "partner";
+  organizationName?: string;
 };
 
-export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
+export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName }: WorkspaceScopeSwitcherProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const organizationLabelId = useId();
@@ -56,24 +58,30 @@ export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
   }
 
   return (
-    <section className="dp-workspace-scope" aria-label="Choose workspace scope">
-      <div>
-        <p>Viewing</p>
+    <section
+      className={`dp-workspace-scope dp-workspace-scope--${accessMode}`}
+      aria-label={accessMode === "admin" ? "Choose admin workspace scope" : "Partner workspace scope"}
+    >
+      <div className="dp-workspace-scope__summary">
+        <p>{accessMode === "admin" ? "Admin viewing" : "Partner workspace"}</p>
         <strong>{scope.listingId ? "One place" : scope.organizationId ? "Combined organization" : "Choose an organization"}</strong>
+        {accessMode === "partner" && organizationName ? <span>{organizationName}</span> : null}
       </div>
-      <label id={organizationLabelId}>
-        <span>Organization</span>
-        <select
-          aria-labelledby={organizationLabelId}
-          value={scope.organizationId || ""}
-          onChange={(event) => selectOrganization(event.target.value)}
-        >
-          <option value="">Choose organization</option>
-          {demoOrganizations.map((organization) => (
-            <option key={organization.id} value={organization.id}>{organization.name}</option>
-          ))}
-        </select>
-      </label>
+      {accessMode === "admin" ? (
+        <label id={organizationLabelId}>
+          <span>Organization</span>
+          <select
+            aria-labelledby={organizationLabelId}
+            value={scope.organizationId || ""}
+            onChange={(event) => selectOrganization(event.target.value)}
+          >
+            <option value="">Choose organization</option>
+            {demoOrganizations.map((organization) => (
+              <option key={organization.id} value={organization.id}>{organization.name}</option>
+            ))}
+          </select>
+        </label>
+      ) : null}
       {scope.organizationId && portfolios.length ? (
         <label id={portfolioLabelId}>
           <span>Portfolio</span>
@@ -103,6 +111,11 @@ export function WorkspaceScopeSwitcher({ scope }: WorkspaceScopeSwitcherProps) {
             ))}
           </select>
         </label>
+      ) : null}
+      {accessMode === "admin" ? (
+        <Link className="dp-workspace-scope__accounts" to="/admin-studio/residents">
+          Registered users
+        </Link>
       ) : null}
     </section>
   );

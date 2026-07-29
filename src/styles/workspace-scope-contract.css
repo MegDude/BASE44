@@ -16,6 +16,16 @@
   box-shadow: none !important;
 }
 
+.dp-partner-workspace-page .dp-workspace-scope--admin {
+  grid-template-columns: minmax(170px, 1fr) repeat(3, minmax(150px, 210px)) auto;
+  padding-top: 16px;
+  border-top: 3px solid #0b1f33;
+}
+
+.dp-partner-workspace-page .dp-workspace-scope--partner {
+  grid-template-columns: minmax(210px, 1fr) repeat(2, minmax(160px, 220px));
+}
+
 .dp-workspace-scope > div p,
 .dp-workspace-scope label span {
   display: block;
@@ -23,6 +33,31 @@
   color: rgba(11, 31, 51, 0.58);
   font: 650 11px/1.2 Inter, sans-serif;
   letter-spacing: 0.04em;
+}
+
+.dp-workspace-scope__summary > span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(11, 31, 51, 0.68);
+  font: 500 12px/1.35 Inter, sans-serif;
+}
+
+.dp-workspace-scope__accounts {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid #0b1f33;
+  color: #0b1f33;
+  font: 700 12px/1 Inter, sans-serif;
+  text-decoration: none;
+}
+
+.dp-workspace-scope__accounts:hover,
+.dp-workspace-scope__accounts:focus-visible {
+  border-color: #9a7937;
+  color: #9a7937;
 }
 
 .dp-workspace-scope > div strong {
