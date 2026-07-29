@@ -4,7 +4,7 @@ import { demoOrganizations, getOrganizationListings, getOrganizationPortfolios }
 import { type PartnerWorkspaceScope, replacePartnerWorkspaceScope, writePartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 
 type WorkspaceScopeSwitcherProps = { scope: PartnerWorkspaceScope; accessMode: "admin" | "partner"; organizationName?: string };
-const ADMIN_WORKSPACE_URL = import.meta.env.VITE_ADMIN_WORKSPACE_URL || "https://downtown-perks-backend.vercel.app/admin";
+const ADMIN_WORKSPACE_URL = import.meta.env.VITE_ADMIN_WORKSPACE_URL || "https://downtown-perks-platform.vercel.app/admin";
 
 export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName }: WorkspaceScopeSwitcherProps) {
   const location = useLocation();
