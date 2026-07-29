@@ -1,3 +1,4 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -61,20 +62,26 @@ export function AdminScopeSwitcher() {
   const label = listing?.name || portfolio?.name || organization?.name || "All organizations";
   return (
     <section className="dp-admin-scope" aria-label="Administrator organization scope">
-      <button type="button" className="dp-admin-scope__trigger" onClick={() => setOpen(true)} disabled={status !== "ready"}>
-        <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
-      </button>
-      {open ? <div className="dp-admin-scope__layer">
-        <button type="button" className="dp-admin-scope__backdrop" aria-label="Close organization selector" onClick={() => setOpen(false)} />
-        <section className="dp-admin-scope__sheet" role="dialog" aria-modal="true" aria-labelledby="admin-scope-title">
-          <header><div><p>Admin Workspace</p><h2 id="admin-scope-title">Choose scope</h2></div><button type="button" onClick={() => setOpen(false)} aria-label="Close organization selector"><X aria-hidden="true" /></button></header>
-          <label><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search organization, portfolio, or listing" autoFocus /></label>
-          <div className="dp-admin-scope__results">
-            {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>All organizations</strong><small>Platform-wide view</small></span></button> : null}
-            {results.map((item) => <button type="button" key={`${item.type}-${item.id}`} onClick={() => selectScope({ organizationId: item.organizationId, portfolioId: item.portfolioId, listingId: item.listingId })}><span><em>{item.type}</em><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}
-          </div>
-        </section>
-      </div> : null}
+      <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+        <DialogPrimitive.Trigger asChild>
+          <button type="button" className="dp-admin-scope__trigger" disabled={status !== "ready"}>
+            <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
+          </button>
+        </DialogPrimitive.Trigger>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="dp-admin-scope__backdrop" />
+          <DialogPrimitive.Content className="dp-admin-scope__sheet" aria-describedby={undefined}>
+            <header><div><p>Admin Workspace</p><DialogPrimitive.Title>Choose scope</DialogPrimitive.Title></div>
+              <DialogPrimitive.Close aria-label="Close organization selector"><X aria-hidden="true" /></DialogPrimitive.Close>
+            </header>
+            <label className="dp-admin-scope__search"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search organization, portfolio, or listing" autoFocus /></label>
+            <div className="dp-admin-scope__results">
+              {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>All organizations</strong><small>Platform-wide view</small></span></button> : null}
+              {results.map((item) => <button type="button" key={`${item.type}-${item.id}`} onClick={() => selectScope({ organizationId: item.organizationId, portfolioId: item.portfolioId, listingId: item.listingId })}><span><em>{item.type}</em><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}
+            </div>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     </section>
   );
 }
