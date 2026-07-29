@@ -22,7 +22,7 @@ assert.doesNotMatch(mapSource.slice(mapSource.indexOf("function HappyHourDetails
 assert.match(mapSource, /if \(!isVerifiedOffer\)[\s\S]*?title="Venue details"/, "unverified Banger's content must render as neutral venue details");
 assert.match(mapSource, /title=\{isBangersVenue\(place\) \? "Verified resident offer"/, "Banger's perk language must be explicitly verified");
 
-assert.match(panelCss, /\.dp-map-panel-content\.dp-destination-content\.dp-detail-content[\s\S]*?display: block !important/, "the visual layout must follow DOM order instead of inherited flex order values");
+assert.match(panelCss, /#root#root#root#root[\s\S]*?\.dp-map-panel-content\.dp-destination-content\.dp-detail-content[\s\S]*?display: block !important/, "the visual layout must follow DOM order instead of inherited flex order values");
 assert.match(panelCss, /#dp-active-map-drawer\.dp-map-detail-sheet[\s\S]*?overflow: hidden !important/, "the drawer shell must clip to its viewport");
 assert.match(panelCss, /\.dp-map-detail-scroll[\s\S]*?min-height: 0 !important;[\s\S]*?flex: 1 1 auto !important;[\s\S]*?overflow-y: auto !important/, "the content viewport must be the single scroll owner");
 assert.match(panelCss, /@media \(min-width: 768px\)[\s\S]*?inset: 0 0 0 auto !important;[\s\S]*?width: min\(460px, 42vw\) !important/, "desktop must use a standard right-side detail panel");
