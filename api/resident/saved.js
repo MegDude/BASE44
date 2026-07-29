@@ -5,27 +5,8 @@ import {
   TransactionApiError,
 } from "../../src/lib/api/transactionAuth.js";
 
-const SAVED_ENTITY_RPC_NAMES = ["dp_set_resident_saved_entity", "set_resident_saved_entity"];
-
 function clean(value, limit = 240) {
   return String(value || "").trim().slice(0, limit);
-}
-
-function isMissingRpc(error) {
-  return error?.code === "PGRST202" || /could not find the function/i.test(String(error?.message || ""));
-}
-
-async function setResidentSavedEntity(database, parameters) {
-  let lastError = null;
-
-  for (const rpcName of SAVED_ENTITY_RPC_NAMES) {
-    const result = await database.rpc(rpcName, parameters);
-    if (!result.error) return result;
-    lastError = result.error;
-    if (!isMissingRpc(result.error)) return result;
-  }
-
-  return { data: null, error: lastError };
 }
 
 export default async function handler(req, res) {
@@ -33,7 +14,7 @@ export default async function handler(req, res) {
 
   try {
     const database = requireTransactionDatabase();
-    const { profile } = await requireResidentProfile(req);
+    const { user, profile } = await requireResidentProfile(req);
 
     if (req.method === "GET") {
       const { data, error } = await database
@@ -53,12 +34,17 @@ export default async function handler(req, res) {
     const sourceContext = req.body?.sourceContext && typeof req.body.sourceContext === "object" ? req.body.sourceContext : {};
     if (!entityType || !entityId) throw new TransactionApiError(400, "ENTITY_REQUIRED", "Choose an item to save.");
 
-    const { data, error } = await setResidentSavedEntity(database, {
-      p_resident_profile_id: profile.id,
+    const idempotencyKey = clean(req.headers?.["idempotency-key"] || req.body?.idempotencyKey, 200);
+    if (idempotencyKey.length < 8) throw new TransactionApiError(400, "IDEMPOTENCY_KEY_REQUIRED", "A valid request key is required.");
+
+    const { data, error } = await database.rpc("dp_set_resident_saved_entity", {
+      p_auth_user_id: user.id,
       p_entity_type: entityType,
       p_entity_id: entityId,
       p_saved: saved,
+      p_idempotency_key: idempotencyKey,
       p_source_surface: sourceSurface,
+      p_source_route: clean(req.body?.sourceRoute, 1000) || null,
       p_source_context: sourceContext,
     });
     if (error) throw error;

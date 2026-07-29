@@ -47,9 +47,10 @@ requireMatch('admin studio', adminStudio, /to="\/partners\/sign-in"/, 'anonymous
 requireMatch('admin studio', adminStudio, /to="\/partner-workspace\/overview"/, 'non-admin users are not returned to the partner workspace');
 
 requireMatch('resident saved API', savedApi, /requireResidentProfile\(req\)/, 'resident identity is not derived from authentication');
-requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'deployed saved-entity RPC compatibility is missing');
-requireMatch('resident saved API', savedApi, /set_resident_saved_entity/, 'migration saved-entity RPC compatibility is missing');
-requireMatch('resident saved API', savedApi, /PGRST202/, 'missing-RPC fallback is not constrained to PostgREST schema errors');
+requireMatch('resident saved API', savedApi, /dp_set_resident_saved_entity/, 'canonical saved-entity RPC is missing');
+requireMatch('resident saved API', savedApi, /p_auth_user_id:\s*user\.id/, 'saved-entity RPC does not derive the auth user server-side');
+requireMatch('resident saved API', savedApi, /p_idempotency_key:\s*idempotencyKey/, 'saved-entity RPC does not persist idempotency');
+if (/["']set_resident_saved_entity["']/.test(savedApi)) fail('resident saved API', 'obsolete unprefixed saved-entity RPC fallback remains');
 
 requireMatch('detail panel', panel, /createPortal\(actions,\s*drawerHost\)/, 'canonical actions are not mounted in the drawer shell footer');
 requireMatch('detail panel', panel, /aria-pressed=\{saved\}/, 'save state is not accessible');

@@ -67,7 +67,7 @@ import { resolveMapEntityAlias, resolveMapEntityFromCollection, resolvePropertyL
 import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../lib/map/entityImageResolver";
 import { resolveEntityPanelArchetype, resolveEntityPanelContent } from "../lib/map/entityPanelArchetypes";
 import { resolveEntityPin } from "../lib/map/entityPinResolver";
-import { getCanonicalMapGlyph, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
+import { getCanonicalMapGlyph, LEGENDS_PIN_ASSET, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
 import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from "@/utils/nearbyRecommendations";
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
@@ -236,7 +236,7 @@ const DAA_CIVIC_VIDEOS = [
   },
 ];
 const LEGENDS_BRAND_LINE = "Legends Real Estate";
-const LEGENDS_PIN_LOGO = "/pins/downtown-perks/legends-logo.png";
+const LEGENDS_PIN_LOGO = LEGENDS_PIN_ASSET;
 const LEGENDS_PIN_ALT = "Legends Real Estate logo";
 const MAP_DRAWER_SURFACE_STYLE = {
   backgroundColor: "rgba(255, 255, 255, 0.97)",
@@ -526,6 +526,17 @@ function luxuryPresenceListingToPlace(listing) {
 const luxuryPresenceListingPlaces = luxuryPresenceListings
   .map(luxuryPresenceListingToPlace)
   .filter(Boolean);
+
+function resolveCanonicalLegendsDirectoryPlaces(places = []) {
+  return dedupeMapPinPlaces(places).filter((place) => {
+    const pin = resolveEntityPin(place);
+    const listing = getResolvedLegendsListing(place);
+    const profile = getLegendsResidentialProfileForPlace(place);
+    return pin?.label === "Legends" && Boolean(
+      listing || profile || isLegendsMapPlace(place) || isLegendsListingLike(place)
+    );
+  }).slice(0, 80);
+}
 
 const FILTER_MATCHERS = {
   Perks: ["offer", "perk", "deal", "discount", "reward", "card"],
@@ -15222,17 +15233,10 @@ export default function MapPage() {
     : isResidentEventsDrawer
       ? discoverDisplayPlaces.slice(0, 80)
       : previewPlaces;
-  const legendsDirectoryPlaces = isLegendsDirectoryLayer
-    ? discoverDisplayPlaces
-      .filter((place) =>
-        isRentalEntity(place) ||
-        getLegendsResidentialProfileForPlace(place) ||
-        isLegendsMapPlace(place) ||
-        isLegendsListingLike(place) ||
-        Boolean(getResolvedLegendsListing(place))
-      )
-      .slice(0, 80)
-    : [];
+  const legendsDirectoryPlaces = useMemo(
+    () => isLegendsDirectoryLayer ? resolveCanonicalLegendsDirectoryPlaces(discoverDisplayPlaces) : [],
+    [discoverDisplayPlaces, isLegendsDirectoryLayer],
+  );
   const hiddenPreviewCount = Math.max(0, Math.min(discoverDisplayPlaces.length, 12) - previewPlaces.length);
   const hiddenSavedPreviewCount = Math.max(0, Math.min(residentSavedPlaces.length, 12) - savedDrawerPlaces.length);
   const searchPlaceholder = urlState.mode === "partner"
@@ -18410,8 +18414,7 @@ export default function MapPage() {
         </div>
       )}
 
-      <AnimatePresence>
-        {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
+      {urlState.mode === "resident" && urlState.tab === "map" && activeBottomTab === "perks" && !selected && (
           <ActivePerksSheet
             items={activePerkItems}
             drawerState={activePerksDrawerState}
@@ -18424,8 +18427,7 @@ export default function MapPage() {
             onRedeem={(item) => openResidentQrModal(item.place, "use_perk", "active_perks_sheet")}
             onSave={(item) => toggleSaved(item.place)}
           />
-        )}
-      </AnimatePresence>
+      )}
 
       <AnimatePresence>
         {(urlState.tab === "map" || Boolean(urlState.panelTab)) && (
@@ -18523,7 +18525,7 @@ export default function MapPage() {
                     Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
                   </span>
                   <strong className="dp-map-directory-count">
-                    {legendsDirectoryPlaces.length || discoverDisplayPlaces.length} active listings
+                    {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "listing" : "listings"}
                   </strong>
                 </section>
                 <div className="dp-map-directory-list">
