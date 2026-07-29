@@ -23,6 +23,8 @@ assert.match(mapSource, /aria-label="Home"[\s\S]*?aria-label="Map"[\s\S]*?aria-l
 assert.match(mapSource, /\["perks", "events", "saved"\]\.includes\(urlState\.tab\)\s*\? urlState\.tab/, "canonical resident panel routes must hydrate the active tab");
 assert.match(mapSource, /\["map", "perks"\]\.includes\(urlState\.tab\) && activeBottomTab === "perks"/, "the canonical Perks route must render the active perks sheet");
 assert.match(mapSource, /urlState\.tab === "perks" && activeBottomTab === "perks"/, "the Perks tab must expose its selected state on the canonical route");
+assert.match(mapSource, /const showBottomNavigation = !urlState\.embed && \([\s\S]*?\["perks", "events", "saved"\]\.includes\(urlState\.tab\)[\s\S]*?Boolean\(urlState\.panelTab\)[\s\S]*?\);/, "canonical resident panel routes must keep the bottom navigation mounted");
+assert.match(mapSource, /if \(urlState\.tab === "perks" && activeBottomTab === "perks" && !selectedId\)/, "the Perks drawer toggle must only short-circuit on the canonical Perks route");
 
 assert.match(sheetSource, /<NativeDrawerShell/);
 assert.match(shellSource, /role="dialog"/);
