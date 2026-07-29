@@ -13264,9 +13264,13 @@ function GoogleMapCanvas({
     const collectionStopIds = new Set((collectionRoute?.stops || []).map((stop) => stop.id));
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
+    const markerPositionKey = (position) => `${Number(position?.lat).toFixed(7)}:${Number(position?.lng).toFixed(7)}`;
     const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
+      const nextPositionKey = markerPositionKey(position);
+      const positionChanged = marker.__dpLastPositionKey !== nextPositionKey;
       if (canUseAdvancedMarkers && "content" in marker) {
-        marker.position = position;
+        if (positionChanged) marker.position = position;
+        marker.__dpLastPositionKey = nextPositionKey;
         // Keep the provider-owned marker root stable. Replacing AdvancedMarker
         // content on every selection/filter pass can momentarily detach the
         // projected element while Google Maps is moving it.
@@ -13276,7 +13280,8 @@ function GoogleMapCanvas({
         marker.map = map;
         return;
       }
-      marker.setPosition?.(position);
+      if (positionChanged) marker.setPosition?.(position);
+      marker.__dpLastPositionKey = nextPositionKey;
       marker.setTitle?.(title);
       marker.setIcon?.(icon);
       marker.setZIndex?.(zIndex);
@@ -13330,6 +13335,7 @@ function GoogleMapCanvas({
             onClick: () => openCluster(entry.currentItem),
             preferAdvanced: canUseAdvancedMarkers,
           });
+          if (entry.marker) entry.marker.__dpLastPositionKey = markerPositionKey(markerOptions.position);
           registry.set(key, entry);
         }
         return;
@@ -13406,6 +13412,7 @@ function GoogleMapCanvas({
           },
           preferAdvanced: canUseAdvancedMarkers,
         });
+        if (entry.marker) entry.marker.__dpLastPositionKey = markerPositionKey(markerOptions.position);
         registry.set(key, entry);
       }
     });
