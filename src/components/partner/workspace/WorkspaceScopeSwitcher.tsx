@@ -142,9 +142,9 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName }: 
           <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
             People & access
           </Link>
-          <Link className="dp-workspace-scope__admin-link" to={replacePartnerWorkspaceScope("/partner-workspace/overview", {})}>
+          <button className="dp-workspace-scope__admin-link" type="button" onClick={() => selectOrganization("")}>
             Platform overview
-          </Link>
+          </button>
         </div>
       ) : null}
       {accessMode === "admin" && scopeMenuOpen ? (
