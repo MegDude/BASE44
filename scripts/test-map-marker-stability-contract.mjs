@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 const markerRecordSource = await readFile(new URL("../src/lib/map/canonicalMarkerRecords.ts", import.meta.url), "utf8");
 const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
 const leafletShellSource = await readFile(new URL("../src/components/map/unified/UnifiedMapShell.jsx", import.meta.url), "utf8");
+const sharedLeafletShellSource = await readFile(new URL("../src/components/map/MapShell.jsx", import.meta.url), "utf8");
 const searchHookSource = await readFile(new URL("../src/hooks/useSearchDrivenMapEntities.js", import.meta.url), "utf8");
 
 assert.match(markerRecordSource, /export type CanonicalMarkerRecord = Readonly<\{[\s\S]*?markerId: string;[\s\S]*?entityId: string;[\s\S]*?latitude: number;[\s\S]*?longitude: number;/, "canonical marker record shape is missing required immutable fields");
@@ -29,6 +30,9 @@ assert.doesNotMatch(googleMarkerLifecycleSource, /key=\{index\}|key=\{.*Date\.no
 
 assert.doesNotMatch(leafletShellSource, /flyTo\(|<MapFlyTo\b/, "Leaflet map shell must not fly after ordinary center state updates");
 assert.match(leafletShellSource, /key=\{item\.markerId \|\| item\.id\}/, "Leaflet markers must prefer stable marker IDs over list indexes or transient state");
+assert.doesNotMatch(sharedLeafletShellSource, /flyTo\(|<MapFlyTo\b/, "Shared Leaflet map shell must not move the camera after selection");
+assert.match(sharedLeafletShellSource, /const markerId = item\.markerId \|\| item\.id;/, "Shared Leaflet markers must resolve a stable marker ID");
+assert.match(sharedLeafletShellSource, /key=\{markerId\}/, "Shared Leaflet markers must use the stable marker ID as their React key");
 assert.match(searchHookSource, /activeRequestRef\.current\.key !== queryKey/, "late search responses must be rejected after async catalog work");
 
 console.log("Map marker stability contract checks passed.");

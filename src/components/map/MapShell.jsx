@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
-import { normalizeCoordinates, filterValidMapItems, getValidLatLng, isValidLatLngArray } from "@/lib/mapCoordinates";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { normalizeCoordinates, filterValidMapItems, getValidLatLng } from "@/lib/mapCoordinates";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -18,20 +17,6 @@ const AUSTIN_CENTER = [30.267, -97.743];
  * Replaces all page-specific map implementations
  * Guarantees coordinate safety through lib/mapCoordinates validation
  */
-
-/**
- * MapFlyTo — Coordinate-safe map centering
- * Only flies to valid coordinates; silently ignores invalid ones
- */
-function MapFlyTo({ position }) {
-  const map = useMap();
-  useEffect(() => {
-    if (isValidLatLngArray(position)) {
-      map.flyTo(position, Math.max(map.getZoom(), 14), { duration: 0.55 });
-    }
-  }, [position, map]);
-  return null;
-}
 
 /**
  * @typedef {Object} MapShellProps
@@ -76,9 +61,9 @@ export default function MapShell({
   // This is the only path items take to the map
   const validItems = filterValidMapItems(items).map(normalizeCoordinates);
   
-  // CRITICAL: Retrieve flyTarget through getValidLatLng only
-  // Returns null if selected is missing or has invalid coordinates
-  const flyTarget = getValidLatLng(selected);
+  // Selection is a panel concern. It must never change the map camera or
+  // recreate markers. Prefer the stable marker ID when an adapter provides it.
+  const selectedMarkerId = selected?.markerId || selected?.id || "";
 
   return (
     <div className={`${className} relative`}>
@@ -105,19 +90,19 @@ export default function MapShell({
           detectRetina
           crossOrigin
         />
-        <MapFlyTo position={flyTarget} />
-
         {validItems.map(item => {
           // CRITICAL: Every marker gets re-validated through getValidLatLng
           // This prevents any coordinate from reaching Marker without validation
           const coords = getValidLatLng(item);
           if (!coords) return null; // Silent fail for invalid coordinates
           
-          const icon = markerIcon ? markerIcon(item, selected?.id === item.id) : undefined;
+          const markerId = item.markerId || item.id;
+          const isSelected = Boolean(selectedMarkerId && markerId === selectedMarkerId);
+          const icon = markerIcon ? markerIcon(item, isSelected) : undefined;
           
           return (
             <Marker
-              key={item.id}
+              key={markerId}
               position={coords}
               icon={icon}
               eventHandlers={{ click: () => onSelect(item) }}
