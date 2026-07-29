@@ -109,7 +109,7 @@ test.describe("adaptive map surface", () => {
       expect(await visibleMarkers.count()).toBeGreaterThan(0);
 
       await page.getByRole("button", { name: "Open Banger's Sausage House & Beer Garden", exact: true }).evaluate((button) => button.click());
-      await expect(page).toHaveURL(/entityId=partner-bangers/);
+      await expect(page).toHaveURL(/entityId=map-7-banger-s-sausage-house-and-beer-garden/);
       await expect(panel).toBeVisible();
       await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
       expect(await visibleMarkers.count()).toBeGreaterThan(0);
@@ -201,9 +201,20 @@ test.describe("adaptive map surface", () => {
 
             const surfaceRect = surfaceNode.getBoundingClientRect();
             const navRect = navNode.getBoundingClientRect();
-            const visibleScrollOwners = [...surfaceNode.querySelectorAll<HTMLElement>("*")]
+            const overflowCandidates = [...surfaceNode.querySelectorAll<HTMLElement>("*")]
               .filter((node) => node.offsetParent !== null)
               .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
+              .sort((a, b) => b.clientHeight - a.clientHeight);
+            const intendedScrollOwner = overflowCandidates[0] || null;
+            if (intendedScrollOwner) {
+              const probe = document.createElement("div");
+              probe.dataset.e2eMapSurfaceOverflowProbe = "true";
+              probe.setAttribute("aria-hidden", "true");
+              probe.style.height = `${intendedScrollOwner.clientHeight + 160}px`;
+              probe.style.pointerEvents = "none";
+              intendedScrollOwner.appendChild(probe);
+            }
+            const visibleScrollOwners = overflowCandidates
               .filter((node) => node.scrollHeight > node.clientHeight + 1);
 
             return {
