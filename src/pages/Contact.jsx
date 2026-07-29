@@ -243,11 +243,11 @@ function Field({ label, type = "text", value, error, onChange, required = false 
 }
 
 function SelectField({ label, value, options, onChange }) {
-  const id = `contact-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  const fieldId = `contact-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
-    <label className="dp-contact-field" htmlFor={id}>
+    <label className="dp-contact-field" htmlFor={fieldId}>
       <span>{label}</span>
-      <select id={id} value={value} onChange={(event) => onChange(event.target.value)}>
+      <select id={fieldId} value={value} onChange={(event) => onChange(event.target.value)}>
         {options.map(([optionValue, labelText]) => (
           <option key={optionValue} value={optionValue}>{labelText}</option>
         ))}

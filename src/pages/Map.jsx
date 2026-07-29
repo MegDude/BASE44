@@ -11211,7 +11211,7 @@ function ResidentDrawerActions({
   legendsListing,
   onRsvp,
   onShowCard,
-  onAskMap,
+  onContact,
   onSave,
   onTrackAction,
 }) {
@@ -17369,7 +17369,7 @@ export default function MapPage() {
 
   async function runSearch(event) {
     event?.preventDefault();
-    const query = search.trim() || searchConsoleModeConfig.placeholder;
+    const query = search.trim() || searchPlaceholder;
     const parsedIntent = parseMapIntent(query, urlState.mode);
     const nextFilter = resolveFilterForIntent(query, urlState.mode);
     const routeCollection = getMapCollectionForQuery(query);
@@ -17680,7 +17680,7 @@ export default function MapPage() {
     const nextFilter = beginSearchIntentTransition(filter);
     setActiveBottomTab("map");
     setConsoleCollapsed(true);
-    setPanelMode("closed");
+    setNativeDrawerState("collapsed");
     setIntelOpen(false);
     setFiltersOpen(false);
     setSecondaryRailOpen(false);

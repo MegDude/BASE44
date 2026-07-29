@@ -1,5 +1,7 @@
 import { createSign } from "node:crypto";
+import { Buffer } from "node:buffer";
 
+const env = globalThis.process?.env || {};
 const SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets";
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 
@@ -12,14 +14,14 @@ function base64Url(input) {
 }
 
 function getPrivateKey() {
-  return process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  return env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, "\n");
 }
 
 function getSheetsConfig() {
-  const clientEmail = process.env.GOOGLE_SHEETS_CLIENT_EMAIL;
+  const clientEmail = env.GOOGLE_SHEETS_CLIENT_EMAIL;
   const privateKey = getPrivateKey();
-  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
-  const tabName = process.env.GOOGLE_SHEETS_CONTACT_TAB || "Contact Leads";
+  const spreadsheetId = env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const tabName = env.GOOGLE_SHEETS_CONTACT_TAB || "Contact Leads";
 
   if (!clientEmail || !privateKey || !spreadsheetId) {
     throw new Error("Google Sheets environment variables are not configured");

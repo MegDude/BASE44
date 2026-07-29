@@ -1,3 +1,4 @@
+const env = globalThis.process?.env || {};
 const DEFAULT_BASE_URL = "https://api.luxurypresence.com/cms/v1";
 
 export class LuxuryPresenceApiError extends Error {
@@ -24,8 +25,8 @@ function buildQuery(params = {}) {
 }
 
 export async function luxuryPresenceRequest(endpoint, options = {}) {
-  const baseUrl = process.env.LUXURY_PRESENCE_API_BASE_URL || process.env.LUXURY_PRESENCE_API_BASE || DEFAULT_BASE_URL;
-  const apiKey = process.env.LUXURY_PRESENCE_API_KEY;
+  const baseUrl = env.LUXURY_PRESENCE_API_BASE_URL || env.LUXURY_PRESENCE_API_BASE || DEFAULT_BASE_URL;
+  const apiKey = env.LUXURY_PRESENCE_API_KEY;
 
   if (!apiKey) {
     throw new LuxuryPresenceApiError("Luxury Presence API key is not configured", { status: 503 });

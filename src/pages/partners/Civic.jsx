@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { TrendingUp } from 'lucide-react';
 import PartnerHero from '@/components/partner/PartnerHero';
 import PlanningForm from '@/components/partner/PlanningForm';
 import PartnerCTASection from '@/components/partner/PartnerCTASection';

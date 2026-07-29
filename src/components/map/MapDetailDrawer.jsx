@@ -18,6 +18,8 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
   const { history, addSaved, removeSaved } = useResidentStore();
   const isSaved = history.saved.includes(entity.id);
   const pin = resolveEntityPin(entity);
+  const heroImage = entity?.heroImage || entity?.image || entity?.image_url || entity?.raw?.heroImage || entity?.raw?.image || entity?.raw?.image_url || "";
+  const heroAlt = entity?.name || entity?.title || "Map detail";
 
   const handleSave = () => {
     if (isSaved) {
