@@ -51,10 +51,10 @@ export default function About() {
             className="dp-about-hero-copy"
           >
             <p className="dp-editorial-context">About Downtown Perks</p>
-            <h1>Where you live changes how you live.</h1>
-            <p className="dp-about-kicker">Downtown living is about who is close by, not just what is close by.</p>
+            <h1>Downtown should feel easier to use.</h1>
+            <p className="dp-about-kicker">A resident-first layer for deciding where to go, what to use, and what is worth putting on the calendar.</p>
             <p>
-              Downtown Perks connects residents to the places, people, and small reasons to step outside that make the city feel easier to know.
+              Downtown Perks brings nearby places, verified offers, and useful local plans into one clear view. It gives residents a faster route to a good next step and gives partners a better way to be present when that decision is being made.
             </p>
             <div className="dp-about-action-row">
               <Link to="/map?mode=resident&tab=map" className="dp-about-primary-cta dp-perk-cta">
@@ -81,18 +81,18 @@ export default function About() {
 
       <EditorialSection
         eyebrow="Why We Built It"
-        title="A good day usually has people in it."
-        copy="Most residents spend months comparing the apartment checklist: floor plan, finishes, price per square foot. Almost nobody slows down long enough to ask what it feels like to come home, who they might run into, or whether the building gives them a reason to step outside. That is not fluff. It is the day-to-day. The people around you shape your energy, your routine, and whether downtown starts to feel like home."
+        title="A useful neighborhood starts with a clear next step."
+        copy="People do not need another feed to manage. They need a simple way to see what is nearby, what is on, and what is actually worth their time. Downtown Perks makes those decisions lighter without turning local life into a chore."
       >
         <p className="dp-about-note">
-          It is whether you bump into someone at coffee, find a plan without twenty texts, or feel like your block knows you a little bit.
+          Find a good coffee, save an offer for later, put an event on the calendar, or leave the house with a plan that did not take twenty minutes to make.
         </p>
       </EditorialSection>
 
       <EditorialSection
         eyebrow="Product Philosophy"
-        title="Nearby life matters more than a feature grid."
-        copy="Downtown Perks keeps everyday decisions close: the places people come back to, the perks they want to remember, the events worth saving, and the neighborhood texture around where someone lives."
+        title="The right information, at the right moment."
+        copy="The experience keeps daily choices close: places people return to, offers worth remembering, events that belong on the calendar, and the context around where someone lives or visits."
       >
         <ul className="dp-about-compact-list">
           {philosophyItems.map((item) => <li key={item}>{item}</li>)}
@@ -101,8 +101,8 @@ export default function About() {
 
       <EditorialSection
         eyebrow="How It Helps"
-        title="The real question is how the place lives."
-        copy="People still want their space. They also want a low-pressure way to be around others when the mood hits. A building can photograph beautifully and still feel flat; the better places give people small reasons to step out, run into people, and come back again."
+        title="Built for residents. Useful to partners."
+        copy="Resident value comes first. When people can decide faster and act with confidence, the buildings, local businesses, and civic partners around them get a clearer, more useful connection to downtown life."
       >
           <div className="dp-question-stack">
             {homeQuestions.map((question) => (
@@ -112,9 +112,9 @@ export default function About() {
       </EditorialSection>
 
       <EditorialSection
-        eyebrow="Built In Austin"
-        title="More charm than a biscuit with honey."
-        copy={'For the folks who still call it Town Lake, know the shortcut through the alley off South Congress, plan their week around happy hour and live music, and understand that "y\'all" can be singular, plural, and a whole mood. Think of it like a screened-in porch for your city: easy to use, easy to come back to, and ready for rooftop nights, taco runs, tailgates, and everything in between.'}
+        eyebrow="Built For Downtown Austin"
+        title="Local, without the scavenger hunt."
+        copy="Downtown Perks is designed for the real rhythm of the city: a plan after work, a place that is open now, a resident benefit worth using, and a quick way back to the places that make a week better."
         action={{ to: "/map?mode=resident&tab=map", label: "See what is nearby" }}
       />
 
