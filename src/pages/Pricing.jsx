@@ -349,7 +349,7 @@ export default function PricingPage() {
             <div className="dp-pricing-calculator-controls">
               <fieldset className="dp-pricing-decision" data-step="1">
                 <legend><span>1</span> Who are you?</legend>
-                <div className="dp-pricing-choice-grid dp-pricing-partner-type-grid">
+                <div className="dp-pricing-role-list">
                   {PARTNER_TYPES.map((type) => (
                     <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
                       <strong>{partnerCopy[type].label}</strong>
