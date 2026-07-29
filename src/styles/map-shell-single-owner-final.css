@@ -49,3 +49,79 @@
     height: 100dvh !important;
   }
 }
+
+/* Resident/partner bottom tab controls: final visual owner.
+   Geometry is shared, while these rules prevent older global tab/button styles
+   from turning the resident tabs into cramped text links or filled capsules. */
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(var(--dp-bottom-nav-count, 5), minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 5px 0 max(6px, env(safe-area-inset-bottom, 0px)) !important;
+    border-top: 1px solid rgba(11, 31, 51, 0.10) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(18px) saturate(1.04) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.04) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) {
+    position: relative !important;
+    display: grid !important;
+    grid-template-rows: 22px 14px !important;
+    align-content: center !important;
+    justify-items: center !important;
+    gap: 2px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 54px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 5px 2px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: rgba(11, 31, 51, 0.58) !important;
+    box-shadow: none !important;
+    font: 650 10px/1.05 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    letter-spacing: 0 !important;
+    text-decoration: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a)::before,
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a)::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) :is(svg, .lucide) {
+    width: 19px !important;
+    height: 19px !important;
+    color: currentColor !important;
+    stroke-width: 1.9 !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav .dp-native-tab-label,
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a) span:not(.dp-nav-activity-badge) {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: currentColor !important;
+    text-align: center !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-selected="true"], [aria-current="page"], .is-active) {
+    background: transparent !important;
+    color: #0b1f33 !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav > :is(button, a):is([aria-pressed="true"], [aria-selected="true"], [aria-current="page"], .is-active) :is(svg, .lucide) {
+    color: #c8a96a !important;
+    stroke-width: 2.25 !important;
+  }
+}
