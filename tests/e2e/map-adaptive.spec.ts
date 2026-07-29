@@ -173,9 +173,21 @@ test.describe("adaptive map surface", () => {
   }
 
   const mapSurfaceFixtures = [
-    { name: "resident browse", url: "/map?mode=resident&tab=events&filter=Events" },
-    { name: "resident card", url: "/map?mode=resident&tab=pass" },
-    { name: "partner scanner", url: "/map?mode=partner&tab=pass" },
+    {
+      name: "resident browse",
+      url: "/map?mode=resident&tab=events&filter=Events",
+      scrollSelector: ".dp-resident-tab-panel-list",
+    },
+    {
+      name: "resident card",
+      url: "/map?mode=resident&tab=pass",
+      scrollSelector: ".dp-map-sheet-scroll",
+    },
+    {
+      name: "partner scanner",
+      url: "/map?mode=partner&tab=pass",
+      scrollSelector: ".dp-pass-panel-body",
+    },
   ];
 
   for (const viewport of [
@@ -194,27 +206,25 @@ test.describe("adaptive map surface", () => {
           await expect(surface).toBeVisible();
           await expect(nav).toBeVisible();
 
-          const system = await surface.evaluate((surfaceNode) => {
+          const system = await surface.evaluate((surfaceNode, scrollSelector) => {
             const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
             const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
-            if (!navNode || !navShell) return null;
+            const intendedScrollOwner = surfaceNode.querySelector<HTMLElement>(scrollSelector);
+            if (!navNode || !navShell || !intendedScrollOwner) return null;
 
             const surfaceRect = surfaceNode.getBoundingClientRect();
             const navRect = navNode.getBoundingClientRect();
-            const overflowCandidates = [...surfaceNode.querySelectorAll<HTMLElement>("*")]
+            const probe = document.createElement("div");
+            probe.dataset.e2eMapSurfaceOverflowProbe = "true";
+            probe.setAttribute("aria-hidden", "true");
+            probe.style.height = `${intendedScrollOwner.clientHeight + 160}px`;
+            probe.style.pointerEvents = "none";
+            intendedScrollOwner.appendChild(probe);
+            intendedScrollOwner.scrollTop = 1;
+
+            const activeNestedScrollOwners = [...intendedScrollOwner.querySelectorAll<HTMLElement>("*")]
               .filter((node) => node.offsetParent !== null)
               .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
-              .sort((a, b) => b.clientHeight - a.clientHeight);
-            const intendedScrollOwner = overflowCandidates[0] || null;
-            if (intendedScrollOwner) {
-              const probe = document.createElement("div");
-              probe.dataset.e2eMapSurfaceOverflowProbe = "true";
-              probe.setAttribute("aria-hidden", "true");
-              probe.style.height = `${intendedScrollOwner.clientHeight + 160}px`;
-              probe.style.pointerEvents = "none";
-              intendedScrollOwner.appendChild(probe);
-            }
-            const visibleScrollOwners = overflowCandidates
               .filter((node) => node.scrollHeight > node.clientHeight + 1);
 
             return {
@@ -227,13 +237,15 @@ test.describe("adaptive map surface", () => {
               navBottom: navRect.bottom,
               navZIndex: Number.parseInt(getComputedStyle(navShell).zIndex, 10),
               surfaceZIndex: Number.parseInt(getComputedStyle(surfaceNode).zIndex, 10),
-              verticalScrollOwners: visibleScrollOwners.length,
-              scrollOwnerOverscroll: visibleScrollOwners[0]
-                ? getComputedStyle(visibleScrollOwners[0]).overscrollBehaviorY
-                : null,
+              verticalScrollOwners: 1 + activeNestedScrollOwners.length,
+              scrollOwnerOverflowY: getComputedStyle(intendedScrollOwner).overflowY,
+              scrollOwnerOverscroll: getComputedStyle(intendedScrollOwner).overscrollBehaviorY,
+              scrollOwnerScrollHeight: intendedScrollOwner.scrollHeight,
+              scrollOwnerClientHeight: intendedScrollOwner.clientHeight,
+              scrollOwnerScrollTop: intendedScrollOwner.scrollTop,
               bodyOverflowY: getComputedStyle(document.body).overflowY,
             };
-          });
+          }, fixture.scrollSelector);
 
           expect(system).not.toBeNull();
           expect(system?.surfacePosition).toBe("fixed");
@@ -243,7 +255,10 @@ test.describe("adaptive map surface", () => {
           expect(system?.surfaceLeft || 0).toBeCloseTo(viewport.width - (system?.surfaceRight || viewport.width), 0);
           expect(system?.navZIndex || 0).toBeGreaterThan(system?.surfaceZIndex || 0);
           expect(system?.verticalScrollOwners).toBe(1);
+          expect(system?.scrollOwnerOverflowY).toBe("auto");
           expect(system?.scrollOwnerOverscroll).toBe("contain");
+          expect(system?.scrollOwnerScrollHeight || 0).toBeGreaterThan(system?.scrollOwnerClientHeight || 0);
+          expect(system?.scrollOwnerScrollTop || 0).toBeGreaterThan(0);
           expect(system?.bodyOverflowY).not.toBe("auto");
         });
       }
@@ -300,10 +315,12 @@ test.describe("adaptive map surface", () => {
             const titleRect = titleNode.getBoundingClientRect();
             const followingRect = followingCopy?.getBoundingClientRect() || { top: Number.POSITIVE_INFINITY };
             const titleStyle = getComputedStyle(titleNode);
-            const nestedVerticalScrollOwners = [...drawerNode.querySelectorAll<HTMLElement>("*")]
-              .filter((node) => node !== scroll && node.offsetParent !== null)
+            const nestedVerticalScrollOwners = [...scroll.querySelectorAll<HTMLElement>("*")]
+              .filter((node) => node.offsetParent !== null)
               .filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY))
+              .filter((node) => node.scrollHeight > node.clientHeight + 1)
               .length;
+            scroll.scrollTop = 1;
 
             return {
               drawerLeft: drawerRect.left,
@@ -318,6 +335,7 @@ test.describe("adaptive map surface", () => {
               scrollOverflowY: getComputedStyle(scroll).overflowY,
               scrollHeight: scroll.scrollHeight,
               clientHeight: scroll.clientHeight,
+              scrollTop: scroll.scrollTop,
               nestedVerticalScrollOwners,
               bodyOverflowY: getComputedStyle(document.body).overflowY,
               titleBottom: titleRect.bottom,
@@ -339,6 +357,7 @@ test.describe("adaptive map surface", () => {
           expect(geometry?.navZIndex || 0).toBeGreaterThan(geometry?.drawerZIndex || 0);
           expect(geometry?.scrollOverflowY).toBe("auto");
           expect(geometry?.scrollHeight || 0).toBeGreaterThan(geometry?.clientHeight || 0);
+          expect(geometry?.scrollTop || 0).toBeGreaterThan(0);
           expect(geometry?.nestedVerticalScrollOwners).toBe(0);
           expect(geometry?.bodyOverflowY).not.toBe("auto");
           if (geometry?.followingTop !== null) {
