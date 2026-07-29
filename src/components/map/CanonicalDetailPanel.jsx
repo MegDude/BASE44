@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Bookmark, Check, ChevronRight } from "lucide-react";
+import { Bookmark, CalendarPlus, Check, ChevronRight } from "lucide-react";
 import { PerkIdentityHeader } from "@/components/map/PerkIdentityHeader";
 import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
@@ -150,6 +150,11 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
         ) : (
           <button type="button" className="dp-native-detail-panel__primary" disabled={model.primaryAction?.disabled} onClick={() => { onAnalytics?.("detail_primary_action_tapped", { actionLabel: model.primaryAction?.label }); onPrimaryAction?.(); }}>{model.primaryAction?.label}</button>
         )}
+        {model.calendarAction?.href ? (
+          <a className="dp-native-detail-panel__calendar" href={model.calendarAction.href} target="_blank" rel="noreferrer" onClick={() => onAnalytics?.("calendar_add_started", { entityType: model.entityType })}>
+            <CalendarPlus aria-hidden="true" /><span>{model.calendarAction.label || "Google Calendar"}</span>
+          </a>
+        ) : null}
       </DrawerActionFooter>
     </div>
   );
