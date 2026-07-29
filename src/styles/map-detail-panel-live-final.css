@@ -200,7 +200,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-entity-meta {
   text-transform: uppercase !important;
 }
 
-html body #root .dp-map-page #dp-active-map-drawer .dp-entity-title {
+html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
   display: block !important;
   width: 100% !important;
   min-width: 0 !important;
@@ -372,17 +372,19 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-partner-nearby-list small
 }
 
 @media (min-width: 768px) {
-  html body #root .dp-map-page #dp-active-map-drawer.dp-map-detail-sheet {
+  html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer.dp-map-detail-sheet {
     inset: auto 0 0 !important;
     width: min(760px, calc(100vw - 48px)) !important;
     max-width: 760px !important;
     height: auto !important;
+    min-height: 0 !important;
     max-height: min(82dvh, calc(100dvh - 72px)) !important;
     margin-inline: auto !important;
   }
 
-  html body #root .dp-map-page #dp-active-map-drawer .dp-entity-title {
+  html body #root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer#dp-active-map-drawer .dp-entity-title {
     font-size: clamp(28px, 2.5vw, 34px) !important;
+    line-height: 1.14 !important;
   }
 }
 
