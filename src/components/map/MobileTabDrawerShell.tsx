@@ -16,6 +16,15 @@ const states: DrawerSnapState[] = ["collapsed", "medium", "expanded", "full"];
 
 export default function MobileTabDrawerShell({ title, subtitle, state = "medium", actions, onClose, onBack, onStateChange, children }: Props) {
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const stateRef = useRef(state);
+  const closeRef = useRef(onClose);
+  const stateChangeRef = useRef(onStateChange);
+
+  useEffect(() => {
+    stateRef.current = state;
+    closeRef.current = onClose;
+    stateChangeRef.current = onStateChange;
+  }, [onClose, onStateChange, state]);
 
   useEffect(() => {
     previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -26,9 +35,9 @@ export default function MobileTabDrawerShell({ title, subtitle, state = "medium"
       if (event.key !== "Escape") return;
       event.preventDefault();
       event.stopPropagation();
-      if (state === "full") onStateChange?.("expanded");
-      else if (state === "expanded") onStateChange?.("medium");
-      else onClose();
+      if (stateRef.current === "full") stateChangeRef.current?.("expanded");
+      else if (stateRef.current === "expanded") stateChangeRef.current?.("medium");
+      else closeRef.current();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -37,7 +46,7 @@ export default function MobileTabDrawerShell({ title, subtitle, state = "medium"
       window.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus?.({ preventScroll: true });
     };
-  }, [onClose, onStateChange, state]);
+  }, []);
 
   return (
     <section className="dp-mobile-tab-drawer" data-drawer-state={state} role="dialog" aria-modal={state === "full"} aria-labelledby="dp-mobile-tab-title">
