@@ -48,3 +48,4 @@ inventory/generated/
 .env*.local
 billing-scan.txt
 billing-focus.txt
+base44/.app.jsonc
