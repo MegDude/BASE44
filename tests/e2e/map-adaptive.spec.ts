@@ -98,7 +98,9 @@ test.describe("adaptive map surface", () => {
       const scroll = drawer.querySelector<HTMLElement>(".dp-map-detail-scroll");
       const hero = drawer.querySelector<HTMLElement>(".dp-destination-hero");
       const identity = drawer.querySelector<HTMLElement>(".dp-entity-identity");
-      const details = drawer.querySelector<HTMLElement>(".dp-happy-hour-section, .dp-partner-destination-section");
+      const details = drawer.querySelector<HTMLElement>(
+        ".dp-venue-details-section, .dp-happy-hour-section, .dp-partner-destination-section",
+      );
       const nearby = drawer.querySelector<HTMLElement>(".dp-discovery-context-section, .dp-partner-nearby-list");
       if (!content || !scroll || !hero || !identity || !details || !nearby) return null;
 
