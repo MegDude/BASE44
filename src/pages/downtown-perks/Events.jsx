@@ -221,7 +221,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-8 w-8 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
+                className="flex h-11 w-11 items-center justify-center bg-transparent text-[#0B1F33]/62 transition hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                 aria-label="Close event details"
               >
                 <X className="h-4 w-4" />
