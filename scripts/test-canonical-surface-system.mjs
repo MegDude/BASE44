@@ -45,7 +45,22 @@ const governedPostCanonicalLocks = [
   'import "@/styles/resident-events-drawer-full.css"',
   'import "@/styles/inkind-redemption-compact-final.css"',
   'import "@/styles/search-input-rail-compact-final.css"',
+  'import "@/styles/resident-civic-native-final.css"',
+  'import "@/styles/quick-search-native-final.css"',
   'import "@/styles/global-back-control-final.css"',
+  'import "@/styles/panel-media-system-final.css"',
+  'import "@/styles/restaurant-program-layer-final.css"',
+  'import "@/styles/platform-cleanup-polish-final.css"',
+  'import "@/styles/detail-panel-fixed-actions-final.css"',
+  'import "@/styles/platform-panel-cohesion-final.css"',
+  'import "@/styles/search-intent-expanded-readability-final.css"',
+  'import "@/styles/partner-signin-white-surface-final.css"',
+  'import "@/styles/platform-panel-mobile-cohesion-final.css"',
+  'import "@/styles/universal-entity-drawer-final.css"',
+  'import "@/styles/search-intent-label-contrast-final.css"',
+  'import "@/styles/map-drawer-single-line-titles-final.css"',
+  'import "@/styles/map-drawer-scroll-footer-final.css"',
+  'import "@/styles/map-detail-panel-live-final.css"',
 ];
 const stylesheetImports = main.match(/^import "@\/styles\/[^\n]+$/gm) || [];
 const canonicalIndex = stylesheetImports.indexOf(importLine);
