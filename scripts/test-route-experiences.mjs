@@ -7,6 +7,9 @@ const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url
 if (!/DirectionsService/.test(routeManagerSource) || !/TravelMode\?\.WALKING/.test(routeManagerSource)) {
   throw new Error("Walking routes are not resolved through Google walking directions");
 }
+if (!/MAX_DIRECTIONS_POSITIONS = 27/.test(routeManagerSource) || !/walkingRouteBatches/.test(routeManagerSource)) {
+  throw new Error("Long walking routes are not split within the Google Directions waypoint limit");
+}
 if (!/requestWalkingRoutePath\(maps, collectionRoute\.stops\)/.test(mapSource)) {
   throw new Error("Map route rendering does not request the road-aware walking path");
 }
