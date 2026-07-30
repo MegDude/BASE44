@@ -13,6 +13,38 @@ export type BrandedRouteStyle = {
   repeat: string;
 };
 
+type RouteStop = {
+  lat?: number;
+  lng?: number;
+  latitude?: number;
+  longitude?: number;
+  coords?: [number, number];
+};
+
+function stopPosition(stop: RouteStop): { lat: number; lng: number } | null {
+  if (Number.isFinite(stop.lat) && Number.isFinite(stop.lng)) return { lat: Number(stop.lat), lng: Number(stop.lng) };
+  if (Number.isFinite(stop.latitude) && Number.isFinite(stop.longitude)) return { lat: Number(stop.latitude), lng: Number(stop.longitude) };
+  if (Array.isArray(stop.coords) && stop.coords.length >= 2) return { lat: Number(stop.coords[0]), lng: Number(stop.coords[1]) };
+  return null;
+}
+
+export async function requestWalkingRoutePath(maps: any, stops: RouteStop[] = []): Promise<Array<{ lat: number; lng: number }>> {
+  const positions = stops.map(stopPosition).filter(Boolean) as Array<{ lat: number; lng: number }>;
+  if (positions.length < 2 || !maps?.DirectionsService) return [];
+  const service = new maps.DirectionsService();
+  const result = await service.route({
+    origin: positions[0],
+    destination: positions[positions.length - 1],
+    waypoints: positions.slice(1, -1).map((location) => ({ location, stopover: true })),
+    optimizeWaypoints: false,
+    travelMode: maps.TravelMode?.WALKING || "WALKING",
+  });
+  return (result?.routes?.[0]?.overview_path || []).map((point: any) => ({
+    lat: Number(typeof point.lat === "function" ? point.lat() : point.lat),
+    lng: Number(typeof point.lng === "function" ? point.lng() : point.lng),
+  })).filter((point: { lat: number; lng: number }) => Number.isFinite(point.lat) && Number.isFinite(point.lng));
+}
+
 export function createBrandedRoutePolylines(
   maps: any,
   map: any,
