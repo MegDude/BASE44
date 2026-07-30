@@ -25,6 +25,8 @@ assert.match(workspace, /\.\.\.authorizedAdminScope[\s\S]*type:/, "workspace con
 assert.match(workspace, /hasPrivilegedWorkspaceAccess \? <WorkspaceRegistryPanel key="admin-offers"/, "unsafe partner offer mutations remain exposed to admin scope");
 assert.match(workspace, /hasPrivilegedWorkspaceAccess \? <WorkspaceRegistryPanel key="admin-governance"/, "partner-only governance actions remain exposed to admin scope");
 assert.match(workspace, /hasPrivilegedWorkspaceAccess \? <WorkspaceRegistryPanel key="admin-share-links"/, "partner-only share-link actions remain exposed to admin scope");
+assert.match(workspace, /<WorkspaceReports key="reports" scope=\{workspaceScope\}/, "reports do not receive the server-authorized scope");
+assert.match(workspace, /onSwitchWorkspace=\{hasPrivilegedAccess \? undefined/, "admin overview still exposes the demo-only workspace switcher");
 assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not link to the in-shell people directory");
 assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
 assert.match(app, /ADMIN_STUDIO_DESTINATIONS/, "legacy admin routes are not mapped into canonical workspace destinations");
