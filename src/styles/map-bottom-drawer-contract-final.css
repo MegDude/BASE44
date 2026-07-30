@@ -94,8 +94,8 @@ html body #root .dp-map-page :is(
   .dp-collection-route-panel
 )[data-drawer-state="full"],
 html body #root .dp-map-page .dp-route-experience-sheet.is-full {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
+  height: calc(100% - 8px) !important;
+  max-height: calc(100% - 8px) !important;
 }
 
 html body #root .dp-map-page .dp-route-experience-sheet .dp-native-drawer-actions {
@@ -203,7 +203,8 @@ html body #root .dp-map-page .dp-route-experience-sheet.is-peek .dp-route-sheet-
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page aside#dp-active-map-drawer.dp-native-drawer[data-drawer-state="full"] {
-    height: 100dvh !important;
+    height: calc(100% - 8px) !important;
+    max-height: calc(100% - 8px) !important;
   }
 }
 
