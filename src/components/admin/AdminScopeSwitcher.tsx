@@ -1,7 +1,9 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuthorizedAdminScope, type AdminScope, type AdminScopeResponse } from "@/lib/admin/adminScopeClient";
+import { writePartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 
 const EMPTY: AdminScopeResponse = { role: "", organizations: [], portfolios: [], listings: [], activeScope: {} };
 type ScopeResult = {
@@ -14,7 +16,7 @@ type ScopeResult = {
   detail: string;
 };
 
-export function AdminScopeSwitcher() {
+export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (scope: AdminScope) => void }) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -30,12 +32,19 @@ export function AdminScopeSwitcher() {
 
   useEffect(() => {
     const controller = new AbortController();
+    // Never continue rendering records from the previous organization while
+    // the server authorizes a newly requested scope.
+    onScopeResolved?.({});
     setStatus("loading");
     getAuthorizedAdminScope(requested, controller.signal)
-      .then((next) => { setData(next); setStatus("ready"); })
+      .then((next) => {
+        setData(next);
+        setStatus("ready");
+        onScopeResolved?.(next.activeScope);
+      })
       .catch(() => setStatus("error"));
     return () => controller.abort();
-  }, [requested]);
+  }, [onScopeResolved, requested]);
 
   const organization = data.organizations.find((item) => item.id === data.activeScope.organizationId);
   const portfolio = data.portfolios.find((item) => item.id === data.activeScope.portfolioId);
@@ -54,6 +63,7 @@ export function AdminScopeSwitcher() {
     ["organizationId", "portfolioId", "listingId"].forEach((key) => nextParams.delete(key));
     Object.entries(next).forEach(([key, value]) => { if (value) nextParams.set(key, value); });
     sessionStorage.setItem("dp_admin_workspace:scope", JSON.stringify(next));
+    writePartnerWorkspaceScope(next);
     navigate(`${location.pathname}?${nextParams.toString()}`, { replace: false });
     setOpen(false);
   }
@@ -61,20 +71,26 @@ export function AdminScopeSwitcher() {
   const label = listing?.name || portfolio?.name || organization?.name || "All organizations";
   return (
     <section className="dp-admin-scope" aria-label="Administrator organization scope">
-      <button type="button" className="dp-admin-scope__trigger" onClick={() => setOpen(true)} disabled={status !== "ready"}>
-        <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
-      </button>
-      {open ? <div className="dp-admin-scope__layer">
-        <button type="button" className="dp-admin-scope__backdrop" aria-label="Close organization selector" onClick={() => setOpen(false)} />
-        <section className="dp-admin-scope__sheet" role="dialog" aria-modal="true" aria-labelledby="admin-scope-title">
-          <header><div><p>Admin Workspace</p><h2 id="admin-scope-title">Choose scope</h2></div><button type="button" onClick={() => setOpen(false)} aria-label="Close organization selector"><X aria-hidden="true" /></button></header>
-          <label><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search organization, portfolio, or listing" autoFocus /></label>
-          <div className="dp-admin-scope__results">
-            {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>All organizations</strong><small>Platform-wide view</small></span></button> : null}
-            {results.map((item) => <button type="button" key={`${item.type}-${item.id}`} onClick={() => selectScope({ organizationId: item.organizationId, portfolioId: item.portfolioId, listingId: item.listingId })}><span><em>{item.type}</em><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}
-          </div>
-        </section>
-      </div> : null}
+      <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+        <DialogPrimitive.Trigger asChild>
+          <button type="button" className="dp-admin-scope__trigger" disabled={status !== "ready"}>
+            <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
+          </button>
+        </DialogPrimitive.Trigger>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="dp-admin-scope__backdrop" />
+          <DialogPrimitive.Content className="dp-admin-scope__sheet" aria-describedby={undefined}>
+            <header><div><p>Admin Workspace</p><DialogPrimitive.Title>Choose scope</DialogPrimitive.Title></div>
+              <DialogPrimitive.Close aria-label="Close organization selector"><X aria-hidden="true" /></DialogPrimitive.Close>
+            </header>
+            <label className="dp-admin-scope__search"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search organization, portfolio, or listing" autoFocus /></label>
+            <div className="dp-admin-scope__results">
+              {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>All organizations</strong><small>Platform-wide view</small></span></button> : null}
+              {results.map((item) => <button type="button" key={`${item.type}-${item.id}`} onClick={() => selectScope({ organizationId: item.organizationId, portfolioId: item.portfolioId, listingId: item.listingId })}><span><em>{item.type}</em><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}
+            </div>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     </section>
   );
 }

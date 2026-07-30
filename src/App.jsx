@@ -27,7 +27,6 @@ const PartnerHappyHours = lazy(() => import("./pages/partners/HappyHours"));
 const PartnerProperties = lazy(() => import("./pages/partners/Properties"));
 const AskMapAgent = lazy(() => import("./pages/AskMapAgent"));
 const SplashPage = lazy(() => import("./pages/SplashPage"));
-const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
 const InteractionSystemPreview = lazy(() => import("./pages/InteractionSystemPreview"));
 const MicrositeDirectory = lazy(() => import("./components/microsites/MicrositeDirectory"));
 const PartnerMicrositePage = lazy(() => import("./components/microsites/PartnerMicrositePage"));
@@ -86,10 +85,33 @@ function AdminProtectedRoute({ children }) {
   return children;
 }
 
+const ADMIN_STUDIO_DESTINATIONS = {
+  "/admin-studio": "/partner-workspace/overview",
+  "/admin-studio/command-center": "/partner-workspace/overview",
+  "/admin-studio/campaign-builder": "/partner-workspace/campaigns?intent=new",
+  "/admin-studio/audience-builder": "/partner-workspace/audience",
+  "/admin-studio/content-library": "/partner-workspace/media",
+  "/admin-studio/approval-queue": "/partner-workspace/governance",
+  "/admin-studio/distribution": "/partner-workspace/broadcasts",
+  "/admin-studio/performance": "/partner-workspace/analytics",
+  "/admin-studio/partner-intelligence": "/partner-workspace/reports",
+  "/admin-studio/residents": "/partner-workspace/residents",
+};
+
+function getAdminStudioDestination(location) {
+  const configured = ADMIN_STUDIO_DESTINATIONS[location.pathname] || ADMIN_STUDIO_DESTINATIONS["/admin-studio"];
+  const [pathname, configuredSearch = ""] = configured.split("?");
+  const params = new URLSearchParams(configuredSearch);
+  new URLSearchParams(location.search).forEach((value, key) => params.set(key, value));
+  const search = params.toString();
+  return `${pathname}${search ? `?${search}` : ""}${location.hash}`;
+}
+
 function ProtectedAdminStudio() {
+  const location = useLocation();
   return (
     <AdminProtectedRoute>
-      <AdminMarketingStudio />
+      <Navigate to={getAdminStudioDestination(location)} replace />
     </AdminProtectedRoute>
   );
 }

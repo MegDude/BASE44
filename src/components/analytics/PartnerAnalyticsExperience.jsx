@@ -114,11 +114,11 @@ function ResearchCoverage({ scope }) {
   </>;
 }
 
-export function PartnerAnalyticsExperience() {
+export function PartnerAnalyticsExperience({ scopeOverride, adminMode = false }) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const scope = resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
+  const scope = scopeOverride || resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
   const requestedWorkspace = scope.organizationId || params.get("workspace");
   const organization = demoOrganizations.find((item) => item.id === requestedWorkspace) || null;
   const view = VIEWS.some(([id]) => id === params.get("view")) ? params.get("view") : "overview";
@@ -167,6 +167,9 @@ export function PartnerAnalyticsExperience() {
   }
 
   if (!organization) {
+    if (adminMode && scope.organizationId) {
+      return <section className="dp-pa-empty"><Info aria-hidden="true" /><strong>Analytics are not connected for this authorized scope yet.</strong><p>This production organization is selected securely, but no admin-aware reporting source is available. No demo organization data has been substituted.</p><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}>Review sources</Link></section>;
+    }
     return <section className="dp-pa-empty"><Search aria-hidden="true" /><strong>Choose a partner to see its recommendations.</strong><p>The workspace will keep every insight tied to the selected organization and its connected places.</p></section>;
   }
 
@@ -189,4 +192,3 @@ export function PartnerAnalyticsExperience() {
     </div>
   </motion.section>;
 }
-
