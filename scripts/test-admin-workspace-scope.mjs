@@ -18,7 +18,7 @@ assert.match(
 );
 assert.match(switcher, /Search organization, portfolio, or listing/);
 assert.match(switcher, /sessionStorage/);
-assert.match(switcher, /role="dialog"/);
+assert.match(switcher, /DialogPrimitive\.Content/);
 assert.match(studio, /<AdminScopeSwitcher \/>/);
 assert.match(studio, /Admin Workspace/);
 assert.match(styles, /min-height: 44px/);
