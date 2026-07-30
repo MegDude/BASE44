@@ -14,18 +14,27 @@ export type BrandedRouteStyle = {
 };
 
 type RouteStop = {
-  lat?: number;
-  lng?: number;
-  latitude?: number;
-  longitude?: number;
-  coords?: [number, number];
+  lat?: number | string;
+  lng?: number | string;
+  latitude?: number | string;
+  longitude?: number | string;
+  coords?: [number | string, number | string];
 };
 
+function finitePosition(latValue: unknown, lngValue: unknown): { lat: number; lng: number } | null {
+  const lat = Number(latValue);
+  const lng = Number(lngValue);
+  return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+}
+
 function stopPosition(stop: RouteStop): { lat: number; lng: number } | null {
-  if (Number.isFinite(stop.lat) && Number.isFinite(stop.lng)) return { lat: Number(stop.lat), lng: Number(stop.lng) };
-  if (Number.isFinite(stop.latitude) && Number.isFinite(stop.longitude)) return { lat: Number(stop.latitude), lng: Number(stop.longitude) };
-  if (Array.isArray(stop.coords) && stop.coords.length >= 2) return { lat: Number(stop.coords[0]), lng: Number(stop.coords[1]) };
-  return null;
+  const direct = finitePosition(stop.lat, stop.lng);
+  if (direct) return direct;
+  const verbose = finitePosition(stop.latitude, stop.longitude);
+  if (verbose) return verbose;
+  return Array.isArray(stop.coords) && stop.coords.length >= 2
+    ? finitePosition(stop.coords[0], stop.coords[1])
+    : null;
 }
 
 export async function requestWalkingRoutePath(maps: any, stops: RouteStop[] = []): Promise<Array<{ lat: number; lng: number }>> {
