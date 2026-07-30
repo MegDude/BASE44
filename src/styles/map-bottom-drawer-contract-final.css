@@ -259,3 +259,15 @@ html body #root .dp-map-page :is(.dp-mobile-tab-drawer, .dp-map-popup-card)[data
     background: #fff !important;
   }
 }
+
+
+/* Resident event browse is authored by an older full-state rule with a
+   dynamic-viewport height. Pin both edges instead so mobile browser chrome
+   cannot make the sheet taller than the rendered viewport. */
+@media (max-width: 899px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page-resident aside.dp-map-drawer-shell.dp-resident-events-drawer[data-drawer-state="full"] {
+    inset: max(8px, env(safe-area-inset-top, 0px)) 0 0 0 !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+}
