@@ -106,7 +106,7 @@ import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { clearGoogleMapArtifacts, createDowntownGoogleMap, removeGoogleMapMarker } from "@/map/MapProvider";
 import { createDowntownMarker } from "@/map/MarkerManager";
-import { createBrandedRoutePolylines } from "@/map/RouteManager";
+import { createBrandedRoutePolylines, requestWalkingRoutePath } from "@/map/RouteManager";
 import {
   getAgentEntityRegistrySnapshot,
   getCanonicalIntentForFilter,
@@ -13012,6 +13012,7 @@ function GoogleMapCanvas({
   const markerRegistryRef = useRef(new Map());
   const markerActionHandlersRef = useRef({ onClusterOpen, onSelect, onSelectNearestLegends });
   const collectionRoutePolylinesRef = useRef([]);
+  const walkingRoutePathsRef = useRef(new Map());
   const lastFitKeyRef = useRef("");
   const lastSelectedFocusRef = useRef("");
   const userNavigatedRef = useRef(false);
@@ -13238,27 +13239,50 @@ function GoogleMapCanvas({
       (polyline) => polyline?.setMap?.(null),
     );
 
-    const routePath = collectionRoute?.routePath || [];
-    if (routePath.length < 2) return undefined;
+    const fallbackPath = collectionRoute?.routePath || [];
+    if (fallbackPath.length < 2) return undefined;
 
     const style = getCollectionRouteStyle(collectionRoute);
     const routeMetrics = getZoomRouteMetrics(markerRenderZoom);
-    collectionRoutePolylinesRef.current = createBrandedRoutePolylines(maps, map, routePath, {
-      ambientColor: style.ambientColor,
-      ambientOpacity: style.ambientOpacity,
-      ambientStrokeWeight: routeMetrics.ambientStrokeWeight,
-      overlapColor: style.overlapColor,
-      overlapOpacity: style.overlapOpacity,
-      overlapStrokeWeight: routeMetrics.overlapStrokeWeight,
-      mainColor: style.mainColor,
-      mainOpacity: style.mainOpacity,
-      strokeWeight: routeMetrics.strokeWeight,
-      dotColor: style.dotColor,
-      dotScale: style.isDashed ? routeMetrics.dashedDotScale : routeMetrics.dotScale,
-      repeat: style.isDashed ? routeMetrics.dashedRepeat : routeMetrics.repeat,
-    });
+    const paintRoute = (path) => {
+      collectionRoutePolylinesRef.current = clearGoogleMapArtifacts(
+        collectionRoutePolylinesRef.current,
+        (polyline) => polyline?.setMap?.(null),
+      );
+      collectionRoutePolylinesRef.current = createBrandedRoutePolylines(maps, map, path, {
+        ambientColor: style.ambientColor,
+        ambientOpacity: style.ambientOpacity,
+        ambientStrokeWeight: routeMetrics.ambientStrokeWeight,
+        overlapColor: style.overlapColor,
+        overlapOpacity: style.overlapOpacity,
+        overlapStrokeWeight: routeMetrics.overlapStrokeWeight,
+        mainColor: style.mainColor,
+        mainOpacity: style.mainOpacity,
+        strokeWeight: routeMetrics.strokeWeight,
+        dotColor: style.dotColor,
+        dotScale: style.isDashed ? routeMetrics.dashedDotScale : routeMetrics.dotScale,
+        repeat: style.isDashed ? routeMetrics.dashedRepeat : routeMetrics.repeat,
+      });
+    };
+    const routeKey = String(collectionRoute?.id || "");
+    const cachedPath = walkingRoutePathsRef.current.get(routeKey);
+    paintRoute(cachedPath?.length >= 2 ? cachedPath : fallbackPath);
+
+    let active = true;
+    if (!cachedPath && collectionRoute?.routeMode === "walking") {
+      requestWalkingRoutePath(maps, collectionRoute.stops)
+        .then((walkingPath) => {
+          if (!active || walkingPath.length < 2) return;
+          walkingRoutePathsRef.current.set(routeKey, walkingPath);
+          paintRoute(walkingPath);
+        })
+        .catch(() => {
+          // The ordered stop path remains visible when Directions is unavailable.
+        });
+    }
 
     return () => {
+      active = false;
       collectionRoutePolylinesRef.current = clearGoogleMapArtifacts(
         collectionRoutePolylinesRef.current,
         (polyline) => polyline?.setMap?.(null),
@@ -17939,11 +17963,8 @@ export default function MapPage() {
       return;
     }
     if (node.classList.contains("dp-native-drawer")) {
-      node.style.setProperty("top", "auto", "important");
-      node.style.setProperty("right", "0", "important");
-      node.style.setProperty("bottom", "0", "important");
-      node.style.setProperty("left", "0", "important");
-      node.style.setProperty("padding", "0 0 var(--dp-bottom-nav-total-height)", "important");
+      ["position", "inset", "top", "right", "bottom", "left", "width", "height", "min-height", "max-height", "margin", "padding", "overflow", "z-index"]
+        .forEach((property) => node.style.removeProperty(property));
       return;
     }
 
