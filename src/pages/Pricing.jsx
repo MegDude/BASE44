@@ -188,6 +188,7 @@ export default function PricingPage() {
   const [selectedModuleIds, setSelectedModuleIds] = useState(Array.isArray(storedSetup.modules) ? storedSetup.modules : []);
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("grow");
   const [comparePlansOpen, setComparePlansOpen] = useState(false);
+  const [upgradesOpen, setUpgradesOpen] = useState(false);
   const [showAllUpgrades, setShowAllUpgrades] = useState(false);
   const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
   const [checkoutMessage, setCheckoutMessage] = useState("");
@@ -289,6 +290,7 @@ export default function PricingPage() {
     // resident decision.
     setSelectedModuleIds([]);
     setComparePlansOpen(false);
+    setUpgradesOpen(false);
     setShowAllUpgrades(false);
     trackPricingEvent("partner_type_changed", { partnerType: type });
   }
@@ -342,8 +344,8 @@ export default function PricingPage() {
         <div className="dp-pricing-container">
           <SectionHeader
             eyebrow="Pricing"
-            title="Pricing that stays out of the way."
-            copy="Start with your role, choose a plan, then add only the capabilities you need."
+            title="Choose a plan that fits."
+            copy="Select your role, choose a plan, then continue. Optional services can be added when you need them."
           />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
@@ -373,7 +375,7 @@ export default function PricingPage() {
                     {plans.length > 0 ? (
                       <>
                         <div className="dp-pricing-plan-selector" aria-label="Available plans">
-                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><strong>{plan.tier}</strong><small>{getPriceText(plan)}</small></button>)}
+                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><strong>{plan.tier}</strong><small>{getPriceText(plan)}</small></button>)}
                         </div>
                         {selectedPlan ? <article className="dp-pricing-selected-plan">
                           <div><p>{selectedPlan.label.replace(/ Annual$/, "")}</p><strong>{getPriceText(selectedPlan)}</strong></div>
@@ -383,7 +385,7 @@ export default function PricingPage() {
                         {plans.length > 1 ? <button className="dp-pricing-compare-toggle" type="button" aria-expanded={comparePlansOpen} onClick={() => setComparePlansOpen((open) => !open)}>{comparePlansOpen ? "Hide comparison" : "Compare plans"}</button> : null}
                         {comparePlansOpen ? <section className="dp-pricing-plan-comparison" aria-label="Plan comparison">
                           <p>Choose the plan that fits your current scope.</p>
-                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
+                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
                             <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
                             <em>{getPriceText(plan)}</em>
                           </button>)}
@@ -403,20 +405,26 @@ export default function PricingPage() {
                     )}
                   </fieldset>
                   {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision" data-step="3">
-                    <legend><span>3</span> Optional upgrades</legend>
-                    <p className="dp-pricing-decision-copy">Add these now or later from your workspace.</p>
-                    <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
-                      {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}>{category.label}</button>)}
-                    </div>
-                    <p className="dp-pricing-upgrade-category-copy">{activeUpgradeCategory.description}</p>
-                    <div className="dp-pricing-upgrade-list" role="tabpanel" aria-label={`${activeUpgradeCategory.label} upgrades`}>
-                      {(showAllUpgrades ? activeUpgradeModules : activeUpgradeModules.slice(0, 4)).map((rawModule) => {
-                        const module = displayModule(rawModule);
-                        const active = selectedModuleIds.includes(module.id);
-                        return <button key={module.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>;
-                      })}
-                    </div>
-                    {activeUpgradeModules.length > 4 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 4} more`}</button> : null}
+                    <legend><span>3</span> Optional services</legend>
+                    <p className="dp-pricing-decision-copy">Your plan works on its own. Add services now only if they are useful.</p>
+                    <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
+                      <span>{upgradesOpen ? "Hide optional services" : "Add optional services"}</span>
+                      <small>{selectedModules.length > 0 ? `${selectedModules.length} selected` : "Available later"}</small>
+                    </button>
+                    {upgradesOpen ? <div className="dp-pricing-upgrade-content">
+                      <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
+                        {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}>{category.label}</button>)}
+                      </div>
+                      <p className="dp-pricing-upgrade-category-copy">{activeUpgradeCategory.description}</p>
+                      <div className="dp-pricing-upgrade-list" role="tabpanel" aria-label={`${activeUpgradeCategory.label} upgrades`}>
+                        {(showAllUpgrades ? activeUpgradeModules : activeUpgradeModules.slice(0, 4)).map((rawModule) => {
+                          const module = displayModule(rawModule);
+                          const active = selectedModuleIds.includes(module.id);
+                          return <button key={module.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>;
+                        })}
+                      </div>
+                      {activeUpgradeModules.length > 4 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 4} more`}</button> : null}
+                    </div> : null}
                   </fieldset> : null}
                 </>
               )}
