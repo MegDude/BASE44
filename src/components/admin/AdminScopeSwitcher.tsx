@@ -32,6 +32,9 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
 
   useEffect(() => {
     const controller = new AbortController();
+    // Never continue rendering records from the previous organization while
+    // the server authorizes a newly requested scope.
+    onScopeResolved?.({});
     setStatus("loading");
     getAuthorizedAdminScope(requested, controller.signal)
       .then((next) => {
