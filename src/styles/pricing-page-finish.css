@@ -44,6 +44,16 @@ html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-
   color: #0b1f33 !important; text-decoration: underline !important; text-underline-offset: 4px !important;
 }
 
+/* Optional services stay out of the conversion path until a buyer asks for them. */
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle {
+  display: flex !important; align-items: center !important; justify-content: space-between !important;
+  width: 100% !important; min-height: 44px !important; padding: 0 !important; background: transparent !important;
+  border: 0 !important; border-bottom: 1px solid rgba(11, 31, 51, .1) !important; color: #0b1f33 !important; text-align: left !important;
+}
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle > span { font-weight: 650 !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle small { color: rgba(11, 31, 51, .64) !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-content { padding-top: 14px !important; }
+
 /* Comparison is a short decision list: plan, fit, and price on one row. */
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison {
   display: block !important; margin-top: 14px !important; padding: 0 !important; background: transparent !important; border: 0 !important;
@@ -81,5 +91,12 @@ html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-
   border-top: 1px solid rgba(11, 31, 51, .12) !important; border-bottom: 1px solid rgba(11, 31, 51, .12) !important;
 }
 @media (max-width: 767px) {
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header { margin-bottom: 28px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision { padding-bottom: 28px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision + fieldset.dp-pricing-decision { padding-top: 28px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector { gap: 18px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button,
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button { min-height: 44px !important; }
   html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button { min-height: 58px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary { margin-top: 4px !important; }
 }
