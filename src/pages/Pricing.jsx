@@ -344,8 +344,8 @@ export default function PricingPage() {
         <div className="dp-pricing-container">
           <SectionHeader
             eyebrow="Pricing"
-            title="Choose a plan that fits."
-            copy="Select your role, choose a plan, then continue. Optional services can be added when you need them."
+            title="Choose the right way in."
+            copy="Start with your role. We will show the clearest plan, then let you add only what is useful."
           />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
@@ -404,14 +404,13 @@ export default function PricingPage() {
                       </>
                     )}
                   </fieldset>
-                  {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision" data-step="3">
-                    <legend><span>3</span> Optional services</legend>
-                    <p className="dp-pricing-decision-copy">Your plan works on its own. Add services now only if they are useful.</p>
-                    <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
-                      <span>{upgradesOpen ? "Hide optional services" : "Add optional services"}</span>
-                      <small>{selectedModules.length > 0 ? `${selectedModules.length} selected` : "Available later"}</small>
+                  {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision dp-pricing-optional" data-step="3">
+                    <legend><span>3</span> Optional capabilities</legend>
+                    <p className="dp-pricing-decision-copy">Campaigns, reporting, support, and placements can be added now or later.</p>
+                    <button className="dp-pricing-upgrades-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
+                      {upgradesOpen ? "Hide optional capabilities" : "Add optional capabilities"}
                     </button>
-                    {upgradesOpen ? <div className="dp-pricing-upgrade-content">
+                    {upgradesOpen ? <div className="dp-pricing-upgrades-content">
                       <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
                         {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}>{category.label}</button>)}
                       </div>
