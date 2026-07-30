@@ -1,6 +1,15 @@
 import { chromium } from "playwright";
+import { readFile } from "node:fs/promises";
 
 const baseUrl = process.env.BASE_URL || "http://127.0.0.1:4173";
+const routeManagerSource = await readFile(new URL("../src/map/RouteManager.ts", import.meta.url), "utf8");
+const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
+if (!/DirectionsService/.test(routeManagerSource) || !/TravelMode\?\.WALKING/.test(routeManagerSource)) {
+  throw new Error("Walking routes are not resolved through Google walking directions");
+}
+if (!/requestWalkingRoutePath\(maps, collectionRoute\.stops\)/.test(mapSource)) {
+  throw new Error("Map route rendering does not request the road-aware walking path");
+}
 const routeIds = [
   "waterloo-greenway",
   "daa-art-walk",
@@ -59,8 +68,14 @@ const routeGeometry = await page.locator(".dp-route-experience-sheet").evaluate(
     content: contentViewport?.getBoundingClientRect().toJSON(),
     footer: footer?.getBoundingClientRect().toJSON(),
     primaryAction: primaryAction?.getBoundingClientRect().toJSON(),
+    viewportHeight: innerHeight,
+    nav: document.querySelector("[data-dp-bottom-navigation='true']")?.getBoundingClientRect().toJSON(),
+    inlineGeometry: ["inset", "top", "right", "bottom", "left", "padding"].some((property) => sheet.style.getPropertyValue(property)),
   };
 });
+if (routeGeometry.inlineGeometry) throw new Error("Waterloo: route sheet still owns geometry through inline styles");
+if (Math.abs(routeGeometry.sheet.bottom - routeGeometry.viewportHeight) > 1) throw new Error("Waterloo: route sheet does not reach the viewport bottom");
+if (!routeGeometry.nav || routeGeometry.content.bottom > routeGeometry.nav.top + 1) throw new Error("Waterloo: route content overlaps bottom navigation");
 if (!routeGeometry.footer || routeGeometry.footer.height > 60) throw new Error("Waterloo: route action footer is too tall");
 if (!routeGeometry.content || routeGeometry.content.bottom > routeGeometry.footer.top + 1) throw new Error("Waterloo: route content is hidden behind the action footer");
 if (!routeGeometry.primaryAction || routeGeometry.primaryAction.width > 281) throw new Error("Waterloo: route primary action is too wide");
