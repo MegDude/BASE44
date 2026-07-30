@@ -13,49 +13,15 @@ const PARTNER_TYPES = ["Venue", "Property", "Hotel", "Brand", "Civic", "Real Est
 const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 
 const partnerCopy = {
-  Venue: {
-    label: "Venue",
-    short: "Restaurants, cafés, bars, shops and local businesses.",
-    description: "Restaurants, cafés, bars, shops and local businesses.",
-  },
-  Property: {
-    label: "Property",
-    short: "Apartment communities, condominiums, HOAs and property managers.",
-    description: "Apartment communities, condominiums, HOAs and property managers.",
-  },
-  Hotel: {
-    label: "Hotel",
-    short: "Help every guest discover more during their stay.",
-    description: "Help every guest discover more during their stay.",
-  },
-  Brand: {
-    label: "Brand",
-    short: "Run local campaigns and measure their impact.",
-    description: "Run local campaigns and measure their impact.",
-  },
-  Civic: {
-    label: "Community",
-    short: "Civic organizations, nonprofits and districts.",
-    description: "Civic organizations, nonprofits and districts.",
-  },
-  "Real Estate": {
-    label: "Real Estate",
-    short: "Show buyers and renters what makes the neighborhood valuable.",
-    description: "Show buyers and renters what makes the neighborhood valuable.",
-  },
-  Resident: {
-    label: "Resident",
-    short: "Get the Perks Card and discover local offers, places and events.",
-    description: "Get the Perks Card and discover local offers, places and events.",
-  },
-  Custom: {
-    label: "Enterprise",
-    short: "Multi-property portfolios and custom programs.",
-    description: "Multi-property portfolios and custom programs.",
-  },
+  Venue: { label: "Venue", short: "Restaurants, cafés, bars, shops and local businesses." },
+  Property: { label: "Property", short: "Apartment communities, condominiums, HOAs and property managers." },
+  Hotel: { label: "Hotel", short: "Help every guest discover more during their stay." },
+  Brand: { label: "Brand", short: "Run local campaigns and measure their impact." },
+  Civic: { label: "Community", short: "Civic organizations, nonprofits and districts." },
+  "Real Estate": { label: "Real Estate", short: "Show buyers and renters what makes the neighborhood valuable." },
+  Resident: { label: "Resident", short: "Get the Perks Card and discover local offers, places and events." },
+  Custom: { label: "Enterprise", short: "Multi-property portfolios and custom programs." },
 };
-
-const partnerAddOnGroups = PRICING_MODULE_GROUPS.filter((group) => group.id !== "residentAccess");
 
 const UPGRADE_CATEGORIES = [
   { id: "grow", label: "Grow", description: "Campaigns, placements and broadcasts.", sourceGroups: ["campaigns", "broadcasts"], annualIds: ["unlimitedPerkCampaignsAnnual"] },
@@ -71,88 +37,16 @@ const UPGRADE_COPY = {
   districtSponsorAnnual: { label: "District sponsorship", summary: "Own a category or neighborhood placement." },
 };
 
+const customOptions = [
+  { id: "multi-property-portfolios", title: "Multi-property portfolios", description: "For owners, managers, and leasing teams working across several buildings.", included: ["Shared resident access", "Building-level reporting", "QR setup by property", "Portfolio overview"], message: "I'm interested in multi-property portfolio pricing." },
+  { id: "district-programs", title: "District programs", description: "For organizations coordinating activity across a downtown area.", included: ["District map presence", "Event and program listings", "QR entry points", "Participation reporting"], message: "I'm interested in planning a district program." },
+  { id: "destination-sponsorships", title: "Destination sponsorships", description: "For brands that want to support local experiences people already choose.", included: ["Sponsored placement", "Campaign page", "Event or offer connection", "Performance recap"], message: "I'm interested in destination sponsorship options." },
+  { id: "major-developments", title: "Major developments", description: "For new buildings, mixed-use projects, and teams shaping a larger downtown experience.", included: ["Launch plan", "Resident or visitor journey", "Partner coordination", "Custom reporting"], message: "I'm interested in Downtown Perks for a major development." },
+];
+
 function displayModule(module) {
   return { ...module, ...(UPGRADE_COPY[module.id] || {}) };
 }
-
-const customOptions = [
-  {
-    id: "multi-property-portfolios",
-    title: "Multi-property portfolios",
-    description: "For owners, managers, and leasing teams working across several buildings.",
-    bestFor: [
-      "Apartment groups",
-      "Condo associations",
-      "Mixed-use properties",
-      "Portfolio leasing teams",
-    ],
-    included: [
-      "Shared resident access",
-      "Building-level reporting",
-      "QR setup by property",
-      "Portfolio overview",
-    ],
-    cta: "Talk through portfolio setup",
-    message: "I'm interested in multi-property portfolio pricing.",
-  },
-  {
-    id: "district-programs",
-    title: "District programs",
-    description: "For organizations coordinating activity across a downtown area.",
-    bestFor: [
-      "District groups",
-      "Nonprofits",
-      "Public-space partners",
-      "Neighborhood programs",
-    ],
-    included: [
-      "District map presence",
-      "Event and program listings",
-      "QR entry points",
-      "Participation reporting",
-    ],
-    cta: "Plan a district program",
-    message: "I'm interested in planning a district program.",
-  },
-  {
-    id: "destination-sponsorships",
-    title: "Destination sponsorships",
-    description: "For brands that want to support local experiences people already choose.",
-    bestFor: [
-      "Local campaigns",
-      "Seasonal sponsorships",
-      "Hospitality moments",
-      "Downtown activations",
-    ],
-    included: [
-      "Sponsored placement",
-      "Campaign page",
-      "Event or offer connection",
-      "Performance recap",
-    ],
-    cta: "Discuss sponsorship",
-    message: "I'm interested in destination sponsorship options.",
-  },
-  {
-    id: "major-developments",
-    title: "Major developments",
-    description: "For new buildings, mixed-use projects, and teams shaping a larger downtown experience.",
-    bestFor: [
-      "New developments",
-      "Mixed-use projects",
-      "Leasing launches",
-      "Neighborhood positioning",
-    ],
-    included: [
-      "Launch plan",
-      "Resident or visitor journey",
-      "Partner coordination",
-      "Custom reporting",
-    ],
-    cta: "Talk through the project",
-    message: "I'm interested in Downtown Perks for a major development.",
-  },
-];
 
 function normalizePartnerSlug(type) {
   return String(type || "").trim().toLowerCase().replace(/\s+/g, "-");
@@ -189,109 +83,81 @@ export default function PricingPage() {
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("grow");
   const [comparePlansOpen, setComparePlansOpen] = useState(false);
   const [upgradesOpen, setUpgradesOpen] = useState(false);
-  const [showAllUpgrades, setShowAllUpgrades] = useState(false);
   const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
-  const [checkoutMessage, setCheckoutMessage] = useState("");
 
   const plans = useMemo(() => getPlansForPartnerType(partnerType), [partnerType]);
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId) || plans[0];
   const isResident = partnerType === "Resident";
-  const modules = useMemo(() => partnerAddOnGroups.flatMap((group) => group.modules), []);
+  const modules = useMemo(() => PRICING_MODULE_GROUPS.filter((group) => group.id !== "residentAccess").flatMap((group) => group.modules), []);
+  const selectedModules = modules.filter((module) => selectedModuleIds.includes(module.id));
   const activeUpgradeCategory = UPGRADE_CATEGORIES.find((category) => category.id === activeCapabilityGroup) || UPGRADE_CATEGORIES[0];
   const activeUpgradeModules = useMemo(() => {
     const ids = new Set(activeUpgradeCategory.annualIds || []);
-    partnerAddOnGroups.forEach((group) => {
-      if (activeUpgradeCategory.sourceGroups.includes(group.id)) {
-        group.modules.forEach((module) => ids.add(module.id));
-      }
+    PRICING_MODULE_GROUPS.forEach((group) => {
+      if (activeUpgradeCategory.sourceGroups.includes(group.id)) group.modules.forEach((module) => ids.add(module.id));
     });
     return modules.filter((module) => ids.has(module.id));
   }, [activeUpgradeCategory, modules]);
-  const selectedModules = modules.filter((module) => selectedModuleIds.includes(module.id));
-  const selectedModuleLabels = useMemo(() => selectedModules.map((module) => module.label), [selectedModules]);
+  const selectedCustomOption = customOptions.find((option) => option.id === activeCustomOption) || customOptions[0];
   const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
   const oneTimeTotal = selectedModules.filter((module) => module.billing === "One-time service").reduce((sum, module) => sum + module.price, 0);
-  const recurringAnnualTotal = (selectedPlan?.annualPrice || 0) + annualAddOnTotal;
   const total = calculatePricingTotal(selectedPlan, selectedModules);
   const checkoutTarget = selectedPlan?.checkoutKey ? resolveCheckoutTarget(selectedPlan.checkoutKey) : null;
-  const partnerTypeSlug = normalizePartnerSlug(partnerType);
-  const selectedPartner = partnerCopy[partnerType] || partnerCopy.Custom;
-  const selectedPartnerLabel = selectedPartner.label;
-  const selectedCustomOption = customOptions.find((option) => option.id === activeCustomOption) || customOptions[0];
   const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
-  const estimatedTotalLabel = isResident ? "Estimated annual total" : "Estimated first-year total";
+  const selectedPartner = partnerCopy[partnerType] || partnerCopy.Custom;
 
   const setupPayload = useMemo(() => ({
     source: "pricing",
-    organizationType: partnerTypeSlug,
+    organizationType: normalizePartnerSlug(partnerType),
     partnerType,
     plan: selectedPlan?.label || "Custom setup",
     sku: selectedPlan?.id || "custom",
     checkoutKey: selectedPlan?.checkoutKey || "custom",
     checkoutTarget,
     modules: selectedModuleIds,
-    moduleLabels: selectedModuleLabels,
+    moduleLabels: selectedModules.map((module) => module.label),
     annualTotal: selectedPlan?.annualPrice == null ? "custom" : total,
-    recurringAnnualTotal: selectedPlan?.annualPrice == null ? "custom" : recurringAnnualTotal,
-    oneTimeTotal,
     annualAddOnTotal,
+    oneTimeTotal,
     customOption: partnerType === "Custom" ? selectedCustomOption.id : "",
     customOptionTitle: partnerType === "Custom" ? selectedCustomOption.title : "",
     status: "pricing_selected",
     updatedAt: new Date().toISOString(),
-  }), [annualAddOnTotal, checkoutTarget, oneTimeTotal, partnerType, partnerTypeSlug, recurringAnnualTotal, selectedCustomOption.id, selectedCustomOption.title, selectedModuleIds, selectedModuleLabels, selectedPlan, total]);
+  }), [annualAddOnTotal, checkoutTarget, oneTimeTotal, partnerType, selectedCustomOption, selectedModuleIds, selectedModules, selectedPlan, total]);
 
-  const setupParams = new URLSearchParams({
-    intent: "partner-registration",
-    partnerType,
-    partnerTypeSlug,
-    partnerLabel: partnerType,
-    plan: selectedPlan?.id || "custom",
-    sku: selectedPlan?.id || "custom",
-    checkoutKey: selectedPlan?.checkoutKey || "custom",
-    billingMode: checkoutTarget?.mode || "lead",
-    modules: selectedModuleIds.join(","),
-    annualTotal: selectedPlan?.annualPrice == null ? "custom" : String(total),
-    recurringAnnualTotal: selectedPlan?.annualPrice == null ? "custom" : String(recurringAnnualTotal),
-    oneTimeTotal: String(oneTimeTotal),
-    annualAddOnTotal: String(annualAddOnTotal),
-  });
-
-  if (partnerType === "Custom") {
-    setupParams.set("customOption", selectedCustomOption.id);
-    setupParams.set("customOptionTitle", selectedCustomOption.title);
-    setupParams.set("message", selectedCustomOption.message);
-  }
-
-  if (partnerType === "Custom" || selectedPlan?.annualPrice == null) {
-    setupParams.set("interest", "custom");
-  }
-
-  const setupHref = `/partners/sign-up?${setupParams.toString()}`;
-
-  useEffect(() => {
-    persistPartnerSetup(setupPayload);
-  }, [setupPayload]);
-
-  useEffect(() => {
-    trackPricingEvent("pricing_viewed", {
+  const setupHref = useMemo(() => {
+    const params = new URLSearchParams({
+      intent: "partner-registration",
       partnerType,
-      planId: selectedPlan?.id,
-      annualTotal: selectedPlan?.annualPrice == null ? "custom" : total,
+      partnerTypeSlug: normalizePartnerSlug(partnerType),
+      partnerLabel: selectedPartner.label,
+      plan: selectedPlan?.id || "custom",
+      sku: selectedPlan?.id || "custom",
+      checkoutKey: selectedPlan?.checkoutKey || "custom",
+      billingMode: checkoutTarget?.mode || "lead",
+      modules: selectedModuleIds.join(","),
+      annualTotal: selectedPlan?.annualPrice == null ? "custom" : String(total),
     });
+    if (partnerType === "Custom") {
+      params.set("customOption", selectedCustomOption.id);
+      params.set("customOptionTitle", selectedCustomOption.title);
+      params.set("message", selectedCustomOption.message);
+    }
+    return `/partners/sign-up?${params.toString()}`;
+  }, [checkoutTarget, partnerType, selectedCustomOption, selectedModuleIds, selectedPartner.label, selectedPlan, total]);
+
+  useEffect(() => { persistPartnerSetup(setupPayload); }, [setupPayload]);
+  useEffect(() => {
+    trackPricingEvent("pricing_viewed", { partnerType, planId: selectedPlan?.id, annualTotal: selectedPlan?.annualPrice == null ? "custom" : total });
   }, []);
 
   function choosePartner(type) {
     const nextPlans = getPlansForPartnerType(type);
     setPartnerType(type);
     setSelectedPlanId(nextPlans[0]?.id || "");
-    // Add-ons belong to the plan path, not to a browser session. Clearing them
-    // prevents a venue selection from carrying into an unrelated property or
-    // resident decision.
     setSelectedModuleIds([]);
     setComparePlansOpen(false);
     setUpgradesOpen(false);
-    setShowAllUpgrades(false);
     trackPricingEvent("partner_type_changed", { partnerType: type });
   }
 
@@ -305,157 +171,116 @@ export default function PricingPage() {
     trackPricingEvent("pricing_module_toggled", { moduleId, partnerType, planId: selectedPlan?.id });
   }
 
-  function selectCustomOption(optionId) {
-    setActiveCustomOption(optionId);
-    setPartnerType("Custom");
-    const next = customOptions.find((option) => option.id === optionId);
-    trackPricingEvent("custom_pricing_option_selected", { optionId, optionTitle: next?.title });
-  }
-
-  function trackCta(label, href) {
+  function continueWithSetup() {
     persistPartnerSetup(setupPayload);
-    trackPricingEvent("pricing_cta_clicked", { label, href, partnerType, planId: selectedPlan?.id, annualTotal: selectedPlan?.annualPrice == null ? "custom" : total });
-  }
-
-  async function continueWithSetup(event) {
-    event.preventDefault();
-    persistPartnerSetup(setupPayload);
-    setCheckoutMessage("");
-
     if (isResident) {
-      trackCta("Get Perks Card", "/card");
+      trackPricingEvent("pricing_cta_clicked", { label: "Get Perks Card", partnerType, planId: selectedPlan?.id });
       window.location.href = "/card";
       return;
     }
-
-    if (!checkoutTarget || checkoutTarget.type === "lead" || selectedPlan?.annualPrice === 0 || selectedPlan?.annualPrice == null) {
-      trackCta("Continue to registration", setupHref);
-      window.location.href = setupHref;
-      return;
-    }
-
-    trackCta("Continue to registration", setupHref);
+    trackPricingEvent("pricing_cta_clicked", { label: "Continue to account setup", partnerType, planId: selectedPlan?.id });
     window.location.href = setupHref;
   }
 
+  const chosenTitle = selectedPlan?.label.replace(/ Annual$/, "") || selectedCustomOption.title;
+  const chosenCopy = selectedPlan?.summary || selectedCustomOption.description;
+  const chosenIncludes = selectedPlan?.includes || selectedCustomOption.included;
+
   return (
-    <main className="dp-pricing-page">
-      <section className="dp-pricing-section dp-pricing-calculator-section" id="pricing-builder" aria-label="Pricing calculator">
+    <main className="dp-pricing-page dp-pricing-guided-page">
+      <section className="dp-pricing-section" aria-label="Pricing">
         <div className="dp-pricing-container">
-          <SectionHeader
-            eyebrow="Pricing"
-            title="Choose a plan that fits."
-            copy="Select your role, choose a plan, then continue. Optional services can be added when you need them."
-          />
-          <div className="dp-pricing-calculator">
-            <div className="dp-pricing-calculator-controls">
-              <fieldset className="dp-pricing-decision" data-step="1">
-                <legend><span>1</span> Who are you?</legend>
-                <div className="dp-pricing-role-list">
-                  {PARTNER_TYPES.map((type) => (
-                    <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      <strong>{partnerCopy[type].label}</strong>
-                      <small>{partnerCopy[type].short}</small>
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-              {isResident ? (
-                <fieldset className="dp-pricing-decision" data-step="2">
-                  <legend><span>2</span> Choose your access</legend>
-                  <article className="dp-pricing-selected-plan">
-                    <div><p>Perks Card</p><strong>$25 <small>/ year</small></strong></div>
-                    <ul>{selectedPlan?.includes.map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
-                  </article>
-                </fieldset>
-              ) : (
-                <>
-                  <fieldset className="dp-pricing-decision" data-step="2">
-                    <legend><span>2</span> Choose your plan</legend>
-                    {plans.length > 0 ? (
-                      <>
-                        <div className="dp-pricing-plan-selector" aria-label="Available plans">
-                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><strong>{plan.tier}</strong><small>{getPriceText(plan)}</small></button>)}
-                        </div>
-                        {selectedPlan ? <article className="dp-pricing-selected-plan">
-                          <div><p>{selectedPlan.label.replace(/ Annual$/, "")}</p><strong>{getPriceText(selectedPlan)}</strong></div>
-                          <p>{selectedPlan.summary}</p>
-                          <ul>{selectedPlan.includes.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
-                        </article> : null}
-                        {plans.length > 1 ? <button className="dp-pricing-compare-toggle" type="button" aria-expanded={comparePlansOpen} onClick={() => setComparePlansOpen((open) => !open)}>{comparePlansOpen ? "Hide comparison" : "Compare plans"}</button> : null}
-                        {comparePlansOpen ? <section className="dp-pricing-plan-comparison" aria-label="Plan comparison">
-                          <p>Choose the plan that fits your current scope.</p>
-                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
-                            <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
-                            <em>{getPriceText(plan)}</em>
-                          </button>)}
-                        </section> : null}
-                      </>
-                    ) : (
-                      <>
-                        <div className="dp-pricing-plan-selector dp-pricing-enterprise-selector">
-                          {customOptions.map((option) => <button key={option.id} type="button" data-active={activeCustomOption === option.id} onClick={() => selectCustomOption(option.id)}><strong>{option.title}</strong></button>)}
-                        </div>
-                        <article className="dp-pricing-selected-plan">
-                          <div><p>{selectedCustomOption.title}</p><strong>Custom</strong></div>
-                          <p>{selectedCustomOption.description}</p>
-                          <ul>{selectedCustomOption.included.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
-                        </article>
-                      </>
-                    )}
-                  </fieldset>
-                  {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision" data-step="3">
-                    <legend><span>3</span> Optional services</legend>
-                    <p className="dp-pricing-decision-copy">Your plan works on its own. Add services now only if they are useful.</p>
-                    <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
-                      <span>{upgradesOpen ? "Hide optional services" : "Add optional services"}</span>
-                      <small>{selectedModules.length > 0 ? `${selectedModules.length} selected` : "Available later"}</small>
-                    </button>
-                    {upgradesOpen ? <div className="dp-pricing-upgrade-content">
-                      <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
-                        {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}>{category.label}</button>)}
-                      </div>
-                      <p className="dp-pricing-upgrade-category-copy">{activeUpgradeCategory.description}</p>
-                      <div className="dp-pricing-upgrade-list" role="tabpanel" aria-label={`${activeUpgradeCategory.label} upgrades`}>
-                        {(showAllUpgrades ? activeUpgradeModules : activeUpgradeModules.slice(0, 4)).map((rawModule) => {
-                          const module = displayModule(rawModule);
-                          const active = selectedModuleIds.includes(module.id);
-                          return <button key={module.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>;
-                        })}
-                      </div>
-                      {activeUpgradeModules.length > 4 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 4} more`}</button> : null}
-                    </div> : null}
-                  </fieldset> : null}
-                </>
-              )}
+          <header className="dp-pricing-guided-header">
+            <p>Pricing</p>
+            <h1>Start with the right plan.</h1>
+            <span>Choose a role, review the plan, then set up your account. You can tailor it later.</span>
+          </header>
+
+          <div className="dp-pricing-guided-layout">
+            <div className="dp-pricing-journey">
+              <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
+                <div className="dp-pricing-step-heading"><span>01</span><div><p>Start here</p><h2 id="pricing-role-title">Who is this for?</h2></div></div>
+                <label className="dp-pricing-role-select">
+                  <span>Pricing for</span>
+                  <select value={partnerType} onChange={(event) => choosePartner(event.target.value)}>
+                    <optgroup label="Local places">
+                      <option value="Venue">Venue</option>
+                      <option value="Hotel">Hotel</option>
+                    </optgroup>
+                    <optgroup label="Property and place">
+                      <option value="Property">Property</option>
+                      <option value="Real Estate">Real Estate</option>
+                    </optgroup>
+                    <optgroup label="Organizations">
+                      <option value="Brand">Brand</option>
+                      <option value="Civic">Community</option>
+                      <option value="Custom">Enterprise</option>
+                    </optgroup>
+                    <option value="Resident">Resident</option>
+                  </select>
+                </label>
+                <p className="dp-pricing-role-context">{selectedPartner.short}</p>
+              </section>
+
+              <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
+                <div className="dp-pricing-step-heading"><span>02</span><div><p>Choose a plan</p><h2 id="pricing-plan-title">{isResident ? "Your access" : "Choose what fits today"}</h2></div></div>
+                {plans.length > 0 ? <div className="dp-pricing-plan-list">
+                  {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
+                    <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
+                    <em>{getPriceText(plan)}</em>
+                    <i>{selectedPlan?.id === plan.id ? "Selected" : "Choose"}</i>
+                  </button>)}
+                </div> : <div className="dp-pricing-plan-list">
+                  {customOptions.map((option) => <button key={option.id} type="button" data-active={activeCustomOption === option.id} aria-pressed={activeCustomOption === option.id} onClick={() => { setActiveCustomOption(option.id); choosePartner("Custom"); }}>
+                    <span><strong>{option.title}</strong><small>{option.description}</small></span><em>Custom</em><i>{activeCustomOption === option.id ? "Selected" : "Choose"}</i>
+                  </button>)}
+                </div>}
+                {plans.length > 1 ? <button className="dp-pricing-compare-toggle" type="button" aria-expanded={comparePlansOpen} onClick={() => setComparePlansOpen((open) => !open)}>{comparePlansOpen ? "Close plan comparison" : "Compare plans"}</button> : null}
+                {comparePlansOpen ? <div className="dp-pricing-plan-comparison" aria-label="Plan comparison">
+                  <p>Choose the plan that matches your current scope.</p>
+                  {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span><em>{getPriceText(plan)}</em></button>)}
+                </div> : null}
+              </section>
+
+              {partnerType !== "Custom" && !isResident ? <section className="dp-pricing-step dp-pricing-services" aria-labelledby="pricing-services-title">
+                <div className="dp-pricing-step-heading"><span>03</span><div><p>Only if useful</p><h2 id="pricing-services-title">Tailor your plan</h2></div></div>
+                <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
+                  <span>{upgradesOpen ? "Hide services" : "Add services"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "You can do this later"}</small>
+                </button>
+                {upgradesOpen ? <div className="dp-pricing-upgrade-content">
+                  <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Service category">
+                    {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => setActiveCapabilityGroup(category.id)}>{category.label}</button>)}
+                  </div>
+                  <p className="dp-pricing-upgrade-category-copy">{activeUpgradeCategory.description}</p>
+                  <div className="dp-pricing-upgrade-list" role="tabpanel" aria-label={`${activeUpgradeCategory.label} services`}>
+                    {activeUpgradeModules.slice(0, 4).map((module) => {
+                      const service = displayModule(module);
+                      const active = selectedModuleIds.includes(service.id);
+                      return <button key={service.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(service.id)}><span><strong>{service.label}</strong><small>{service.summary}</small></span><em>{getPriceText(service)}</em></button>;
+                    })}
+                  </div>
+                </div> : null}
+              </section> : null}
             </div>
-            <aside className="dp-pricing-summary" aria-label="Order Summary">
-              <p className="dp-pricing-kicker">Order summary</p>
+
+            <aside className="dp-pricing-review" aria-label="Your selection">
+              <p>Your selection</p>
               <h2>{totalText}</h2>
-              <p className="dp-pricing-summary-context">{estimatedTotalLabel}</p>
-              <div className="dp-pricing-summary-plan"><strong>{selectedPlan?.label.replace(/ Annual$/, "") || selectedCustomOption.title}</strong><span>{selectedPlan?.summary || selectedCustomOption.description}</span></div>
-              <dl>
-                <div><dt>{isResident ? "Access" : "Partner type"}</dt><dd>{isResident ? "Perks Card" : selectedPartnerLabel}</dd></div>
-                <div><dt>{isResident ? "Perks Card" : "Annual plan"}</dt><dd>{selectedPlan ? getPriceText(selectedPlan) : "Custom"}</dd></div>
-                {!isResident ? <div><dt>Annual add-ons</dt><dd>{formatCurrency(annualAddOnTotal)}</dd></div> : null}
-                {!isResident ? <div><dt>One-time services</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div> : null}
-                {!isResident ? <div><dt>Recurring annual</dt><dd>{selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(recurringAnnualTotal)}</dd></div> : null}
-              </dl>
-              {!isResident ? <div className="dp-pricing-selected" aria-label="Selected upgrades">{selectedModules.length > 0 ? selectedModules.map((module) => <button key={module.id} type="button" onClick={() => toggleModule(module.id)}>{displayModule(module).label}</button>) : <span>No upgrades selected.</span>}</div> : null}
-              <p className="dp-pricing-checkout-note">
-                {checkoutMessage || (isResident ? "Resident access is separate from partner subscriptions." : "Continue to create your account. Payment details are requested only when they apply.")}
-              </p>
-              <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>
-                {isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" />
-              </button>
+              <span>{isResident ? "Annual access" : "Estimated first year"}</span>
+              <div><strong>{chosenTitle}</strong><small>{chosenCopy}</small></div>
+              <ul>{chosenIncludes?.slice(0, 3).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
+              {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
+              <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
+              <small className="dp-pricing-reassurance">{isResident ? "Resident access is separate from partner subscriptions." : "Payment details are requested only when they apply."}</small>
             </aside>
           </div>
         </div>
       </section>
+
+      <div className="dp-pricing-mobile-action">
+        <span><small>{isResident ? "Annual access" : "Your plan"}</small><strong>{totalText}</strong></span>
+        <button type="button" onClick={continueWithSetup}>{isResident ? "Get card" : "Continue"} <ArrowRight aria-hidden="true" /></button>
+      </div>
     </main>
   );
-}
-
-function SectionHeader({ eyebrow, title, copy }) {
-  return <header className="dp-pricing-section-header"><p className="dp-pricing-eyebrow">{eyebrow}</p><h2>{title}</h2>{copy ? <p>{copy}</p> : null}</header>;
 }

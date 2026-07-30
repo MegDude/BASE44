@@ -1,102 +1,136 @@
-/* Final page-level pricing treatment: text-first, square, and deliberately quiet. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page { background: #fff !important; color: #0b1f33 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page :is(button, a, input, select) { border-radius: 0 !important; box-shadow: none !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan { background: #fff !important; box-shadow: none !important; }
+/* Guided pricing: a short, native-feeling decision journey with no card grid or decorative UI. */
+html body #root#root#root#root main.dp-pricing-guided-page {
+  --pricing-ink: #0b1f33;
+  --pricing-muted: rgba(11, 31, 51, .64);
+  --pricing-gold: #c8a96a;
+  --pricing-line: rgba(11, 31, 51, .12);
+  background: #fff !important;
+  color: var(--pricing-ink) !important;
+  padding-bottom: 92px !important;
+}
+html body #root#root#root#root main.dp-pricing-guided-page :is(button, a, select) { border-radius: 0 !important; box-shadow: none !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-section { padding: clamp(32px, 6vw, 72px) 0 !important; background: #fff !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-container { width: min(1040px, calc(100% - 40px)) !important; margin-inline: auto !important; }
 
-/* Every role begins at the same text edge. There are no cards, markers, or offsets. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list {
-  display: grid !important; grid-template-columns: 1fr !important; gap: 0 !important;
-  margin: 0 !important; padding: 0 !important; border: 0 !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header { max-width: 620px !important; margin: 0 0 48px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header > p,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading p {
+  margin: 0 0 7px !important; color: var(--pricing-gold) !important; font-size: 11px !important;
+  font-weight: 700 !important; letter-spacing: .12em !important; text-transform: uppercase !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button {
-  display: block !important; width: 100% !important; min-height: 0 !important; margin: 0 !important;
-  padding: 9px 0 !important; background: transparent !important; border: 0 !important;
-  color: #0b1f33 !important; text-align: left !important; transform: none !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header h1 {
+  margin: 0 !important; color: var(--pricing-ink) !important; font-size: clamp(34px, 5vw, 52px) !important;
+  line-height: 1.02 !important; letter-spacing: -.045em !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button::before,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button::after { content: none !important; display: none !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list :is(strong, small) {
-  display: block !important; margin: 0 !important; padding: 0 !important; text-align: left !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header > span {
+  display: block !important; max-width: 540px !important; margin-top: 14px !important; color: var(--pricing-muted) !important;
+  font-size: 16px !important; line-height: 1.5 !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list strong { color: #0b1f33 !important; font-size: 15px !important; line-height: 1.25 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list small {
-  overflow: visible !important; margin-top: 2px !important; color: rgba(11, 31, 51, .64) !important;
-  font-size: 13px !important; line-height: 1.4 !important; text-overflow: clip !important; white-space: normal !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-layout {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) 300px !important; gap: clamp(40px, 7vw, 88px) !important; align-items: start !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button[data-active="true"] strong { color: #b8963e !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-journey { min-width: 0 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step { padding: 0 0 34px !important; margin: 0 0 34px !important; border: 0 !important; border-bottom: 1px solid var(--pricing-line) !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step:last-child { margin-bottom: 0 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading {
+  display: grid !important; grid-template-columns: 32px minmax(0, 1fr) !important; gap: 12px !important; margin-bottom: 18px !important;
+}
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading > span {
+  color: var(--pricing-gold) !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1.5 !important;
+}
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading h2 { margin: 0 !important; font-size: 22px !important; line-height: 1.15 !important; letter-spacing: -.025em !important; }
 
-/* Compact plan choices are a simple text rail, not a segmented pill. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector {
-  display: flex !important; gap: 20px !important; overflow-x: auto !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select { display: block !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select > span { display: block !important; margin-bottom: 7px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select select {
+  width: 100% !important; min-height: 50px !important; padding: 0 12px !important; appearance: auto !important;
+  background: #fff !important; border: 1px solid var(--pricing-ink) !important; color: var(--pricing-ink) !important; font: 600 16px/1.2 Inter, sans-serif !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button {
-  flex: 0 0 auto !important; min-height: 38px !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important; color: rgba(11, 31, 51, .64) !important; text-align: left !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] { background: transparent !important; color: #0b1f33 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] strong { color: #b8963e !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-compare-toggle,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-more {
-  min-height: 38px !important; padding: 0 !important; background: transparent !important; border: 0 !important;
-  color: #0b1f33 !important; text-decoration: underline !important; text-underline-offset: 4px !important;
-}
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-context { margin: 11px 0 0 !important; color: var(--pricing-muted) !important; font-size: 14px !important; line-height: 1.45 !important; }
 
-/* Optional services stay out of the conversion path until a buyer asks for them. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle {
-  display: flex !important; align-items: center !important; justify-content: space-between !important;
-  width: 100% !important; min-height: 44px !important; padding: 0 !important; background: transparent !important;
-  border: 0 !important; border-bottom: 1px solid rgba(11, 31, 51, .1) !important; color: #0b1f33 !important; text-align: left !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list { display: grid !important; gap: 0 !important; border-top: 1px solid var(--pricing-line) !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) auto auto !important; align-items: center !important; gap: 14px !important;
+  width: 100% !important; min-height: 64px !important; padding: 11px 0 !important; background: transparent !important;
+  border: 0 !important; border-bottom: 1px solid var(--pricing-line) !important; color: var(--pricing-ink) !important; text-align: left !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle > span { font-weight: 650 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-toggle small { color: rgba(11, 31, 51, .64) !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-content { padding-top: 14px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list span { display: grid !important; gap: 3px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list strong { font-size: 16px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list small { color: var(--pricing-muted) !important; font-size: 13px !important; line-height: 1.35 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list em { font-style: normal !important; white-space: nowrap !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list i { min-width: 56px !important; color: var(--pricing-muted) !important; font-size: 12px !important; font-style: normal !important; text-align: right !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] strong,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] i { color: var(--pricing-gold) !important; }
 
-/* Comparison is a short decision list: plan, fit, and price on one row. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison {
-  display: block !important; margin-top: 14px !important; padding: 0 !important; background: transparent !important; border: 0 !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-compare-toggle,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle {
+  display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important;
+  min-height: 46px !important; padding: 0 !important; margin-top: 10px !important; background: transparent !important;
+  border: 0 !important; border-bottom: 1px solid var(--pricing-line) !important; color: var(--pricing-ink) !important; text-align: left !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > p { margin: 0 0 6px !important; color: rgba(11, 31, 51, .64) !important; font-size: 13px !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button {
-  display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; align-items: center !important;
-  width: 100% !important; min-height: 54px !important; padding: 8px 0 !important; background: transparent !important;
-  border: 0 !important; border-bottom: 1px solid rgba(11, 31, 51, .1) !important; color: #0b1f33 !important; text-align: left !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button:first-of-type { border-top: 1px solid rgba(11, 31, 51, .1) !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button[data-active="true"] strong { color: #b8963e !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison span { display: grid !important; gap: 2px !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison small { color: rgba(11, 31, 51, .64) !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison em { color: #0b1f33 !important; font-style: normal !important; white-space: nowrap !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-compare-toggle { text-decoration: underline !important; text-underline-offset: 4px !important; font-weight: 650 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle span { font-weight: 650 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { color: var(--pricing-muted) !important; }
 
-/* Upgrade categories are labels only; their explanatory sentence appears once below. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups {
-  display: flex !important; gap: 20px !important; overflow-x: auto !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison { margin-top: 14px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison > p,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-category-copy { margin: 0 0 9px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison > button,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; gap: 16px !important; align-items: center !important;
+  width: 100% !important; min-height: 56px !important; padding: 9px 0 !important; background: transparent !important;
+  border: 0 !important; border-bottom: 1px solid var(--pricing-line) !important; color: var(--pricing-ink) !important; text-align: left !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button {
-  flex: 0 0 auto !important; min-height: 38px !important; margin: 0 !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important; color: rgba(11, 31, 51, .64) !important;
-  font: 650 14px/1.2 Inter, sans-serif !important; text-align: left !important;
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison span,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list span { display: grid !important; gap: 2px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison small,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list small { color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-comparison em,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list em { font-style: normal !important; white-space: nowrap !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-content { padding-top: 14px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups { display: flex !important; gap: 18px !important; overflow-x: auto !important; margin-bottom: 7px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button { flex: 0 0 auto !important; min-height: 38px !important; padding: 0 !important; background: transparent !important; border: 0 !important; color: var(--pricing-muted) !important; font-weight: 650 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button[data-active="true"] { color: var(--pricing-gold) !important; }
+
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review { position: sticky !important; top: 24px !important; padding: 0 0 22px !important; border: 0 !important; border-top: 1px solid var(--pricing-ink) !important; border-bottom: 1px solid var(--pricing-ink) !important; background: #fff !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > p { margin: 15px 0 4px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review h2 { margin: 0 !important; font-size: 36px !important; line-height: 1 !important; letter-spacing: -.04em !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > span { display: block !important; margin-top: 4px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > div { margin-top: 20px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > div :is(strong, small) { display: block !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > div small { margin-top: 5px !important; color: var(--pricing-muted) !important; line-height: 1.4 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review ul { display: grid !important; gap: 7px !important; margin: 16px 0 !important; padding: 0 !important; list-style: none !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review li { display: flex !important; gap: 7px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review li svg { width: 15px !important; height: 15px !important; flex: 0 0 auto !important; color: var(--pricing-gold) !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review-services { margin: 0 0 14px !important; color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-button,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action button {
+  display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+  min-height: 48px !important; padding: 0 16px !important; background: var(--pricing-ink) !important; border: 1px solid var(--pricing-ink) !important; color: #fff !important; font: 650 14px/1 Inter, sans-serif !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button[data-active="true"] {
-  background: transparent !important; border: 0 !important; color: #b8963e !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-category-copy {
-  margin: 2px 0 10px !important; color: rgba(11, 31, 51, .64) !important; font-size: 13px !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
-  padding: 20px 0 !important; background: #fff !important; border: 0 !important;
-  border-top: 1px solid rgba(11, 31, 51, .12) !important; border-bottom: 1px solid rgba(11, 31, 51, .12) !important;
-}
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-button { width: 100% !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-button svg,
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action svg { width: 16px !important; height: 16px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-reassurance { display: block !important; margin-top: 10px !important; color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
+
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action { display: none !important; }
+
 @media (max-width: 767px) {
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header { margin-bottom: 28px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision { padding-bottom: 28px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision + fieldset.dp-pricing-decision { padding-top: 28px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector { gap: 18px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button,
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button { min-height: 44px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button { min-height: 58px !important; }
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary { margin-top: 4px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page { padding-bottom: calc(82px + env(safe-area-inset-bottom)) !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-container { width: min(100% - 32px, 620px) !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header { margin-bottom: 32px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-layout { display: block !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step { padding-bottom: 26px !important; margin-bottom: 26px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { grid-template-columns: minmax(0, 1fr) auto !important; min-height: 66px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list i { display: none !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review { display: none !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action {
+    position: fixed !important; right: 0 !important; bottom: 0 !important; left: 0 !important; z-index: 40 !important;
+    display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 14px !important;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom)) !important; background: #fff !important; border-top: 1px solid var(--pricing-line) !important;
+  }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action span { display: grid !important; gap: 2px !important; min-width: 0 !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action small { color: var(--pricing-muted) !important; font-size: 11px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action strong { font-size: 18px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action button { flex: 0 0 auto !important; min-width: 126px !important; }
 }
