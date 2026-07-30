@@ -856,8 +856,8 @@ function PartnerWorkspaceContent() {
           {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
-          {tab === "reports" && <WorkspaceReports key="reports" />}
-          {tab === "analytics" && <WorkspaceAnalytics key="analytics" />}
+          {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}
+          {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
@@ -1045,9 +1045,9 @@ const DOWNTOWN_AUSTIN_REPORT_CONTEXT = [
   },
 ];
 
-function WorkspaceReports() {
+function WorkspaceReports({ scope: authorizedScope }) {
   const location = useLocation();
-  const scope = resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
+  const scope = authorizedScope || resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
   const requestedOrganizationId = scope.organizationId;
   const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const hasVerifiedSearchSnapshot = organization?.id === "demo-org-legends-real-estate";
@@ -1367,7 +1367,7 @@ function WorkspaceAgent({ user, scope }) {
   );
 }
 
-function WorkspaceAnalytics() {
+function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
   const location = useLocation();
   if (location.pathname.includes("/analytics/experiences/downtown-art-parks-tour")) {
     return (
@@ -1382,7 +1382,7 @@ function WorkspaceAnalytics() {
       </motion.section>
     );
   }
-  return <PartnerAnalyticsExperience />;
+  return <PartnerAnalyticsExperience scopeOverride={scope} adminMode={hasPrivilegedAccess} />;
   /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
@@ -1735,7 +1735,7 @@ function NativeMobileWorkspaceDashboard({
 
   return (
     <div className="dp-native-mobile-dashboard" aria-label={`${organization?.name || "Partner"} mobile overview`}>
-      <div className="dp-native-mobile-workspace-switcher">
+      {onSwitchWorkspace ? <div className="dp-native-mobile-workspace-switcher">
         <button
           type="button"
           onClick={onSwitchWorkspace}
@@ -1744,7 +1744,7 @@ function NativeMobileWorkspaceDashboard({
           <span><small>Partner workspace</small><strong>{organization?.name || "Partner workspace"}</strong></span>
           <ChevronRight aria-hidden="true" />
         </button>
-      </div>
+      </div> : null}
       <section className="dp-native-mobile-hero">
         <p className="dp-native-mobile-kicker">{organization?.name || "Partner overview"}</p>
         <h1>{heroMedia.headline}</h1>
@@ -1823,7 +1823,7 @@ function NativeMobileWorkspaceDashboard({
   );
 }
 
-function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null }) {
+function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null, hasPrivilegedAccess = false }) {
   const navigate = useNavigate();
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [perks, setPerks] = useState([]);
@@ -1927,10 +1927,10 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         report={legendsSeoReport}
         scope={scope}
         heroMedia={heroMedia}
-        onSwitchWorkspace={() => setWorkspaceMenuOpen(true)}
+        onSwitchWorkspace={hasPrivilegedAccess ? undefined : () => setWorkspaceMenuOpen(true)}
       />
       <AnimatePresence>
-        {workspaceMenuOpen ? (
+        {workspaceMenuOpen && !hasPrivilegedAccess ? (
           <motion.section
             className="dp-native-mobile-workspace-menu"
             role="dialog"
@@ -2015,7 +2015,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
           </div>
         </div>
         <div className="dp-workspace-context-actions">
-          <button type="button" onClick={() => setWorkspaceMenuOpen(true)}>Switch workspace</button>
+          {!hasPrivilegedAccess ? <button type="button" onClick={() => setWorkspaceMenuOpen(true)}>Switch workspace</button> : null}
           <button type="button" onClick={() => setTab("profile")}>Manage workspace</button>
         </div>
       </section>
