@@ -843,13 +843,13 @@ function PartnerWorkspaceContent() {
           {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" scope={workspaceScope} />}
           {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" scope={workspaceScope} />}
           {tab === "map" && <WorkspaceRegistryPanel key="map" tabId="map" />}
-          {tab === "campaigns" && <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />}
+          {tab === "campaigns" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-campaigns" tabId="campaigns" /> : <WorkspaceExperienceSystem key="campaigns" organizationId={activeOrganizationId} view="campaigns" />)}
           {tab === "offers" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-offers" tabId="offers" /> : <PerksManager key="offers" user={user} scope={workspaceScope} />)}
           {tab === "events" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-events" tabId="events" /> : <EventsManager key="events" user={user} scope={workspaceScope} />)}
-          {tab === "surveys" && <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />}
+          {tab === "surveys" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-surveys" tabId="surveys" /> : <WorkspaceExperienceSystem key="surveys" organizationId={activeOrganizationId} view="surveys" />)}
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
-          {tab === "share_links" && <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
-          {tab === "governance" && <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />}
+          {tab === "share_links" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-share-links" tabId="share_links" /> : <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
+          {tab === "governance" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-governance" tabId="governance" /> : <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
