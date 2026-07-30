@@ -1,85 +1,225 @@
-/* Final page-level pricing treatment: text-first, square, and deliberately quiet. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page { background: #fff !important; color: #0b1f33 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page :is(button, a, input, select) { border-radius: 0 !important; box-shadow: none !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan { background: #fff !important; box-shadow: none !important; }
+/* Canonical pricing journey. This is the only late-loaded pricing surface. */
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page {
+  --pricing-ink: #0b1f33;
+  --pricing-muted: rgba(11, 31, 51, .66);
+  --pricing-line: rgba(11, 31, 51, .12);
+  --pricing-gold: #c8a96a;
+  background: #fff !important;
+  color: var(--pricing-ink) !important;
+}
 
-/* Every role begins at the same text edge. There are no cards, markers, or offsets. */
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page :is(button, a, input, select) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section {
+  padding: clamp(32px, 6vw, 72px) 0 88px !important;
+  background: #fff !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container {
+  width: min(1040px, calc(100% - 40px)) !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header {
+  max-width: 620px !important;
+  margin-bottom: clamp(28px, 4vw, 44px) !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-header h2 {
+  font-size: clamp(34px, 4.2vw, 52px) !important;
+  line-height: .98 !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 320px) !important;
+  gap: clamp(36px, 6vw, 72px) !important;
+  align-items: start !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator-controls {
+  min-width: 0 !important;
+  background: #fff !important;
+  border: 0 !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 0 28px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pricing-line) !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision + fieldset.dp-pricing-decision {
+  padding-top: 28px !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision > legend {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  color: var(--pricing-ink) !important;
+  font: 700 18px/1.2 Inter, sans-serif !important;
+  letter-spacing: -.02em !important;
+  text-transform: none !important;
+}
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page fieldset.dp-pricing-decision > legend > span {
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  color: var(--pricing-gold) !important;
+  font: 650 11px/1 Inter, sans-serif !important;
+}
+
+/* Role selector: aligned editorial rows, never cards. */
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list {
-  display: grid !important; grid-template-columns: 1fr !important; gap: 0 !important;
-  margin: 0 !important; padding: 0 !important; border: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
+
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button {
-  display: block !important; width: 100% !important; min-height: 0 !important; margin: 0 !important;
-  padding: 9px 0 !important; background: transparent !important; border: 0 !important;
-  color: #0b1f33 !important; text-align: left !important; transform: none !important;
+  display: grid !important;
+  grid-template-columns: minmax(128px, 160px) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--pricing-ink) !important;
+  text-align: left !important;
+  transform: none !important;
 }
+
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button::before,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button::after { content: none !important; display: none !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button::after {
+  content: none !important;
+  display: none !important;
+}
+
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list :is(strong, small) {
-  display: block !important; margin: 0 !important; padding: 0 !important; text-align: left !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list strong { color: #0b1f33 !important; font-size: 15px !important; line-height: 1.25 !important; }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list strong {
+  color: var(--pricing-ink) !important;
+  font-size: 15px !important;
+  line-height: 1.4 !important;
+}
+
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list small {
-  overflow: visible !important; margin-top: 2px !important; color: rgba(11, 31, 51, .64) !important;
-  font-size: 13px !important; line-height: 1.4 !important; text-overflow: clip !important; white-space: normal !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button[data-active="true"] strong { color: #b8963e !important; }
-
-/* Compact plan choices are a simple text rail, not a segmented pill. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector {
-  display: flex !important; gap: 20px !important; overflow-x: auto !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button {
-  flex: 0 0 auto !important; min-height: 38px !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important; color: rgba(11, 31, 51, .64) !important; text-align: left !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] { background: transparent !important; color: #0b1f33 !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] strong { color: #b8963e !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-compare-toggle,
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-more {
-  min-height: 38px !important; padding: 0 !important; background: transparent !important; border: 0 !important;
-  color: #0b1f33 !important; text-decoration: underline !important; text-underline-offset: 4px !important;
+  overflow: visible !important;
+  color: var(--pricing-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
 }
 
-/* Comparison is a short decision list: plan, fit, and price on one row. */
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison {
-  display: block !important; margin-top: 14px !important; padding: 0 !important; background: transparent !important; border: 0 !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > p { margin: 0 0 6px !important; color: rgba(11, 31, 51, .64) !important; font-size: 13px !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button {
-  display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; align-items: center !important;
-  width: 100% !important; min-height: 54px !important; padding: 8px 0 !important; background: transparent !important;
-  border: 0 !important; border-bottom: 1px solid rgba(11, 31, 51, .1) !important; color: #0b1f33 !important; text-align: left !important;
-}
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button:first-of-type { border-top: 1px solid rgba(11, 31, 51, .1) !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button[data-active="true"] strong { color: #b8963e !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison span { display: grid !important; gap: 2px !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison small { color: rgba(11, 31, 51, .64) !important; }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison em { color: #0b1f33 !important; font-style: normal !important; white-space: nowrap !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button[data-active="true"] strong { color: var(--pricing-gold) !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page button:focus-visible { outline: 2px solid var(--pricing-gold) !important; outline-offset: 3px !important; }
 
-/* Upgrade categories are labels only; their explanatory sentence appears once below. */
+/* Plan choice and detail have one visual language: text and evidence. */
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector,
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups {
-  display: flex !important; gap: 20px !important; overflow-x: auto !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important;
+  display: flex !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button {
-  flex: 0 0 auto !important; min-height: 38px !important; margin: 0 !important; padding: 0 !important;
-  background: transparent !important; border: 0 !important; color: rgba(11, 31, 51, .64) !important;
-  font: 650 14px/1.2 Inter, sans-serif !important; text-align: left !important;
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-plan-selector, .dp-pricing-upgrade-groups) > button {
+  flex: 0 0 auto !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--pricing-muted) !important;
+  font: 650 14px/1.25 Inter, sans-serif !important;
+  text-align: left !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-groups > button[data-active="true"] {
-  background: transparent !important; border: 0 !important; color: #b8963e !important;
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-plan-selector, .dp-pricing-upgrade-groups) > button[data-active="true"],
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] strong { color: var(--pricing-gold) !important; }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan {
+  margin: 18px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
-html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-category-copy {
-  margin: 2px 0 10px !important; color: rgba(11, 31, 51, .64) !important; font-size: 13px !important;
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan > div { gap: 16px !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan > div p,
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan > div strong { color: var(--pricing-ink) !important; font-size: 18px !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected-plan ul { gap: 8px 18px !important; }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-compare-toggle,
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrades-toggle,
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-more {
+  min-height: 40px !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--pricing-ink) !important;
+  font: 650 13px/1.2 Inter, sans-serif !important;
+  text-align: left !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
 }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrades-content { margin-top: 14px !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-category-copy { margin: 4px 0 8px !important; color: var(--pricing-muted) !important; }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-upgrade-list > button,
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Summary is the conversion rail, not a floating dashboard card. */
 html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary {
-  padding: 20px 0 !important; background: #fff !important; border: 0 !important;
-  border-top: 1px solid rgba(11, 31, 51, .12) !important; border-bottom: 1px solid rgba(11, 31, 51, .12) !important;
+  position: sticky !important;
+  top: 24px !important;
+  margin: 0 !important;
+  padding: 0 0 20px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pricing-line) !important;
+  color: var(--pricing-ink) !important;
 }
+
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary h2 { margin: 5px 0 0 !important; font-size: 32px !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl { margin: 18px 0 !important; border-top: 1px solid var(--pricing-line) !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary dl > div { padding: 9px 0 !important; border-bottom: 1px solid var(--pricing-line) !important; }
+html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button { width: 100% !important; min-height: 48px !important; border: 1px solid var(--pricing-gold) !important; background: var(--pricing-gold) !important; color: var(--pricing-ink) !important; }
+
 @media (max-width: 767px) {
-  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-comparison > button { min-height: 58px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-container { width: min(100% - 32px, 620px) !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator { grid-template-columns: 1fr !important; gap: 32px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-role-list > button { grid-template-columns: 1fr !important; gap: 2px !important; min-height: 52px !important; }
+  html body #root#root#root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary { position: static !important; }
 }
