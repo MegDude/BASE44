@@ -12,6 +12,13 @@ import {
 const PARTNER_TYPES = ["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate", "Resident", "Custom"];
 const PARTNER_SETUP_KEY = "dp_partner_lifecycle_setup";
 
+const ROLE_PATHS = [
+  { id: "business", label: "A local business", description: "Offers, campaigns and measurable local reach.", types: ["Venue", "Brand"] },
+  { id: "place", label: "A place to stay or live", description: "Resident or guest benefits for a building, hotel or listing.", types: ["Property", "Hotel", "Real Estate"] },
+  { id: "community", label: "A community program", description: "District, nonprofit and portfolio programs.", types: ["Civic", "Custom"] },
+  { id: "resident", label: "I am a resident", description: "Find local offers, events and your Perks Card.", types: ["Resident"] },
+];
+
 const partnerCopy = {
   Venue: {
     label: "Venue",
@@ -158,6 +165,10 @@ function normalizePartnerSlug(type) {
   return String(type || "").trim().toLowerCase().replace(/\s+/g, "-");
 }
 
+function getRolePathId(type) {
+  return ROLE_PATHS.find((path) => path.types.includes(type))?.id || "business";
+}
+
 function readPartnerSetup() {
   if (typeof window === "undefined") return {};
   try {
@@ -188,8 +199,8 @@ export default function PricingPage() {
   const [selectedModuleIds, setSelectedModuleIds] = useState(Array.isArray(storedSetup.modules) ? storedSetup.modules : []);
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("grow");
   const [comparePlansOpen, setComparePlansOpen] = useState(false);
-  const [upgradesOpen, setUpgradesOpen] = useState(false);
   const [showAllUpgrades, setShowAllUpgrades] = useState(false);
+  const [activeRolePath, setActiveRolePath] = useState(() => getRolePathId(storedPartnerType));
   const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
   const [checkoutMessage, setCheckoutMessage] = useState("");
 
@@ -217,6 +228,7 @@ export default function PricingPage() {
   const partnerTypeSlug = normalizePartnerSlug(partnerType);
   const selectedPartner = partnerCopy[partnerType] || partnerCopy.Custom;
   const selectedPartnerLabel = selectedPartner.label;
+  const selectedRolePath = ROLE_PATHS.find((path) => path.id === activeRolePath) || ROLE_PATHS[0];
   const selectedCustomOption = customOptions.find((option) => option.id === activeCustomOption) || customOptions[0];
   const totalText = selectedPlan?.annualPrice == null ? "Custom" : formatCurrency(total);
   const estimatedTotalLabel = isResident ? "Estimated annual total" : "Estimated first-year total";
@@ -284,15 +296,21 @@ export default function PricingPage() {
   function choosePartner(type) {
     const nextPlans = getPlansForPartnerType(type);
     setPartnerType(type);
+    setActiveRolePath(getRolePathId(type));
     setSelectedPlanId(nextPlans[0]?.id || "");
-    // Add-ons belong to the plan path, not to a browser session. Clearing them
-    // prevents a venue selection from carrying into an unrelated property or
-    // resident decision.
     setSelectedModuleIds([]);
     setComparePlansOpen(false);
-    setUpgradesOpen(false);
     setShowAllUpgrades(false);
     trackPricingEvent("partner_type_changed", { partnerType: type });
+  }
+
+  function chooseRolePath(path) {
+    setActiveRolePath(path.id);
+    if (path.types.length === 1) {
+      choosePartner(path.types[0]);
+      return;
+    }
+    choosePartner(path.types[0]);
   }
 
   function selectPlan(plan) {
@@ -344,25 +362,32 @@ export default function PricingPage() {
         <div className="dp-pricing-container">
           <SectionHeader
             eyebrow="Pricing"
-            title="Choose a plan that fits."
-            copy="Select your role, choose a plan, then continue. Optional services can be added when you need them."
+            title="Start with the right path."
+            copy="A few clear choices, a recommended plan, then only the extras that earn their place."
           />
           <div className="dp-pricing-calculator">
             <div className="dp-pricing-calculator-controls">
               <fieldset className="dp-pricing-decision" data-step="1">
-                <legend><span>1</span> Who are you?</legend>
-                <div className="dp-pricing-role-list">
-                  {PARTNER_TYPES.map((type) => (
-                    <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      <strong>{partnerCopy[type].label}</strong>
-                      <small>{partnerCopy[type].short}</small>
+                <legend><span>01</span> What brings you here?</legend>
+                <p className="dp-pricing-decision-copy">Choose the closest match. You can refine it in the next step.</p>
+                <div className="dp-pricing-choice-grid dp-pricing-role-paths">
+                  {ROLE_PATHS.map((path) => (
+                    <button key={path.id} type="button" data-active={activeRolePath === path.id} onClick={() => chooseRolePath(path)}>
+                      <strong>{path.label}</strong>
+                      <small>{path.description}</small>
                     </button>
                   ))}
                 </div>
+                {selectedRolePath.types.length > 1 ? <div className="dp-pricing-role-refinement" aria-label="Refine your role">
+                  <span>More specifically</span>
+                  <div>
+                    {selectedRolePath.types.map((type) => <button key={type} type="button" data-active={partnerType === type} onClick={() => choosePartner(type)}>{partnerCopy[type].label}</button>)}
+                  </div>
+                </div> : null}
               </fieldset>
               {isResident ? (
                 <fieldset className="dp-pricing-decision" data-step="2">
-                  <legend><span>2</span> Choose your access</legend>
+                    <legend><span>02</span> Choose your access</legend>
                   <article className="dp-pricing-selected-plan">
                     <div><p>Perks Card</p><strong>$25 <small>/ year</small></strong></div>
                     <ul>{selectedPlan?.includes.map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
@@ -371,7 +396,7 @@ export default function PricingPage() {
               ) : (
                 <>
                   <fieldset className="dp-pricing-decision" data-step="2">
-                    <legend><span>2</span> Choose your plan</legend>
+                    <legend><span>02</span> Choose your plan</legend>
                     {plans.length > 0 ? (
                       <>
                         <div className="dp-pricing-plan-selector" aria-label="Available plans">
@@ -383,13 +408,7 @@ export default function PricingPage() {
                           <ul>{selectedPlan.includes.slice(0, 4).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
                         </article> : null}
                         {plans.length > 1 ? <button className="dp-pricing-compare-toggle" type="button" aria-expanded={comparePlansOpen} onClick={() => setComparePlansOpen((open) => !open)}>{comparePlansOpen ? "Hide comparison" : "Compare plans"}</button> : null}
-                        {comparePlansOpen ? <section className="dp-pricing-plan-comparison" aria-label="Plan comparison">
-                          <p>Choose the plan that fits your current scope.</p>
-                          {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
-                            <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
-                            <em>{getPriceText(plan)}</em>
-                          </button>)}
-                        </section> : null}
+                        {comparePlansOpen ? <section className="dp-pricing-plan-comparison" aria-label="Plan comparison"><p>Choose the plan that fits your current scope.</p>{plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span><em>{getPriceText(plan)}</em></button>)}</section> : null}
                       </>
                     ) : (
                       <>
@@ -405,26 +424,22 @@ export default function PricingPage() {
                     )}
                   </fieldset>
                   {partnerType !== "Custom" ? <fieldset className="dp-pricing-decision" data-step="3">
-                    <legend><span>3</span> Optional services</legend>
-                    <p className="dp-pricing-decision-copy">Your plan works on its own. Add services now only if they are useful.</p>
-                    <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
-                      <span>{upgradesOpen ? "Hide optional services" : "Add optional services"}</span>
-                      <small>{selectedModules.length > 0 ? `${selectedModules.length} selected` : "Available later"}</small>
-                    </button>
-                    {upgradesOpen ? <div className="dp-pricing-upgrade-content">
+                    <legend><span>03</span> Add capabilities, if useful</legend>
+                    <p className="dp-pricing-decision-copy">Optional. Start lean; add more from your workspace later.</p>
+                    <details className="dp-pricing-upgrades-disclosure">
+                      <summary>Browse optional capabilities</summary>
                       <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Upgrade categories">
-                        {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}>{category.label}</button>)}
+                        {UPGRADE_CATEGORIES.map((category) => <button key={category.id} type="button" role="tab" aria-selected={activeUpgradeCategory.id === category.id} data-active={activeUpgradeCategory.id === category.id} onClick={() => { setActiveCapabilityGroup(category.id); setShowAllUpgrades(false); }}><strong>{category.label}</strong></button>)}
                       </div>
-                      <p className="dp-pricing-upgrade-category-copy">{activeUpgradeCategory.description}</p>
                       <div className="dp-pricing-upgrade-list" role="tabpanel" aria-label={`${activeUpgradeCategory.label} upgrades`}>
-                        {(showAllUpgrades ? activeUpgradeModules : activeUpgradeModules.slice(0, 4)).map((rawModule) => {
-                          const module = displayModule(rawModule);
-                          const active = selectedModuleIds.includes(module.id);
-                          return <button key={module.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>;
-                        })}
+                      {(showAllUpgrades ? activeUpgradeModules : activeUpgradeModules.slice(0, 3)).map((rawModule) => {
+                        const module = displayModule(rawModule);
+                        const active = selectedModuleIds.includes(module.id);
+                        return <button key={module.id} type="button" data-active={active} aria-pressed={active} onClick={() => toggleModule(module.id)}><span><strong>{module.label}</strong><small>{module.summary}</small></span><em>{getPriceText(module)}</em></button>;
+                      })}
                       </div>
-                      {activeUpgradeModules.length > 4 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 4} more`}</button> : null}
-                    </div> : null}
+                      {activeUpgradeModules.length > 3 ? <button type="button" className="dp-pricing-upgrade-more" aria-expanded={showAllUpgrades} onClick={() => setShowAllUpgrades((show) => !show)}>{showAllUpgrades ? "Show fewer" : `Show ${activeUpgradeModules.length - 3} more`}</button> : null}
+                    </details>
                   </fieldset> : null}
                 </>
               )}
