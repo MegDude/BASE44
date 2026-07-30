@@ -21,13 +21,17 @@ type RouteStop = {
   coords?: [number | string, number | string];
 };
 
-function finitePosition(latValue: unknown, lngValue: unknown): { lat: number; lng: number } | null {
+type RoutePosition = { lat: number; lng: number };
+
+const MAX_DIRECTIONS_POSITIONS = 27;
+
+function finitePosition(latValue: unknown, lngValue: unknown): RoutePosition | null {
   const lat = Number(latValue);
   const lng = Number(lngValue);
   return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
 }
 
-function stopPosition(stop: RouteStop): { lat: number; lng: number } | null {
+function stopPosition(stop: RouteStop): RoutePosition | null {
   const direct = finitePosition(stop.lat, stop.lng);
   if (direct) return direct;
   const verbose = finitePosition(stop.latitude, stop.longitude);
@@ -37,27 +41,46 @@ function stopPosition(stop: RouteStop): { lat: number; lng: number } | null {
     : null;
 }
 
-export async function requestWalkingRoutePath(maps: any, stops: RouteStop[] = []): Promise<Array<{ lat: number; lng: number }>> {
-  const positions = stops.map(stopPosition).filter(Boolean) as Array<{ lat: number; lng: number }>;
-  if (positions.length < 2 || !maps?.DirectionsService) return [];
-  const service = new maps.DirectionsService();
-  const result = await service.route({
-    origin: positions[0],
-    destination: positions[positions.length - 1],
-    waypoints: positions.slice(1, -1).map((location) => ({ location, stopover: true })),
-    optimizeWaypoints: false,
-    travelMode: maps.TravelMode?.WALKING || "WALKING",
-  });
+function walkingRouteBatches(positions: RoutePosition[]): RoutePosition[][] {
+  const batches: RoutePosition[][] = [];
+  for (let start = 0; start < positions.length - 1; start += MAX_DIRECTIONS_POSITIONS - 1) {
+    batches.push(positions.slice(start, start + MAX_DIRECTIONS_POSITIONS));
+  }
+  return batches;
+}
+
+function overviewPath(result: any): RoutePosition[] {
   return (result?.routes?.[0]?.overview_path || []).map((point: any) => ({
     lat: Number(typeof point.lat === "function" ? point.lat() : point.lat),
     lng: Number(typeof point.lng === "function" ? point.lng() : point.lng),
-  })).filter((point: { lat: number; lng: number }) => Number.isFinite(point.lat) && Number.isFinite(point.lng));
+  })).filter((point: RoutePosition) => Number.isFinite(point.lat) && Number.isFinite(point.lng));
+}
+
+export async function requestWalkingRoutePath(maps: any, stops: RouteStop[] = []): Promise<RoutePosition[]> {
+  const positions = stops.map(stopPosition).filter(Boolean) as RoutePosition[];
+  if (positions.length < 2 || !maps?.DirectionsService) return [];
+  const service = new maps.DirectionsService();
+  const resolved: RoutePosition[] = [];
+
+  for (const batch of walkingRouteBatches(positions)) {
+    const result = await service.route({
+      origin: batch[0],
+      destination: batch[batch.length - 1],
+      waypoints: batch.slice(1, -1).map((location) => ({ location, stopover: true })),
+      optimizeWaypoints: false,
+      travelMode: maps.TravelMode?.WALKING || "WALKING",
+    });
+    const path = overviewPath(result);
+    resolved.push(...(resolved.length > 0 ? path.slice(1) : path));
+  }
+
+  return resolved;
 }
 
 export function createBrandedRoutePolylines(
   maps: any,
   map: any,
-  path: Array<{ lat: number; lng: number }>,
+  path: RoutePosition[],
   style: BrandedRouteStyle,
 ): any[] {
   if (path.length < 2) return [];
