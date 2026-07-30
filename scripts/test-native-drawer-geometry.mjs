@@ -22,6 +22,8 @@ assert.match(hookSource, /ResizeObserver/);
 assert.match(hookSource, /visualViewport/);
 assert.match(geometrySource, /--dp-bottom-nav-total-height/);
 assert.match(geometrySource, /touch-action:\s*pan-y/);
+const mapSource = await readFile(new URL("../src/pages/Map.jsx", import.meta.url), "utf8");
+assert.doesNotMatch(mapSource, /style\.setProperty\("padding", "0 0 var\(--dp-bottom-nav-total-height\)"/, "map runtime still forces drawer geometry inline");
 
 const viewports = [
   { width: 320, height: 568, name: "320x568" },
