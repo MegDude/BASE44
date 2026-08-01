@@ -1,6 +1,7 @@
 export type EntityType =
   | "property"
   | "listing"
+  | "real_estate"
   | "rental"
   | "hotel"
   | "venue"

@@ -11,6 +11,7 @@ export type CanonicalMarkerEntityType =
   | "civic"
   | "service"
   | "listing"
+  | "real_estate"
   | "parking";
 
 export type CanonicalMarkerRecord = Readonly<{
@@ -44,6 +45,7 @@ const ENTITY_TYPES = new Set<CanonicalMarkerEntityType>([
   "civic",
   "service",
   "listing",
+  "real_estate",
   "parking",
 ]);
 
@@ -95,7 +97,8 @@ function textForEntity(entity: Record<string, any> = {}): string {
 export function resolveCanonicalMarkerEntityType(entity: Record<string, any> = {}): CanonicalMarkerEntityType {
   const text = textForEntity(entity);
   if (/\b(parking|garage|reservable)\b/.test(text)) return "parking";
-  if (/\b(listing|mls|for sale|for rent|legends[_\s-]*property)\b/.test(text)) return "listing";
+  if (/\b(real[_\s-]*estate|property access)\b/.test(text)) return "real_estate";
+  if (/\b(listing|mls|for sale|for rent|legends[_\s-]*property)\b/.test(text)) return "real_estate";
   if (/\b(hotel|hospitality)\b/.test(text)) return "hotel";
   if (/\b(event|activation|class|concert|show)\b/.test(text)) return "event";
   if (/\b(perk|offer|happy hour|inkind|discount)\b/.test(text)) return "perk";
@@ -174,7 +177,7 @@ function resolveChildLocationId(entity: Record<string, any> = {}, entityType: Ca
       "parking",
     );
   }
-  if (entityType === "listing") {
+  if (entityType === "listing" || entityType === "real_estate") {
     const listing = entity.legendsListing || entity.luxuryPresenceListing || raw.legendsListing || raw.luxuryPresenceListing || {};
     return stableSlug(
       listing.id || listing.listingId || listing.listing_id || listing.mlsNumber || listing.mls_number || entity.listingId || entity.listing_id || raw.listingId || raw.listing_id,
