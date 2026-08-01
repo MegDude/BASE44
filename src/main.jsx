@@ -147,6 +147,7 @@ import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
 import "@/styles/pricing-page-finish.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
+import "@/styles/platform-tokens.css"
 
 inject()
 injectSpeedInsights()
