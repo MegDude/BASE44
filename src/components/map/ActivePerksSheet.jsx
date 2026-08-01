@@ -141,9 +141,9 @@ export default function ActivePerksSheet({
             <p>Available near this map area</p>
             <strong aria-live="polite">{items.length} {items.length === 1 ? "offer" : "offers"}</strong>
           </section>
-          <div className="dp-perks-filter-rail" role="tablist" aria-label="Perk filters">
+          <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
             {["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"].map((label, index) => (
-              <button key={label} type="button" role="tab" aria-selected={index === 0}>
+              <button key={label} type="button" aria-pressed={index === 0}>
                 {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
                 <span>{label}</span>
               </button>
