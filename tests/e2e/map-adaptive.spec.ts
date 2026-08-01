@@ -397,7 +397,6 @@ test.describe("adaptive map surface", () => {
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto("/map?mode=resident&tab=map&filter=All&entityId=partner-bangers");
     await expect(page.locator("#dp-active-map-drawer")).toBeVisible();
-    await expect(page.locator("[data-marker-entity-id]").first()).toBeVisible();
 
     async function markerSnapshot() {
       return page.evaluate(() => {
@@ -425,6 +424,10 @@ test.describe("adaptive map surface", () => {
           .sort((left: any, right: any) => left.markerId.localeCompare(right.markerId));
       });
     }
+
+    await expect
+      .poll(async () => (await markerSnapshot()).length, { timeout: 10000 })
+      .toBeGreaterThan(0);
 
     function assertStableCommonMarkers(before: Awaited<ReturnType<typeof markerSnapshot>>, after: Awaited<ReturnType<typeof markerSnapshot>>) {
       const afterById = new Map(after.map((row) => [row.markerId, row]));
