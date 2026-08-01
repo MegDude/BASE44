@@ -30,6 +30,7 @@ assert.match(mapSource, /data-accessible-marker-entity-id=\{item\.place\.id\}/, 
 assert.match(mapSource, /data-marker-entity-id=\{markerId\}/, "accessible marker controls must expose canonical marker IDs");
 assert.match(mapSource, /data-canonical-latitude=\{markerRecord \? String\(markerRecord\.latitude\) : ""\}/, "accessible marker controls must expose canonical latitude");
 assert.match(mapSource, /data-canonical-longitude=\{markerRecord \? String\(markerRecord\.longitude\) : ""\}/, "accessible marker controls must expose canonical longitude");
+assert.match(mapSource, /const coordinateKey = markerRecord \? `\$\{Number\(markerRecord\.latitude\)\.toFixed\(7\)\}:\$\{Number\(markerRecord\.longitude\)\.toFixed\(7\)\}` : "";/, "accessible marker controls must compute canonical coordinate keys in render scope");
 assert.match(mapSource, /data-coordinate-key=\{coordinateKey\}/, "accessible marker controls must expose canonical coordinate keys");
 assert.match(mapSource, /markerSnapshots: Array\.from\(registry\.entries\(\)\)\.map/, "development marker lifecycle snapshots must expose stable marker identity and coordinates");
 assert.match(mapSource, /lastPositionKey: entry\.marker\?\.__dpLastPositionKey/, "marker snapshots must include the provider marker's last coordinate key");

@@ -13525,7 +13525,7 @@ function GoogleMapCanvas({
         {mapItems.filter((item) => item.type !== "cluster" && item.place?.id).map((item) => {
           const markerRecord = getCanonicalMarkerRecord(item.place, { audienceMode: item.place?.audienceMode || item.place?.mode });
           const markerId = markerRecord?.markerId || item.place.id;
-          const coordinateKey = markerRecord ? markerPositionKey({ lat: markerRecord.latitude, lng: markerRecord.longitude }) : "";
+          const coordinateKey = markerRecord ? `${Number(markerRecord.latitude).toFixed(7)}:${Number(markerRecord.longitude).toFixed(7)}` : "";
           return (
             <button
               key={`accessible-marker-${markerId}`}
