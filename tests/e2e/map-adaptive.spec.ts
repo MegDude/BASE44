@@ -402,7 +402,7 @@ test.describe("adaptive map surface", () => {
       return page.evaluate(() => {
         const lifecycle = (window as any).__DP_MAP_MARKER_LIFECYCLE__;
         const lifecycleRows = Array.isArray(lifecycle?.markerSnapshots) ? lifecycle.markerSnapshots : [];
-        const domRows = [...document.querySelectorAll<HTMLElement>(".dp-google-map-marker-shell[data-marker-entity-id]")].map((node) => ({
+        const shellRows = [...document.querySelectorAll<HTMLElement>(".dp-google-map-marker-shell[data-marker-entity-id]")].map((node) => ({
           key: `pin:${node.dataset.markerEntityId || ""}`,
           markerId: node.dataset.markerEntityId || "",
           entityId: node.dataset.entityId || "",
@@ -411,6 +411,16 @@ test.describe("adaptive map surface", () => {
           coordinateKey: node.dataset.coordinateKey || "",
           lastPositionKey: node.dataset.coordinateKey || "",
         }));
+        const buttonRows = [...document.querySelectorAll<HTMLElement>(".dp-map-pin[data-marker-entity-id]")].map((node) => ({
+          key: `pin:${node.dataset.markerEntityId || ""}`,
+          markerId: node.dataset.markerEntityId || "",
+          entityId: node.dataset.entityId || "",
+          latitude: node.dataset.canonicalLatitude || "",
+          longitude: node.dataset.canonicalLongitude || "",
+          coordinateKey: node.dataset.coordinateKey || "",
+          lastPositionKey: node.dataset.coordinateKey || "",
+        }));
+        const domRows = shellRows.length ? shellRows : buttonRows;
         return (lifecycleRows.length ? lifecycleRows : domRows)
           .filter((row: any) => row.markerId && row.latitude && row.longitude)
           .map((row: any) => ({
