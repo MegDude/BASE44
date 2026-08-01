@@ -1,0 +1,118 @@
+/* Canonical product system. Public editorial pages keep their existing type and layout. */
+:root {
+  --color-navy: #0B1F33;
+  --color-navy-secondary: #132238;
+  --color-gold: #C8A96A;
+  --color-white: #FFFFFF;
+  --color-border: rgba(11, 31, 51, 0.08);
+  --font-product: "Inter", sans-serif;
+  --radius-control: 6px;
+  --radius-panel: 8px;
+  --control-height: 44px;
+  --mobile-nav-clearance: 12px;
+  --duration-fast: 120ms;
+  --duration-standard: 180ms;
+  --duration-panel: 220ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --page-padding: 20px;
+  --content-max-width: 1200px;
+}
+
+/* A single product surface contract. It is intentionally scoped so approved marketing
+   compositions remain editorial rather than being restyled as application screens. */
+[data-platform-surface="authenticated"] {
+  --dp-bg: var(--color-white);
+  --dp-surface: var(--color-white);
+  --dp-surface-alt: var(--color-white);
+  --dp-navy: var(--color-navy);
+  --dp-navy-soft: var(--color-navy-secondary);
+  --dp-gold: var(--color-gold);
+  --dp-border: var(--color-border);
+  --dp-radius-xs: var(--radius-control);
+  --dp-radius-sm: var(--radius-control);
+  --dp-radius-md: var(--radius-panel);
+  --dp-radius-lg: var(--radius-panel);
+  --dp-radius-xl: var(--radius-panel);
+  --dp-radius-full: var(--radius-control);
+  --dp-panel-shadow: none;
+  --dp-shadow-sm: none;
+  --dp-shadow-md: none;
+  --dp-shadow-lg: none;
+  --dp-shadow-glow: none;
+  --dp-glass: var(--color-white);
+  --dp-glass-strong: var(--color-white);
+  --font-heading: var(--font-product);
+  --font-body: var(--font-product);
+  background: var(--color-white);
+  color: var(--color-navy);
+  font-family: var(--font-product);
+}
+
+[data-platform-surface="authenticated"] :where(button, input, select, textarea) {
+  font-family: var(--font-product);
+}
+
+[data-platform-surface="authenticated"] :where(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.dp-platform-page {
+  width: min(100%, var(--content-max-width));
+  margin-inline: auto;
+  padding: calc(var(--page-padding) + env(safe-area-inset-top)) var(--page-padding)
+    calc(var(--page-padding) + env(safe-area-inset-bottom) + var(--mobile-nav-clearance));
+}
+
+.dp-platform-section {
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 24px;
+}
+
+.dp-platform-section:last-child { border-bottom: 0; }
+
+.dp-platform-page-title {
+  margin: 0;
+  color: var(--color-navy);
+  font: 650 clamp(28px, 4vw, 42px)/1.08 var(--font-product);
+  letter-spacing: -0.035em;
+}
+
+.dp-platform-supporting-copy {
+  max-width: 62ch;
+  margin: 10px 0 0;
+  color: rgba(11, 31, 51, .64);
+  font: 400 15px/1.5 var(--font-product);
+}
+
+.dp-platform-button {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--color-navy);
+  border-radius: var(--radius-control);
+  padding: 0 14px;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font: 650 14px/1 var(--font-product);
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+}
+
+.dp-platform-button:hover { background: var(--color-navy-secondary); }
+.dp-platform-button[data-variant="secondary"] { background: var(--color-white); color: var(--color-navy); }
+.dp-platform-button[data-variant="text"] { min-height: 44px; border-color: transparent; background: transparent; color: var(--color-navy); padding-inline: 0; text-decoration: underline; text-underline-offset: 4px; }
+
+.dp-platform-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-white);
+  box-shadow: none;
+}
+
+@media (max-width: 767px) {
+  [data-platform-surface="authenticated"] { overflow-x: clip; }
+  .dp-platform-page { padding-inline: var(--page-padding); }
+}
