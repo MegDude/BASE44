@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "npm run inventory:partner-content && npm run inventory:platform-search-index",
     "dev": "vite",
-    "prebuild": "npm run inventory:partner-content && npm run test:partner-content-inventory && npm run inventory:platform-search-index",
+    "prebuild": "npm run audit:css-entry && npm run inventory:partner-content && npm run test:partner-content-inventory && npm run inventory:platform-search-index",
     "build": "vite build",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
@@ -127,7 +127,8 @@
     "test:backend-v2-foundation": "node scripts/test-backend-v2-foundation.mjs",
     "test:map-marker-stability": "node scripts/test-map-marker-stability-contract.mjs",
     "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs",
-    "test:perks-saved-nearby-mobile": "node scripts/test-perks-saved-nearby-mobile-system.mjs"
+    "test:perks-saved-nearby-mobile": "node scripts/test-perks-saved-nearby-mobile-system.mjs",
+    "audit:css-entry": "node scripts/audit-global-style-budget.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",
