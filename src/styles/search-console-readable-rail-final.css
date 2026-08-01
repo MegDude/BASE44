@@ -5,6 +5,42 @@
   --dp-search-console-navy: #0B1F33;
 }
 
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-search-intent-console :is(
+  button.dp-compact-intent-chip,
+  button.dp-search-more-toggle
+) {
+  color: var(--dp-search-console-navy) !important;
+  -webkit-text-fill-color: var(--dp-search-console-navy) !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-search-intent-console :is(
+  button.dp-compact-intent-chip,
+  button.dp-search-more-toggle
+) :is(
+  .dp-compact-intent-chip__label,
+  .dp-expanding-intent-chip__label,
+  .dp-search-intent-filter-label,
+  .dp-compact-intent-chip__icon,
+  .dp-expanding-intent-chip__icon,
+  .dp-search-intent-filter-icon
+) {
+  color: var(--dp-search-console-navy) !important;
+  stroke: currentColor !important;
+  -webkit-text-fill-color: var(--dp-search-console-navy) !important;
+  opacity: 1 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-search-intent-console :is(
+  button.dp-compact-intent-chip,
+  button.dp-search-more-toggle
+):is(.is-active, .is-open, [aria-selected="true"], [aria-pressed="true"], [aria-expanded="true"]) {
+  color: var(--dp-search-console-navy) !important;
+  background-color: #fff !important;
+  border-color: var(--dp-search-console-gold) !important;
+}
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-search-intent-console .dp-search-intent-audience-tabs > button {
   color: rgba(11, 31, 51, 0.68) !important;
