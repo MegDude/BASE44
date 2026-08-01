@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Keep the product font request small and non-blocking. Product surfaces use a
+   system fallback until Inter is ready instead of delaying first paint. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,65 +12,61 @@
     --font-body: 'Inter', -apple-system, sans-serif;
 
     /* Downtown Perks canonical tokens */
-    --dp-bg: #F8F6F1;
+    --dp-bg: #FFFFFF;
     --dp-surface: #FFFFFF;
-    --dp-surface-alt: #F4F1EA;
+    --dp-surface-alt: #FFFFFF;
     --dp-navy: #0B1F33;
     --dp-navy-soft: #17324D;
-    --dp-gold: #B8963E;
-    --dp-muted: #4D5C6B;
+    --dp-gold: #C8A96A;
+    --dp-muted: rgba(11, 31, 51, 0.64);
     --dp-navy-secondary: var(--dp-navy-soft);
     --dp-navy-elevated: var(--dp-navy-soft);
     --dp-navy-muted: rgba(11, 31, 51, 0.42);
     --dp-gold-deep: var(--dp-gold);
-    --dp-gold-tint: #F4EDDD;
+    --dp-gold-tint: #FFFFFF;
     --dp-gold-muted: var(--dp-gold);
     --dp-border: rgba(11, 31, 51, 0.10);
     --dp-border-hover: rgba(191, 164, 106, 0.34);
     --dp-focus: rgba(191,164,106, 0.10);
     --dp-placeholder: rgba(11, 31, 51, 0.38);
-    --dp-panel-bg: rgba(255, 255, 255, 0.76);
+    --dp-panel-bg: #FFFFFF;
     --dp-panel-border: rgba(11, 31, 51, 0.08);
-    --dp-white-glow: 0 0 0 1px rgba(255, 255, 255, 0.72),
-      0 8px 30px rgba(255, 255, 255, 0.88),
-      0 20px 60px rgba(255, 255, 255, 0.92);
-    --dp-white-glow-strong: 0 0 0 1px rgba(255, 255, 255, 0.86),
-      0 24px 80px rgba(255, 255, 255, 0.96),
-      0 40px 120px rgba(255, 255, 255, 0.98);
-    --dp-panel-shadow: var(--dp-white-glow);
+    --dp-white-glow: none;
+    --dp-white-glow-strong: none;
+    --dp-panel-shadow: none;
     --dp-glass: var(--dp-panel-bg);
-    --dp-glass-strong: rgba(255, 255, 255, 0.88);
-    --dp-glass-blur: blur(20px) saturate(1.08);
+    --dp-glass-strong: #FFFFFF;
+    --dp-glass-blur: none;
     --dp-shadow-sm: var(--dp-panel-shadow);
     --dp-shadow-md: var(--dp-panel-shadow);
     --dp-shadow-lg: var(--dp-panel-shadow);
     --dp-shadow-glow: var(--dp-white-glow-strong);
     --dp-radius-xs: 4px;
-    --dp-radius-sm: 10px;
-    --dp-radius-md: 14px;
-    --dp-radius-lg: 18px;
-    --dp-radius-xl: 18px;
-    --dp-radius-full: 999px;
+    --dp-radius-sm: 6px;
+    --dp-radius-md: 8px;
+    --dp-radius-lg: 8px;
+    --dp-radius-xl: 8px;
+    --dp-radius-full: 8px;
     --z-map: 0;
     --z-map-controls: 10;
     --z-nav: 100;
     --z-overlay: 200;
     --z-drawer: 300;
     --z-toast: 400;
-    --dp-bottom-nav-h: 84px;
+    --dp-bottom-nav-h: 64px;
     --dp-top-nav-h: 64px;
     --dp-safe-bottom: env(safe-area-inset-bottom);
     --dp-clearance: calc(var(--dp-bottom-nav-h) + var(--dp-safe-bottom));
     --dp-map-native-bottom-nav-height: 64px;
-    --dp-soft-neutral: #F5F5F1;
+    --dp-soft-neutral: #FFFFFF;
     --dp-success: #28584A;
     --dp-handle: rgba(11, 31, 51, 0.20);
-    --dp-sheet-shadow: 0 -10px 28px rgba(11, 31, 51, 0.10);
+    --dp-sheet-shadow: none;
     --dp-font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
     --dp-font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
 
     /* Shadcn-compatible aliases mapped to Downtown Perks tokens */
-    --background: 42 33% 97%;
+    --background: 0 0% 100%;
     --foreground: 218 42% 14%;
 
     --card: 0 0% 100%;
@@ -79,24 +77,24 @@
     --primary: 218 42% 14%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 42 20% 94%;
+    --secondary: 0 0% 100%;
     --secondary-foreground: 218 42% 14%;
-    --muted: 42 16% 93%;
-    --muted-foreground: 218 16% 36%;
-    --accent: 40 55% 44%;
+    --muted: 0 0% 100%;
+    --muted-foreground: 218 42% 30%;
+    --accent: 39 45% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 2 43% 46%;
     --destructive-foreground: 0 0% 98%;
-    --border: 42 14% 86%;
-    --input: 42 14% 86%;
-    --ring: 40 55% 44%;
+    --border: 218 42% 14% / 0.08;
+    --input: 218 42% 14% / 0.08;
+    --ring: 39 45% 60%;
 
     --chart-1: 218 42% 14%;
     --chart-2: 40 55% 44%;
     --chart-3: 218 18% 32%;
     --chart-4: 42 12% 72%;
     --chart-5: 42 10% 82%;
-    --radius: 2px;
+    --radius: 6px;
 
     --sidebar-background: 213 79% 9%;
     --sidebar-foreground: 220 22% 94%;
