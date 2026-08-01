@@ -126,7 +126,8 @@
     "test:backend-baseline": "node scripts/test-backend-baseline-audit.mjs",
     "test:backend-v2-foundation": "node scripts/test-backend-v2-foundation.mjs",
     "test:map-marker-stability": "node scripts/test-map-marker-stability-contract.mjs",
-    "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs"
+    "test:bangers-drawer": "node scripts/test-bangers-drawer-contract.mjs",
+    "test:perks-saved-nearby-mobile": "node scripts/test-perks-saved-nearby-mobile-system.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",

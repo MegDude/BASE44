@@ -1,0 +1,343 @@
+/* Shared iOS-native Perks / Saved / Nearby mobile system.
+   This file is intentionally loaded last so related surfaces cannot drift independently. */
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
+  --dp-mobile-system-surface: #ffffff;
+  --dp-mobile-system-ink: #0b1f33;
+  --dp-mobile-system-muted: rgba(11, 31, 51, 0.62);
+  --dp-mobile-system-line: rgba(11, 31, 51, 0.1);
+  --dp-mobile-system-gold: #c8a96a;
+  --dp-mobile-system-header-height: 56px;
+  --dp-mobile-system-bottom-clearance: 12px;
+}
+
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-native-drawer,
+    .dp-active-perks-sheet,
+    #dp-active-map-drawer,
+    .dp-map-drawer-shell,
+    .dp-destination-drawer,
+    .dp-detail-drawer,
+    .dp-resident-events-drawer,
+    .dp-saved-drawer-shell
+  ) {
+    right: 0 !important;
+    bottom: calc(var(--dp-bottom-nav-total-height) + var(--dp-mobile-system-bottom-clearance)) !important;
+    left: 0 !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-native-drawer > .dp-native-drawer-surface,
+    #dp-active-map-drawer,
+    .dp-map-drawer-shell,
+    .dp-destination-drawer,
+    .dp-detail-drawer
+  ) {
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: var(--dp-mobile-system-surface) !important;
+    color: var(--dp-mobile-system-ink) !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-native-drawer-header,
+    .dp-active-perks-header,
+    .dp-panel-header,
+    .dp-map-panel-header,
+    .dp-drawer-control-row,
+    .dp-map-sheet-toolbar,
+    .dp-destination-header
+  ) {
+    min-height: var(--dp-mobile-system-header-height) !important;
+    height: var(--dp-mobile-system-header-height) !important;
+    padding: 0 56px !important;
+    display: grid !important;
+    grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+    align-items: center !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--dp-mobile-system-line) !important;
+    background: var(--dp-mobile-system-surface) !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-header > div,
+    .dp-panel-header > div,
+    .dp-map-panel-header > div,
+    .dp-destination-header > div
+  ) {
+    grid-column: 2 !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-header p,
+    .dp-resident-tab-panel-header p,
+    .dp-saved-downtown-header p,
+    .dp-destination-section-kicker,
+    .dp-tab-eyebrow
+  ) {
+    margin: 0 !important;
+    color: var(--dp-mobile-system-gold) !important;
+    font: 700 10px/1.1 Inter, system-ui, sans-serif !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-header h2,
+    .dp-resident-tab-panel-header h2,
+    .dp-saved-downtown-header h2,
+    .dp-map-panel-title,
+    .dp-destination-title,
+    .dp-detail-title
+  ) {
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: var(--dp-mobile-system-ink) !important;
+    font: 700 16px/1.2 Inter, system-ui, sans-serif !important;
+    text-align: center !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-close,
+    .dp-panel-close,
+    .dp-drawer-close,
+    .dp-map-panel-button--icon,
+    .dp-map-sheet-toolbar button
+  ) {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--dp-mobile-system-ink) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-handle,
+    .dp-map-sheet-handle,
+    .dp-panel-handle,
+    .dp-drawer-handle
+  ) {
+    min-height: 20px !important;
+    height: 20px !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    border: 0 !important;
+    background: var(--dp-mobile-system-surface) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-active-perks-handle > span, .dp-map-sheet-handle, .dp-panel-handle::before, .dp-drawer-handle::before) {
+    width: 36px !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background: rgba(11, 31, 51, 0.22) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-native-drawer-scroll,
+    .dp-active-perks-list,
+    .dp-resident-tab-panel-list,
+    .dp-saved-downtown-scroll,
+    .dp-map-detail-scroll,
+    .dp-destination-scroll,
+    .dp-map-sheet-scroll
+  ) {
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+    background: var(--dp-mobile-system-surface) !important;
+    scrollbar-width: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perk-row,
+    .dp-mobile-result-row,
+    .dp-saved-mobile-row,
+    .dp-tab-row,
+    .dp-compact-place-row,
+    .dp-nearby-image-card,
+    .dp-related-place
+  ) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    min-height: 72px !important;
+    margin: 0 !important;
+    padding: 12px 20px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--dp-mobile-system-line) !important;
+    border-radius: 0 !important;
+    background: var(--dp-mobile-system-surface) !important;
+    box-shadow: none !important;
+    color: var(--dp-mobile-system-ink) !important;
+    text-align: left !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perk-row *,
+    .dp-mobile-result-row *,
+    .dp-saved-mobile-row *,
+    .dp-tab-row *,
+    .dp-compact-place-row *
+  ) {
+    min-width: 0 !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perk-copy strong,
+    .dp-mobile-result-row strong,
+    .dp-saved-mobile-row strong,
+    .dp-tab-row strong,
+    .dp-compact-place-row strong
+  ) {
+    color: var(--dp-mobile-system-ink) !important;
+    font: 700 15px/1.22 Inter, system-ui, sans-serif !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perk-copy span,
+    .dp-mobile-result-row small,
+    .dp-saved-mobile-row small,
+    .dp-tab-row small,
+    .dp-compact-place-row small
+  ) {
+    color: var(--dp-mobile-system-muted) !important;
+    font: 500 12px/1.35 Inter, system-ui, sans-serif !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-perks-filter-rail,
+    .dp-saved-segmented-filter,
+    .dp-resident-category-rail
+  ) {
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    padding: 10px 20px !important;
+    border-bottom: 1px solid var(--dp-mobile-system-line) !important;
+    background: var(--dp-mobile-system-surface) !important;
+    scrollbar-width: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-perks-filter-rail button,
+    .dp-saved-segmented-filter button,
+    .dp-resident-category-rail button
+  ) {
+    min-height: 44px !important;
+    flex: 0 0 auto !important;
+    padding: 0 8px !important;
+    border: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: var(--dp-mobile-system-muted) !important;
+    font: 700 11px/1 Inter, system-ui, sans-serif !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-perks-filter-rail button[aria-selected="true"],
+    .dp-saved-segmented-filter button[aria-selected="true"],
+    .dp-resident-category-rail button[aria-selected="true"]
+  ) {
+    border-bottom-color: var(--dp-mobile-system-gold) !important;
+    color: var(--dp-mobile-system-ink) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-primary-action-row,
+    .dp-universal-action-rail,
+    .dp-map-detail-actions,
+    .dp-active-perk-actions,
+    .dp-saved-action-row
+  ) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    border-radius: 0 !important;
+    background: var(--dp-mobile-system-surface) !important;
+    box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-primary-action-row,
+    .dp-universal-action-rail,
+    .dp-map-detail-actions,
+    .dp-active-perk-actions,
+    .dp-saved-action-row
+  ) > :is(button, a, .dp-panel-action, .dp-perk-cta) {
+    min-height: 44px !important;
+    border: 1px solid var(--dp-mobile-system-line) !important;
+    border-radius: 0 !important;
+    background: var(--dp-mobile-system-surface) !important;
+    box-shadow: none !important;
+    color: var(--dp-mobile-system-ink) !important;
+    font: 700 12px/1 Inter, system-ui, sans-serif !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-primary-action-row,
+    .dp-universal-action-rail,
+    .dp-map-detail-actions,
+    .dp-active-perk-actions
+  ) > :is(.dp-primary-action, .is-primary, button:first-child, a:first-child) {
+    border-color: var(--dp-mobile-system-ink) !important;
+    background: var(--dp-mobile-system-ink) !important;
+    color: #ffffff !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-favorites-matrix,
+    .dp-saved-collection-section,
+    .dp-saved-primary-actions
+  ) {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-native-drawer,
+    .dp-active-perks-sheet,
+    #dp-active-map-drawer,
+    .dp-active-perk-row,
+    .dp-mobile-result-row,
+    .dp-saved-mobile-row,
+    .dp-nearby-image-card
+  ) {
+    animation: none !important;
+    transition: none !important;
+  }
+}

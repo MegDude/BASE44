@@ -1,4 +1,4 @@
-import { Star, X } from "lucide-react";
+import { Navigation, Search, Star, X } from "lucide-react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
@@ -33,10 +33,21 @@ function PerkRowMedia({ image, pin }) {
   );
 }
 
+function perkAvailabilityLabel(item, redeemed) {
+  if (redeemed) return "Already used";
+  if (item.expired) return "Expired";
+  if (item.unavailable) return "Unavailable";
+  if (item.upcoming) return "Upcoming";
+  if (item.limited) return "Limited quantity";
+  if (item.memberOnly) return "Member-only";
+  return "Available now";
+}
+
 function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
   const expiry = formatExpiry(item.expiresAt);
+  const availability = perkAvailabilityLabel(item, redeemed);
   return (
-    <article className="dp-active-perk-row">
+    <article className="dp-active-perk-row dp-mobile-result-row" data-perk-state={availability.toLowerCase().replace(/[^a-z0-9]+/g, "-")} data-canonical-entity-id={item.id}>
       <button
         id={`dp-active-perk-${item.focusKey}`}
         type="button"
@@ -48,14 +59,13 @@ function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
         <span className="dp-active-perk-copy">
           <strong>{item.name}</strong>
           <span>{item.offerTitle}</span>
-          {(expiry || item.distance) && (
-            <small>{[expiry, item.distance].filter(Boolean).join(" · ")}</small>
-          )}
+          <small>{[item.partner || item.category || "Resident benefit", item.value, item.distance, availability, saved ? "Saved" : ""].filter(Boolean).join(" · ")}</small>
+          {expiry ? <em>{expiry}</em> : null}
         </span>
       </button>
       <div className="dp-active-perk-actions" aria-label={`${item.name} perk actions`}>
         <button type="button" onClick={() => onRedeem(item)} disabled={redeemed}>
-          {redeemed ? "Used" : "Redeem"}
+          {redeemed ? "Used" : "Use perk"}
         </button>
         <button
           type="button"
@@ -116,10 +126,9 @@ export default function ActivePerksSheet({
           <header className="dp-active-perks-header">
             <div>
               <p>Resident benefits</p>
-              <h2>Active perks</h2>
+              <h2>Perks</h2>
             </div>
-            <strong aria-live="polite">{items.length} nearby</strong>
-            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close active perks">
+            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close perks">
               <X aria-hidden="true" />
             </button>
           </header>
@@ -128,6 +137,18 @@ export default function ActivePerksSheet({
     >
       {safeState !== "peek" && (
         <div>
+          <section className="dp-active-perks-intro" aria-label="Perks context">
+            <p>Available near this map area</p>
+            <strong aria-live="polite">{items.length} {items.length === 1 ? "offer" : "offers"}</strong>
+          </section>
+          <div className="dp-perks-filter-rail" role="tablist" aria-label="Perk filters">
+            {["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"].map((label, index) => (
+              <button key={label} type="button" role="tab" aria-selected={index === 0}>
+                {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
           {items.length ? items.map((item) => (
             <PerkRow
               key={item.id}

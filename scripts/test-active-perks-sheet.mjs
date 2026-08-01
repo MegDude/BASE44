@@ -33,7 +33,7 @@ assert.match(shellSource, /aria-modal="false"/);
 assert.match(shellSource, /event\.key !== "Escape"/);
 assert.match(sheetSource, /aria-label="Active perks"/);
 assert.match(sheetSource, /aria-live="polite"/);
-assert.match(sheetSource, /aria-label="Close active perks"/);
+assert.match(sheetSource, /aria-label="Close perks"/);
 assert.match(sheetSource, /aria-pressed=\{saved\}/);
 assert.match(sheetSource, /loading="lazy"/);
 assert.match(sheetSource, /decoding="async"/);
