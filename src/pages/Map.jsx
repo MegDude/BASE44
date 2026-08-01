@@ -23,7 +23,6 @@ import {
   Gift,
   Heart,
   HeartPulse,
-  House,
   BadgePercent,
   Info,
   Landmark,
@@ -14520,11 +14519,9 @@ export default function MapPage() {
   const [activeBottomTab, setActiveBottomTab] = useState(() => (
     urlState.panelTab
       ? urlState.panelTab
-      : urlState.mode === "resident" && ["perks", "events", "saved"].includes(urlState.tab)
-        ? urlState.tab
-        : urlState.mode === "resident" && urlState.tab === "map" && ["Perks", "Events", "Saved"].includes(urlState.filter)
-          ? urlState.filter.toLowerCase()
-          : "map"
+      : urlState.mode === "resident" && urlState.tab === "map" && ["Perks", "Events", "Saved"].includes(urlState.filter)
+        ? urlState.filter.toLowerCase()
+        : "map"
   ));
   const [savedPanelFilter, setSavedPanelFilter] = useState("all");
   const [activePerksDrawerState, setActivePerksDrawerState] = useState(() => {
@@ -16843,24 +16840,6 @@ export default function MapPage() {
     navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "Perks")}`, { replace: true });
   }
 
-  function openActivePerkItem(item, event) {
-    const list = event?.currentTarget?.closest?.(".dp-active-perks-sheet")?.querySelector?.("[data-active-perks-scroll='true']");
-    pushPanelState({
-      url: `${location.pathname}${location.search}`,
-      drawerState: activePerksDrawerState,
-      scrollTop: list?.scrollTop || 0,
-      focusId: event?.currentTarget?.id || "",
-    });
-    selectPlace(item.place, { perkId: item.perkId });
-  }
-
-  function closeActivePerksSheet() {
-    clearPanelStack();
-    setActiveBottomTab("map");
-    setConsoleCollapsed(false);
-    navigate(`/map?mode=resident&tab=map&filter=${encodeURIComponent(activeFilter || "Perks")}`, { replace: true });
-  }
-
   useEffect(() => {
     window.__dpOpenMapPin = (entityId) => {
       const place = places.find((item) => item.id === entityId);
@@ -18473,16 +18452,6 @@ export default function MapPage() {
                 <button
                   type="button"
                   role="tab"
-                  aria-label="Home"
-                  onClick={() => navigate("/resident/home")}
-                  aria-selected={false}
-                >
-                  <House className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Home</span>
-                </button>
-                <button
-                  type="button"
-                  role="tab"
                   aria-label="Map"
                   onClick={() => {
                     beginSearchIntentTransition("All");
@@ -18533,9 +18502,24 @@ export default function MapPage() {
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
                 </button>
-                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
-                  <CreditCard className="h-4 w-4" />
-                  <span className="dp-native-tab-label">Card</span>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-label="Saved"
+                  onClick={() => {
+                    setConsoleCollapsed(true);
+                    setActiveBottomTab("saved");
+                    navigate("/map?mode=resident&tab=saved&filter=Saved");
+                  }}
+                  aria-pressed={activeBottomTab === "saved"}
+                  aria-selected={activeBottomTab === "saved"}
+                >
+                  <Bookmark className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Saved</span>
+                </button>
+                <button type="button" role="tab" aria-label="Home" onClick={() => navigate("/resident/home")} aria-selected={false}>
+                  <Building2 className="h-4 w-4" />
+                  <span className="dp-native-tab-label">Home</span>
                 </button>
               </>
             )}
@@ -18614,7 +18598,7 @@ export default function MapPage() {
       )}
 
       <AnimatePresence>
-        {(urlState.tab === "map" || Boolean(urlState.panelTab) || (urlState.mode === "resident" && ["perks", "events", "saved"].includes(urlState.tab))) && (
+        {(["map", "perks", "events", "saved"].includes(urlState.tab) || Boolean(urlState.panelTab)) && (
           urlState.mode === "partner"
             ? Boolean(activePartnerPanel) || isLegendsDirectoryLayer
             : ["perks", "events", "saved", "info"].includes(activeBottomTab) || isRentalLayer || isLegendsDirectoryLayer
@@ -18647,7 +18631,7 @@ export default function MapPage() {
                 </>
               ) : (
                 <>
-                  <button type="button" onClick={goBackToMap} className="dp-panel-back" aria-label="Back to map">
+                  <button type="button" onClick={restorePreviousMapPanel} className="dp-panel-back" aria-label="Back to previous panel">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                   </button>
                   <span className="dp-panel-toolbar-title">{mapPanelNavigationTitle}</span>

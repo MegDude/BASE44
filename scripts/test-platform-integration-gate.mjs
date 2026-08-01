@@ -76,14 +76,25 @@ requireMatch('panel cohesion', panelCohesion, /background:\s*var\(--dp-cohesion-
 requireMatch('panel cohesion', panelCohesion, /box-shadow:\s*none\s*!important/, 'decorative shadow removal is missing');
 requireMatch('panel cohesion', panelCohesion, /border-radius:\s*0\s*!important/, 'filled card and capsule shape removal is missing');
 requireMatch('panel cohesion', canonicalSurface, /--dp-sheet-shadow:\s*none/, 'canonical surface tokens reintroduce a decorative sheet shadow');
-requireMatch('panel cohesion', canonicalSurface, /\.dp-native-drawer,[\s\S]*?box-shadow:\s*none\s*!important/, 'canonical drawers can override the shadow-free panel contract');
-requireMatch('panel cohesion', canonicalSurface, /@media \(max-width:\s*767px\)[\s\S]*?\.dp-native-drawer,[\s\S]*?border-radius:\s*0\s*!important/, 'canonical mobile sheets can override the sharp panel geometry');
+requireMatch('panel cohesion', canonicalSurface, /\.dp-map-page :is\(\.dp-native-drawer,[\s\S]*?box-shadow:\s*none\s*!important/, 'map drawers can override the shadow-free panel contract');
+requireMatch('panel cohesion', canonicalSurface, /@media \(max-width:\s*767px\)[\s\S]*?\.dp-map-page :is\(\.dp-native-drawer,[\s\S]*?border-radius:\s*0\s*!important/, 'map sheets can override the sharp panel geometry');
+if (/^\.dp-native-drawer,\s*\.dp-detail-drawer,\s*\.dp-panel-shell/m.test(canonicalSurface)) {
+  failures.push('panel cohesion: map drawer authority leaks into unrelated platform panel shells');
+}
 
 requireMatch('Legends directory', map, /resolveCanonicalLegendsDirectoryPlaces/, 'canonical Legends listing resolver is missing');
 requireMatch('Legends directory', map, /\{legendsDirectoryPlaces\.length\} active[\s\S]*?legendsDirectoryPlaces\.map/, 'Legends count and rows do not use the same resolved array');
 requireMatch('Legends directory', map, /dp-panel-body dp-panel-scroll[\s\S]*?isLegendsDirectoryLayer && \([\s\S]*?dp-map-directory-header[\s\S]*?dp-map-directory-list/, 'Legends content is not inside the directory scroll body');
 requireMatch('Legends directory', mapIconRegistry, /\/pins\/downtown-perks\/legends-logo-gold\.svg/, 'canonical Legends pin artwork is missing');
 requireMatch('map drawer', map, /const MAP_DRAWER_SURFACE_STYLE = \{[\s\S]*?backgroundColor:\s*"#ffffff"[\s\S]*?borderRadius:\s*0[\s\S]*?boxShadow:\s*"none"[\s\S]*?backdropFilter:\s*"none"/, 'inline drawer styles can reintroduce tint, rounded corners, shadow, or blur');
+requireMatch('resident navigation', map, /aria-label="Home" onClick=\{\(\) => navigate\("\/resident\/home"\)\}/, 'resident Home tab is missing from bottom navigation');
+requireMatch('resident navigation', map, /\["map", "perks"\]\.includes\(urlState\.tab\) && activeBottomTab === "perks"[\s\S]*?<ActivePerksSheet/, 'resident Perks route and legacy map-filter URL cannot mount the drawer');
+requireMatch('resident navigation', map, /\["map", "perks", "events", "saved"\]\.includes\(urlState\.tab\)/, 'resident drawer routes are excluded from the shared panel renderer');
+requireMatch('panel navigation', map, /ariaLabel="Return to previous panel"[\s\S]*?onPress=\{restorePreviousMapPanel\}/, 'Legends Back does not restore prior panel state');
+requireMatch('panel navigation', map, /onClick=\{restorePreviousMapPanel\} className="dp-panel-back" aria-label="Back to previous panel"/, 'shared drawer Back does not restore prior panel state');
+requireMatch('panel navigation', map, /className="dp-panel-close[\s\S]*?onClick=\{goBackToMap\}|onClick=\{goBackToMap\}[\s\S]*?className="dp-panel-close/, 'shared drawer Close does not dismiss to the map');
+if ((map.match(/function openActivePerkItem\(/g) || []).length !== 1) failures.push('resident navigation: duplicate Perks open handlers remain');
+if ((map.match(/function closeActivePerksSheet\(/g) || []).length !== 1) failures.push('resident navigation: duplicate Perks close handlers remain');
 
 requireMatch('panel navigation', map, /ariaLabel="Return to previous panel"[\s\S]*?onPress=\{restorePreviousMapPanel\}/, 'Legends Back does not restore prior panel state');
 requireMatch('panel navigation', map, /onClick=\{restorePreviousMapPanel\} className="dp-panel-back" aria-label="Back to previous panel"/, 'shared drawer Back does not restore prior panel state');
