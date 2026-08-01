@@ -420,7 +420,16 @@ test.describe("adaptive map surface", () => {
           coordinateKey: node.dataset.coordinateKey || "",
           lastPositionKey: node.dataset.coordinateKey || "",
         }));
-        const domRows = shellRows.length ? shellRows : buttonRows;
+        const accessibleRows = [...document.querySelectorAll<HTMLElement>("[data-accessible-marker-entity-id][data-marker-entity-id]")].map((node) => ({
+          key: `pin:${node.dataset.markerEntityId || ""}`,
+          markerId: node.dataset.markerEntityId || "",
+          entityId: node.dataset.entityId || "",
+          latitude: node.dataset.canonicalLatitude || "",
+          longitude: node.dataset.canonicalLongitude || "",
+          coordinateKey: node.dataset.coordinateKey || "",
+          lastPositionKey: node.dataset.coordinateKey || "",
+        }));
+        const domRows = shellRows.length ? shellRows : buttonRows.length ? buttonRows : accessibleRows;
         return (lifecycleRows.length ? lifecycleRows : domRows)
           .filter((row: any) => row.markerId && row.latitude && row.longitude)
           .map((row: any) => ({

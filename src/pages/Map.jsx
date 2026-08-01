@@ -13522,23 +13522,33 @@ function GoogleMapCanvas({
     <div className="dp-google-map-shell h-full w-full">
       <div ref={containerRef} className="dp-google-map-canvas h-full w-full" role="application" aria-label="Downtown Austin map" />
       <div className="sr-only" role="group" aria-label="Visible map places">
-        {mapItems.filter((item) => item.type !== "cluster" && item.place?.id).map((item) => (
-          <button
-            key={`accessible-marker-${item.place.id}`}
-            type="button"
-            tabIndex={-1}
-            data-accessible-marker-entity-id={item.place.id}
-            aria-label={`Open ${item.place.name || "map place"}`}
-            aria-pressed={item.place.id === selectedId}
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={(event) => {
-              event.stopPropagation();
-              markerActionHandlersRef.current.onSelect?.(item.place);
-            }}
-          >
-            Open {item.place.name || "map place"}
-          </button>
-        ))}
+        {mapItems.filter((item) => item.type !== "cluster" && item.place?.id).map((item) => {
+          const markerRecord = getCanonicalMarkerRecord(item.place, { audienceMode: item.place?.audienceMode || item.place?.mode });
+          const markerId = markerRecord?.markerId || item.place.id;
+          const coordinateKey = markerRecord ? markerPositionKey({ lat: markerRecord.latitude, lng: markerRecord.longitude }) : "";
+          return (
+            <button
+              key={`accessible-marker-${markerId}`}
+              type="button"
+              tabIndex={-1}
+              data-accessible-marker-entity-id={item.place.id}
+              data-marker-entity-id={markerId}
+              data-entity-id={markerRecord?.entityId || item.place.id}
+              data-canonical-latitude={markerRecord ? String(markerRecord.latitude) : ""}
+              data-canonical-longitude={markerRecord ? String(markerRecord.longitude) : ""}
+              data-coordinate-key={coordinateKey}
+              aria-label={`Open ${item.place.name || "map place"}`}
+              aria-pressed={item.place.id === selectedId}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                markerActionHandlersRef.current.onSelect?.(item.place);
+              }}
+            >
+              Open {item.place.name || "map place"}
+            </button>
+          );
+        })}
       </div>
       {loadState === "loading" && (
         <div className="dp-google-map-state" role="status">

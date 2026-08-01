@@ -26,6 +26,11 @@ assert.match(mapSource, /wrapper\.dataset\.canonicalLatitude = String\(markerRec
 assert.match(mapSource, /wrapper\.dataset\.canonicalLongitude = String\(markerRecord\.longitude\)/, "marker DOM shells must expose canonical longitude for interaction stability tests");
 assert.match(mapSource, /wrapper\.dataset\.coordinateKey = markerPositionKey\(\{ lat: markerRecord\.latitude, lng: markerRecord\.longitude \}\)/, "marker DOM shells must expose the canonical coordinate key");
 assert.match(mapSource, /button\?\.setAttribute\("data-canonical-latitude", String\(markerRecord\.latitude\)\)/, "marker controls must expose canonical latitude for automated interaction tests");
+assert.match(mapSource, /data-accessible-marker-entity-id=\{item\.place\.id\}/, "visible provider markers need a canonical accessible control");
+assert.match(mapSource, /data-marker-entity-id=\{markerId\}/, "accessible marker controls must expose canonical marker IDs");
+assert.match(mapSource, /data-canonical-latitude=\{markerRecord \? String\(markerRecord\.latitude\) : ""\}/, "accessible marker controls must expose canonical latitude");
+assert.match(mapSource, /data-canonical-longitude=\{markerRecord \? String\(markerRecord\.longitude\) : ""\}/, "accessible marker controls must expose canonical longitude");
+assert.match(mapSource, /data-coordinate-key=\{coordinateKey\}/, "accessible marker controls must expose canonical coordinate keys");
 assert.match(mapSource, /markerSnapshots: Array\.from\(registry\.entries\(\)\)\.map/, "development marker lifecycle snapshots must expose stable marker identity and coordinates");
 assert.match(mapSource, /lastPositionKey: entry\.marker\?\.__dpLastPositionKey/, "marker snapshots must include the provider marker's last coordinate key");
 assert.match(mapSource, /markerPositionKey = \(position\) => `\$\{Number\(position\?\.lat\)\.toFixed\(7\)\}:\$\{Number\(position\?\.lng\)\.toFixed\(7\)\}`/, "marker lifecycle must compare exact normalized coordinate keys before moving provider markers");
