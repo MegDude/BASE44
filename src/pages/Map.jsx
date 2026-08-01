@@ -13780,9 +13780,7 @@ function MapSearchConsole({
     const state = active ? "Pressed" : "Not pressed";
     return `${definition.fullLabel}. Shows ${definition.description}. ${state}.`;
   };
-  const moreToggleInsertIndex = mode === "partner"
-    ? Math.min(2, Math.max(0, intentRail.length - 1))
-    : intentRail.length - 1;
+  // More always completes the first rail. Partner and resident rails share the same order contract.
   const trackFilterRailEvent = (eventName, item, railState = moreOpen ? "expanded" : "collapsed") => {
     if (typeof window === "undefined") return;
     window.dispatchEvent(new CustomEvent("dp:map-filter-rail", {
@@ -14191,7 +14189,7 @@ function MapSearchConsole({
               "Primary intent shortcuts",
               {
                 includeMoreToggle: true,
-                insertMoreAfterIndex: moreToggleInsertIndex,
+
               },
             )}
             {moreOpen ? (
