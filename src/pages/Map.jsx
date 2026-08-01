@@ -13402,6 +13402,9 @@ function GoogleMapCanvas({
       wrapper.dataset.markerEntityId = markerRecord.markerId;
       wrapper.dataset.entityId = markerRecord.entityId;
       wrapper.dataset.sourceVersion = markerRecord.sourceVersion;
+      wrapper.dataset.canonicalLatitude = String(markerRecord.latitude);
+      wrapper.dataset.canonicalLongitude = String(markerRecord.longitude);
+      wrapper.dataset.coordinateKey = markerPositionKey({ lat: markerRecord.latitude, lng: markerRecord.longitude });
       applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: markerSelected });
       wrapper.innerHTML = mapPinButtonHtml({
         place,
@@ -13415,6 +13418,9 @@ function GoogleMapCanvas({
       const button = wrapper.querySelector(".dp-map-pin");
       button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
       button?.setAttribute("data-entity-id", markerRecord.entityId);
+      button?.setAttribute("data-canonical-latitude", String(markerRecord.latitude));
+      button?.setAttribute("data-canonical-longitude", String(markerRecord.longitude));
+      button?.setAttribute("data-coordinate-key", markerPositionKey({ lat: markerRecord.latitude, lng: markerRecord.longitude }));
       button?.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -13478,6 +13484,16 @@ function GoogleMapCanvas({
         reusedMarkerCount: reconciliation.keep.length,
         createdMarkerCount: reconciliation.create.length,
         resultItemCount: mapItems.length,
+        markerSnapshots: Array.from(registry.entries()).map(([key, entry]) => ({
+          key,
+          type: entry.type,
+          markerId: entry.element?.dataset?.markerEntityId || "",
+          entityId: entry.element?.dataset?.entityId || "",
+          latitude: entry.element?.dataset?.canonicalLatitude || "",
+          longitude: entry.element?.dataset?.canonicalLongitude || "",
+          coordinateKey: entry.element?.dataset?.coordinateKey || entry.marker?.__dpLastPositionKey || "",
+          lastPositionKey: entry.marker?.__dpLastPositionKey || "",
+        })),
         updatedAt: new Date().toISOString(),
       };
       const visibleLimit = window.innerWidth <= 767 ? 15 : 25;

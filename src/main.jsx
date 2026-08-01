@@ -146,6 +146,7 @@ import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
 import "@/styles/pricing-page-finish.css"
+import "@/styles/map-pin-coordinate-anchor-lock.css"
 
 inject()
 injectSpeedInsights()

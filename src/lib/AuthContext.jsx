@@ -272,6 +272,63 @@ export const AuthProvider = ({ children }) => {
     return nextSession;
   };
 
+  const signInPartnerWithPassword = async ({ email = "", password = "", redirectPath = "/partner-workspace/overview" } = {}) => {
+    if (!canUseProductionAccountAccess()) {
+      return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+    }
+
+    if (!email || !password) {
+      return { type: "error", message: "Enter your email address and password." };
+    }
+
+    if (isProductionLike()) {
+      if (!supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        const normalizedError = `${error.code || ""} ${error.message || ""}`.toLowerCase();
+        const confirmationRequired = normalizedError.includes("email_not_confirmed") || normalizedError.includes("email not confirmed");
+        const invalidCredentials = normalizedError.includes("invalid_credentials") || normalizedError.includes("invalid login credentials");
+        const message = confirmationRequired
+          ? "Confirm your email before signing in with a password."
+          : invalidCredentials
+            ? "Email or password is incorrect. Use Email link if this account was created without a password."
+            : (error.message || "Password sign-in could not be completed.");
+        setAuthError(message);
+        return { type: "error", code: error.code || "sign_in_failed", confirmationRequired, message };
+      }
+
+      const { data: verifiedUserData, error: userError } = await supabaseClient.auth.getUser();
+      if (userError) {
+        const message = userError.message || "The signed-in account could not be verified.";
+        setAuthError(message);
+        return { type: "error", code: userError.code || "user_verification_failed", message };
+      }
+
+      const verifiedUser = verifiedUserData?.user || data?.user || null;
+      const profile = buildSupabaseProfile(verifiedUser);
+      if (profile?.role === "resident") {
+        await supabaseClient.auth.signOut().catch(() => {});
+        applySupabaseUser(null);
+        const message = "This is a resident account. Use the resident sign-in page to continue.";
+        setAuthError(message);
+        return { type: "error", code: "partner_access_required", message };
+      }
+
+      applySupabaseUser(verifiedUser);
+      return {
+        type: "authenticated",
+        session: data?.session,
+        user: verifiedUser,
+        redirectPath,
+      };
+    }
+
+    const localSession = await signInPartner({ email, partner_type: "partner", organization_name: "Downtown Perks Partner" });
+    return localSession?.type === "partner"
+      ? { type: "authenticated", user: localSession.user, redirectPath }
+      : localSession;
+  };
+
   const signInResidentWithPassword = async ({ email = "", password = "" } = {}) => {
     if (!canUseProductionAccountAccess()) {
       return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
@@ -430,6 +487,7 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings,
       logout,
       signInPartner,
+      signInPartnerWithPassword,
       signInResidentWithPassword,
       registerResidentWithPassword,
       resendResidentConfirmation,
