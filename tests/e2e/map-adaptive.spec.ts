@@ -465,6 +465,14 @@ test.describe("adaptive map surface", () => {
     const initial = await markerSnapshot();
     expect(initial.length).toBeGreaterThan(0);
 
+    const initiallyOpenDrawer = page.locator("#dp-active-map-drawer");
+    if (await initiallyOpenDrawer.isVisible().catch(() => false)) {
+      const closeInitialDrawer = initiallyOpenDrawer.getByRole("button", { name: /close/i }).first();
+      await closeInitialDrawer.click();
+      await expect(initiallyOpenDrawer).toBeHidden({ timeout: 5000 });
+      assertStableCommonMarkers(initial, await markerSnapshot());
+    }
+
     await page.getByRole("button", { name: "Zoom in", exact: true }).click();
     await page.waitForTimeout(250);
     assertStableCommonMarkers(initial, await markerSnapshot());
