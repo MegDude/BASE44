@@ -1,0 +1,159 @@
+/* Final marker coordinate anchor lock.
+   Loaded after every historical map style layer so marker visuals cannot move,
+   resize, pulse, or shift the provider-owned geographic anchor. */
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page {
+  --dp-canonical-pin-size: 32px;
+  --dp-canonical-pin-icon-size: 15px;
+  --dp-canonical-pin-shell-size: 44px;
+  --dp-canonical-legends-logo-size: 28px;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin,
+  .leaflet-marker-pane .leaflet-marker-icon.dp-leaflet-pin
+) {
+  width: var(--dp-canonical-pin-shell-size) !important;
+  min-width: var(--dp-canonical-pin-shell-size) !important;
+  max-width: var(--dp-canonical-pin-shell-size) !important;
+  height: var(--dp-canonical-pin-shell-size) !important;
+  min-height: var(--dp-canonical-pin-shell-size) !important;
+  max-height: var(--dp-canonical-pin-shell-size) !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  animation: none !important;
+  transition: none !important;
+  transform-origin: center center !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin,
+  .dp-live-pin,
+  .dp-marker-factory-pin,
+  .dp-collection-stop
+),
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin,
+  .dp-live-pin,
+  .dp-marker-factory-pin,
+  .dp-collection-stop
+):is(:hover, :focus-visible, .is-selected, .is-active, .is-pulsing, [data-active="true"]) {
+  width: var(--dp-canonical-pin-size) !important;
+  min-width: var(--dp-canonical-pin-size) !important;
+  max-width: var(--dp-canonical-pin-size) !important;
+  height: var(--dp-canonical-pin-size) !important;
+  min-height: var(--dp-canonical-pin-size) !important;
+  max-height: var(--dp-canonical-pin-size) !important;
+  margin: 0 !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  animation: none !important;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin::before,
+  .dp-map-pin::after,
+  .dp-live-pin::before,
+  .dp-live-pin::after,
+  .dp-live-pin__halo,
+  .dp-map-pin.is-pulsing::before,
+  .dp-map-pin.is-pulsing::after
+) {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin__icon,
+  .dp-live-pin__core,
+  .dp-map-pin__icon svg,
+  .dp-live-pin__core svg,
+  .dp-pin-svg
+),
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin,
+  .dp-live-pin
+):is(:hover, :focus-visible, .is-selected, .is-active, .is-pulsing, [data-active="true"]) :is(
+  .dp-map-pin__icon,
+  .dp-live-pin__core,
+  .dp-map-pin__icon svg,
+  .dp-live-pin__core svg,
+  .dp-pin-svg
+) {
+  width: var(--dp-canonical-pin-icon-size) !important;
+  min-width: var(--dp-canonical-pin-icon-size) !important;
+  max-width: var(--dp-canonical-pin-icon-size) !important;
+  height: var(--dp-canonical-pin-icon-size) !important;
+  min-height: var(--dp-canonical-pin-icon-size) !important;
+  max-height: var(--dp-canonical-pin-icon-size) !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin--legends .dp-map-pin__icon,
+  .dp-map-pin--legends .dp-live-pin__legends-logo,
+  .dp-live-pin--legends-logo,
+  .dp-live-pin--legends-logo .dp-live-pin__core,
+  .dp-live-pin--legends-logo .dp-live-pin__legends-logo,
+  .dp-live-pin--legends-logo img
+),
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(
+  .dp-map-pin--legends,
+  .dp-live-pin--legends-logo
+):is(:hover, :focus-visible, .is-selected, .is-active, .is-pulsing, [data-active="true"]) :is(
+  .dp-map-pin__icon,
+  .dp-live-pin__core,
+  .dp-live-pin__legends-logo,
+  img
+) {
+  width: var(--dp-canonical-legends-logo-size) !important;
+  min-width: var(--dp-canonical-legends-logo-size) !important;
+  max-width: var(--dp-canonical-legends-logo-size) !important;
+  height: var(--dp-canonical-legends-logo-size) !important;
+  min-height: var(--dp-canonical-legends-logo-size) !important;
+  max-height: var(--dp-canonical-legends-logo-size) !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page.dp-map-page :is(
+  .dp-google-map-marker-shell,
+  .leaflet-marker-icon.dp-leaflet-pin
+) :is(.dp-pin-logo, .dp-live-pin__brand-logo, .dp-live-pin__inkind-logo) {
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
