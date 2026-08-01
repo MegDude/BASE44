@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { DEFAULT_PARTNER_RETURN_PATH, consumeAuthReturnPath, getSafeReturnPath } from "@/lib/authReturnPath";
+import { PageContainer, SectionHeader } from "@/components/platform/PlatformPrimitives";
 
 export default function AuthCallbackPage() {
   const location = useLocation();
@@ -26,5 +27,5 @@ export default function AuthCallbackPage() {
     navigate(consumeAuthReturnPath(returnTo), { replace: true });
   }, [isAuthenticated, isLoadingAuth, location.hash, location.search, navigate, user]);
 
-  return <main className="dp-auth-callback" aria-busy="true" aria-label="Signing in to Downtown Perks"><div><span aria-hidden="true" /><strong>Signing you in…</strong><p>We are loading your membership, building, saved places, and preferences.</p></div></main>;
+  return <PageContainer className="dp-auth-callback min-h-screen pt-28" aria-busy="true" aria-label="Signing in to Downtown Perks"><SectionHeader eyebrow="Downtown Perks" title="Signing you in…" supporting="We are loading your membership, building, saved places, and preferences." /></PageContainer>;
 }

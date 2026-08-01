@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeFooter from "./HomeFooter";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
+import { PlatformShell } from "@/components/platform/PlatformShell";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -194,7 +195,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
+    <PlatformShell><div className="min-h-screen bg-background font-body" data-platform-layout="downtown-perks">
       <ScrollToTop />
       <InteractionFeedback />
       {showNavbar && <Navbar />}
@@ -226,6 +227,6 @@ export default function Layout() {
         onClose={() => setQuickSearchOpen(false)}
         onSelectResult={handleQuickSearchSelect}
       />
-    </div>
+    </div></PlatformShell>
   );
 }

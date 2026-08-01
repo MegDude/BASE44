@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
+import { currentSafeReturnTo, preserveIntentParams } from "@/lib/routeIntent";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -57,7 +58,7 @@ function ProtectedRoute({ children }) {
   }
   return (
     <Navigate
-      to={`/partners/sign-in?returnTo=${encodeURIComponent(`${location.pathname}${location.search}${location.hash}`)}`}
+      to={`/partners/sign-in?returnTo=${encodeURIComponent(currentSafeReturnTo(location, DEFAULT_RESIDENT_MAP_PATH))}`}
       replace
     />
   );
@@ -102,7 +103,7 @@ function getAdminStudioDestination(location) {
   const configured = ADMIN_STUDIO_DESTINATIONS[location.pathname] || ADMIN_STUDIO_DESTINATIONS["/admin-studio"];
   const [pathname, configuredSearch = ""] = configured.split("?");
   const params = new URLSearchParams(configuredSearch);
-  new URLSearchParams(location.search).forEach((value, key) => params.set(key, value));
+  preserveIntentParams(location.search).forEach((value, key) => params.set(key, value));
   const search = params.toString();
   return `${pathname}${search ? `?${search}` : ""}${location.hash}`;
 }
