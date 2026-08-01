@@ -6,12 +6,13 @@ type RouteProgressProps = {
 };
 
 export function RouteProgress({ current, total, started, nextStopName }: RouteProgressProps) {
+  if (!started) return null;
   const percent = total > 0 ? Math.round((current / total) * 100) : 0;
   return (
     <section className="dp-route-progress" aria-label="Route progress">
       <div>
-        <strong>{started ? `${current} of ${total} stops` : "Ready to start"}</strong>
-        <span>{started && nextStopName ? `Up next · ${nextStopName}` : `${total} stops ahead`}</span>
+        <strong>{`${current} of ${total} stops explored`}</strong>
+        <span>{nextStopName ? `Next · ${nextStopName}` : `${Math.max(total - current, 0)} stops remaining`}</span>
       </div>
       <div
         className="dp-route-progress__track"
