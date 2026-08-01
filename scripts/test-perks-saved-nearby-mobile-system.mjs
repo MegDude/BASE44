@@ -9,7 +9,7 @@ const shellSource = await readFile(new URL("../src/components/map/NativeDrawerSh
 
 assert.match(shellSource, /dp-native-drawer-content-viewport[\s\S]*?dp-native-drawer-scroll/, "shared NativeDrawerShell must keep one internal scroll viewport");
 assert.match(shellSource, /window\.addEventListener\("keydown", handleKeyDown\)/, "drawers must keep Escape handling centralized");
-assert.match(mainSource, /perks-saved-nearby-mobile-system\.css["'];?\s*\n\s*inject\(\)/, "Perks/Saved/Nearby system stylesheet must be the final UI stylesheet before instrumentation");
+assert.match(mainSource, /perks-saved-nearby-mobile-system\.css["'];?\s*\n\s*import ["']@\/styles\/real-estate-property-access\.css["'];?\s*\n\s*inject\(\)/, "Perks/Saved/Nearby system stylesheet must remain immediately before the property-access extension and instrumentation");
 
 assert.match(sheetSource, /function perkAvailabilityLabel/, "Perks must expose one shared availability-state resolver");
 assert.match(sheetSource, /data-perk-state=\{availability\.toLowerCase\(\)/, "Perk rows must expose normalized availability state");

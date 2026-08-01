@@ -23,6 +23,8 @@ function cleanListing(value = {}) {
     source: clean(value.source, 160),
     brand: clean(value.brand, 160) || "Legends Real Estate",
     contactEmail: clean(value.contactEmail || value.contact_email, 240),
+    organizationId: clean(value.organizationId || value.organization_id, 180),
+    portfolioId: clean(value.portfolioId || value.portfolio_id, 180),
   };
 }
 
@@ -112,10 +114,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, moveTimeline, message, sessionId, profileId, pageUrl } = req.body || {};
-  const listing = cleanListing(req.body?.listing);
-  if (!clean(name) || !clean(email) || !clean(phone) || !listing.address) {
-    return res.status(400).json({ error: 'Missing required fields: name, email, phone, and listing.address are required' });
+  const { name, email, phone, moveTimeline, timeline, message, sessionId, profileId, pageUrl, sourceSurface } = req.body || {};
+  const listing = cleanListing({ ...(req.body?.listing || {}), listingId: req.body?.listingId, organizationId: req.body?.organizationId, portfolioId: req.body?.portfolioId });
+  if (!clean(name) || !clean(email) || !listing.address) {
+    return res.status(400).json({ error: 'Missing required fields: name, email, and listing.address are required' });
   }
 
   const interest = {
@@ -123,7 +125,8 @@ export default async function handler(req, res) {
     name: clean(name, 160),
     email: clean(email, 240),
     phone: clean(phone, 80),
-    moveTimeline: clean(moveTimeline, 120),
+    moveTimeline: clean(timeline || moveTimeline, 120),
+    sourceSurface: clean(sourceSurface || "resident_map_listing", 120),
     message: clean(message, 2000),
     listing,
     sessionId: clean(sessionId, 180),
@@ -138,7 +141,7 @@ export default async function handler(req, res) {
       phone: interest.phone,
       move_timeline: interest.moveTimeline || null,
       message: interest.message || null,
-      listing: interest.listing,
+      listing: { ...interest.listing, sourceSurface: interest.sourceSurface || null },
       session_id: interest.sessionId || null,
       profile_id: interest.profileId || null
     });

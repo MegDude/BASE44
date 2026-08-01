@@ -69,7 +69,8 @@ import { resolveEntityGallery, resolveEntityImage, resolveMapImage } from "../li
 import { resolveEntityPanelArchetype, resolveEntityPanelContent } from "../lib/map/entityPanelArchetypes";
 import { resolveEntityPin } from "../lib/map/entityPinResolver";
 import { createCanonicalMarkerRecord, resolveCanonicalMarkerEntityId } from "../lib/map/canonicalMarkerRecords";
-import { getCanonicalMapGlyph, LEGENDS_PIN_ASSET, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
+import { getCanonicalMapGlyph, getMapIcon, LEGENDS_PIN_ASSET, normalizeMapIconKey } from "../lib/map/mapIconRegistry";
+import { isRealEstateListingEntity, realEstateTrackingMetadata, toRealEstateListingEntity } from "../lib/map/realEstateListings";
 import { formatDistanceLabel, getDistanceMeters, getNearbyRecommendations } from "@/utils/nearbyRecommendations";
 import { getRelatedRecommendations } from "@/utils/relatedRecommendations";
 import { useEventRsvpStore } from "@/store/event-rsvp-store";
@@ -2120,8 +2121,9 @@ function isNeighborhoodEntity(place) {
 function getCanonicalDetailEntityType(place, hasPerkContext = false) {
   const explicit = String(place?.detailEntityType || place?.raw?.detailEntityType || "").toLowerCase();
   const directType = String(place?.entityType || place?.kind || place?.type || "").toLowerCase();
-  if (["perk", "campaign", "collection", "event", "route", "amenity", "venue", "property", "hotel", "brand", "civic", "portfolio"].includes(explicit)) return explicit;
+  if (["perk", "campaign", "collection", "event", "route", "amenity", "venue", "property", "real_estate", "hotel", "brand", "civic", "portfolio"].includes(explicit)) return explicit;
   if (directType === "portfolio") return "portfolio";
+  if (isRealEstateListingEntity(place)) return "real_estate";
   if (hasPerkContext && hasActivePerkData(place)) return "perk";
   if (isCampaignEntity(place)) return "campaign";
   if (isEventEntity(place)) return "event";
@@ -2137,7 +2139,7 @@ function getMapDrawerPanelKind(place, mode = "resident", hasPerkContext = false)
   if (!place) return "destination";
   const canonicalType = getCanonicalDetailEntityType(place, hasPerkContext);
   if (isBangersVenue(place)) return "place";
-  if (["perk", "event", "campaign", "collection", "route", "amenity", "portfolio"].includes(canonicalType)) return canonicalType;
+  if (["perk", "event", "campaign", "collection", "route", "amenity", "portfolio", "real_estate"].includes(canonicalType)) return canonicalType;
   const entityKind = getResidentEntityKind(place);
   if (isInKindEntity(place) && !isInKindNetworkEntity(place)) return mode === "partner" ? "partner-opportunity" : "place";
   if (isHospitalityNetworkEntity(place)) return place?.kind === "hospitality-offer" ? "perk" : "place";
@@ -3821,14 +3823,17 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, z
   const escapedId = escapeHtmlAttribute(place.id);
   const escapedLabel = escapeHtmlAttribute(ariaLabel);
   const pinLabel = escapeHtmlAttribute(pin.label);
-  const iconKey = normalizeMapIconKey(pin.label);
+  const entityType = isRealEstateListingEntity(place) ? "real_estate" : getCanonicalDetailEntityType(place, false);
+  const iconKey = isRealEstateListingEntity(place) ? "property" : normalizeMapIconKey(pin.label);
   const kind = escapeHtmlAttribute(iconKey);
+  const escapedEntityType = escapeHtmlAttribute(entityType);
   const activeClass = selected ? "is-selected is-active" : "";
   const pulseClass = pulsing ? "is-pulsing" : "";
+  if (isRealEstateListingEntity(place)) pin = getMapIcon("property");
   const iconSvg = getCanonicalMapGlyph(pin);
 
   const zoomStyle = zoomMarkerStyleAttribute(zoom, { selected });
-  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" style="${zoomStyle}" data-entity-id="${escapedId}" data-kind="${kind}" data-pin-label="${pinLabel}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span></button>`;
+  const buttonHtml = `<button type="button" class="dp-map-pin dp-map-pin--${kind} ${classes} ${activeClass} ${pulseClass}" style="${zoomStyle}" data-map-pin="true" data-entity-id="${escapedId}" data-entity-type="${escapedEntityType}" data-kind="${kind}" data-pin-label="${pinLabel}" data-selected="${selected ? "true" : "false"}" aria-label="${escapedLabel}" data-active="${selected ? "true" : "false"}"><span class="dp-map-pin__icon" aria-hidden="true">${iconSvg}</span></button>`;
   const stopNumber = Number(place?.routeStopNumber || 0);
   if (!stopNumber) return buttonHtml;
   return `<div class="dp-collection-stop ${selected ? "is-current" : ""}" style="${zoomStyle}" data-collection-stop="${stopNumber}">${buttonHtml}<span class="dp-collection-stop__number">${stopNumber}</span></div>`;
@@ -3836,6 +3841,7 @@ function mapPinButtonHtml({ place, pin, ariaLabel, selected, pulsing, classes, z
 
 function getMarkerDataKind(place) {
   if (isCampaignEntity(place)) return "campaign";
+  if (isRealEstateListingEntity(place)) return "real_estate";
   if (isRentalEntity(place)) return "rental";
   if (isInKindEntity(place)) return "inkind";
   if (isListingEntity(place)) return "listing";
@@ -10723,55 +10729,73 @@ function LegendsMLSFactsSection({ place, mode, onSelect }) {
   );
 }
 
-function LegendsContactForm({ listing, formId }) {
+function LegendsContactForm({ listing, formId, sourceSurface = "resident_map_listing" }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [started, setStarted] = useState(false);
+  const trackingMetadata = realEstateTrackingMetadata(listing, sourceSurface);
 
   if (submitted) {
     return (
-      <div className="mt-3 dp-info-section p-3 text-[12px] leading-5 text-[#0B1F33]/72 md:mt-4 md:p-4 md:text-[13px]">
-        Thanks — your request has been sent to Legends Real Estate. The team will follow up with listing details and next steps.
+      <div className="dp-real-estate-inquiry-status" role="status" aria-live="polite">
+        Thanks — your request was sent to Legends Real Estate. Their team will follow up about this property.
       </div>
     );
   }
 
+  const startInquiry = () => {
+    if (started) return;
+    setStarted(true);
+    trackingEvents.realEstateInquiryStarted(listing.id, trackingMetadata);
+  };
+
   return (
     <form
       id={formId}
-      className="dp-contact-continuation mt-0 text-left"
+      className="dp-real-estate-inquiry-form"
+      aria-label="Ask about this property"
+      onFocus={startInquiry}
       onSubmit={async (event) => {
         event.preventDefault();
         setSubmitError("");
         setSubmitting(true);
         const form = new FormData(event.currentTarget);
+        const timeline = String(form.get("timeline") || "");
         const listingPayload = {
-          id: form.get("listingId"),
-          name: form.get("listingName"),
-          listingType: form.get("listingType"),
-          address: form.get("address"),
-          price: form.get("price"),
-          beds: form.get("beds"),
-          baths: form.get("baths"),
-          sqft: form.get("sqft"),
-          daysOnMarket: form.get("daysOnMarket"),
-          neighborhood: form.get("neighborhood"),
-          source: form.get("source"),
-          brand: form.get("brand"),
-          contactEmail: form.get("contactEmail"),
+          id: listing.id,
+          listingId: listing.listingId,
+          organizationId: listing.organizationId,
+          portfolioId: listing.portfolioId || "",
+          name: listing.displayAddress,
+          address: listing.displayAddress,
+          listingType: "Property access",
+          price: listing.priceLabel,
+          beds: listing.bedrooms || "",
+          baths: listing.bathrooms || "",
+          sqft: listing.squareFeet || "",
+          neighborhood: listing.district || "",
+          source: sourceSurface,
+          brand: listing.brokerName,
         };
         try {
           await postWorkflow("/api/listing-interest", {
+            listingId: listing.listingId,
+            organizationId: listing.organizationId,
+            portfolioId: listing.portfolioId || undefined,
+            sourceSurface,
             name: form.get("name"),
             email: form.get("email"),
             phone: form.get("phone"),
-            moveTimeline: form.get("moveTimeline"),
+            timeline,
+            moveTimeline: timeline,
             message: form.get("message"),
             listing: listingPayload,
             sessionId: getWorkflowSessionId(),
             profileId: getWorkflowProfileId(),
             pageUrl: typeof window !== "undefined" ? window.location.href : "",
           });
+          trackingEvents.realEstateInquirySubmitted(listing.id, { ...trackingMetadata, timeline });
           setSubmitted(true);
         } catch (error) {
           setSubmitError(error instanceof Error ? error.message : "The request could not be sent.");
@@ -10780,65 +10804,49 @@ function LegendsContactForm({ listing, formId }) {
         }
       }}
     >
-      <div className="max-w-2xl text-left">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
-        <h3 className="mt-1 text-[14px] font-semibold leading-tight text-[#0B1F33] md:text-[15px]">{listing.address}</h3>
-        <p className="mt-1 text-[12px] leading-5 text-[#425466]">
-          Send interest directly from the map. Legends receives the listing, your timing, and how to follow up.
-        </p>
+      <div className="dp-real-estate-inquiry-heading">
+        <h3>Ask about this property</h3>
+        <p>Send your preferred timing and contact details to Legends. The listing address is included automatically.</p>
       </div>
 
-      <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-2">
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
-          Name
-          <input required name="name" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Your name" />
+      <div className="dp-real-estate-field-grid">
+        <label>
+          <span>Name</span>
+          <input required name="name" autoComplete="name" placeholder="Your name" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
-          Email
-          <input required type="email" name="email" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="you@example.com" />
+        <label>
+          <span>Email</span>
+          <input required type="email" name="email" autoComplete="email" placeholder="you@example.com" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
-          Phone
-          <input required name="phone" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Phone number" />
+        <label>
+          <span>Phone</span>
+          <input name="phone" autoComplete="tel" placeholder="Phone number" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
-          Move timeline
-          <select name="moveTimeline" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70">
-            {["ASAP", "30-60 days", "60-90 days", "Just exploring"].map((timeline) => (
-              <option key={timeline}>{timeline}</option>
-            ))}
+        <label>
+          <span>Preferred timing</span>
+          <select name="timeline" defaultValue="Just exploring">
+            {[
+              "As soon as possible",
+              "Within 30 days",
+              "1–3 months",
+              "3–6 months",
+              "Just exploring",
+            ].map((timeline) => <option key={timeline}>{timeline}</option>)}
           </select>
         </label>
       </div>
 
-      <label className="mt-2 grid max-w-2xl gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
-        Message optional
-        <textarea name="message" className="min-h-16 dp-soft-field rounded-[2px] bg-white px-2.5 py-2 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue={listing.prefilledMessage} />
+      <label className="dp-real-estate-message-field">
+        <span>What would you like to know?</span>
+        <textarea name="message" placeholder="Ask about pricing, availability, tour times or similar downtown homes." />
       </label>
 
-      <input type="hidden" name="listingId" value={listing.id || ""} />
-      <input type="hidden" name="listingName" value={listing.buildingName || listing.name || listing.address || ""} />
-      <input type="hidden" name="listingType" value={listing.listingType === "rent" ? "Rent" : "Sale"} />
-      <input type="hidden" name="address" value={`${listing.address}, ${listing.city}, ${listing.state} ${listing.zip}`} />
-      <input type="hidden" name="price" value={listing.price} />
-      <input type="hidden" name="beds" value={listing.beds} />
-      <input type="hidden" name="baths" value={listing.baths} />
-      <input type="hidden" name="sqft" value={listing.sqft} />
-      <input type="hidden" name="daysOnMarket" value={listing.daysOnMarket} />
-      <input type="hidden" name="neighborhood" value={listing.neighborhood} />
-      <input type="hidden" name="source" value={listing.source} />
-      <input type="hidden" name="brand" value="Legends Real Estate" />
-      <input type="hidden" name="contactEmail" value={listing.contactEmail || ""} />
+      <p className="dp-real-estate-inquiry-privacy">Your inquiry is shared with Legends Real Estate so they can respond about this property. It is not sent to other partners.</p>
 
-      {submitError && (
-        <p className="mt-3 text-[12px] leading-5 text-red-700">
-          {submitError}
-        </p>
-      )}
+      {submitError ? <p className="dp-real-estate-inquiry-error" role="alert">{submitError}</p> : null}
 
-      <button type="submit" className="dp-panel-action-text mt-5 inline-flex items-center gap-1.5" disabled={submitting}>
-        {submitting ? "Sending..." : "Submit Interest"}
-        <Send className="h-3 w-3 text-[#BFA46A]" />
+      <button type="submit" className="dp-entity-action is-primary" disabled={submitting}>
+        {submitting ? "Sending request" : "Request listing details"}
       </button>
     </form>
   );
@@ -11103,6 +11111,21 @@ function UniversalEntityActionRail({
         <button type="button" className="is-primary" aria-pressed={rsvped} onClick={() => { track("event_saved"); onRsvp?.(); }}>{rsvped ? "RSVP saved" : "RSVP"}</button>
         {saveButton}
         {directionsAction}
+      </div>
+    );
+  }
+
+  if (kind === "real_estate") {
+    const listing = toRealEstateListingEntity(place);
+    const metadata = listing ? realEstateTrackingMetadata(listing) : {};
+    return (
+      <div className="dp-universal-action-rail dp-real-estate-action-rail" aria-label={`${place?.name || "Property access"} actions`}>
+        {saveButton}
+        <button type="button" className="is-primary" onClick={() => {
+          track("real_estate_inquiry_started", "request_details");
+          if (listing) trackingEvents.realEstateInquiryStarted(place?.id || listing.id, metadata);
+          onContact?.();
+        }}>Request details</button>
       </div>
     );
   }
@@ -12028,6 +12051,135 @@ function getLegendsInquiryListing(place, profile) {
     contactEmail: source.contactEmail || source.contact_email || profile?.contactEmail || profile?.contact_email || place?.contactEmail || place?.contact_email || place?.email || "",
     prefilledMessage: `I would like more information about ${address}.`,
   };
+}
+
+function RealEstateListingDrawer({ place, places, savedIds, onSelect, onSave, onContact, onDirections }) {
+  const listing = toRealEstateListingEntity(place);
+  if (!listing) return null;
+  const inquiryFormId = `real-estate-inquiry-${listing.id}`;
+  const facts = [
+    ["Area", listing.district || "2nd Street District"],
+    ["Property type", listing.propertyType || "Downtown residence"],
+    ["Listing partner", listing.brokerName],
+    listing.bedrooms ? ["Bedrooms", String(listing.bedrooms)] : null,
+    listing.bathrooms ? ["Bathrooms", String(listing.bathrooms)] : null,
+    listing.squareFeet ? ["Interior size", `${Number(listing.squareFeet).toLocaleString()} sq ft`] : null,
+    listing.listingStatus && listing.listingStatus !== "unknown" ? ["Listing status", listing.listingStatus.replace(/_/g, " ")] : null,
+  ].filter(Boolean);
+  const similarListings = places
+    .map((candidate) => ({ candidate, listing: toRealEstateListingEntity(candidate) }))
+    .filter(({ candidate, listing: candidateListing }) => candidateListing && candidate.id !== place.id)
+    .map(({ candidate, listing: candidateListing }) => {
+      let score = 0;
+      if (candidateListing.streetAddress && listing.streetAddress && candidateListing.streetAddress === listing.streetAddress) score += 100;
+      if (candidateListing.district && listing.district && candidateListing.district === listing.district) score += 50;
+      if (candidateListing.bedrooms && listing.bedrooms && candidateListing.bedrooms === listing.bedrooms) score += 20;
+      const distance = getMapDistanceScore(place, candidate);
+      if (Number.isFinite(distance)) score += Math.max(0, 20 - distance / 100);
+      return { candidate, listing: candidateListing, score };
+    })
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 4);
+  const nearbyContext = places
+    .filter((candidate) => candidate.id !== place.id && !toRealEstateListingEntity(candidate) && !isParkingEntity(candidate) && getPlaceCoords(candidate))
+    .map((candidate) => ({ candidate, score: getMapDistanceScore(place, candidate) }))
+    .filter(({ score }) => Number.isFinite(score))
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 4)
+    .map(({ candidate }) => candidate);
+  const metadata = realEstateTrackingMetadata(listing);
+  const requestDetails = () => {
+    trackingEvents.realEstateInquiryStarted(listing.id, metadata);
+    onContact?.();
+    window.setTimeout(() => document.getElementById(inquiryFormId)?.focus?.({ preventScroll: true }), 180);
+  };
+  const scheduleTour = () => {
+    trackingEvents.realEstateTourRequested(listing.id, metadata);
+    requestDetails();
+  };
+  const openSimilar = (candidate) => {
+    const candidateListing = toRealEstateListingEntity(candidate);
+    if (candidateListing) trackingEvents.realEstateSimilarListingOpened(candidateListing.id, realEstateTrackingMetadata(candidateListing));
+    onSelect(candidate);
+  };
+
+  return (
+    <div className="dp-real-estate-drawer dp-entity-drawer" role="document" data-entity-type="real_estate" data-listing-id={listing.listingId}>
+      {listing.imageUrl ? (
+        <figure className="dp-entity-hero dp-entity-hero-image">
+          <img src={listing.imageUrl} alt={`${listing.displayAddress} listing`} loading="lazy" decoding="async" onError={handlePanelImageError} />
+        </figure>
+      ) : null}
+
+      <header className="dp-entity-panel-header dp-entity-summary">
+        <p className="dp-entity-eyebrow">PROPERTY ACCESS · {listing.district || "2ND STREET DISTRICT"}</p>
+        <h2 className="dp-entity-title">{listing.displayAddress}</h2>
+        <p className="dp-entity-meta">{listing.priceLabel || "Pricing available from the listing agent"}</p>
+        <p className="dp-entity-meta">Presented by {listing.brokerName}</p>
+        <p className="dp-entity-dek">{listing.partnerLabel}</p>
+        <p className="dp-entity-dek">{listing.summary}</p>
+      </header>
+
+      <div className="dp-legends-action-grid dp-entity-action-row" aria-label="Property access actions">
+        <button type="button" className="dp-entity-action is-primary" onClick={requestDetails}>Request listing details</button>
+        <button type="button" className="dp-entity-action" onClick={scheduleTour}>Schedule a tour</button>
+        <button type="button" className="dp-entity-action" onClick={onSave}>{savedIds?.has?.(place.id) ? "Saved" : "Save"}</button>
+        <a className="dp-entity-action" href={directionsUrl(place)} target="_blank" rel="noreferrer" onClick={() => { trackingEvents.realEstateDirectionsOpened(listing.id, metadata); onDirections?.(); }}>Directions</a>
+      </div>
+
+      <section className="dp-entity-section">
+        <h3>Property details</h3>
+        <div className="dp-entity-row-list">
+          {facts.map(([label, value]) => <div key={label} className="dp-entity-row"><span><strong>{label}</strong><small>{value}</small></span></div>)}
+        </div>
+      </section>
+
+      <section className="dp-entity-section">
+        <h3>Living here</h3>
+        <p>This residence is positioned near downtown dining, cultural destinations, everyday services and the lakefront trail network.</p>
+      </section>
+
+      <section className="dp-entity-section">
+        <h3>Your access through Downtown Perks</h3>
+        <p>Send a direct inquiry to Legends from this listing. Their team receives the property you are viewing, your preferred timing and the best way to follow up.</p>
+      </section>
+
+      <section id={inquiryFormId} className="dp-entity-section dp-legends-inquiry-section" tabIndex={-1}>
+        <LegendsContactForm formId={`${inquiryFormId}-form`} listing={listing} />
+      </section>
+
+      <section className="dp-entity-section">
+        <h3>Similar downtown homes</h3>
+        {similarListings.length ? (
+          <div className="dp-entity-row-list">
+            {similarListings.map(({ candidate, listing: candidateListing }) => (
+              <button key={candidate.id} type="button" className="dp-entity-row" onClick={() => openSimilar(candidate)}>
+                <span><strong>{candidateListing.displayAddress}</strong><small>{[candidateListing.district, candidateListing.priceLabel].filter(Boolean).join(" · ")}</small></span>
+              </button>
+            ))}
+          </div>
+        ) : <p>No verified similar homes are available in this launch dataset yet.</p>}
+      </section>
+
+      <section className="dp-entity-section">
+        <h3>Nearby context</h3>
+        {nearbyContext.length ? (
+          <div className="dp-entity-row-list">
+            {nearbyContext.map((candidate) => (
+              <button key={candidate.id} type="button" className="dp-entity-row" onClick={() => onSelect(candidate)}>
+                <span><strong>{candidate.name || candidate.title}</strong><small>{[getCanonicalCategoryLabel(candidate), candidate.district].filter(Boolean).join(" · ")}</small></span>
+              </button>
+            ))}
+          </div>
+        ) : <p>No nearby context is available for this listing yet.</p>}
+      </section>
+
+      <section className="dp-entity-section">
+        <h3>Source</h3>
+        <p>Listing information provided by Legends Real Estate. Availability and pricing should be confirmed directly with the listing agent.</p>
+      </section>
+    </div>
+  );
 }
 
 function LegendsResidentialIntelligenceDrawer({
@@ -13606,6 +13758,7 @@ function getRailItemForMapState({ filter, collection, prompt }) {
 }
 
 function workflowEntityType(place) {
+  if (isRealEstateListingEntity(place)) return "real_estate";
   return String(place?.type || place?.category || place?.raw?.type || "place").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
 }
 
@@ -16766,10 +16919,25 @@ export default function MapPage() {
       collection: urlState.collection,
       filter: activeFilter,
     });
+    const realEstateListing = toRealEstateListingEntity(place);
     navigateMapJourney(
-      isRentalSelection
-        ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: nextEntityId, listingId: "", perkId: "" }
-        : { tab: "map", entityId: nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
+      realEstateListing
+        ? {
+            tab: "map",
+            filter: "Properties",
+            entityType: "real_estate",
+            entityId: nextEntityId,
+            listingId: realEstateListing.listingId,
+            organizationId: realEstateListing.organizationId,
+            perkId: "",
+            campaignId: "",
+            cardId: "",
+            residentUid: "",
+            touchpoint: "",
+          }
+        : isRentalSelection
+          ? { layer: "rentals", filter: "Rentals", listing: place.id, entityId: nextEntityId, listingId: "", perkId: "" }
+          : { tab: "map", entityId: nextEntityId, listingId: publicListingId || "", perkId: nextPerkId },
     );
     const raw = place.raw || {};
     const trackingContext = {
@@ -16788,6 +16956,13 @@ export default function MapPage() {
       interpretedIntent: scopedResultState.intent || undefined,
       resultRank: Math.max(0, scopedResultState.resultIds.indexOf(place.id)),
     };
+    if (realEstateListing) {
+      const metadata = realEstateTrackingMetadata(realEstateListing);
+      trackingEvents.realEstateListingOpened(nextEntityId, metadata);
+      trackingEvents.markerClick(nextEntityId, "real_estate", { ...trackingContext, ...metadata });
+      trackingEvents.drawerOpen(nextEntityId, { ...trackingContext, ...metadata, entityType: "real_estate" });
+      return;
+    }
     trackingEvents.markerClick(nextEntityId, workflowEntityType(place), trackingContext);
     trackingEvents.drawerOpen(nextEntityId, { ...trackingContext, entityType: workflowEntityType(place) });
   }
@@ -17124,14 +17299,16 @@ export default function MapPage() {
       console.warn("Saved item could not be reconciled", error);
       if (typeof window !== "undefined") window.alert(error?.message || "Couldn't save. Try again.");
     });
+    const realEstateListing = toRealEstateListingEntity(place);
     if (nextSaved) {
       recordMapUserAction("save", {
         entityId: place.id,
         name: place.name,
-        category: place.category,
+        category: realEstateListing ? "Property access" : place.category,
         collection: urlState.collection,
       });
-      trackingEvents.save(place.id);
+      if (realEstateListing) trackingEvents.realEstateListingSaved(place.id, realEstateTrackingMetadata(realEstateListing));
+      else trackingEvents.save(place.id);
       return;
     }
     recordMapUserAction("unsave", {
@@ -19020,7 +19197,11 @@ export default function MapPage() {
               onContact={() => {
                 setAgentFormPlaceId(selected.id);
                 setAgentFormSubmitted(false);
-                window.setTimeout(() => document.getElementById(`map-contact-form-${selected.id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+                const realEstateListing = toRealEstateListingEntity(selected);
+                window.setTimeout(() => {
+                  const targetId = realEstateListing ? `real-estate-inquiry-${realEstateListing.id}` : `map-contact-form-${selected.id}`;
+                  document.getElementById(targetId)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                }, 80);
               }}
               onExplore={() => document.querySelector("#dp-active-map-drawer [data-building-section='overview'], #dp-active-map-drawer .dp-native-detail-panel__summary, #dp-active-map-drawer .dp-entity-summary")?.scrollIntoView({ behavior: "smooth", block: "start" })}
               onTrack={(action, source) => fireWorkflow("/api/map-actions", buildMapActionPayload(selected, action, source, {
@@ -19039,6 +19220,7 @@ export default function MapPage() {
                 const isRental = entityKind === "rental" || isRentalEntity(selected);
                 const isCampaign = entityKind === "campaign" || isCampaignEntity(selected);
                 const isPerkPanel = urlState.mode === "resident" && getCanonicalDetailEntityType(selected, Boolean(urlState.perkId)) === "perk";
+                const realEstateListing = toRealEstateListingEntity(selected);
                 const isProperty = !isRental && (entityKind === "property" || Boolean(legendsListing || getLuxuryPresenceBuilding(selected) || isLegendsListingLike(selected)));
                 const isParking = isParkingEntity(selected);
                 const isDaaStop = isDaaTourPlace(selected);
@@ -19098,6 +19280,22 @@ export default function MapPage() {
                     {content}
                   </>
                 );
+
+                if (realEstateListing && urlState.mode === "resident") {
+                  return withStandardActionPanel(
+                    <RealEstateListingDrawer
+                      place={selected}
+                      places={places}
+                      savedIds={savedIds}
+                      onSave={() => toggleSaved(selected)}
+                      onSelect={selectPlace}
+                      onContact={openContactForm}
+                      onDirections={() => fireWorkflow("/api/map-actions", buildMapActionPayload(selected, "real_estate_directions_opened", "real_estate_listing_drawer", {
+                        metadata: realEstateTrackingMetadata(realEstateListing),
+                      }))}
+                    />
+                  );
+                }
 
                 if (isHospitalityPortfolio) {
                   return (

@@ -66,7 +66,8 @@ export function resolveEntityType(entity: Record<string, unknown>): EntityType {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw as Record<string, unknown> : {};
   const name = String(entity.name || entity.title || raw.name || raw.title || "").toLowerCase();
 
-  if (entity.isLegendsListing || raw.isLegendsListing || raw.legendsListing || text.includes("legends listing")) return "listing";
+  if (entity.entityType === "real_estate" || raw.entityType === "real_estate" || entity.detailKind === "real_estate" || raw.detailKind === "real_estate") return "real_estate";
+  if (entity.isLegendsListing || raw.isLegendsListing || raw.legendsListing || text.includes("legends listing")) return "real_estate";
   if (raw.rentalListing || text.includes("rental") || text.includes("leasing") || text.includes("for rent")) return "rental";
   if (text.includes("hotel")) return "hotel";
   if (text.includes("campaign")) return "campaign";
@@ -127,6 +128,7 @@ export function resolveDrawer(entityType: EntityType): string {
   const drawerByType: Record<EntityType, string> = {
     property: "PropertyDrawer",
     listing: "LegendsListingDrawer",
+    real_estate: "LegendsListingDrawer",
     rental: "RentalListingDrawer",
     hotel: "HotelDrawer",
     venue: "VenueDrawer",

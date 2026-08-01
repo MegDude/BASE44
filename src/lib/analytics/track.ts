@@ -20,7 +20,15 @@ export type EventType =
   | 'redeem'
   | 'rsvp'
   | 'filter_apply'
-  | 'building_anchor';
+  | 'building_anchor'
+  | 'real_estate_listing_opened'
+  | 'real_estate_listing_saved'
+  | 'real_estate_directions_opened'
+  | 'real_estate_inquiry_started'
+  | 'real_estate_inquiry_submitted'
+  | 'real_estate_tour_requested'
+  | 'real_estate_similar_listing_opened'
+  | 'real_estate_partner_profile_opened';
 
 export interface TrackingEvent {
   type: EventType;
@@ -35,6 +43,12 @@ export interface TrackingEvent {
   partnerId?: string | null;
   propertyId?: string | null;
   buildingId?: string | null;
+  listingId?: string;
+  organizationId?: string;
+  portfolioId?: string;
+  district?: string;
+  timeline?: string;
+  sourceSurface?: string;
   perkId?: string | null;
   eventId?: string | null;
   queryId?: string;
@@ -71,6 +85,12 @@ export function track(event: TrackingEvent) {
     metadata: {
       legacyType: event.type,
       value: event.value,
+      listingId: event.listingId,
+      organizationId: event.organizationId,
+      portfolioId: event.portfolioId,
+      district: event.district,
+      timeline: event.timeline,
+      sourceSurface: event.sourceSurface,
     },
   });
 
@@ -85,6 +105,12 @@ export function track(event: TrackingEvent) {
     partner_id: event.partnerId ?? null,
     property_id: event.propertyId ?? null,
     building_id: event.buildingId ?? null,
+    listing_id: event.listingId ?? null,
+    organization_id: event.organizationId ?? null,
+    portfolio_id: event.portfolioId ?? null,
+    district: event.district ?? null,
+    timeline: event.timeline ?? null,
+    source_surface: event.sourceSurface ?? null,
     campaign_id: event.campaign || null,
     perk_id: event.perkId ?? null,
     event_id: event.eventId ?? null,
@@ -125,4 +151,13 @@ export const trackingEvents = {
   filterApply: (filter: string) => track({ type: 'filter_apply', value: filter }),
 
   buildingAnchor: (buildingId: string) => track({ type: 'building_anchor', entityId: buildingId }),
+
+  realEstateListingOpened: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_listing_opened', entityId, entityType: 'real_estate' }),
+  realEstateListingSaved: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_listing_saved', entityId, entityType: 'real_estate' }),
+  realEstateDirectionsOpened: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_directions_opened', entityId, entityType: 'real_estate' }),
+  realEstateInquiryStarted: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_inquiry_started', entityId, entityType: 'real_estate' }),
+  realEstateInquirySubmitted: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_inquiry_submitted', entityId, entityType: 'real_estate' }),
+  realEstateTourRequested: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_tour_requested', entityId, entityType: 'real_estate' }),
+  realEstateSimilarListingOpened: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_similar_listing_opened', entityId, entityType: 'real_estate' }),
+  realEstatePartnerProfileOpened: (entityId: string, context: Partial<TrackingEvent> = {}) => track({ ...context, type: 'real_estate_partner_profile_opened', entityId, entityType: 'real_estate' }),
 };
