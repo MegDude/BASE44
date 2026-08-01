@@ -148,6 +148,7 @@ import "@/styles/global-back-control-final.css"
 import "@/styles/pricing-page-finish.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/platform-tokens.css"
+import "@/styles/map-pin-coordinate-anchor-lock.css"
 
 inject()
 injectSpeedInsights()
