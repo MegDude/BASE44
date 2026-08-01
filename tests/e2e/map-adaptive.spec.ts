@@ -487,6 +487,11 @@ test.describe("adaptive map surface", () => {
       assertStableCommonMarkers(initial, await markerSnapshot());
     }
 
+    const closeDrawer = page.getByRole("button", { name: /close/i }).first();
+    if (await closeDrawer.isVisible().catch(() => false)) {
+      await closeDrawer.click();
+      await page.waitForTimeout(150);
+    }
     await page.getByRole("tab", { name: "Perks", exact: true }).click();
     await expect(page).toHaveURL(/tab=perks|filter=Perks/);
     await page.waitForTimeout(250);
