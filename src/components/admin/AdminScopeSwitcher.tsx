@@ -53,7 +53,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
   const results = useMemo(() => {
     const organizations: ScopeResult[] = data.organizations.map((item) => ({ type: "Organization", id: item.id, organizationId: item.id, label: item.name, detail: item.status || "Organization" }));
     const portfolios: ScopeResult[] = data.portfolios.map((item) => ({ type: "Portfolio", id: item.id, organizationId: item.organization_id, portfolioId: item.id, label: item.name, detail: data.organizations.find((organizationItem) => organizationItem.id === item.organization_id)?.name || "Portfolio" }));
-    const listings: ScopeResult[] = data.listings.map((item) => ({ type: "Listing", id: item.id, organizationId: item.organization_id, portfolioId: item.portfolio_id, listingId: item.id, label: item.name, detail: item.address || "Listing or property" }));
+    const listings: ScopeResult[] = data.listings.map((item) => ({ type: "Listing", id: item.id, organizationId: item.organization_id, portfolioId: item.portfolio_id, listingId: item.id, label: item.name, detail: item.status || "Listing or property" }));
     const all: ScopeResult[] = [...organizations, ...portfolios, ...listings];
     return normalizedQuery ? all.filter((item) => `${item.label} ${item.detail} ${item.type}`.toLowerCase().includes(normalizedQuery)) : all;
   }, [data, normalizedQuery]);

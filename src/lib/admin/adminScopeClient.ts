@@ -1,11 +1,16 @@
 import { supabaseClient } from "@/lib/supabase/client";
 
-export type AdminOrganization = { id: string; name: string; external_id?: string; status?: string };
+export type AdminOrganization = { id: string; name: string; external_id?: string; status?: string; legacy_partner_id?: string };
 export type AdminPortfolio = { id: string; organization_id: string; name: string; status?: string };
-export type AdminListing = { id: string; organization_id: string; portfolio_id?: string; name: string; address?: string; status?: string; entity_id?: string };
+export type AdminListing = { id: string; organization_id: string; portfolio_id?: string; name: string; status?: string; entity_id?: string };
 export type AdminScope = { organizationId?: string; portfolioId?: string; listingId?: string };
 export type AdminScopeResponse = {
-  role: string; organizations: AdminOrganization[]; portfolios: AdminPortfolio[]; listings: AdminListing[]; activeScope: AdminScope;
+  role: string;
+  organizations: AdminOrganization[];
+  portfolios: AdminPortfolio[];
+  listings: AdminListing[];
+  activeScope: AdminScope;
+  requestId?: string;
 };
 
 export async function getAuthorizedAdminScope(scope: AdminScope, signal?: AbortSignal): Promise<AdminScopeResponse> {
