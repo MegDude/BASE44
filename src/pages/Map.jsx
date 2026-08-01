@@ -14528,6 +14528,7 @@ export default function MapPage() {
           ? urlState.filter.toLowerCase()
           : "map"
   ));
+  const [savedPanelFilter, setSavedPanelFilter] = useState("all");
   const [activePerksDrawerState, setActivePerksDrawerState] = useState(() => {
     if (typeof window === "undefined") return "expanded";
     try {
@@ -15139,6 +15140,9 @@ export default function MapPage() {
         focusKey: String(place.id).replace(/[^a-z0-9_-]/gi, "-"),
         name: place.name,
         offerTitle: offer?.title || offer?.offer || offer?.value || "Resident perk",
+        category: offer?.category || place.category || place.type || "Resident benefit",
+        value: offer?.value || offer?.offer || "",
+        partner: place.partnerName || place.partner_name || place.raw?.partnerName || place.raw?.partner_name || "",
         expiresAt: getResidentPerkExpiry(place),
         distance: placeDistanceLabel(place),
         image: resolveEntityImage(place, "card"),
@@ -15596,6 +15600,24 @@ export default function MapPage() {
     );
   }
 
+  function renderSavedMobileRow(place) {
+    const group = getSavedItemGroup(place);
+    return (
+      <article key={place.id} className="dp-saved-mobile-row" data-saved-group={group} data-canonical-entity-id={place.id}>
+        <button type="button" onClick={() => selectPlace(place)} aria-label={`Open ${place.name}`}>
+          <span>
+            <strong>{place.name}</strong>
+            <small>{[group === "benefits" ? "Perk" : group === "events" ? "Event" : "Place", getSavedLocationLabel(place), placeDistanceLabel(place)].filter(Boolean).join(" · ")}</small>
+            <em>{getSavedItemCopy(place)}</em>
+          </span>
+        </button>
+        <button type="button" aria-pressed="true" onClick={() => toggleSaved(place)} aria-label={`Remove ${place.name} from saved`}>
+          Remove
+        </button>
+      </article>
+    );
+  }
+
   function renderSavedCollectionPanel() {
     const savedGroups = residentSavedPlaces.reduce(
       (groups, place) => {
@@ -15605,6 +15627,18 @@ export default function MapPage() {
       { places: [], events: [], benefits: [] },
     );
     const recommended = getMyDowntownSuggestions();
+    const savedFilterOptions = [
+      ["all", "All"],
+      ["benefits", "Perks"],
+      ["places", "Places"],
+      ["events", "Events"],
+      ["routes", "Routes"],
+    ];
+    const filteredSavedPlaces = savedPanelFilter === "all"
+      ? residentSavedPlaces
+      : savedPanelFilter === "routes"
+        ? []
+        : residentSavedPlaces.filter((place) => getSavedItemGroup(place) === savedPanelFilter);
     const askPrompts = [
       "What should I visit first?",
       "What's closest right now?",
@@ -15680,6 +15714,28 @@ export default function MapPage() {
             <span><strong>{savedGroups.benefits.length}</strong> benefits</span>
             <span><strong>{savedGroups.events.length}</strong> events</span>
           </section>
+
+          <div className="dp-saved-segmented-filter" role="tablist" aria-label="Saved filters">
+            {savedFilterOptions.map(([value, label]) => (
+              <button key={value} type="button" role="tab" aria-selected={savedPanelFilter === value} onClick={() => setSavedPanelFilter(value)}>
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {!!residentSavedPlaces.length && (
+            <section className="dp-saved-mobile-list" aria-label="Saved results" data-active-filter={savedPanelFilter}>
+              {filteredSavedPlaces.length ? filteredSavedPlaces.map(renderSavedMobileRow) : (
+                <div className="dp-saved-empty-state" aria-label="No saved results for this filter">
+                  <h3>No saved {savedFilterOptions.find(([value]) => value === savedPanelFilter)?.[1]?.toLowerCase()} yet.</h3>
+                  <p>Keep exploring the map and save useful places, perks, events, or routes.</p>
+                  <div className="dp-saved-action-row">
+                    <button type="button" onClick={() => openResidentDiscovery(savedPanelFilter === "events" ? "Events" : savedPanelFilter === "benefits" ? "Perks" : "All")}>Search this area</button>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
 
           {!residentSavedPlaces.length && (
             <section className="dp-saved-empty-state" aria-label="Nothing saved yet">
