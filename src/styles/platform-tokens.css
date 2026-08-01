@@ -16,6 +16,18 @@
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --page-padding: 20px;
   --content-max-width: 1200px;
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+  --breakpoint-mobile: 393px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --z-app-header: 40;
+  --z-bottom-nav: 45;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --elevation-flat: none;
+  --elevation-panel: none;
 }
 
 /* A single product surface contract. It is intentionally scoped so approved marketing
