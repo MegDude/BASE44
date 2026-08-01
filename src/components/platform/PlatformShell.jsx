@@ -13,7 +13,8 @@ function isAuthenticatedSurface(pathname) {
     || pathname.startsWith("/partners/checkout")
     || pathname.startsWith("/partners/register")
     || pathname.startsWith("/map")
-    || pathname.startsWith("/app");
+    || pathname.startsWith("/app")
+    || pathname.startsWith("/auth");
 }
 
 export function PlatformShell({ children }) {
