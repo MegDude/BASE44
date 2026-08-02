@@ -209,6 +209,21 @@ html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action butto
   border-radius: 0 !important;
   box-shadow: none !important;
 }
+html body #root#root#root#root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  clip-path: none !important;
+}
+html body #root#root#root#root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::before,
+html body #root#root#root#root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::after {
+  content: none !important;
+  display: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
 @media (max-width: 767px) {
   html body #root#root main.dp-pricing-guided-page .dp-pricing-section {
     padding: 34px 0 calc(96px + env(safe-area-inset-bottom)) !important;
