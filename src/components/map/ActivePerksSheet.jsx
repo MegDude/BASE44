@@ -1,4 +1,4 @@
-import { Navigation, Search, Star, X } from "lucide-react";
+import { ArrowLeft, Navigation, Search, Star, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
@@ -159,7 +159,10 @@ export default function ActivePerksSheet({
             <span aria-hidden="true" />
           </button>
           <header className="dp-active-perks-header">
-            <div>
+            <button type="button" className="dp-active-perks-back" onClick={onClose} aria-label="Return to map">
+              <ArrowLeft aria-hidden="true" />
+            </button>
+            <div className="dp-active-perks-title">
               <p>Resident benefits</p>
               <h2>Perks</h2>
             </div>
