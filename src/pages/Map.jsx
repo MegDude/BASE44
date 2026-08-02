@@ -15182,7 +15182,19 @@ export default function MapPage() {
     const relatedCategories = /fitness|wellness|health|spa|yoga|gym|event|music|arts|culture/i;
     const relatedPlaces = places
       .filter((place) => !offeredIds.has(place.id))
-      .filter((place) => relatedCategories.test([place.category, place.type, place.name, place.summary, place.raw?.category].filter(Boolean).join(" ")))
+      .filter((place) => relatedCategories.test([
+        place.category,
+        place.category_key,
+        place.type,
+        place.partnerType,
+        place.name,
+        place.summary,
+        place.raw?.category,
+        place.raw?.category_key,
+        place.raw?.partnerType,
+        ...(Array.isArray(place.tags) ? place.tags : []),
+        ...(Array.isArray(place.raw?.tags) ? place.raw.tags : []),
+      ].filter(Boolean).join(" ")))
       .slice(0, 36)
       .map((place) => toSheetItem(place, false));
     return [...offers, ...relatedPlaces].slice(0, 72);
