@@ -1,5 +1,5 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Search, X } from "lucide-react";
+import { ChevronDown, RefreshCw, Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuthorizedAdminScope, type AdminScope, type AdminScopeResponse } from "@/lib/admin/adminScopeClient";
@@ -30,19 +30,23 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  useEffect(() => {
-    const controller = new AbortController();
+  function loadScope(signal?: AbortSignal) {
     // Never continue rendering records from the previous organization while
     // the server authorizes a newly requested scope.
     onScopeResolved?.({});
     setStatus("loading");
-    getAuthorizedAdminScope(requested, controller.signal)
+    return getAuthorizedAdminScope(requested, signal)
       .then((next) => {
         setData(next);
-        setStatus("ready");
+        setStatus((next.organizations.length || next.role === "super_admin") ? "ready" : "error");
         onScopeResolved?.(next.activeScope);
       })
       .catch(() => setStatus("error"));
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadScope(controller.signal);
     return () => controller.abort();
   }, [onScopeResolved, requested]);
 
@@ -68,13 +72,16 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
     setOpen(false);
   }
 
-  const label = listing?.name || portfolio?.name || organization?.name || "All organizations";
+  const label = listing?.name || portfolio?.name || organization?.name || (data.role === "super_admin" ? "Platform-wide access" : "Active workspace");
+  const isSelectable = status === "ready" && (data.role === "super_admin" || results.length > 1);
   return (
-    <section className="dp-admin-scope" aria-label="Administrator organization scope">
-      <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+    <section className="dp-admin-scope" aria-label="Administrator organization scope" data-state={status}>
+      <DialogPrimitive.Root open={open && isSelectable} onOpenChange={(next) => setOpen(next && isSelectable)}>
         <DialogPrimitive.Trigger asChild>
-          <button type="button" className="dp-admin-scope__trigger" disabled={status !== "ready"}>
-            <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
+          <button type="button" className="dp-admin-scope__trigger" aria-haspopup="dialog" aria-expanded={open && isSelectable}>
+            <span>{status === "loading" ? "Active scope" : data.role === "super_admin" ? "Platform workspace" : "Active workspace"}</span>
+            <strong>{status === "loading" ? "Loading authorized access…" : status === "error" ? "We could not load your authorized scope." : label}</strong>
+            {isSelectable ? <ChevronDown aria-hidden="true" /> : null}
           </button>
         </DialogPrimitive.Trigger>
         <DialogPrimitive.Portal>
@@ -85,12 +92,14 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
             </header>
             <label className="dp-admin-scope__search"><Search aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search organization, portfolio, or listing" autoFocus /></label>
             <div className="dp-admin-scope__results">
-              {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>All organizations</strong><small>Platform-wide view</small></span></button> : null}
+              {data.role === "super_admin" ? <button type="button" onClick={() => selectScope({})}><span><strong>Platform-wide access</strong><small>All Downtown Perks</small></span></button> : null}
               {results.map((item) => <button type="button" key={`${item.type}-${item.id}`} onClick={() => selectScope({ organizationId: item.organizationId, portfolioId: item.portfolioId, listingId: item.listingId })}><span><em>{item.type}</em><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}
+              {!results.length ? <p className="dp-admin-scope__empty">No workspace access yet. Your account is active, but no organization or listing has been assigned.</p> : null}
             </div>
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
       </DialogPrimitive.Root>
+      {status === "error" ? <button type="button" className="dp-admin-scope__retry" onClick={() => loadScope()}><RefreshCw aria-hidden="true" />Try again</button> : null}
     </section>
   );
 }

@@ -32,13 +32,13 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
       <section className="dp-workspace-scope dp-workspace-scope--admin" aria-label="Choose admin workspace scope">
         <div className="dp-workspace-scope__summary">
           <p>Admin workspace</p>
-          <strong>Authorized platform scope</strong>
-          <span>Organizations, portfolios, and listings from your verified access.</span>
+          <strong>{scope.organizationId ? "Organization administration" : "Platform control"}</strong>
+          <span>{scope.organizationId ? "Manage only the organizations, portfolios, listings, and members assigned to this scope." : "All authorized organizations, portfolios, listings, members, and system activity."}</span>
         </div>
         <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
         <div className="dp-workspace-scope__admin-actions">
-          <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
-            People & access
+          <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope(scope.organizationId ? "/partner-workspace/team" : "/partner-workspace/residents", scope)}>
+            {scope.listingId ? "View listing access →" : scope.organizationId ? "View organization members →" : "Manage people & access →"}
           </Link>
         </div>
       </section>

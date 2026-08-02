@@ -7,6 +7,8 @@ const adminScope = readFileSync(join(root, "api/admin/scope.js"), "utf8");
 const docs = readFileSync(join(root, "docs/authenticated-routes-scope-live-data.md"), "utf8");
 const workspaceSummary = readFileSync(join(root, "api/partner/workspace-summary.js"), "utf8");
 const partnerWorkspace = readFileSync(join(root, "src/pages/PartnerWorkspace.jsx"), "utf8");
+const adminScopeSwitcher = readFileSync(join(root, "src/components/admin/AdminScopeSwitcher.tsx"), "utf8");
+const workspaceScopeSwitcher = readFileSync(join(root, "src/components/partner/workspace/WorkspaceScopeSwitcher.tsx"), "utf8");
 
 assert.match(adminScope, /requireAuthenticatedUser/);
 assert.match(adminScope, /ADMIN_ROLES/);
@@ -57,3 +59,16 @@ assert.doesNotMatch(partnerWorkspace, /\["Potential audience", "Not connected"\]
 assert.match(readFileSync(join(root, "src/pages/Map.jsx"), "utf8"), /<h2 className="dp-map-panel-title dp-map-detail-navigation-title">/);
 
 console.log("Authenticated route and admin scope contract checks passed.");
+
+
+assert.doesNotMatch(adminScopeSwitcher, /Scope unavailable/);
+assert.match(adminScopeSwitcher, /Loading authorized access/);
+assert.match(adminScopeSwitcher, /We could not load your authorized scope/);
+assert.match(adminScopeSwitcher, /Try again/);
+assert.match(adminScopeSwitcher, /Platform-wide access/);
+assert.doesNotMatch(adminScopeSwitcher, /disabled=\{status !== "ready"\}/);
+assert.match(workspaceScopeSwitcher, /Platform control/);
+assert.match(workspaceScopeSwitcher, /Manage people & access/);
+assert.match(workspaceScopeSwitcher, /View organization members/);
+assert.match(workspaceScopeSwitcher, /View listing access/);
+assert.doesNotMatch(workspaceScopeSwitcher, /Authorized platform scope/);
