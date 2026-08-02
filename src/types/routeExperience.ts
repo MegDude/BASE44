@@ -35,6 +35,8 @@ export type RouteExperienceDefinition = {
   distanceLabel?: string;
   neighborhood?: string;
   partnerName?: string;
+  attribution?: string;
+  format?: string;
   partnerWorkspaceId?: string;
   heroImageUrl?: string;
   stopIds: string[];

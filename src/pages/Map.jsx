@@ -107,6 +107,7 @@ import { getGoogleMapsConfigError, loadGoogleMaps } from "@/lib/googleMapsLoader
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { clearGoogleMapArtifacts, createDowntownGoogleMap, removeGoogleMapMarker } from "@/map/MapProvider";
 import { createDowntownMarker } from "@/map/MarkerManager";
+import { getStreetViewCoverage } from "@/lib/map/streetViewAvailability";
 import { createBrandedRoutePolylines, requestWalkingRoutePath } from "@/map/RouteManager";
 import {
   getAgentEntityRegistrySnapshot,
@@ -11054,7 +11055,19 @@ function UniversalEntityActionRail({
   const kind = entityType || getCanonicalDetailEntityType(place) || getResidentEntityKind(place);
   const entityId = encodeURIComponent(place?.id || place?.entityId || "");
   const directionsHref = directionsUrl(place);
+  const [streetViewCoverage, setStreetViewCoverage] = useState(null);
   const track = (action, source = "universal_entity_action_rail") => onTrack?.(action, source);
+  useEffect(() => {
+    let active = true;
+    setStreetViewCoverage(null);
+    const coords = getPlaceCoords(place);
+    const maps = typeof window !== "undefined" ? window.google?.maps : null;
+    if (!coords || !maps?.StreetViewService) return () => { active = false; };
+    getStreetViewCoverage(maps, { lat: coords[0], lng: coords[1] }).then((coverage) => {
+      if (active) setStreetViewCoverage(coverage);
+    });
+    return () => { active = false; };
+  }, [place?.id, place?.latitude, place?.longitude, place?.lat, place?.lng]);
   const share = async () => {
     track("share");
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -11086,6 +11099,9 @@ function UniversalEntityActionRail({
   );
   const directionsAction = directionsHref ? (
     <a href={directionsHref} target="_blank" rel="noreferrer" onClick={() => track("directions_opened")}>Directions</a>
+  ) : null;
+  const streetViewAction = streetViewCoverage?.url ? (
+    <a href={streetViewCoverage.url} target="_blank" rel="noreferrer" onClick={() => track("street_view_opened")}>Street View →</a>
   ) : null;
 
   if (kind === "perk" || kind === "happy_hour") {
@@ -11135,7 +11151,7 @@ function UniversalEntityActionRail({
     <div className="dp-universal-action-rail" aria-label={`${place?.name || "Place"} actions`}>
       {directionsHref ? <a className="is-primary" href={directionsHref} target="_blank" rel="noreferrer" onClick={() => track("directions_opened")}>Directions</a> : <button type="button" className="is-primary" onClick={onExplore}>View details</button>}
       {saveButton}
-      <button type="button" onClick={share}>Share</button>
+      {streetViewAction || <button type="button" onClick={share}>Share</button>}
     </div>
   );
 }
@@ -14282,7 +14298,7 @@ function useUrlMapState() {
         ? "Saved"
         : "";
   const filter = searchParams.get("filter") || collectionFilter || residentTabFilter || (layer === "rentals" ? "Rentals" : layerFilter || (mode === "partner" ? "All" : "All"));
-  const rawEntityId = searchParams.get("entityId") || searchParams.get("entity") || stopId || "";
+  const rawEntityId = searchParams.get("entityId") || searchParams.get("entity") || ((!collection && !route) ? stopId : "");
   const listingId = searchParams.get("listingId") || "";
   const listingEntityId = resolveMapEntityAlias(listingId);
   const resolvedRawEntityId = resolveMapEntityAlias(rawEntityId);
@@ -15177,9 +15193,15 @@ export default function MapPage() {
       .slice(0, 3),
     [activeCollection],
   );
+  const activeRouteSelectedStop = useMemo(() => {
+    if (!activeCollectionRoute?.stops?.length || !urlState.stopId) return null;
+    return activeCollectionRoute.stops.find((stop) => stop.id === urlState.stopId) || null;
+  }, [activeCollectionRoute, urlState.stopId]);
+  const activeRouteMapSelection = selected || activeRouteSelectedStop || null;
+  const activeRouteMapSelectedId = selectedId || activeRouteSelectedStop?.id || "";
   const activeRouteAgentContext = useMemo(() => {
     if (!activeCollectionRoute?.stops?.length) return null;
-    const selectedStopIndex = selectedId ? activeCollectionRoute.stops.findIndex((stop) => stop.id === selectedId) : -1;
+    const selectedStopIndex = activeRouteMapSelectedId ? activeCollectionRoute.stops.findIndex((stop) => stop.id === activeRouteMapSelectedId) : -1;
     const selectedStop = selectedStopIndex >= 0 ? activeCollectionRoute.stops[selectedStopIndex] : null;
     const upcomingStops = activeCollectionRoute.stops
       .slice(Math.max(0, selectedStopIndex + 1), Math.max(0, selectedStopIndex + 1) + 6)
@@ -15206,7 +15228,7 @@ export default function MapPage() {
       upcomingStops,
       routeStopIds: activeCollectionRoute.stops.map((stop) => stop.id).slice(0, 80),
     };
-  }, [activeCollectionRoute, selectedId]);
+  }, [activeCollectionRoute, activeRouteMapSelectedId]);
   const activeCanonicalIntentId = useMemo(
     () => getCanonicalIntentForFilter(activeFilter, effectiveSearch),
     [activeFilter, effectiveSearch],
@@ -17028,7 +17050,7 @@ export default function MapPage() {
     setSelectedDrawerClosed(true);
     setClusterDrawer(null);
     setMapAnswer(null);
-    urlState.update({ collection: urlState.collection, routeId: urlState.collection, stop: "", stopId: stop.id, entityId: stop.id, drawerClosed: "true" });
+    urlState.update({ collection: urlState.collection, routeId: urlState.collection, stop: "", stopId: stop.id, entityId: "", drawerClosed: "true" });
   }
 
   function openCollectionStop(stop) {
@@ -17054,7 +17076,7 @@ export default function MapPage() {
       routeState: "active",
       stop: "",
       stopId: stop.id,
-      entityId: stop.id,
+      entityId: "",
       drawerClosed: "true",
     });
   }
@@ -18211,8 +18233,8 @@ export default function MapPage() {
             fitPlaces={activeCollectionRoute?.stops?.length ? activeCollectionRoute.stops : discoverDisplayPlaces}
             fitActiveKey={mapResultBoundsKey}
             fitEnabled={hasActiveCategoryScope && !isCleanResidentPerksLaunch && !userHasNavigatedMap && !isStreetLevelMapView}
-            selected={selected}
-            selectedId={selectedId}
+            selected={activeRouteMapSelection}
+            selectedId={activeRouteMapSelectedId}
             pulsingPinId={pulsingPinId}
             onSelect={activeCollectionRoute?.stops?.length ? focusCollectionStop : selectPlace}
             onSelectNearestLegends={selectNearestLegendsListing}
@@ -18248,6 +18270,12 @@ export default function MapPage() {
           onOpenStop={openCollectionStop}
           onPrimaryAction={startCollectionRoute}
           onOpenRelatedRoute={openCollectionRoute}
+          onBackToRoute={() => {
+            setSelectedId("");
+            setSelectedPlaceOverride(null);
+            setSelectedDrawerClosed(true);
+            urlState.update({ stop: "", stopId: "", entityId: "", drawerClosed: "true" });
+          }}
           onExit={exitCollectionRoute}
         />
       ) : null}
