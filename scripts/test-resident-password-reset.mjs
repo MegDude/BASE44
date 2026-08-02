@@ -15,5 +15,7 @@ assert.match(reset, /PASSWORD_RECOVERY/, "implicit recovery links must be detect
 assert.match(reset, /auth\.updateUser\(\{ password \}\)/, "recovery session must be able to update the password");
 assert.match(reset, /auth\.signOut\(\)/, "recovery session must end before the new sign-in");
 assert.match(reset, /autoComplete="new-password"/, "password managers must identify new credentials correctly");
+assert.match(reset, /const \[recoveryReady, setRecoveryReady\] = useState\(false\)/, "the recovery session must be tracked separately from validation state");
+assert.match(reset, /const canSubmit = recoveryReady && state\.status !== "saving" && state\.status !== "complete"/, "local validation errors must keep an active recovery form editable");
 
 console.log("Resident password reset contract: PASS");
