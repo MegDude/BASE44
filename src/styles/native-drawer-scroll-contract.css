@@ -62,3 +62,18 @@ html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-cont
     padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+
+/* Legacy map rules set explicit heights on the scroll child.  Pin it to the
+   grid-owned viewport instead of allowing that height to escape the panel. */
+html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport {
+  position: relative !important;
+}
+
+html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport > .dp-native-drawer-scroll {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
