@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import "@/styles/workspace-reports-surface.css";
 import { ArrowRight, Download, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { downloadWorkspaceReport, getWorkspaceReport } from "@/services/platform/reportClient";
@@ -44,7 +45,7 @@ export function WorkspaceReportsSurface({ scope }) {
   const [applied, setApplied] = useState(() => ({ ...initialRange, compareTo: "previous_period" }));
   const [state, setState] = useState({ status: "loading", report: null, error: "" });
   const [exporting, setExporting] = useState(false);
-  const retryRef = useRef(0);
+  const [retryNonce, setRetryNonce] = useState(0);
 
   const reportScope = useMemo(() => ({
     organizationId: scope?.organizationId,
@@ -69,7 +70,7 @@ export function WorkspaceReportsSurface({ scope }) {
         setState({ status: error?.status === 403 ? "unavailable" : "error", report: null, error: error?.message || "Reports are unavailable right now." });
       });
     return () => controller.abort();
-  }, [reportScopeKey, retryRef.current]);
+  }, [reportScopeKey, retryNonce]);
 
   const report = state.report;
   const summary = report?.summary || {};
@@ -104,7 +105,7 @@ export function WorkspaceReportsSurface({ scope }) {
     <header className="dp-reports-header">
       <div><p>Reports</p><h1>See what people did and what to do next.</h1><span>{report?.scope?.organization?.name || "Loading workspace results"}</span></div>
       <div className="dp-reports-actions">
-        <button type="button" onClick={() => { retryRef.current += 1; setApplied({ ...applied }); }} disabled={state.status === "loading"}><RefreshCw aria-hidden="true" /> Refresh</button>
+        <button type="button" onClick={() => setRetryNonce((value) => value + 1)} disabled={state.status === "loading"}><RefreshCw aria-hidden="true" /> Refresh</button>
         <button type="button" onClick={exportCsv} disabled={!report || exporting}><Download aria-hidden="true" /> {exporting ? "Preparing…" : "Export CSV"}</button>
       </div>
     </header>
@@ -116,7 +117,7 @@ export function WorkspaceReportsSurface({ scope }) {
       {report?.updatedAt ? <span>Updated {new Date(report.updatedAt).toLocaleString()}</span> : null}
     </form>
 
-    {state.status === "error" ? <section className="dp-reports-state"><p>Reports unavailable</p><h2>We could not load this report.</h2><span>{state.error}</span><button type="button" onClick={() => { retryRef.current += 1; setApplied({ ...applied }); }}>Try again <ArrowRight aria-hidden="true" /></button></section> : null}
+    {state.status === "error" ? <section className="dp-reports-state"><p>Reports unavailable</p><h2>We could not load this report.</h2><span>{state.error}</span><button type="button" onClick={() => setRetryNonce((value) => value + 1)}>Try again <ArrowRight aria-hidden="true" /></button></section> : null}
 
     {state.status === "loading" && !report ? <section className="dp-reports-skeleton" aria-live="polite"><i /><i /><i /><i /><i /><i /></section> : null}
 
