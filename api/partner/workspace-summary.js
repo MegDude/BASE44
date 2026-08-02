@@ -141,6 +141,14 @@ export default async function handler(req, res) {
     if (sourceRows.error) throw sourceRows.error;
     if (audienceBindingRows.error) throw audienceBindingRows.error;
 
+    const audienceBuildingIds = [...new Set((audienceBindingRows.data || []).map((row) => row.building_id).filter(Boolean))];
+    const [audienceEligible, audienceContactable] = audienceBuildingIds.length
+      ? await Promise.all([
+          countRows(database.from("audience_members").select("id", { count: "exact", head: true }).eq("status", "active").in("building_id", audienceBuildingIds)),
+          countRows(database.from("audience_members").select("id", { count: "exact", head: true }).eq("status", "active").eq("consent_partner_contact", true).in("building_id", audienceBuildingIds)),
+        ])
+      : [null, null];
+
     const scopedListingIds = (listingRows || []).map((row) => row.id);
     const scopedEntityIds = (listingRows || []).map((row) => row.entity_id).filter(Boolean);
     const [workspaceMapCount, managedMapRows] = scopedEntityIds.length
