@@ -24,6 +24,9 @@ for (const section of ["Identity", "Organization", "Active scope", "Public prese
 assert.match(workspace, /id="workspace-profile-form"/, "profile save action must target one canonical form");
 assert.match(workspace, /className="dp-workspace-ia-context"/, "active scope must render as a full-width context row");
 assert.doesNotMatch(workspace, /campaign metrics|map data|analytics charts/i, "profile must not pull campaign metrics or analytics charts into account settings copy");
+assert.doesNotMatch(workspace, /partner_name: user\?\.partner_name[\s\S]{0,160}Waterloo Greenway/, "profile must not default new workspaces to Waterloo Greenway");
+assert.doesNotMatch(workspace, /primary_location:[\s\S]{0,160}Waterloo Park, Austin, TX/, "profile must not default new workspaces to a Waterloo location");
+assert.doesNotMatch(workspace, /membership_plan:[\s\S]{0,160}Founding Partner/, "profile must not default new workspaces to a plan label");
 
 assert.match(styles, /background: #fff;/, "workspace IA surface must stay pure white");
 assert.match(styles, /border-radius: 2px;/, "controls must be square or nearly square");
