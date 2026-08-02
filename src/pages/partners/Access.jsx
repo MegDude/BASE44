@@ -439,7 +439,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
-            <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
+            <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading font-medium text-[#0B1F33]">
               {isSignUp ? "Set up your partner account." : "Sign in to Downtown Perks."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
@@ -467,7 +467,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </div>
           </div>
 
-          <div className="dp-partner-access-panel rounded-[10px] border border-[#0B1F33]/[0.08] bg-white/88 p-5 shadow-[0_8px_24px_rgba(11,31,51,.055)]">
+          <div className="dp-partner-access-panel border border-[#0B1F33]/[0.08] bg-white/88 p-5">
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
@@ -516,7 +516,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
-                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
                   >
                     {TIMELINES.map((timeline) => (
                       <option key={timeline} value={timeline}>{timeline}</option>
@@ -532,7 +532,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full resize-none border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
                     placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
                   />
                 </div>
@@ -717,7 +717,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+        className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
       />
     </div>
   );
