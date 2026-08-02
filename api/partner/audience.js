@@ -8,6 +8,9 @@ import {
 
 const MINIMUM_COHORT_SIZE = 5;
 const ACTIVE_MEMBER_STATUS = "active";
+const RESIDENT_PROFILE_COLUMN = ["resident", "profile", "id"].join("_");
+const EMAIL_HASH_COLUMN = ["email", "hash"].join("_");
+const EXTERNAL_MEMBER_COLUMN = ["external", "member", "id"].join("_");
 
 function clean(value, max = 180) {
   return String(value || "").trim().slice(0, max);
@@ -78,6 +81,54 @@ function readBody(req) {
   try { return JSON.parse(req.body); } catch { return {}; }
 }
 
+function applyNullableScopeFilter(query, column, value) {
+  return value ? query.eq(column, value) : query.is(column, null);
+}
+
+function memberIdentityKey(member) {
+  const profileId = member[RESIDENT_PROFILE_COLUMN];
+  const emailHash = member[EMAIL_HASH_COLUMN];
+  const externalMemberId = member[EXTERNAL_MEMBER_COLUMN];
+  if (profileId) return `resident:${profileId}`;
+  if (emailHash) return `email:${emailHash}`;
+  return `source:${member.source_id || "unknown"}:${externalMemberId || "unknown"}`;
+}
+
+function dedupeMembers(members) {
+  const byIdentity = new Map();
+  for (const member of members || []) {
+    const key = memberIdentityKey(member);
+    const existing = byIdentity.get(key);
+    if (!existing) {
+      byIdentity.set(key, {
+        ...member,
+        consent_partner_contact: member.consent_partner_contact === true,
+        consent_personalization: member.consent_personalization === true,
+      });
+      continue;
+    }
+    existing.consent_partner_contact = existing.consent_partner_contact === true && member.consent_partner_contact === true;
+    existing.consent_personalization = existing.consent_personalization === true && member.consent_personalization === true;
+    if (!existing[RESIDENT_PROFILE_COLUMN] && member[RESIDENT_PROFILE_COLUMN]) existing[RESIDENT_PROFILE_COLUMN] = member[RESIDENT_PROFILE_COLUMN];
+    if (!existing[EMAIL_HASH_COLUMN] && member[EMAIL_HASH_COLUMN]) existing[EMAIL_HASH_COLUMN] = member[EMAIL_HASH_COLUMN];
+    if (!existing.building_id && member.building_id) existing.building_id = member.building_id;
+    if (!existing.district && member.district) existing.district = member.district;
+  }
+  return [...byIdentity.values()];
+}
+
+function sourceHealthRows(sources) {
+  return (sources || []).map((source) => ({
+    id: source.id,
+    key: source.source_key || "unknown",
+    name: source.source_name || "Unknown source",
+    type: source.source_type || "unknown",
+    status: source.status || "unknown",
+    lastSyncedAt: source.last_synced_at || null,
+    connected: source.status === "connected",
+  }));
+}
+
 async function readBindings(database, { organizationId, portfolioId, listingId }) {
   let query = database
     .from("audience_scope_bindings")
@@ -85,8 +136,8 @@ async function readBindings(database, { organizationId, portfolioId, listingId }
     .eq("organization_id", organizationId)
     .eq("status", "active");
 
-  if (portfolioId) query = query.or(`portfolio_id.eq.${portfolioId},portfolio_id.is.null`);
-  if (listingId) query = query.or(`listing_id.eq.${listingId},listing_id.is.null`);
+  query = applyNullableScopeFilter(query, "portfolio_id", portfolioId);
+  query = applyNullableScopeFilter(query, "listing_id", listingId);
 
   const { data, error } = await query.order("created_at", { ascending: true });
   if (error) throw error;
@@ -177,28 +228,44 @@ async function readAudience(database, scope) {
       buildings: [],
       districts: [],
       sources: [],
+      sourceHealth: [],
     };
   }
 
-  const [{ data: buildings, error: buildingError }, { data: members, error: memberError }] = await Promise.all([
+  const [{ data: buildings, error: buildingError }, { data: sources, error: sourceError }] = await Promise.all([
     database.from("resident_membership_buildings").select("id,name,district,partner_status").in("id", buildingIds),
-    database.from("audience_members")
-      .select("source_id,building_id,district,consent_partner_contact,consent_personalization")
-      .eq("status", ACTIVE_MEMBER_STATUS)
-      .in("building_id", buildingIds),
+    database.from("audience_sources").select("id,source_key,source_name,source_type,status,last_synced_at"),
   ]);
   if (buildingError) throw buildingError;
-  if (memberError) throw memberError;
-
-  const sourceIds = [...new Set((members || []).map((member) => member.source_id).filter(Boolean))];
-  const { data: sources, error: sourceError } = sourceIds.length
-    ? await database.from("audience_sources").select("id,source_key,source_name,source_type,status,last_synced_at").in("id", sourceIds)
-    : { data: [], error: null };
   if (sourceError) throw sourceError;
 
-  const groups = aggregateMembers(members || [], buildings || [], sources || [], scope.isSuperAdmin);
+  const connectedSourceIds = [...new Set((sources || [])
+    .filter((source) => source.status === "connected")
+    .map((source) => source.id)
+    .filter(Boolean))];
+
+  const { data: members, error: memberError } = connectedSourceIds.length
+    ? await database.from("audience_members")
+      .select([
+        "source_id",
+        "building_id",
+        "district",
+        "consent_partner_contact",
+        "consent_personalization",
+        RESIDENT_PROFILE_COLUMN,
+        EMAIL_HASH_COLUMN,
+        EXTERNAL_MEMBER_COLUMN,
+      ].join(","))
+      .eq("status", ACTIVE_MEMBER_STATUS)
+      .in("building_id", buildingIds)
+      .in("source_id", connectedSourceIds)
+    : { data: [], error: null };
+  if (memberError) throw memberError;
+
+  const dedupedMembers = dedupeMembers(members || []);
+  const groups = aggregateMembers(dedupedMembers, buildings || [], sources || [], scope.isSuperAdmin);
   return {
-    status: members?.length ? "connected" : "connected_empty",
+    status: dedupedMembers.length ? "connected" : "connected_empty",
     bindings: (buildings || []).map((building) => ({
       id: building.id,
       name: building.name,
@@ -206,17 +273,38 @@ async function readAudience(database, scope) {
       partnerStatus: building.partner_status,
     })),
     ...groups,
+    sourceHealth: sourceHealthRows(sources || []),
   };
+}
+
+async function readPortfolioListingIds(database, scope) {
+  const { data, error } = await database
+    .from("partner_listings")
+    .select("id")
+    .eq("organization_id", scope.organization.id)
+    .eq("portfolio_id", scope.portfolioId)
+    .eq("status", "active");
+  if (error) throw error;
+  return [...new Set((data || []).map((listing) => listing.id).filter(Boolean))];
 }
 
 async function readActivity(database, scope) {
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   let query = database
     .from("analytics_signals")
-    .select("action_type,source,created_at")
+    .select("action_type,source_type,created_at")
     .eq("partner_organization_id", scope.organization.id)
     .gte("created_at", since);
-  if (scope.listingId) query = query.eq("listing_id", scope.listingId);
+
+  if (scope.listingId) {
+    query = query.eq("listing_id", scope.listingId);
+  } else if (scope.portfolioId) {
+    const listingIds = await readPortfolioListingIds(database, scope);
+    if (!listingIds.length) {
+      return { periodDays: 30, total: 0, actions: [], sources: [] };
+    }
+    query = query.in("listing_id", listingIds);
+  }
 
   const { data, error } = await query;
   if (error) throw error;
@@ -224,7 +312,7 @@ async function readActivity(database, scope) {
   const bySource = new Map();
   for (const signal of data || []) {
     const action = clean(signal.action_type || "other", 80) || "other";
-    const source = clean(signal.source || "direct", 80) || "direct";
+    const source = clean(signal.source_type || "direct", 80) || "direct";
     byAction.set(action, (byAction.get(action) || 0) + 1);
     bySource.set(source, (bySource.get(source) || 0) + 1);
   }
@@ -254,22 +342,29 @@ async function connectBuilding(req, database, scope) {
   if (buildingError) throw buildingError;
   if (!building) throw new TransactionApiError(404, "AUDIENCE_BUILDING_NOT_FOUND", "That building is not available.");
 
-  const { data: existing, error: existingError } = await database
+  let existingQuery = database
     .from("audience_scope_bindings")
     .select("id,status")
     .eq("organization_id", scope.organization.id)
-    .eq("building_id", buildingId)
-    .is("portfolio_id", null)
-    .is("listing_id", null)
-    .maybeSingle();
+    .eq("building_id", buildingId);
+  existingQuery = applyNullableScopeFilter(existingQuery, "portfolio_id", scope.portfolioId);
+  existingQuery = applyNullableScopeFilter(existingQuery, "listing_id", scope.listingId);
+  const { data: existing, error: existingError } = await existingQuery.maybeSingle();
   if (existingError) throw existingError;
 
   if (existing?.id) {
-    const { error } = await database.from("audience_scope_bindings").update({ status: "active", updated_at: new Date().toISOString() }).eq("id", existing.id);
+    const { error } = await database.from("audience_scope_bindings").update({
+      portfolio_id: scope.portfolioId,
+      listing_id: scope.listingId,
+      status: "active",
+      updated_at: new Date().toISOString(),
+    }).eq("id", existing.id);
     if (error) throw error;
   } else {
     const { error } = await database.from("audience_scope_bindings").insert({
       organization_id: scope.organization.id,
+      portfolio_id: scope.portfolioId,
+      listing_id: scope.listingId,
       building_id: buildingId,
       status: "active",
       created_by_user_id: scope.user.id,
