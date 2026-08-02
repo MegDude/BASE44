@@ -134,7 +134,8 @@
     "test:platform-design-system-contrast": "node scripts/test-platform-design-system-contrast.mjs",
     "test:native-drawer-map-recovery": "node scripts/test-native-drawer-map-recovery-contract.mjs",
     "test:google-map-marker-anchoring": "node scripts/test-google-map-marker-anchoring-contract.mjs",
-    "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs"
+    "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs",
+    "test:authenticated-routes-scope": "node scripts/test-authenticated-routes-scope-contract.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",

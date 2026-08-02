@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     const [{ data: portfolios, error: portfolioError }, { data: listings, error: listingError }] = organizationIds.length
       ? await Promise.all([
           database.from("partner_portfolios").select("id,organization_id,name,status").in("organization_id", organizationIds).order("name"),
-          database.from("partner_listings").select("id,organization_id,portfolio_id,name,address,status,entity_id").in("organization_id", organizationIds).order("name"),
+          database.from("partner_listings").select("id,organization_id,portfolio_id,name,status,entity_id").in("organization_id", organizationIds).order("name"),
         ])
       : [{ data: [], error: null }, { data: [], error: null }];
     if (portfolioError) throw portfolioError;
