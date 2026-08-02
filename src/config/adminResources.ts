@@ -12,6 +12,17 @@ export type AdminResource = {
 
 export const ADMIN_RESOURCES: AdminResource[] = [
   {
+    id: "backendMasterControlPlane",
+    label: "Backend Master Control Plane",
+    shortLabel: "Control Plane",
+    description: "Review the server-authorized Admin Studio, identity, entitlement, QR, payment, audit, and workspace contract.",
+    href: "/admin/resources/backend-master-control-plane",
+    section: "resources",
+    adminOnly: true,
+    priority: 0,
+    searchTerms: ["backend master", "control plane", "admin studio", "entitlements", "audit log", "payments", "qr", "super admin"],
+  },
+  {
     id: "partnerJourneyLinks",
     label: "Partner Journey Links",
     shortLabel: "Journey Links",
