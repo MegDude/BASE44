@@ -28,6 +28,7 @@ html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > but
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button { grid-template-columns: minmax(0, 1fr) 12px !important; align-items: center !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { grid-template-columns: minmax(0, 1fr) auto !important; gap: 16px !important; align-items: center !important; }
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] { padding-left: 12px !important; border-left: 2px solid var(--pricing-gold) !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) { padding-left: 12px !important; color: var(--pricing-ink) !important; }
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::before,
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::after { content: none !important; display: none !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list strong,
@@ -38,7 +39,8 @@ html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list i { displ
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] strong { color: var(--pricing-gold) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt { margin: 14px 0 0 !important; font-size: 13px !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button,
-html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--pricing-ink) !important; text-decoration: underline !important; text-underline-offset: 4px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--pricing-ink) !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: normal !important; text-decoration: none !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button:hover { color: var(--pricing-gold) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { display: flex !important; width: 100% !important; min-height: 48px !important; align-items: center !important; justify-content: space-between !important; border-bottom: 1px solid var(--pricing-line) !important; text-decoration: none !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { color: var(--pricing-muted) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups { display: flex !important; gap: 18px !important; overflow-x: auto !important; padding-top: 12px !important; }
@@ -103,52 +105,83 @@ html body #root#root main.dp-partner-access-page .dp-partner-type-card strong { 
 html body #root#root main.dp-partner-access-page .dp-partner-type-card small { color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] { padding-left: 12px !important; border-left: 2px solid var(--pricing-gold) !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] strong { color: var(--pricing-gold) !important; }
-/* Deliberate actions: one crisp primary action, with quiet square secondary actions. */
+/* Actions are deliberately quiet: flat text affordances and one compact dark handoff. */
 html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary {
   display: inline-flex !important;
   min-height: 46px !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 10px !important;
-  padding: 0 18px !important;
-  border: 1px solid var(--pricing-ink) !important;
+  padding: 0 15px !important;
+  border: 0 !important;
   border-radius: 0 !important;
   background: var(--pricing-ink) !important;
   box-shadow: none !important;
   color: #fff !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 650 !important;
-  letter-spacing: .075em !important;
+  letter-spacing: 0 !important;
   line-height: 1 !important;
   text-align: center !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease !important;
 }
 html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary :is(svg, .text-\[\#BFA46A\]) { color: #fff !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) { border-color: var(--pricing-gold) !important; background: var(--pricing-gold) !important; color: var(--pricing-ink) !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) :is(svg, .text-\[\#BFA46A\]) { color: var(--pricing-ink) !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) { background: #132238 !important; color: #fff !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) :is(svg, .text-\[\#BFA46A\]) { color: #fff !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-access-actions .dp-acquisition-primary { flex: 1 1 190px !important; }
 html body #root#root main.dp-partner-access-page .dp-acquisition-secondary {
   display: inline-flex !important;
   min-height: 46px !important;
   align-items: center !important;
-  justify-content: center !important;
-  padding: 0 16px !important;
-  border: 1px solid var(--pricing-line) !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+  border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   color: var(--pricing-ink) !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
-  letter-spacing: .05em !important;
+  letter-spacing: 0 !important;
   line-height: 1 !important;
-  text-align: center !important;
-  text-transform: uppercase !important;
-  transition: border-color 160ms ease, color 160ms ease !important;
+  text-align: left !important;
+  text-transform: none !important;
+  transition: color 160ms ease !important;
 }
-html body #root#root main.dp-partner-access-page .dp-acquisition-secondary:hover { border-color: var(--pricing-gold) !important; color: var(--pricing-gold) !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) :is(.dp-acquisition-primary, .dp-acquisition-secondary):focus-visible { outline: 2px solid var(--pricing-gold) !important; outline-offset: 3px !important; }
+html body #root#root main.dp-partner-access-page .dp-acquisition-secondary:hover { color: var(--pricing-gold) !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) :is(.dp-acquisition-primary, .dp-acquisition-secondary):focus-visible { box-shadow: inset 0 -2px 0 var(--pricing-gold) !important; outline: 0 !important; }
+
+/* Pricing is a reading flow, not a collection of boxes. */
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step,
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list, .dp-pricing-plan-list),
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review,
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle,
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step { margin-bottom: 38px !important; padding-bottom: 0 !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button) {
+  min-height: 52px !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-left: 0 !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { min-height: 64px !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"],
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) { padding-left: 0 !important; border-left: 0 !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] :is(strong, em) { color: var(--pricing-gold) !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) strong { color: var(--pricing-ink) !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button i { opacity: .38 !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button[data-active="true"] i { opacity: 1 !important; color: var(--pricing-gold) !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { min-height: 44px !important; justify-content: flex-start !important; gap: 10px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { font-size: 12px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review { padding: 0 !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt { margin-top: 18px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button { line-height: 1.45 !important; white-space: normal !important; }
+html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary,
+html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary :is(span, svg, path) { color: #fff !important; fill: none !important; }
 
 @media (max-width: 767px) {
   html body #root#root main.dp-pricing-guided-page .dp-pricing-section { padding: 28px 0 calc(88px + env(safe-area-inset-bottom)) !important; }
