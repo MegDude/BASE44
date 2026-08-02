@@ -3670,7 +3670,7 @@ function dedupeMapPinPlaces(places) {
   const chosen = [];
   const keyToIndex = new Map();
 
-  places.filter(hasCanonicalMapResultIdentity).forEach((place) => {
+  places.forEach((place) => {
     if (!place?.id || !getPlaceCoords(place)) return;
 
     const keys = getMapPinCanonicalKeys(place);
@@ -4116,7 +4116,7 @@ function getClusterPresentationPriority(place) {
 
 function getCanonicalClusterDrawerPlaces(places = []) {
   const groups = new Map();
-  places.forEach((place) => {
+  places.filter(hasCanonicalMapResultIdentity).forEach((place) => {
     const identity = getClusterPresentationIdentity(place);
     const current = groups.get(identity);
     if (!current || getClusterPresentationPriority(place) > getClusterPresentationPriority(current)) {
