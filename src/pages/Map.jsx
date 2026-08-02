@@ -19196,8 +19196,10 @@ export default function MapPage() {
 
                 if (isCanonicalResidentialMixedUseEntity(selected)) {
                   return withStandardActionPanel(
-                    <ResidentialMixedUseDrawer
-                      place={selected}
+                    <>
+                      <h2 className="dp-map-panel-title dp-selected-drawer-title">{selected.name}</h2>
+                      <ResidentialMixedUseDrawer
+                        place={selected}
                       places={places}
                       mode={urlState.mode}
                       savedIds={savedIds}
@@ -19213,14 +19215,17 @@ export default function MapPage() {
                       onOpenRoute={openCollectionRoute}
                       onBack={goBackToMap}
                       onClose={closeSelectedMapDrawer}
-                    />
+                      />
+                    </>
                   );
                 }
 
                 if (isProperty && !isRental && !legendsListing && !isLegendsMapPlace(selected) && !legendsResidentialProfile) {
                   return withStandardActionPanel(
-                    <ResidentialMixedUseDrawer
-                      place={selected}
+                    <>
+                      <h2 className="dp-map-panel-title dp-selected-drawer-title">{selected.name}</h2>
+                      <ResidentialMixedUseDrawer
+                        place={selected}
                       places={places}
                       mode={urlState.mode}
                       savedIds={savedIds}
@@ -19234,7 +19239,8 @@ export default function MapPage() {
                         });
                       }}
                       onOpenRoute={openCollectionRoute}
-                    />
+                      />
+                    </>
                   );
                 }
 
