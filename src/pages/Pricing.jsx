@@ -251,7 +251,7 @@ export default function PricingPage() {
               <span>{isResident ? "Annual access" : "First year"}</span>
               <div><strong>{chosenTitle}</strong></div>
               {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
-              <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
+              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
             </aside>
           </div>
         </div>
@@ -259,7 +259,7 @@ export default function PricingPage() {
 
       <div className="dp-pricing-mobile-action">
         <span><small>{isResident ? "Annual access" : "Your plan"}</small><strong>{totalText}</strong></span>
-        <button type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
+        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
       </div>
     </main>
   );
