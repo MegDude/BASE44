@@ -33,7 +33,16 @@ assert.match(migration, /create table if not exists public\.partner_campaigns/, 
 assert.match(migration, /create table if not exists public\.audience_members/, "migration must create consent-aware audience storage");
 assert.match(migration, /alter table public\.analytics_signals add column if not exists partner_organization_id/, "migration must add attribution");
 assert.match(importer, /production-map-inventory\.json/, "inventory importer must use the approved published map registry");
-assert.match(importer, /upsert/, "inventory importer must be idempotent");
+assert.match(importer, /const dryRun = args\.has\("--dry-run"\)/, "inventory importer must expose an explicit dry-run mode");
+assert.match(importer, /validateRecords/, "inventory importer must validate records before database writes");
+assert.match(importer, /duplicate_id/, "inventory importer must reject duplicate IDs");
+assert.match(importer, /invalid_latitude/, "inventory importer must validate latitude values");
+assert.match(importer, /invalid_longitude/, "inventory importer must validate longitude values");
+assert.match(importer, /planChanges/, "inventory importer must compare live rows before writing");
+assert.match(importer, /noop/, "inventory importer must report no-op rows");
+assert.match(importer, /written: dryRun \? 0 : changedRows\.length/, "dry-run mode must never report production writes");
+assert.match(importer, /if \(!dryRun && changedRows\.length\)/, "upsert must be guarded behind non-dry-run mode and changed rows only");
+assert.match(importer, /upsert/, "inventory importer must remain idempotent for changed rows");
 assert.doesNotMatch(importer, /canonical_entities/, "inventory importer must not own backend canonical-entity persistence");
 assert.doesNotMatch(migration, /references public\.canonical_entities/, "UI migration must not depend on an undeclared backend table");
 console.log("Workspace live inventory contract: PASS");
