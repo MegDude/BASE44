@@ -240,8 +240,6 @@ function ProductRoutes() {
             path="/admin/resources/backend-master-control-plane"
             element={<AdminProtectedRoute><BackendMasterControlPlaneResource /></AdminProtectedRoute>}
           />
-          <Route path="/admin" element={<AdminProtectedRoute><BackendMasterControlPlaneResource /></AdminProtectedRoute>} />
-          <Route path="/admin/:section" element={<AdminProtectedRoute><BackendMasterControlPlaneResource /></AdminProtectedRoute>} />
           <Route path="/admin/content-index" element={<AdminProtectedRoute><AdminContentIndex /></AdminProtectedRoute>} />
           <Route path="/studio" element={<Navigate to="/admin-studio/command-center" replace />} />
           <Route path="/residents" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />

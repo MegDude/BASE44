@@ -99,7 +99,10 @@ assert.match(contracts, /source: "backend-platform"/);
 assert.match(contracts, /authenticated user[\s\S]*verified role[\s\S]*organization or building membership[\s\S]*entitlement[\s\S]*permitted records/);
 
 assert.match(adminResource, /Backend Platform owns persistence, RBAC, Stripe webhooks, QR validation, reporting, and integrations/);
-assert.match(adminResource, /Requires server authorization and audit logging/);
+assert.match(adminResource, /This page documents the platform contract/);
+assert.match(adminResource, /does not show live backend status, grant permissions/);
+assert.match(adminResource, /Required backend contract — not verified account state/);
+assert.match(adminResource, /Actual role, entitlement, and scope must come from authorized backend APIs/);
 assert.match(adminResource, /Visible only when the backend returns an authorized organization scope and active entitlement/);
 assert.doesNotMatch(adminResource, /fake|demo metrics|placeholder metrics/i);
 
@@ -107,8 +110,8 @@ assert.match(adminConfig, /backendMasterControlPlane/);
 assert.match(adminConfig, /\/admin\/resources\/backend-master-control-plane/);
 assert.match(app, /BackendMasterControlPlaneResource/);
 assert.match(app, /\/admin\/resources\/backend-master-control-plane/);
-assert.match(app, /path="\/admin"/);
-assert.match(app, /path="\/admin\/:section"/);
+assert.doesNotMatch(app, /path="\/admin" element=\{<AdminProtectedRoute><BackendMasterControlPlaneResource/);
+assert.doesNotMatch(app, /path="\/admin\/:section"/);
 
 assert.match(docs, /BASE44 owns the frontend shell/);
 assert.match(docs, /Backend Platform owns persistence, RBAC, Stripe webhooks, QR validation, reporting, integrations/);

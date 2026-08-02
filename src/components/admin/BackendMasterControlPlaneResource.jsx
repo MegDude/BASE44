@@ -24,8 +24,8 @@ export default function BackendMasterControlPlaneResource() {
         <p>Backend master build</p>
         <h1>Platform control plane contract.</h1>
         <p>
-          This resource records the backend-owned contract for Admin Studio, identity, entitlements, partner workspaces,
-          resident provisioning, map intelligence, QR, payments, and audit logging. It does not grant access from client state.
+          This page documents the platform contract. It does not show live backend status, grant permissions,
+          activate modules, or create operational records.
         </p>
       </header>
 
@@ -35,14 +35,14 @@ export default function BackendMasterControlPlaneResource() {
       </aside>
 
       <section aria-labelledby="super-admin-contract">
-        <h2 id="super-admin-contract">Super Admin contract</h2>
+        <h2 id="super-admin-contract">Required backend contract — not verified account state</h2>
         <div className="dp-admin-resource-sections">
           <article>
             <div>
-              <strong>{SUPER_ADMIN_CONTRACT.verifiedEmail}</strong>
-              <p>{SUPER_ADMIN_CONTRACT.role} · {SUPER_ADMIN_CONTRACT.scope}</p>
+              <strong>Super Admin requirements</strong>
+              <p>Architecture documentation only. Actual role, entitlement, and scope must come from authorized backend APIs in a later release.</p>
               <span>Requires server authorization and audit logging for every consequential action.</span>
-              <code>entitlements: {SUPER_ADMIN_CONTRACT.entitlements.join(", ")}</code>
+              <code>{SUPER_ADMIN_CONTRACT.verifiedEmail} · {SUPER_ADMIN_CONTRACT.role} · {SUPER_ADMIN_CONTRACT.scope}</code>
             </div>
           </article>
         </div>
