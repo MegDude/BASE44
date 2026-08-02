@@ -809,7 +809,7 @@ export const PARTNER_WORKSPACE_COPY: Record<PartnerWorkspaceTab, any> = {
     fields: ["Service", "Account", "Connection status", "Last update", "Data available", "Owner", "Notes"],
     sourceTypes: ["Maps", "Search reporting", "Billing", "Email", "SMS", "Listings", "Events", "Other"],
     success: "Connection details saved.",
-    emptyState: "No connected services yet. Add only the services this partner actually uses.",
+    emptyState: "Connection status appears in the protected Connections module after the authenticated workspace scope is verified.",
   },
   campaigns: {
     route: PARTNER_ROUTES.workspaceCampaigns,

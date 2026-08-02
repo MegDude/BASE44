@@ -14,7 +14,7 @@ assert.match(summaryApi, /requirePartnerMembership/, "workspace summary must enf
 assert.match(summaryApi, /platform_profiles/, "workspace summary must resolve trusted platform roles");
 assert.match(summaryApi, /partner_listings/, "workspace summary must calculate connected places from persisted listings");
 assert.match(summaryApi, /partner_campaigns/, "workspace summary must calculate persisted campaigns");
-assert.match(summaryApi, /eligibleResidents: null/, "unscoped audience must not be fabricated");
+assert.match(summaryApi, /audienceBuildingIds\.length[\s\S]*\[null, null\]/, "unscoped audience must not be fabricated");
 assert.match(summaryApi, /MAP_COVERAGE/, "published map coverage must have an explicit source");
 assert.match(summaryApi, /map_inventory/, "workspace map coverage must read the canonical map inventory table");
 assert.match(tracker, /partner_organization_id/, "analytics tracking must persist organization attribution");
