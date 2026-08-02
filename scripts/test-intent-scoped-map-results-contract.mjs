@@ -47,7 +47,10 @@ assert.match(hook, /Drinks: "drinks"/);
 assert.match(hook, /Dinner: "dinner"/);
 assert.match(hook, /Fitness: "fitness"/);
 
-assert.match(hook, /setResultState\(\(current\) => \(\{[\s\S]*resultIds: \[\],[\s\S]*entitiesById: \{\},[\s\S]*mapResultState: createLoadingMapResultState\(activeMapQuery\)/, "new requests must clear stale result IDs and rows before loading");
+assert.match(hook, /preserveSelectionDuringLookup = Boolean\(normalizedScope\.activeEntityId\) && \/entity\/i\.test\(trigger\)/, "direct entity selection may preserve the current marker set during lookup");
+assert.match(hook, /resultIds: preserveSelectionDuringLookup \? current\.resultIds : \[\]/, "intent and search requests must clear stale result IDs before loading");
+assert.match(hook, /entitiesById: preserveSelectionDuringLookup \? current\.entitiesById : \{\}/, "intent and search requests must clear stale rows before loading");
+assert.match(hook, /mapResultState: preserveSelectionDuringLookup[\s\S]*: createLoadingMapResultState\(activeMapQuery\)/, "loading state must be explicit for new map queries");
 assert.match(hook, /activeRequestRef\.current\.id !== requestId/, "late responses must be ignored");
 assert.match(hook, /activeRequestRef\.current\.key !== queryKey/, "late responses from previous query keys must be ignored");
 assert.match(hook, /result\.mapResultState = createReadyMapResultState\(activeMapQuery, resolvedEntities/, "ready state must derive from the same resolved entity array used by pins and lists");

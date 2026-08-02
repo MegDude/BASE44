@@ -821,18 +821,21 @@ export function useSearchDrivenMapEntities() {
     setRequestStatus("loading");
     setLastTrigger(trigger);
     const activeMapQuery = buildMapQueryFromScope(normalizedScope);
+    const preserveSelectionDuringLookup = Boolean(normalizedScope.activeEntityId) && /entity/i.test(trigger);
     setResultState((current) => ({
       ...current,
-      resultIds: [],
-      entitiesById: {},
-      total: 0,
-      cursor: "",
+      resultIds: preserveSelectionDuringLookup ? current.resultIds : [],
+      entitiesById: preserveSelectionDuringLookup ? current.entitiesById : {},
+      total: preserveSelectionDuringLookup ? current.total : 0,
+      cursor: preserveSelectionDuringLookup ? current.cursor : "",
       status: "resolving",
       source: resolverRequest.source,
       queryId: "",
-      resultTitle: null,
-      resultSubtitle: null,
-      mapResultState: createLoadingMapResultState(activeMapQuery),
+      resultTitle: preserveSelectionDuringLookup ? current.resultTitle : null,
+      resultSubtitle: preserveSelectionDuringLookup ? current.resultSubtitle : null,
+      mapResultState: preserveSelectionDuringLookup
+        ? current.mapResultState || createLoadingMapResultState(activeMapQuery)
+        : createLoadingMapResultState(activeMapQuery),
     }));
     const startedAt = performance.now();
 
