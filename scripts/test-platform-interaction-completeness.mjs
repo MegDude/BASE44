@@ -27,7 +27,7 @@ const workspaceModules = {
   overview: "WorkspaceOverview", launch: "WorkspaceAgent", publish: "WorkspaceDestinationRoot",
   performance: "WorkspaceDestinationRoot", map: "WorkspaceRegistryPanel", campaigns: "WorkspaceExperienceSystem",
   offers: "PerksManager", events: "EventsManager", surveys: "WorkspaceExperienceSystem",
-  broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceRegistryPanel", audience: "WorkspaceRegistryPanel",
+  broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceConnections", audience: "WorkspaceRegistryPanel",
   media: "WorkspaceRegistryPanel", reports: "WorkspaceReports", analytics: "WorkspaceAnalytics",
   assistant: "WorkspaceAgent", profile: "ProfileSection", team: "WorkspaceRegistryPanel",
   billing: "WorkspaceRegistryPanel", residents: "WorkspaceRegistryPanel",
