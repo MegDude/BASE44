@@ -256,7 +256,7 @@ export default function PricingPage() {
 
       <div className="dp-pricing-mobile-action">
         <span><small>{isResident ? "Annual access" : "Your plan"}</small><strong>{totalText}</strong></span>
-        <button type="button" onClick={continueWithSetup}>{isResident ? "Get card" : "Continue"} <ArrowRight aria-hidden="true" /></button>
+        <button type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
       </div>
     </main>
   );
