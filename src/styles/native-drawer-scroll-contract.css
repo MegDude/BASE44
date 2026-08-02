@@ -1,0 +1,79 @@
+/* Terminal geometry contract for every map detail drawer.
+   The shell owns exactly one scroll region; legacy panel styles cannot expand it
+   beyond the visible drawer. */
+html body .dp-native-drawer {
+  display: block !important;
+  overflow: hidden !important;
+}
+
+html body .dp-native-drawer > .dp-native-drawer-surface {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-header,
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-actions {
+  position: static !important;
+  z-index: auto !important;
+  flex: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport {
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport > .dp-native-drawer-scroll {
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport > .dp-native-drawer-scroll > article {
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 767px) {
+  html body .dp-native-drawer > .dp-native-drawer-surface {
+    border-radius: 0 !important;
+  }
+
+  html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-actions {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+
+/* Legacy map rules set explicit heights on the scroll child.  Pin it to the
+   grid-owned viewport instead of allowing that height to escape the panel. */
+html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport {
+  position: relative !important;
+}
+
+html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport > .dp-native-drawer-scroll {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
