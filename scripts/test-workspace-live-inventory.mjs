@@ -29,5 +29,9 @@ assert.match(migration, /create table if not exists public\.audience_members/, "
 assert.match(migration, /alter table public\.analytics_signals add column if not exists partner_organization_id/, "migration must add attribution");
 assert.match(importer, /production-map-inventory\.json/, "inventory importer must use the approved published map registry");
 assert.match(importer, /upsert/, "inventory importer must be idempotent");
+assert.match(importer, /--dry-run/, "inventory importer must support a read-only preflight");
+assert.match(importer, /inventoryWrites/, "inventory importer must skip unchanged inventory rows");
+assert.match(importer, /canonicalWrites/, "inventory importer must skip unchanged canonical rows");
+assert.match(importer, /INVENTORY_SOURCE_INVALID/, "inventory importer must reject invalid source records");
 assert.match(importer, /canonical_entities/, "inventory importer must populate canonical entities");
 console.log("Workspace live inventory contract: PASS");
