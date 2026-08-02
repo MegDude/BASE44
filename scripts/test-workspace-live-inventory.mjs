@@ -19,7 +19,12 @@ assert.match(summaryApi, /MAP_COVERAGE/, "published map coverage must have an ex
 assert.match(summaryApi, /map_inventory/, "workspace map coverage must read the canonical map inventory table");
 assert.match(tracker, /partner_organization_id/, "analytics tracking must persist organization attribution");
 assert.match(tracker, /listing_id/, "analytics tracking must persist listing attribution");
-assert.match(tracker, /entity_id: entityId/, "analytics tracking must persist entity attribution");
+assert.match(tracker, /entity_id: isUuid\(entityId\) \? entityId : null/, "analytics tracking must write only UUID entity IDs");
+assert.match(tracker, /map_entity_id/, "non-UUID public map IDs must remain in metadata");
+assert.doesNotMatch(tracker, /attribution: \{ organizationId/, "public tracking must not return internal attribution IDs");
+assert.match(summaryApi, /scopedListingsQuery/, "workspace listing rows must respect the active scope");
+assert.match(summaryApi, /resolveListingId/, "public listing IDs must resolve inside the active organization before UUID queries");
+assert.match(summaryApi, /WORKSPACE_SCOPE_INVALID/, "workspace identifiers must be validated before database filtering");
 assert.match(workspace, /getPartnerWorkspaceSummary/, "workspace UI must request the server summary");
 assert.match(workspace, /Map inventory/, "workspace UI must distinguish map coverage from connected places");
 assert.doesNotMatch(workspace, /\["Potential audience", "Not connected"\]/, "workspace must not retain the fabricated potential-audience metric");
@@ -29,5 +34,6 @@ assert.match(migration, /create table if not exists public\.audience_members/, "
 assert.match(migration, /alter table public\.analytics_signals add column if not exists partner_organization_id/, "migration must add attribution");
 assert.match(importer, /production-map-inventory\.json/, "inventory importer must use the approved published map registry");
 assert.match(importer, /upsert/, "inventory importer must be idempotent");
-assert.match(importer, /canonical_entities/, "inventory importer must populate canonical entities");
+assert.doesNotMatch(importer, /canonical_entities/, "inventory importer must not own backend canonical-entity persistence");
+assert.doesNotMatch(migration, /references public\.canonical_entities/, "UI migration must not depend on an undeclared backend table");
 console.log("Workspace live inventory contract: PASS");

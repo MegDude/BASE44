@@ -30,29 +30,11 @@ const rows = records.map((record) => ({
   updated_at: new Date().toISOString(),
 }));
 
-const canonicalRows = records.map((record) => ({
-  id: String(record.id),
-  // `canonical_entities.slug` is globally unique; published map slugs are not.
-  // Keep the display slug in metadata and use the immutable inventory ID here.
-  slug: String(record.id),
-  name: String(record.name),
-  entity_type: String(record.entityType || "place"),
-  status: ["draft", "active", "paused", "archived"].includes(record.status) ? record.status : "active",
-  address: record.address || null,
-  district: record.district || null,
-  latitude: Number.isFinite(Number(record.lat)) ? Number(record.lat) : null,
-  longitude: Number.isFinite(Number(record.lng)) ? Number(record.lng) : null,
-  metadata: { ...record, source: String(record.source || "published_map_inventory") },
-  updated_at: new Date().toISOString(),
-}));
-
 for (let offset = 0; offset < rows.length; offset += 200) {
-  const [{ error: canonicalError }, { error: inventoryError }] = await Promise.all([
-    database.from("canonical_entities").upsert(canonicalRows.slice(offset, offset + 200), { onConflict: "id" }),
-    database.from("map_inventory").upsert(rows.slice(offset, offset + 200), { onConflict: "id" }),
-  ]);
-  if (canonicalError) throw canonicalError;
+  const { error: inventoryError } = await database
+    .from("map_inventory")
+    .upsert(rows.slice(offset, offset + 200), { onConflict: "id" });
   if (inventoryError) throw inventoryError;
 }
 
-console.log(JSON.stringify({ imported: rows.length, canonicalEntities: canonicalRows.length, source: "production-map-inventory.json" }));
+console.log(JSON.stringify({ imported: rows.length, source: "production-map-inventory.json" }));

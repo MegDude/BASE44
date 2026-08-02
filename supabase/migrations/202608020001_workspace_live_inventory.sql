@@ -16,7 +16,10 @@ create table if not exists public.map_inventory (
   source_updated_at timestamptz,
   verification_status text not null default 'unverified' check (verification_status in ('unverified','verified','stale','rejected')),
   ownership_status text not null default 'unassigned' check (ownership_status in ('unassigned','claimed','partner_managed','platform_managed')),
-  canonical_entity_id text references public.canonical_entities(id) on delete set null,
+  -- BASE44 consumes canonical inventory IDs from the Backend Platform. They are
+  -- intentionally opaque text values here: this UI repository does not own the
+  -- backend canonical_entities table or its migration lifecycle.
+  canonical_entity_id text,
   source_payload jsonb not null default '{}'::jsonb,
   imported_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
