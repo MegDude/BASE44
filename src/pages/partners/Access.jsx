@@ -13,7 +13,6 @@ import {
 import {
   formatCurrency,
   getPlansForPartnerType,
-  getPriceText,
   PRICING_MODULES,
 } from "@/config/pricingRegistry";
 
@@ -290,14 +289,6 @@ export default function PartnerAccess({ mode = "sign-in" }) {
     setSubmissionMessage("");
   }
 
-  function toggleModule(moduleId) {
-    setSelectedModuleIds((current) => (
-      current.includes(moduleId)
-        ? current.filter((id) => id !== moduleId)
-        : [...current, moduleId]
-    ));
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     setSubmissionState("submitting");
@@ -449,11 +440,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Register your partner setup." : "Sign in to Downtown Perks."}
+              {isSignUp ? "Confirm your Downtown Perks plan." : "Sign in to Downtown Perks."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Choose the right path first, then add your profile, map listing, campaigns, and billing."
+                ? "Your selected plan is ready. Confirm the organization and contact details needed to open the right account."
                 : accountAccessEnabled
                   ? "Use one secure sign-in for properties, hotels, venues, brands, civic teams, real estate teams, residents, and custom partner accounts."
                   : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
@@ -461,12 +452,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {(isSignUp ? [
-                "Choose the plan and add-ons that match your launch.",
-                "Share the details your account needs.",
-                "Continue without re-entering the same information.",
+                "Your selected plan carries through from pricing.",
+                "Share only the account and launch details we need.",
+                "Add campaign or reporting support later, when it is useful.",
               ] : [
-                "Choose the access type that matches your account.",
-                "Use the same secure link pattern for partner and resident access.",
+                "Use the email attached to your Downtown Perks account.",
+                "A secure link returns you to the right workspace.",
                 "Request team access if someone else owns the organization.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
@@ -483,108 +474,36 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <div className="dp-partner-access-form-head">
                   <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Sign up</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Register your partner setup
+                    Confirm your partner setup
                   </h2>
                 </div>
 
-                <section className="dp-partner-type-section" aria-labelledby="partner-type-heading">
-                  <div className="dp-partner-type-section-head">
-                    <p className="dp-partner-access-label">Partner type</p>
-                    <h3 id="partner-type-heading">Choose the section that fits you.</h3>
-                  </div>
-                  <div className="dp-partner-type-grid" role="radiogroup" aria-label="Partner type">
-                    {PARTNER_TYPES.map((type) => {
-                      const isActive = form.partner_type === type.value;
-                      return (
-                        <button
-                          key={type.value}
-                          type="button"
-                          role="radio"
-                          aria-checked={isActive}
-                          data-active={isActive}
-                          onClick={() => selectPartnerType(type.value)}
-                          className="dp-partner-type-card"
-                        >
-                          <span>{type.section}</span>
-                          <strong>{type.label}</strong>
-                          <small>{type.summary}</small>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <input value={form.partner_type} tabIndex={-1} aria-hidden="true" className="sr-only" onChange={() => {}} />
-                </section>
-
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
                   <div className="dp-partner-access-setup-head">
-                    <p className="dp-partner-access-setup-label">Plan</p>
-                    <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
+                    <p className="dp-partner-access-setup-label">Your selection</p>
+                    <strong>{!hasPartnerType ? "Choose a plan" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
                   </div>
                   <div className="dp-partner-access-setup-fields">
                     <label>
-                      <span>Subscription plan</span>
+                      <span>Partner type</span>
                       <select
                         className="dp-partner-access-control"
-                        value={selectedPlan?.id || ""}
-                        disabled={!hasPartnerType || !availablePlans.length}
-                        onChange={(event) => setSelectedPlanId(event.target.value)}
+                        value={form.partner_type}
+                        onChange={(event) => selectPartnerType(event.target.value)}
                       >
-                        {!hasPartnerType ? (
-                          <option value="">Choose partner type first</option>
-                        ) : availablePlans.length ? (
-                          availablePlans.map((plan) => (
-                            <option key={plan.id} value={plan.id}>
-                              {plan.label} - {getPriceText(plan)}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="">Custom setup</option>
-                        )}
-                      </select>
-                    </label>
-                    <label>
-                      <span>Campaign interest</span>
-                      <select
-                        className="dp-partner-access-control"
-                        value={campaignInterest}
-                        onChange={(event) => setCampaignInterest(event.target.value)}
-                      >
-                        {CAMPAIGN_INTERESTS.map((option) => <option key={option}>{option}</option>)}
-                      </select>
-                    </label>
-                    <label>
-                      <span>Reporting</span>
-                      <select
-                        className="dp-partner-access-control"
-                        value={reportingNeeds}
-                        onChange={(event) => setReportingNeeds(event.target.value)}
-                      >
-                        {REPORTING_NEEDS.map((option) => <option key={option}>{option}</option>)}
+                        <option value="">Choose partner type</option>
+                        {PARTNER_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
                       </select>
                     </label>
                   </div>
-                  <div className="dp-partner-access-addon-list" aria-label="Available add-ons">
-                    {PRICING_MODULES.filter((module) => module.id !== "residentJoinBuildingNotMember").slice(0, 10).map((module) => (
-                      <button
-                        key={module.id}
-                        type="button"
-                        data-active={selectedModuleIds.includes(module.id)}
-                        onClick={() => toggleModule(module.id)}
-                      >
-                        <span>{module.label}</span>
-                        <small>{getPriceText(module)}</small>
-                      </button>
-                    ))}
-                  </div>
+                  <p className="dp-partner-access-plan-summary"><strong>{selectedPlan?.label || "Choose a plan"}</strong>{selectedModules.length ? ` · ${selectedModules.length} optional service${selectedModules.length === 1 ? "" : "s"}` : ""}</p>
+                  <Link className="dp-partner-access-edit-plan" to="/pricing">Change plan or add optional support</Link>
                   <dl>
                     <div>
                       <dt>Annual estimate</dt>
                       <dd>{annualEstimate == null ? "Custom" : `${formatCurrency(annualEstimate)}/year`}</dd>
                     </div>
-                    <div>
-                      <dt>One-time add-ons</dt>
-                      <dd>{formatCurrency(oneTimeTotal)}</dd>
-                    </div>
+                    {oneTimeTotal ? <div><dt>One-time support</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div> : null}
                   </dl>
                 </section>
 

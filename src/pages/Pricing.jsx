@@ -191,34 +191,24 @@ export default function PricingPage() {
       <section className="dp-pricing-section" aria-label="Pricing">
         <div className="dp-pricing-container">
           <header className="dp-pricing-guided-header">
-            <p>Pricing</p>
-            <h1>Start with the right plan.</h1>
-            <span>Choose a role, review the plan, then set up your account. You can tailor it later.</span>
+            <p>Partner pricing</p>
+            <h1>Choose a plan built for how people find you.</h1>
+            <span>Annual membership gives your organization a live Downtown Perks presence. Add launch or growth support only when there is a reason.</span>
           </header>
 
           <div className="dp-pricing-guided-layout">
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
                 <div className="dp-pricing-step-heading"><span>01</span><div><p>Start here</p><h2 id="pricing-role-title">Who is this for?</h2></div></div>
-                <label className="dp-pricing-role-select">
-                  <span>Pricing for</span>
-                  <select value={partnerType} onChange={(event) => choosePartner(event.target.value)}>
-                    <optgroup label="Local places">
-                      <option value="Venue">Venue</option>
-                      <option value="Hotel">Hotel</option>
-                    </optgroup>
-                    <optgroup label="Property and place">
-                      <option value="Property">Property</option>
-                      <option value="Real Estate">Real Estate</option>
-                    </optgroup>
-                    <optgroup label="Organizations">
-                      <option value="Brand">Brand</option>
-                      <option value="Civic">Community</option>
-                      <option value="Custom">Enterprise</option>
-                    </optgroup>
-                    <option value="Resident">Resident</option>
-                  </select>
-                </label>
+                <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
+                  {["Venue", "Property", "Hotel", "Brand", "Civic"].map((type) => (
+                    <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
+                      <span><strong>{partnerCopy[type].label}</strong><small>{partnerCopy[type].short}</small></span>
+                      <i aria-hidden="true" />
+                    </button>
+                  ))}
+                </div>
+                <p className="dp-pricing-role-alt">Need a portfolio, real-estate, or sponsorship program? <button type="button" onClick={() => choosePartner("Custom")}>Talk through a custom setup</button>.</p>
                 <p className="dp-pricing-role-context">{selectedPartner.short}</p>
               </section>
 
@@ -245,7 +235,7 @@ export default function PricingPage() {
               {partnerType !== "Custom" && !isResident ? <section className="dp-pricing-step dp-pricing-services" aria-labelledby="pricing-services-title">
                 <div className="dp-pricing-step-heading"><span>03</span><div><p>Only if useful</p><h2 id="pricing-services-title">Tailor your plan</h2></div></div>
                 <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
-                  <span>{upgradesOpen ? "Hide services" : "Add services"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "You can do this later"}</small>
+                  <span>{upgradesOpen ? "Hide optional support" : "Add optional support"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "You can do this later"}</small>
                 </button>
                 {upgradesOpen ? <div className="dp-pricing-upgrade-content">
                   <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Service category">
