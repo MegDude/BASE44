@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { DEFAULT_PARTNER_RETURN_PATH, consumeAuthReturnPath, getSafeReturnPath } from "@/lib/authReturnPath";
+import { DEFAULT_PARTNER_RETURN_PATH, consumeAuthReturnPath, getAuthenticatedAccountRole, getAuthenticatedDestination, getSafeReturnPath } from "@/lib/authReturnPath";
 import { PageContainer, SectionHeader } from "@/components/platform/PlatformPrimitives";
 
 export default function AuthCallbackPage() {
@@ -19,13 +19,14 @@ export default function AuthCallbackPage() {
     const signInPath = audience === "partner" ? "/partners/sign-in" : "/sign-in";
     if (callbackError) return navigate(`${signInPath}?returnTo=${encodeURIComponent(returnTo)}&error=${encodeURIComponent(callbackError)}`, { replace: true });
     if (!isAuthenticated) return navigate(`${signInPath}?returnTo=${encodeURIComponent(returnTo)}&error=callback_failed`, { replace: true });
-    const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
+    const role = getAuthenticatedAccountRole(user);
     if (audience === "partner") {
       if (role === "resident") return navigate(`/partners/sign-in?returnTo=${encodeURIComponent(returnTo)}&error=partner_access_required`, { replace: true });
       return navigate(returnTo, { replace: true });
     }
-    navigate(consumeAuthReturnPath(returnTo), { replace: true });
+    const residentReturnPath = consumeAuthReturnPath(returnTo);
+    navigate(getAuthenticatedDestination(user, residentReturnPath), { replace: true });
   }, [isAuthenticated, isLoadingAuth, location.hash, location.search, navigate, user]);
 
-  return <PageContainer className="dp-auth-callback min-h-screen pt-28" aria-busy="true" aria-label="Signing in to Downtown Perks"><SectionHeader eyebrow="Downtown Perks" title="Signing you in…" supporting="We are loading your membership, building, saved places, and preferences." /></PageContainer>;
+  return <PageContainer className="dp-auth-callback min-h-screen pt-28" aria-busy="true" aria-label="Signing in to Downtown Perks"><SectionHeader eyebrow="Downtown Perks" title="Opening Downtown Perks…" supporting="Taking you to the right place for your account." /></PageContainer>;
 }

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, LogIn } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
-import { DEFAULT_RESIDENT_MAP_PATH, getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
+import { DEFAULT_RESIDENT_MAP_PATH, getAuthenticatedDestination, getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
 
 export default function ResidentSignIn() {
   const location = useLocation();
@@ -18,8 +18,7 @@ export default function ResidentSignIn() {
 
   useEffect(() => {
     if (isLoadingAuth || !isAuthenticated) return;
-    const role = String(user?.role || user?.partner_type || "resident").toLowerCase();
-    if (role === "resident") navigate(DEFAULT_RESIDENT_MAP_PATH, { replace: true });
+    navigate(getAuthenticatedDestination(user), { replace: true });
   }, [isAuthenticated, isLoadingAuth, navigate, user]);
 
   async function submit(event) {
@@ -28,7 +27,7 @@ export default function ResidentSignIn() {
     storeAuthReturnPath(returnTo);
     const result = await signInResidentWithPassword({ email, password });
     if (result?.type === "authenticated") {
-      navigate(DEFAULT_RESIDENT_MAP_PATH, { replace: true });
+      navigate(getAuthenticatedDestination(result.user, returnTo), { replace: true });
       return;
     }
     setStatus({

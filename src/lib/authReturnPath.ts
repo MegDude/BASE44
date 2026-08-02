@@ -1,6 +1,8 @@
 export const DEFAULT_RESIDENT_MAP_PATH = "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured";
 export const DEFAULT_PARTNER_RETURN_PATH = "/partner-workspace/overview";
+export const DEFAULT_ADMIN_RETURN_PATH = "/admin-studio/command-center";
 const DEFAULT_RESIDENT_FILTER = "Featured";
+const ADMIN_ROLES = new Set(["admin", "platform_admin", "super_admin"]);
 
 function normalizeResidentFilter(value?: string | null) {
   const filter = String(value || DEFAULT_RESIDENT_FILTER).trim();
@@ -81,7 +83,7 @@ export function normalizeResidentReturnPath(value?: string | null) {
   }
 
   if (path === "/resident/card" || path === "/card") {
-    return buildResidentMapPath("?mode=resident&tab=card&filter=Featured", "/map");
+    return buildResidentMapPath("?mode=resident&tab=pass&filter=Featured", "/map");
   }
 
   if (path === "/resident/saved") {
@@ -101,6 +103,34 @@ export function normalizeResidentReturnPath(value?: string | null) {
   }
 
   return DEFAULT_RESIDENT_MAP_PATH;
+}
+
+export function getAuthenticatedAccountRole(account?: Record<string, unknown> | null) {
+  const appMetadata = account?.app_metadata as Record<string, unknown> | undefined;
+  const userMetadata = account?.user_metadata as Record<string, unknown> | undefined;
+  const candidates = [
+    appMetadata?.role,
+    appMetadata?.account_type,
+    userMetadata?.role,
+    userMetadata?.account_type,
+    userMetadata?.partner_type,
+    account?.role,
+    account?.partner_type,
+  ].map((value) => String(value || "").toLowerCase()).filter(Boolean);
+  const platformRole = candidates.find((role) => role === "resident" || role === "partner" || ADMIN_ROLES.has(role));
+  if (platformRole) return platformRole;
+  const partnerType = candidates.find((role) => !["authenticated", "anon"].includes(role));
+  return partnerType || "resident";
+}
+
+export function getAuthenticatedDestination(
+  account?: Record<string, unknown> | null,
+  residentReturnPath = DEFAULT_RESIDENT_MAP_PATH,
+) {
+  const role = getAuthenticatedAccountRole(account);
+  if (role === "resident") return normalizeResidentReturnPath(residentReturnPath);
+  if (ADMIN_ROLES.has(role)) return DEFAULT_ADMIN_RETURN_PATH;
+  return DEFAULT_PARTNER_RETURN_PATH;
 }
 
 export function normalizeAuthReturnPath(value: string | null | undefined, fallback = DEFAULT_RESIDENT_MAP_PATH) {

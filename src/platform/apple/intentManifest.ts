@@ -24,7 +24,7 @@ export const appleReadyIntentManifest: AppleReadyIntentDefinition[] = [
     phrases: ["Open my saved Downtown Perks places.", "Show the restaurant I saved."],
     requiredTools: ["save_entity"],
     requiresAuthentication: true,
-    canonicalRoute: "/resident/home?saved=true",
+    canonicalRoute: "/map?mode=resident&tab=saved&filter=Featured&collection=downtown-perks-featured",
   },
   {
     id: "start-route",
@@ -40,7 +40,7 @@ export const appleReadyIntentManifest: AppleReadyIntentDefinition[] = [
     requiredTools: ["show_resident_card"],
     requiresAuthentication: true,
     requiresInAppConfirmation: true,
-    canonicalRoute: "/resident/home?panel=card",
+    canonicalRoute: "/map?mode=resident&tab=pass&filter=Featured&collection=downtown-perks-featured",
   },
   {
     id: "use-perk",

@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { buildResidentMapPath, getSafeReturnPath, isSafeFirstPartyPath, normalizeResidentReturnPath } from "../src/lib/authReturnPath";
+import {
+  DEFAULT_ADMIN_RETURN_PATH,
+  DEFAULT_PARTNER_RETURN_PATH,
+  DEFAULT_RESIDENT_MAP_PATH,
+  buildResidentMapPath,
+  getAuthenticatedAccountRole,
+  getAuthenticatedDestination,
+  getSafeReturnPath,
+  isSafeFirstPartyPath,
+  normalizeResidentReturnPath,
+} from "../src/lib/authReturnPath";
 
 const root = process.cwd();
 const appSource = readFileSync(join(root, "src/App.jsx"), "utf8");
@@ -39,11 +49,16 @@ assert.equal(getSafeReturnPath("?returnTo=https%3A%2F%2Fattacker.example"), "/ma
 assert.equal(getSafeReturnPath("?returnTo=%2Fapp%2Fmap%3Ffilter%3DCoffee"), "/map?mode=resident&tab=map&filter=Coffee");
 assert.equal(normalizeResidentReturnPath("/resident/home"), "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured");
 assert.equal(normalizeResidentReturnPath("/resident/onboarding"), "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured");
-assert.match(normalizeResidentReturnPath("/resident/card"), /tab=card/);
+assert.match(normalizeResidentReturnPath("/resident/card"), /tab=pass/);
 assert.match(normalizeResidentReturnPath("/resident/saved"), /tab=saved/);
 assert.match(normalizeResidentReturnPath("/resident/events"), /tab=events/);
 assert.match(normalizeResidentReturnPath("/resident/perks"), /tab=perks/);
 assert.equal(normalizeResidentReturnPath("/resident/unknown"), "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured");
+assert.equal(getAuthenticatedAccountRole({ role: "authenticated", user_metadata: { partner_type: "resident" } }), "resident");
+assert.equal(getAuthenticatedDestination({ role: "resident" }, "/map?mode=resident&tab=events&filter=Events"), "/map?mode=resident&tab=events&filter=Events&collection=events-nearby");
+assert.equal(getAuthenticatedDestination({ role: "partner" }, "/map?mode=resident&tab=events"), DEFAULT_PARTNER_RETURN_PATH);
+assert.equal(getAuthenticatedDestination({ app_metadata: { role: "super_admin" } }), DEFAULT_ADMIN_RETURN_PATH);
+assert.equal(getAuthenticatedDestination({ role: "resident" }, "https://attacker.example"), DEFAULT_RESIDENT_MAP_PATH);
 
 assert.match(appSource, /path="\/map" element=\{<MapPage/);
 assert.match(appSource, /path="\/app\/map" element=\{<RedirectWithSearch to="\/map"/);
@@ -52,7 +67,10 @@ assert.doesNotMatch(appSource, /PublicMapGateway/);
 assert.match(appSource, /path="\/auth\/callback"/);
 assert.match(appSource, /path="\/sign-in"/);
 assert.match(appSource, /path="\/resident\/\*".*DEFAULT_RESIDENT_MAP_PATH/s);
-assert.match(appSource, /path="\/resident\/home".*DEFAULT_RESIDENT_MAP_PATH/s);
+assert.match(appSource, /path="\/resident\/home" element=\{<Navigate to=\{DEFAULT_RESIDENT_MAP_PATH\} replace \/>\}/);
+assert.match(appSource, /path="\/resident\/civic" element=\{<Navigate to=\{DEFAULT_RESIDENT_MAP_PATH\} replace \/>\}/);
+assert.match(appSource, /path="\/residents\/governance" element=\{<Navigate to=\{DEFAULT_RESIDENT_MAP_PATH\} replace \/>\}/);
+assert.doesNotMatch(appSource, /<ResidentHome|<ResidentGovernance/);
 assert.match(appSource, /path="\/residents\/register".*\/residents\/login/s);
 assert.match(appSource, /path="\/partner-workspace\/overview".*ProtectedRoute/s);
 assert.doesNotMatch(appSource, /canBootstrapWorkspace|hasWorkspaceActivation/);
@@ -86,9 +104,10 @@ assert.match(authSource, /skipBrowserRedirect:\s*true/);
 assert.match(authSource, /window\.top\?\.location\.assign/);
 assert.doesNotMatch(residentSignInSource, /Create account|Create resident account|registerResidentWithPassword|Resend confirmation email/);
 assert.match(residentSignInSource, /autoComplete="current-password"/);
-assert.match(residentSignInSource, /navigate\(DEFAULT_RESIDENT_MAP_PATH, \{ replace: true \}\)/);
-assert.match(authCallbackSource, /\["admin", "platform_admin", "super_admin"\]/);
-assert.match(authCallbackSource, /partner-workspace\/overview/);
+assert.match(residentSignInSource, /navigate\(getAuthenticatedDestination\(user\), \{ replace: true \}\)/);
+assert.match(residentSignInSource, /navigate\(getAuthenticatedDestination\(result\.user, returnTo\), \{ replace: true \}\)/);
+assert.match(authCallbackSource, /getAuthenticatedDestination\(user, residentReturnPath\)/);
+assert.match(authCallbackSource, /partner_access_required/);
 assert.doesNotMatch(residentAccessSource, /dp-resident-access-topbar/);
 assert.match(residentAccessSource, /payload\.persisted/);
 assert.match(residentAccessSource, /href=\{href\}/);

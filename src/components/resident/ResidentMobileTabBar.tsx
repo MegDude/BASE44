@@ -9,7 +9,7 @@ type ResidentTab = {
 };
 
 const RESIDENT_TABS = [
-  { id: "home", label: "Home", href: "/resident/home", icon: House },
+  { id: "home", label: "Home", href: "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured", icon: House },
   { id: "map", label: "Map", href: "/map?mode=resident&tab=map&filter=All", icon: MapPin },
   { id: "perks", label: "Perks", href: "/map?mode=resident&tab=perks&filter=Perks", icon: Gift },
   { id: "events", label: "Events", href: "/map?mode=resident&tab=events&filter=Events", icon: CalendarDays },

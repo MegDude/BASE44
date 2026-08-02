@@ -54,6 +54,7 @@ import BuildingExperienceModule from "@/components/map/BuildingExperienceModule"
 import { CanonicalDetailPanel, DrawerActionFooter } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
+import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
 import { residentAccountFromContext, residentAccountStatus } from "@/lib/residentMembership/residentAccount";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
@@ -8492,9 +8493,9 @@ function MapSheetToolbar({ eyebrow, onBack, onClose }) {
   );
 }
 
-function MapPanelMatrix({ label, children }) {
+function MapPanelMatrix({ id, label, children }) {
   return (
-    <section className="dp-map-panel-section" aria-label={label}>
+    <section id={id} className="dp-map-panel-section" aria-label={label}>
       <p className="dp-map-panel-section-label">{label}</p>
       <h3 className="dp-map-panel-section-title">Active resident access</h3>
       <div className="dp-map-panel-matrix">{children}</div>
@@ -18418,7 +18419,7 @@ export default function MapPage() {
                     </div>
                   </section>
 
-                  <MapPanelMatrix label="YOUR ACCOUNT">
+                  <MapPanelMatrix id="dp-resident-account-details" label="YOUR ACCOUNT">
                     <MapPanelMatrixRow label="Name" value={residentAccount?.fullName || user?.full_name || user?.email || "Resident"} />
                     <MapPanelMatrixRow label="Email" value={residentAccount?.email || user?.email || "Not added"} />
                     <MapPanelMatrixRow label="Home" value={residentAccount?.buildingName || "Not connected"} />
@@ -18444,7 +18445,7 @@ export default function MapPage() {
                 <>
                   <MapPanelButton action="open-detail" label={passPresented ? "Confirmed" : "Show QR"} ariaLabel={passPresented ? "Show confirmed resident QR again" : "Show resident QR code"} variant="primary" onPress={presentResidentPass} />
                   <div className="dp-map-sheet-action-grid">
-                    <MapPanelButton action="open-detail" label="Profile" ariaLabel="Open resident profile" variant="secondary" onPress={() => navigate("/resident/home?panel=card")} />
+                    <MapPanelButton action="open-detail" label="Profile" ariaLabel="Review resident profile" variant="secondary" onPress={() => document.getElementById("dp-resident-account-details")?.scrollIntoView({ behavior: "smooth", block: "start" })} />
                     <MapPanelButton action="open-detail" label="Add Wallet" ariaLabel={walletAdded ? "Add wallet already completed" : "Add card to wallet"} variant="secondary" onPress={saveResidentPassForLater} />
                   </div>
                   <button type="button" className="dp-resident-card-signout" onClick={() => logout(true, "/residents/login")}>Sign out</button>
@@ -18474,7 +18475,7 @@ export default function MapPage() {
                   type="button"
                   role="tab"
                   aria-label="Home"
-                  onClick={() => navigate("/resident/home")}
+                  onClick={() => navigate(DEFAULT_RESIDENT_MAP_PATH)}
                   aria-selected={false}
                 >
                   <House className="h-4 w-4" />
