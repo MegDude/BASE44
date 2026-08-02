@@ -440,11 +440,11 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Confirm your Downtown Perks plan." : "Sign in to Downtown Perks."}
+              {isSignUp ? "Set up your partner account." : "Sign in to Downtown Perks."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Your selected plan is ready. Confirm the organization and contact details needed to open the right account."
+                ? "Your plan travels with you from pricing. Add the details needed to open the right account."
                 : accountAccessEnabled
                   ? "Use one secure sign-in for properties, hotels, venues, brands, civic teams, real estate teams, residents, and custom partner accounts."
                   : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
@@ -452,9 +452,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {(isSignUp ? [
-                "Your selected plan carries through from pricing.",
-                "Share only the account and launch details we need.",
-                "Add campaign or reporting support later, when it is useful.",
+                "Review the plan, then add your organization and contact details.",
+                "Optional support can be added later.",
               ] : [
                 "Use the email attached to your Downtown Perks account.",
                 "A secure link returns you to the right workspace.",

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   calculatePricingTotal,
@@ -187,27 +188,29 @@ export default function PricingPage() {
       <section className="dp-pricing-section" aria-label="Pricing">
         <div className="dp-pricing-container">
           <header className="dp-pricing-guided-header">
+            <Link className="dp-pricing-return" data-page-back="true" to="/partners">For partners</Link>
             <p>Partner plans</p>
-            <h1>Choose your Downtown Perks plan.</h1>
+            <h1>Choose a plan that fits how you show up downtown.</h1>
+            <span>Start with a simple annual presence. Add launch or growth support only when it helps.</span>
           </header>
 
           <div className="dp-pricing-guided-layout">
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
-                <div className="dp-pricing-step-heading"><h2 id="pricing-role-title">Who is this for?</h2></div>
+                <div className="dp-pricing-step-heading"><h2 id="pricing-role-title">Choose your partner type</h2></div>
                 <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
-                  {["Venue", "Property", "Hotel", "Brand", "Civic"].map((type) => (
+                  {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate"].map((type) => (
                     <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
                       <span><strong>{partnerCopy[type].label}</strong></span>
                       <i aria-hidden="true" />
                     </button>
                   ))}
                 </div>
-                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real-estate, or sponsorship program</button></p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Need a portfolio, real-estate, or sponsorship program?</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
-                <div className="dp-pricing-step-heading"><h2 id="pricing-plan-title">{isResident ? "Your access" : "Pick an annual plan"}</h2></div>
+                <div className="dp-pricing-step-heading"><h2 id="pricing-plan-title">{isResident ? "Your access" : "Choose an annual plan"}</h2></div>
                 {plans.length > 0 ? <div className="dp-pricing-plan-list">
                   {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
                     <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
