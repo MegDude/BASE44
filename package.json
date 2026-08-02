@@ -137,7 +137,7 @@
     "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs",
     "sync:production-map-inventory": "node scripts/sync-production-map-inventory.mjs",
     "test:workspace-live-inventory": "node scripts/test-workspace-live-inventory.mjs",
-    "test:workspace-ia-refactor": "node scripts/test-workspace-ia-refactor-contract.mjs"
+    "test:workspace-connections": "node scripts/test-workspace-connections.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",

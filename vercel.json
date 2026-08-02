@@ -3,7 +3,7 @@
   "alias": [
     "base-44-downtown-perks-live.vercel.app"
   ],
-  "buildCommand": "node scripts/test-platform-integration-gate.mjs && node scripts/test-platform-interaction-completeness.mjs && npm run build",
+  "buildCommand": "node scripts/test-platform-integration-gate.mjs && node scripts/test-platform-interaction-completeness.mjs && node scripts/test-workspace-connections.mjs && npm run build",
   "redirects": [
     {
       "source": "/resident-app",

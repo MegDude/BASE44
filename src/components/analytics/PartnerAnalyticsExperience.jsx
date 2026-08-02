@@ -12,6 +12,7 @@ import {
 import { getResearchCoverageSummary } from "@/api/researchIntelligenceClient";
 import { getPartnerRedemptionOverview } from "@/features/partner/analytics/partnerRedemptionAnalytics";
 import { listPartnerShareLinks } from "@/lib/partner/partnerShareLinksClient";
+import { getPartnerWorkspaceAnalytics } from "@/lib/partner/workspaceAnalyticsClient";
 
 const VIEWS = [
   ["overview", "Overview"],
@@ -120,15 +121,32 @@ export function PartnerAnalyticsExperience({ scopeOverride, adminMode = false })
   const params = new URLSearchParams(location.search);
   const scope = scopeOverride || resolvePartnerWorkspaceScope(readPartnerWorkspaceScope(location.search));
   const requestedWorkspace = scope.organizationId || params.get("workspace");
-  const organization = demoOrganizations.find((item) => item.id === requestedWorkspace) || null;
+  const localOrganization = demoOrganizations.find((item) => item.id === requestedWorkspace) || null;
+  const [liveAnalytics, setLiveAnalytics] = useState({ status: "loading", data: null, error: "" });
+  const organization = localOrganization || (liveAnalytics.data ? {
+    id: liveAnalytics.data.scope.organizationId,
+    name: liveAnalytics.data.scope.organizationName,
+    externalId: liveAnalytics.data.scope.externalId,
+  } : null);
   const view = VIEWS.some(([id]) => id === params.get("view")) ? params.get("view") : "overview";
-  const entities = organization
-    ? getScopedOrganizationEntities(organization.id, scope.portfolioId, scope.listingId)
-    : [];
+  const entities = localOrganization
+    ? getScopedOrganizationEntities(localOrganization.id, scope.portfolioId, scope.listingId)
+    : (liveAnalytics.data?.listings || []);
   const isListingScope = scope.type === "listing";
-  const intelligence = getPartnerAnalyticsIntelligence(organization, entities);
+  const intelligence = getPartnerAnalyticsIntelligence(
+    organization?.externalId === "legends-real-estate" ? { ...organization, id: "demo-org-legends-real-estate" } : organization,
+    entities,
+  );
   const [redemptionOverview, setRedemptionOverview] = useState({ status: "loading", data: null });
   const [shareLinkOverview, setShareLinkOverview] = useState({ status: "loading", records: [] });
+
+  useEffect(() => {
+    let active = true;
+    getPartnerWorkspaceAnalytics(scope)
+      .then((data) => { if (active) setLiveAnalytics({ status: "ready", data, error: "" }); })
+      .catch((error) => { if (active) setLiveAnalytics({ status: "error", data: null, error: error?.message || "Analytics could not be loaded." }); });
+    return () => { active = false; };
+  }, [scope.organizationId, scope.portfolioId, scope.listingId]);
 
   useEffect(() => {
     if (!organization?.id || isListingScope) {
@@ -166,17 +184,17 @@ export function PartnerAnalyticsExperience({ scopeOverride, adminMode = false })
     navigate(`${location.pathname}?${next.toString()}`);
   }
 
+  if (liveAnalytics.status === "loading" && !localOrganization) {
+    return <section className="dp-pa-empty"><Search aria-hidden="true" /><strong>Loading authorized analytics…</strong><p>Reading only the records available to this workspace.</p></section>;
+  }
   if (!organization) {
-    if (adminMode && scope.organizationId) {
-      return <section className="dp-pa-empty"><Info aria-hidden="true" /><strong>Analytics are not connected for this authorized scope yet.</strong><p>This production organization is selected securely, but no admin-aware reporting source is available. No demo organization data has been substituted.</p><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}>Review sources</Link></section>;
-    }
-    return <section className="dp-pa-empty"><Search aria-hidden="true" /><strong>Choose a partner to see its recommendations.</strong><p>The workspace will keep every insight tied to the selected organization and its connected places.</p></section>;
+    return <section className="dp-pa-empty"><Info aria-hidden="true" /><strong>{liveAnalytics.error || "Choose a partner to see its recommendations."}</strong><p>Connections and analytics stay scoped to the selected organization.</p><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}>Review connections</Link></section>;
   }
 
   return <motion.section className="dp-partner-analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
     <header className="dp-pa-header"><div><span>{scope.listingId ? `${organization.name} · ${entities[0]?.display_name || "Selected place"}` : organization.name}</span><h1>{view === "seo" ? intelligence.purpose : "See what people respond to"}</h1><p>{view === "seo" ? "Use partner-specific search guidance to decide which page, place, and message should be improved next." : "Review verified activity, understand what it means for this partner, and choose one useful next action."}</p></div><div><Link to={withPartnerWorkspaceScope("/partner-workspace/sources", scope)}><Plug aria-hidden="true" />Review sources</Link><Link to={withPartnerWorkspaceScope("/partner-workspace/reports", scope)}><FileText aria-hidden="true" />View reports</Link></div></header>
 
-    <section className="dp-pa-status" aria-label="Recommendation source"><Info aria-hidden="true" /><span><strong>Specific to {organization.name}</strong>Recommendations use this partner's connected places. No generated performance data is shown.</span></section>
+    <section className="dp-pa-status" aria-label="Recommendation source"><Info aria-hidden="true" /><span><strong>Specific to {organization.name}</strong>{liveAnalytics.data?.luxuryPresence ? ` SEO Snapshot captured ${new Date(liveAnalytics.data.luxuryPresence.seoSnapshot.capturedAt).toLocaleDateString()}; ${liveAnalytics.data.luxuryPresence.mode === "live" ? "verified Luxury Presence activity is connected." : "live Luxury Presence activity is awaiting a verified export or webhook."}` : " Recommendations use this partner's authorized records. No generated performance data is shown."}</span></section>
 
     <nav className="dp-pa-tabs" aria-label="Analytics views">{VIEWS.map(([id, label]) => <button key={id} type="button" aria-current={view === id ? "page" : undefined} onClick={() => update({ view: id })}>{label}</button>)}</nav>
 
@@ -184,7 +202,7 @@ export function PartnerAnalyticsExperience({ scopeOverride, adminMode = false })
       {view === "overview" ? <><section className="dp-pa-decision"><div><span>Connected places</span><h2>{entities.length} {entities.length === 1 ? "place is" : "places are"} ready to review.</h2><p>This count describes connected records only. It does not estimate audience size or results.</p></div><div><span>What matters for {organization.name}</span><h3>{intelligence.recommendation}</h3><p>{intelligence.context}</p><Link to={withPartnerWorkspaceScope(intelligence.nextHref, scope)}>{intelligence.nextAction} <ArrowRight aria-hidden="true" /></Link></div></section><div className="dp-pa-metrics" aria-label="Verified workspace status"><article><div><span>Places ready to review</span><Building2 aria-hidden="true" /></div><strong>{entities.length}</strong><footer><span>Connected to {organization.name}</span></footer></article><article><div><span>Share-link opens</span><Plug aria-hidden="true" /></div><strong>{shareLinkOverview.status === "ready" ? shareLinkOverview.records.reduce((total, record) => total + Number(record.analytics?.opens || 0), 0) : "—"}</strong><footer><span>{shareLinkOverview.status === "ready" ? `${shareLinkOverview.records.length} tracked ${shareLinkOverview.records.length === 1 ? "link" : "links"}` : isListingScope ? "Listing results are not connected" : "Publishing data not connected"}</span></footer></article><article><div><span>Residents who redeemed</span><Users aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.uniqueResidents : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified residents" : isListingScope ? "Listing results are not connected" : "Results not connected"}</span></footer></article><article><div><span>Completed redemptions</span><MapPin aria-hidden="true" /></div><strong>{redemptionOverview.status === "ready" ? redemptionOverview.data.metrics.completedRedemptions : "—"}</strong><footer><span>{redemptionOverview.status === "ready" ? "Verified partner activity" : isListingScope ? "Listing results are not connected" : "Results not connected"}</span></footer></article></div><div className="dp-pa-split"><ConnectedPlaces entities={entities.slice(0, 5)} scope={scope} /><PartnerRecommendation intelligence={intelligence} scope={scope} /></div><DataNotice title={redemptionOverview.status === "ready" ? "Verified results are connected." : isListingScope ? "Listing-specific results are not connected yet." : "No verified perk results are available yet."} description={redemptionOverview.status === "ready" ? "Results come from completed resident perk transactions and tracked share links for the selected partner." : isListingScope ? "This view will not reuse organization totals for the selected place. Connect a listing-filtered analytics source to show verified results here." : "Sign in with an authorized partner account and complete a resident perk to begin reporting."} /></> : null}
       {view === "audience" ? <><PartnerRecommendation intelligence={intelligence} scope={scope} /><DataNotice title="No verified user total is available." description={`Connect a consent-aware audience source for ${organization.name} before reporting reach or behavior.`} /></> : null}
       {view === "research" ? <ResearchCoverage scope={scope} /> : null}
-      {view === "seo" ? <SeoIntelligence intelligence={intelligence} organization={organization} entities={entities} scope={scope} /> : null}
+      {view === "seo" ? <><SeoIntelligence intelligence={intelligence} organization={organization} entities={entities} scope={scope} />{liveAnalytics.data?.luxuryPresence ? <section className="dp-pa-panel"><header><span>Luxury Presence source</span><h2>{liveAnalytics.data.luxuryPresence.mode === "live" ? "Verified activity is connected." : "Verified snapshot available; live activity is not connected yet."}</h2><p>Snapshot captured {new Date(liveAnalytics.data.luxuryPresence.seoSnapshot.capturedAt).toLocaleDateString()}. Live listing views, favorites, and inquiries remain at zero until the provider export or webhook delivers records.</p></header><div className="dp-pa-metrics"><article><div><span>SEO keywords</span><Search aria-hidden="true" /></div><strong>{liveAnalytics.data.luxuryPresence.seoSnapshot.keywordMetrics.length}</strong></article><article><div><span>Live inquiries</span><Users aria-hidden="true" /></div><strong>{liveAnalytics.data.luxuryPresence.live.inquiries}</strong></article></div><Link to={withPartnerWorkspaceScope("/partner-workspace/sources?section=support", scope)}>Request live connection <ArrowRight aria-hidden="true" /></Link></section> : null}</> : null}
       {view === "places" ? <ConnectedPlaces entities={entities} scope={scope} /> : null}
       {view === "sources" ? <><ShareLinkSources records={shareLinkOverview.records} scope={scope} partnerName={organization.name} />{shareLinkOverview.status === "unavailable" ? <DataNotice title={isListingScope ? "Listing share-link results are not connected." : "Share-link results are not connected."} description={isListingScope ? "This view will not substitute organization-wide opens for the selected place." : "Connect the publishing service before reporting attributed opens."} /> : null}</> : null}
       {["campaigns", "activity", "geography"].includes(view) ? <><EmptyMeasurement view={view} /><DataNotice /></> : null}
