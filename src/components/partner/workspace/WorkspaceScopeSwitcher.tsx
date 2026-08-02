@@ -49,7 +49,7 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
           </div>
           <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
           <div className="dp-workspace-scope__admin-actions">
-            <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/admin?section=people", scope)}>
+            <Link className="dp-workspace-scope__accounts" to="/admin-studio/residents">
               People & access
             </Link>
           </div>
