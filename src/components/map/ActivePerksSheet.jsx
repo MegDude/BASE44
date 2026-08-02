@@ -1,11 +1,17 @@
-import { Navigation, Search, Star, X } from "lucide-react";
+import { ArrowLeft, Navigation, Search, Star, X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
-function formatExpiry(value) {
-  if (!value) return "";
+function expiresAt(value) {
+  if (!value) return null;
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatExpiry(value) {
+  const date = expiresAt(value);
+  if (!date || date.getTime() < Date.now()) return "";
   return `Expires ${date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
 }
 
@@ -35,7 +41,7 @@ function PerkRowMedia({ image, pin }) {
 
 function perkAvailabilityLabel(item, redeemed) {
   if (redeemed) return "Already used";
-  if (item.expired) return "Expired";
+  if (item.expired || (expiresAt(item.expiresAt)?.getTime() || Infinity) < Date.now()) return "Expired";
   if (item.unavailable) return "Unavailable";
   if (item.upcoming) return "Upcoming";
   if (item.limited) return "Limited quantity";
@@ -64,8 +70,8 @@ function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
         </span>
       </button>
       <div className="dp-active-perk-actions" aria-label={`${item.name} perk actions`}>
-        <button type="button" onClick={() => onRedeem(item)} disabled={redeemed}>
-          {redeemed ? "Used" : "Use perk"}
+        <button type="button" onClick={() => onRedeem(item)} disabled={redeemed || availability === "Expired" || availability === "Unavailable"}>
+          {redeemed ? "Used" : availability === "Expired" ? "Ended" : "Use perk"}
         </button>
         <button
           type="button"
@@ -95,6 +101,20 @@ export default function ActivePerksSheet({
 }) {
   const safeState = normalizeDrawerState(drawerState, "list");
   const nextState = nextDrawerState(safeState, "list");
+  const [activeFilter, setActiveFilter] = useState("Active");
+  const filters = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+  const visibleItems = useMemo(() => {
+    const isAvailable = (item) => perkAvailabilityLabel(item, redeemedIds.has(item.perkId) || redeemedIds.has(item.id)) !== "Expired";
+    const category = (item) => `${item.category || ""} ${item.partner || ""} ${item.offerTitle || ""}`.toLowerCase();
+    const parseDistance = (value) => Number.parseFloat(String(value || "").replace(/[^0-9.]/g, "")) || Number.POSITIVE_INFINITY;
+    const result = items.filter((item) => {
+      if (activeFilter === "Active") return isAvailable(item);
+      if (activeFilter === "Saved") return savedIds.has(item.id);
+      if (activeFilter === "Nearby") return true;
+      return category(item).includes(activeFilter.toLowerCase());
+    });
+    return activeFilter === "Nearby" ? [...result].sort((a, b) => parseDistance(a.distance) - parseDistance(b.distance)) : result;
+  }, [activeFilter, items, redeemedIds, savedIds]);
 
   return (
     <NativeDrawerShell
@@ -124,6 +144,9 @@ export default function ActivePerksSheet({
             <span aria-hidden="true" />
           </button>
           <header className="dp-active-perks-header">
+            <button type="button" className="dp-active-perks-back" onClick={onClose} aria-label="Return to map">
+              <ArrowLeft aria-hidden="true" />
+            </button>
             <div>
               <p>Resident benefits</p>
               <h2>Perks</h2>
@@ -138,18 +161,18 @@ export default function ActivePerksSheet({
       {safeState !== "peek" && (
         <div>
           <section className="dp-active-perks-intro" aria-label="Perks context">
-            <p>Available near this map area</p>
-            <strong aria-live="polite">{items.length} {items.length === 1 ? "offer" : "offers"}</strong>
+            <p>{activeFilter === "Nearby" ? "Closest to this map area" : activeFilter === "Saved" ? "Saved resident benefits" : "Available near this map area"}</p>
+            <strong aria-live="polite">{visibleItems.length} {visibleItems.length === 1 ? "offer" : "offers"}</strong>
           </section>
           <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
-            {["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"].map((label, index) => (
-              <button key={label} type="button" aria-pressed={index === 0}>
+            {filters.map((label, index) => (
+              <button key={label} type="button" onClick={() => setActiveFilter(label)} aria-pressed={activeFilter === label}>
                 {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
                 <span>{label}</span>
               </button>
             ))}
           </div>
-          {items.length ? items.map((item) => (
+          {visibleItems.length ? visibleItems.map((item) => (
             <PerkRow
               key={item.id}
               item={item}
@@ -161,9 +184,9 @@ export default function ActivePerksSheet({
             />
           )) : (
             <div className="dp-active-perks-empty">
-              <strong>Nothing matches these filters.</strong>
-              <span>Return to the map and try nearby places, dining, coffee, or events.</span>
-              <button type="button" onClick={onClose}>Back to map</button>
+              <strong>Nothing matches {activeFilter.toLowerCase()}.</strong>
+              <span>Choose another filter or return to the map to explore more places.</span>
+              <button type="button" onClick={() => setActiveFilter("Active")}>Show active perks</button>
             </div>
           )}
         </div>
