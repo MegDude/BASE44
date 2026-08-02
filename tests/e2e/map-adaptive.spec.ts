@@ -298,7 +298,7 @@ test.describe("adaptive map surface", () => {
 
           const drawer = page.locator("#dp-active-map-drawer");
           const nav = page.getByRole("tablist", { name: "Map bottom navigation" });
-          const title = drawer.locator(".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, .dp-map-detail-scroll h1, .dp-map-detail-scroll h2").first();
+          const title = drawer.locator(".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title:not(.dp-map-detail-navigation-title), .dp-map-detail-scroll h1, .dp-map-detail-scroll h2").first();
           await expect(drawer).toBeVisible();
           await expect(nav).toBeVisible();
           await expect(title).toBeVisible();
@@ -306,7 +306,7 @@ test.describe("adaptive map surface", () => {
           const geometry = await drawer.evaluate((drawerNode) => {
             const scroll = drawerNode.querySelector<HTMLElement>(".dp-map-detail-scroll");
             const titleNode = drawerNode.querySelector<HTMLElement>(
-              ".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, .dp-map-detail-scroll h1, .dp-map-detail-scroll h2",
+              ".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title:not(.dp-map-detail-navigation-title), .dp-map-detail-scroll h1, .dp-map-detail-scroll h2",
             );
             const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
             const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
