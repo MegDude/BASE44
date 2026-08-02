@@ -11,6 +11,7 @@ import { WorkspaceExperienceSystem } from "@/components/partner/workspace/Worksp
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
 import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
+import { ProtectedAudiencePanel, ProtectedConnectionsPanel } from "@/components/partner/workspace/ProtectedAudienceConnections";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
@@ -850,11 +851,11 @@ function PartnerWorkspaceContent() {
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "share_links" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-share-links" tabId="share_links" /> : <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
           {tab === "governance" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-governance" tabId="governance" /> : <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
-          {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
+          {tab === "audience" && <ProtectedAudiencePanel key={`audience-${activeOrganizationId}-${workspaceScope.portfolioId || "all"}-${workspaceScope.listingId || "all"}`} scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
           {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
-          {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
+          {tab === "sources" && <ProtectedConnectionsPanel key={`connections-${activeOrganizationId}-${workspaceScope.portfolioId || "all"}-${workspaceScope.listingId || "all"}`} scope={workspaceScope} />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
           {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
