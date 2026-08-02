@@ -58,7 +58,10 @@ function ProtectedRoute({ children }) {
     // Platform administrators always start in the platform command center.
     // Partner scope is entered deliberately from authorized admin tools, never
     // inherited from a previous partner workspace URL or browser state.
-    if (["admin", "platform_admin", "super_admin"].includes(role)) return <Navigate to="/admin" replace />;
+    if (["admin", "platform_admin", "super_admin"].includes(role)) {
+      const adminDestination = location.pathname === "/partner-workspace/residents" ? "/admin-studio/residents" : "/admin";
+      return <Navigate to={adminDestination} replace />;
+    }
     return children;
   }
   return (
