@@ -18,30 +18,42 @@ export default async function handler(req, res) {
   try {
     const database = requireTransactionDatabase();
     const scope = await resolveAuthorizedWorkspaceScope(req, database);
+    const requestedPortfolioId = cleanWorkspaceValue(req.query?.portfolioId);
     const requestedListingId = cleanWorkspaceValue(req.query?.listingId);
+    if (requestedPortfolioId && !isWorkspaceUuid(requestedPortfolioId)) {
+      return res.status(400).json({ error: "The requested portfolio is invalid." });
+    }
     if (requestedListingId && !isWorkspaceUuid(requestedListingId)) {
       return res.status(400).json({ error: "The requested listing is invalid." });
     }
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    let signalQuery = database.from("analytics_signals").select("action_type,source,created_at").eq("partner_organization_id", scope.organization.id).gte("created_at", since);
     let listingQuery = database.from("partner_listings").select("id,external_id,entity_id,name,listing_type,updated_at").eq("organization_id", scope.organization.id).eq("status", "active");
-    if (requestedListingId) {
-      signalQuery = signalQuery.eq("listing_id", requestedListingId);
-      listingQuery = listingQuery.eq("id", requestedListingId);
+    if (requestedPortfolioId) listingQuery = listingQuery.eq("portfolio_id", requestedPortfolioId);
+    if (requestedListingId) listingQuery = listingQuery.eq("id", requestedListingId);
+
+    const listings = await listingQuery;
+    if (listings.error) throw listings.error;
+
+    const scopedListingIds = (listings.data || []).map((listing) => listing.id).filter(Boolean);
+    const scopedExternalIds = (listings.data || []).map((listing) => listing.external_id).filter(Boolean);
+    let signalQuery = database.from("analytics_signals").select("action_type,source_type,created_at").eq("partner_organization_id", scope.organization.id).gte("created_at", since);
+    if (requestedListingId) signalQuery = signalQuery.eq("listing_id", requestedListingId);
+    else if (requestedPortfolioId) {
+      if (!scopedListingIds.length) signalQuery = null;
+      else signalQuery = signalQuery.in("listing_id", scopedListingIds);
     }
 
-    const [signals, listings, liveIntelligence, leadEvents] = await Promise.all([
-      signalQuery,
-      listingQuery,
-      scope.organization.external_id === "legends-real-estate"
-        ? database.from("luxury_presence_listing_intelligence").select("external_listing_id,views_last_7_days,favorites_last_7_days,inquiries_last_7_days,demand_score,seller_intent_score,last_activity_at,updated_at")
+    const isLegendsScope = scope.organization.external_id === "legends-real-estate";
+    const [signals, liveIntelligence, leadEvents] = await Promise.all([
+      signalQuery || Promise.resolve({ data: [], error: null }),
+      isLegendsScope && scopedExternalIds.length
+        ? database.from("luxury_presence_listing_intelligence").select("external_listing_id,views_last_7_days,favorites_last_7_days,inquiries_last_7_days,demand_score,seller_intent_score,last_activity_at,updated_at").in("external_listing_id", scopedExternalIds)
         : Promise.resolve({ data: [], error: null }),
-      scope.organization.external_id === "legends-real-estate"
+      isLegendsScope
         ? countRows(database.from("lead_activity_events").select("id", { count: "exact", head: true }).eq("source", "luxury_presence").gte("created_at", since))
         : Promise.resolve(0),
     ]);
     if (signals.error) throw signals.error;
-    if (listings.error) throw listings.error;
     if (liveIntelligence.error) throw liveIntelligence.error;
 
     const byAction = {};
@@ -56,7 +68,7 @@ export default async function handler(req, res) {
       inquiries: total.inquiries + Number(row.inquiries_last_7_days || 0),
       demand: total.demand + Number(row.demand_score || 0),
     }), { views: 0, favorites: 0, inquiries: 0, demand: 0 });
-    const snapshot = scope.organization.external_id === "legends-real-estate" ? getLegendsSeoReport() : null;
+    const snapshot = isLegendsScope ? getLegendsSeoReport() : null;
 
     return res.status(200).json({
       data: {
@@ -64,6 +76,8 @@ export default async function handler(req, res) {
           organizationId: scope.organization.id,
           organizationName: scope.organization.name,
           externalId: scope.organization.external_id,
+          portfolioId: requestedPortfolioId || null,
+          listingId: requestedListingId || null,
           role: scope.role,
         },
         listings: (listings.data || []).map((row) => ({
