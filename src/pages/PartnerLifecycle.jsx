@@ -4,19 +4,14 @@ import {
   ArrowRight,
   BadgeCheck,
   Building2,
-  CalendarDays,
-  Camera,
   Check,
   CreditCard,
   Hotel,
   Landmark,
-  Megaphone,
   MapPin,
-  QrCode,
   Receipt,
   Sparkles,
   Store,
-  Users,
 } from "lucide-react";
 import { ANNUAL_PLANS, PRICING_MODULES, formatCurrency } from "@/config/pricingRegistry";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
@@ -159,15 +154,35 @@ const impactGroups = [
   },
 ];
 
-const professionalServices = [
-  ["Launch Kit", QrCode, "QR setup, welcome materials, and publishing support."],
-  ["Photography", Camera, "Polished images for profiles, offers, events, and listings."],
-  ["Creative", Megaphone, "Campaign copy, offer framing, and resident-facing messaging."],
-  ["Resident launch", Users, "Clear launch communication that tells people what to do."],
-  ["Street Team", MapPin, "On-site support for QR placement and events."],
-  ["Training", BadgeCheck, "A practical workspace handoff for your team."],
-  ["Research", Sparkles, "Resident feedback, survey setup, and insight packaging."],
-  ["Custom Campaign", CalendarDays, "A tailored launch or district campaign."],
+const launchSupportPaths = [
+  {
+    id: "opening",
+    label: "Set up an opening",
+    title: "Get the essentials live, in the right order.",
+    copy: "A practical launch path for a new location, listing, or partner profile.",
+    includes: "Launch kit · QR setup · welcome materials · publishing support",
+  },
+  {
+    id: "story",
+    label: "Shape the story",
+    title: "Make the first impression feel considered.",
+    copy: "Use this when the profile, offer, or campaign needs sharper imagery and clearer resident-facing language.",
+    includes: "Photography · campaign framing · copy and creative direction",
+  },
+  {
+    id: "activation",
+    label: "Activate in person",
+    title: "Turn a local moment into a clear action.",
+    copy: "For QR placement, an event, or an on-site moment where people need a simple next step.",
+    includes: "Street team · QR placement · event support · launch communication",
+  },
+  {
+    id: "program",
+    label: "Build a program",
+    title: "Plan a more tailored partnership.",
+    copy: "For ongoing launches, district work, training, resident insight, or a campaign that does not fit a standard package.",
+    includes: "Training · research · resident feedback · custom campaign",
+  },
 ];
 
 const integrationPartners = [
@@ -731,27 +746,43 @@ function GrowthProgramsSection() {
 }
 
 function ProfessionalServicesSection() {
+  const [selectedPathId, setSelectedPathId] = useState(launchSupportPaths[0].id);
+  const selectedPath = launchSupportPaths.find((path) => path.id === selectedPathId) || launchSupportPaths[0];
+  const requestHref = `/contact?intent=partner-registration&interest=support&message=${encodeURIComponent(`Launch support request: ${selectedPath.label}. ${selectedPath.includes}.`)}`;
+
   return (
     <section className="dp-partner-lifecycle-section dp-partner-services-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Professional launch services</p>
-        <h2>Want us to help?</h2>
-        <span>
-          Whether you need photography, campaign planning, QR installation, or a complete launch, our team can help you get everything live quickly.
-        </span>
+        <p>Launch assistance</p>
+        <h2>Where would a little help matter most?</h2>
+        <span>Choose the outcome. We will shape the scope around your plan, timing, and location.</span>
       </div>
-      <div className="dp-professional-service-list">
-        {professionalServices.map(([title, , copy]) => (
-          <article key={title}>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-          </article>
-        ))}
+      <div className="dp-launch-support" role="radiogroup" aria-label="Launch support path">
+        <div className="dp-launch-support-list">
+          {launchSupportPaths.map((path) => (
+            <button
+              key={path.id}
+              type="button"
+              role="radio"
+              aria-checked={path.id === selectedPath.id}
+              data-active={path.id === selectedPath.id}
+              onClick={() => setSelectedPathId(path.id)}
+            >
+              <span>{path.label}</span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+        <div className="dp-launch-support-detail" aria-live="polite">
+          <h3>{selectedPath.title}</h3>
+          <p>{selectedPath.copy}</p>
+          <small>{selectedPath.includes}</small>
+          <Link className="dp-partner-section-action" to={requestHref}>
+            Request this support
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </div>
       </div>
-      <Link className="dp-partner-section-action" to="/contact">
-        Discuss launch support
-        <ArrowRight aria-hidden="true" />
-      </Link>
     </section>
   );
 }
