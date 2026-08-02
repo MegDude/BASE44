@@ -32,6 +32,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
 import { queryAgent } from "@/services/agent/agentClient";
+import { supabaseClient } from "@/lib/supabase/client";
 import {
   readPartnerWorkspaceScope,
   resolvePartnerWorkspaceScope,
@@ -1823,17 +1824,67 @@ function NativeMobileWorkspaceDashboard({
   );
 }
 
+
+function metricValue(summary, key, fallback = null) {
+  const metric = summary?.metrics?.[key];
+  if (!metric || metric.value === null || metric.value === undefined) return fallback;
+  return formatWorkspaceNumber(metric.value);
+}
+
+function metricDetail(summary, key, fallback = "Live source") {
+  const metric = summary?.metrics?.[key];
+  if (!metric) return fallback;
+  if (metric.sourceStatus === "not_connected") return "Source not connected";
+  if (metric.sourceStatus === "unavailable") return "Source unavailable";
+  return metric.detail || fallback;
+}
+
 function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null, hasPrivilegedAccess = false }) {
   const navigate = useNavigate();
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
+  const [workspaceSummary, setWorkspaceSummary] = useState({ status: "idle", data: null, error: "" });
   const selectedOrganizationId = organizationId;
 
   useEffect(() => {
     listWorkspaceItems("Perk", "perks", user.email).then((items) => setPerks((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
     listWorkspaceItems("Event", "events", user.email).then((items) => setEvents((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
   }, [user.email, selectedOrganizationId, scope?.listingId]);
+
+
+  useEffect(() => {
+    let active = true;
+    async function loadWorkspaceSummary() {
+      if (!supabaseClient) {
+        if (active) setWorkspaceSummary({ status: "unavailable", data: null, error: "Source not connected" });
+        return;
+      }
+      try {
+        setWorkspaceSummary((current) => ({ ...current, status: "loading", error: "" }));
+        const { data } = await supabaseClient.auth.getSession();
+        const token = data?.session?.access_token;
+        if (!token) {
+          if (active) setWorkspaceSummary({ status: "unavailable", data: null, error: "Source not connected" });
+          return;
+        }
+        const params = new URLSearchParams();
+        if (selectedOrganizationId) params.set("organizationId", selectedOrganizationId);
+        if (scope?.portfolioId) params.set("portfolioId", scope.portfolioId);
+        if (scope?.listingId) params.set("listingId", scope.listingId);
+        const response = await fetch(`/api/partner/workspace-summary?${params.toString()}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const payload = await response.json().catch(() => null);
+        if (!response.ok || !payload?.ok) throw new Error(payload?.error || "Workspace summary unavailable");
+        if (active) setWorkspaceSummary({ status: "ready", data: payload, error: "" });
+      } catch (error) {
+        if (active) setWorkspaceSummary({ status: "error", data: null, error: error?.message || "Your available workspace summary could not load." });
+      }
+    }
+    loadWorkspaceSummary();
+    return () => { active = false; };
+  }, [selectedOrganizationId, scope?.portfolioId, scope?.listingId]);
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
   const ownedEntities = selectedOrganization
@@ -1869,10 +1920,11 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
-        ["Connected places", formatWorkspaceNumber(ownedEntities.length)],
-        ["Live offers", formatWorkspaceNumber(activePerks.length)],
-        ["Upcoming events", formatWorkspaceNumber(upcomingEvents.length)],
-        ["Potential audience", "Not connected"],
+        ["Connected places", metricValue(workspaceSummary.data, "connectedActiveListings", formatWorkspaceNumber(ownedEntities.length)), metricDetail(workspaceSummary.data, "connectedActiveListings", "Authorized listing source")],
+        ["Live offers", metricValue(workspaceSummary.data, "liveOffers", formatWorkspaceNumber(activePerks.length)), metricDetail(workspaceSummary.data, "liveOffers", "Authorized offer source")],
+        ["Upcoming events", metricValue(workspaceSummary.data, "upcomingEvents", formatWorkspaceNumber(upcomingEvents.length)), metricDetail(workspaceSummary.data, "upcomingEvents", "Authorized event source")],
+        ["Verified resident audience", workspaceSummary.data ? `${metricValue(workspaceSummary.data, "activeResidentProfiles", "—")} profiles / ${metricValue(workspaceSummary.data, "activeResidentIdentities", "—")} identities` : "—", workspaceSummary.status === "loading" ? "Loading source" : "Aggregate-only platform count"],
+        ["Contactable audience", metricValue(workspaceSummary.data, "contactableAudience", "—"), metricDetail(workspaceSummary.data, "contactableAudience", "Source not connected")],
       ];
   const nextAction = isLarryAndGuy && selectedEntity
     ? {
@@ -2034,8 +2086,10 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
           )}
         </div>
         <div className="dp-metric-grid">
-          {metrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
+          {metrics.map(([label, value, detail]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span>{detail ? <small>{detail}</small> : null}</div>)}
         </div>
+        {!isLegends && workspaceSummary.status === "error" ? <p className="dp-workspace-source-note">Your available workspace summary could not load. Try again from the workspace controls.</p> : null}
+        {!isLegends && workspaceSummary.data?.audienceBasis ? <p className="dp-workspace-source-note">{workspaceSummary.data.audienceBasis}</p> : null}
         {isLegends ? <WorkspaceAnalyticsSnapshotGraphs report={legendsSeoReport} /> : null}
       </section>
 
