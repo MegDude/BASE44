@@ -5,6 +5,13 @@ const smokeViewports = viewportMatrix.filter((viewport) =>
   ["compact-phone", "iphone-15", "compact-embed", "tablet-landscape", "desktop"].includes(viewport.name),
 );
 
+function visibleDrawerHeading(drawer, name?: string | RegExp) {
+  const selector = ".dp-map-detail-scroll :is(.dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, h1, h2), .dp-entity-summary :is(.dp-entity-title, h1, h2)";
+  const locator = drawer.locator(selector);
+  return name ? locator.filter({ hasText: name }).first() : locator.first();
+}
+
+
 test.describe("adaptive map surface", () => {
   for (const viewport of smokeViewports) {
     test(`embed shell holds at ${viewport.name}`, async ({ page }) => {
@@ -93,7 +100,7 @@ test.describe("adaptive map surface", () => {
       const panel = page.locator("#dp-active-map-drawer");
       const visibleMarkers = page.locator("[data-accessible-marker-entity-id]");
       await expect(panel).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
+      await expect(visibleDrawerHeading(panel, "Banger's Sausage House & Beer Garden")).toBeVisible();
       const initialMarkerCount = await visibleMarkers.count();
       expect(initialMarkerCount).toBeGreaterThan(0);
 
@@ -105,13 +112,13 @@ test.describe("adaptive map surface", () => {
       await natiivoMarker.evaluate((button) => button.click());
       await expect(page).toHaveURL(/entityId=natiivo-austin/);
       await expect(panel).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Natiivo Austin", exact: true })).toBeVisible();
+      await expect(visibleDrawerHeading(panel, "Natiivo Austin")).toBeVisible();
       expect(await visibleMarkers.count()).toBeGreaterThan(0);
 
       await page.getByRole("button", { name: "Open Banger's Sausage House & Beer Garden", exact: true }).evaluate((button) => button.click());
       await expect(page).toHaveURL(/entityId=map-7-banger-s-sausage-house-and-beer-garden/);
       await expect(panel).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Banger's Sausage House & Beer Garden" })).toBeVisible();
+      await expect(visibleDrawerHeading(panel, "Banger's Sausage House & Beer Garden")).toBeVisible();
       expect(await visibleMarkers.count()).toBeGreaterThan(0);
     });
 
@@ -298,7 +305,7 @@ test.describe("adaptive map surface", () => {
 
           const drawer = page.locator("#dp-active-map-drawer");
           const nav = page.getByRole("tablist", { name: "Map bottom navigation" });
-          const title = drawer.locator(".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title, .dp-map-detail-scroll h1, .dp-map-detail-scroll h2").first();
+          const title = visibleDrawerHeading(drawer);
           await expect(drawer).toBeVisible();
           await expect(nav).toBeVisible();
           await expect(title).toBeVisible();
