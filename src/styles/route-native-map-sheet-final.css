@@ -1,0 +1,235 @@
+/* Final native route sheet authority. Loaded last for route UI only. */
+html body #root .dp-map-page .dp-route-experience-sheet.dp-native-drawer {
+  --dp-route-navy: #0B1F33;
+  --dp-route-muted: #52606D;
+  --dp-route-line: rgba(11, 31, 51, 0.10);
+  --dp-route-gold: #C8A96A;
+  color: var(--dp-route-navy) !important;
+  background: #fff !important;
+  border-color: var(--dp-route-line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-route-experience-sheet .dp-native-drawer-surface {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-route-experience-sheet .dp-native-drawer-actions {
+  display: none !important;
+}
+
+html body #root .dp-map-page .dp-route-sheet-grabber {
+  display: grid !important;
+  width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  place-items: center !important;
+  border: 0 !important;
+  background: #fff !important;
+  cursor: grab !important;
+}
+
+html body #root .dp-map-page .dp-route-sheet-grabber i {
+  width: 36px !important;
+  height: 4px !important;
+  border-radius: 0 !important;
+  background: rgba(11,31,51,.24) !important;
+}
+
+html body #root .dp-map-page .dp-route-sheet-header {
+  display: flex !important;
+  min-height: 56px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 0 12px 10px 20px !important;
+  border-bottom: 1px solid var(--dp-route-line) !important;
+  background: #fff !important;
+}
+
+html body #root .dp-map-page .dp-route-sheet-header > div:first-child { min-width: 0 !important; }
+html body #root .dp-map-page .dp-route-sheet-header > div:first-child span {
+  display: block !important;
+  margin-bottom: 3px !important;
+  color: var(--dp-route-muted) !important;
+  font: 650 11px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+html body #root .dp-map-page .dp-route-sheet-header > div:first-child strong {
+  display: block !important;
+  overflow: hidden !important;
+  color: var(--dp-route-navy) !important;
+  font: 650 20px/1.08 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -.035em !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+html body #root .dp-map-page .dp-route-sheet-header > div:nth-child(2) { display: flex !important; gap: 2px !important; }
+html body #root .dp-map-page .dp-route-sheet-header > div:nth-child(2) button {
+  display: grid !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--dp-route-navy) !important;
+}
+
+html body #root .dp-map-page .dp-route-overflow-menu {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: 54px !important;
+  right: 12px !important;
+  width: min(250px, calc(100vw - 32px)) !important;
+  border: 1px solid var(--dp-route-line) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+html body #root .dp-map-page .dp-route-overflow-menu :is(a,button) {
+  display: flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--dp-route-line) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: var(--dp-route-navy) !important;
+  text-decoration: none !important;
+}
+
+html body #root .dp-map-page .dp-route-sheet-scroll {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html body #root .dp-map-page .dp-route-hero { border-bottom: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-hero img { display: none !important; }
+html body #root .dp-map-page .dp-route-hero > div { padding: 20px 20px 22px !important; }
+html body #root .dp-map-page .dp-route-hero p {
+  margin: 0 !important;
+  max-width: 59ch !important;
+  color: var(--dp-route-navy) !important;
+  font: 450 16px/1.45 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -.012em !important;
+}
+html body #root .dp-map-page .dp-route-facts { display: flex !important; flex-wrap: wrap !important; gap: 14px 24px !important; margin-top: 18px !important; }
+html body #root .dp-map-page .dp-route-facts span {
+  color: var(--dp-route-navy) !important;
+  font: 600 14px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+html body #root .dp-map-page .dp-route-facts span + span::before { display: none !important; }
+
+html body #root .dp-map-page .dp-route-primary-action {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 156px !important;
+  min-height: 48px !important;
+  margin-top: 18px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid var(--dp-route-navy) !important;
+  border-radius: 0 !important;
+  background: var(--dp-route-navy) !important;
+  color: #fff !important;
+  font: 700 14px/1 Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+html body #root .dp-map-page .dp-route-progress,
+html body #root .dp-map-page .dp-route-active-stop,
+html body #root .dp-map-page .dp-route-stop-section,
+html body #root .dp-map-page .dp-route-details,
+html body #root .dp-map-page .dp-route-related { margin: 0 !important; padding: 20px 0 0 !important; border: 0 !important; background: #fff !important; }
+html body #root .dp-map-page .dp-route-progress { margin: 0 20px !important; padding: 20px 0 !important; border-bottom: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-progress__track { height: 2px !important; border-radius: 0 !important; background: rgba(11,31,51,.12) !important; }
+html body #root .dp-map-page .dp-route-progress__track i { background: var(--dp-route-gold) !important; }
+
+html body #root .dp-map-page .dp-route-active-stop { padding: 16px 20px !important; border-bottom: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-active-stop > span { color: var(--dp-route-gold) !important; font: 700 11px/1.2 Inter,sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase !important; }
+html body #root .dp-map-page .dp-route-active-stop h3 { margin: 3px 0 8px !important; color: var(--dp-route-navy) !important; font: 650 16px/1.2 Inter,sans-serif !important; }
+html body #root .dp-map-page .dp-route-active-stop p { display: none !important; }
+html body #root .dp-map-page .dp-route-active-stop button { min-height: 44px !important; border: 0 !important; background: transparent !important; color: var(--dp-route-navy) !important; }
+
+html body #root .dp-map-page .dp-route-stop-section > header,
+html body #root .dp-map-page .dp-route-related h3,
+html body #root .dp-map-page .dp-route-details > h3 { margin: 0 20px 10px !important; }
+html body #root .dp-map-page .dp-route-stop-section h3,
+html body #root .dp-map-page .dp-route-related h3,
+html body #root .dp-map-page .dp-route-details > h3 { color: var(--dp-route-navy) !important; font: 700 15px/1.25 Inter,sans-serif !important; letter-spacing: -.015em !important; }
+html body #root .dp-map-page .dp-route-stop-section > header span { display: none !important; }
+html body #root .dp-map-page .dp-route-stop-list,
+html body #root .dp-map-page .dp-route-related > div { margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: #fff !important; list-style: none !important; }
+html body #root .dp-map-page .dp-route-stop-list li,
+html body #root .dp-map-page .dp-route-related button { border-top: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-stop-list li:last-child { border-bottom: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-stop-list button {
+  display: grid !important;
+  width: 100% !important;
+  min-height: 68px !important;
+  grid-template-columns: 40px minmax(0,1fr) 24px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 20px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: var(--dp-route-navy) !important;
+  text-align: left !important;
+}
+html body #root .dp-map-page .dp-route-stop-list button.is-selected { box-shadow: inset 2px 0 0 var(--dp-route-navy) !important; background: #fff !important; }
+html body #root .dp-map-page .dp-route-stop-list__number { display: grid !important; width: 28px !important; height: 28px !important; place-items: center !important; border: 1px solid rgba(11,31,51,.2) !important; border-radius: 0 !important; font-size: 12px !important; font-weight: 700 !important; }
+html body #root .dp-map-page .dp-route-stop-list__copy strong { color: var(--dp-route-navy) !important; font: 650 15px/1.25 Inter,sans-serif !important; }
+html body #root .dp-map-page .dp-route-stop-list__copy small { color: var(--dp-route-muted) !important; font: 450 12px/1.35 Inter,sans-serif !important; }
+
+html body #root .dp-map-page .dp-route-details__plain { margin: 0 20px !important; padding-bottom: 18px !important; border-bottom: 1px solid var(--dp-route-line) !important; }
+html body #root .dp-map-page .dp-route-details__plain h4 { margin: 0 0 8px !important; color: var(--dp-route-navy) !important; font: 700 15px/1.2 Inter,sans-serif !important; }
+html body #root .dp-map-page .dp-route-details__plain p,
+html body #root .dp-map-page .dp-route-details ul,
+html body #root .dp-map-page .dp-route-partner { color: var(--dp-route-muted) !important; font: 450 14px/1.55 Inter,sans-serif !important; }
+html body #root .dp-map-page .dp-route-details details { display: none !important; }
+html body #root .dp-map-page .dp-route-partner-actions { display: none !important; }
+
+html body #root .dp-map-page .dp-route-related button { display: grid !important; width: 100% !important; min-height: 62px !important; grid-template-columns: minmax(0,1fr) 24px !important; padding: 10px 20px !important; border-radius: 0 !important; }
+
+html body #root .dp-map-page .dp-route-active-action-bar {
+  position: sticky !important;
+  bottom: 0 !important;
+  display: grid !important;
+  min-height: 56px !important;
+  grid-template-columns: minmax(0,1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+  border-top: 1px solid var(--dp-route-line) !important;
+  background: #fff !important;
+}
+html body #root .dp-map-page .dp-route-active-action-bar span { overflow: hidden !important; color: var(--dp-route-navy) !important; font: 650 13px/1.2 Inter,sans-serif !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
+html body #root .dp-map-page .dp-route-active-action-bar button { min-height: 40px !important; border: 0 !important; background: #fff !important; color: var(--dp-route-navy) !important; font: 650 12px/1 Inter,sans-serif !important; }
+
+@media (max-width: 767px) {
+  html body #root .dp-map-page .dp-route-experience-sheet.dp-native-drawer { inset: auto 0 0 !important; width: 100% !important; height: min(72dvh,650px) !important; max-height: calc(100dvh - env(safe-area-inset-top,0px)) !important; border-width: 1px 0 0 !important; }
+  html body #root .dp-map-page .dp-route-experience-sheet.is-peek { height: 132px !important; }
+  html body #root .dp-map-page .dp-route-experience-sheet.is-expanded,
+  html body #root .dp-map-page .dp-route-experience-sheet.is-full { height: calc(100dvh - env(safe-area-inset-top,0px)) !important; }
+  html body #root .dp-map-page .dp-route-experience-sheet.is-peek .dp-native-drawer-content-viewport { visibility: hidden !important; pointer-events: none !important; }
+}
+
+@media (min-width: 768px) {
+  html body #root .dp-map-page .dp-route-experience-sheet.dp-native-drawer { top: 16px !important; right: 16px !important; bottom: 16px !important; left: auto !important; width: min(440px, calc(100vw - 32px)) !important; height: auto !important; border: 1px solid var(--dp-route-line) !important; }
+  html body #root .dp-map-page .dp-route-sheet-grabber { display: none !important; }
+}
