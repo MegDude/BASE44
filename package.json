@@ -133,7 +133,8 @@
     "test:strategic-intelligence-privacy": "node scripts/test-strategic-intelligence-privacy-contract.mjs",
     "test:platform-design-system-contrast": "node scripts/test-platform-design-system-contrast.mjs",
     "test:native-drawer-map-recovery": "node scripts/test-native-drawer-map-recovery-contract.mjs",
-    "test:google-map-marker-anchoring": "node scripts/test-google-map-marker-anchoring-contract.mjs"
+    "test:google-map-marker-anchoring": "node scripts/test-google-map-marker-anchoring-contract.mjs",
+    "test:backend-master-control-plane": "node scripts/test-backend-master-control-plane-contract.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",
