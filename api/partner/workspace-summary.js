@@ -127,7 +127,7 @@ export default async function handler(req, res) {
       activity = activity.eq("listing_id", listingId);
     }
 
-    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount] = await Promise.all([
+    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount, audienceBindingRows] = await Promise.all([
       scopedListingsQuery(database, organization.id, portfolioId, listingId),
       countRows(perks),
       portfolioId || listingId ? Promise.resolve(0) : countRows(events.eq("partner_id", organization.legacy_partner_id)),
