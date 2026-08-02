@@ -93,9 +93,15 @@ await page.waitForURL(/routeState=active/);
 const activeUrl = new URL(page.url());
 if (activeUrl.searchParams.get("routeId") !== "waterloo-greenway") throw new Error("Waterloo: canonical routeId was lost");
 if (activeUrl.searchParams.get("stopId") !== "waterloo-park") throw new Error("Waterloo: first physical stop was not selected");
-if (await page.locator(".dp-route-stop-list > li > button[aria-current='step']").count() !== 1) throw new Error("Waterloo: active route row is not synchronized");
+await page.locator(".dp-route-experience-sheet[data-sheet-view='stop-detail']").waitFor({ state: "visible", timeout: 5_000 });
+if (await page.locator("#dp-active-map-drawer").count()) throw new Error("Waterloo: route stop opened a second entity drawer");
+if (await page.locator(".dp-route-stop-list").count()) throw new Error("Waterloo: route body remains visible behind stop detail");
+await page.getByRole("button", { name: /Back to Waterloo Greenway/ }).tap();
+await page.locator(".dp-route-experience-sheet[data-sheet-view='route']").waitFor({ state: "visible", timeout: 5_000 });
+const backUrl = new URL(page.url());
+if (backUrl.searchParams.get("stopId")) throw new Error("Waterloo: Back did not clear stopId back to route context");
 
 if (errors.length) throw new Error(`Browser errors: ${errors.join(" | ")}`);
 
-console.log(`route experiences: ${routeIds.length} shared routes, Waterloo 6-stop start state, canonical URL, no legacy panel or overflow`);
+console.log(`route experiences: ${routeIds.length} shared routes, Waterloo 6-stop in-sheet stop detail, canonical URL, no legacy panel or overflow`);
 await browser.close();

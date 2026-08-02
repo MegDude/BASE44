@@ -1,6 +1,9 @@
 :root {
   --dp-bottom-nav-height: 64px;
+  --dp-safe-top: max(env(safe-area-inset-top, 0px), 12px);
   --dp-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --dp-map-recovery-space: 72px;
+  --dp-sheet-max-height: calc(100dvh - var(--dp-safe-top) - var(--dp-map-recovery-space));
   --dp-measured-bottom-nav-height: calc(var(--dp-bottom-nav-height) + var(--dp-safe-bottom));
   --dp-bottom-nav-total-height: var(--dp-measured-bottom-nav-height);
   --dp-drawer-content-clearance: 16px;
@@ -64,14 +67,14 @@ body.dp-native-drawer-open {
 @media (max-width: 767px), (max-height: 599px) {
   .dp-map-page .dp-native-drawer {
     position: fixed !important;
-    inset: auto 0 0 !important;
+    inset: auto 0 var(--dp-safe-bottom) !important;
     z-index: var(--dp-drawer-z-index) !important;
     width: 100dvw !important;
     min-width: 0 !important;
     max-width: 100dvw !important;
     height: calc(58dvh + var(--dp-bottom-nav-total-height)) !important;
     min-height: 0 !important;
-    max-height: var(--dp-visual-viewport-height) !important;
+    max-height: var(--dp-sheet-max-height) !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
@@ -87,15 +90,15 @@ body.dp-native-drawer-open {
   }
 
   .dp-map-page .dp-native-drawer[data-drawer-state="medium"] {
-    height: min(calc(58dvh + var(--dp-bottom-nav-total-height)), calc(var(--dp-visual-viewport-height) - 18px)) !important;
+    height: min(calc(58dvh + var(--dp-bottom-nav-total-height)), var(--dp-sheet-max-height)) !important;
   }
 
   .dp-map-page .dp-native-drawer[data-drawer-state="expanded"] {
-    height: min(calc(82dvh + var(--dp-bottom-nav-total-height)), calc(var(--dp-visual-viewport-height) - 8px)) !important;
+    height: min(calc(var(--dp-sheet-max-height)), calc(var(--dp-visual-viewport-height) - var(--dp-safe-top) - var(--dp-map-recovery-space))) !important;
   }
 
   .dp-map-page .dp-native-drawer[data-drawer-state="full"] {
-    height: var(--dp-visual-viewport-height) !important;
+    height: var(--dp-sheet-max-height) !important;
   }
 
   .dp-map-page .dp-native-drawer > .dp-native-drawer-surface {
@@ -114,9 +117,12 @@ body.dp-native-drawer-open {
   }
 
   .dp-map-page .dp-native-drawer-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 3;
     min-width: 0;
+    min-height: 56px;
+    border-bottom: 1px solid rgba(11, 31, 51, 0.14);
     background: #ffffff;
   }
 
@@ -140,6 +146,7 @@ body.dp-native-drawer-open {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    padding-bottom: calc(88px + var(--dp-safe-bottom));
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
     scrollbar-gutter: stable;
@@ -152,17 +159,19 @@ body.dp-native-drawer-open {
   }
 
   .dp-map-page .dp-native-drawer-actions {
-    position: relative;
+    position: sticky;
+    bottom: 0;
     z-index: 4;
     grid-row: 3;
     display: flex;
     align-items: center;
     gap: 10px;
     min-height: var(--dp-drawer-footer-height);
+    max-height: 72px;
     margin-bottom: var(--dp-bottom-nav-total-height);
-    padding: 10px 16px;
+    padding: 10px 16px var(--dp-safe-bottom);
     border: 0;
-    border-top: 1px solid var(--dp-drawer-border);
+    border-top: 1px solid rgba(11, 31, 51, 0.14);
     background: #ffffff;
   }
 
@@ -250,7 +259,7 @@ body.dp-native-drawer-open {
   }
 
   .dp-map-page .dp-route-experience-sheet .dp-route-sheet-scroll {
-    padding: 0 !important;
+    padding: 0 0 calc(88px + var(--dp-safe-bottom)) !important;
   }
 }
 

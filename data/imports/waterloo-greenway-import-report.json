@@ -1,0 +1,35 @@
+{
+  "importId": "waterloo-greenway-canonical-native-sheet-2026-08-02",
+  "source": "approved source branch preview",
+  "targetRouteId": "waterloo-greenway",
+  "idempotent": true,
+  "created": [],
+  "updated": [
+    "route:waterloo-greenway",
+    "entity:waterloo-park"
+  ],
+  "merged": [
+    "entity:waterloo-park",
+    "entity:moody-amphitheater",
+    "entity:great-lawn",
+    "entity:waller-creek-trail",
+    "entity:hill-country-garden",
+    "entity:family-pavilion",
+    "route-stop:waterloo-greenway:waterloo-park:1",
+    "route-stop:waterloo-greenway:moody-amphitheater:2",
+    "route-stop:waterloo-greenway:great-lawn:3",
+    "route-stop:waterloo-greenway:waller-creek-trail:4",
+    "route-stop:waterloo-greenway:hill-country-garden:5",
+    "route-stop:waterloo-greenway:family-pavilion:6"
+  ],
+  "skipped": [
+    "waterloo-event-zones: excluded from route stops because it is an event/programming zone, not one of the six approved physical stops"
+  ],
+  "rejected": [],
+  "duplicatePrevented": [
+    "waterloo-greenway route keyed by stable route id",
+    "six route stops keyed by routeId + stopEntityId + sequence",
+    "canonical stop entities reused from waterlooParkInventory instead of duplicating place data"
+  ],
+  "productionDeepLink": "/map?mode=resident&tab=map&filter=Civic&query=Waterloo+Greenway+Walk&intent=civic&collection=waterloo-greenway&routeId=waterloo-greenway"
+}

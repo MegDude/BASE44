@@ -12,6 +12,7 @@ export const MAP_DISCOVERY_LIMITS = Object.freeze({
 });
 
 export const mapSearchSourceSchema = z.enum([
+  "default-discovery",
   "direct-search",
   "intent-console",
   "category",
@@ -154,6 +155,7 @@ export const mapInteractionEventSchema = z.object({
 export type MapInteractionEvent = z.infer<typeof mapInteractionEventSchema>;
 
 export function sourceFromTrigger(trigger = "search"): MapSearchSource {
+  if (/default[-_ ]?discovery/i.test(trigger)) return "default-discovery";
   if (/qr/i.test(trigger)) return "qr";
   if (/campaign/i.test(trigger)) return "campaign";
   if (/saved/i.test(trigger)) return "saved";
@@ -192,6 +194,7 @@ export function isExplicitMapSearch(request: Partial<MapSearchRequest>) {
     request.route_id?.trim() ||
     request.categories?.length ||
     request.entity_types?.length ||
+    request.source === "default-discovery" ||
     request.source === "saved" ||
     request.source === "search-area"
   );
