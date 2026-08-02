@@ -411,7 +411,7 @@ export const AuthProvider = ({ children }) => {
     return { type: "confirmation_sent", message: "Check your email for a secure sign-in link." };
   };
 
-  const sendResidentPasswordReset = async ({ email = "", redirectPath = "/residents/login" } = {}) => {
+  const sendResidentPasswordReset = async ({ email = "", redirectPath = "/residents/reset-password" } = {}) => {
     if (!email) return { type: "error", message: "Enter your email address first." };
     if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}${redirectPath}` });
@@ -452,4 +452,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
