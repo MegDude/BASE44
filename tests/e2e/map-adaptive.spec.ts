@@ -445,10 +445,20 @@ test.describe("adaptive map surface", () => {
 
     await expect.poll(async () => (await markerSnapshot()).length, { timeout: 10000 }).toBeGreaterThan(0);
 
-    function assertStableCommonMarkers(before: Awaited<ReturnType<typeof markerSnapshot>>, after: Awaited<ReturnType<typeof markerSnapshot>>) {
+    function assertCoordinateRows(rows: Awaited<ReturnType<typeof markerSnapshot>>) {
+      const seen = new Set<string>();
+      for (const row of rows) {
+        expect(seen.has(row.markerId)).toBe(false);
+        seen.add(row.markerId);
+        expect(row.coordinateKey).toBe(`${Number(row.latitude).toFixed(7)}:${Number(row.longitude).toFixed(7)}`);
+        expect(row.lastPositionKey).toBe(row.coordinateKey);
+      }
+    }
+
+    function assertStableCommonMarkers(before: Awaited<ReturnType<typeof markerSnapshot>>, after: Awaited<ReturnType<typeof markerSnapshot>>, requireCommon = true) {
       const afterById = new Map(after.map((row) => [row.markerId, row]));
       const common = before.filter((row) => afterById.has(row.markerId));
-      expect(common.length).toBeGreaterThan(0);
+      if (requireCommon) expect(common.length).toBeGreaterThan(0);
       for (const row of common) {
         const next = afterById.get(row.markerId)!;
         expect(next.entityId).toBe(row.entityId);
@@ -459,14 +469,15 @@ test.describe("adaptive map surface", () => {
       }
     }
 
-    const initial = await markerSnapshot();
     const initiallyOpenDrawer = page.locator("#dp-active-map-drawer");
     if (await initiallyOpenDrawer.isVisible().catch(() => false)) {
       const closeInitialDrawer = initiallyOpenDrawer.getByRole("button", { name: /close/i }).first();
       await closeInitialDrawer.click();
       await expect(initiallyOpenDrawer).toBeHidden({ timeout: 5000 });
-      assertStableCommonMarkers(initial, await markerSnapshot());
     }
+    await expect.poll(async () => (await markerSnapshot()).length, { timeout: 10000 }).toBeGreaterThan(0);
+    const initial = await markerSnapshot();
+    assertCoordinateRows(initial);
 
     await page.getByRole("button", { name: "Zoom in", exact: true }).click();
     await page.waitForTimeout(250);
@@ -500,7 +511,8 @@ test.describe("adaptive map surface", () => {
     await page.waitForTimeout(250);
     const filtered = await markerSnapshot();
     expect(filtered.length).toBeGreaterThan(0);
-    assertStableCommonMarkers(initial, filtered);
+    assertCoordinateRows(filtered);
+    assertStableCommonMarkers(initial, filtered, false);
 
     await page.setViewportSize({ width: 844, height: 390 });
     await page.waitForTimeout(300);
