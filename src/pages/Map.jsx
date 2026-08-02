@@ -14912,8 +14912,18 @@ export default function MapPage() {
     );
 
     if (!shouldHydrate) {
-      clearScopedMapResults();
-      recentScopedQueryRef.current = "";
+      const alreadyLoadedDefaultDiscovery = Boolean(
+        scopedLastTrigger === "default-discovery" &&
+        scopedResultState.resultIds.length,
+      );
+      if (alreadyLoadedDefaultDiscovery) return;
+
+      void requestScopedMapResults({
+        query: "",
+        filterOverride: "All",
+        activeEntityId: "",
+        trigger: "default-discovery",
+      });
       return;
     }
 
