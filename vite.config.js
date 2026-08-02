@@ -252,6 +252,15 @@ export default defineConfig(({ mode }) => {
   return {
   logLevel: 'error', // Suppress warnings, only show errors
   publicDir: process.env.DP_SKIP_PUBLIC_COPY === "true" ? false : undefined,
+  resolve: {
+  // Router hooks and the renderer must share one React module instance.
+  dedupe: ['react', 'react-dom'],
+  },
+  optimizeDeps: {
+  // Prebundle the hook runtime and router together to prevent stale split chunks in HMR.
+  include: ['react', 'react-dom', 'react/jsx-runtime', 'react-router-dom'],
+  force: true,
+  },
   define: {
     "import.meta.env.VITE_GOOGLE_MAPS_API_KEY": JSON.stringify(googleMapsApiKey),
     "import.meta.env.VITE_GOOGLE_MAP_ID": JSON.stringify(googleMapsMapId),
