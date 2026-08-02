@@ -1185,7 +1185,7 @@ const brandPartnerPlaces = [
     campaignObjective: "Turn building and neighborhood interest into listing views, showing requests, and property-linked local discovery.",
     partnerInsight: "Best when prospects compare the building and the block together: nearby dining, events, perks, and daily utility.",
     audience: "Relocation prospects, downtown renters, buyers, residents, and hotel guests considering a move.",
-    image: "/pins/downtown-perks/legends-logo.png",
+    image: "/pins/downtown-perks/legends-logo-gold.svg",
     related: ["priority-the-waterline", "priority-the-independent", "priority-the-austonian", "property-the-shore"],
     mapLayer: "Legends",
     datasetLayer: "Legends",
