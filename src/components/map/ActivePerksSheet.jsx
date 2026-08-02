@@ -47,7 +47,7 @@ function perkAvailabilityLabel(item, redeemed) {
 const PERK_FILTERS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
 
 function perkSearchText(item) {
-  return [item.category, item.partner, item.name, item.offerTitle, item.value, item.raw?.type]
+  return [item.category, item.partner, item.name, item.offerTitle, item.value, item.searchText, item.raw?.type]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
