@@ -1,0 +1,312 @@
+/* Terminal contract for campaign creation and all partner workspace sheets.
+   These selectors deliberately beat broad legacy "all section/article/button" rules. */
+
+html body .dp-workspace-sheet-layer {
+  position: fixed !important;
+  z-index: 1000 !important;
+  inset: 0 !important;
+  display: grid !important;
+  align-items: end !important;
+  background: rgba(11, 31, 51, .22) !important;
+}
+
+html body .dp-workspace-sheet-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] {
+  position: relative !important;
+  z-index: 1 !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+  width: min(760px, 100vw) !important;
+  max-width: 100vw !important;
+  height: min(780px, calc(100dvh - env(safe-area-inset-top, 0px))) !important;
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px)) !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(11, 31, 51, .12) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #0B1F33 !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-handle {
+  display: grid !important;
+  height: 22px !important;
+  place-items: center !important;
+  border: 0 !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-handle span {
+  width: 32px !important;
+  height: 3px !important;
+  border-radius: 0 !important;
+  background: rgba(11, 31, 51, .28) !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-header {
+  position: static !important;
+  display: flex !important;
+  align-items: start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 10px 20px 16px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-header > div:first-child {
+  min-width: 0 !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-header p,
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage > header p,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences :is(.dp-workspace-experiences__header > p, .dp-workspace-experiences__library header p, .dp-workspace-experiences__flow > h2) {
+  margin: 0 0 6px !important;
+  color: #A98445 !important;
+  font: 700 10px/1.2 Inter, sans-serif !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-header h2 {
+  margin: 0 !important;
+  font: 600 20px/1.15 Inter, sans-serif !important;
+  letter-spacing: -.02em !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-surface-controls {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  gap: 4px !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-surface-controls button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+  font: 650 12px/1 Inter, sans-serif !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-body {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 20px !important;
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-footer {
+  position: static !important;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  border-top: 1px solid rgba(11, 31, 51, .1) !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder {
+  display: grid !important;
+  grid-template-columns: 168px minmax(0, 1fr) !important;
+  min-height: 100% !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav {
+  min-width: 0 !important;
+  padding: 14px 14px 20px 0 !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, .1) !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage {
+  min-width: 0 !important;
+  padding: 20px 0 24px 22px !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage > footer {
+  position: sticky !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  padding: 14px 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, .1) !important;
+  background: #fff !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage > footer button,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__header > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(11, 31, 51, .2) !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .2) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+  font: 650 13px/1 Inter, sans-serif !important;
+}
+
+html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage > footer button:last-child,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__header > button {
+  border-color: #0B1F33 !important;
+  background: #0B1F33 !important;
+  color: #fff !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences {
+  width: min(100%, 980px) !important;
+  margin: 0 auto !important;
+  padding: 24px 20px calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  background: #fff !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences :is(section, article) {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__header,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__flow,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__library,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__integration {
+  padding-inline: 0 !important;
+  border-color: rgba(11, 31, 51, .1) !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__tabs button,
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__rows > button {
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0B1F33 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__tabs button {
+  border: 0 !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__tabs button[aria-selected="true"] {
+  border-bottom-color: #C8A96A !important;
+}
+
+html body #root .dp-partner-workspace-page .dp-workspace-experiences__rows > button {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+}
+
+@media (max-width: 767px) {
+  html body .dp-workspace-sheet-layer { align-items: end !important; }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] {
+    width: 100vw !important;
+    height: min(88dvh, calc(100dvh - env(safe-area-inset-top, 0px))) !important;
+    max-height: min(88dvh, calc(100dvh - env(safe-area-inset-top, 0px))) !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 0 !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-header,
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-body,
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-sheet-footer {
+    padding-inline: 16px !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-workspace-surface-controls button span {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder {
+    display: block !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav {
+    overflow-x: auto !important;
+    padding: 10px 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav ol {
+    display: flex !important;
+    width: max-content !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav li {
+    min-width: 44px !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav button {
+    display: grid !important;
+    place-items: center !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    background: transparent !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder > nav button strong {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage {
+    padding: 18px 0 20px !important;
+  }
+
+  html body .dp-workspace-sheet[data-workspace-drawer="true"] .dp-experience-builder__stage > footer {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root .dp-partner-workspace-page .dp-workspace-experiences {
+    padding-inline: 16px !important;
+  }
+
+  html body #root .dp-partner-workspace-page .dp-workspace-experiences__flow ol {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  html body #root .dp-partner-workspace-page .dp-workspace-experiences__flow li {
+    flex: 0 0 130px !important;
+    scroll-snap-align: start !important;
+  }
+}
