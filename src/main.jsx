@@ -153,6 +153,8 @@ import "@/styles/route-native-map-sheet-final.css"
 
 import "@/styles/native-drawer-scroll-contract.css"
 
+import "@/styles/map-pin-coordinate-anchor-lock.css"
+
 inject()
 injectSpeedInsights()
 
