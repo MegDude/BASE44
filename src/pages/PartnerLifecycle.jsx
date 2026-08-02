@@ -497,14 +497,14 @@ function LifecycleShell({ stage, children }) {
               : "Publish offers and events, appear on the map, and see what people use."}
           </span>
           <div className="dp-partner-lifecycle-hero-actions">
-            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
+            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/pricing" : "/partners/pricing"}>
               {isTools ? "Open workspace" : stage === "register" ? "Continue to signup" : "Join Downtown Perks"}
               <ArrowRight aria-hidden="true" />
             </Link>
             <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View membership" : "View partner tools"}</Link>
           </div>
         </div>
-        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/register" : "/partner-workspace/overview"}>
+        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/sign-up" : "/partners/sign-in"}>
           {isTools ? "Create partner account" : "Partner sign in"}
           <ArrowRight aria-hidden="true" />
         </Link>
@@ -879,7 +879,7 @@ function FinalCtaSection() {
       <h2>Ready to join?</h2>
       <span>Choose a membership and bring your business into the downtown map.</span>
       <div>
-        <Link to="/partners/register">Join Downtown Perks</Link>
+        <Link to="/pricing">Choose a plan</Link>
         <Link to="/contact">Contact us</Link>
       </div>
     </section>
