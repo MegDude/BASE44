@@ -5,7 +5,7 @@ export function cleanWorkspaceValue(value, max = 180) {
 }
 
 export function isWorkspaceUuid(value) {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i.test(String(value || ""));
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
 }
 
 const isExternalId = (value) => /^[a-z0-9][a-z0-9_-]{0,179}$/i.test(String(value || ""));
