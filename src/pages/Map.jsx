@@ -7173,7 +7173,7 @@ function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack
         >
           <ArrowLeft aria-hidden="true" />
         </button>
-        <h2 className="dp-map-panel-title dp-map-detail-navigation-title" aria-hidden="true">{navigationTitle || place?.name || "Details"}</h2>
+        <span className="dp-map-detail-navigation-title" aria-hidden="true">{navigationTitle || place?.name || "Details"}</span>
         <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
           <X aria-hidden="true" />
         </button>

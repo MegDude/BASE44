@@ -4,7 +4,7 @@
     --dp-native-ink: #1a2038;
     --dp-native-muted: #697386;
     --dp-native-bg: #fafafa;
-    --dp-native-line: rgba(0, 0, 0, 0.08);
+    --dp-native-line: rgba(0, 0, 0, 0.05);
     --dp-native-glass: rgba(255, 255, 255, 0.82);
   }
 
@@ -36,8 +36,8 @@
   }
 
   .dp-ios-list-tile:active {
-    background: #f2f3f5;
-    transform: scale(0.99);
+    background: rgba(0, 0, 0, 0.04);
+    transform: scale(0.98);
   }
 
   .dp-ios-list-tile:focus-visible {
@@ -135,11 +135,22 @@
 
   :is(.dp-ios-list-tile, .dp-native-bottom-nav-list button, .dp-workspace-row, .dp-map-filter-rail button, .dp-map-floating-controls button):active {
     background-color: rgba(0, 0, 0, 0.04) !important;
-    transform: scale(0.96);
+    transform: scale(0.98);
   }
 
   .dp-partner-workspace-page {
     padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  :is(.dp-map-page, .dp-partner-workspace-page, .dp-partner-access-page) :is(input, select, textarea) {
+    font-family: Inter, sans-serif !important;
+    font-size: 16px !important;
+  }
+
+  :is(.dp-map-page, .dp-partner-workspace-page) :is(h1, .dp-page-title, .dp-map-detail-scroll h2) {
+    font-weight: 700 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.1 !important;
   }
 
   .dp-partner-workspace-header-inner,
@@ -207,8 +218,8 @@
     flex-direction: column !important;
     gap: 0 !important;
     overflow: hidden !important;
-    border: 0.5px solid var(--dp-native-line) !important;
-    border-radius: 16px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     background: #fff !important;
   }
 
