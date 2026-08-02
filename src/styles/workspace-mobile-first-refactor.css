@@ -1,0 +1,154 @@
+/* Final workspace layer: mobile-first, single-surface, sharp controls. */
+html body #root#root .dp-partner-workspace-page {
+  --workspace-ink: #0b1f33;
+  --workspace-gold: #c8a96a;
+  --workspace-rule: rgba(11, 31, 51, 0.10);
+  --workspace-muted: rgba(11, 31, 51, 0.62);
+  background: #fff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor :is(button, a, input, select, textarea) {
+  min-height: 44px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor :is(button, a):focus-visible,
+html body #root#root .dp-partner-workspace-page .dp-profile-editor :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--workspace-gold) !important;
+  outline-offset: 2px;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor {
+  border: 0 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__intro {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__status {
+  padding: 0 !important;
+  color: var(--workspace-muted) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__section > header {
+  display: grid !important;
+  gap: 4px !important;
+  margin-bottom: 18px !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__section > header > p {
+  color: var(--workspace-gold) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__actions {
+  position: static !important;
+  margin: 28px 0 0 !important;
+  padding: 16px 0 0 !important;
+  border-top: 1px solid var(--workspace-rule) !important;
+  background: transparent !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__primary {
+  background: var(--workspace-ink) !important;
+  color: #fff !important;
+}
+
+html body #root#root .dp-partner-workspace-page .dp-profile-editor__secondary {
+  background: #fff !important;
+  color: var(--workspace-ink) !important;
+}
+
+@media (max-width: 767px) {
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header {
+    position: sticky !important;
+    min-height: calc(56px + env(safe-area-inset-top)) !important;
+    padding: calc(8px + env(safe-area-inset-top)) 16px 8px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header-inner {
+    grid-template-columns: 44px minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-history-controls,
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-search,
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-header-tools [aria-label="Notifications"] {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-brand strong {
+    font-size: 14px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-partner-workspace-brand span {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-workspace-content {
+    width: 100% !important;
+    padding: 20px 16px calc(96px + env(safe-area-inset-bottom)) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__intro {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 18px !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__intro h2 {
+    font-size: 30px !important;
+    line-height: 1.08 !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__layout,
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__section {
+    padding: 22px 0 !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-field {
+    display: grid !important;
+    gap: 7px !important;
+    padding: 12px 0 !important;
+    border-top: 1px solid var(--workspace-rule) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-field input,
+  html body #root#root .dp-partner-workspace-page .dp-profile-field select,
+  html body #root#root .dp-partner-workspace-page .dp-profile-field textarea {
+    padding: 10px 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-preview {
+    display: none !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    margin: 24px 0 0 !important;
+    padding: 16px 0 calc(12px + env(safe-area-inset-bottom)) !important;
+  }
+
+  html body #root#root .dp-partner-workspace-page .dp-profile-editor__actions :is(button, a) {
+    width: 100% !important;
+  }
+}
