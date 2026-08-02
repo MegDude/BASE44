@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
   calculatePricingTotal,
@@ -81,7 +81,6 @@ export default function PricingPage() {
   const [selectedPlanId, setSelectedPlanId] = useState(storedSetup.sku || "venueBasicAnnual");
   const [selectedModuleIds, setSelectedModuleIds] = useState(Array.isArray(storedSetup.modules) ? storedSetup.modules : []);
   const [activeCapabilityGroup, setActiveCapabilityGroup] = useState("grow");
-  const [comparePlansOpen, setComparePlansOpen] = useState(false);
   const [upgradesOpen, setUpgradesOpen] = useState(false);
   const [activeCustomOption, setActiveCustomOption] = useState(storedSetup.customOption || customOptions[0].id);
 
@@ -156,7 +155,6 @@ export default function PricingPage() {
     setPartnerType(type);
     setSelectedPlanId(nextPlans[0]?.id || "");
     setSelectedModuleIds([]);
-    setComparePlansOpen(false);
     setUpgradesOpen(false);
     trackPricingEvent("partner_type_changed", { partnerType: type });
   }
@@ -183,37 +181,33 @@ export default function PricingPage() {
   }
 
   const chosenTitle = selectedPlan?.label.replace(/ Annual$/, "") || selectedCustomOption.title;
-  const chosenCopy = selectedPlan?.summary || selectedCustomOption.description;
-  const chosenIncludes = selectedPlan?.includes || selectedCustomOption.included;
 
   return (
     <main className="dp-pricing-page dp-pricing-guided-page">
       <section className="dp-pricing-section" aria-label="Pricing">
         <div className="dp-pricing-container">
           <header className="dp-pricing-guided-header">
-            <p>Partner pricing</p>
-            <h1>Choose a plan built for how people find you.</h1>
-            <span>Annual membership gives your organization a live Downtown Perks presence. Add launch or growth support only when there is a reason.</span>
+            <p>Partner plans</p>
+            <h1>Choose your Downtown Perks plan.</h1>
           </header>
 
           <div className="dp-pricing-guided-layout">
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
-                <div className="dp-pricing-step-heading"><span>01</span><div><p>Start here</p><h2 id="pricing-role-title">Who is this for?</h2></div></div>
+                <div className="dp-pricing-step-heading"><h2 id="pricing-role-title">Who is this for?</h2></div>
                 <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
                   {["Venue", "Property", "Hotel", "Brand", "Civic"].map((type) => (
                     <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      <span><strong>{partnerCopy[type].label}</strong><small>{partnerCopy[type].short}</small></span>
+                      <span><strong>{partnerCopy[type].label}</strong></span>
                       <i aria-hidden="true" />
                     </button>
                   ))}
                 </div>
-                <p className="dp-pricing-role-alt">Need a portfolio, real-estate, or sponsorship program? <button type="button" onClick={() => choosePartner("Custom")}>Talk through a custom setup</button>.</p>
-                <p className="dp-pricing-role-context">{selectedPartner.short}</p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real-estate, or sponsorship program</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
-                <div className="dp-pricing-step-heading"><span>02</span><div><p>Choose a plan</p><h2 id="pricing-plan-title">{isResident ? "Your access" : "Choose what fits today"}</h2></div></div>
+                <div className="dp-pricing-step-heading"><h2 id="pricing-plan-title">{isResident ? "Your access" : "Pick an annual plan"}</h2></div>
                 {plans.length > 0 ? <div className="dp-pricing-plan-list">
                   {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
                     <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
@@ -225,17 +219,12 @@ export default function PricingPage() {
                     <span><strong>{option.title}</strong><small>{option.description}</small></span><em>Custom</em><i>{activeCustomOption === option.id ? "Selected" : "Choose"}</i>
                   </button>)}
                 </div>}
-                {plans.length > 1 ? <button className="dp-pricing-compare-toggle" type="button" aria-expanded={comparePlansOpen} onClick={() => setComparePlansOpen((open) => !open)}>{comparePlansOpen ? "Close plan comparison" : "Compare plans"}</button> : null}
-                {comparePlansOpen ? <div className="dp-pricing-plan-comparison" aria-label="Plan comparison">
-                  <p>Choose the plan that matches your current scope.</p>
-                  {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}><span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span><em>{getPriceText(plan)}</em></button>)}
-                </div> : null}
               </section>
 
               {partnerType !== "Custom" && !isResident ? <section className="dp-pricing-step dp-pricing-services" aria-labelledby="pricing-services-title">
-                <div className="dp-pricing-step-heading"><span>03</span><div><p>Only if useful</p><h2 id="pricing-services-title">Tailor your plan</h2></div></div>
+                <div className="dp-pricing-step-heading"><h2 id="pricing-services-title">Optional support</h2></div>
                 <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
-                  <span>{upgradesOpen ? "Hide optional support" : "Add optional support"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "You can do this later"}</small>
+                  <span>{upgradesOpen ? "Hide support" : "Add support"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "Optional"}</small>
                 </button>
                 {upgradesOpen ? <div className="dp-pricing-upgrade-content">
                   <div className="dp-pricing-upgrade-groups" role="tablist" aria-label="Service category">
@@ -254,14 +243,12 @@ export default function PricingPage() {
             </div>
 
             <aside className="dp-pricing-review" aria-label="Your selection">
-              <p>Your selection</p>
+              <p>Selected plan</p>
               <h2>{totalText}</h2>
-              <span>{isResident ? "Annual access" : "Estimated first year"}</span>
-              <div><strong>{chosenTitle}</strong><small>{chosenCopy}</small></div>
-              <ul>{chosenIncludes?.slice(0, 3).map((item) => <li key={item}><CheckCircle2 aria-hidden="true" />{item}</li>)}</ul>
+              <span>{isResident ? "Annual access" : "First year"}</span>
+              <div><strong>{chosenTitle}</strong></div>
               {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
               <button className="dp-pricing-button" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
-              <small className="dp-pricing-reassurance">{isResident ? "Resident access is separate from partner subscriptions." : "Payment details are requested only when they apply."}</small>
             </aside>
           </div>
         </div>
