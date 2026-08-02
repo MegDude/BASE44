@@ -32,7 +32,7 @@ assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.verc
 assert.ok(app.includes('path="/admin" element={<ProtectedAdminStudio />}'), "canonical platform admin route is missing");
 assert.ok(app.includes("<AdminMarketingStudio />"), "admin routes do not render the platform command center");
 assert.doesNotMatch(app, /ADMIN_STUDIO_DESTINATIONS/, "admin routes still redirect into a partner workspace");
-assert.match(app, /\\["admin", "platform_admin", "super_admin"\\]\\.includes\\(role\\).*Navigate to="\\/admin"/s, "platform admins can still inherit partner workspace state");
+assert.ok(app.includes('["admin", "platform_admin", "super_admin"].includes(role)) return <Navigate to="/admin" replace />'), "platform admins can still inherit partner workspace state");
 assert.doesNotMatch(switcher, /accessMode === "partner"[\s\S]{0,300}demoOrganizations\.map/, "partner workspace enumerates all organizations");
 
 console.log("Admin and partner workspace boundary contract passed.");
