@@ -47,7 +47,7 @@ export async function getWorkspaceReport(scope: WorkspaceReportScope, signal?: A
 }
 
 export async function downloadWorkspaceReport(scope: WorkspaceReportScope) {
-  const response = await fetch(`${getPartnerContentApiBaseUrl()}/api/workspace/reports/export?${query(scope)}`, {
+  const response = await fetch(`${getPartnerContentApiBaseUrl()}/api/workspace/reports?${query(scope)}&format=csv`, {
     headers: await authorizedHeaders(),
   });
   if (!response.ok) throw new Error("The CSV export is unavailable right now.");
