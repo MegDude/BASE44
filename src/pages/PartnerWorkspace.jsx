@@ -976,12 +976,22 @@ function WorkspaceRegistryPanel({ tabId }) {
       </header>
 
       {items.length > 0 && (
-        <div className="dp-workspace-row-list">
-          {items.map((item) => (
-            <article key={item} className="dp-workspace-row">
-              <strong>{item}</strong>
-              <small>{copy.rowDescription || copy.emptyState || "Review this workspace item."}</small>
-            </article>
+        <div className="dp-workspace-row-list" role="list">
+          {items.map((item, index) => (
+            <Link
+              key={item}
+              to={withPartnerWorkspaceScope(primaryHref, scope)}
+              className="dp-workspace-row"
+              role="listitem"
+              aria-label={`Open ${item}`}
+            >
+              <span className="dp-workspace-row-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <span className="dp-workspace-row-copy">
+                <strong>{item}</strong>
+                <small>{copy.rowDescription || copy.emptyState || "Review this workspace item."}</small>
+              </span>
+              <ChevronRight aria-hidden="true" />
+            </Link>
           ))}
         </div>
       )}

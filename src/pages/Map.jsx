@@ -15516,22 +15516,45 @@ export default function MapPage() {
   }
 
   function renderCompactEntityRow(place, actionLabel = "Open") {
-    const offer = urlState.mode === "partner" ? getPartnerPanelCopy(place) : getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
-    const offerLine = offer?.title || offer?.offer || "";
-    return (
-      <button key={place.id} type="button" className="dp-tab-row dp-compact-place-row" onClick={() => selectPlace(place)}>
-        <span className="dp-partner-feed-main">
-          <span>
-            <strong>{place.name}</strong>
-            <small>{[offerLine || place.category || place.type || "Place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</small>
-          </span>
-        </span>
-        <span className="dp-compact-place-actions">
-          <em>{actionLabel}</em>
-        </span>
-      </button>
-    );
+  const offer = urlState.mode === "partner" ? getPartnerPanelCopy(place) : getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+  const offerLine = offer?.title || offer?.offer || "";
+  const isResidentNativeList = urlState.mode === "resident" && ["events", "perks"].includes(activeBottomTab);
+  if (isResidentNativeList) {
+  const isEvent = activeBottomTab === "events";
+  return (
+  <button
+  key={place.id}
+  type="button"
+  className="dp-ios-list-tile"
+  aria-label={`Open ${place.name} ${isEvent ? "event" : "perk"} details`}
+  onClick={() => selectPlace(place)}
+  >
+  <span className={`dp-ios-list-tile__icon ${isEvent ? "is-event" : "is-perk"}`} aria-hidden="true">
+  {isEvent ? <CalendarDays /> : <Gift />}
+  </span>
+  <span className="dp-ios-list-tile__copy">
+  <strong>{place.name}</strong>
+  <small>{[offerLine || place.category || place.type || (isEvent ? "Event" : "Perk"), place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" · ")}</small>
+  </span>
+  <ChevronRight className="dp-ios-list-tile__chevron" aria-hidden="true" />
+  </button>
+  );
   }
+  return (
+  <button key={place.id} type="button" className="dp-tab-row dp-compact-place-row" onClick={() => selectPlace(place)}>
+  <span className="dp-partner-feed-main">
+  <span>
+  <strong>{place.name}</strong>
+  <small>{[offerLine || place.category || place.type || "Place", place.district || place.neighborhood || "Downtown", placeDistanceLabel(place)].filter(Boolean).join(" • ")}</small>
+  </span>
+  </span>
+  <span className="dp-compact-place-actions">
+  <em>{actionLabel}</em>
+  </span>
+  </button>
+  );
+  }
+
 
   function getSavedItemGroup(place) {
     const kind = getResidentEntityKind(place);
@@ -18858,6 +18881,27 @@ export default function MapPage() {
                   const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
                   const offerTitle = offer?.title || offer?.offer || place.perk?.offer || place.recommended_perk || place.partner_opportunity || "";
                   const isPerkRow = activeBottomTab === "perks" && hasActivePerkData(place);
+                  const usesNativeListTile = ["events", "perks"].includes(activeBottomTab);
+                  if (usesNativeListTile) {
+                    return (
+                      <button
+                        key={place.id}
+                        type="button"
+                        className="dp-ios-list-tile"
+                        aria-label={`Open ${place.name} ${isPerkRow ? "perk" : "event"} details`}
+                        onClick={() => selectPlace(place)}
+                      >
+                        <span className={`dp-ios-list-tile__icon ${isPerkRow ? "is-perk" : "is-event"}`} aria-hidden="true">
+                          {isPerkRow ? <Gift /> : <CalendarDays />}
+                        </span>
+                        <span className="dp-ios-list-tile__copy">
+                          <strong>{place.name}</strong>
+                          <small>{[offer?.category || place.category || (isPerkRow ? "Perk" : "Event"), place.district || "Downtown", offerTitle || "Explore what is useful nearby."].filter(Boolean).join(" · ")}</small>
+                        </span>
+                        <ChevronRight className="dp-ios-list-tile__chevron" aria-hidden="true" />
+                      </button>
+                    );
+                  }
                   return (
                     <article
                       key={place.id}
@@ -18874,21 +18918,9 @@ export default function MapPage() {
                             {place.district ? `${place.district} · ` : ""}{offerTitle || "Explore what is useful nearby."}
                           </span>
                         </button>
-                        {isPerkRow ? (
-                          <span className="dp-resident-row-action-strip" aria-label={`${place.name} perk actions`}>
-                            <button type="button" onClick={() => toggleSaved(place)} aria-pressed={savedIds.has(place.id)}>
-                              {savedIds.has(place.id) ? "Saved" : "Save"}
-                            </button>
-                            <a href={directionsUrl(place)} target="_blank" rel="noreferrer">
-                              Directions
-                            </a>
-                            <button type="button" onClick={() => selectPlace(place)}>View perk</button>
-                          </span>
-                        ) : (
-                          <span className="dp-resident-row-action-strip" aria-label={`${place.name} actions`}>
-                            <button type="button" onClick={() => selectPlace(place)}>View details</button>
-                          </span>
-                        )}
+                        <span className="dp-resident-row-action-strip" aria-label={`${place.name} actions`}>
+                          <button type="button" onClick={() => selectPlace(place)}>View details</button>
+                        </span>
                       </span>
                     </article>
                   );

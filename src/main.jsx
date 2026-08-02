@@ -152,6 +152,7 @@ import "@/styles/partner-acquisition-flow-final.css"
 import "@/styles/workspace-unified-native-release.css"
 import "@/styles/map-drawer-native-luxury-final.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
+import "@/styles/native-luxury-platform-release.css"
 
 const application = <App />
 
