@@ -1387,7 +1387,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
   /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
-    ["—", "Potential audience", "No verified audience total is connected."],
+    ["—", "Potential audience", "No consented audience source is connected."],
     ["81,904", "Views", "Views across the map, campaigns, events, and partner pages."],
     ["31,511", "Actions taken", "Searches, saves, directions, scans, RSVPs, and offer opens."],
   ];
@@ -1666,7 +1666,7 @@ function NativeMobileWorkspaceDashboard({
   const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
   const heroSource = isLegends
     ? "Source: SEO Snapshot"
-    : "No verified audience total is connected";
+    : "No consented audience source is connected";
   const kpis = isLegends
     ? [
         [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "SEO Snapshot"],
@@ -1920,9 +1920,12 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
-        ["Connected places", metricValue(workspaceSummary.data, "connectedActiveListings", formatWorkspaceNumber(ownedEntities.length)), metricDetail(workspaceSummary.data, "connectedActiveListings", "Authorized listing source")],
+        ["Partner listings", metricValue(workspaceSummary.data, "connectedActiveListings", formatWorkspaceNumber(ownedEntities.length)), metricDetail(workspaceSummary.data, "connectedActiveListings", "Authorized partner inventory")],
+        ["Map inventory", workspaceSummary.data?.sections?.mapCoverage?.metrics?.publicMapEntities?.value ?? metricValue(workspaceSummary.data, "connectedMapEntities", "—"), workspaceSummary.data?.sections?.mapCoverage?.description || "Discovery coverage, not partner performance"],
         ["Live offers", metricValue(workspaceSummary.data, "liveOffers", formatWorkspaceNumber(activePerks.length)), metricDetail(workspaceSummary.data, "liveOffers", "Authorized offer source")],
-        ["Upcoming events", metricValue(workspaceSummary.data, "upcomingEvents", formatWorkspaceNumber(upcomingEvents.length)), metricDetail(workspaceSummary.data, "upcomingEvents", "Authorized event source")],
+        ["Upcoming events", metricValue(workspaceSummary.data, "upcomingEvents", formatWorkspaceNumber(upcomingEvents.length)), metricDetail(workspaceSummary.data, "upcomingEvents", "Persisted event source")],
+        ["Campaigns", metricValue(workspaceSummary.data, "persistedCampaigns", "—"), metricDetail(workspaceSummary.data, "persistedCampaigns", "Persisted campaign source")],
+        ["Attributed actions", metricValue(workspaceSummary.data, "attributedActivity", "—"), metricDetail(workspaceSummary.data, "attributedActivity", "Only events with partner/entity identifiers")],
         ["Verified resident audience", workspaceSummary.data ? `${metricValue(workspaceSummary.data, "activeResidentProfiles", "—")} profiles / ${metricValue(workspaceSummary.data, "activeResidentIdentities", "—")} identities` : "—", workspaceSummary.status === "loading" ? "Loading source" : "Aggregate-only platform count"],
         ["Contactable audience", metricValue(workspaceSummary.data, "contactableAudience", "—"), metricDetail(workspaceSummary.data, "contactableAudience", "Source not connected")],
       ];

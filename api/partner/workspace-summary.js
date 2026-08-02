@@ -6,6 +6,7 @@ import {
 
 const ACTIVE_STATUSES = ["active", "live", "published"];
 const UPCOMING_EVENT_STATUSES = ["upcoming", "live", "scheduled"];
+const PUBLISHED_EXPERIENCE_STATUSES = ["active", "live", "published", "scheduled"];
 
 function clean(value, max = 180) {
   return String(value || "").trim().slice(0, max);
@@ -13,6 +14,14 @@ function clean(value, max = 180) {
 
 function metric(value, sourceStatus = "connected", detail = "") {
   return { value: Number.isFinite(Number(value)) ? Number(value) : null, sourceStatus, detail };
+}
+
+function sourceMetric(value, sourceSystem, sourceStatus = "connected", detail = "") {
+  return {
+    ...metric(value, sourceStatus, detail),
+    sourceSystem,
+    freshness: { asOf: new Date().toISOString() },
+  };
 }
 
 async function countRows(query) {
@@ -81,6 +90,21 @@ export default async function handler(req, res) {
       return query.in("status", ACTIVE_STATUSES);
     });
 
+    const persistedCampaigns = await optionalCount("partner_experiences", () => {
+      let query = database.from("partner_experiences").select("id", { count: "exact", head: true });
+      if (organizationId) query = query.eq("organization_id", organizationId);
+      if (requestedPortfolioId) query = query.eq("portfolio_id", requestedPortfolioId);
+      if (requestedListingId) query = query.eq("listing_id", requestedListingId);
+      return query.in("status", PUBLISHED_EXPERIENCE_STATUSES);
+    });
+
+    const attributedActivity = await optionalCount("user_activity_events", () => {
+      let query = database.from("user_activity_events").select("id", { count: "exact", head: true });
+      query = query.eq("partner_organization_id", organizationId || "__none__");
+      if (requestedListingId) query = query.eq("listing_id", requestedListingId);
+      return query;
+    });
+
     const liveOffers = await optionalCount("perks", () => database
       .from("perks")
       .select("id", { count: "exact", head: true })
@@ -143,8 +167,43 @@ export default async function handler(req, res) {
         activeResidentIdentities,
         activeMemberships,
         completedOnboarding,
+        persistedCampaigns,
+        attributedActivity,
         contactableAudience: metric(null, "not_connected", "Connect a consented CRM/audience source before showing contactable residents."),
-        mapActivity,
+        danaAudience: metric(null, "not_connected", "Connect DANA member ingestion before showing DANA audience counts."),
+        eligibleResidentAudience: activeMemberships,
+        mapActivity: metric(mapActivity.value, "unassigned", "Platform activity is currently unassigned until event tracking records entity and partner identifiers."),
+      },
+      sections: {
+        mapCoverage: {
+          label: "Map inventory",
+          description: "Public inventory available to discover. This is coverage, not partner performance.",
+          metrics: {
+            publicMapEntities: sourceMetric(connectedMapEntities.value, "map_entities", connectedMapEntities.sourceStatus, connectedMapEntities.detail || "Active public map entities"),
+          },
+        },
+        partnerResults: {
+          label: "Partner results",
+          description: "Persisted, scope-authorized records and attributed actions only.",
+          metrics: {
+            connectedListings: sourceMetric(connectedActiveListings.value, "partner_listings", connectedActiveListings.sourceStatus, connectedActiveListings.detail || "Active listings in this authorized partner scope"),
+            liveOffers: sourceMetric(liveOffers.value, "perks", liveOffers.sourceStatus, liveOffers.detail || "Persisted active offers"),
+            upcomingEvents: sourceMetric(upcomingEvents.value, "events", upcomingEvents.sourceStatus, upcomingEvents.detail || "Persisted upcoming events"),
+            campaigns: sourceMetric(persistedCampaigns.value, "partner_experiences", persistedCampaigns.sourceStatus, persistedCampaigns.detail || "Persisted published campaigns"),
+            attributedActivity: sourceMetric(attributedActivity.value, "user_activity_events", attributedActivity.sourceStatus, attributedActivity.detail || "Events carrying this partner scope"),
+          },
+        },
+        audience: {
+          label: "Audience",
+          description: "Consent-based audience segments. Not-connected sources remain visible as not connected.",
+          metrics: {
+            eligibleResidents: sourceMetric(activeMemberships.value, "resident_memberships", activeMemberships.sourceStatus, activeMemberships.detail || "Active resident memberships"),
+            residentProfiles: sourceMetric(activeResidentProfiles.value, "resident_profiles", activeResidentProfiles.sourceStatus, activeResidentProfiles.detail || "Active resident profiles"),
+            residentIdentities: sourceMetric(activeResidentIdentities.value, "users", activeResidentIdentities.sourceStatus, activeResidentIdentities.detail || "Active resident identities"),
+            contactableAudience: sourceMetric(null, "consented_audience", "not_connected", "Connect a consented CRM/audience source before showing contactable residents."),
+            danaAudience: sourceMetric(null, "dana_member_sync", "not_connected", "DANA member ingestion is not connected."),
+          },
+        },
       },
       viewer: { id: user.id, role: membership.role },
     });
