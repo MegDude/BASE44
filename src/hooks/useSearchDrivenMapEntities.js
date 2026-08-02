@@ -392,6 +392,35 @@ function distanceBetween(a = {}, b = {}) {
   return Math.hypot(aCoords.lat - bCoords.lat, aCoords.lng - bCoords.lng);
 }
 
+
+function normalizeLookupId(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function entityMatchesLookupId(entity = {}, lookupId = "") {
+  const target = normalizeLookupId(lookupId);
+  if (!target) return false;
+  return [
+    entity.id,
+    entity.entity_id,
+    entity.entityId,
+    entity.slug,
+    entity.name,
+    entity.title,
+    entity.raw?.id,
+    entity.raw?.entity_id,
+    entity.raw?.entityId,
+    entity.raw?.slug,
+    entity.raw?.name,
+    entity.raw?.title,
+  ].some((value) => normalizeLookupId(value) === target);
+}
+
 function activeEntityRelatedNames(entity = {}) {
   const raw = entity.raw && typeof entity.raw === "object" ? entity.raw : {};
   return new Set([
@@ -539,7 +568,7 @@ export function selectScopedEntities(allEntities, scope) {
   const limit = normalizedScope.resultLimit;
   const activeEntityId = scope.activeEntityId || "";
   const savedEntityIds = new Set((scope.savedEntityIds || []).map(String));
-  const activeEntity = activeEntityId ? allEntities.find((entity) => String(entity.id) === String(activeEntityId)) : null;
+  const activeEntity = activeEntityId ? allEntities.find((entity) => entityMatchesLookupId(entity, activeEntityId)) : null;
   const relatedLimit = activeEntity ? Math.max(0, limit - 1) : limit;
 
   if (activeEntity) {
