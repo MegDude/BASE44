@@ -56,12 +56,15 @@ export default async function handler(req, res) {
     const requestedListingId = clean(req.query?.listingId);
     const organizationId = organization?.id || "";
 
-    if (requestedOrganizationId && organizationId && requestedOrganizationId !== organizationId) {
+    if (requestedOrganizationId && requestedOrganizationId !== organizationId) {
       return res.status(403).json({ ok: false, code: "SCOPE_NOT_AUTHORIZED", error: "This workspace scope is not available to this account." });
     }
 
     const listingScope = (query) => {
-      if (organizationId) query = query.eq("organization_id", organizationId);
+      // Always tenant-scope by organization. When the partner's organization
+      // cannot be resolved, force an empty scope (mirroring admin/scope.js and
+      // the mapActivity "__none__" sentinel) so we never leak platform-wide counts.
+      query = query.eq("organization_id", organizationId || "__none__");
       if (requestedPortfolioId) query = query.eq("portfolio_id", requestedPortfolioId);
       if (requestedListingId) query = query.eq("id", requestedListingId);
       return query;
