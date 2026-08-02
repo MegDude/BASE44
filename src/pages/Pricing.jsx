@@ -206,7 +206,7 @@ export default function PricingPage() {
                     </button>
                   ))}
                 </div>
-                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Need a portfolio, real-estate, or sponsorship program?</button></p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real estate, or sponsorship?</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
