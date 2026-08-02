@@ -150,6 +150,8 @@ import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
 
+import "@/styles/map-pin-coordinate-anchor-lock.css"
+
 inject()
 injectSpeedInsights()
 

@@ -393,4 +393,119 @@ test.describe("adaptive map surface", () => {
   }
 
 
+
+
+  test("map marker coordinate keys remain stable across interactions", async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.goto("/map?mode=resident&tab=map&filter=All&entityId=partner-bangers");
+    await expect(page.locator("#dp-active-map-drawer")).toBeVisible();
+
+    async function markerSnapshot() {
+      return page.evaluate(() => {
+        const lifecycle = (window as any).__DP_MAP_MARKER_LIFECYCLE__;
+        const lifecycleRows = Array.isArray(lifecycle?.markerSnapshots) ? lifecycle.markerSnapshots : [];
+        const shellRows = [...document.querySelectorAll<HTMLElement>(".dp-google-map-marker-shell[data-marker-entity-id]")].map((node) => ({
+          markerId: node.dataset.markerEntityId || "",
+          entityId: node.dataset.entityId || "",
+          latitude: node.dataset.canonicalLatitude || "",
+          longitude: node.dataset.canonicalLongitude || "",
+          coordinateKey: node.dataset.coordinateKey || "",
+          lastPositionKey: node.dataset.coordinateKey || "",
+        }));
+        const buttonRows = [...document.querySelectorAll<HTMLElement>(".dp-map-pin[data-marker-entity-id]")].map((node) => ({
+          markerId: node.dataset.markerEntityId || "",
+          entityId: node.dataset.entityId || "",
+          latitude: node.dataset.canonicalLatitude || "",
+          longitude: node.dataset.canonicalLongitude || "",
+          coordinateKey: node.dataset.coordinateKey || "",
+          lastPositionKey: node.dataset.coordinateKey || "",
+        }));
+        const accessibleRows = [...document.querySelectorAll<HTMLElement>("[data-accessible-marker-entity-id][data-marker-entity-id]")].map((node) => ({
+          markerId: node.dataset.markerEntityId || "",
+          entityId: node.dataset.entityId || "",
+          latitude: node.dataset.canonicalLatitude || "",
+          longitude: node.dataset.canonicalLongitude || "",
+          coordinateKey: node.dataset.coordinateKey || "",
+          lastPositionKey: node.dataset.coordinateKey || "",
+        }));
+        const domRows = shellRows.length ? shellRows : buttonRows.length ? buttonRows : accessibleRows;
+        return (lifecycleRows.length ? lifecycleRows : domRows)
+          .filter((row: any) => row.markerId && row.latitude && row.longitude)
+          .map((row: any) => ({
+            markerId: String(row.markerId),
+            entityId: String(row.entityId),
+            latitude: String(row.latitude),
+            longitude: String(row.longitude),
+            coordinateKey: String(row.coordinateKey),
+            lastPositionKey: String(row.lastPositionKey || row.coordinateKey),
+          }))
+          .sort((left: any, right: any) => left.markerId.localeCompare(right.markerId));
+      });
+    }
+
+    await expect.poll(async () => (await markerSnapshot()).length, { timeout: 10000 }).toBeGreaterThan(0);
+
+    function assertStableCommonMarkers(before: Awaited<ReturnType<typeof markerSnapshot>>, after: Awaited<ReturnType<typeof markerSnapshot>>) {
+      const afterById = new Map(after.map((row) => [row.markerId, row]));
+      const common = before.filter((row) => afterById.has(row.markerId));
+      expect(common.length).toBeGreaterThan(0);
+      for (const row of common) {
+        const next = afterById.get(row.markerId)!;
+        expect(next.entityId).toBe(row.entityId);
+        expect(next.latitude).toBe(row.latitude);
+        expect(next.longitude).toBe(row.longitude);
+        expect(next.coordinateKey).toBe(row.coordinateKey);
+        expect(next.lastPositionKey).toBe(row.coordinateKey);
+      }
+    }
+
+    const initial = await markerSnapshot();
+    const initiallyOpenDrawer = page.locator("#dp-active-map-drawer");
+    if (await initiallyOpenDrawer.isVisible().catch(() => false)) {
+      const closeInitialDrawer = initiallyOpenDrawer.getByRole("button", { name: /close/i }).first();
+      await closeInitialDrawer.click();
+      await expect(initiallyOpenDrawer).toBeHidden({ timeout: 5000 });
+      assertStableCommonMarkers(initial, await markerSnapshot());
+    }
+
+    await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+    await page.waitForTimeout(250);
+    assertStableCommonMarkers(initial, await markerSnapshot());
+
+    const mapBox = await page.locator(".dp-google-map-canvas, .gm-style").first().boundingBox();
+    if (mapBox) {
+      await page.mouse.move(mapBox.x + mapBox.width / 2, mapBox.y + mapBox.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(mapBox.x + mapBox.width / 2 + 80, mapBox.y + mapBox.height / 2 + 40, { steps: 8 });
+      await page.mouse.up();
+      await page.waitForTimeout(300);
+      assertStableCommonMarkers(initial, await markerSnapshot());
+    }
+
+    const natiivo = page.getByRole("button", { name: "Open Natiivo Austin", exact: true });
+    if (await natiivo.isVisible()) {
+      await natiivo.evaluate((button) => button.click());
+      await expect(page).toHaveURL(/entityId=natiivo-austin/);
+      await expect(page.locator("#dp-active-map-drawer")).toBeVisible();
+      assertStableCommonMarkers(initial, await markerSnapshot());
+    }
+
+    const closeDrawer = page.getByRole("button", { name: /close/i }).first();
+    if (await closeDrawer.isVisible().catch(() => false)) {
+      await closeDrawer.click();
+      await page.waitForTimeout(150);
+    }
+    await page.getByRole("tab", { name: "Perks", exact: true }).click();
+    await expect(page).toHaveURL(/tab=perks|filter=Perks/);
+    await page.waitForTimeout(250);
+    const filtered = await markerSnapshot();
+    expect(filtered.length).toBeGreaterThan(0);
+    assertStableCommonMarkers(initial, filtered);
+
+    await page.setViewportSize({ width: 844, height: 390 });
+    await page.waitForTimeout(300);
+    assertStableCommonMarkers(filtered, await markerSnapshot());
+  });
+
+
 });
