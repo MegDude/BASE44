@@ -54,7 +54,6 @@ import BuildingExperienceModule from "@/components/map/BuildingExperienceModule"
 import { CanonicalDetailPanel, DrawerActionFooter } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
-import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
 import { residentAccountFromContext, residentAccountStatus } from "@/lib/residentMembership/residentAccount";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
@@ -14328,7 +14327,7 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, rawTab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
@@ -18513,8 +18512,14 @@ export default function MapPage() {
                   type="button"
                   role="tab"
                   aria-label="Home"
-                  onClick={() => navigate(DEFAULT_RESIDENT_MAP_PATH)}
-                  aria-selected={false}
+                  onClick={() => {
+                    clearOpenMapSelection();
+                    setActiveBottomTab("info");
+                    setConsoleCollapsed(true);
+                    navigate("/map?mode=resident&tab=home");
+                  }}
+                  aria-pressed={urlState.rawTab === "home" && activeBottomTab === "info"}
+                  aria-selected={urlState.rawTab === "home" && activeBottomTab === "info"}
                 >
                   <House className="h-4 w-4" />
                   <span className="dp-native-tab-label">Home</span>
