@@ -1,0 +1,63 @@
+/* Canonical map-results sheet: live, canonical rows only. Loaded last to prevent
+   legacy grouped-popup styles from restoring generic actions or rounded cards. */
+.dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] {
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-context-list-heading {
+  padding: 16px 20px 12px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+  background: #fff !important;
+}
+
+.dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-grouped-row {
+  min-height: 72px !important;
+  padding: 12px 20px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, .1) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-grouped-status {
+  display: grid !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  place-items: center !important;
+  color: #0b1f33 !important;
+}
+
+.dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-grouped-row:is(:hover, :focus-visible) .dp-grouped-status {
+  color: #c8a96a !important;
+}
+
+@media (max-width: 767px), (max-height: 599px) {
+  .dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] {
+    bottom: calc(var(--dp-bottom-nav-total-height) + 12px + env(safe-area-inset-bottom, 0px)) !important;
+    max-height: min(84dvh, calc(100dvh - var(--dp-bottom-nav-total-height) - 12px)) !important;
+  }
+
+  .dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-native-drawer-content-viewport,
+  .dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] .dp-native-drawer-scroll {
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .dp-map-page #dp-active-map-drawer[data-panel-layout="context-list"] {
+    top: 84px !important;
+    right: auto !important;
+    bottom: 24px !important;
+    left: 24px !important;
+    width: min(380px, calc(100vw - 48px)) !important;
+    max-height: calc(100dvh - 108px) !important;
+  }
+}
