@@ -117,7 +117,7 @@ const partnerTypes = [
   },
 ];
 
-const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
+const publicPartnerTypes = partnerTypes.filter((type) => !["restaurant", "retail"].includes(type.id));
 
 const impactGroups = [
   {
@@ -342,12 +342,10 @@ const integrationLogoAliases = {
 };
 
 const timelineSteps = [
-  "Choose your membership",
-  "Create your workspace",
-  "Connect your existing software",
-  "Publish your first offer or event",
-  "Reach nearby residents",
-  "Track visits and results",
+  "Choose the plan that fits your location",
+  "Set up your partner account",
+  "Publish an offer, event, or profile update",
+  "Review what residents use",
 ];
 
 const faqItems = [
@@ -525,15 +523,6 @@ function LifecycleShell({ stage, children }) {
         </Link>
       </header>
 
-      {!isTools ? (
-        <section className="dp-partner-trust-strip" aria-label="Connected tools">
-          <span>Works with</span>
-          <div>
-            {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
-          </div>
-        </section>
-      ) : null}
-
       {children}
     </main>
   );
@@ -563,7 +552,7 @@ function ChooseBusinessSection({ setup, setSetup }) {
         <span>Choose the closest match. We’ll recommend the right membership.</span>
       </div>
       <div className="dp-partner-lifestyle-grid">
-        {partnerTypes.slice(0, 7).map((type) => {
+        {publicPartnerTypes.map((type) => {
           const isSelected = selectedType.id === type.id;
           const TypeIcon = type.icon;
           return (
@@ -606,7 +595,7 @@ function RecommendedMembership({ setup }) {
           <p>{selectedType.overview}</p>
           <strong>{total === "Custom" ? "Custom setup" : `${total} annually`}</strong>
           <div>
-            {selectedType.includes.map((item) => (
+            {selectedType.includes.slice(0, 3).map((item) => (
               <span key={item}><Check aria-hidden="true" />{item}</span>
             ))}
           </div>
@@ -618,7 +607,7 @@ function RecommendedMembership({ setup }) {
         <details className="dp-partner-plan-comparison">
           <summary>View all memberships</summary>
           <div>
-            {partnerTypes.slice(0, 7).map((type) => (
+            {publicPartnerTypes.map((type) => (
               <Link key={type.id} to={`/pricing?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
                 <span>{type.label}</span>
                 <strong>{type.plan}</strong>
