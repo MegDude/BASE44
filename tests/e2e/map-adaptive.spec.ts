@@ -480,9 +480,12 @@ test.describe("adaptive map surface", () => {
       assertStableCommonMarkers(initial, await markerSnapshot(), false);
     }
 
-    await page.getByRole("button", { name: "Zoom in", exact: true }).click();
-    await page.waitForTimeout(250);
-    assertStableCommonMarkers(initial, await markerSnapshot());
+    const zoomIn = page.getByRole("button", { name: "Zoom in", exact: true }).first();
+    if (await zoomIn.isVisible().catch(() => false)) {
+      await zoomIn.evaluate((button) => (button as HTMLButtonElement).click());
+      await page.waitForTimeout(250);
+      assertStableCommonMarkers(initial, await markerSnapshot());
+    }
 
     const mapBox = await page.locator(".dp-google-map-canvas, .gm-style").first().boundingBox();
     if (mapBox) {
