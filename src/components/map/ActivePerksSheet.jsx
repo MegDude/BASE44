@@ -56,10 +56,10 @@ function perkSearchText(item) {
 function perkMatchesFilter(item, filter, savedIds, redeemedIds) {
   const text = perkSearchText(item);
   const redeemed = redeemedIds.has(item.perkId) || redeemedIds.has(item.id);
-  if (filter === "Active") return !redeemed && !item.expired && !item.unavailable && !item.upcoming;
+  if (filter === "Active") return item.isOffer && !redeemed && !item.expired && !item.unavailable && !item.upcoming;
   if (filter === "Saved") return savedIds.has(item.id);
-  if (filter === "Nearby") return true;
-  if (filter === "Events") return /event|rsvp|calendar/.test(text);
+  if (filter === "Nearby") return item.isOffer;
+  if (filter === "Events") return /event|rsvp|calendar|music|arts|culture/.test(text);
   return text.includes(filter.toLowerCase());
 }
 
@@ -89,8 +89,13 @@ function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
         </span>
       </button>
       <div className="dp-active-perk-actions" aria-label={`${item.name} perk actions`}>
-        <button type="button" onClick={() => onRedeem(item)} disabled={redeemed}>
-          {redeemed ? "Used" : "Use perk"}
+        <button
+          type="button"
+          className="dp-active-perk-primary-link"
+          onClick={() => (item.isOffer ? onRedeem(item) : onOpen(item))}
+          disabled={item.isOffer && redeemed}
+        >
+          {item.isOffer ? (redeemed ? "Used" : "Use offer →") : "Explore →"}
         </button>
         <button
           type="button"
