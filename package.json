@@ -67,6 +67,7 @@
     "test:content-governance": "tsx scripts/test-content-governance.ts",
     "verify:production-map": "tsx scripts/verify-production-map.ts",
     "test:partner-analytics": "node scripts/test-partner-analytics.mjs",
+    "test:partner-audience-live-data": "node scripts/test-partner-audience-live-data-contract.mjs",
     "test:workspace-reconciliation": "tsx scripts/test-workspace-reconciliation.ts",
     "microsites:sync-notion": "tsx scripts/sync-notion-microsites.ts",
     "test:microsites": "tsx scripts/test-microsites.ts",
