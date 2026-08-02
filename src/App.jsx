@@ -17,6 +17,7 @@ const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
+const ResidentGovernance = lazy(() => import("./pages/ResidentGovernance"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
 const PartnerGateway = lazy(() => import("./pages/PartnerGateway"));
@@ -199,10 +200,10 @@ function ProductRoutes() {
           <Route path="/resident/saved" element={<Navigate to="/map?mode=resident&tab=saved&filter=Featured&collection=downtown-perks-featured" replace />} />
           <Route path="/resident/events" element={<Navigate to="/map?mode=resident&tab=events&filter=Events&collection=events-nearby" replace />} />
           <Route path="/resident/perks" element={<Navigate to="/map?mode=resident&tab=perks&filter=Perks&collection=resident-benefits" replace />} />
-          <Route path="/resident/civic" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
-          <Route path="/resident/civic/:actionId" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
+          <Route path="/resident/civic" element={<ResidentGovernance />} />
+          <Route path="/resident/civic/:actionId" element={<ResidentGovernance />} />
           <Route path="/resident/*" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
-          <Route path="/residents/governance" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
+          <Route path="/residents/governance" element={<ResidentGovernance />} />
           <Route path="/residents/membership" element={<Navigate to="/residents/login" replace />} />
           <Route path="/residents/register" element={<Navigate to="/residents/login" replace />} />
           <Route path="/residents/login" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
