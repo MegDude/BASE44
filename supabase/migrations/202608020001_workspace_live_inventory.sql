@@ -77,3 +77,14 @@ alter table public.analytics_signals add column if not exists listing_id uuid re
 alter table public.analytics_signals add column if not exists perk_id uuid references public.perks(id) on delete set null;
 create index if not exists analytics_signals_partner_scope_idx on public.analytics_signals (partner_organization_id, listing_id, created_at desc);
 create index if not exists analytics_signals_entity_idx on public.analytics_signals (entity_id, created_at desc);
+
+insert into public.audience_sources (source_key, source_name, source_type, status, last_synced_at)
+values
+  ('resident-profiles', 'Downtown Perks resident profiles', 'resident', 'connected', now()),
+  ('dana-members', 'DANA members', 'dana', 'pending', null)
+on conflict (source_key) do update
+set source_name = excluded.source_name,
+    source_type = excluded.source_type,
+    status = excluded.status,
+    last_synced_at = excluded.last_synced_at,
+    updated_at = now();
