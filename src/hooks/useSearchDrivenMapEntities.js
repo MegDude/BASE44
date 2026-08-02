@@ -11,6 +11,13 @@ import {
 } from "@/lib/map/mapDiscovery";
 import { isDiscoveryControlFilter, normalizeDiscoveryControlQuery } from "@/lib/map/mapDiscoveryControls";
 import { buildPlatformSearchCatalog, groupPlatformSearchResults, searchPlatformCatalog } from "@/lib/search/platformSearchCatalog";
+import {
+  buildMapQueryFromScope,
+  createErrorMapResultState,
+  createIdleMapResultState,
+  createLoadingMapResultState,
+  createReadyMapResultState,
+} from "@/lib/map/intentScopedMapResults";
 
 const QUERY_CACHE_MAX = MAP_DISCOVERY_LIMITS.cacheEntries;
 const SEARCH_RESULT_LIMITS = Object.freeze({
@@ -342,9 +349,17 @@ function matchesIntent(entity, intent, filter, mode = "resident") {
     return entityMatchesMapIntent(entity, intent);
   }
 
+  if (intent === "lunch") return /\b(lunch|restaurant|dining|food|cafe|café|taco|burger|sandwich|salad|sushi|pizza|kitchen|cocina|brunch)\b/.test(text);
+  if (intent === "happy_hour") return /\b(happy hour|perk|offer|cocktail|drinks|bar|beer|wine|nightlife|resident benefit)\b/.test(text);
+  if (intent === "drinks") return /\b(drink|drinks|bar|cocktail|beer|wine|nightlife|rooftop|lounge|happy hour)\b/.test(text);
+  if (intent === "dinner") return /\b(dinner|restaurant|dining|supper|steak|sushi|italian|kitchen|cocina|grill)\b/.test(text);
+  if (intent === "fitness") return /\b(fitness|gym|training|pilates|yoga|wellness|recovery)\b/.test(text);
+  if (intent === "walking_route") return /\b(route|walk|trail|tour|stop|waterloo|greenway|art walk|parks tour)\b/.test(text);
+  if (intent === "partner") return /\b(partner|venue|brand|civic|property|hotel|real estate)\b/.test(text);
+  if (intent === "campaign") return /\b(campaign|activation|passport|challenge|sponsor|featured)\b/.test(text);
   if (intent === "coffee") return /\b(coffee|cafe|espresso|bakery)\b/.test(text);
   if (intent === "hotels") return /\bhotel|hospitality|stay\b/.test(text) || type === "hotel";
-  if (intent === "buildings") return /\b(property|residential|building|rental|listing|legends|condo|apartment)\b/.test(text);
+  if (intent === "buildings" || intent === "property") return /\b(property|residential|building|rental|listing|legends|condo|apartment|hotel)\b/.test(text);
   if (intent === "resident_perks") return hasActivePerk(entity);
   if (intent === "events") return /\b(event|rsvp|live music|tonight|festival|show|concert)\b/.test(text) || type === "event";
   if (intent === "wellness") return /\b(wellness|fitness|spa|salon|gym|yoga|pilates|recovery)\b/.test(text);
@@ -418,7 +433,25 @@ function buildQueryKey(scope = {}) {
 
 function normalizeScope(scope = {}) {
   const query = normalizeDiscoveryControlQuery(scope.query, scope.filter);
-  const intent = scope.intent || getCanonicalIntentForFilter(scope.filter || "All", query);
+  const filterIntent = getCanonicalIntentForFilter(scope.filter || "All", query);
+  const explicitIntentByFilter = {
+    Lunch: "lunch",
+    "Happy Hour": "happy_hour",
+    "Happy Hours": "happy_hour",
+    Drinks: "drinks",
+    Cocktails: "drinks",
+    Dinner: "dinner",
+    Fitness: "fitness",
+    Wellness: "wellness",
+    Events: "events",
+    Campaigns: "campaign",
+    "Brand Activations": "campaign",
+    Properties: "property",
+    Hotels: "property",
+    Listings: "property",
+    "All Listings": "property",
+  };
+  const intent = scope.intent || explicitIntentByFilter[scope.filter] || filterIntent;
   const fallbackLimit = query ? SEARCH_RESULT_LIMITS.text : SEARCH_RESULT_LIMITS.intent;
   return {
     ...scope,
@@ -703,6 +736,7 @@ export function useSearchDrivenMapEntities() {
     queryId: "",
     resultTitle: null,
     resultSubtitle: null,
+    mapResultState: createIdleMapResultState(),
   });
   const [requestStatus, setRequestStatus] = useState("idle");
   const [lastTrigger, setLastTrigger] = useState("");
@@ -763,10 +797,13 @@ export function useSearchDrivenMapEntities() {
     const cached = getCache(cacheRef, queryKey);
     if (cached) {
       const cachedEntities = cached.resultIds.map((id) => cached.entitiesById[id]).filter(Boolean);
-      await searchCatalog(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
-      setResultState(cached);
+      setResultState({
+        ...cached,
+        mapResultState: cached.mapResultState || createReadyMapResultState(buildMapQueryFromScope(normalizedScope), cachedEntities, cached.route || null),
+      });
       setLastTrigger(trigger);
       setRequestStatus("success");
+      await searchCatalog(normalizedScope.query, cachedEntities, normalizedScope.audienceMode);
       setMetrics((current) => ({ ...current, cacheHitCount: current.cacheHitCount + 1 }));
       return cached;
     }
@@ -783,7 +820,20 @@ export function useSearchDrivenMapEntities() {
     activeRequestRef.current = { id: requestId, key: queryKey };
     setRequestStatus("loading");
     setLastTrigger(trigger);
-    setResultState((current) => ({ ...current, status: "resolving", source: resolverRequest.source }));
+    const activeMapQuery = buildMapQueryFromScope(normalizedScope);
+    setResultState((current) => ({
+      ...current,
+      resultIds: [],
+      entitiesById: {},
+      total: 0,
+      cursor: "",
+      status: "resolving",
+      source: resolverRequest.source,
+      queryId: "",
+      resultTitle: null,
+      resultSubtitle: null,
+      mapResultState: createLoadingMapResultState(activeMapQuery),
+    }));
     const startedAt = performance.now();
 
     try {
@@ -823,8 +873,9 @@ export function useSearchDrivenMapEntities() {
         setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
         return null;
       }
-      putCache(cacheRef, result.queryKey, result);
       const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
+      result.mapResultState = createReadyMapResultState(activeMapQuery, resolvedEntities, result.route || null);
+      putCache(cacheRef, result.queryKey, result);
       await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
       if (controller.signal.aborted || activeRequestRef.current.id !== requestId || activeRequestRef.current.key !== queryKey) {
         setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
@@ -853,8 +904,9 @@ export function useSearchDrivenMapEntities() {
           source: resolverRequest.source,
           queryId: `local-${requestId}`,
         };
-        putCache(cacheRef, result.queryKey, result);
         const resolvedEntities = result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
+        result.mapResultState = createReadyMapResultState(activeMapQuery, resolvedEntities, result.route || null);
+        putCache(cacheRef, result.queryKey, result);
         await searchCatalog(normalizedScope.query, resolvedEntities, normalizedScope.audienceMode);
         if (controller.signal.aborted || activeRequestRef.current.id !== requestId || activeRequestRef.current.key !== queryKey) {
           setMetrics((current) => ({ ...current, staleCancellationCount: current.staleCancellationCount + 1 }));
@@ -873,7 +925,15 @@ export function useSearchDrivenMapEntities() {
         if (fallbackError?.name === "AbortError") return null;
         console.warn("Map results could not be loaded.", fallbackError);
         setRequestStatus("error");
-        setResultState((current) => ({ ...current, status: "error" }));
+        setResultState((current) => ({
+          ...current,
+          resultIds: [],
+          entitiesById: {},
+          total: 0,
+          cursor: "",
+          status: "error",
+          mapResultState: createErrorMapResultState(activeMapQuery),
+        }));
         return null;
       }
     }
@@ -901,6 +961,7 @@ export function useSearchDrivenMapEntities() {
       queryId: "",
       resultTitle: null,
       resultSubtitle: null,
+      mapResultState: createIdleMapResultState(),
     });
   }, []);
 
@@ -931,6 +992,7 @@ export function useSearchDrivenMapEntities() {
     allLoadedPlaces: places,
     entitiesById: resultState.entitiesById,
     resultState,
+    mapResultState: resultState.mapResultState || createIdleMapResultState(),
     catalogState,
     requestStatus,
     lastTrigger,
