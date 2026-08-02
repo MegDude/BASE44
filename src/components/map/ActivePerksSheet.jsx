@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Navigation, Search, Star, X } from "lucide-react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
@@ -41,6 +42,26 @@ function perkAvailabilityLabel(item, redeemed) {
   if (item.limited) return "Limited quantity";
   if (item.memberOnly) return "Member-only";
   return "Available now";
+}
+
+const PERK_FILTERS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+const CATEGORY_TERMS = {
+  Dining: ["dining", "restaurant", "food", "coffee", "cafe", "bar", "drink"],
+  Fitness: ["fitness", "gym", "workout", "sport", "yoga", "pilates"],
+  Wellness: ["wellness", "spa", "health", "beauty", "salon", "massage"],
+  Events: ["event", "entertainment", "music", "arts", "culture", "venue"],
+};
+
+function matchesPerkFilter(item, filter, savedIds) {
+  if (filter === "Active") return !item.expired && !item.unavailable && !item.upcoming;
+  if (filter === "Saved") return savedIds.has(item.id);
+  if (filter === "Nearby") return Boolean(item.distance);
+
+  const searchable = [item.category, item.name, item.offerTitle, item.partner]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return CATEGORY_TERMS[filter]?.some((term) => searchable.includes(term)) ?? true;
 }
 
 function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
@@ -95,6 +116,11 @@ export default function ActivePerksSheet({
 }) {
   const safeState = normalizeDrawerState(drawerState, "list");
   const nextState = nextDrawerState(safeState, "list");
+  const [selectedFilter, setSelectedFilter] = useState("Active");
+  const filteredItems = useMemo(
+    () => items.filter((item) => matchesPerkFilter(item, selectedFilter, savedIds)),
+    [items, savedIds, selectedFilter],
+  );
 
   return (
     <NativeDrawerShell
@@ -138,18 +164,23 @@ export default function ActivePerksSheet({
       {safeState !== "peek" && (
         <div>
           <section className="dp-active-perks-intro" aria-label="Perks context">
-            <p>Available near this map area</p>
-            <strong aria-live="polite">{items.length} {items.length === 1 ? "offer" : "offers"}</strong>
+            <p>{selectedFilter === "Active" ? "Available near this map area" : `${selectedFilter} perks`}</p>
+            <strong aria-live="polite">{filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"}</strong>
           </section>
           <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
-            {["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"].map((label, index) => (
-              <button key={label} type="button" aria-pressed={index === 0}>
+            {PERK_FILTERS.map((label, index) => (
+              <button
+                key={label}
+                type="button"
+                aria-pressed={selectedFilter === label}
+                onClick={() => setSelectedFilter(label)}
+              >
                 {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
                 <span>{label}</span>
               </button>
             ))}
           </div>
-          {items.length ? items.map((item) => (
+          {filteredItems.length ? filteredItems.map((item) => (
             <PerkRow
               key={item.id}
               item={item}
@@ -160,9 +191,10 @@ export default function ActivePerksSheet({
               onSave={onSave}
             />
           )) : (
-            <div className="dp-active-perks-empty">
-              <strong>Nothing matches these filters.</strong>
-              <span>Return to the map and try nearby places, dining, coffee, or events.</span>
+            <div className="dp-active-perks-empty" role="status">
+              <strong>No {selectedFilter.toLowerCase()} perks found.</strong>
+              <span>Choose another filter or return to the map to explore a wider area.</span>
+              <button type="button" onClick={() => setSelectedFilter("Active")}>Show active perks</button>
               <button type="button" onClick={onClose}>Back to map</button>
             </div>
           )}

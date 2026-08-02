@@ -1,7 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { inject } from '@vercel/analytics'
-import { injectSpeedInsights } from '@vercel/speed-insights'
 import App from '@/App.jsx'
 import '@/index.css'
 import '@/styles/map-glass-final.css'
@@ -155,9 +153,27 @@ import "@/styles/workspace-unified-native-release.css"
 import "@/styles/map-drawer-native-luxury-final.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
 
-inject()
-injectSpeedInsights()
+const application = <App />
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <App />
+  import.meta.env.DEV ? <React.StrictMode>{application}</React.StrictMode> : application
 )
+
+function scheduleObservability() {
+  const start = async () => {
+    const [{ inject }, { injectSpeedInsights }] = await Promise.all([
+      import('@vercel/analytics'),
+      import('@vercel/speed-insights'),
+    ])
+    inject()
+    injectSpeedInsights()
+  }
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => void start(), { timeout: 2500 })
+  } else {
+    window.setTimeout(() => void start(), 1500)
+  }
+}
+
+if (import.meta.env.PROD) scheduleObservability()
