@@ -14280,7 +14280,7 @@ function useUrlMapState() {
     : mode === "resident" && MAP_NATIVE_RESIDENT_PANELS.includes(panelCandidate)
       ? panelCandidate
       : "";
-  const tab = rawTab === "pass" || rawTab === "card" ? "pass" : "map";
+  const tab = rawTab === "pass" || rawTab === "card" ? "card" : "map";
   const embed = searchParams.get("embed") === "true";
   const layer = searchParams.get("layer") || "";
   const route = searchParams.get("routeId") || searchParams.get("route") || "";
@@ -16728,7 +16728,7 @@ export default function MapPage() {
   }, [consoleHasActiveWork, selectedId, urlState.mode, urlState.panelTab, urlState.tab]);
 
   useEffect(() => {
-    if (selectedId || clusterDrawer || activePartnerPanel || urlState.tab === "pass" || urlState.tab === "campaigns") {
+    if (selectedId || clusterDrawer || activePartnerPanel || urlState.tab === "card" || urlState.tab === "campaigns") {
       setConsoleCollapsed(true);
       setFiltersOpen(false);
     }
@@ -17115,7 +17115,7 @@ export default function MapPage() {
     setDistrict(ALL_NEIGHBORHOODS);
     setRadius("5 min walk");
     urlState.update({
-      tab: urlState.tab === "pass" ? "pass" : "map",
+      tab: urlState.tab === "card" ? "pass" : "map",
       filter: "All",
       query: "",
       q: "",
@@ -17790,7 +17790,7 @@ export default function MapPage() {
   }
 
   function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
-    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
+    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "card" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
     clearOpenMapSelection();
     setSearch("");
     setActiveFilter(nextFilter);
@@ -17800,7 +17800,7 @@ export default function MapPage() {
     setFiltersOpen(false);
     setNeighborhoodsOpen(false);
     setSecondaryRailOpen(false);
-    setActiveBottomTab(tab === "pass" ? "card" : "map");
+    setActiveBottomTab(tab === "card" ? "card" : "map");
     setConsoleCollapsed(Boolean(options.collapseConsole));
     navigate(`/map?mode=${mode}&tab=${tab}${tab === "map" ? `&filter=${encodeURIComponent(nextFilter)}` : ""}`);
   }
@@ -18009,7 +18009,7 @@ export default function MapPage() {
   const advancedSearchFilters = dedupeConsoleItems(urlState.mode === "partner" ? PARTNER_ADVANCED_SEARCH_FILTERS : RESIDENT_ADVANCED_SEARCH_FILTERS);
   const searchRollupLabel = `Ask the map · ${activeFilter === "All" ? (urlState.mode === "partner" ? "Partners" : "Residents") : activeFilter}`;
   const hasOpenMapPanel =
-    urlState.tab === "pass" ||
+    urlState.tab === "card" ||
     activeBottomTab !== "map" ||
     Boolean(selected) ||
     Boolean(clusterDrawer) ||
@@ -18027,7 +18027,7 @@ export default function MapPage() {
     hasOpenMapPanel ||
     activeFilter === "Legends" ||
     activeFilter === "Listings";
-  const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "pass" || Boolean(urlState.panelTab));
+  const showBottomNavigation = !urlState.embed && (urlState.tab === "map" || urlState.tab === "card" || Boolean(urlState.panelTab));
   const isResidentPerksPanel = urlState.mode === "resident" && (
     urlState.panelTab === "perks" ||
     (urlState.tab === "map" && activeFilter === "Perks")
@@ -18360,7 +18360,7 @@ export default function MapPage() {
         </div>
       )}
 
-      {urlState.tab === "pass" && urlState.mode === "partner" && (
+      {urlState.tab === "card" && urlState.mode === "partner" && (
         <div className="pointer-events-none absolute inset-0 z-[540] flex items-end justify-center bg-[#0B1F33]/10 p-2 backdrop-blur-[2px] sm:p-4 md:items-center">
           <motion.section
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
@@ -18403,7 +18403,7 @@ export default function MapPage() {
         </div>
       )}
 
-      {urlState.tab === "pass" && urlState.mode !== "partner" && (
+      {urlState.tab === "card" && urlState.mode !== "partner" && (
         <div className="pointer-events-none absolute inset-0 z-[540] flex items-end justify-center p-2 sm:p-4 md:items-center">
           <MapSheet
             variant="resident-card"
@@ -18572,7 +18572,7 @@ export default function MapPage() {
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
                 </button>
-                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
+                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "card")} aria-selected={urlState.tab === "card"}>
                   <CreditCard className="h-4 w-4" />
                   <span className="dp-native-tab-label">Card</span>
                 </button>
