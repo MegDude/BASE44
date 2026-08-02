@@ -1,4 +1,5 @@
 import {
+  ArrowLeft,
   ArrowRight,
   BadgePercent,
   BarChart3,
@@ -34,9 +35,9 @@ import { withPartnerWorkspaceScope } from "@/lib/partnerWorkspaceContext";
 const DESTINATIONS = {
   publish: {
     eyebrow: "Create",
-    title: "Publish",
-    description: "Put offers, events, campaigns, and map guides in front of the right people.",
-    next: { id: "offers", title: "Create an offer", description: "Give nearby residents one clear reason to visit." },
+    title: "Share",
+    description: "Add offers, events, and updates without inventing content or metrics.",
+    next: { id: "offers", title: "Add an offer", description: "Give nearby residents one clear member benefit when it is ready." },
     groups: [
       { title: "Publish", ids: ["events", "campaigns", "share_links", "broadcasts", "surveys"] },
       { title: "Map content", ids: ["listings", "routes"] },
@@ -44,11 +45,11 @@ const DESTINATIONS = {
   },
   performance: {
     eyebrow: "Results",
-    title: "Performance",
-    description: "See what people find, open, save, and use across the map and your campaigns.",
-    next: { id: "analytics", title: "Review results", description: "See the latest activity and the next decision it supports." },
+    title: "Results",
+    description: "See real activity from map views, offers, events, and resident updates.",
+    next: { id: "analytics", title: "Review activity", description: "Open the real activity that supports the next decision." },
     groups: [
-      { title: "Results", ids: ["reports", "audience"] },
+      { title: "Results", ids: ["reports", "redemptions", "audience"] },
       { title: "Discovery", ids: ["research", "seo", "map_activity"] },
     ],
   },
@@ -152,7 +153,7 @@ export function GlobalWorkspaceSearch({ open, onClose, scope }) {
   return createPortal(<div className="dp-workspace-search-layer" role="dialog" aria-modal="true" aria-label="Search workspace">
     <button className="dp-workspace-search-backdrop" type="button" onClick={onClose} aria-label="Close search" />
     <section className="dp-workspace-search-sheet">
-      <header><span aria-hidden="true" /><Search aria-hidden="true" /><input autoFocus type="search" placeholder="Search workspace" aria-label="Search workspace" onInput={(event) => {
+      <header><button type="button" onClick={onClose} aria-label="Go back from workspace search"><ArrowLeft aria-hidden="true" /><span>Back</span></button><Search aria-hidden="true" /><input autoFocus type="search" placeholder="Search workspace" aria-label="Search workspace" onInput={(event) => {
         const query = event.currentTarget.value.trim().toLowerCase();
         event.currentTarget.closest("section")?.querySelectorAll("[data-search-text]").forEach((row) => { row.hidden = Boolean(query) && !row.dataset.searchText.includes(query); });
       }} /><button type="button" onClick={onClose} aria-label="Close search"><X aria-hidden="true" /><span>Close</span></button></header>

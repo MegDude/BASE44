@@ -118,14 +118,14 @@ const WORKSPACE_MEDIA = [
 // Partner profile is stored on the user object.
 
 const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Launch", href: "/partner-workspace/launch", helper: "Decisions, relationships, and proof." };
-const REDEMPTIONS_WORKSPACE_NAV_ITEM = { id: "redemptions", label: "Redemptions", href: "/partner-workspace/redemptions", helper: "Confirm QR uses and review results." };
+const REDEMPTIONS_WORKSPACE_NAV_ITEM = { id: "redemptions", label: "Visits & redemptions", href: "/partner-workspace/results?section=redemptions", helper: "Confirm QR uses and review results." };
 const SHARE_LINKS_WORKSPACE_NAV_ITEM = { id: "share_links", label: "Share links", href: "/partner-workspace/share-links", helper: "Create links and QR codes people can open." };
 const GOVERNANCE_WORKSPACE_NAV_ITEM = { id: "governance", label: "Community decisions", href: "/partner-workspace/governance", helper: "Publish updates and respond to residents." };
 
 const WORKSPACE_NAV_GROUPS = [
   { label: "Workspace", ids: ["overview", "launch", "assistant", "map", "profile"] },
-  { label: "Publish", ids: ["offers", "events", "campaigns", "governance", "share_links", "broadcasts"] },
-  { label: "Review", ids: ["audience", "surveys", "redemptions", "analytics", "reports"] },
+  { label: "Share", ids: ["offers", "events", "campaigns", "governance", "share_links", "broadcasts"] },
+  { label: "Results", ids: ["audience", "surveys", "redemptions", "analytics", "reports"] },
   { label: "Manage", ids: ["media", "team", "billing"] },
 ].map((group) => ({
   ...group,
@@ -210,28 +210,28 @@ const PARTNER_LIFECYCLE_LINKS = [
 
 const WORKSPACE_CAPABILITY_LINKS = [
   { label: "Ask the Map", href: "/partner-workspace/assistant", description: "Use current places, campaigns, and results to decide what to do next." },
-  { label: "Map Listing", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
-  { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, approvals, and live offers." },
+  { label: "Where you appear", href: "/partner-workspace/map", description: "Manage the public map listing, placement, images, categories, and live preview." },
+  { label: "Member offers", href: "/partner-workspace/offers", description: "Create and manage perks, resident benefits, approvals, and live offers." },
   { label: "Events", href: "/partner-workspace/events", description: "Publish events and see how people find them on the map." },
   { label: "Surveys", href: "/partner-workspace/surveys", description: "Build surveys, choose who should see them, review the preview, and publish when ready." },
-  { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan placements, messages, QR codes, events, and offers in one place." },
-  { label: "Broadcasts", href: "/partner-workspace/broadcasts", description: "Create email and SMS sends when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
-  { label: "People", href: "/partner-workspace/audience", description: "Choose districts, buildings, saved groups, and uploaded contacts." },
+  { label: "Reach residents", href: "/partner-workspace/reach", description: "Plan placements, messages, QR codes, events, and offers in one place." },
+  { label: "Send an update", href: "/partner-workspace/updates", description: "Create email and SMS sends when the Broadcasts add-on is active.", lockedByDefault: true, addonId: "broadcasts" },
+  { label: "Residents reached", href: "/partner-workspace/results?section=audience", description: "Choose districts, buildings, saved groups, and uploaded contacts." },
   { label: "Media", href: "/partner-workspace/media", description: "Keep logos, photos, videos, copy, and QR assets ready to publish." },
   { label: "Reports", href: "/partner-workspace/reports", description: "See monthly results, saves, redemptions, activity, and suggested next steps." },
-  { label: "Results", href: "/partner-workspace/analytics", description: "See what people view, save, open, scan, and act on." },
+  { label: "Activity", href: "/partner-workspace/results", description: "See what people view, save, open, scan, and act on." },
   { label: "Profile", href: "/partner-workspace/profile", description: "Keep organization details, contacts, listings, and workspace information current." },
   { label: "Team", href: "/partner-workspace/team", description: "Manage roles, permissions, and workspace access." },
-  { label: "Billing", href: "/partner-workspace/billing", description: "Review plan access, invoices, subscriptions, and checkout status." },
+  { label: "Workspace settings", href: "/partner-workspace/settings", description: "Review plan access, invoices, subscriptions, and checkout status." },
 ];
 
 const WORKSPACE_MODULE_GROUPS = [
   {
     label: "Operations",
     items: [
-      { label: "Offers", href: "/partner-workspace/offers", description: "Create and manage resident benefits." },
+      { label: "Member offers", href: "/partner-workspace/offers", description: "Create and manage resident benefits." },
       { label: "Events", href: "/partner-workspace/events", description: "Publish plans that should appear nearby." },
-      { label: "Campaigns", href: "/partner-workspace/campaigns", description: "Plan a clear reason to visit." },
+      { label: "Reach residents", href: "/partner-workspace/reach", description: "Plan a clear reason to visit." },
       { label: "QR", href: "/partner-workspace/sources", description: "Generate entry points for lobbies, counters, and events." },
       { label: "Listings", href: "/partner-workspace/sources", description: "Connect property or listing details to the map." },
     ],
@@ -257,7 +257,7 @@ const WORKSPACE_MODULE_GROUPS = [
     label: "Analytics",
     items: [
       { label: "Reports", href: "/partner-workspace/reports", description: "Summarize what changed and what to do next." },
-      { label: "Performance", href: "/partner-workspace/analytics", description: "Track views, directions, scans, and redemptions." },
+      { label: "Results", href: "/partner-workspace/results", description: "Track views, directions, scans, and redemptions." },
       { label: "Exports", href: "/partner-workspace/reports", description: "Prepare CSV, PDF, and email-ready reads." },
       { label: "Growth", href: "/partner-workspace/analytics", description: "Find where to improve next." },
     ],
@@ -267,9 +267,9 @@ const WORKSPACE_MODULE_GROUPS = [
     items: [
       { label: "Team", href: "/partner-workspace/team", description: "Invite teammates and assign roles." },
       { label: "Permissions", href: "/partner-workspace/team", description: "Control workspace access." },
-      { label: "Billing", href: "/partner-workspace/billing", description: "Review plan, subscription, invoices, and seats." },
-      { label: "Connected services", href: "/partner-workspace/profile", description: "Connect data sources, domains, notifications, and other services." },
-      { label: "Settings", href: "/partner-workspace/profile", description: "Manage organization settings and review recent account activity." },
+      { label: "Workspace settings", href: "/partner-workspace/settings", description: "Review plan, subscription, invoices, and seats." },
+      { label: "Connections", href: "/partner-workspace/connections", description: "Connect data sources, domains, notifications, and other services." },
+      { label: "Workspace settings", href: "/partner-workspace/settings", description: "Manage organization settings and review recent account activity." },
     ],
   },
 ];
@@ -299,10 +299,10 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/assistant") || pathname.includes("/ask-map")) return "assistant";
   if (pathname.includes("/map")) return "map";
   if (pathname.includes("/offers") || pathname.includes("/perks")) return "offers";
-  if (pathname.includes("/campaigns")) return "campaigns";
+  if (pathname.includes("/campaigns") || pathname.includes("/reach")) return "campaigns";
   if (pathname.includes("/events")) return "events";
   if (pathname.includes("/surveys")) return "surveys";
-  if (pathname.includes("/broadcasts") || pathname.includes("/messages")) return "broadcasts";
+  if (pathname.includes("/broadcasts") || pathname.includes("/updates") || pathname.includes("/messages")) return "broadcasts";
   if (pathname.includes("/share-links")) return "share_links";
   if (pathname.includes("/governance") || pathname.includes("/civic")) return "governance";
   if (pathname.includes("/audience") || pathname.includes("/segmentation")) return "audience";
@@ -310,12 +310,12 @@ function getWorkspaceTabFromPath(pathname) {
   if (pathname.includes("/media")) return "media";
   if (pathname.includes("/residents")) return "residents";
   if (pathname.includes("/buildings")) return "buildings";
-  if (pathname.includes("/properties") || pathname.includes("/hotels") || pathname.includes("/venues") || pathname.includes("/brands") || pathname.includes("/civic") || pathname.includes("/real-estate") || pathname.includes("/sources")) return "sources";
+  if (pathname.includes("/properties") || pathname.includes("/hotels") || pathname.includes("/venues") || pathname.includes("/brands") || pathname.includes("/civic") || pathname.includes("/real-estate") || pathname.includes("/sources") || pathname.includes("/connections")) return "sources";
   if (pathname.includes("/reports")) return "reports";
-  if (pathname.includes("/analytics")) return "analytics";
+  if (pathname.includes("/analytics") || pathname.includes("/results")) return "analytics";
   if (pathname.includes("/profile")) return "profile";
   if (pathname.includes("/team") || pathname.includes("/messages")) return "team";
-  if (pathname.includes("/billing")) return "billing";
+  if (pathname.includes("/billing") || pathname.includes("/settings")) return "billing";
   return "overview";
 }
 
@@ -731,7 +731,7 @@ function PartnerWorkspaceContent() {
 
   useEffect(() => {
     if (tab !== "residents" || hasPrivilegedWorkspaceAccess) return;
-    navigate(withPartnerWorkspaceScope("/partner-workspace/overview", workspaceScope), { replace: true });
+    navigate(withPartnerWorkspaceScope("/partner-workspace/home", workspaceScope), { replace: true });
   }, [hasPrivilegedWorkspaceAccess, navigate, tab, workspaceScope]);
 
   function handleSignIn() {
@@ -758,7 +758,7 @@ function PartnerWorkspaceContent() {
     }
 
     if (tab !== "overview") {
-      navigate(`/partner-workspace/overview${location.search}`);
+      navigate(`/partner-workspace/home${location.search}`);
       return;
     }
 
@@ -786,7 +786,7 @@ function PartnerWorkspaceContent() {
               <span>Close</span>
             </button>
           </nav>
-          <Link className="dp-partner-workspace-brand" to={withPartnerWorkspaceScope("/partner-workspace/overview", workspaceScope)} aria-label="Downtown Perks workspace overview">
+          <Link className="dp-partner-workspace-brand" to={withPartnerWorkspaceScope("/partner-workspace/home", workspaceScope)} aria-label="Downtown Perks workspace home">
             <strong>Downtown Perks</strong>
             <span>Workspace</span>
           </Link>
@@ -1091,8 +1091,8 @@ function WorkspaceReports({ scope: authorizedScope }) {
       title: "Publish a relocation guide for new downtown supply.",
       evidence: "Downtown sources report more than 2,600 homes and 890 hotel rooms under construction.",
       action: "Pair active listings with nearby hotels, parks, dining, parking, and construction-aware arrival guidance.",
-      href: reportHref("/partner-workspace/campaigns"),
-      label: "Create campaign",
+      href: reportHref("/partner-workspace/reach"),
+      label: "Send an update",
     },
   ] : [];
 
@@ -2189,7 +2189,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
   const QUICK_ACTIONS = [
     { label: "Create offer", sub: "Give residents a clear reason to visit this week.", icon: Star, tab: "offers" },
     { label: "Create event", sub: "Add something happening soon so people can find it nearby.", icon: Calendar, tab: "events" },
-    { label: "Create campaign", sub: "Choose the message, where it appears, and what people should do next.", icon: LayoutDashboard, tab: "campaigns" },
+    { label: "Send an update", sub: "Choose the message, where it appears, and what people should do next.", icon: LayoutDashboard, tab: "campaigns" },
     { label: "Create report", sub: "Review the results and choose the next practical update.", icon: ShieldCheck, tab: "reports" },
   ];
 

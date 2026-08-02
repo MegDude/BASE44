@@ -79,7 +79,7 @@ function AdminProtectedRoute({ children }) {
 
   const role = String(user?.role || "").toLowerCase();
   if (!["admin", "platform_admin", "super_admin"].includes(role)) {
-    return <Navigate to="/partner-workspace/overview" replace />;
+    return <Navigate to="/partner-workspace/home" replace />;
   }
   return children;
 }
@@ -290,7 +290,7 @@ function ProductRoutes() {
           <Route path="/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
           <Route path="/partners/real-estate" element={<Navigate to="/partners/sign-up?type=real-estate" replace />} />
           <Route path="/partners/legends" element={<Navigate to="/partners/sign-up?type=property" replace />} />
-          <Route path="/partners/dashboard" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/partners/dashboard" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/partners/dashboard/map" element={<RedirectWithSearch to="/partner-workspace/map" />} />
           <Route path="/partners/dashboard/properties" element={<RedirectWithSearch to="/partner-workspace/buildings" />} />
           <Route path="/partners/dashboard/residential" element={<RedirectWithSearch to="/partner-workspace/buildings" />} />
@@ -331,49 +331,50 @@ function ProductRoutes() {
           <Route path="/partners/register" element={<PartnerLifecycle />} />
           <Route path="/partners/checkout" element={<PartnerLifecycle />} />
           <Route path="/partners/provision" element={<PartnerLifecycle />} />
-          <Route path="/partners/workspace/*" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/partners/workspace/*" element={<RedirectWithSearch to="/partner-workspace/home" />} />
 
           {/* Partner workspace */}
-          <Route path="/workspace" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
-          <Route path="/workspace/home" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/workspace" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/workspace/home" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/workspace/map" element={<RedirectWithSearch to="/partner-workspace/map" />} />
           <Route path="/workspace/offers" element={<RedirectWithSearch to="/partner-workspace/offers" />} />
           <Route path="/workspace/events" element={<RedirectWithSearch to="/partner-workspace/events" />} />
           <Route path="/workspace/surveys" element={<RedirectWithSearch to="/partner-workspace/surveys" />} />
           <Route path="/workspace/broadcasts" element={<RedirectWithSearch to="/partner-workspace/broadcasts" />} />
-          <Route path="/workspace/campaigns" element={<RedirectWithSearch to="/partner-workspace/campaigns" />} />
-          <Route path="/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/audience" />} />
+          <Route path="/workspace/campaigns" element={<RedirectWithSearch to="/partner-workspace/reach" />} />
+          <Route path="/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/results" />} />
           <Route path="/workspace/media" element={<RedirectWithSearch to="/partner-workspace/media" />} />
           <Route path="/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
-          <Route path="/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
-          <Route path="/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
+          <Route path="/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/results" />} />
+          <Route path="/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/results" />} />
           <Route path="/workspace/assistant" element={<RedirectWithSearch to="/partner-workspace/assistant" />} />
           <Route path="/workspace/profile" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
           <Route path="/workspace/team" element={<RedirectWithSearch to="/partner-workspace/team" />} />
           <Route path="/workspace/billing" element={<RedirectWithSearch to="/partner-workspace/billing" />} />
-          <Route path="/workspace/settings" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
+          <Route path="/workspace/settings" element={<RedirectWithSearch to="/partner-workspace/settings" />} />
           {/* Legacy workspace URLs must enter the canonical workspace shell. */}
-          <Route path="/app/workspace" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
-          <Route path="/app/workspace/home" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
-          <Route path="/app/workspace/overview" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/app/workspace" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/app/workspace/home" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/app/workspace/overview" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/app/workspace/map" element={<RedirectWithSearch to="/partner-workspace/map" />} />
           <Route path="/app/workspace/offers" element={<RedirectWithSearch to="/partner-workspace/offers" />} />
           <Route path="/app/workspace/events" element={<RedirectWithSearch to="/partner-workspace/events" />} />
-          <Route path="/app/workspace/campaigns" element={<RedirectWithSearch to="/partner-workspace/campaigns" />} />
-          <Route path="/app/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/audience" />} />
+          <Route path="/app/workspace/campaigns" element={<RedirectWithSearch to="/partner-workspace/reach" />} />
+          <Route path="/app/workspace/audience" element={<RedirectWithSearch to="/partner-workspace/results" />} />
           <Route path="/app/workspace/media" element={<RedirectWithSearch to="/partner-workspace/media" />} />
-          <Route path="/app/workspace/sources" element={<RedirectWithSearch to="/partner-workspace/sources" />} />
+          <Route path="/app/workspace/sources" element={<RedirectWithSearch to="/partner-workspace/connections" />} />
           <Route path="/app/workspace/share-links" element={<RedirectWithSearch to="/partner-workspace/share-links" />} />
           <Route path="/app/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
-          <Route path="/app/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/redemptions" />} />
-          <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
+          <Route path="/app/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/results" />} />
+          <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/results" />} />
           <Route path="/app/workspace/assistant" element={<RedirectWithSearch to="/partner-workspace/assistant" />} />
           <Route path="/app/workspace/profile" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
           <Route path="/app/workspace/team" element={<RedirectWithSearch to="/partner-workspace/team" />} />
-          <Route path="/app/workspace/billing" element={<RedirectWithSearch to="/partner-workspace/billing" />} />
-          <Route path="/app/workspace/*" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
-          <Route path="/partner-workspace" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
-          <Route path="/partner-workspace/overview" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/app/workspace/billing" element={<RedirectWithSearch to="/partner-workspace/settings" />} />
+          <Route path="/app/workspace/*" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/partner-workspace" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/partner-workspace/home" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/overview" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/partner-workspace/launch" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/publish" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/performance" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
@@ -391,38 +392,43 @@ function ProductRoutes() {
           <Route path="/partner-workspace/civic/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/profile" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/reach" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/updates" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/results" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/connections" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-workspace/settings" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/audience" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/media" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/residents" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/buildings" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/messages" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/team" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-workspace/billing" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-workspace/dashboard" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/partner-workspace/billing" element={<RedirectWithSearch to="/partner-workspace/settings" />} />
+          <Route path="/partner-workspace/dashboard" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/partner-workspace/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/redemptions" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/analytics" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/assistant" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-workspace/analytics/experiences/downtown-art-parks-tour" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-workspace/*" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
+          <Route path="/partner-workspace/*" element={<RedirectWithSearch to="/partner-workspace/home" />} />
 
           <Route path="/partner/audience" element={<Navigate to="/partner-workspace/audience" replace />} />
           <Route path="/partner/audiences" element={<Navigate to="/partner-workspace/audience" replace />} />
 
           {/* Partner portal aliases: always enter the workspace shell, even when no partner is linked. */}
           <Route path="/partner-portal" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-portal/dashboard" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/dashboard" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/partner-portal/properties" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/hotels" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/venues" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/brands" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/civic" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/real-estate" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-portal/campaigns" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-portal/reports" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/campaigns" element={<RedirectWithSearch to="/partner-workspace/reach" />} />
+          <Route path="/partner-portal/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
           <Route path="/partner-portal/events" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
           <Route path="/partner-portal/perks" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
-          <Route path="/partner-portal/*" element={<ProtectedRoute><PartnerWorkspace /></ProtectedRoute>} />
+          <Route path="/partner-portal/*" element={<RedirectWithSearch to="/partner-workspace/home" />} />
 
           {/* Legacy public marketing URLs now enter the product or commerce flow. */}
           <Route path="/marketing" element={<Navigate to="/" replace />} />
