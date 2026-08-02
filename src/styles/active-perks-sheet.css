@@ -1,98 +1,88 @@
+/* Active perks list drawer.
+   Geometry, page-lock, focus return, single scroll owner and the safe-area
+   content spacer are all provided by NativeDrawerShell + the shared native
+   drawer layers. This file only owns the perks-specific content treatment:
+   header IA, the filter rail, list rows and the empty state, tuned for a
+   modern luxury iOS-native feel on the navy / gold / cream palette. */
+
 .dp-active-perks-sheet {
-  position: fixed;
-  right: 0;
-  bottom: calc(var(--dp-map-native-bottom-nav-height) + var(--dp-safe-bottom));
-  left: 0;
-  z-index: var(--z-drawer);
-  display: grid;
-  grid-template-rows: 28px minmax(68px, auto) minmax(0, 1fr);
-  width: 100%;
   max-width: 760px;
   margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid var(--dp-border);
-  border-bottom: 0;
-  border-radius: 28px 28px 0 0;
-  background: var(--dp-surface);
-  box-shadow: var(--dp-sheet-shadow);
   color: var(--dp-navy);
 }
 
+/* List drawers use only peek + expanded states. Heights are expressed in dvh
+   so the sheet tracks the real iOS visual viewport, and the shell owns the
+   internal scroll. */
+.dp-active-perks-sheet.is-peek {
+  height: min(38dvh, 340px);
+}
+
+.dp-active-perks-sheet.is-expanded {
+  height: min(88dvh, 920px);
+}
+
+/* Grab handle: a quiet, thumb-sized target that cycles the sheet height. */
 .dp-active-perks-handle {
   display: grid;
   width: 100%;
-  min-width: 100%;
-  min-height: 44px;
-  padding: 0;
+  min-height: 28px;
+  padding: 10px 0 4px;
   place-items: center;
   border: 0;
-  background: var(--dp-surface);
-  box-shadow: none;
-}
-
-html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perks-handle {
-  width: 100% !important;
-  min-width: 100% !important;
-  min-height: 44px !important;
-  padding: 0 !important;
-  place-items: center !important;
+  background: transparent;
 }
 
 .dp-active-perks-handle > span {
   width: 36px;
-  height: 4px;
-  border-radius: 2px;
+  height: 5px;
+  border-radius: 9999px;
   background: var(--dp-handle);
+  transition: background 160ms ease, width 160ms ease;
 }
 
+.dp-active-perks-handle:is(:hover, :focus-visible) > span {
+  width: 44px;
+  background: var(--dp-navy-secondary);
+}
+
+/* Header: eyebrow + title on the left, a live count chip, then close. */
 .dp-active-perks-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto 44px;
   align-items: center;
-  min-height: 68px;
-  padding: 6px 14px 14px 20px;
-  border-bottom: 1px solid var(--dp-border);
-  background: var(--dp-surface);
+  gap: 10px;
+  min-height: 60px;
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) 14px max(20px, env(safe-area-inset-left, 0px));
 }
 
-.dp-active-perks-header p,
-.dp-active-perks-header h2 {
+.dp-active-perks-heading {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dp-active-perks-heading p {
   margin: 0;
+  color: var(--dp-gold);
+  font: 600 11px/1.2 var(--dp-font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.dp-active-perks-header p {
-  color: var(--dp-muted);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.2;
+.dp-active-perks-heading h2 {
+  margin: 0;
+  font: 400 26px/1.05 var(--dp-font-display, Georgia, "Times New Roman", serif);
+  letter-spacing: -0.01em;
 }
 
-.dp-active-perks-header h2 {
-  margin-top: 2px;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-}
-
-.dp-active-perks-header > strong {
-  padding-right: 8px;
-  color: var(--dp-muted);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.dp-active-perks-close,
-.dp-active-perk-actions button,
-.dp-active-perks-empty button {
-  min-width: 44px;
-  min-height: 44px;
-  border: 1px solid var(--dp-border);
-  border-radius: 8px;
-  background: var(--dp-surface);
-  color: var(--dp-navy);
+.dp-active-perks-count {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: var(--dp-soft-neutral);
+  color: var(--dp-navy-secondary);
   font: 600 12px/1 var(--dp-font-ui);
+  white-space: nowrap;
 }
 
 .dp-active-perks-close {
@@ -101,49 +91,75 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perks-handle {
   height: 44px;
   padding: 0;
   place-items: center;
-  border-color: transparent;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--dp-soft-neutral);
+  color: var(--dp-navy);
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.dp-active-perks-close:is(:hover, :focus-visible) {
+  background: var(--dp-surface-alt, #f4f1ea);
 }
 
 .dp-active-perks-close svg,
 .dp-active-perk-save svg {
-  width: 19px;
-  height: 19px;
+  width: 18px;
+  height: 18px;
   stroke-width: 2;
 }
 
-.dp-active-perks-list {
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  background: var(--dp-surface);
+/* Body wrapper keeps the context line, filter rail and collection in a single
+   scrollable column owned by the shell. */
+.dp-active-perks-body {
+  padding-bottom: max(20px, var(--dp-safe-bottom));
+}
+
+.dp-active-perks-context {
+  margin: 0;
+  padding: 4px max(20px, env(safe-area-inset-left, 0px)) 10px;
+  color: var(--dp-muted);
+  font: 400 13px/1.4 var(--dp-font-ui);
+}
+
+/* Filter rail + row action rail are owned by the shared mobile system layer
+   (perks-saved-nearby-mobile-system.css): a unified segmented-underline rail
+   and flat action rail shared across the perks, saved, nearby and resident
+   category surfaces. We deliberately do not restyle them here so every list
+   drawer stays consistent — only base scroll behaviour lives here as a
+   fallback for non-map contexts. */
+.dp-perks-filter-rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 
-.dp-active-perks-list > div {
-  padding-bottom: max(20px, var(--dp-safe-bottom));
-}
-
-.dp-active-perks-list::-webkit-scrollbar {
+.dp-perks-filter-rail::-webkit-scrollbar {
   display: none;
 }
 
+/* Collection rows. */
 .dp-active-perk-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  min-height: 88px;
-  margin: 0 20px;
-  padding: 12px 0;
+  align-items: center;
+  gap: 12px;
+  min-height: 84px;
+  margin: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px));
+  padding: 14px 0;
   border-bottom: 1px solid var(--dp-border);
+}
+
+.dp-active-perk-row:last-child {
+  border-bottom: 0;
 }
 
 .dp-active-perk-main {
   display: block;
-  align-items: center;
   min-width: 0;
-  min-height: 64px;
-  gap: 10px;
+  min-height: 60px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -153,35 +169,34 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perks-handle {
 
 .dp-active-perk-main.has-media {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 60px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
 }
 
 .dp-active-perk-media {
   position: relative;
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   overflow: hidden;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+  border-radius: 14px;
+  background: var(--dp-soft-neutral);
+}
+
+.dp-active-perk-media[data-media-unavailable="true"] {
+  background: var(--dp-surface-alt, #f4f1ea);
 }
 
 .dp-active-perk-hero {
   display: block;
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
   object-fit: cover;
-  box-shadow: none;
 }
 
 .dp-active-perk-hero.is-logo-fallback {
+  padding: 8px;
   object-fit: contain;
 }
 
@@ -193,8 +208,7 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perks-handle {
 
 .dp-active-perk-copy strong {
   overflow: hidden;
-  font-size: 15px;
-  line-height: 1.2;
+  font: 600 15px/1.25 var(--dp-font-ui);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -203,60 +217,40 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perks-handle {
   display: -webkit-box;
   overflow: hidden;
   color: var(--dp-navy-secondary);
-  font-size: 13px;
-  line-height: 1.28;
+  font: 400 13px/1.3 var(--dp-font-ui);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
 .dp-active-perk-copy small {
+  overflow: hidden;
   color: var(--dp-muted);
-  font-size: 11px;
-  line-height: 1.2;
-}
-
-.dp-active-perk-actions {
-  display: grid;
-  grid-template-columns: minmax(68px, auto) 44px;
-  align-content: center;
-  gap: 4px;
-  padding-left: 8px;
-}
-
-.dp-active-perk-actions > button:first-child {
-  min-width: 68px;
-  padding: 0 8px;
-  border-color: transparent;
-  background: transparent;
-  color: var(--dp-navy);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font: 500 11px/1.3 var(--dp-font-ui);
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perk-actions > button:first-child {
-  min-width: 68px !important;
-  padding-inline: 8px !important;
-  text-decoration: none !important;
-  white-space: nowrap !important;
-}
-
-.dp-active-perk-actions > button:first-child:is(:hover, :focus-visible, :active) {
+.dp-active-perk-copy em {
   color: var(--dp-gold);
+  font: 600 11px/1.3 var(--dp-font-ui);
+  font-style: normal;
 }
 
-.dp-active-perk-actions button:disabled {
-  border-color: var(--dp-border);
-  background: var(--dp-soft-neutral);
-  color: var(--dp-muted);
-}
-
+/* Row actions ("Use perk" + save toggle) inherit the shared flat action rail
+   from perks-saved-nearby-mobile-system.css so they match the detail panel and
+   saved surfaces. The save-toggle pressed state is the one perks-specific
+   accent we layer on top. */
 .dp-active-perk-save {
   display: grid;
   width: 44px;
+  height: 44px;
   padding: 0;
   place-items: center;
+  border: 1px solid var(--dp-border);
+  border-radius: 9999px;
+  background: var(--dp-surface);
+  color: var(--dp-navy-secondary);
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .dp-active-perk-save[aria-pressed="true"] {
@@ -265,22 +259,53 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perk-actions > bu
   color: var(--dp-gold);
 }
 
+.dp-active-perk-save[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+/* Empty state. */
 .dp-active-perks-empty {
   display: grid;
   max-width: 420px;
   gap: 8px;
-  padding: 28px 20px;
-  color: var(--dp-muted);
+  padding: 40px max(20px, env(safe-area-inset-left, 0px));
+  text-align: left;
 }
 
 .dp-active-perks-empty strong {
   color: var(--dp-navy);
+  font: 600 17px/1.3 var(--dp-font-ui);
 }
 
-.dp-active-perks-empty button {
-  width: fit-content;
+.dp-active-perks-empty span {
+  color: var(--dp-muted);
+  font: 400 14px/1.5 var(--dp-font-ui);
+}
+
+.dp-active-perks-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 8px;
-  padding: 0 14px;
+}
+
+.dp-active-perks-empty-actions button {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 9999px;
+  font: 600 13px/1 var(--dp-font-ui);
+}
+
+.dp-active-perks-empty-actions .is-primary {
+  border: 1px solid var(--dp-navy);
+  background: var(--dp-navy);
+  color: var(--dp-cream, #f7f6f2);
+}
+
+.dp-active-perks-empty-actions .is-secondary {
+  border: 1px solid var(--dp-border);
+  background: var(--dp-surface);
+  color: var(--dp-navy);
 }
 
 .dp-active-perks-sheet :is(button, [href]):focus-visible {
@@ -288,47 +313,13 @@ html body #root .dp-map-page .dp-active-perks-sheet .dp-active-perk-actions > bu
   outline-offset: 2px;
 }
 
-.dp-active-perks-sheet.is-collapsed {
-  grid-template-rows: 28px minmax(68px, 1fr);
-}
-
-.dp-active-perks-sheet.is-medium {
-  height: 50dvh;
-}
-
-@media (max-width: 370px) {
-  .dp-active-perk-row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .dp-active-perk-main.has-media {
-    grid-template-columns: 60px minmax(0, 1fr);
-  }
-
-  .dp-active-perk-media {
-    width: 60px;
-    height: 60px;
-  }
-
-  .dp-active-perk-actions {
-    grid-template-columns: 76px 44px;
-    justify-content: end;
-    margin-left: 70px;
-    padding: 8px 0 0;
-  }
-}
-
 @media (min-width: 768px) {
-  .dp-active-perks-sheet {
-    border-radius: 12px 12px 0 0;
-  }
-
   .dp-active-perk-main.has-media {
-    grid-template-columns: 88px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr);
   }
 
   .dp-active-perk-media {
-    width: 88px;
+    width: 72px;
     height: 72px;
   }
 }
