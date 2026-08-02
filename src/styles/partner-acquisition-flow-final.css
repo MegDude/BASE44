@@ -105,6 +105,42 @@ html body #root#root main.dp-partner-access-page .dp-partner-type-card strong { 
 html body #root#root main.dp-partner-access-page .dp-partner-type-card small { color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] { padding-left: 12px !important; border-left: 2px solid var(--pricing-gold) !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] strong { color: var(--pricing-gold) !important; }
+/* Account types are one flat choice list, deliberately separate from legacy card styles. */
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row,
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row[data-active="true"] {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 88px minmax(0, 1fr) 14px !important;
+  grid-template-rows: auto auto !important;
+  gap: 2px 14px !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pricing-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--pricing-ink) !important;
+  text-align: left !important;
+}
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row::before,
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row::after { content: none !important; display: none !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row span {
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+  color: var(--pricing-muted) !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  letter-spacing: .07em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row strong { grid-column: 2 !important; font-size: 14px !important; line-height: 1.25 !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row small { grid-column: 2 !important; color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row[data-active="true"] strong { color: var(--pricing-gold) !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row:is(:hover, :focus-visible) { background: transparent !important; color: var(--pricing-ink) !important; outline: 0 !important; }
 /* Actions are deliberately quiet: the handoff is text and motion, never a dark block. */
 html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary {
   display: inline-flex !important;
