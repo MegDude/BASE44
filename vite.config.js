@@ -252,6 +252,8 @@ export default defineConfig(({ mode }) => {
   return {
   logLevel: 'error', // Suppress warnings, only show errors
   publicDir: process.env.DP_SKIP_PUBLIC_COPY === "true" ? false : undefined,
+  // Keep this app's optimized dependency graph isolated from stale preview chunks.
+  cacheDir: 'node_modules/.vite-base44-single-react',
   resolve: {
   // Router hooks and the renderer must share one React module instance.
   dedupe: ['react', 'react-dom'],
