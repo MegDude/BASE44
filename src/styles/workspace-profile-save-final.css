@@ -1,17 +1,16 @@
 /* Workspace profile saving stays visible, scoped, and explicit. */
 html body #root .dp-partner-workspace-page .dp-profile-editor__actions {
-  position:sticky!important;
-  bottom:max(12px,env(safe-area-inset-bottom,0px))!important;
-  z-index:12!important;
+  position:static!important;
   display:flex!important;
   min-width:0!important;
   align-items:center!important;
   gap:12px!important;
   padding:12px 0!important;
+  margin-top:32px!important;
   border:0!important;
   border-top:1px solid rgba(11,31,51,.09)!important;
-  background:rgba(255,255,255,.94)!important;
-  backdrop-filter:blur(14px) saturate(135%)!important;
+  background:#fff!important;
+  backdrop-filter:none!important;
 }
 
 html body #root .dp-partner-workspace-page .dp-profile-editor__primary {
@@ -54,18 +53,16 @@ html body #root .dp-partner-workspace-page .dp-profile-editor__save-state {
 html body #root .dp-partner-workspace-page .dp-profile-editor__save-state.is-dirty { color:#8a6422!important; }
 
 html body #root .dp-partner-workspace-page .dp-profile-editor__layout.is-dirty .dp-profile-editor__actions {
-  position:fixed!important;
-  right:auto!important;
-  bottom:16px!important;
-  left:50%!important;
-  z-index:140!important;
-  width:min(720px,calc(100vw - 32px))!important;
-  padding:10px 12px!important;
-  border:1px solid rgba(11,31,51,.1)!important;
-  border-radius:14px!important;
-  background:rgba(255,255,255,.96)!important;
-  box-shadow:0 12px 34px rgba(11,31,51,.12)!important;
-  transform:translateX(-50%)!important;
+  position:static!important;
+  width:auto!important;
+  margin-top:32px!important;
+  padding:16px 0 0!important;
+  border:0!important;
+  border-top:1px solid rgba(11,31,51,.09)!important;
+  border-radius:0!important;
+  background:#fff!important;
+  box-shadow:none!important;
+  transform:none!important;
 }
 
 @media (max-width:680px) {
@@ -76,8 +73,4 @@ html body #root .dp-partner-workspace-page .dp-profile-editor__layout.is-dirty .
   }
   html body #root .dp-partner-workspace-page .dp-profile-editor__primary { width:100%!important; }
   html body #root .dp-partner-workspace-page .dp-profile-editor__save-state { grid-column:1/-1!important; grid-row:1!important; margin:0!important; }
-  html body #root .dp-partner-workspace-page .dp-profile-editor__layout.is-dirty .dp-profile-editor__actions {
-    bottom:calc(68px + env(safe-area-inset-bottom,0px))!important;
-    width:calc(100vw - 24px)!important;
-  }
 }
