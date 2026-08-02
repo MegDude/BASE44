@@ -153,6 +153,8 @@ import "@/styles/map-drawer-native-luxury-final.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/native-luxury-platform-release.css"
 import "@/styles/panel-media-system-final.css"
+import "@/styles/workspace-founding-partner-targets-final.css"
+import "@/styles/perk-action-visibility-final.css"
 
 const application = <App />
 

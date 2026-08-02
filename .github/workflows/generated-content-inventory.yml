@@ -41,6 +41,9 @@ jobs:
       - name: Validate required outputs
         run: npm run test:partner-content-inventory
 
+      - name: Validate Founding Partner Collection
+        run: node scripts/test-founding-partner-collection.mjs
+
       - name: Upload generated inventory
         uses: actions/upload-artifact@v4
         with:
