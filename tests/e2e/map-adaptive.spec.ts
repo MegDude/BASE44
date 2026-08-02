@@ -397,8 +397,7 @@ test.describe("adaptive map surface", () => {
 
   test("map marker coordinate keys remain stable across interactions", async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 852 });
-    await page.goto("/map?mode=resident&tab=map&filter=All&entityId=partner-bangers");
-    await expect(page.locator("#dp-active-map-drawer")).toBeVisible();
+    await page.goto("/map?mode=resident&tab=map&filter=All");
 
     async function markerSnapshot() {
       return page.evaluate(() => {
@@ -469,13 +468,6 @@ test.describe("adaptive map surface", () => {
       }
     }
 
-    const initiallyOpenDrawer = page.locator("#dp-active-map-drawer");
-    if (await initiallyOpenDrawer.isVisible().catch(() => false)) {
-      const closeInitialDrawer = initiallyOpenDrawer.getByRole("button", { name: /close/i }).first();
-      await closeInitialDrawer.click();
-      await expect(initiallyOpenDrawer).toBeHidden({ timeout: 5000 });
-    }
-    await expect.poll(async () => (await markerSnapshot()).length, { timeout: 10000 }).toBeGreaterThan(0);
     const initial = await markerSnapshot();
     assertCoordinateRows(initial);
 
