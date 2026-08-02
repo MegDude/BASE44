@@ -123,10 +123,12 @@ const SHARE_LINKS_WORKSPACE_NAV_ITEM = { id: "share_links", label: "Share links"
 const GOVERNANCE_WORKSPACE_NAV_ITEM = { id: "governance", label: "Community decisions", href: "/partner-workspace/governance", helper: "Publish updates and respond to residents." };
 
 const WORKSPACE_NAV_GROUPS = [
-  { label: "Workspace", ids: ["overview", "launch", "assistant", "map", "profile"] },
-  { label: "Share", ids: ["offers", "events", "campaigns", "governance", "share_links", "broadcasts"] },
-  { label: "Results", ids: ["audience", "surveys", "redemptions", "analytics", "reports"] },
-  { label: "Manage", ids: ["media", "team", "billing"] },
+  { label: "Today", ids: ["overview", "map"] },
+  { label: "Build", ids: ["offers", "events", "campaigns", "broadcasts"] },
+  { label: "Measure", ids: ["performance", "audience", "analytics", "reports"] },
+  { label: "Operate", ids: ["redemptions", "sources", "media", "team"] },
+  { label: "Account", ids: ["profile", "billing"] },
+  { label: "Platform admin", ids: ["admin_studio"] },
 ].map((group) => ({
   ...group,
   items: group.ids.map((id) => {
@@ -134,6 +136,8 @@ const WORKSPACE_NAV_GROUPS = [
     if (id === "redemptions") return REDEMPTIONS_WORKSPACE_NAV_ITEM;
     if (id === "share_links") return SHARE_LINKS_WORKSPACE_NAV_ITEM;
     if (id === "governance") return GOVERNANCE_WORKSPACE_NAV_ITEM;
+    if (id === "performance") return { id: "performance", label: "Performance", href: "/partner-workspace/performance", helper: "Decision summary, trends, and next steps." };
+    if (id === "admin_studio") return { id: "admin_studio", label: "Admin Studio", href: "/admin/resources/backend-master-control-plane", helper: "Platform control plane for authorized admins only.", adminOnly: true };
     return PARTNER_WORKSPACE_NAV.find((item) => item.id === id);
   }).filter(Boolean),
 }));
@@ -815,16 +819,20 @@ function PartnerWorkspaceContent() {
             </div>
           </div>
           <nav aria-label="Workspace navigation">
-            {WORKSPACE_NAV_GROUPS.map((group) => (
-              <div className="dp-workspace-nav-group" key={group.label}>
-                <p>{group.label}</p>
-                {group.items.map((item) => (
-                  <Link key={item.id} to={withPartnerWorkspaceScope(item.href, workspaceScope)} className={tab === item.id ? "is-active" : ""} aria-current={tab === item.id ? "page" : undefined}>
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
+            {WORKSPACE_NAV_GROUPS.map((group) => {
+              const visibleItems = group.items.filter((item) => !item.adminOnly || hasPrivilegedWorkspaceAccess);
+              if (!visibleItems.length) return null;
+              return (
+                <div className="dp-workspace-nav-group" key={group.label}>
+                  <p>{group.label}</p>
+                  {visibleItems.map((item) => (
+                    <Link key={item.id} to={withPartnerWorkspaceScope(item.href, workspaceScope)} className={tab === item.id ? "is-active" : ""} aria-current={tab === item.id ? "page" : undefined}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              );
+            })}
           </nav>
         </aside>
 
@@ -859,7 +867,7 @@ function PartnerWorkspaceContent() {
           {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
-          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
+          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
@@ -3089,33 +3097,33 @@ function EventForm({ user, event, scope, onClose, onSave }) {
 
 // ─── PROFILE ──────────────────────────────────────────────────────────────────
 
-function ProfileSection({ user, setUser }) {
+function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false }) {
   const storedProfile = getStoredProfile() || {};
-  const defaultStory = "Waterloo Greenway connects downtown visitors with park experiences, outdoor events, cultural programming, and public spaces throughout the Greenway.";
-  const defaultAction = "Attend events, discover public art, join community programs, learn more, volunteer, and support local initiatives.";
+  const defaultStory = "";
+  const defaultAction = "";
   const [form, setForm] = useState(() => ({
     ...(storedProfile),
-    partner_name: user?.partner_name || user?.organization_name || storedProfile.partner_name || "Waterloo Greenway",
-    organization_name: user?.organization_name || user?.partner_name || storedProfile.organization_name || "Waterloo Greenway",
-    partner_category: user?.partner_category || storedProfile.partner_category || user?.partner_type || "Civic / Community",
-    partner_type: user?.partner_type || storedProfile.partner_type || "civic",
-    district: user?.district || storedProfile.district || "Waterloo",
-    primary_location: user?.primary_location || user?.address || storedProfile.primary_location || "Waterloo Park, Austin, TX",
-    membership_plan: user?.membership_plan || user?.plan || storedProfile.membership_plan || "Founding Partner",
-    best_contact: user?.best_contact || user?.full_name || storedProfile.best_contact || "Waterloo Greenway team",
+    partner_name: user?.partner_name || user?.organization_name || storedProfile.partner_name || "",
+    organization_name: user?.organization_name || user?.partner_name || storedProfile.organization_name || "",
+    partner_category: user?.partner_category || storedProfile.partner_category || user?.partner_type || "",
+    partner_type: user?.partner_type || storedProfile.partner_type || "",
+    district: user?.district || storedProfile.district || "",
+    primary_location: user?.primary_location || user?.address || storedProfile.primary_location || "",
+    membership_plan: user?.membership_plan || user?.plan || storedProfile.membership_plan || "",
+    best_contact: user?.best_contact || user?.full_name || storedProfile.best_contact || "",
     email: user?.email || user?.contact_email || storedProfile.email || "",
     contact_email: user?.contact_email || user?.email || storedProfile.contact_email || "",
     phone: user?.phone || user?.contact_phone || storedProfile.phone || "",
     website: user?.website || storedProfile.website || "",
-    audience_size: user?.audience_size || user?.audience_reach || storedProfile.audience_size || "Downtown residents, visitors, event guests, and park supporters",
+    audience_size: user?.audience_size || user?.audience_reach || storedProfile.audience_size || "",
     public_summary: user?.public_summary || user?.bio || storedProfile.public_summary || defaultStory,
     public_action: user?.public_action || storedProfile.public_action || defaultAction,
-    operating_hours: user?.operating_hours || storedProfile.operating_hours || "Daily park hours with event-specific schedules",
-    neighborhood: user?.neighborhood || storedProfile.neighborhood || "Waterloo Park and Red River",
-    nearby_landmarks: user?.nearby_landmarks || storedProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
-    keywords: user?.keywords || storedProfile.keywords || "parks, public art, events, trails, community",
-    category: user?.category || storedProfile.category || "Parks and culture",
-    map_visibility: user?.map_visibility || storedProfile.map_visibility || "Appears on the map, search, events, offers, and QR links",
+    operating_hours: user?.operating_hours || storedProfile.operating_hours || "",
+    neighborhood: user?.neighborhood || storedProfile.neighborhood || "",
+    nearby_landmarks: user?.nearby_landmarks || storedProfile.nearby_landmarks || "",
+    keywords: user?.keywords || storedProfile.keywords || "",
+    category: user?.category || storedProfile.category || "",
+    map_visibility: user?.map_visibility || storedProfile.map_visibility || "",
   }));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -3124,27 +3132,27 @@ function ProfileSection({ user, setUser }) {
     const latestStoredProfile = getStoredProfile() || {};
     setForm({
       ...(latestStoredProfile),
-      partner_name: user?.partner_name || user?.organization_name || latestStoredProfile.partner_name || "Waterloo Greenway",
-      organization_name: user?.organization_name || user?.partner_name || latestStoredProfile.organization_name || "Waterloo Greenway",
-      partner_category: user?.partner_category || latestStoredProfile.partner_category || user?.partner_type || "Civic / Community",
-      partner_type: user?.partner_type || latestStoredProfile.partner_type || "civic",
-      district: user?.district || latestStoredProfile.district || "Waterloo",
-      primary_location: user?.primary_location || user?.address || latestStoredProfile.primary_location || "Waterloo Park, Austin, TX",
-      membership_plan: user?.membership_plan || user?.plan || latestStoredProfile.membership_plan || "Founding Partner",
-      best_contact: user?.best_contact || user?.full_name || latestStoredProfile.best_contact || "Waterloo Greenway team",
+      partner_name: user?.partner_name || user?.organization_name || latestStoredProfile.partner_name || "",
+      organization_name: user?.organization_name || user?.partner_name || latestStoredProfile.organization_name || "",
+      partner_category: user?.partner_category || latestStoredProfile.partner_category || user?.partner_type || "",
+      partner_type: user?.partner_type || latestStoredProfile.partner_type || "",
+      district: user?.district || latestStoredProfile.district || "",
+      primary_location: user?.primary_location || user?.address || latestStoredProfile.primary_location || "",
+      membership_plan: user?.membership_plan || user?.plan || latestStoredProfile.membership_plan || "",
+      best_contact: user?.best_contact || user?.full_name || latestStoredProfile.best_contact || "",
       email: user?.email || user?.contact_email || latestStoredProfile.email || "",
       contact_email: user?.contact_email || user?.email || latestStoredProfile.contact_email || "",
       phone: user?.phone || user?.contact_phone || latestStoredProfile.phone || "",
       website: user?.website || latestStoredProfile.website || "",
-      audience_size: user?.audience_size || user?.audience_reach || latestStoredProfile.audience_size || "Downtown residents, visitors, event guests, and park supporters",
+      audience_size: user?.audience_size || user?.audience_reach || latestStoredProfile.audience_size || "",
       public_summary: user?.public_summary || user?.bio || latestStoredProfile.public_summary || defaultStory,
       public_action: user?.public_action || latestStoredProfile.public_action || defaultAction,
-      operating_hours: user?.operating_hours || latestStoredProfile.operating_hours || "Daily park hours with event-specific schedules",
-      neighborhood: user?.neighborhood || latestStoredProfile.neighborhood || "Waterloo Park and Red River",
-      nearby_landmarks: user?.nearby_landmarks || latestStoredProfile.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District",
-      keywords: user?.keywords || latestStoredProfile.keywords || "parks, public art, events, trails, community",
-      category: user?.category || latestStoredProfile.category || "Parks and culture",
-      map_visibility: user?.map_visibility || latestStoredProfile.map_visibility || "Appears on the map, search, events, offers, and QR links",
+      operating_hours: user?.operating_hours || latestStoredProfile.operating_hours || "",
+      neighborhood: user?.neighborhood || latestStoredProfile.neighborhood || "",
+      nearby_landmarks: user?.nearby_landmarks || latestStoredProfile.nearby_landmarks || "",
+      keywords: user?.keywords || latestStoredProfile.keywords || "",
+      category: user?.category || latestStoredProfile.category || "",
+      map_visibility: user?.map_visibility || latestStoredProfile.map_visibility || "",
     });
   }, [user.email, user.organization_name, user.partner_name, user.full_name, user.partner_type]);
 
@@ -3203,124 +3211,160 @@ function ProfileSection({ user, setUser }) {
     { value: "real-estate", label: "Real Estate" },
   ];
 
+  const profileSections = [
+    {
+      title: "Identity",
+      summary: `${form.best_contact || user?.full_name || "Workspace user"} · ${hasPrivilegedAccess ? "Platform access" : "Partner access"}`,
+      rows: [
+        ["Name", form.best_contact || user?.full_name || "Add a name"],
+        ["Role", hasPrivilegedAccess ? "Super admin or platform admin" : "Partner workspace member"],
+        ["Verified email", form.email || "Email not connected"],
+      ],
+    },
+    {
+      title: "Organization",
+      summary: form.organization_name || form.partner_name || "Organization pending",
+      rows: [
+        ["Public name", form.partner_name || "Add organization name"],
+        ["Category", form.partner_category || form.partner_type || "Add category"],
+        ["Contact", form.contact_email || form.email || "Add contact email"],
+      ],
+    },
+    {
+      title: "Active scope",
+      summary: scope.listingId ? "Listing scope" : scope.portfolioId ? "Portfolio scope" : scope.organizationId ? "Organization scope" : "Scope pending",
+      rows: [
+        ["Organization", organizationName || form.organization_name || "Server-authorized organization required"],
+        ["Portfolio", scope.portfolioId || "All authorized portfolios"],
+        ["Listing", scope.listingId || "All authorized listings"],
+      ],
+    },
+    {
+      title: "Public presence",
+      summary: form.map_visibility || "Visibility state pending",
+      rows: [
+        ["Website", form.website || "Add website"],
+        ["District", form.district || "Add district"],
+        ["Preview", "Open public map preview"],
+      ],
+    },
+    {
+      title: "Notifications",
+      summary: "Operational alerts enabled for publishing and reporting updates",
+      rows: [
+        ["Campaign alerts", "Send when a campaign needs attention"],
+        ["Reporting cadence", "Monthly summary"],
+        ["Integration issues", "Notify when a source needs reconnecting"],
+      ],
+    },
+    {
+      title: "Security",
+      summary: "Sign-in and recovery are resolved by the backend auth provider",
+      rows: [
+        ["Sign-in method", form.email ? "Email account" : "Account not connected"],
+        ["Password reset", "Available through the verified recovery flow"],
+        ["Sessions", "Manage through Account settings"],
+      ],
+    },
+    {
+      title: "Account actions",
+      summary: "Workspace, billing, sign-out, and close-request actions stay separated from profile details",
+      rows: [
+        ["Switch workspace", hasPrivilegedAccess ? "Use server-authorized scope selector" : "Current authorized workspace only"],
+        ["Billing", form.membership_plan || "Plan pending"],
+        ["Close request", "Contact support before destructive account changes"],
+      ],
+    },
+  ];
+
   return (
-    <motion.div className="dp-profile-editor" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-      <div className="dp-profile-editor__intro">
+    <motion.div className="dp-profile-editor dp-workspace-ia-profile" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+      <header className="dp-workspace-ia-header">
         <div>
-          <p className="dp-profile-editor__eyebrow">Partner Page</p>
-          <h2 className="dp-profile-editor__title">Your public profile</h2>
-          <p>Everything residents see across the map, search results, events, offers, and QR experiences starts here.</p>
+          <p className="dp-workspace-eyebrow">Account</p>
+          <h2>Profile and settings</h2>
+          <span>{organizationName || form.organization_name || form.partner_name || "Workspace scope pending"}</span>
         </div>
-        <span className="dp-profile-editor__status">Founding Partner</span>
-      </div>
+        <button type="submit" form="workspace-profile-form" disabled={saving} className="dp-workspace-ia-primary">
+          {saved ? <><Check aria-hidden="true" /> Saved</> : saving ? "Saving" : "Save"}
+        </button>
+      </header>
 
-      <form onSubmit={handleSubmit} className="dp-profile-editor__layout">
-        <div className="dp-profile-editor__sections">
-          <section className="dp-profile-editor__section">
-            <header>
-              <p>Identity</p>
-              <h3 className="dp-profile-section-title">Partner identity</h3>
-            </header>
-            <div className="dp-profile-editor__grid">
-              <ProfileField label="Partner Name" value={form.partner_name} onChange={value => update("partner_name", value)} required />
-              <ProfileSelect label="Partner Category" value={form.partner_type} onChange={value => update("partner_type", value)} options={PARTNER_TYPES} />
-              <ProfileField label="District" value={form.district} onChange={value => update("district", value)} />
-              <ProfileField label="Primary Location" value={form.primary_location} onChange={value => update("primary_location", value)} />
-              <ProfileField label="Membership Plan" value={form.membership_plan} onChange={value => update("membership_plan", value)} />
-            </div>
-          </section>
+      <section className="dp-workspace-ia-context" aria-label="Active workspace scope">
+        <span>Active scope</span>
+        <strong>{organizationName || form.organization_name || form.partner_name || "Server-authorized organization required"}</strong>
+        <small>{scope.listingId ? `Listing ${scope.listingId}` : scope.portfolioId ? `Portfolio ${scope.portfolioId}` : scope.organizationId ? "Organization scope" : "Scope unavailable"}</small>
+      </section>
 
-          <section className="dp-profile-editor__section">
-            <header>
-              <p>Contact</p>
-              <h3 className="dp-profile-section-title">Contact information</h3>
-            </header>
-            <div className="dp-profile-editor__grid">
-              <ProfileField label="Best Contact" value={form.best_contact} onChange={value => update("best_contact", value)} />
-              <ProfileField label="Email" value={form.email} onChange={value => update("email", value)} type="email" />
-              <ProfileField label="Phone" value={form.phone} onChange={value => update("phone", value)} type="tel" />
-              <ProfileField label="Website" value={form.website} onChange={value => update("website", value)} type="url" />
-              <ProfileField label="People you reach" value={form.audience_size} onChange={value => update("audience_size", value)} />
-            </div>
-          </section>
-
-          <section className="dp-profile-editor__section">
-            <header>
-              <p>Story</p>
-              <h3 className="dp-profile-section-title">Public story</h3>
-            </header>
-            <ProfileTextarea
-              label="About this place"
-              helper="Help visitors understand why they should stop here."
-              value={form.public_summary}
-              onChange={value => update("public_summary", value)}
-              placeholder="Describe the experience, atmosphere, community value, or what makes this place worth discovering."
-            />
-            <ProfileTextarea
-              label="What can people do here?"
-              value={form.public_action}
-              onChange={value => update("public_action", value)}
-              placeholder="Attend events, discover public art, join community programs, reserve tickets, learn more, volunteer, or support local initiatives."
-            />
-          </section>
-
-          <section className="dp-profile-editor__section">
-            <header>
-              <p>Discovery</p>
-              <h3 className="dp-profile-section-title">Discovery settings</h3>
-            </header>
-            <div className="dp-profile-editor__grid">
-              <ProfileField label="Operating Hours" value={form.operating_hours} onChange={value => update("operating_hours", value)} />
-              <ProfileField label="Neighborhood" value={form.neighborhood} onChange={value => update("neighborhood", value)} />
-              <ProfileField label="Nearby Landmarks" value={form.nearby_landmarks} onChange={value => update("nearby_landmarks", value)} />
-              <ProfileField label="Keywords" value={form.keywords} onChange={value => update("keywords", value)} />
-              <ProfileField label="Category" value={form.category} onChange={value => update("category", value)} />
-              <ProfileField label="Where it appears" value={form.map_visibility} onChange={value => update("map_visibility", value)} />
-            </div>
-          </section>
-
-          <div className="dp-profile-editor__actions">
-            <button type="submit" disabled={saving} className="dp-profile-editor__primary">
-              {saved ? <><Check aria-hidden="true" /> Changes saved</> : saving ? "Saving..." : "Save changes"}
-            </button>
-            <Link to="/map?mode=resident&tab=map&filter=All" className="dp-profile-editor__secondary">
-              Preview Public Page
-            </Link>
+      <form id="workspace-profile-form" onSubmit={handleSubmit} className="dp-workspace-ia-layout">
+        <section className="dp-workspace-ia-section" aria-labelledby="workspace-profile-identity-title">
+          <div className="dp-workspace-ia-section-head">
+            <p>Identity</p>
+            <h3 id="workspace-profile-identity-title">Account details</h3>
+            <span>Edit only the fields that belong to account identity and recovery.</span>
           </div>
-        </div>
+          <div className="dp-workspace-ia-field-grid">
+            <ProfileField label="Name" value={form.best_contact} onChange={value => update("best_contact", value)} />
+            <ProfileField label="Verified email" value={form.email} onChange={value => update("email", value)} type="email" />
+            <ProfileSelect label="Role category" value={form.partner_type} onChange={value => update("partner_type", value)} options={PARTNER_TYPES} />
+          </div>
+        </section>
 
-        <aside className="dp-profile-preview" aria-label="Live profile preview">
-          <div className="dp-profile-preview__phone">
-            <div className="dp-profile-preview__image">
-              <span>{form.partner_type || "partner"}</span>
-            </div>
-            <div className="dp-profile-preview__body">
-              <p className="dp-profile-preview__meta">{form.category || form.partner_type} / {form.district || "Downtown Austin"}</p>
-              <h3>{form.partner_name || "Partner Name"}</h3>
-              <p className="dp-profile-preview__location">{form.neighborhood || form.primary_location}</p>
-              <p className="dp-profile-preview__description">{form.public_summary || defaultStory}</p>
-              <button type="button">Open on map</button>
-              <div className="dp-profile-preview__nearby">
-                <span>Nearby suggestions</span>
-                <p>{form.nearby_landmarks || "Moody Amphitheater, Texas Capitol, Red River Cultural District"}</p>
-              </div>
+        <section className="dp-workspace-ia-section" aria-labelledby="workspace-profile-organization-title">
+          <div className="dp-workspace-ia-section-head">
+            <p>Organization</p>
+            <h3 id="workspace-profile-organization-title">Public organization record</h3>
+            <span>Public profile changes are saved here and reviewed before external publishing.</span>
+          </div>
+          <div className="dp-workspace-ia-field-grid">
+            <ProfileField label="Organization name" value={form.partner_name} onChange={value => update("partner_name", value)} required />
+            <ProfileField label="Primary location" value={form.primary_location} onChange={value => update("primary_location", value)} />
+            <ProfileField label="Website" value={form.website} onChange={value => update("website", value)} type="url" />
+            <ProfileField label="Phone" value={form.phone} onChange={value => update("phone", value)} type="tel" />
+          </div>
+          <ProfileTextarea label="Public description" value={form.public_summary} onChange={value => update("public_summary", value)} placeholder="Describe the public experience in plain language." />
+        </section>
+
+        <section className="dp-workspace-ia-section" aria-labelledby="workspace-profile-presence-title">
+          <div className="dp-workspace-ia-section-head">
+            <p>Public presence</p>
+            <h3 id="workspace-profile-presence-title">Map and discovery details</h3>
+            <span>Keep map copy, visibility, and discovery details separate from analytics and campaign tools.</span>
+          </div>
+          <div className="dp-workspace-ia-field-grid">
+            <ProfileField label="District" value={form.district} onChange={value => update("district", value)} />
+            <ProfileField label="Neighborhood" value={form.neighborhood} onChange={value => update("neighborhood", value)} />
+            <ProfileField label="Operating hours" value={form.operating_hours} onChange={value => update("operating_hours", value)} />
+            <ProfileField label="Visibility state" value={form.map_visibility} onChange={value => update("map_visibility", value)} />
+            <ProfileField label="Keywords" value={form.keywords} onChange={value => update("keywords", value)} />
+            <ProfileField label="Nearby landmarks" value={form.nearby_landmarks} onChange={value => update("nearby_landmarks", value)} />
+          </div>
+        </section>
+
+        <section className="dp-workspace-ia-summary" aria-label="Profile and settings overview">
+          {profileSections.map((section) => (
+            <article key={section.title}>
+              <button type="button">
+                <span><strong>{section.title}</strong><small>{section.summary}</small></span>
+                <ChevronRight aria-hidden="true" />
+              </button>
               <dl>
-                <div>
-                  <dt>Likely visitors</dt>
-                  <dd>{form.audience_size}</dd>
-                </div>
-                <div>
-                  <dt>Visible across</dt>
-                  <dd>Map, search, events, offers, and QR links</dd>
-                </div>
-                <div>
-                  <dt>Suggested improvement</dt>
-                  <dd>Publish updates that help visitors discover upcoming events, seasonal experiences, and ways to explore {form.partner_name || "this place"}.</dd>
-                </div>
+                {section.rows.map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
               </dl>
-            </div>
-          </div>
-        </aside>
+            </article>
+          ))}
+        </section>
+
+        <div className="dp-workspace-ia-actions">
+          <Link to="/map?mode=partner&tab=map&filter=All">Preview public presence</Link>
+          <Link to="/partner-workspace/settings">Billing and settings</Link>
+          <button type="button">Sign out</button>
+        </div>
       </form>
     </motion.div>
   );
