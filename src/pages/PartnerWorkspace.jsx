@@ -9,6 +9,7 @@ import { WorkspaceSheetProvider } from "@/components/partner/workspace/Workspace
 import { WorkspaceDestinationRoot } from "@/components/partner/workspace/WorkspaceDestinationRoot";
 import { WorkspaceExperienceSystem } from "@/components/partner/workspace/WorkspaceExperienceSystem";
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
+import { WorkspaceAudience } from "@/components/partner/workspace/WorkspaceAudience";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
 import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
@@ -850,7 +851,7 @@ function PartnerWorkspaceContent() {
           {tab === "broadcasts" && <WorkspaceRegistryPanel key="broadcasts" tabId="broadcasts" />}
           {tab === "share_links" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-share-links" tabId="share_links" /> : <PartnerShareLinksPanel key={`share_links-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
           {tab === "governance" && (hasPrivilegedWorkspaceAccess ? <WorkspaceRegistryPanel key="admin-governance" tabId="governance" /> : <GovernanceWorkspacePanel key={`governance-${activeOrganizationId}`} organizationId={activeOrganizationId} scope={workspaceScope} />)}
-          {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
+          {tab === "audience" && <WorkspaceAudience key={`audience-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} scope={workspaceScope} />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
           {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
