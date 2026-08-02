@@ -6,9 +6,7 @@ const smokeViewports = viewportMatrix.filter((viewport) =>
 );
 
 function visibleDrawerHeading(drawer, name?: string | RegExp) {
-  const selector = ".dp-map-detail-scroll :is(.dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title:not(.dp-map-detail-navigation-title), h1, h2), .dp-entity-summary :is(.dp-entity-title, h1, h2)";
-  const locator = drawer.locator(selector);
-  return name ? locator.filter({ hasText: name }).first() : locator.first();
+  return drawer.getByRole("heading", name ? { name } : undefined).first();
 }
 
 
@@ -312,9 +310,8 @@ test.describe("adaptive map surface", () => {
 
           const geometry = await drawer.evaluate((drawerNode) => {
             const scroll = drawerNode.querySelector<HTMLElement>(".dp-map-detail-scroll");
-            const titleNode = drawerNode.querySelector<HTMLElement>(
-              ".dp-entity-title, .dp-destination-title, .dp-detail-title, .dp-map-panel-title:not(.dp-map-detail-navigation-title), .dp-map-detail-scroll h1, .dp-map-detail-scroll h2",
-            );
+            const titleNode = [...drawerNode.querySelectorAll<HTMLElement>("h1, h2, [role='heading']")]
+              .find((node) => node.offsetParent !== null && node.getAttribute("aria-hidden") !== "true") || null;
             const navNode = document.querySelector<HTMLElement>(".dp-map-bottom-nav");
             const navShell = navNode?.closest<HTMLElement>(".dp-map-bottom-nav-shell");
             if (!scroll || !titleNode || !navNode || !navShell) return null;

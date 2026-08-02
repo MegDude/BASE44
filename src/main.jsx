@@ -126,7 +126,6 @@ import "@/styles/search-input-rail-compact-final.css"
 import "@/styles/resident-civic-native-final.css"
 import "@/styles/quick-search-native-final.css"
 import "@/styles/panel-navigation-contract-final.css"
-import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/platform-cleanup-polish-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
@@ -153,6 +152,7 @@ import "@/styles/workspace-unified-native-release.css"
 import "@/styles/map-drawer-native-luxury-final.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/native-luxury-platform-release.css"
+import "@/styles/panel-media-system-final.css"
 
 const application = <App />
 
