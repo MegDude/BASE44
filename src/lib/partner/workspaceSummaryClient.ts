@@ -6,8 +6,16 @@ const ORGANIZATION_SLUG_BY_LEGACY_ID = {
   "demo-org-downtown-perks": "downtown-perks",
 };
 
-export async function getPartnerWorkspaceSummary({ organizationId, portfolioId, listingId } = {}) {
-  const session = await supabaseClient?.auth.getSession().catch(() => null);
+type WorkspaceSummaryScope = {
+  organizationId?: string;
+  portfolioId?: string;
+  listingId?: string;
+};
+
+export async function getPartnerWorkspaceSummary({ organizationId, portfolioId, listingId }: WorkspaceSummaryScope = {}) {
+  const session = supabaseClient?.auth
+    ? await supabaseClient.auth.getSession().catch(() => null)
+    : null;
   const token = session?.data?.session?.access_token;
   if (!token) return null;
 

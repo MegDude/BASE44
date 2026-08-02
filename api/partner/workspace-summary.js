@@ -19,6 +19,35 @@ function clean(value, max = 180) {
   return String(value || "").trim().slice(0, max);
 }
 
+function isUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
+}
+
+function isExternalId(value) {
+  return /^[a-z0-9][a-z0-9_-]{0,179}$/i.test(String(value || ""));
+}
+
+function scopedListingsQuery(database, organizationId, portfolioId, listingId) {
+  let query = database.from("partner_listings").select("id,entity_id").eq("organization_id", organizationId).eq("status", "active");
+  if (portfolioId) query = query.eq("portfolio_id", portfolioId);
+  if (listingId) query = query.eq("id", listingId);
+  return query;
+}
+
+async function resolveListingId(database, organizationId, requestedListingId) {
+  if (!requestedListingId || isUuid(requestedListingId)) return requestedListingId || null;
+  const { data, error } = await database
+    .from("partner_listings")
+    .select("id")
+    .eq("organization_id", organizationId)
+    .eq("entity_id", requestedListingId)
+    .eq("status", "active")
+    .maybeSingle();
+  if (error) throw error;
+  if (!data?.id) throw new TransactionApiError(404, "WORKSPACE_LISTING_NOT_FOUND", "This listing is not available in the active workspace.");
+  return data.id;
+}
+
 async function countRows(query) {
   const { count, error } = await query;
   if (error) throw error;
@@ -40,7 +69,11 @@ async function resolveScope(req, database) {
 
   if (isSuperAdmin) {
     let query = database.from("partner_organizations").select("id,external_id,legacy_partner_id,name,organization_type,status").eq("status", "active");
-    if (requestedOrganization) query = query.or(`id.eq.${requestedOrganization},external_id.eq.${requestedOrganization}`);
+    if (requestedOrganization) {
+      if (isUuid(requestedOrganization)) query = query.eq("id", requestedOrganization);
+      else if (isExternalId(requestedOrganization)) query = query.eq("external_id", requestedOrganization);
+      else throw new TransactionApiError(400, "WORKSPACE_SCOPE_INVALID", "The requested workspace is invalid.");
+    }
     const { data, error } = await query.order("name").limit(2);
     if (error) throw error;
     if (!data?.length) throw new TransactionApiError(404, "WORKSPACE_SCOPE_NOT_FOUND", "This workspace is not connected.");
@@ -71,7 +104,11 @@ export default async function handler(req, res) {
     const database = requireTransactionDatabase();
     const { organization, role } = await resolveScope(req, database);
     const portfolioId = clean(req.query?.portfolioId);
-    const listingId = clean(req.query?.listingId);
+    const requestedListingId = clean(req.query?.listingId);
+    if (portfolioId && !isUuid(portfolioId)) {
+      throw new TransactionApiError(400, "WORKSPACE_PORTFOLIO_INVALID", "The requested portfolio is invalid.");
+    }
+    const listingId = await resolveListingId(database, organization.id, requestedListingId);
 
     let listings = database.from("partner_listings").select("id", { count: "exact", head: true }).eq("organization_id", organization.id).eq("status", "active");
     let perks = database.from("perks").select("id", { count: "exact", head: true }).eq("partner_organization_id", organization.id).eq("status", "active");
@@ -91,9 +128,9 @@ export default async function handler(req, res) {
     }
 
     const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount] = await Promise.all([
-      database.from("partner_listings").select("id,entity_id").eq("organization_id", organization.id).eq("status", "active"),
+      scopedListingsQuery(database, organization.id, portfolioId, listingId),
       countRows(perks),
-      countRows(events.eq("partner_id", organization.legacy_partner_id)),
+      portfolioId || listingId ? Promise.resolve(0) : countRows(events.eq("partner_id", organization.legacy_partner_id)),
       countRows(campaigns),
       countRows(activity),
       database.from("audience_sources").select("source_key,source_name,source_type,status,last_synced_at").order("source_name"),
