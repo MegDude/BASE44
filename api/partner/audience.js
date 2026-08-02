@@ -1,6 +1,6 @@
 import { requireTransactionDatabase, sendTransactionError, TransactionApiError } from "../../src/lib/api/transactionAuth.js";
 import { resolveAuthorizedWorkspaceScope } from "../_lib/workspaceScope.js";
-const cohort=(n,admin)=>admin||n>=5?{count:n,display:String(n),suppressed:false}:{count:null,display:n?"<5":"0",suppressed:!!n};
+const cohort=(n,admin)=>admin||n>=5?{count:n,display:String(n),suppressed:false}:n===0?{count:0,display:"0",suppressed:false}:{count:null,display:"<5",suppressed:true};
 export default async function handler(req,res){
  res.setHeader("Cache-Control","private, no-store");
  try { if(req.method!=="GET") return res.status(405).json({error:"Method not allowed"});
