@@ -145,7 +145,6 @@ import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
-import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
 import "@/styles/route-native-map-sheet-final.css"
@@ -154,6 +153,7 @@ import "@/styles/native-drawer-scroll-contract.css"
 import "@/styles/partner-acquisition-flow-final.css"
 import "@/styles/workspace-unified-native-release.css"
 import "@/styles/map-drawer-native-luxury-final.css"
+import "@/styles/perks-saved-nearby-mobile-system.css"
 
 inject()
 injectSpeedInsights()
