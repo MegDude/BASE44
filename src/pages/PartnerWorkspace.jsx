@@ -44,6 +44,7 @@ import {
   listPublishedWorkspaceItems,
   updatePublishedWorkspaceItem,
 } from "@/lib/partner/publishedContentClient";
+import { getPartnerWorkspaceSummary } from "@/lib/partner/workspaceSummaryClient";
 
 const WORKSPACE_MEDIA_TABS = ["media"];
 
@@ -1658,14 +1659,13 @@ function NativeMobileWorkspaceDashboard({
   scope,
   heroMedia,
   onSwitchWorkspace,
+  workspaceSummary,
 }) {
   const workspaceHref = (path) => withPartnerWorkspaceScope(path, scope);
-  const potentialReach = getPotentialReachSummary();
-  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : potentialReach.total === null ? "—" : formatWorkspaceNumber(potentialReach.total);
-  const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
-  const heroSource = isLegends
-    ? "Source: SEO Snapshot"
-    : "No verified audience total is connected";
+  const liveInventory = workspaceSummary?.inventory;
+  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : workspaceSummary?.audience?.eligibleResidents == null ? "—" : formatWorkspaceNumber(workspaceSummary.audience.eligibleResidents);
+  const heroLabel = isLegends ? "Recorded search visits" : "Eligible resident audience";
+  const heroSource = isLegends ? "Source: SEO Snapshot" : workspaceSummary?.audience?.status === "connected" ? "Source: consented audience segment" : "Audience source not connected";
   const kpis = isLegends
     ? [
         [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "SEO Snapshot"],
@@ -1673,9 +1673,10 @@ function NativeMobileWorkspaceDashboard({
         [formatWorkspaceNumber(report.summary.nonBrandedTop10KeywordCount), "Top results", "SEO Snapshot"],
       ]
     : [
-        [formatWorkspaceNumber(ownedEntities.length), "Connected places", "Current workspace"],
-        [formatWorkspaceNumber(activePerks.length), "Live offers", "Current workspace"],
-        [formatWorkspaceNumber(upcomingEvents.length), "Upcoming events", "Current workspace"],
+        [formatWorkspaceNumber(liveInventory?.connectedPlaces), "Connected places", "Live workspace data"],
+        [formatWorkspaceNumber(liveInventory?.mapInventory?.total), "Map inventory", liveInventory?.mapInventory?.status === "connected" ? "Connected records" : "Published map registry"],
+        [formatWorkspaceNumber(liveInventory?.liveOffers), "Live offers", "Live workspace data"],
+        [formatWorkspaceNumber(liveInventory?.upcomingEvents), "Upcoming events", "Live workspace data"],
       ];
   const entityTypeLabel = (type) => ({
     brand: "Brand profile",
@@ -1828,12 +1829,21 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
+  const [workspaceSummary, setWorkspaceSummary] = useState(null);
   const selectedOrganizationId = organizationId;
 
   useEffect(() => {
     listWorkspaceItems("Perk", "perks", user.email).then((items) => setPerks((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
     listWorkspaceItems("Event", "events", user.email).then((items) => setEvents((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
   }, [user.email, selectedOrganizationId, scope?.listingId]);
+
+  useEffect(() => {
+    let active = true;
+    getPartnerWorkspaceSummary({ organizationId: selectedOrganizationId, portfolioId: scope?.portfolioId, listingId: scope?.listingId })
+      .then((summary) => { if (active) setWorkspaceSummary(summary); })
+      .catch(() => { if (active) setWorkspaceSummary(null); });
+    return () => { active = false; };
+  }, [selectedOrganizationId, scope?.portfolioId, scope?.listingId]);
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
   const ownedEntities = selectedOrganization
@@ -1869,10 +1879,11 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
-        ["Connected places", formatWorkspaceNumber(ownedEntities.length)],
-        ["Live offers", formatWorkspaceNumber(activePerks.length)],
-        ["Upcoming events", formatWorkspaceNumber(upcomingEvents.length)],
-        ["Potential audience", "Not connected"],
+        ["Connected places", formatWorkspaceNumber(workspaceSummary?.inventory?.connectedPlaces)],
+        ["Map inventory", formatWorkspaceNumber(workspaceSummary?.inventory?.mapInventory?.total)],
+        ["Live offers", formatWorkspaceNumber(workspaceSummary?.inventory?.liveOffers)],
+        ["Upcoming events", formatWorkspaceNumber(workspaceSummary?.inventory?.upcomingEvents)],
+        ["Eligible resident audience", workspaceSummary?.audience?.eligibleResidents == null ? "Not connected" : formatWorkspaceNumber(workspaceSummary.audience.eligibleResidents)],
       ];
   const nextAction = isLarryAndGuy && selectedEntity
     ? {
@@ -1928,6 +1939,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         scope={scope}
         heroMedia={heroMedia}
         onSwitchWorkspace={hasPrivilegedAccess ? undefined : () => setWorkspaceMenuOpen(true)}
+        workspaceSummary={workspaceSummary}
       />
       <AnimatePresence>
         {workspaceMenuOpen && !hasPrivilegedAccess ? (
