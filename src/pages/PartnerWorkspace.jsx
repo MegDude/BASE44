@@ -11,7 +11,6 @@ import { WorkspaceExperienceSystem } from "@/components/partner/workspace/Worksp
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
 import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
-import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunchBrief";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
 import { legendsLuxuryPresenceSeoSnapshot } from "@/data/luxuryPresenceSeoSnapshot";
@@ -117,7 +116,7 @@ const WORKSPACE_MEDIA = [
 // We use Perk, Event, and Venue entities which already exist.
 // Partner profile is stored on the user object.
 
-const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Launch", href: "/partner-workspace/launch", helper: "Decisions, relationships, and proof." };
+const LAUNCH_WORKSPACE_NAV_ITEM = { id: "launch", label: "Engagement", href: "/partner-workspace/launch", helper: "Map intelligence, relationships, and next actions." };
 const REDEMPTIONS_WORKSPACE_NAV_ITEM = { id: "redemptions", label: "Visits & redemptions", href: "/partner-workspace/results?section=redemptions", helper: "Confirm QR uses and review results." };
 const SHARE_LINKS_WORKSPACE_NAV_ITEM = { id: "share_links", label: "Share links", href: "/partner-workspace/share-links", helper: "Create links and QR codes people can open." };
 const GOVERNANCE_WORKSPACE_NAV_ITEM = { id: "governance", label: "Community decisions", href: "/partner-workspace/governance", helper: "Publish updates and respond to residents." };
@@ -838,7 +837,7 @@ function PartnerWorkspaceContent() {
         />
         <AnimatePresence mode="wait">
           {tab === "overview" && <WorkspaceOverview key="overview" user={user} setTab={setTab} scope={workspaceScope} organizationId={activeOrganizationId} mode={isPublicWorkspaceUser && !activation ? "unlinked" : "active"} activation={activation} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
-          {tab === "launch" && <WorkspaceLaunchBrief key="launch" organizationId={activeOrganizationId} />}
+          {tab === "launch" && <WorkspaceAgent key="engagement" user={user} scope={workspaceScope} engagement /> }
           {tab === "publish" && <WorkspaceDestinationRoot key="publish" destination="publish" scope={workspaceScope} />}
           {tab === "performance" && <WorkspaceDestinationRoot key="performance" destination="performance" scope={workspaceScope} />}
           {tab === "workspace" && <WorkspaceDestinationRoot key="workspace" destination="workspace" scope={workspaceScope} />}
@@ -1233,14 +1232,18 @@ function workspaceAgentActionHref(action, scope) {
   return "";
 }
 
-function WorkspaceAgent({ user, scope }) {
+function WorkspaceAgent({ user, scope, engagement = false }) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const requestedOrganizationId = scope?.organizationId || params.get("organizationId") || params.get("workspace") || "";
   const organization = demoOrganizations.find((item) => item.id === requestedOrganizationId);
   const organizationId = organization?.id || requestedOrganizationId;
   const ownedEntities = getScopedOrganizationEntities(organizationId, scope?.portfolioId, scope?.listingId);
-  const prompts = PARTNER_WORKSPACE_COPY.assistant?.prompts || [];
+  const prompts = PARTNER_WORKSPACE_COPY.assistant?.prompts || [
+    "What should we improve this week?",
+    "Which nearby audience should we focus on?",
+    "Which offer, event, or campaign needs attention first?",
+  ];
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState(null);
   const [status, setStatus] = useState("idle");
@@ -1258,30 +1261,21 @@ function WorkspaceAgent({ user, scope }) {
         message: nextQuestion,
         query: nextQuestion,
         mode: "partner",
-        intent: "workspace_decision",
+        intent: engagement ? "workspace_engagement_decision" : "workspace_decision",
         organizationId,
         listingIds: scope?.listingId ? [scope.listingId] : ownedEntities.map((entity) => entity.entity_id),
         userId: user?.id || user?.email || "",
         location: { district: user?.district || "Downtown Austin" },
         context: {
-          surface: "partner_workspace",
-          workspaceTab: "assistant",
+          surface: engagement ? "partner_workspace_engagement" : "partner_workspace",
+          workspaceTab: engagement ? "engagement" : "assistant",
           portfolioId: scope?.portfolioId || null,
           listingId: scope?.listingId || null,
-          organization: {
-            id: organizationId,
-            name: organization?.name || user?.organization_name || user?.partner_name || "Partner",
-            type: organization?.type || user?.partner_type || "partner",
-          },
+          organization: { id: organizationId, name: organization?.name || user?.organization_name || user?.partner_name || "Platform workspace", type: organization?.type || user?.partner_type || "partner" },
           entities: ownedEntities,
+          requiredEvidence: ["canonical_map_inventory", "authorized_workspace_records", "activity_events"],
         },
-        mapContext: ownedEntities.map((entity) => ({
-          id: entity.entity_id,
-          name: entity.display_name,
-          type: entity.entity_type,
-          summary: entity.perk_summary || "",
-          filter: entity.map_filter || "All",
-        })),
+        mapContext: ownedEntities.map((entity) => ({ id: entity.entity_id, name: entity.display_name, type: entity.entity_type, summary: entity.perk_summary || "", filter: entity.map_filter || "All" })),
       });
       setResponse(answer);
       setStatus("ready");
@@ -1291,76 +1285,26 @@ function WorkspaceAgent({ user, scope }) {
     }
   }
 
-  const structuredActions = Array.isArray(response?.structuredActions)
-    ? response.structuredActions
-    : [];
+  const structuredActions = Array.isArray(response?.structuredActions) ? response.structuredActions : [];
   const followUps = Array.isArray(response?.followUps) ? response.followUps : [];
   const places = Array.isArray(response?.places) ? response.places : [];
-  const sourceLabel = response?.source === "base44-agent"
-    ? "Ask the Map"
-    : response?.source === "openai-ask-map"
-      ? "Ask the Map"
-      : response?.source === "local-agent"
-        ? "Current map details"
-        : "Downtown Perks map guidance";
+  const contextLabel = scope?.listingId ? "Selected listing" : scope?.portfolioId ? "Selected portfolio" : organizationId ? "Selected organization" : "Platform-wide map";
 
   return (
-    <motion.section className="dp-workspace-agent" aria-labelledby="workspace-agent-title" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+    <motion.section className="dp-workspace-agent dp-workspace-agent--native" aria-labelledby="workspace-agent-title" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
       <header className="dp-workspace-agent__hero">
-        <div>
-          <p className="dp-workspace-eyebrow">Ask the Map</p>
-          <h1 id="workspace-agent-title">Decide what to do next.</h1>
-          <p>Ask about {organization?.name || "your organization"}, nearby demand, listings, offers, campaigns, or results. Answers use the places and details connected to your account.</p>
-        </div>
-        <Link to={`/map?mode=partner&tab=map&filter=All&organizationId=${encodeURIComponent(organizationId)}`}>Open partner map <ArrowRight aria-hidden="true" /></Link>
+        <div><p className="dp-workspace-eyebrow">{engagement ? "Engagement intelligence" : "Ask the Map"}</p><h1 id="workspace-agent-title">{engagement ? "Turn map signals into the next move." : "Make the next decision with the map."}</h1><p>Answers are grounded in the authorized workspace, canonical map inventory, and recorded activity. Missing evidence stays explicit.</p></div>
+        <Link to={withPartnerWorkspaceScope("/map?mode=partner&tab=map&filter=All", scope)}>Open map <ArrowRight aria-hidden="true" /></Link>
       </header>
-
+      <div className="dp-workspace-agent__context"><span>{contextLabel}</span><strong>{ownedEntities.length ? `${ownedEntities.length} connected ${ownedEntities.length === 1 ? "place" : "places"}` : "Map intelligence is ready when authorized scope loads"}</strong></div>
       <div className="dp-workspace-agent__layout">
         <section className="dp-workspace-agent__ask" aria-labelledby="workspace-agent-question-title">
-          <div><p>Ask a question</p><h2 id="workspace-agent-question-title">What decision are you making?</h2></div>
-          <form onSubmit={askAgent}>
-            <label htmlFor="workspace-agent-question">Question</label>
-            <textarea
-              id="workspace-agent-question"
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              placeholder="Which listing or campaign should we improve first?"
-              rows={4}
-              maxLength={600}
-            />
-            <button type="submit" disabled={!question.trim() || status === "loading"}>
-              {status === "loading" ? "Finding the clearest next step…" : "Ask the Map"}
-              <ArrowRight aria-hidden="true" />
-            </button>
-          </form>
-          <div className="dp-workspace-agent__prompts" aria-label="Suggested questions">
-            {prompts.map((prompt) => (
-              <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)} disabled={status === "loading"}>{prompt}</button>
-            ))}
-          </div>
-          <aside>
-            <strong>Context included</strong>
-            <p>{ownedEntities.length} connected {ownedEntities.length === 1 ? "place" : "places"}, your organization, the selected district, and your question. Missing details are clearly identified.</p>
-          </aside>
+          <div><p>Ask the agent</p><h2 id="workspace-agent-question-title">What decision needs a clearer answer?</h2></div>
+          <form onSubmit={askAgent}><label htmlFor="workspace-agent-question">Question</label><textarea id="workspace-agent-question" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Which listing, offer, audience, or campaign should we improve first?" rows={3} maxLength={600} /><button type="submit" disabled={!question.trim() || status === "loading"}>{status === "loading" ? "Reading map intelligence…" : "Ask the Map"}<ArrowRight aria-hidden="true" /></button></form>
+          <div className="dp-workspace-agent__prompts" aria-label="Suggested questions">{prompts.slice(0, 4).map((prompt) => <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)} disabled={status === "loading"}>{prompt}</button>)}</div>
         </section>
-
         <section className="dp-workspace-agent__answer" aria-live="polite" aria-busy={status === "loading"}>
-          {status === "loading" ? (
-            <div className="dp-workspace-agent__loading"><span aria-hidden="true" /><strong>Reading the current map context</strong><p>Checking connected places and the next useful action.</p></div>
-          ) : error ? (
-            <div className="dp-workspace-agent__empty"><strong>That answer is not available yet.</strong><p>{error}</p><button type="button" onClick={(event) => askAgent(event)}>Try again</button></div>
-          ) : response?.answer ? (
-            <div className="dp-workspace-agent__response">
-              <div className="dp-workspace-agent__response-heading"><span>{sourceLabel}</span><h2>{response.title || "Recommended next step"}</h2></div>
-              <div className="dp-workspace-agent__markdown"><ReactMarkdown>{String(response.answer)}</ReactMarkdown></div>
-              {response.explanation && response.explanation !== response.answer ? <p className="dp-workspace-agent__reason"><strong>Why this fits</strong>{String(response.explanation)}</p> : null}
-              {places.length ? <div className="dp-workspace-agent__places"><strong>Places used in this answer</strong>{places.slice(0, 4).map((place) => <Link key={String(place.id || place.name)} to={`/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(String(place.id || ""))}&organizationId=${encodeURIComponent(organizationId)}`}><span>{String(place.name || place.title || "Downtown place")}</span><small>{String(place.reason || place.summary || "Open on the map")}</small><ArrowRight aria-hidden="true" /></Link>)}</div> : null}
-              {structuredActions.length ? <div className="dp-workspace-agent__actions"><strong>Take the next step</strong>{structuredActions.slice(0, 4).map((action, index) => { const href = workspaceAgentActionHref(action, scope); return href ? <Link key={`${action.label || action.type}-${index}`} to={href}>{String(action.label || "Open next step")}<ArrowRight aria-hidden="true" /></Link> : null; })}</div> : null}
-              {followUps.length ? <div className="dp-workspace-agent__followups"><strong>Ask next</strong>{followUps.slice(0, 4).map((prompt) => <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)}>{prompt}</button>)}</div> : null}
-            </div>
-          ) : (
-            <div className="dp-workspace-agent__empty"><MessageSquareText aria-hidden="true" /><strong>Your recommendation will appear here.</strong><p>Start with one decision. The agent will explain what matters, why it matters now, and what you can do next.</p></div>
-          )}
+          {status === "loading" ? <div className="dp-workspace-agent__loading"><span aria-hidden="true" /><strong>Reading authorized map context</strong><p>Checking places, activity, and the clearest next action.</p></div> : error ? <div className="dp-workspace-agent__empty"><strong>That answer is not available yet.</strong><p>{error}</p><button type="button" onClick={(event) => askAgent(event)}>Try again</button></div> : response?.answer ? <div className="dp-workspace-agent__response"><div className="dp-workspace-agent__response-heading"><span>Map intelligence</span><h2>{response.title || "Recommended next step"}</h2></div><div className="dp-workspace-agent__markdown"><ReactMarkdown>{String(response.answer)}</ReactMarkdown></div>{response.explanation && response.explanation !== response.answer ? <p className="dp-workspace-agent__reason"><strong>Why this fits</strong>{String(response.explanation)}</p> : null}{places.length ? <div className="dp-workspace-agent__places"><strong>Evidence used</strong>{places.slice(0, 4).map((place) => <Link key={String(place.id || place.name)} to={withPartnerWorkspaceScope(`/map?mode=partner&tab=map&filter=All&entityId=${encodeURIComponent(String(place.id || ""))}`, scope)}><span>{String(place.name || place.title || "Downtown place")}</span><small>{String(place.reason || place.summary || "Open on the map")}</small><ArrowRight aria-hidden="true" /></Link>)}</div> : null}{structuredActions.length ? <div className="dp-workspace-agent__actions"><strong>Take the next step</strong>{structuredActions.slice(0, 4).map((action, index) => { const href = workspaceAgentActionHref(action, scope); return href ? <Link key={`${action.label || action.type}-${index}`} to={href}>{String(action.label || "Open next step")}<ArrowRight aria-hidden="true" /></Link> : null; })}</div> : null}{followUps.length ? <div className="dp-workspace-agent__followups"><strong>Ask next</strong>{followUps.slice(0, 4).map((prompt) => <button key={prompt} type="button" onClick={(event) => askAgent(event, prompt)}>{prompt}</button>)}</div> : null}</div> : <div className="dp-workspace-agent__empty"><MessageSquareText aria-hidden="true" /><strong>Your evidence-backed recommendation will appear here.</strong><p>Ask one decision question. The agent will separate known signals, missing information, and the next useful action.</p></div>}
         </section>
       </div>
     </motion.section>

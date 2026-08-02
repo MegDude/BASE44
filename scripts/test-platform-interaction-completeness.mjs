@@ -24,7 +24,7 @@ const requiredRoutes = [
 for (const route of requiredRoutes) assert.ok(app.includes(`path=\"${route}\"`), `missing application route: ${route}`);
 
 const workspaceModules = {
-  overview: "WorkspaceOverview", launch: "WorkspaceLaunchBrief", publish: "WorkspaceDestinationRoot",
+  overview: "WorkspaceOverview", launch: "WorkspaceAgent", publish: "WorkspaceDestinationRoot",
   performance: "WorkspaceDestinationRoot", map: "WorkspaceRegistryPanel", campaigns: "WorkspaceExperienceSystem",
   offers: "PerksManager", events: "EventsManager", surveys: "WorkspaceExperienceSystem",
   broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceRegistryPanel", audience: "WorkspaceRegistryPanel",
