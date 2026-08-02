@@ -226,7 +226,9 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
   const [submissionMessage, setSubmissionMessage] = useState(getAuthFailureMessage(callbackError));
   const [signInEmail, setSignInEmail] = useState("");
-  const [signInType, setSignInType] = useState(initialType || "property");
+  const [signInType, setSignInType] = useState(
+    SIGN_IN_ACCESS_TYPES.some((type) => type.value === initialType) ? initialType : "property",
+  );
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
@@ -585,7 +587,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                             setSignInType(type.value);
                             setSubmissionMessage("");
                           }}
-                          className="dp-partner-type-card"
+                          className="dp-partner-access-type-row"
                         >
                           <span>{type.section}</span>
                           <strong>{type.label}</strong>
