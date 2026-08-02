@@ -9,7 +9,8 @@ const profileActions = readFileSync(new URL("../src/styles/workspace-profile-sav
 
 assert.match(app, /const AdminMarketingStudio = lazy/);
 assert.match(app, /path="\/admin" element={<ProtectedAdminStudio \/>}/);
-assert.match(app, /\["admin", "platform_admin", "super_admin"\]\.includes\(role\).*Navigate to="\/admin"/s);
+assert.match(app, /const adminDestination = location\.pathname === "\/partner-workspace\/residents" \? "\/admin-studio\/residents" : "\/admin";/);
+assert.match(app, /return <Navigate to=\{adminDestination\} replace \/>/);
 assert.match(app, /function ProtectedAdminStudio\(\)[\s\S]*?<AdminMarketingStudio \/>/);
 assert.doesNotMatch(app, /ADMIN_STUDIO_DESTINATIONS/);
 assert.match(authReturnPath, /DEFAULT_ADMIN_RETURN_PATH = "\/admin"/);
