@@ -29,10 +29,10 @@ assert.match(workspace, /<WorkspaceReports key="reports" scope=\{workspaceScope\
 assert.match(workspace, /onSwitchWorkspace=\{hasPrivilegedAccess \? undefined/, "admin overview still exposes the demo-only workspace switcher");
 assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not link to the in-shell people directory");
 assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
-assert.match(app, /ADMIN_STUDIO_DESTINATIONS/, "legacy admin routes are not mapped into canonical workspace destinations");
-assert.match(app, /"\/admin-studio\/campaign-builder": "\/partner-workspace\/campaigns\?intent=new"/, "campaign builder does not preserve its destination intent");
-assert.match(app, /preserveIntentParams\(location\.search\)/, "legacy admin redirects do not preserve existing query state");
-assert.match(app, /\$\{location\.hash\}/, "legacy admin redirects do not preserve hash state");
+assert.match(app, /path="\\/admin" element={<ProtectedAdminStudio \\/>}/, "canonical platform admin route is missing");
+assert.match(app, /<AdminMarketingStudio \\/>/, "admin routes do not render the platform command center");
+assert.doesNotMatch(app, /ADMIN_STUDIO_DESTINATIONS/, "admin routes still redirect into a partner workspace");
+assert.match(app, /\\["admin", "platform_admin", "super_admin"\\]\\.includes\\(role\\).*Navigate to="\\/admin"/s, "platform admins can still inherit partner workspace state");
 assert.doesNotMatch(switcher, /accessMode === "partner"[\s\S]{0,300}demoOrganizations\.map/, "partner workspace enumerates all organizations");
 
 console.log("Admin and partner workspace boundary contract passed.");
