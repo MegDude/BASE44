@@ -77,3 +77,99 @@ html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawe
   height: auto !important;
   max-height: none !important;
 }
+
+/* Terminal detail-header contract.
+   Map detail headers are rendered inside the shared drawer header wrapper, so
+   child-only legacy selectors cannot be trusted. Keep the resize affordance
+   and the navigation row in separate grid rows: they must never overlap or
+   hide one another. This applies to listings, perks, civic places, routes,
+   events, campaigns, and properties because they all use MapDetailHeader. */
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header > .dp-map-detail-header {
+  display: grid !important;
+  grid-template-rows: 24px 48px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  padding: 0 8px !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12) !important;
+  background: #ffffff !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-native-detail-grabber {
+  position: static !important;
+  grid-row: 1 !important;
+  grid-column: 1 !important;
+  justify-self: stretch !important;
+  align-self: stretch !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-native-detail-grabber > span {
+  display: block !important;
+  width: 36px !important;
+  height: 4px !important;
+  margin: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(11, 31, 51, 0.28) !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-map-detail-navigation {
+  position: static !important;
+  grid-row: 2 !important;
+  grid-column: 1 !important;
+  z-index: auto !important;
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-map-detail-navigation-title {
+  display: block !important;
+  grid-column: 2 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding-inline: 8px !important;
+  color: #0b1f33 !important;
+  font: 650 15px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.012em !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header :is(.dp-map-detail-back, .dp-map-detail-close) {
+  display: inline-grid !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-map-detail-back { grid-column: 1 !important; justify-self: start !important; }
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header .dp-map-detail-close { grid-column: 3 !important; justify-self: end !important; }

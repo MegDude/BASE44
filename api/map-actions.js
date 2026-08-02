@@ -230,19 +230,21 @@ async function recordSupabaseAction(payload) {
   }
 
   if (["request_info", "request_tour", "concierge_request", "service_request", "campaign_request", "reserve"].includes(payload.action)) {
-    writes.push(await safeInsert("partner_crm_leads", {
-      id: payload.id,
+    const attributedPartnerId = nullableUuid(payload.partnerId || payload.entity.partnerId);
+    if (attributedPartnerId) writes.push(await safeInsert("partner_audience_lead_events", {
       source: payload.source || "map",
-      resident_id: payload.profileId || payload.sessionId || null,
-      resident_name: clean(payload.form.name, 180) || null,
-      resident_email: clean(payload.form.email || payload.form.contact, 240) || null,
-      resident_phone: clean(payload.form.phone, 80) || null,
-      building_id: payload.form.buildingId || payload.entity.id || null,
-      partner_id: payload.partnerId || payload.entity.partnerId || null,
-      perk_id: payload.form.perkId || null,
-      campaign_id: payload.campaignId || payload.entity.campaignId || null,
+      action_type: payload.action,
+      entity_id: payload.entity.id || payload.listingId || null,
+      partner_id: attributedPartnerId,
+      campaign_id: nullableUuid(payload.campaignId || payload.entity.campaignId),
       status: "new",
-      metadata,
+      source_context: {
+        mode: payload.mode,
+        source: payload.source,
+        filter: payload.filter,
+        collection: payload.collection,
+        entityType,
+      },
     }));
   }
 

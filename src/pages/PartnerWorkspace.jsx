@@ -11,6 +11,7 @@ import { WorkspaceExperienceSystem } from "@/components/partner/workspace/Worksp
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
 import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
+import { PartnerAudiencePanel } from "@/features/partner/audience/PartnerAudiencePanel";
 import WorkspaceLaunchBrief from "@/components/partner/workspace/WorkspaceLaunchBrief";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
 import { larryAndGuyWorkspaceCampaign } from "@/data/larryAndGuyRestaurantLayer";
@@ -729,11 +730,6 @@ function PartnerWorkspaceContent() {
     setMobileNavOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (tab !== "residents" || hasPrivilegedWorkspaceAccess) return;
-    navigate(withPartnerWorkspaceScope("/partner-workspace/home", workspaceScope), { replace: true });
-  }, [hasPrivilegedWorkspaceAccess, navigate, tab, workspaceScope]);
-
   function handleSignIn() {
     if (!accountAccessEnabled) return;
     navigate("/partners/sign-in");
@@ -853,7 +849,7 @@ function PartnerWorkspaceContent() {
           {tab === "audience" && <WorkspaceRegistryPanel key="audience" tabId="audience" />}
           {tab === "media" && <WorkspaceRegistryPanel key="media" tabId="media" />}
           {tab === "buildings" && <WorkspaceRegistryPanel key="buildings" tabId="buildings" />}
-          {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
+          {tab === "residents" && <PartnerAudiencePanel key="residents" scope={workspaceScope} />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
           {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}

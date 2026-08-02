@@ -54,7 +54,6 @@ import BuildingExperienceModule from "@/components/map/BuildingExperienceModule"
 import { CanonicalDetailPanel, DrawerActionFooter } from "@/components/map/CanonicalDetailPanel";
 import { readPartnerWorkspaceOrganizationId, withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
 import { useAuth } from "@/lib/AuthContext";
-import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
 import { getResidentMembership } from "@/lib/residentMembership/residentMembershipClient";
 import { residentAccountFromContext, residentAccountStatus } from "@/lib/residentMembership/residentAccount";
 import EntityIdentityPanel from "@/components/map/unified/EntityIdentityPanel";
@@ -14328,7 +14327,7 @@ function useUrlMapState() {
     setSearchParams(params, { replace: false });
   }
 
-  return { mode, tab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
+  return { mode, tab, rawTab, panelTab, embed, filter, layer, route, collection, stopId, routeState, rawEntityId, entityId, listingId, rentalListingId, prompt, radius, district, time, intent, entityType, campaignId, perkId, eventId, partnerId, previewFor, returnTo, source, utmCampaign, drawerClosed, update };
 }
 
 export default function MapPage() {
@@ -15155,27 +15154,63 @@ export default function MapPage() {
     () => effectiveSearch ? sortSearchPlaces(displayPlaces, effectiveSearch) : sortDiscoverPlaces(displayPlaces),
     [displayPlaces, effectiveSearch],
   );
-  const activePerkItems = useMemo(() => discoverDisplayPlaces
-    .filter((place) => hasActivePerkData(place))
-    .slice(0, 40)
-    .map((place) => {
-      const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+  const activePerkItems = useMemo(() => {
+    const toSheetItem = (place, isOffer) => {
+      const offer = isOffer ? (getCanonicalResidentOffer(place) || getResidentPerkDetails(place)) : null;
+      const category = offer?.category || place.category || place.type || "Downtown place";
       return {
         id: place.id,
         focusKey: String(place.id).replace(/[^a-z0-9_-]/gi, "-"),
         name: place.name,
-        offerTitle: offer?.title || offer?.offer || offer?.value || "Resident perk",
-        category: offer?.category || place.category || place.type || "Resident benefit",
+        offerTitle: offer?.title || offer?.offer || offer?.value || (category === "Events" || place.type === "event" ? "Upcoming downtown event" : "Explore " + category.toLowerCase()),
+        category,
         value: offer?.value || offer?.offer || "",
         partner: place.partnerName || place.partner_name || place.raw?.partnerName || place.raw?.partner_name || "",
-        expiresAt: getResidentPerkExpiry(place),
+        searchText: [
+          place.category,
+          place.category_key,
+          place.type,
+          place.partnerType,
+          place.summary,
+          place.raw?.category,
+          place.raw?.category_key,
+          place.raw?.partnerType,
+          ...(Array.isArray(place.tags) ? place.tags : []),
+          ...(Array.isArray(place.raw?.tags) ? place.raw.tags : []),
+        ].filter(Boolean).join(" "),
+        expiresAt: isOffer ? getResidentPerkExpiry(place) : "",
         distance: placeDistanceLabel(place),
         image: resolveEntityImage(place, "card"),
         pin: resolveEntityPin(place),
-        perkId: getCanonicalResidentPerkId(place),
+        perkId: isOffer ? getCanonicalResidentPerkId(place) : "",
+        isOffer,
         place,
       };
-    }), [discoverDisplayPlaces]);
+    };
+    const offers = discoverDisplayPlaces
+      .filter((place) => hasActivePerkData(place))
+      .map((place) => toSheetItem(place, true));
+    const offeredIds = new Set(offers.map((item) => item.id));
+    const relatedCategories = /fitness|wellness|health|spa|yoga|gym|event|music|arts|culture/i;
+    const relatedPlaces = places
+      .filter((place) => !offeredIds.has(place.id))
+      .filter((place) => relatedCategories.test([
+        place.category,
+        place.category_key,
+        place.type,
+        place.partnerType,
+        place.name,
+        place.summary,
+        place.raw?.category,
+        place.raw?.category_key,
+        place.raw?.partnerType,
+        ...(Array.isArray(place.tags) ? place.tags : []),
+        ...(Array.isArray(place.raw?.tags) ? place.raw.tags : []),
+      ].filter(Boolean).join(" ")))
+      .slice(0, 36)
+      .map((place) => toSheetItem(place, false));
+    return [...offers, ...relatedPlaces].slice(0, 72);
+  }, [discoverDisplayPlaces, places]);
   const visiblePlaces = discoverDisplayPlaces;
   const activeCollection = useMemo(
     () => getMapCollectionById(urlState.collection),
@@ -18513,8 +18548,14 @@ export default function MapPage() {
                   type="button"
                   role="tab"
                   aria-label="Home"
-                  onClick={() => navigate(DEFAULT_RESIDENT_MAP_PATH)}
-                  aria-selected={false}
+                  onClick={() => {
+                    clearOpenMapSelection();
+                    setActiveBottomTab("info");
+                    setConsoleCollapsed(true);
+                    navigate("/map?mode=resident&tab=home");
+                  }}
+                  aria-pressed={urlState.rawTab === "home" && activeBottomTab === "info"}
+                  aria-selected={urlState.rawTab === "home" && activeBottomTab === "info"}
                 >
                   <House className="h-4 w-4" />
                   <span className="dp-native-tab-label">Home</span>

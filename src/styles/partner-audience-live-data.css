@@ -1,0 +1,48 @@
+.dp-partner-workspace-page .dp-audience-panel__row {
+  align-items: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.dp-partner-workspace-page .dp-audience-panel__result {
+  align-items: flex-end;
+  display: grid;
+  gap: 5px;
+  justify-items: end;
+  min-width: 180px;
+}
+
+.dp-partner-workspace-page .dp-audience-panel__result > strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.dp-partner-workspace-page .dp-audience-panel__result a,
+.dp-partner-workspace-page .dp-audience-panel button {
+  background: transparent;
+  border: 0;
+  color: #0B1F33;
+  font: inherit;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.dp-partner-workspace-page .dp-audience-panel button {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.dp-partner-workspace-page .dp-audience-panel .dp-workspace-note {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .dp-partner-workspace-page .dp-audience-panel__row { align-items: start; grid-template-columns: 1fr; }
+  .dp-partner-workspace-page .dp-audience-panel__result { align-items: start; justify-items: start; min-width: 0; }
+}
