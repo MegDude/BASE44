@@ -153,6 +153,7 @@ import "@/styles/route-native-map-sheet-final.css"
 import "@/styles/workspace-campaign-drawer-contract.css"
 import "@/styles/partner-audience-live-data.css"
 import "@/styles/native-drawer-scroll-contract.css"
+import "@/styles/resident-perks-sheet-final.css"
 
 inject()
 injectSpeedInsights()
