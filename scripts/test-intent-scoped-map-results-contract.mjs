@@ -4,6 +4,7 @@ import { join } from "node:path";
 
 const root = process.cwd();
 const hook = readFileSync(join(root, "src/hooks/useSearchDrivenMapEntities.js"), "utf8");
+const aliases = readFileSync(join(root, "src/lib/mapEntityAliases.js"), "utf8");
 const contract = readFileSync(join(root, "src/lib/map/intentScopedMapResults.ts"), "utf8");
 
 for (const intent of [
@@ -44,6 +45,7 @@ assert.match(hook, /createErrorMapResultState/);
 assert.match(hook, /function normalizeLookupId/);
 assert.match(hook, /function entityMatchesLookupId/);
 assert.match(hook, /entityMatchesLookupId\(entity, activeEntityId\)/, "direct entity URLs must resolve public aliases and display names, not raw IDs only");
+assert.match(aliases, /entity\?\.name,[\s\S]*entity\?\.title,[\s\S]*entity\?\.raw\?\.name,[\s\S]*entity\?\.raw\?\.title/, "map entity collection resolution must match public aliases against names and titles");
 assert.match(hook, /Lunch: "lunch"/);
 assert.match(hook, /"Happy Hour": "happy_hour"/);
 assert.match(hook, /Drinks: "drinks"/);
