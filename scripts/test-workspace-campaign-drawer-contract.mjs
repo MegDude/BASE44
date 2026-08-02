@@ -8,6 +8,7 @@ const main = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8")
 assert.match(sheet, /data-workspace-drawer="true"/);
 assert.match(main, /workspace-campaign-drawer-contract\.css/);
 assert.match(styles, /\.dp-workspace-sheet\[data-workspace-drawer="true"\]/);
+assert.match(styles, /\.dp-workspace-sheet-layer[\s\S]*z-index:\s*2200 !important/);
 assert.match(styles, /grid-template-rows: auto auto minmax\(0, 1fr\) auto/);
 assert.match(styles, /\.dp-workspace-sheet-body[\s\S]*overflow: auto/);
 assert.match(styles, /@media \(max-width: 767px\)/);
