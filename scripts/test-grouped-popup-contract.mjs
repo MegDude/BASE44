@@ -14,7 +14,7 @@ assert.ok(drawer.length > 0, "Grouped places drawer is missing");
 assert.doesNotMatch(drawer, /dp-panel-eyebrow/, "Grouped drawer restores the repetitive eyebrow");
 assert.match(drawer, /getClusterTitle\(clusterDrawer, urlState\.mode\)/, "Grouped drawer title is missing");
 assert.match(drawer, /getClusterSubtitle\(clusterDrawer, urlState\.mode\)/, "Grouped drawer guidance is missing");
-assert.match(map, /return `\$\{count\} \$\{count === 1 \? "result" : "results"\} · Tap one to see details`;/, "Nearby result copy is repetitive or unclear");
+assert.match(map, /return `\$\{count\} \$\{count === 1 \? "result" : "results"\} in the current map area`;/, "Nearby result copy must describe the live map scope");
 assert.match(map, /dangerouslySetInnerHTML=\{\{ __html: getCanonicalMapGlyph\(pin\) \}\}/, "Grouped rows do not use the canonical pin language");
 
 assert.match(sharedStyles, /\[aria-label="Grouped map places"\][\s\S]*?\.dp-panel-title[\s\S]*?font-size:\s*16px\s*!important;/, "Grouped header title is oversized");
