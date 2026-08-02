@@ -17,6 +17,7 @@ const PartnersDashboardPage = lazy(() => import("./pages/partners/Dashboard"));
 const PricingPage = lazy(() => import("./pages/Pricing"));
 const ContactPage = lazy(() => import("./pages/Contact"));
 const ResidentSignIn = lazy(() => import("./pages/ResidentSignIn"));
+const ResidentResetPassword = lazy(() => import("./pages/ResidentResetPassword"));
 const ResidentGovernance = lazy(() => import("./pages/ResidentGovernance"));
 const AuthCallbackPage = lazy(() => import("./pages/AuthCallbackPage"));
 const AboutPage = lazy(() => import("./pages/downtown-perks/About"));
@@ -207,6 +208,7 @@ function ProductRoutes() {
           <Route path="/residents/membership" element={<Navigate to="/residents/login" replace />} />
           <Route path="/residents/register" element={<Navigate to="/residents/login" replace />} />
           <Route path="/residents/login" element={<Suspense fallback={<MarketingFallback />}><ResidentSignIn /></Suspense>} />
+          <Route path="/residents/reset-password" element={<Suspense fallback={<MarketingFallback />}><ResidentResetPassword /></Suspense>} />
           <Route path="/residents/welcome" element={<Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />} />
           <Route path="/interaction-system" element={<InteractionSystemPreview />} />
           <Route
