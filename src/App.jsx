@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { queryClientInstance } from "@/lib/query-client";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { DEFAULT_RESIDENT_MAP_PATH } from "@/lib/authReturnPath";
-import { currentSafeReturnTo, preserveIntentParams } from "@/lib/routeIntent";
+import { currentSafeReturnTo } from "@/lib/routeIntent";
 import Layout from "./components/Layout";
 
 // Platform pages
@@ -34,6 +34,7 @@ const PartnerMicrositePage = lazy(() => import("./components/microsites/PartnerM
 const MicrositeAdminRegistry = lazy(() => import("./components/microsites/MicrositeAdminRegistry"));
 const PartnerJourneyResource = lazy(() => import("./components/admin/PartnerJourneyResource"));
 const AdminContentIndex = lazy(() => import("./pages/AdminContentIndex"));
+const AdminMarketingStudio = lazy(() => import("./pages/AdminMarketingStudio"));
 const ROUTER_FUTURE_FLAGS = {
   v7_startTransition: true,
   v7_relativeSplatPath: true,
@@ -54,6 +55,13 @@ function ProtectedRoute({ children }) {
   if (isAuthenticated) {
     const role = String(user?.role || "resident").toLowerCase();
     if (role === "resident") return <Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />;
+    // Platform administrators always start in the platform command center.
+    // Partner scope is entered deliberately from authorized admin tools, never
+    // inherited from a previous partner workspace URL or browser state.
+    if (["admin", "platform_admin", "super_admin"].includes(role)) {
+      const adminDestination = location.pathname === "/partner-workspace/residents" ? "/admin-studio/residents" : "/admin";
+      return <Navigate to={adminDestination} replace />;
+    }
     return children;
   }
   return (
@@ -86,33 +94,10 @@ function AdminProtectedRoute({ children }) {
   return children;
 }
 
-const ADMIN_STUDIO_DESTINATIONS = {
-  "/admin-studio": "/partner-workspace/overview",
-  "/admin-studio/command-center": "/partner-workspace/overview",
-  "/admin-studio/campaign-builder": "/partner-workspace/campaigns?intent=new",
-  "/admin-studio/audience-builder": "/partner-workspace/audience",
-  "/admin-studio/content-library": "/partner-workspace/media",
-  "/admin-studio/approval-queue": "/partner-workspace/governance",
-  "/admin-studio/distribution": "/partner-workspace/broadcasts",
-  "/admin-studio/performance": "/partner-workspace/analytics",
-  "/admin-studio/partner-intelligence": "/partner-workspace/reports",
-  "/admin-studio/residents": "/partner-workspace/residents",
-};
-
-function getAdminStudioDestination(location) {
-  const configured = ADMIN_STUDIO_DESTINATIONS[location.pathname] || ADMIN_STUDIO_DESTINATIONS["/admin-studio"];
-  const [pathname, configuredSearch = ""] = configured.split("?");
-  const params = new URLSearchParams(configuredSearch);
-  preserveIntentParams(location.search).forEach((value, key) => params.set(key, value));
-  const search = params.toString();
-  return `${pathname}${search ? `?${search}` : ""}${location.hash}`;
-}
-
 function ProtectedAdminStudio() {
-  const location = useLocation();
   return (
     <AdminProtectedRoute>
-      <Navigate to={getAdminStudioDestination(location)} replace />
+      <AdminMarketingStudio />
     </AdminProtectedRoute>
   );
 }
@@ -219,6 +204,8 @@ function ProductRoutes() {
               </Suspense>
             }
           />
+          <Route path="/admin" element={<ProtectedAdminStudio />} />
+          <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
           <Route path="/admin-studio" element={<ProtectedAdminStudio />} />
           <Route path="/admin-studio/command-center" element={<ProtectedAdminStudio />} />
           <Route path="/admin-studio/campaign-builder" element={<ProtectedAdminStudio />} />

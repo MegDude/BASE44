@@ -304,3 +304,76 @@
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
   }
 }
+
+
+/* Compact, tappable admin context: scope controls stay out of the way until needed. */
+.dp-partner-workspace-page .dp-workspace-scope--admin {
+  display: block;
+  padding: 0;
+  border-top: 0;
+}
+
+.dp-workspace-scope__admin-summary {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.dp-workspace-scope__admin-summary .dp-workspace-scope__summary {
+  min-width: 0;
+}
+
+.dp-workspace-scope__toggle {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(11, 31, 51, 0.16);
+  border-radius: 0;
+  background: #fff;
+  color: #0b1f33;
+  font: 700 12px/1 Inter, sans-serif;
+}
+
+.dp-workspace-scope__toggle:focus-visible {
+  outline: 2px solid #c8a96a;
+  outline-offset: 2px;
+}
+
+.dp-workspace-scope__admin-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  padding: 12px 0 16px;
+  border-top: 1px solid rgba(11, 31, 51, 0.1);
+}
+
+.dp-workspace-scope__admin-controls .dp-admin-scope {
+  min-width: 0;
+}
+
+.dp-workspace-scope__admin-controls .dp-admin-scope__trigger {
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .dp-workspace-scope__admin-summary {
+    align-items: flex-start;
+  }
+
+  .dp-workspace-scope__admin-summary .dp-workspace-scope__summary > span {
+    display: none;
+  }
+
+  .dp-workspace-scope__admin-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .dp-workspace-scope__admin-actions,
+  .dp-workspace-scope__accounts {
+    width: 100%;
+  }
+}

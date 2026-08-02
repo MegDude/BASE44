@@ -19,7 +19,7 @@ const requiredRoutes = [
   "/partner-workspace/broadcasts", "/partner-workspace/sources", "/partner-workspace/audience",
   "/partner-workspace/media", "/partner-workspace/reports", "/partner-workspace/analytics",
   "/partner-workspace/profile", "/partner-workspace/team", "/partner-workspace/billing",
-  "/partner-workspace/residents", "/admin-studio/approval-queue",
+  "/partner-workspace/residents", "/admin", "/admin-studio/approval-queue",
 ];
 for (const route of requiredRoutes) assert.ok(app.includes(`path=\"${route}\"`), `missing application route: ${route}`);
 
@@ -46,9 +46,9 @@ for (const href of [
 ]) assert.ok(registry.includes(href), `workspace registry is missing ${href}`);
 
 for (const target of [
-  "/partner-workspace/campaigns?intent=new", "/partner-workspace/audience", "/partner-workspace/media",
-  "/partner-workspace/publish", "/partner-workspace/broadcasts", "/partner-workspace/performance",
-  "/partner-workspace/analytics", "/partner-workspace/residents",
+  "/admin-studio/campaign-builder", "/admin-studio/audience-builder", "/admin-studio/content-library",
+  "/admin-studio/approval-queue", "/admin-studio/distribution", "/admin-studio/performance",
+  "/admin-studio/partner-intelligence", "/admin-studio/residents",
 ]) assert.ok(admin.includes(target), `admin operating action is missing ${target}`);
 
 assert.doesNotMatch(admin, /<button[^>]*type=\"button\"[^>]*>\s*\{route\.primaryCta\}/, "admin primary CTA is still a dead button");

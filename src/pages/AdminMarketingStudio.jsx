@@ -15,15 +15,15 @@ import {
 } from "@/content/downtown-perks/downtownPerksOSBlueprint";
 
 const ADMIN_ACTION_TARGETS = {
-  "command-center": "/partner-workspace/overview",
-  "campaign-builder": "/partner-workspace/campaigns?intent=new",
-  "audience-builder": "/partner-workspace/audience",
-  "content-library": "/partner-workspace/media",
-  "approval-queue": "/partner-workspace/publish",
-  distribution: "/partner-workspace/broadcasts",
-  performance: "/partner-workspace/performance",
-  "partner-intelligence": "/partner-workspace/analytics",
-  residents: "/partner-workspace/residents",
+  "command-center": "/admin-studio/command-center",
+  "campaign-builder": "/admin-studio/campaign-builder",
+  "audience-builder": "/admin-studio/audience-builder",
+  "content-library": "/admin-studio/content-library",
+  "approval-queue": "/admin-studio/approval-queue",
+  distribution: "/admin-studio/distribution",
+  performance: "/admin-studio/performance",
+  "partner-intelligence": "/admin-studio/partner-intelligence",
+  residents: "/admin-studio/residents",
 };
 
 function getActiveStudioRoute(pathname) {
@@ -224,7 +224,7 @@ function ResidentAdminPanel() {
         ))}
       </div>
       {state.status === "ready" && records.length === 0 ? <p>No account records were returned.</p> : null}
-      <Link to="/partner-workspace/residents">Open resident operations</Link>
+      <Link to="/admin-studio/residents">Open resident operations</Link>
     </section>
   );
 }
@@ -262,7 +262,7 @@ export default function AdminMarketingStudio() {
             <p>Review organizations, people, places, campaigns, publishing, and data health without leaving the Downtown Perks platform shell.</p>
           </div>
           <div className="dp-os-studio-hero__actions">
-            <button type="button" onClick={() => navigate("/partner-workspace/campaigns?intent=new")}>Build campaign <ArrowRight aria-hidden="true" /></button>
+            <button type="button" onClick={() => navigate("/admin-studio/campaign-builder")}>Build campaign <ArrowRight aria-hidden="true" /></button>
             <Link to="/map?mode=resident&tab=map&filter=All">Open resident map</Link>
           </div>
         </header>

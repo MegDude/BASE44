@@ -1,6 +1,6 @@
 export const DEFAULT_RESIDENT_MAP_PATH = "/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured";
 export const DEFAULT_PARTNER_RETURN_PATH = "/partner-workspace/overview";
-export const DEFAULT_ADMIN_RETURN_PATH = "/admin-studio/command-center";
+export const DEFAULT_ADMIN_RETURN_PATH = "/admin";
 const DEFAULT_RESIDENT_FILTER = "Featured";
 const ADMIN_ROLES = new Set(["admin", "platform_admin", "super_admin"]);
 

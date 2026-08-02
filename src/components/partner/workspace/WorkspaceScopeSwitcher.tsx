@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AdminScopeSwitcher } from "@/components/admin/AdminScopeSwitcher";
 import {
@@ -23,24 +23,40 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
   const navigate = useNavigate();
   const portfolioLabelId = useId();
   const listingLabelId = useId();
+  const [adminScopeOpen, setAdminScopeOpen] = useState(false);
   const portfolios = scope.organizationId ? getOrganizationPortfolios(scope.organizationId) : [];
   const listings = scope.organizationId
     ? getOrganizationListings(scope.organizationId, scope.portfolioId)
     : [];
   if (accessMode === "admin") {
     return (
-      <section className="dp-workspace-scope dp-workspace-scope--admin" aria-label="Choose admin workspace scope">
-        <div className="dp-workspace-scope__summary">
-          <p>Admin workspace</p>
-          <strong>Authorized platform scope</strong>
-          <span>Organizations, portfolios, and listings from your verified access.</span>
-        </div>
-        <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
-        <div className="dp-workspace-scope__admin-actions">
-          <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
-            People & access
-          </Link>
-        </div>
+      <section className="dp-workspace-scope dp-workspace-scope--admin" aria-label="Choose admin workspace scope" data-expanded={adminScopeOpen}>
+        <header className="dp-workspace-scope__admin-summary">
+          <div className="dp-workspace-scope__summary">
+            <p>Admin workspace</p>
+            <strong>Authorized platform scope</strong>
+            <span>Organizations, portfolios, and listings from your verified access.</span>
+          </div>
+          <button
+            type="button"
+            className="dp-workspace-scope__toggle"
+            aria-expanded={adminScopeOpen}
+            aria-controls="admin-workspace-scope-controls"
+            onClick={() => setAdminScopeOpen((open) => !open)}
+          >
+            {adminScopeOpen ? "Hide controls" : "Choose scope"}
+          </button>
+        </header>
+        {adminScopeOpen ? (
+          <div className="dp-workspace-scope__admin-controls" id="admin-workspace-scope-controls">
+            <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
+            <div className="dp-workspace-scope__admin-actions">
+              <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
+                People & access
+              </Link>
+            </div>
+          </div>
+        ) : null}
       </section>
     );
   }
