@@ -190,14 +190,14 @@ export default function PricingPage() {
           <header className="dp-pricing-guided-header">
             <Link className="dp-pricing-return" data-page-back="true" to="/partners">For partners</Link>
             <p>Partner plans</p>
-            <h1>Choose a plan that fits how you show up downtown.</h1>
-            <span>Start with a simple annual presence. Add launch or growth support only when it helps.</span>
+            <h1>Build your Downtown Perks plan.</h1>
+            <span>Choose your type, select an annual plan, then add support only if you need it.</span>
           </header>
 
           <div className="dp-pricing-guided-layout">
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
-                <div className="dp-pricing-step-heading"><h2 id="pricing-role-title">Choose your partner type</h2></div>
+                <div className="dp-pricing-step-heading"><span>01</span><h2 id="pricing-role-title">What are you building?</h2></div>
                 <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
                   {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate"].map((type) => (
                     <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
@@ -206,11 +206,11 @@ export default function PricingPage() {
                     </button>
                   ))}
                 </div>
-                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Need a portfolio, real-estate, or sponsorship program?</button></p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real estate, or sponsorship?</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
-                <div className="dp-pricing-step-heading"><h2 id="pricing-plan-title">{isResident ? "Your access" : "Choose an annual plan"}</h2></div>
+                <div className="dp-pricing-step-heading"><span>02</span><h2 id="pricing-plan-title">{isResident ? "Choose your access" : "Choose your annual plan"}</h2></div>
                 {plans.length > 0 ? <div className="dp-pricing-plan-list">
                   {plans.map((plan) => <button key={plan.id} type="button" data-active={selectedPlan?.id === plan.id} aria-pressed={selectedPlan?.id === plan.id} onClick={() => selectPlan(plan)}>
                     <span><strong>{plan.tier}</strong><small>{plan.bestFor}</small></span>
@@ -225,7 +225,7 @@ export default function PricingPage() {
               </section>
 
               {partnerType !== "Custom" && !isResident ? <section className="dp-pricing-step dp-pricing-services" aria-labelledby="pricing-services-title">
-                <div className="dp-pricing-step-heading"><h2 id="pricing-services-title">Optional support</h2></div>
+                <div className="dp-pricing-step-heading"><span>03</span><h2 id="pricing-services-title">Add support, if useful</h2></div>
                 <button className="dp-pricing-upgrade-toggle" type="button" aria-expanded={upgradesOpen} onClick={() => setUpgradesOpen((open) => !open)}>
                   <span>{upgradesOpen ? "Hide support" : "Add support"}</span><small>{selectedModules.length ? `${selectedModules.length} selected` : "Optional"}</small>
                 </button>
@@ -246,7 +246,7 @@ export default function PricingPage() {
             </div>
 
             <aside className="dp-pricing-review" aria-label="Your selection">
-              <p>Selected plan</p>
+              <p>Your selection</p>
               <h2>{totalText}</h2>
               <span>{isResident ? "Annual access" : "First year"}</span>
               <div><strong>{chosenTitle}</strong></div>
@@ -258,7 +258,7 @@ export default function PricingPage() {
       </section>
 
       <div className="dp-pricing-mobile-action">
-        <span><small>{isResident ? "Annual access" : "Your plan"}</small><strong>{totalText}</strong></span>
+        <span><small>{isResident ? "Annual access" : "Selected plan"}</small><strong>{totalText}</strong></span>
         <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
       </div>
     </main>

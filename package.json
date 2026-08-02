@@ -138,6 +138,7 @@
     "sync:production-map-inventory": "node scripts/sync-production-map-inventory.mjs",
     "test:workspace-live-inventory": "node scripts/test-workspace-live-inventory.mjs",
     "test:audience-backend-operations": "node scripts/test-audience-backend-operations.mjs"
+    "test:workspace-connections": "node scripts/test-workspace-connections.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",

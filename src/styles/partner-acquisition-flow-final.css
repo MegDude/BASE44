@@ -28,6 +28,7 @@ html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > but
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button { grid-template-columns: minmax(0, 1fr) 12px !important; align-items: center !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { grid-template-columns: minmax(0, 1fr) auto !important; gap: 16px !important; align-items: center !important; }
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] { padding-left: 12px !important; border-left: 2px solid var(--pricing-gold) !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) { padding-left: 12px !important; color: var(--pricing-ink) !important; }
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::before,
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)::after { content: none !important; display: none !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list strong,
@@ -38,7 +39,8 @@ html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list i { displ
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] strong { color: var(--pricing-gold) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt { margin: 14px 0 0 !important; font-size: 13px !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button,
-html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--pricing-ink) !important; text-decoration: underline !important; text-underline-offset: 4px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; color: var(--pricing-ink) !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: normal !important; text-decoration: none !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button:hover { color: var(--pricing-gold) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { display: flex !important; width: 100% !important; min-height: 48px !important; align-items: center !important; justify-content: space-between !important; border-bottom: 1px solid var(--pricing-line) !important; text-decoration: none !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { color: var(--pricing-muted) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups { display: flex !important; gap: 18px !important; overflow-x: auto !important; padding-top: 12px !important; }
@@ -103,52 +105,136 @@ html body #root#root main.dp-partner-access-page .dp-partner-type-card strong { 
 html body #root#root main.dp-partner-access-page .dp-partner-type-card small { color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] { padding-left: 12px !important; border-left: 2px solid var(--pricing-gold) !important; }
 html body #root#root main.dp-partner-access-page .dp-partner-type-card[data-active="true"] strong { color: var(--pricing-gold) !important; }
-/* Deliberate actions: one crisp primary action, with quiet square secondary actions. */
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary {
-  display: inline-flex !important;
-  min-height: 46px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-  padding: 0 18px !important;
-  border: 1px solid var(--pricing-ink) !important;
-  border-radius: 0 !important;
-  background: var(--pricing-ink) !important;
-  box-shadow: none !important;
-  color: #fff !important;
-  font-size: 12px !important;
-  font-weight: 650 !important;
-  letter-spacing: .075em !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  text-transform: uppercase !important;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease !important;
-}
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary :is(svg, .text-\[\#BFA46A\]) { color: #fff !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) { border-color: var(--pricing-gold) !important; background: var(--pricing-gold) !important; color: var(--pricing-ink) !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) :is(svg, .text-\[\#BFA46A\]) { color: var(--pricing-ink) !important; }
-html body #root#root main.dp-partner-access-page .dp-partner-access-actions .dp-acquisition-primary { flex: 1 1 190px !important; }
-html body #root#root main.dp-partner-access-page .dp-acquisition-secondary {
-  display: inline-flex !important;
-  min-height: 46px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 16px !important;
-  border: 1px solid var(--pricing-line) !important;
+/* Account types are one flat choice list, deliberately separate from legacy card styles. */
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row,
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row[data-active="true"] {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 88px minmax(0, 1fr) 14px !important;
+  grid-template-rows: auto auto !important;
+  gap: 2px 14px !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 10px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pricing-line) !important;
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   color: var(--pricing-ink) !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  letter-spacing: .05em !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  text-transform: uppercase !important;
-  transition: border-color 160ms ease, color 160ms ease !important;
+  text-align: left !important;
 }
-html body #root#root main.dp-partner-access-page .dp-acquisition-secondary:hover { border-color: var(--pricing-gold) !important; color: var(--pricing-gold) !important; }
-html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) :is(.dp-acquisition-primary, .dp-acquisition-secondary):focus-visible { outline: 2px solid var(--pricing-gold) !important; outline-offset: 3px !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row::before,
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row::after { content: none !important; display: none !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row span {
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+  color: var(--pricing-muted) !important;
+  font-size: 10px !important;
+  font-weight: 650 !important;
+  letter-spacing: .07em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row strong { grid-column: 2 !important; font-size: 14px !important; line-height: 1.25 !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row small { grid-column: 2 !important; color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row[data-active="true"] strong { color: var(--pricing-gold) !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-type-row:is(:hover, :focus-visible) { background: transparent !important; color: var(--pricing-ink) !important; outline: 0 !important; }
+/* Actions are deliberately quiet: the handoff is text and motion, never a dark block. */
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary {
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--pricing-ink) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-align: left !important;
+  text-transform: none !important;
+  transition: color 160ms ease !important;
+}
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary :is(svg, .text-\[\#BFA46A\]) { width: 16px !important; color: var(--pricing-gold) !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) { background: transparent !important; color: var(--pricing-gold) !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) .dp-acquisition-primary:hover:not(:disabled) svg { transform: translateX(3px) !important; }
+html body #root#root main.dp-partner-access-page .dp-partner-access-actions .dp-acquisition-primary { flex: 0 0 auto !important; }
+html body #root#root main.dp-partner-access-page .dp-acquisition-secondary {
+  display: inline-flex !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--pricing-ink) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-align: left !important;
+  text-transform: none !important;
+  transition: color 160ms ease !important;
+}
+html body #root#root main.dp-partner-access-page .dp-acquisition-secondary:hover { color: var(--pricing-gold) !important; }
+html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-page) :is(.dp-acquisition-primary, .dp-acquisition-secondary):focus-visible { box-shadow: inset 0 -2px 0 var(--pricing-gold) !important; outline: 0 !important; }
+
+/* Pricing is a reading flow, not a collection of boxes. */
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step,
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list, .dp-pricing-plan-list),
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review,
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle,
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step { margin-bottom: 38px !important; padding-bottom: 0 !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step-heading { display: flex !important; align-items: baseline !important; gap: 10px !important; margin-bottom: 12px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-step-heading > span { color: var(--pricing-gold) !important; font-size: 11px !important; font-weight: 650 !important; letter-spacing: .04em !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button) {
+  min-height: 52px !important;
+  padding: 9px 0 !important;
+  border: 0 !important;
+  border-left: 0 !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { min-height: 64px !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"],
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) { padding-left: 0 !important; border-left: 0 !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button)[data-active="true"] :is(strong, em) { color: var(--pricing-gold) !important; }
+html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) strong { color: var(--pricing-ink) !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button i { opacity: .38 !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button[data-active="true"] i { opacity: 1 !important; color: var(--pricing-gold) !important; }
+/* Partner types are a compact switcher, so the selected plan is visible immediately below. */
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  column-gap: 22px !important;
+  row-gap: 2px !important;
+  margin-bottom: 14px !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button {
+  grid-template-columns: minmax(0, 1fr) 10px !important;
+  min-height: 44px !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { min-height: 44px !important; justify-content: flex-start !important; gap: 10px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { font-size: 12px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review { padding: 0 !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review > span,
+html body #root#root main.dp-pricing-guided-page .dp-pricing-review > div { color: var(--pricing-muted) !important; font-size: 13px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt { margin-top: 18px !important; }
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-alt button { line-height: 1.45 !important; white-space: normal !important; }
+html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary,
+html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary span { color: var(--pricing-ink) !important; }
+html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary svg { color: var(--pricing-gold) !important; fill: none !important; }
 
 @media (max-width: 767px) {
   html body #root#root main.dp-pricing-guided-page .dp-pricing-section { padding: 28px 0 calc(88px + env(safe-area-inset-bottom)) !important; }
@@ -156,11 +242,196 @@ html body #root#root :is(main.dp-pricing-guided-page, main.dp-partner-access-pag
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-header { margin-bottom: 32px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-header h1 { max-width: 13ch !important; font-size: 38px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-layout { display: block !important; }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list {
+    display: flex !important;
+    width: calc(100% + 32px) !important;
+    margin: 0 -16px 14px !important;
+    padding: 0 16px !important;
+    gap: 18px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain !important;
+    scrollbar-width: none !important;
+  }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list::-webkit-scrollbar { display: none !important; }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+    min-height: 48px !important;
+    padding-right: 2px !important;
+  }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button i { display: none !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-review { display: none !important; }
-  html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action { position: fixed !important; inset: auto 0 0 !important; z-index: 50 !important; display: flex !important; min-height: 70px !important; align-items: center !important; justify-content: space-between !important; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)) !important; border-top: 1px solid var(--pricing-line) !important; border-radius: 0 !important; background: #fff !important; }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action { position: fixed !important; inset: auto 0 0 !important; z-index: 50 !important; display: flex !important; min-height: 70px !important; align-items: center !important; justify-content: space-between !important; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)) !important; border: 0 !important; border-radius: 0 !important; background: #fff !important; box-shadow: 0 -8px 18px rgba(255,255,255,.96) !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action > span { display: grid !important; gap: 2px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action small { color: var(--pricing-muted) !important; font-size: 11px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action .dp-acquisition-primary { min-height: 44px !important; padding-inline: 15px !important; }
   html body #root#root main.dp-partner-access-page { padding: 28px 16px 52px !important; }
   html body #root#root main.dp-partner-access-page .dp-partner-access-panel { margin-top: 8px !important; padding: 28px 0 0 !important; border-top: 1px solid var(--pricing-line) !important; border-left: 0 !important; }
+}
+
+/* Partner tools, contact, and resident access keep the same single-surface rhythm. */
+html body #root#root :is(main.dp-partner-lifecycle-page, main.dp-contact-page, main.dp-resident-signin-page) {
+  --acquisition-ink: #0b1f33;
+  --acquisition-muted: rgba(11, 31, 51, .62);
+  --acquisition-gold: #b8963e;
+  --acquisition-line: rgba(11, 31, 51, .12);
+  background: #fff !important;
+  color: var(--acquisition-ink) !important;
+}
+
+html body #root#root main.dp-pricing-guided-page .dp-pricing-button.dp-acquisition-primary {
+  width: max-content !important;
+  margin-top: 16px !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action .dp-acquisition-primary { padding-inline: 0 !important; }
+
+html body #root#root main.dp-partner-lifecycle-page {
+  max-width: 1080px !important;
+  margin: 0 auto !important;
+  padding: 44px 32px 88px !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero, .dp-partner-lifecycle-section) {
+  margin: 0 !important;
+  padding: 40px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--acquisition-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-partner-lifecycle-hero {
+  position: relative !important;
+  display: block !important;
+  padding-top: 0 !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-partner-lifecycle-hero h1 {
+  max-width: 13ch !important;
+  margin: 8px 0 14px !important;
+  color: var(--acquisition-ink) !important;
+  font-size: clamp(34px, 5vw, 52px) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -.045em !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-partner-lifecycle-hero > div > p,
+html body #root#root main.dp-partner-lifecycle-page .dp-partner-lifecycle-section-head > p,
+html body #root#root main.dp-contact-page .dp-contact-eyebrow,
+html body #root#root main.dp-resident-signin-page .dp-resident-signin-eyebrow {
+  margin: 0 !important;
+  color: var(--acquisition-gold) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero > div > span, .dp-partner-lifecycle-section-head > span) {
+  display: block !important;
+  max-width: 580px !important;
+  color: var(--acquisition-muted) !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero-actions, .dp-contact-actions) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  margin-top: 24px !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero-actions > a, .dp-partner-lifecycle-utility-link, .dp-partner-section-action, .dp-partner-register-submit, .dp-partner-final-cta a),
+html body #root#root main.dp-contact-page .dp-contact-button {
+  display: inline-flex !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--acquisition-ink) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero-actions > a, .dp-partner-lifecycle-utility-link, .dp-partner-section-action, .dp-partner-register-submit, .dp-partner-final-cta a) svg,
+html body #root#root main.dp-contact-page .dp-contact-button svg { width: 16px !important; color: var(--acquisition-gold) !important; }
+html body #root#root main.dp-partner-lifecycle-page :is(article, details, .dp-growth-estimate, .dp-growth-program-panel, .dp-integration-detail, .dp-workspace-preview-card, .dp-partner-recommended-plan, .dp-partner-plan-comparison, .dp-partner-trust-strip, .dp-partner-business-icon),
+html body #root#root main.dp-contact-page :is(.dp-contact-summary, .dp-contact-form) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifestyle-grid > button, .dp-growth-program-tabs > button, .dp-integration-category-tabs > button, .dp-growth-program-list > button, .dp-integration-logo-matrix > button) {
+  min-height: 44px !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-tools-list, .dp-partner-lifestyle-grid, .dp-growth-program-list, .dp-professional-service-list, .dp-provision-list, .dp-partner-faq-list) > * {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support { margin-top: 26px !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list { border-top: 1px solid var(--acquisition-line) !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--acquisition-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--acquisition-ink) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button svg { width: 16px !important; color: var(--acquisition-gold) !important; opacity: .45 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button[data-active="true"] { color: var(--acquisition-gold) !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button[data-active="true"] svg { opacity: 1 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail { max-width: 560px !important; padding: 22px 0 0 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail h3 { margin: 0 0 7px !important; font-size: 20px !important; letter-spacing: -.025em !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail p { margin: 0 !important; color: var(--acquisition-muted) !important; font-size: 15px !important; line-height: 1.5 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail small { display: block !important; margin-top: 12px !important; color: var(--acquisition-muted) !important; font-size: 12px !important; line-height: 1.45 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail .dp-partner-section-action { margin-top: 15px !important; }
+
+html body #root#root main.dp-contact-page { padding: 0 0 72px !important; }
+html body #root#root main.dp-contact-page :is(.dp-contact-hero, .dp-contact-section) { padding: 44px 0 !important; background: transparent !important; }
+html body #root#root main.dp-contact-page .dp-contact-container { width: min(100% - 40px, 1040px) !important; margin: 0 auto !important; }
+html body #root#root main.dp-contact-page :is(.dp-contact-hero-grid, .dp-contact-form-grid) { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) !important; gap: clamp(32px, 7vw, 76px) !important; }
+html body #root#root main.dp-contact-page h1 { max-width: 11ch !important; margin: 8px 0 14px !important; font-size: clamp(34px, 5vw, 52px) !important; line-height: 1.04 !important; letter-spacing: -.045em !important; }
+html body #root#root main.dp-contact-page :is(.dp-contact-hero p:not(.dp-contact-eyebrow), .dp-contact-section header > p) { color: var(--acquisition-muted) !important; font-size: 15px !important; line-height: 1.55 !important; }
+html body #root#root main.dp-contact-page .dp-contact-summary { padding: 0 !important; border-top: 1px solid var(--acquisition-line) !important; border-bottom: 1px solid var(--acquisition-line) !important; }
+html body #root#root main.dp-contact-page .dp-contact-summary :is(dl > div, .dp-contact-summary-head) { padding: 12px 0 !important; border-bottom: 1px solid var(--acquisition-line) !important; }
+html body #root#root main.dp-contact-page .dp-contact-summary dl > div:last-child { border-bottom: 0 !important; }
+html body #root#root main.dp-contact-page .dp-contact-fields { gap: 18px !important; }
+html body #root#root main.dp-contact-page :is(.dp-contact-field input, .dp-contact-field select, .dp-contact-field textarea) { border: 0 !important; border-bottom: 1px solid var(--acquisition-line) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+
+html body #root#root main.dp-resident-signin-page { min-height: 100dvh !important; padding: 32px 20px 60px !important; }
+html body #root#root main.dp-resident-signin-page .dp-resident-signin-shell { max-width: 620px !important; margin: 0 auto !important; }
+html body #root#root main.dp-resident-signin-page .dp-resident-signin-header { padding-bottom: 22px !important; border-bottom: 1px solid var(--acquisition-line) !important; }
+html body #root#root main.dp-resident-signin-page .dp-resident-signin-content { max-width: 480px !important; padding: 42px 0 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+html body #root#root main.dp-resident-signin-page h1 { margin: 8px 0 14px !important; font-size: clamp(34px, 9vw, 46px) !important; line-height: 1.04 !important; letter-spacing: -.045em !important; }
+html body #root#root main.dp-resident-signin-page :is(input, form > button, .dp-resident-signin-google, .dp-resident-resend-confirmation) { min-height: 44px !important; padding-inline: 0 !important; border: 0 !important; border-bottom: 1px solid var(--acquisition-line) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--acquisition-ink) !important; text-align: left !important; }
+html body #root#root main.dp-resident-signin-page form > button { display: inline-flex !important; align-items: center !important; gap: 8px !important; font-size: 13px !important; font-weight: 650 !important; }
+html body #root#root main.dp-resident-signin-page form > button svg { width: 16px !important; color: var(--acquisition-gold) !important; }
+
+@media (max-width: 767px) {
+  html body #root#root main.dp-partner-lifecycle-page { padding: 28px 16px calc(72px + env(safe-area-inset-bottom)) !important; }
+  html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-lifecycle-hero, .dp-partner-lifecycle-section) { padding: 30px 0 !important; }
+  html body #root#root main.dp-partner-lifecycle-page .dp-partner-lifecycle-hero h1 { max-width: 11ch !important; font-size: 36px !important; }
+  html body #root#root main.dp-contact-page :is(.dp-contact-hero, .dp-contact-section) { padding: 30px 0 !important; }
+  html body #root#root main.dp-contact-page .dp-contact-container { width: min(100% - 32px, 620px) !important; }
+  html body #root#root main.dp-contact-page :is(.dp-contact-hero-grid, .dp-contact-form-grid) { display: block !important; }
+  html body #root#root main.dp-contact-page .dp-contact-summary { margin-top: 30px !important; }
+  html body #root#root main.dp-contact-page .dp-contact-form { margin-top: 28px !important; }
 }

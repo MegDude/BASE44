@@ -1,0 +1,208 @@
+/* Final map drawer treatment. This is deliberately scoped to map-owned drawers:
+   a flat, edge-to-edge native sheet with one quiet action rail. */
+
+html body #root .dp-map-page :is(
+  .dp-native-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-map-popup-card,
+  .dp-map-detail-sheet,
+  .dp-panel-shell,
+  .dp-detail-drawer,
+  .dp-destination-drawer,
+  .dp-map-list-drawer,
+  .dp-map-drawer-shell,
+  .dp-cluster-drawer,
+  .dp-partner-activity-drawer,
+  .dp-native-sheet,
+  .dp-bottom-sheet,
+  .dp-active-perks-sheet,
+  .dp-collection-route-panel
+) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page :is(
+  .dp-native-drawer,
+  .dp-mobile-tab-drawer,
+  .dp-map-popup-card,
+  .dp-map-detail-sheet
+) > .dp-native-drawer-surface {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page :is(.dp-native-drawer-header, .dp-map-panel-header, .dp-map-detail-header) {
+  min-height: 64px !important;
+  padding: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px)) !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.08) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-native-detail-grabber {
+  display: grid !important;
+  width: 100% !important;
+  min-height: 18px !important;
+  margin: 0 !important;
+  padding: 6px 0 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  place-items: center !important;
+}
+
+html body #root .dp-map-page .dp-native-detail-grabber > span {
+  width: 30px !important;
+  height: 2px !important;
+  border-radius: 0 !important;
+  background: rgba(11, 31, 51, 0.28) !important;
+}
+
+html body #root .dp-map-page .dp-map-detail-navigation {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+  align-items: center !important;
+  min-height: 44px !important;
+  gap: 8px !important;
+}
+
+html body #root .dp-map-page :is(.dp-map-detail-back, .dp-map-detail-close) {
+  display: grid !important;
+  width: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  box-shadow: none !important;
+  place-items: center !important;
+}
+
+html body #root .dp-map-page .dp-map-detail-navigation-title {
+  overflow: hidden !important;
+  color: #0b1f33 !important;
+  font: 650 14px/1.2 Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
+  letter-spacing: -0.01em !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body #root .dp-map-page .dp-native-drawer-scroll {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(11, 31, 51, 0.18) transparent !important;
+}
+
+html body #root .dp-map-page .dp-map-detail-content :is(.dp-destination-hero, .dp-entity-hero) {
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #f7f7f5 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-map-detail-content :is(.dp-destination-media, .dp-entity-hero) img {
+  border-radius: 0 !important;
+}
+
+html body #root .dp-map-page .dp-entity-identity,
+html body #root .dp-map-page .dp-destination-section {
+  margin: 0 !important;
+  padding: 20px max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px)) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-destination-section + .dp-destination-section {
+  margin-top: 20px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+}
+
+html body #root .dp-map-page .dp-entity-meta {
+  margin: 0 0 6px !important;
+  color: #866d3a !important;
+  font: 600 11px/1.3 Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root .dp-map-page .dp-entity-title {
+  margin: 0 !important;
+  color: #0b1f33 !important;
+  font-size: clamp(25px, 7vw, 32px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.04em !important;
+}
+
+html body #root .dp-map-page :is(.dp-entity-subtitle, .dp-entity-context, .dp-destination-section-copy) {
+  color: #5a6978 !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root .dp-map-page .dp-native-drawer-actions {
+  min-height: 64px !important;
+  padding: 8px max(20px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-universal-action-rail {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 1fr)) !important;
+  gap: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+html body #root .dp-map-page .dp-universal-action-rail > :is(a, button) {
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 8px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(11, 31, 51, 0.10) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0b1f33 !important;
+  font: 650 12px/1.15 Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
+  letter-spacing: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root .dp-map-page .dp-universal-action-rail > :is(a, button):last-child {
+  border-right: 0 !important;
+}
+
+html body #root .dp-map-page .dp-universal-action-rail > .is-primary {
+  background: transparent !important;
+  color: #866d3a !important;
+}
+
+html body #root .dp-map-page .dp-universal-action-rail > :is(a, button):hover {
+  background: rgba(191, 164, 106, 0.08) !important;
+}
+
+html body #root .dp-map-page :is(.dp-native-detail-grabber, .dp-map-detail-back, .dp-map-detail-close, .dp-universal-action-rail > :is(a, button)):focus-visible {
+  outline: 2px solid #bfa46a !important;
+  outline-offset: -2px !important;
+}
+
+@media (max-width: 767px), (max-height: 599px) {
+  html body #root .dp-map-page :is(.dp-native-drawer, .dp-mobile-tab-drawer, .dp-map-popup-card, .dp-map-detail-sheet) {
+    border-top: 1px solid rgba(11, 31, 51, 0.08) !important;
+  }
+}

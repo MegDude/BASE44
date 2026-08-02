@@ -7173,7 +7173,7 @@ function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack
         >
           <ArrowLeft aria-hidden="true" />
         </button>
-        <span className="dp-map-detail-navigation-title">{navigationTitle || place?.name || "Details"}</span>
+        <h2 className="dp-map-panel-title dp-map-detail-navigation-title">{navigationTitle || place?.name || "Details"}</h2>
         <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
           <X aria-hidden="true" />
         </button>
@@ -7243,7 +7243,7 @@ function ResidentialMixedUseDrawer({ place, places = [], mode = "resident", save
         <figure className="dp-entity-hero dp-entity-hero-image"><img src={residentialHeroImage} alt={place.name} loading="lazy" decoding="async" onError={handlePanelImageError} /></figure>
         <header className="dp-entity-summary">
           <p className="dp-entity-meta">Residential · {place.district || "Downtown"}</p>
-          <h2>{place.name}</h2>
+          <h2 className="dp-map-panel-title dp-selected-drawer-title">{place.name}</h2>
           <span className="dp-map-detail-status">Profile live</span>
           <p>{summary}</p>
         </header>
@@ -7282,7 +7282,7 @@ function ResidentialMixedUseDrawer({ place, places = [], mode = "resident", save
       <figure className="dp-entity-hero dp-entity-hero-image"><img src={residentialHeroImage} alt={place.name} loading="lazy" decoding="async" onError={handlePanelImageError} /></figure>
       <header className="dp-entity-summary">
         <p className="dp-entity-meta">{place.category || "Residential"} · {place.district}</p>
-        <h2>{place.name}</h2><p>{summary}</p>
+        <h2 className="dp-map-panel-title dp-selected-drawer-title">{place.name}</h2><p>{summary}</p>
       </header>
       <div className="dp-map-detail-actions" aria-label={`${mode} actions`}>
         <button type="button" className="dp-map-detail-primary-action" onClick={() => document.querySelector("[data-residential-section='perks']")?.scrollIntoView({ behavior: "smooth", block: "start" })}>View resident perks</button>

@@ -67,7 +67,7 @@ export const workspaceModules: readonly WorkspaceModuleDefinition[] = [
   { id: "qr", label: "Share links and QR", description: "Create links, see opens, and download QR materials.", href: "/partner-workspace/share-links", destination: "workspace", featureFlag: "qr", permissions: ["qr:view"] },
   { id: "notifications", label: "Notifications", description: "Choose which updates reach your team.", href: "/partner-workspace/profile?section=notifications", destination: "workspace", permissions: ["notifications:view"] },
   { id: "billing", label: "Workspace settings", description: "Plan, usage, payment, invoices, and renewal.", href: "/partner-workspace/settings", destination: "workspace", roles: ["owner", "admin", "super_admin"], permissions: ["billing:view"] },
-  { id: "support", label: "Support", description: "Get help with setup, publishing, reports, or data issues.", href: "/map?mode=partner&tab=info", destination: "workspace", permissions: ["workspace:view"] },
+  { id: "support", label: "Support", description: "Get help with setup, publishing, reports, or data issues.", href: "/partner-workspace/sources?section=support", destination: "workspace", permissions: ["workspace:view"] },
 ] as const;
 
 export function getAvailableWorkspaceModules({

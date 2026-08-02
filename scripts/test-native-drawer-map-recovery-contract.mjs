@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 const geometry = readFileSync("src/styles/native-drawer-geometry-final.css", "utf8");
 const shell = readFileSync("src/components/map/NativeDrawerShell.jsx", "utf8");
 const routeSheet = readFileSync("src/components/map/route/RouteExperienceSheet.tsx", "utf8");
+const mapPage = readFileSync("src/pages/Map.jsx", "utf8");
 
 assert.match(geometry, /--dp-safe-top:\s*max\(env\(safe-area-inset-top, 0px\), 12px\);/, "Drawer geometry must define a safe top inset");
 assert.match(geometry, /--dp-map-recovery-space:\s*72px;/, "Drawer geometry must reserve 72px of map recovery space");
@@ -23,5 +24,7 @@ assert.match(shell, /dp-native-drawer-content-viewport[\s\S]*dp-native-drawer-sc
 assert.match(routeSheet, /scrollRef=\{scrollRef\}/, "Route sheet must own the shared scroll body ref");
 assert.match(routeSheet, /previousRouteScrollTopRef\.current = scrollRef\.current\?\.scrollTop \|\| 0;/, "Route stop transition must preserve route scroll position");
 assert.match(geometry, /\.dp-map-page \.dp-route-experience-sheet \.dp-route-sheet-scroll \{[\s\S]*padding:\s*0 0 calc\(88px \+ var\(--dp-safe-bottom\)\) !important;/, "Route sheet scroll body must keep footer/safe-area content clearance");
+
+assert.match(mapPage, /dp-selected-drawer-title/, "property and mixed-use drawers must expose a visible selected title for E2E and screen-reader discovery");
 
 console.log("Native drawer map recovery contract: PASS");
