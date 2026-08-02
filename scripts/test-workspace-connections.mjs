@@ -13,7 +13,7 @@ assert.match(support, /\/partner-workspace\/sources\?section=support/);
 assert.doesNotMatch(support, /tab=info/);
 assert.match(workspace, /WorkspaceConnections/);
 assert.match(connections, /requestWorkspaceConnection/);
-assert.match(connections, /No connected services yet/);
+assert.doesNotMatch(connections, /No connected services yet/);
 assert.match(connectionApi, /resolveAuthorizedWorkspaceScope/);
 assert.match(connectionApi, /partner_integration_requests/);
 assert.match(connectionApi, /getLegendsSeoReport/);
