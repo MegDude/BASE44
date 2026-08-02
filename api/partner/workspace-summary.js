@@ -135,9 +135,11 @@ export default async function handler(req, res) {
       countRows(activity),
       database.from("audience_sources").select("source_key,source_name,source_type,status,last_synced_at").order("source_name"),
       countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active")),
+      database.from("audience_scope_bindings").select("building_id").eq("organization_id", organization.id).eq("status", "active"),
     ]);
     if (listingError) throw listingError;
     if (sourceRows.error) throw sourceRows.error;
+    if (audienceBindingRows.error) throw audienceBindingRows.error;
 
     const scopedListingIds = (listingRows || []).map((row) => row.id);
     const scopedEntityIds = (listingRows || []).map((row) => row.entity_id).filter(Boolean);
@@ -147,6 +149,13 @@ export default async function handler(req, res) {
     const mapInventory = databaseMapCount
       ? { total: databaseMapCount, linkedToWorkspace: workspaceMapCount, source: "map_inventory", status: "connected" }
       : { ...MAP_COVERAGE, linkedToWorkspace: 0, status: "published_registry_pending_import" };
+    const audienceBuildingIds = [...new Set((audienceBindingRows.data || []).map((row) => row.building_id).filter(Boolean))];
+    const audienceEligible = audienceBuildingIds.length
+      ? await countRows(database.from("audience_members").select("id", { count: "exact", head: true }).eq("status", "active").in("building_id", audienceBuildingIds))
+      : 0;
+    const audienceContactable = audienceBuildingIds.length
+      ? await countRows(database.from("audience_members").select("id", { count: "exact", head: true }).eq("status", "active").eq("consent_partner_contact", true).in("building_id", audienceBuildingIds))
+      : 0;
 
     return res.status(200).json({
       data: {
@@ -159,11 +168,12 @@ export default async function handler(req, res) {
           liveCampaigns,
         },
         audience: {
-          eligibleResidents: null,
-          contactableResidents: null,
+          eligibleResidents: audienceEligible,
+          contactableResidents: audienceContactable,
           danaMembers: null,
-          status: "not_connected",
-          reason: "No consented audience segment is linked to this workspace.",
+          bindingCount: audienceBuildingIds.length,
+          status: audienceBuildingIds.length ? (audienceEligible ? "connected" : "connected_empty") : "setup_required",
+          reason: audienceBuildingIds.length ? "Only aggregate, consent-aware members in explicitly connected buildings are included." : "No authorized building is linked to this workspace yet.",
         },
         activity: {
           attributedActions,
