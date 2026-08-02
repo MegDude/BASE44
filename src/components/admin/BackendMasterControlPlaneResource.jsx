@@ -138,6 +138,26 @@ export default function BackendMasterControlPlaneResource() {
         </div>
       </section>
 
+      <section aria-labelledby="auth-recovery">
+        <h2 id="auth-recovery">Authentication and recovery contract</h2>
+        <div className="dp-admin-resource-sections">
+          {[
+            ["Email + password", "Available at platform sign-in surfaces with server-side auth provider validation."],
+            ["Forgot password?", "Routes to /reset-password and submits to the canonical backend auth provider."],
+            ["Super-admin recovery", "me@megdude.com must recover access through verified provider reset and server-resolved role data."],
+            ["Audit-safe recovery", "Reset requested, completed, sessions revoked, and sign-in outcomes are logged without secrets."],
+          ].map(([title, description]) => (
+            <article key={title}>
+              <div>
+                <strong>{title}</strong>
+                <p>{description}</p>
+                <span>Documentation-only contract; live behavior must come from authorized backend APIs.</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section aria-labelledby="events">
         <h2 id="events">Activity and audit event contract</h2>
         <div className="dp-admin-resource-sections">

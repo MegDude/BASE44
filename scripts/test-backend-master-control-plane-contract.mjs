@@ -117,6 +117,13 @@ assert.match(docs, /BASE44 owns the frontend shell/);
 assert.match(docs, /Backend Platform owns persistence, RBAC, Stripe webhooks, QR validation, reporting, integrations/);
 assert.match(docs, /Release gates not satisfied by this phase/);
 assert.match(docs, /51-partner reconciliation/);
+assert.match(docs, /Platform Authentication, Password Reset, and Super-Admin Recovery/);
+assert.match(docs, /Forgot password\?/);
+assert.match(docs, /https:\/\/app\.downtownperks\.com\/reset-password/);
+assert.match(docs, /If an account matches this email/);
+assert.match(docs, /Password recovery restores account access; it never grants or changes roles/);
+assert.match(adminResource, /Authentication and recovery contract/);
+assert.match(adminResource, /Documentation-only contract; live behavior must come from authorized backend APIs/);
 assert.match(docs, /The Shore resident reference flow/);
 
 console.log("Backend master control plane contract checks passed.");
