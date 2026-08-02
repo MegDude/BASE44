@@ -8,7 +8,7 @@ const [api, migration] = await Promise.all([
 
 assert.match(api, /map_inventory/, "scoped map API must read canonical map inventory");
 assert.match(api, /MAX_RESULTS = 25/, "scoped map API must bound response size");
-assert.match(api, /source_payload/, "scoped map API must not return raw source payload");
+assert.doesNotMatch(api, /source_payload/, "scoped map API must not return raw source payload");
 assert.match(api, /Cache-Control/, "scoped map API must cache bounded public discovery safely");
 for (const table of ["luxury_presence_webhook_events", "lead_activity_events", "luxury_presence_listing_intelligence", "luxury_presence_followup_queue", "luxury_presence_suppression_signals", "luxury_presence_agents"]) {
   assert.match(migration, new RegExp(`create table if not exists public\\.${table}`), `${table} storage is missing`);
