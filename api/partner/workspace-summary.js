@@ -75,7 +75,7 @@ export default async function handler(req, res) {
 
     let listings = database.from("partner_listings").select("id", { count: "exact", head: true }).eq("organization_id", organization.id).eq("status", "active");
     let perks = database.from("perks").select("id", { count: "exact", head: true }).eq("partner_organization_id", organization.id).eq("status", "active");
-    let events = database.from("events").select("id", { count: "exact", head: true }).eq("status", "active").in("status", ACTIVE_EVENT_STATUSES);
+    let events = database.from("events").select("id", { count: "exact", head: true }).in("status", ACTIVE_EVENT_STATUSES);
     let campaigns = database.from("partner_campaigns").select("id", { count: "exact", head: true }).eq("organization_id", organization.id).in("status", ["scheduled", "active"]);
     let activity = database.from("analytics_signals").select("id", { count: "exact", head: true }).eq("partner_organization_id", organization.id);
 
