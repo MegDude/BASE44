@@ -90,22 +90,26 @@ export default async function handler(req, res) {
       activity = activity.eq("listing_id", listingId);
     }
 
-    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows] = await Promise.all([
+    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount] = await Promise.all([
       database.from("partner_listings").select("id,entity_id").eq("organization_id", organization.id).eq("status", "active"),
       countRows(perks),
       countRows(events.eq("partner_id", organization.legacy_partner_id)),
       countRows(campaigns),
       countRows(activity),
       database.from("audience_sources").select("source_key,source_name,source_type,status,last_synced_at").order("source_name"),
+      countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active")),
     ]);
     if (listingError) throw listingError;
     if (sourceRows.error) throw sourceRows.error;
 
     const scopedListingIds = (listingRows || []).map((row) => row.id);
     const scopedEntityIds = (listingRows || []).map((row) => row.entity_id).filter(Boolean);
-    const mapInventory = scopedEntityIds.length
-      ? { total: scopedEntityIds.length, source: "canonical_database", status: "connected" }
-      : { ...MAP_COVERAGE, status: "published_registry_unowned" };
+    const workspaceMapCount = scopedEntityIds.length
+      ? await countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active").in("canonical_entity_id", scopedEntityIds))
+      : 0;
+    const mapInventory = databaseMapCount
+      ? { total: databaseMapCount, linkedToWorkspace: workspaceMapCount, source: "map_inventory", status: "connected" }
+      : { ...MAP_COVERAGE, linkedToWorkspace: 0, status: "published_registry_pending_import" };
 
     return res.status(200).json({
       data: {

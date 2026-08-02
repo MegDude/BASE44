@@ -14,6 +14,9 @@ create table if not exists public.map_inventory (
   status text not null default 'active' check (status in ('draft','active','paused','archived')),
   source_name text not null,
   source_updated_at timestamptz,
+  verification_status text not null default 'unverified' check (verification_status in ('unverified','verified','stale','rejected')),
+  ownership_status text not null default 'unassigned' check (ownership_status in ('unassigned','claimed','partner_managed','platform_managed')),
+  canonical_entity_id text references public.canonical_entities(id) on delete set null,
   source_payload jsonb not null default '{}'::jsonb,
   imported_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -21,6 +24,7 @@ create table if not exists public.map_inventory (
 alter table public.map_inventory enable row level security;
 create index if not exists map_inventory_status_district_idx on public.map_inventory (status, district);
 create index if not exists map_inventory_entity_type_idx on public.map_inventory (entity_type);
+create index if not exists map_inventory_canonical_entity_idx on public.map_inventory (canonical_entity_id);
 
 create table if not exists public.partner_campaigns (
   id uuid primary key default gen_random_uuid(),
