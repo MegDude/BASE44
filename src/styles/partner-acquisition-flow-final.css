@@ -340,6 +340,33 @@ html body #root#root main.dp-partner-lifecycle-page :is(.dp-partner-tools-list, 
   border-radius: 0 !important;
   box-shadow: none !important;
 }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support { margin-top: 26px !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list { border-top: 1px solid var(--acquisition-line) !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--acquisition-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--acquisition-ink) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button svg { width: 16px !important; color: var(--acquisition-gold) !important; opacity: .45 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button[data-active="true"] { color: var(--acquisition-gold) !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-list button[data-active="true"] svg { opacity: 1 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail { max-width: 560px !important; padding: 22px 0 0 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail h3 { margin: 0 0 7px !important; font-size: 20px !important; letter-spacing: -.025em !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail p { margin: 0 !important; color: var(--acquisition-muted) !important; font-size: 15px !important; line-height: 1.5 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail small { display: block !important; margin-top: 12px !important; color: var(--acquisition-muted) !important; font-size: 12px !important; line-height: 1.45 !important; }
+html body #root#root main.dp-partner-lifecycle-page .dp-launch-support-detail .dp-partner-section-action { margin-top: 15px !important; }
 
 html body #root#root main.dp-contact-page { padding: 0 0 72px !important; }
 html body #root#root main.dp-contact-page :is(.dp-contact-hero, .dp-contact-section) { padding: 44px 0 !important; background: transparent !important; }
