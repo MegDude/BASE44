@@ -151,6 +151,8 @@ import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
 import "@/styles/route-native-map-sheet-final.css"
 
+import "@/styles/native-drawer-scroll-contract.css"
+
 inject()
 injectSpeedInsights()
 
