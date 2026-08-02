@@ -32,7 +32,9 @@ const rows = records.map((record) => ({
 
 const canonicalRows = records.map((record) => ({
   id: String(record.id),
-  slug: String(record.slug || record.id),
+  // `canonical_entities.slug` is globally unique; published map slugs are not.
+  // Keep the display slug in metadata and use the immutable inventory ID here.
+  slug: String(record.id),
   name: String(record.name),
   entity_type: String(record.entityType || "place"),
   status: ["draft", "active", "paused", "archived"].includes(record.status) ? record.status : "active",
