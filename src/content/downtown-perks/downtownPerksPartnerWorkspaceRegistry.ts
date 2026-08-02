@@ -720,7 +720,7 @@ export const PARTNER_WORKSPACE_NAV: Array<{ id: PartnerWorkspaceTab; label: stri
   { id: "offers", label: "Offers", href: PARTNER_ROUTES.workspaceOffers, helper: "Perks people can use." },
   { id: "events", label: "Events", href: PARTNER_ROUTES.workspaceEvents, helper: "Plans worth showing up for." },
   { id: "surveys", label: "Surveys", href: PARTNER_ROUTES.workspaceSurveys, helper: "Ask the right people." },
-  { id: "sources", label: "Sources", href: PARTNER_ROUTES.workspaceSources, helper: "Where people enter from." },
+  { id: "sources", label: "Connections", href: "/partner-workspace/connections", helper: "Verified services and requests." },
   { id: "campaigns", label: "Campaigns", href: PARTNER_ROUTES.workspaceCampaigns, helper: "Campaigns tied to real places." },
   { id: "broadcasts", label: "Broadcasts", href: PARTNER_ROUTES.workspaceBroadcasts, helper: "Send email and SMS campaigns." },
   { id: "audience", label: "People", href: PARTNER_ROUTES.workspaceAudience, helper: "Choose who should see it." },
