@@ -19197,7 +19197,7 @@ export default function MapPage() {
                 if (isCanonicalResidentialMixedUseEntity(selected)) {
                   return withStandardActionPanel(
                     <>
-                      <h2 className="dp-map-panel-title dp-selected-drawer-title">{selected.name}</h2>
+                      <div className="dp-map-panel-title dp-selected-drawer-title" aria-hidden="true">{selected.name}</div>
                       <ResidentialMixedUseDrawer
                         place={selected}
                       places={places}
@@ -19223,7 +19223,7 @@ export default function MapPage() {
                 if (isProperty && !isRental && !legendsListing && !isLegendsMapPlace(selected) && !legendsResidentialProfile) {
                   return withStandardActionPanel(
                     <>
-                      <h2 className="dp-map-panel-title dp-selected-drawer-title">{selected.name}</h2>
+                      <div className="dp-map-panel-title dp-selected-drawer-title" aria-hidden="true">{selected.name}</div>
                       <ResidentialMixedUseDrawer
                         place={selected}
                       places={places}
