@@ -127,7 +127,7 @@ export default async function handler(req, res) {
       activity = activity.eq("listing_id", listingId);
     }
 
-    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount] = await Promise.all([
+    const [{ data: listingRows, error: listingError }, livePerks, liveEvents, liveCampaigns, attributedActions, sourceRows, databaseMapCount, audienceBindingRows] = await Promise.all([
       scopedListingsQuery(database, organization.id, portfolioId, listingId),
       countRows(perks),
       portfolioId || listingId ? Promise.resolve(0) : countRows(events.eq("partner_id", organization.legacy_partner_id)),
@@ -135,9 +135,11 @@ export default async function handler(req, res) {
       countRows(activity),
       database.from("audience_sources").select("source_key,source_name,source_type,status,last_synced_at").order("source_name"),
       countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active")),
+      database.from("audience_scope_bindings").select("building_id").eq("organization_id", organization.id).eq("status", "active"),
     ]);
     if (listingError) throw listingError;
     if (sourceRows.error) throw sourceRows.error;
+    if (audienceBindingRows.error) throw audienceBindingRows.error;
 
     const scopedListingIds = (listingRows || []).map((row) => row.id);
     const scopedEntityIds = (listingRows || []).map((row) => row.entity_id).filter(Boolean);
@@ -174,11 +176,12 @@ export default async function handler(req, res) {
           liveCampaigns,
         },
         audience: {
-          eligibleResidents: null,
-          contactableResidents: null,
+          eligibleResidents: audienceEligible,
+          contactableResidents: audienceContactable,
           danaMembers: null,
-          status: "not_connected",
-          reason: "No consented audience segment is linked to this workspace.",
+          bindingCount: audienceBuildingIds.length,
+          status: audienceBuildingIds.length ? (audienceEligible ? "connected" : "connected_empty") : "setup_required",
+          reason: audienceBuildingIds.length ? "Only aggregate, consent-aware members in explicitly connected buildings are included." : "No authorized building is linked to this workspace yet.",
         },
         activity: {
           attributedActions,
