@@ -551,7 +551,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <button
                   type="submit"
                   disabled={submissionState === "submitting"}
-                  className={accessActionClass}
+                  className={`${accessActionClass} dp-acquisition-primary`}
                 >
                   {saved ? <Check className="h-4 w-4 text-[#BFA46A]" /> : <UserPlus className="h-4 w-4 text-[#BFA46A]" />}
                   {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
@@ -618,21 +618,21 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     type="button"
                     onClick={handleSignIn}
                     disabled={!accountAccessEnabled || submissionState === "submitting"}
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-primary`}
                   >
                     <LogIn className="h-4 w-4 text-[#BFA46A]" />
                     {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-secondary`}
                   >
                     Submit setup request
                     <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
                   </Link>
                   <Link
                     to="/partners/apply?intent=request-access"
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-secondary`}
                   >
                     Request team access
                   </Link>
