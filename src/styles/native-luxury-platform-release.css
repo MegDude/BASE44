@@ -4,15 +4,15 @@
     --dp-native-ink: #1a2038;
     --dp-native-muted: #697386;
     --dp-native-bg: #fafafa;
-    --dp-native-line: rgba(26, 32, 56, 0.12);
-    --dp-native-glass: rgba(255, 255, 255, 0.8);
+    --dp-native-line: rgba(0, 0, 0, 0.08);
+    --dp-native-glass: rgba(255, 255, 255, 0.82);
   }
 
   .dp-map-page,
   .dp-partner-workspace-page {
     background: var(--dp-native-bg) !important;
     color: var(--dp-native-ink) !important;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif !important;
+    font-family: Inter, sans-serif !important;
   }
 
   .dp-ios-list-tile {
@@ -101,11 +101,11 @@
   .dp-map-page :is(.dp-map-search-console, .dp-map-search-shell, .dp-map-filter-rail, .dp-map-floating-controls, .dp-map-control-stack),
   .dp-native-bottom-nav-list,
   .dp-partner-mobile-tab-bar {
-    border-color: rgba(255, 255, 255, 0.72) !important;
+    border: 0.5px solid var(--dp-native-line) !important;
     background: var(--dp-native-glass) !important;
-    box-shadow: 0 8px 24px rgba(26, 32, 56, 0.12) !important;
-    -webkit-backdrop-filter: saturate(160%) blur(18px) !important;
-    backdrop-filter: saturate(160%) blur(18px) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
   }
 
   .dp-native-bottom-nav {
@@ -128,9 +128,14 @@
     color: var(--dp-native-gold) !important;
   }
 
-  .dp-native-bottom-nav-list button:active,
-  .dp-workspace-row:active {
-    transform: scale(0.98);
+  .dp-native-bottom-nav-list button[aria-selected="true"] svg {
+    fill: currentColor;
+    stroke-width: 1.5;
+  }
+
+  :is(.dp-ios-list-tile, .dp-native-bottom-nav-list button, .dp-workspace-row, .dp-map-filter-rail button, .dp-map-floating-controls button):active {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    transform: scale(0.96);
   }
 
   .dp-partner-workspace-page {
