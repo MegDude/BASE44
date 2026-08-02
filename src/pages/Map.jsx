@@ -19234,8 +19234,7 @@ export default function MapPage() {
                         });
                       }}
                       onOpenRoute={openCollectionRoute}
-                      />
-                    </>
+                    />
                   );
                 }
 
