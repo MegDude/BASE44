@@ -278,7 +278,11 @@ function ProductRoutes() {
           />
           <Route
             path="/partners/sign-up"
-            element={<PartnerLifecycle />}
+            element={
+              <Suspense fallback={<MarketingFallback />}>
+                <PartnerAccess mode="sign-up" />
+              </Suspense>
+            }
           />
           <Route path="/partners/tools" element={<PartnerLifecycle />} />
           <Route path="/pricing" element={<Suspense fallback={<MarketingFallback />}><PricingPage /></Suspense>} />
@@ -331,9 +335,9 @@ function ProductRoutes() {
           <Route path="/partners/analytics-preview" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
           <Route path="/partners/map" element={<MapPage />} />
           <Route path="/partners/start" element={<PartnerLifecycle />} />
-          <Route path="/partners/register" element={<PartnerLifecycle />} />
-          <Route path="/partners/checkout" element={<PartnerLifecycle />} />
-          <Route path="/partners/provision" element={<PartnerLifecycle />} />
+          <Route path="/partners/register" element={<RedirectWithSearch to="/partners/sign-up" />} />
+          <Route path="/partners/checkout" element={<RedirectWithSearch to="/pricing" />} />
+          <Route path="/partners/provision" element={<RedirectWithSearch to="/partners/sign-up" />} />
           <Route path="/partners/workspace/*" element={<RedirectWithSearch to="/partner-workspace/home" />} />
 
           {/* Partner workspace */}

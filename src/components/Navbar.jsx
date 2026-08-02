@@ -322,7 +322,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-white/80 text-[#0B1F33] shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[#BFA46A]/40 hover:bg-white hover:text-[#BFA46A] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
+            className="inline-flex h-11 w-11 items-center justify-center border-0 bg-transparent text-[#0B1F33] shadow-none transition-colors duration-150 hover:text-[#BFA46A] focus-visible:outline-none focus-visible:ring-0"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
