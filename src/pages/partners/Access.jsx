@@ -70,7 +70,7 @@ const PARTNER_TYPES = [
   },
 ];
 
-const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES;
+const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES.filter((type) => type.value !== "resident");
 
 const ACCESS_ROUTE_BY_TYPE = {
   resident: "/map?mode=resident&tab=map&filter=All",
@@ -446,7 +446,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               {isSignUp
                 ? "Your plan travels with you from pricing. Add the details needed to open the right account."
                 : accountAccessEnabled
-                  ? "Use one secure sign-in for properties, hotels, venues, brands, civic teams, real estate teams, residents, and custom partner accounts."
+                  ? "Use the email attached to your partner, portfolio, or platform administrator account."
                   : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
             </p>
 
@@ -455,9 +455,9 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 "Review the plan, then add your organization and contact details.",
                 "Optional support can be added later.",
               ] : [
-                "Use the email attached to your Downtown Perks account.",
+                "Choose the partner account type, then use its account email.",
                 "A secure link returns you to the right workspace.",
-                "Request team access if someone else owns the organization.",
+                "Resident access uses the resident sign-in page.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
                   <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#BFA46A]" />
@@ -564,7 +564,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Select the account type first. The secure link will return you to the right workspace or resident experience.
+                  Choose the partner account type first. The secure link returns you to the right workspace.
                 </p>
                 <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
                   <div className="dp-partner-type-section-head">
