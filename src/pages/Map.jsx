@@ -3670,7 +3670,7 @@ function dedupeMapPinPlaces(places) {
   const chosen = [];
   const keyToIndex = new Map();
 
-  places.forEach((place) => {
+  places.filter(hasCanonicalMapResultIdentity).forEach((place) => {
     if (!place?.id || !getPlaceCoords(place)) return;
 
     const keys = getMapPinCanonicalKeys(place);
@@ -4083,7 +4083,7 @@ function getClusterTitle(cluster, mode) {
     return address ? `${address} listings` : "Listings in this building";
   }
 
-  return "Places nearby";
+  return "Explore Downtown";
 }
 
 function getClusterPresentationIdentity(place) {
@@ -4126,13 +4126,36 @@ function getCanonicalClusterDrawerPlaces(places = []) {
   return [...groups.values()];
 }
 
+function hasCanonicalMapResultIdentity(place) {
+  const entityId = resolveMapEntityAlias(String(place?.id || place?.entity_id || ""));
+  const latitude = Number(place?.latitude ?? place?.lat ?? place?.coords?.[0]);
+  const longitude = Number(place?.longitude ?? place?.lng ?? place?.coords?.[1]);
+  return Boolean(entityId) && Number.isFinite(latitude) && Number.isFinite(longitude);
+}
+
+function getCanonicalMapResultRow(place) {
+  const raw = place?.raw || {};
+  const entityId = resolveMapEntityAlias(String(place?.id || place?.entity_id || ""));
+  const entityType = getCanonicalDetailEntityType(place, Boolean(place?.perk_id || raw?.perk_id));
+  const category = place?.category || raw?.category || entityType || "Place";
+  const district = place?.district || place?.neighborhood || raw?.district || raw?.neighborhood || "";
+  const sourceUpdatedAt = place?.sourceUpdatedAt || place?.source_updated_at || place?.last_updated || place?.updatedAt || raw?.sourceUpdatedAt || raw?.updatedAt || "";
+  return {
+    entityId,
+    category,
+    district,
+    sourceUpdatedAt: String(sourceUpdatedAt || ""),
+    meta: [category, district].filter(Boolean).join(" · "),
+  };
+}
+
 function getClusterSubtitle(cluster, mode) {
   const count = cluster.places?.length || 0;
   if (cluster?.groupType === "building") {
-    return `${count} ${count === 1 ? "listing" : "listings"} · Tap one to see details`;
+    return `${count} ${count === 1 ? "listing" : "listings"} in this building`;
   }
 
-  return `${count} ${count === 1 ? "result" : "results"} · Tap one to see details`;
+  return `${count} ${count === 1 ? "result" : "results"} in the current map area`;
 }
 
 function PinBadge({ place, selected = false, size = "sm" }) {
@@ -18961,22 +18984,27 @@ export default function MapPage() {
               <section className="dp-context-list-heading">
                 <h2 id="dp-cluster-results-title" className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
                 <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
-                <span>{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</span>
+                <span>{clusterPlacesForDrawer.length} canonical {clusterPlacesForDrawer.length === 1 ? "result" : "results"}</span>
               </section>
               {clusterPlacesForDrawer.map((place) => {
+                const resultRow = getCanonicalMapResultRow(place);
                 const listing = getLegendsListing(place);
                 const explicitOffer = getExplicitGroupedOffer(place);
-                const rowMeta = [place.category || "Downtown place", place.district || place.neighborhood || "Downtown"].filter(Boolean).join(" · ");
+                const rowMeta = resultRow.meta;
                 const listingMeta = listing
                   ? [listing.price, listing.beds ? `${listing.beds} bd` : "", listing.baths ? `${listing.baths} ba` : "", listing.sqft ? `${listing.sqft} sqft` : ""].filter(Boolean).join(" · ")
                   : "";
                 const offerLine = listingMeta || explicitOffer;
                 return (
                   <button
-                    key={place.id}
+                    key={resultRow.entityId}
                     type="button"
                     onClick={() => selectPlace(place)}
                     className="dp-grouped-row"
+                    data-canonical-entity-id={resultRow.entityId}
+                    data-canonical-entity-type={resultRow.category}
+                    data-source-updated-at={resultRow.sourceUpdatedAt || undefined}
+                    aria-label={`View details for ${place.name}`}
                   >
                     <span className="dp-grouped-icon">
                       <PinBadge place={place} />
@@ -18986,8 +19014,8 @@ export default function MapPage() {
                       <span className="dp-grouped-meta">{rowMeta}</span>
                       {offerLine && <span className="dp-grouped-offer">{offerLine}</span>}
                     </span>
-                    <span className="dp-grouped-status">
-                      {listing ? "Contact" : "Open"}
+                    <span className="dp-grouped-status" aria-hidden="true">
+                      <ChevronRight />
                     </span>
                   </button>
                 );
