@@ -160,10 +160,10 @@ export default function ActivePerksSheet({
             <div className="dp-active-perks-heading">
               <p>Resident benefits</p>
               <h2>Perks</h2>
+              <span className="dp-active-perks-count" aria-live="polite">
+                {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"} available
+              </span>
             </div>
-            <span className="dp-active-perks-count" aria-live="polite">
-              {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"}
-            </span>
             <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close perks">
               <X aria-hidden="true" />
             </button>
