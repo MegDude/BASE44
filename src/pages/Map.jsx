@@ -15154,27 +15154,39 @@ export default function MapPage() {
     () => effectiveSearch ? sortSearchPlaces(displayPlaces, effectiveSearch) : sortDiscoverPlaces(displayPlaces),
     [displayPlaces, effectiveSearch],
   );
-  const activePerkItems = useMemo(() => discoverDisplayPlaces
-    .filter((place) => hasActivePerkData(place))
-    .slice(0, 40)
-    .map((place) => {
-      const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
+  const activePerkItems = useMemo(() => {
+    const toSheetItem = (place, isOffer) => {
+      const offer = isOffer ? (getCanonicalResidentOffer(place) || getResidentPerkDetails(place)) : null;
+      const category = offer?.category || place.category || place.type || "Downtown place";
       return {
         id: place.id,
         focusKey: String(place.id).replace(/[^a-z0-9_-]/gi, "-"),
         name: place.name,
-        offerTitle: offer?.title || offer?.offer || offer?.value || "Resident perk",
-        category: offer?.category || place.category || place.type || "Resident benefit",
+        offerTitle: offer?.title || offer?.offer || offer?.value || (category === "Events" || place.type === "event" ? "Upcoming downtown event" : "Explore " + category.toLowerCase()),
+        category,
         value: offer?.value || offer?.offer || "",
         partner: place.partnerName || place.partner_name || place.raw?.partnerName || place.raw?.partner_name || "",
-        expiresAt: getResidentPerkExpiry(place),
+        expiresAt: isOffer ? getResidentPerkExpiry(place) : "",
         distance: placeDistanceLabel(place),
         image: resolveEntityImage(place, "card"),
         pin: resolveEntityPin(place),
-        perkId: getCanonicalResidentPerkId(place),
+        perkId: isOffer ? getCanonicalResidentPerkId(place) : "",
+        isOffer,
         place,
       };
-    }), [discoverDisplayPlaces]);
+    };
+    const offers = discoverDisplayPlaces
+      .filter((place) => hasActivePerkData(place))
+      .map((place) => toSheetItem(place, true));
+    const offeredIds = new Set(offers.map((item) => item.id));
+    const relatedCategories = /fitness|wellness|health|spa|yoga|gym|event|music|arts|culture/i;
+    const relatedPlaces = places
+      .filter((place) => !offeredIds.has(place.id))
+      .filter((place) => relatedCategories.test([place.category, place.type, place.name, place.summary, place.raw?.category].filter(Boolean).join(" ")))
+      .slice(0, 36)
+      .map((place) => toSheetItem(place, false));
+    return [...offers, ...relatedPlaces].slice(0, 72);
+  }, [discoverDisplayPlaces, places]);
   const visiblePlaces = discoverDisplayPlaces;
   const activeCollection = useMemo(
     () => getMapCollectionById(urlState.collection),
