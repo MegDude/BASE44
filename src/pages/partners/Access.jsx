@@ -181,7 +181,7 @@ function toPricingPartnerType(value) {
 }
 
 const accessActionClass =
-  "dp-partner-access-action inline-flex min-h-11 items-center justify-center gap-2 border-0 border-b border-[#0B1F33]/14 bg-transparent px-0 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33] shadow-none transition hover:border-[#BFA46A] hover:text-[#0B1F33] focus-visible:border-[#BFA46A] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:border-[#0B1F33]/10 disabled:text-[#0B1F33]/40";
+  "dp-partner-access-action inline-flex min-h-11 items-center justify-start gap-2 border-0 bg-transparent px-0 py-2 text-[13px] font-semibold normal-case tracking-normal text-[#0B1F33] shadow-none transition hover:text-[#B8963E] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:text-[#0B1F33]/40";
 
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
