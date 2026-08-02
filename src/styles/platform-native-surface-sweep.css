@@ -1,0 +1,83 @@
+/* Final native-surface authority. This file is imported last by design. */
+:root { --dp-native-white: #fff; --dp-native-ink: #0B1F33; --dp-native-line: rgba(11,31,51,.12); --dp-native-gold: #C8A96A; }
+
+html body #root :is(.dp-search-intent-console,.dp-ask-map-panel,.dp-search-intent-input-row) {
+  background: var(--dp-native-white) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+html body #root :is(.dp-search-intent-console,.dp-ask-map-panel) {
+  border: 1px solid var(--dp-native-line) !important;
+  border-radius: 0 !important;
+}
+html body #root :is(.dp-search-intent-submit,.dp-ask-map-submit) {
+  min-height: 44px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Partner tools: rows and selected states, not a segmented-card interface. */
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-integration-category-tabs,.dp-integration-logo-matrix,.dp-integration-detail,
+  .dp-growth-program-tabs,.dp-growth-program-panel,.dp-growth-estimate,.dp-partner-final-cta
+) {
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-integration-category-tabs button,.dp-integration-logo-matrix button,
+  .dp-growth-program-tabs button,.dp-growth-program-list label,.dp-integration-detail small,
+  .dp-partner-final-cta a
+) {
+  min-height: 44px !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-partner-lifecycle-page-tools :is(
+  .dp-integration-category-tabs button.is-active,.dp-integration-logo-matrix button.is-selected,
+  .dp-growth-program-tabs button.is-active,.dp-growth-program-list label.is-selected
+) {
+  background: #fff !important;
+  box-shadow: inset 2px 0 0 var(--dp-native-gold) !important;
+}
+
+/* Pricing is one decision surface: no capsule controls or elevated cards. */
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(
+  .dp-pricing-plan-selector,.dp-pricing-summary,.dp-pricing-live-strip,
+  .dp-pricing-card,.dp-pricing-group-card,.dp-pricing-enterprise-card,
+  .dp-pricing-builder-controls,.dp-pricing-choice-grid button,.dp-pricing-option-list button,
+  .dp-pricing-button,.dp-pricing-compare-toggle,.dp-pricing-upgrade-toggle
+) {
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-pricing-page.dp-pricing-page :is(button,select,input) {
+  min-height: 44px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector {
+  padding: 0 !important;
+  border-top: 1px solid var(--dp-native-line) !important;
+  border-bottom: 1px solid var(--dp-native-line) !important;
+}
+html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-selector > button[data-active="true"] {
+  border-bottom: 2px solid var(--dp-native-gold) !important;
+  box-shadow: none !important;
+}
+
+/* iPhone: one column, generous touch targets, no decorative surface treatment. */
+@media (max-width: 767px) {
+  html body #root :is(.dp-search-intent-console,.dp-ask-map-panel) {
+    border-left: 0 !important; border-right: 0 !important;
+  }
+  html body #root main.dp-partner-lifecycle-page-tools .dp-integration-category-tabs,
+  html body #root main.dp-pricing-page .dp-pricing-plan-selector {
+    overflow-x: auto !important; scrollbar-width: none !important;
+  }
+}
