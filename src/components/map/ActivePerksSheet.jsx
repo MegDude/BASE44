@@ -1,4 +1,5 @@
 import { Navigation, Search, Star, X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
@@ -41,6 +42,30 @@ function perkAvailabilityLabel(item, redeemed) {
   if (item.limited) return "Limited quantity";
   if (item.memberOnly) return "Member-only";
   return "Available now";
+}
+
+const PERK_FILTERS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+
+function perkSearchText(item) {
+  return [item.category, item.partner, item.name, item.offerTitle, item.value, item.raw?.type]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function perkMatchesFilter(item, filter, savedIds, redeemedIds) {
+  const text = perkSearchText(item);
+  const redeemed = redeemedIds.has(item.perkId) || redeemedIds.has(item.id);
+  if (filter === "Active") return !redeemed && !item.expired && !item.unavailable && !item.upcoming;
+  if (filter === "Saved") return savedIds.has(item.id);
+  if (filter === "Nearby") return true;
+  if (filter === "Events") return /event|rsvp|calendar/.test(text);
+  return text.includes(filter.toLowerCase());
+}
+
+function distanceInMiles(item) {
+  const match = String(item.distance || "").match(/([\d.]+)\s*mi/i);
+  return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
 }
 
 function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
@@ -95,6 +120,11 @@ export default function ActivePerksSheet({
 }) {
   const safeState = normalizeDrawerState(drawerState, "list");
   const nextState = nextDrawerState(safeState, "list");
+  const [activeFilter, setActiveFilter] = useState("Active");
+  const visibleItems = useMemo(() => {
+    const matches = items.filter((item) => perkMatchesFilter(item, activeFilter, savedIds, redeemedIds));
+    return activeFilter === "Nearby" ? [...matches].sort((a, b) => distanceInMiles(a) - distanceInMiles(b)) : matches;
+  }, [activeFilter, items, redeemedIds, savedIds]);
 
   return (
     <NativeDrawerShell
@@ -138,18 +168,18 @@ export default function ActivePerksSheet({
       {safeState !== "peek" && (
         <div>
           <section className="dp-active-perks-intro" aria-label="Perks context">
-            <p>Available near this map area</p>
-            <strong aria-live="polite">{items.length} {items.length === 1 ? "offer" : "offers"}</strong>
+            <p>{activeFilter === "Nearby" ? "Closest offers first" : `${activeFilter} resident benefits`}</p>
+            <strong aria-live="polite">{visibleItems.length} {visibleItems.length === 1 ? "offer" : "offers"}</strong>
           </section>
           <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
-            {["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"].map((label, index) => (
-              <button key={label} type="button" aria-pressed={index === 0}>
-                {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
+            {PERK_FILTERS.map((label) => (
+              <button key={label} type="button" aria-pressed={activeFilter === label} onClick={() => setActiveFilter(label)}>
+                {label === "Nearby" ? <Navigation aria-hidden="true" /> : label === "Active" ? <Search aria-hidden="true" /> : null}
                 <span>{label}</span>
               </button>
             ))}
           </div>
-          {items.length ? items.map((item) => (
+          {visibleItems.length ? visibleItems.map((item) => (
             <PerkRow
               key={item.id}
               item={item}
@@ -161,9 +191,9 @@ export default function ActivePerksSheet({
             />
           )) : (
             <div className="dp-active-perks-empty">
-              <strong>Nothing matches these filters.</strong>
-              <span>Return to the map and try nearby places, dining, coffee, or events.</span>
-              <button type="button" onClick={onClose}>Back to map</button>
+              <strong>No {activeFilter.toLowerCase()} offers right now.</strong>
+              <span>Choose another filter to see the benefits currently available on the map.</span>
+              <button type="button" onClick={() => setActiveFilter("Active")}>Show active offers</button>
             </div>
           )}
         </div>
