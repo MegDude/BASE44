@@ -177,6 +177,18 @@ html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > but
 html body #root#root main.dp-pricing-guided-page :is(.dp-pricing-role-list > button, .dp-pricing-plan-list > button):is(:hover, :focus-visible) strong { color: var(--pricing-ink) !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button i { opacity: .38 !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button[data-active="true"] i { opacity: 1 !important; color: var(--pricing-gold) !important; }
+/* Partner types are a compact switcher, so the selected plan is visible immediately below. */
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  column-gap: 22px !important;
+  row-gap: 2px !important;
+  margin-bottom: 14px !important;
+}
+html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button {
+  grid-template-columns: minmax(0, 1fr) 10px !important;
+  min-height: 44px !important;
+}
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle { min-height: 44px !important; justify-content: flex-start !important; gap: 10px !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small { font-size: 12px !important; }
 html body #root#root main.dp-pricing-guided-page .dp-pricing-review { padding: 0 !important; }
@@ -193,6 +205,25 @@ html body #root#root main.dp-pricing-guided-page .dp-acquisition-primary :is(spa
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-header { margin-bottom: 32px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-header h1 { max-width: 13ch !important; font-size: 38px !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-guided-layout { display: block !important; }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list {
+    display: flex !important;
+    width: calc(100% + 32px) !important;
+    margin: 0 -16px 14px !important;
+    padding: 0 16px !important;
+    gap: 18px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain !important;
+    scrollbar-width: none !important;
+  }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list::-webkit-scrollbar { display: none !important; }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+    min-height: 48px !important;
+    padding-right: 2px !important;
+  }
+  html body #root#root main.dp-pricing-guided-page .dp-pricing-role-list > button i { display: none !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-review { display: none !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action { position: fixed !important; inset: auto 0 0 !important; z-index: 50 !important; display: flex !important; min-height: 70px !important; align-items: center !important; justify-content: space-between !important; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)) !important; border: 0 !important; border-radius: 0 !important; background: #fff !important; box-shadow: 0 -8px 18px rgba(255,255,255,.96) !important; }
   html body #root#root main.dp-pricing-guided-page .dp-pricing-mobile-action > span { display: grid !important; gap: 2px !important; }
