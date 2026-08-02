@@ -31,6 +31,7 @@ import { canViewEverything } from "@/lib/auth/session";
 import { useAuth } from "@/lib/AuthContext";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
+import { WorkspaceReportsSurface } from "@/components/partner/workspace/WorkspaceReportsSurface";
 import { queryAgent } from "@/services/agent/agentClient";
 import {
   readPartnerWorkspaceScope,
@@ -856,7 +857,7 @@ function PartnerWorkspaceContent() {
           {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceRegistryPanel key="sources" tabId="sources" />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
-          {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}
+          {tab === "reports" && <WorkspaceReportsSurface key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} />}
