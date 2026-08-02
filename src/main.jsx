@@ -152,6 +152,7 @@ import "@/styles/route-native-map-sheet-final.css"
 import "@/styles/workspace-campaign-drawer-contract.css"
 import "@/styles/native-drawer-scroll-contract.css"
 import "@/styles/partner-acquisition-flow-final.css"
+import "@/styles/workspace-unified-native-release.css"
 
 inject()
 injectSpeedInsights()

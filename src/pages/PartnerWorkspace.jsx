@@ -1694,7 +1694,7 @@ function NativeMobileWorkspaceDashboard({
         <p className="dp-native-mobile-kicker">{organization?.name || "Partner overview"}</p>
         <h1>{heroMedia.headline}</h1>
         <p className="dp-native-mobile-hero-summary">{heroMedia.summary}</p>
-        <div className="dp-native-mobile-meta"><span>{ownedEntities.length} connected places</span><span>Austin · Downtown</span></div>
+        <div className="dp-native-mobile-meta"><span>{formatWorkspaceNumber(liveInventory?.connectedPlaces ?? ownedEntities.length)} connected places</span><span>{heroMedia.locationLabel || "Map-connected workspace"}</span></div>
         <figure className="dp-workspace-home-hero-media">
           <img
             src={heroMedia.src}
@@ -1790,13 +1790,25 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
   }, [selectedOrganizationId, scope?.portfolioId, scope?.listingId]);
 
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId);
-  const ownedEntities = selectedOrganization
-    ? getScopedOrganizationEntities(selectedOrganization.id, scope?.portfolioId, scope?.listingId)
-    : [];
-  const selectedEntity = scope?.type === "listing" && selectedOrganization
-    ? getScopedOrganizationEntities(selectedOrganization.id, scope.portfolioId, scope.listingId)[0]
+  const mapManagedPlaces = workspaceSummary?.inventory?.mapInventory?.places || [];
+  const mapManagedEntities = mapManagedPlaces.map((place) => ({
+    id: place.entityId,
+    display_name: place.name,
+    entity_type: place.entityType,
+    district: place.district,
+    address: place.address,
+    media: place.image ? { src: place.image, alt: place.imageAlt || place.name } : undefined,
+  }));
+  const ownedEntities = mapManagedEntities.length
+    ? mapManagedEntities
+    : selectedOrganization
+      ? getScopedOrganizationEntities(selectedOrganization.id, scope?.portfolioId, scope?.listingId)
+      : [];
+  const selectedEntity = scope?.type === "listing"
+    ? ownedEntities[0] || null
     : null;
   const organizationHeroMedia = getPartnerWorkspaceHeroMedia(selectedOrganization?.id);
+  const mapFocus = workspaceSummary?.inventory?.mapInventory?.focus || null;
   const heroMedia = selectedEntity
     ? {
         ...organizationHeroMedia,
@@ -1806,8 +1818,18 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         summary: `Review ${selectedEntity.display_name} on its own, publish one clear reason to visit, and keep its results separate from the wider portfolio.`,
         label: "Place in focus",
         caption: selectedEntity.display_name,
+        locationLabel: selectedEntity.district || selectedEntity.address || "Map-connected workspace",
       }
-    : organizationHeroMedia;
+    : mapFocus
+      ? {
+          ...organizationHeroMedia,
+          src: mapFocus.image || organizationHeroMedia.src,
+          alt: mapFocus.imageAlt || mapFocus.name || organizationHeroMedia.alt,
+          label: "Place in focus",
+          caption: mapFocus.name || organizationHeroMedia.caption,
+          locationLabel: mapFocus.district || mapFocus.address || "Map-connected workspace",
+        }
+      : { ...organizationHeroMedia, locationLabel: "Map-connected workspace" };
   const isLegends = selectedOrganization?.id === "demo-org-legends-real-estate";
   const isLarryAndGuy = selectedOrganization?.id === "demo-org-larry-and-guy";
   const legendsSeoReport = LEGENDS_WORKSPACE_SEO_REPORT;

@@ -28,7 +28,7 @@ function isExternalId(value) {
 }
 
 function scopedListingsQuery(database, organizationId, portfolioId, listingId) {
-  let query = database.from("partner_listings").select("id,entity_id").eq("organization_id", organizationId).eq("status", "active");
+  let query = database.from("partner_listings").select("id,name,entity_id,metadata").eq("organization_id", organizationId).eq("status", "active");
   if (portfolioId) query = query.eq("portfolio_id", portfolioId);
   if (listingId) query = query.eq("id", listingId);
   return query;
@@ -141,12 +141,27 @@ export default async function handler(req, res) {
 
     const scopedListingIds = (listingRows || []).map((row) => row.id);
     const scopedEntityIds = (listingRows || []).map((row) => row.entity_id).filter(Boolean);
-    const workspaceMapCount = scopedEntityIds.length
-      ? await countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active").in("canonical_entity_id", scopedEntityIds))
-      : 0;
+    const [workspaceMapCount, managedMapRows] = scopedEntityIds.length
+      ? await Promise.all([
+          countRows(database.from("map_inventory").select("id", { count: "exact", head: true }).eq("status", "active").in("canonical_entity_id", scopedEntityIds)),
+          database.from("map_inventory").select("canonical_entity_id,name,entity_type,district,address,source_name,source_updated_at,source_payload").eq("status", "active").in("canonical_entity_id", scopedEntityIds).order("source_updated_at", { ascending: false }).limit(80),
+        ])
+      : [0, { data: [], error: null }];
+    if (managedMapRows.error) throw managedMapRows.error;
+    const managedPlaces = (managedMapRows.data || []).map((item) => ({
+      entityId: item.canonical_entity_id,
+      name: item.name,
+      entityType: item.entity_type,
+      district: item.district || null,
+      address: item.address || null,
+      image: item.source_payload?.primaryImage || item.source_payload?.thumbnail || null,
+      imageAlt: item.source_payload?.name || item.name,
+      source: item.source_name,
+      updatedAt: item.source_updated_at || null,
+    }));
     const mapInventory = databaseMapCount
-      ? { total: databaseMapCount, linkedToWorkspace: workspaceMapCount, source: "map_inventory", status: "connected" }
-      : { ...MAP_COVERAGE, linkedToWorkspace: 0, status: "published_registry_pending_import" };
+      ? { total: databaseMapCount, linkedToWorkspace: workspaceMapCount, source: "map_inventory", status: "connected", places: managedPlaces, focus: managedPlaces[0] || null }
+      : { ...MAP_COVERAGE, linkedToWorkspace: 0, status: "published_registry_pending_import", places: [], focus: null };
 
     return res.status(200).json({
       data: {
