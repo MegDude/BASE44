@@ -31,7 +31,7 @@ assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not li
 assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
 assert.match(app, /ADMIN_STUDIO_DESTINATIONS/, "legacy admin routes are not mapped into canonical workspace destinations");
 assert.match(app, /"\/admin-studio\/campaign-builder": "\/partner-workspace\/campaigns\?intent=new"/, "campaign builder does not preserve its destination intent");
-assert.match(app, /new URLSearchParams\(location\.search\)/, "legacy admin redirects do not preserve existing query state");
+assert.match(app, /preserveIntentParams\(location\.search\)/, "legacy admin redirects do not preserve existing query state");
 assert.match(app, /\$\{location\.hash\}/, "legacy admin redirects do not preserve hash state");
 assert.doesNotMatch(switcher, /accessMode === "partner"[\s\S]{0,300}demoOrganizations\.map/, "partner workspace enumerates all organizations");
 

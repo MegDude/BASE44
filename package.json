@@ -134,7 +134,9 @@
     "test:platform-design-system-contrast": "node scripts/test-platform-design-system-contrast.mjs",
     "test:native-drawer-map-recovery": "node scripts/test-native-drawer-map-recovery-contract.mjs",
     "test:google-map-marker-anchoring": "node scripts/test-google-map-marker-anchoring-contract.mjs",
-    "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs"
+    "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs",
+    "sync:production-map-inventory": "node scripts/sync-production-map-inventory.mjs",
+    "test:workspace-live-inventory": "node scripts/test-workspace-live-inventory.mjs"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",
