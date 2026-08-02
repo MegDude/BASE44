@@ -30,6 +30,21 @@ const SEARCH_RESULT_LIMITS = Object.freeze({
   nearby: 8,
 });
 
+export const MAP_REQUEST_REASONS = Object.freeze({
+  initialDiscovery: "initial_discovery",
+  intentChange: "intent_change",
+  textSearch: "text_search",
+  filterChange: "filter_change",
+  routeChange: "route_change",
+  entitySelection: "entity_selection",
+  clearSearch: "clear_search",
+});
+
+function normalizeMapRequestReason(value, fallback = MAP_REQUEST_REASONS.textSearch) {
+  const reason = String(value || "").trim();
+  return Object.values(MAP_REQUEST_REASONS).includes(reason) ? reason : fallback;
+}
+
 const PUBLIC_RAW_FIELD_ALLOWLIST = new Set([
   "id",
   "slug",
@@ -818,8 +833,9 @@ export function useSearchDrivenMapEntities() {
     }
   }, []);
 
-  const runSearch = useCallback(async (scope = {}, trigger = "search") => {
+  const runSearch = useCallback(async (scope = {}, trigger = "search", requestReason = MAP_REQUEST_REASONS.textSearch) => {
     const normalizedScope = normalizeScope(scope);
+    const normalizedRequestReason = normalizeMapRequestReason(requestReason);
     const resolverRequest = buildResolverRequest(normalizedScope, trigger);
     if (!isExplicitMapSearch(resolverRequest)) return null;
     const queryKey = buildQueryKey({ ...normalizedScope, resultLimit: resolverRequest.limit });
@@ -850,21 +866,22 @@ export function useSearchDrivenMapEntities() {
     setRequestStatus("loading");
     setLastTrigger(trigger);
     const activeMapQuery = buildMapQueryFromScope(normalizedScope);
-    const preserveSelectionDuringLookup = Boolean(normalizedScope.activeEntityId) && /entity/i.test(trigger);
+    const preserveSelectionDuringLookup = normalizedRequestReason === MAP_REQUEST_REASONS.entitySelection && Boolean(normalizedScope.activeEntityId);
+    const shouldClearImmediately = !preserveSelectionDuringLookup;
     setResultState((current) => ({
       ...current,
-      resultIds: preserveSelectionDuringLookup ? current.resultIds : [],
-      entitiesById: preserveSelectionDuringLookup ? current.entitiesById : {},
-      total: preserveSelectionDuringLookup ? current.total : 0,
-      cursor: preserveSelectionDuringLookup ? current.cursor : "",
+      resultIds: shouldClearImmediately ? [] : current.resultIds,
+      entitiesById: shouldClearImmediately ? {} : current.entitiesById,
+      total: shouldClearImmediately ? 0 : current.total,
+      cursor: shouldClearImmediately ? "" : current.cursor,
       status: "resolving",
       source: resolverRequest.source,
       queryId: "",
-      resultTitle: preserveSelectionDuringLookup ? current.resultTitle : null,
-      resultSubtitle: preserveSelectionDuringLookup ? current.resultSubtitle : null,
-      mapResultState: preserveSelectionDuringLookup
-        ? current.mapResultState || createLoadingMapResultState(activeMapQuery)
-        : createLoadingMapResultState(activeMapQuery),
+      resultTitle: shouldClearImmediately ? null : current.resultTitle,
+      resultSubtitle: shouldClearImmediately ? null : current.resultSubtitle,
+      mapResultState: shouldClearImmediately
+        ? createLoadingMapResultState(activeMapQuery)
+        : current.mapResultState || createLoadingMapResultState(activeMapQuery),
     }));
     const startedAt = performance.now();
 
