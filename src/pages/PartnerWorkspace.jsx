@@ -10,6 +10,7 @@ import { WorkspaceDestinationRoot } from "@/components/partner/workspace/Workspa
 import { WorkspaceExperienceSystem } from "@/components/partner/workspace/WorkspaceExperienceSystem";
 import { WorkspaceScopeSwitcher } from "@/components/partner/workspace/WorkspaceScopeSwitcher";
 import { WorkspaceConnections } from "@/components/partner/workspace/WorkspaceConnections";
+import { WorkspaceReportsSurface } from "@/components/partner/workspace/WorkspaceReportsSurface";
 import { PartnerShareLinksPanel } from "@/components/partner/workspace/PartnerShareLinksPanel";
 import { GovernanceWorkspacePanel } from "@/components/partner/workspace/GovernanceWorkspacePanel";
 import { daaDashboardContent, daaExplorerQuestions, daaTourDistricts, daaTourProgress, daaTourStops } from "@/data/daaArtParksTour";
@@ -865,7 +866,7 @@ function PartnerWorkspaceContent() {
           {tab === "residents" && hasPrivilegedWorkspaceAccess && <WorkspaceRegistryPanel key="residents" tabId="residents" />}
           {tab === "sources" && <WorkspaceConnections key={`sources-${activeOrganizationId}-${workspaceScope.listingId || "all"}`} scope={workspaceScope} />}
           {tab === "redemptions" && <WorkspaceRegistryPanel key="redemptions" tabId="redemptions" />}
-          {tab === "reports" && <WorkspaceReports key="reports" scope={workspaceScope} />}
+          {tab === "reports" && <WorkspaceReportsSurface key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
           {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
@@ -3418,7 +3419,7 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
   );
 }
 
-// ─── SHARED UTILITIES ─────────────────────────────────────────────────────────
+// ─── SHARED UTILITIES ──────────────────────────────────────────────────��──────
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (
