@@ -69,6 +69,30 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     box-shadow: none !important;
   }
 
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-native-drawer-header {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
+    .dp-active-perks-header,
+    .dp-panel-header,
+    .dp-map-panel-header,
+    .dp-destination-header
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
     .dp-active-perks-header > div,
     .dp-panel-header > div,
@@ -77,6 +101,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   ) {
     grid-column: 2 !important;
     min-width: 0 !important;
+    overflow: hidden !important;
     text-align: center !important;
   }
 
@@ -237,11 +262,19 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     .dp-resident-category-rail
   ) {
     display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: stretch !important;
     gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     padding: 10px 20px !important;
     border-bottom: 1px solid var(--dp-mobile-system-line) !important;
     background: var(--dp-mobile-system-surface) !important;
+    box-sizing: border-box !important;
+    overscroll-behavior-x: contain !important;
     scrollbar-width: none !important;
   }
 
@@ -250,8 +283,14 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     .dp-saved-segmented-filter button,
     .dp-resident-category-rail button
   ) {
-    min-height: 44px !important;
+    display: inline-flex !important;
     flex: 0 0 auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    min-width: max-content !important;
+    min-height: 44px !important;
     padding: 0 8px !important;
     border: 0 !important;
     border-bottom: 2px solid transparent !important;
@@ -261,7 +300,17 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     font: 700 11px/1 Inter, system-ui, sans-serif !important;
     letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
+    white-space: nowrap !important;
     box-shadow: none !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-perks-filter-rail button > :is(svg, span) {
+    flex: 0 0 auto !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-perks-filter-rail button > svg {
+    width: 14px !important;
+    height: 14px !important;
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(

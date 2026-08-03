@@ -167,6 +167,9 @@ export default function Layout() {
     pathname !== "/" &&
     pathname !== "/auth/callback" &&
     !usesPersistentProductNavigation &&
+    !pathname.startsWith("/partners") &&
+    pathname !== "/pricing" &&
+    pathname !== "/contact" &&
     !pageOwnsBackNavigation;
 
   function fallbackBackRoute() {

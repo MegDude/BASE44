@@ -50,7 +50,7 @@ export const PRICING_REGISTRY = {
       partnerType: "Venue",
       tier: "Basic",
       label: "Venue Basic Annual",
-      annualPrice: 30,
+      annualPrice: 99,
       summary: "A simple annual map listing for local businesses.",
       checkoutKey: "venueBasicAnnual",
       includes: ["Map Listing", "Business Profile", "Resident Offer"],
@@ -208,7 +208,7 @@ export const PRICING_REGISTRY = {
       label: "Real Estate Annual",
       annualPrice: 199,
       summary: "Listing visibility connected to walkable neighborhood context.",
-      checkoutKey: "propertyPartnerAnnual",
+      checkoutKey: "realEstateAnnual",
       includes: ["Listing tour", "Neighborhood context", "Inquiry routing"],
       bestFor: "Lifestyle-led listings",
       billing: "Annual subscription",
@@ -358,7 +358,7 @@ export function formatCurrency(value: number) {
 
 export function getPlansForPartnerType(partnerType: PartnerType) {
   const planOrder = ["propertyBasicBuildingAnnual", "propertyResidentPlusAnnual", "propertyPartnerAnnual"];
-  const plans = ANNUAL_PLANS.filter((plan) => plan.partnerType === partnerType);
+  const plans = ANNUAL_PLANS.filter((plan) => plan.partnerType === partnerType && plan.id !== "venueFreeListing");
 
   if (partnerType !== "Property") return plans;
 

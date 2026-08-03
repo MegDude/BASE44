@@ -5,6 +5,7 @@ const read = (path) => readFileSync(path, "utf8");
 const app = read("src/App.jsx");
 const workspace = read("src/pages/PartnerWorkspace.jsx");
 const campaigns = read("src/pages/partners/Campaigns.jsx");
+const audienceApi = read("api/partner/audience.js");
 const access = read("src/pages/partners/Access.jsx");
 const auth = read("src/lib/AuthContext.jsx");
 const admin = read("src/pages/AdminMarketingStudio.jsx");
@@ -24,10 +25,11 @@ const requiredRoutes = [
 for (const route of requiredRoutes) assert.ok(app.includes(`path=\"${route}\"`), `missing application route: ${route}`);
 
 const workspaceModules = {
-  overview: "WorkspaceOverview", launch: "WorkspaceLaunchBrief", publish: "WorkspaceDestinationRoot",
+  overview: "WorkspaceOverview", launch: "WorkspaceAgent", publish: "WorkspaceDestinationRoot",
   performance: "WorkspaceDestinationRoot", map: "WorkspaceRegistryPanel", campaigns: "WorkspaceExperienceSystem",
   offers: "PerksManager", events: "EventsManager", surveys: "WorkspaceExperienceSystem",
-  broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceRegistryPanel", audience: "WorkspaceRegistryPanel",
+  broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceRegistryPanel", audience: "WorkspaceAudience",
+  broadcasts: "WorkspaceRegistryPanel", sources: "WorkspaceConnections", audience: "WorkspaceRegistryPanel",
   media: "WorkspaceRegistryPanel", reports: "WorkspaceReports", analytics: "WorkspaceAnalytics",
   assistant: "WorkspaceAgent", profile: "ProfileSection", team: "WorkspaceRegistryPanel",
   billing: "WorkspaceRegistryPanel", residents: "WorkspaceRegistryPanel",

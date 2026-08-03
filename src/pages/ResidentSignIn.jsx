@@ -59,7 +59,7 @@ export default function ResidentSignIn() {
 
   async function submitPasswordReset() {
     setStatus({ type: "loading", message: "" });
-    const result = await sendResidentPasswordReset({ email, redirectPath: "/residents/login" });
+    const result = await sendResidentPasswordReset({ email, redirectPath: "/residents/reset-password" });
     setStatus({ type: result?.type === "error" ? "error" : "confirmation", message: result?.message || "Check your email to continue." });
   }
 
