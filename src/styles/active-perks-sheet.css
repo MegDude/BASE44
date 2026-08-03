@@ -75,7 +75,7 @@
   margin: 0;
   color: var(--dp-gold);
   font: 600 11px/1.2 var(--dp-font-ui);
-  letter-spacing: 0.14em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 
@@ -89,7 +89,7 @@
   margin-top: 4px;
   color: var(--dp-navy-secondary);
   font: 600 12px/1.2 var(--dp-font-ui);
-  letter-spacing: 0.01em;
+  letter-spacing: normal;
 }
 
 .dp-active-perks-close {

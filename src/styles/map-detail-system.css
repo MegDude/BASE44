@@ -80,7 +80,7 @@ html body #root .dp-map-page .dp-map-detail-context {
   overflow: hidden !important;
   color: var(--dp-navy, #0b1f33) !important;
   font: 650 14px/1.2 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-overflow: ellipsis !important;
   text-transform: none !important;

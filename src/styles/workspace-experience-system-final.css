@@ -17,7 +17,7 @@
   margin: 0 0 8px;
   color: #98793f;
   font: 650 11px/1.2 Inter, sans-serif;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 
@@ -193,7 +193,7 @@
 .dp-experience-builder > nav svg { width: 15px; }
 
 .dp-experience-builder__stage { min-width: 0; padding: 12px 0 24px 28px; }
-.dp-experience-builder__stage > header p { margin: 0; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .07em; }
+.dp-experience-builder__stage > header p { margin: 0; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: normal; }
 .dp-experience-builder__stage > header h2 { margin: 7px 0 24px; font: 650 24px/1.15 Inter, sans-serif; letter-spacing: -.025em; }
 .dp-experience-builder__stage > footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(11,31,51,.08); }
 .dp-experience-builder__stage > footer button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 92px; min-height: 44px; padding: 0 14px; border: 1px solid rgba(11,31,51,.12); border-radius: 10px; background: #fff; color: #0b1f33; font: 650 13px/1 Inter, sans-serif; }
@@ -216,7 +216,7 @@
 .dp-experience-publish { padding: 4px 0; }
 .dp-experience-builder__type p,
 .dp-experience-preview > p,
-.dp-experience-publish > p { margin: 0 0 7px; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .07em; }
+.dp-experience-publish > p { margin: 0 0 7px; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: normal; }
 .dp-experience-builder__type strong { display: block; font: 650 20px/1.2 Inter, sans-serif; }
 .dp-experience-builder__type span { display: block; max-width: 520px; margin-top: 8px; color: rgba(11,31,51,.65); font: 400 14px/1.5 Inter, sans-serif; }
 
@@ -248,7 +248,7 @@
 
 .dp-map-survey { padding: 20px 0 4px; color: #0b1f33; background: #fff; }
 .dp-map-survey > header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
-.dp-map-survey > header p { margin: 0 0 6px; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .07em; }
+.dp-map-survey > header p { margin: 0 0 6px; color: #98793f; font: 650 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: normal; }
 .dp-map-survey h3 { margin: 0; font: 650 20px/1.2 Inter, sans-serif; }
 .dp-map-survey > header button { width: 44px; height: 44px; border: 0; background: transparent; color: #0b1f33; }
 .dp-map-survey > header svg { width: 18px; }

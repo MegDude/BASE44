@@ -26,7 +26,7 @@ export default function PartnerTypeCard({
         <div className="h-full p-6 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33]  transition-all duration-300">
           {Icon && <Icon className="w-8 h-8 text-[#0B1F33] mb-3" />}
 
-          <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-2">
+          <div className="text-[11px] uppercase text-[#0B1F33]/50 mb-2 text-[11px] font-bold uppercase tracking-normal">
             {type}
           </div>
 

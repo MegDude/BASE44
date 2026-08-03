@@ -70,7 +70,7 @@ export default function VenueBookingForm({ venue, onClose }) {
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Date
         </label>
         <input
@@ -84,7 +84,7 @@ export default function VenueBookingForm({ venue, onClose }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Time
           </label>
           <input
@@ -96,7 +96,7 @@ export default function VenueBookingForm({ venue, onClose }) {
           />
         </div>
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Party size
           </label>
           <select
@@ -114,7 +114,7 @@ export default function VenueBookingForm({ venue, onClose }) {
       </div>
 
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Special requests (optional)
         </label>
         <textarea

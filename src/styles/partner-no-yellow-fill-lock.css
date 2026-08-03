@@ -65,6 +65,6 @@ html body #root#root main.dp-partner-lifecycle-page-start :is(
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid button small,
 html body #root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card small {
   font-variant: normal !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }

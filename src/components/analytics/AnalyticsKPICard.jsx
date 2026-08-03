@@ -17,7 +17,7 @@ export default function AnalyticsKPICard({ label, value, delta, deltaType, spark
     >
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em]">
+          <span className="text-[11px] text-muted-foreground uppercase text-[11px] font-bold uppercase tracking-normal">
             {label}
           </span>
           {delta && (

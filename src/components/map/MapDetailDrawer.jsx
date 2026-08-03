@@ -51,7 +51,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="mb-3 flex items-center justify-between gap-3">
           <button
             onClick={onClose}
-            className="inline-flex h-6 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/58 transition hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="inline-flex h-6 items-center gap-1.5 bg-transparent px-0 text-[10px] font-semibold uppercase tracking-normal text-[#0B1F33]/58 transition hover:-translate-y-px hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-label="Back to map results"
           >
             <ArrowLeft className="h-3 w-3 text-[#BFA46A]" />
@@ -111,7 +111,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {/* Description */}
           {entity.description && (
             <div>
-              <p className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/44 mb-1.5">About</p>
+              <p className="text-[12px] uppercase text-[#0B1F33]/44 mb-1.5 text-[11px] font-bold uppercase tracking-normal">About</p>
               <p className="text-[13.5px] text-[#0B1F33]/72 leading-relaxed line-clamp-3">{entity.description}</p>
             </div>
           )}
@@ -137,7 +137,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {/* Perk highlight */}
           {entity.perk_description && (
             <div className="rounded-[8px] border border-[rgba(191,164,106,0.2)] bg-[rgba(191,164,106,0.06)] p-3.5">
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A] mb-1.5">Member perk</p>
+              <p className="text-[10.5px] uppercase text-[#BFA46A] mb-1.5 text-[11px] font-bold uppercase tracking-normal">Member perk</p>
               <p className="text-[13px] font-medium text-[#0B1F33]">{entity.perk_description}</p>
               {entity.perk_value && <p className="text-[17px] font-bold text-[#0B1F33] mt-1 tracking-tight">{entity.perk_value}</p>}
             </div>
@@ -155,7 +155,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {entity.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {entity.tags.slice(0, 4).map((tag, i) => (
-                <span key={i} className="rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.04)] px-2.5 py-0.5 text-[10.5px] font-medium tracking-wide text-[#0B1F33]/54">
+                <span key={i} className="rounded-[6px] border border-[rgba(11,31,51,0.08)] bg-[rgba(11,31,51,0.04)] px-2.5 py-0.5 text-[10.5px] font-medium tracking-normal text-[#0B1F33]/54">
                   {tag}
                 </span>
               ))}
@@ -191,7 +191,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={handleSave}
-            className={`flex h-9 items-center justify-center gap-1.5 rounded-[7px] border text-[11.5px] font-semibold tracking-[0.04em] transition-all duration-150 hover:-translate-y-px active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50 ${
+            className={`flex h-9 items-center justify-center gap-1.5 rounded-[7px] border text-[11.5px] font-semibold tracking-normal transition-all duration-150 hover:-translate-y-px active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50 ${
               isSaved
                 ? 'border-[rgba(191,164,106,0.35)] bg-[rgba(191,164,106,0.09)] text-[#8B6B2F] shadow-none'
                 : 'border-[rgba(11,31,51,0.09)] bg-white text-[#0B1F33]/62 shadow-[0_1px_3px_rgba(11,31,51,0.05)] hover:border-[rgba(191,164,106,0.4)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)]'
@@ -206,7 +206,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
               navigator.clipboard.writeText(window.location.href);
               trackingEvents.save(entity.id);
             }}
-            className="flex h-9 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white text-[11.5px] font-semibold tracking-[0.04em] text-[#0B1F33]/62 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.14)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
+            className="flex h-9 items-center justify-center gap-1.5 rounded-[7px] border border-[rgba(11,31,51,0.09)] bg-white text-[11.5px] font-semibold tracking-normal text-[#0B1F33]/62 shadow-[0_1px_3px_rgba(11,31,51,0.05)] transition-all duration-150 hover:-translate-y-px hover:border-[rgba(11,31,51,0.14)] hover:text-[#0B1F33] hover:shadow-[0_2px_8px_rgba(11,31,51,0.07)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]/50"
           >
             <Share2 className="w-3.5 h-3.5" />
             Share

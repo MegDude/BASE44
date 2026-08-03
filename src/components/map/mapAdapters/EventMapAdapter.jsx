@@ -72,7 +72,7 @@ export function EventCard({ event, active, onClick }) {
         {date && (
           <div className="absolute bottom-3 left-3 bg-white/95 rounded-xl px-3 py-2 text-center shadow-sm">
             <div className="text-[20px] font-bold leading-none text-[#0B1F33]">{date.format("D")}</div>
-            <div className="text-[10px] uppercase tracking-wider text-[#0B1F33]/58 mt-0.5">
+            <div className="text-[10px] uppercase tracking-normalr text-[#0B1F33]/58 mt-0.5 text-[11px] font-bold uppercase tracking-normal">
               {date.format("MMM")}
             </div>
           </div>
@@ -81,7 +81,7 @@ export function EventCard({ event, active, onClick }) {
       <div className="p-4 bg-white">
         <div className="flex items-center gap-2 mb-2">
           <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0B1F33]/58 capitalize">
+          <span className="text-[11px] uppercase tracking-normalr text-[#0B1F33]/58 capitalize text-[11px] font-bold uppercase tracking-normal">
             {event.category?.replace("_", " ")}
           </span>
         </div>

@@ -61,7 +61,7 @@ export default function PerksCard() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <span className="text-[#BFA46A] text-[13px] font-medium uppercase tracking-widest">
+          <span className="text-[#BFA46A] text-[13px] uppercase tracking-normalst text-[11px] font-bold uppercase tracking-normal">
             Resident Access
           </span>
           <h1 className="font-heading text-4xl md:text-4xl font-bold mt-2 mb-4 text-[#0B1F33]">
@@ -115,7 +115,7 @@ export default function PerksCard() {
               </div>
 
               <div className="border-t border-[#0B1F33]/10 pt-4 text-center">
-                <span className="block text-[10px] uppercase tracking-[0.18em] text-[#0B1F33]/45">Card code</span>
+                <span className="block text-[10px] uppercase text-[#0B1F33]/45 text-[11px] font-bold uppercase tracking-normal">Card code</span>
                 <code className="mt-1 block font-mono text-[13px] font-bold text-[#0B1F33]">{cardCode}</code>
               </div>
 
@@ -129,7 +129,7 @@ export default function PerksCard() {
             transition={{ delay: 0.45 }}
             className="group border border-[#0B1F33]/10 bg-white p-6 shadow-[0_18px_50px_rgba(11,31,51,0.08)] md:p-7"
           >
-            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#BFA46A]">Ready when you are</span>
+            <span className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Ready when you are</span>
             <h2 className="mt-3 font-heading text-3xl font-medium leading-tight text-[#0B1F33]">Claim your Perks Card.</h2>
             <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/66">
               Scan the QR code to open the live card flow, connect your building, and keep your resident access ready for partner venues.
@@ -142,7 +142,7 @@ export default function PerksCard() {
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F33]/14 via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-3 rounded-md border border-white/45 bg-white/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/86 shadow-[0_10px_26px_rgba(11,31,51,0.08)] backdrop-blur-[10px]">
+              <div className="absolute bottom-3 left-3 rounded-md border border-white/45 bg-white/90 px-3 py-2 text-[11px] uppercase text-[#0B1F33]/86 shadow-[0_10px_26px_rgba(11,31,51,0.08)] backdrop-blur-[10px] text-[11px] font-bold uppercase tracking-normal">
                 Scan at partner venues
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function PerksCard() {
 
             <div className="mt-7 grid gap-3 border-t border-[#0B1F33]/10 pt-5 sm:grid-cols-2">
               <div className="rounded-md border border-[#0B1F33]/8 bg-white/78 p-4">
-                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/52">
+                <div className="flex items-center gap-2 text-[10px] uppercase text-[#0B1F33]/52 text-[11px] font-bold uppercase tracking-normal">
                   <QrCode className="h-3.5 w-3.5 text-[#BFA46A]" />
                   Resident access code
                 </div>
@@ -178,7 +178,7 @@ export default function PerksCard() {
                     width="128"
                     height="128"
                   />
-                  <code className="mt-2 block font-mono text-[11px] font-bold tracking-[0.12em] text-[#0B1F33]">{DEMO_CARD_CODE}</code>
+                  <code className="mt-2 block font-mono text-[11px] font-bold tracking-normal text-[#0B1F33]">{DEMO_CARD_CODE}</code>
                 </div>
                 <p className="mt-3 text-[12px] leading-5 text-[#0B1F33]/62">
                   Residents show this style of QR when they redeem a perk, check in for an event, or confirm building access.
@@ -186,7 +186,7 @@ export default function PerksCard() {
               </div>
 
               <div className="rounded-md border border-[#0B1F33]/8 bg-[#0B1F33] p-4 text-white">
-                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/58">
+                <div className="flex items-center gap-2 text-[10px] uppercase text-white/58 text-[11px] font-bold uppercase tracking-normal">
                   <ScanLine className="h-3.5 w-3.5 text-[#BFA46A]" />
                   Partner scanner
                 </div>
@@ -208,7 +208,7 @@ export default function PerksCard() {
 
             <div className="mt-7 border-t border-[#0B1F33]/10 pt-5">
               <div className="mb-3">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/48">
+                <span className="text-[10px] uppercase text-[#0B1F33]/48 text-[11px] font-bold uppercase tracking-normal">
                   How it works
                 </span>
                 <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/58">

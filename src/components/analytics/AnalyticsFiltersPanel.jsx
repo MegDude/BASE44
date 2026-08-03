@@ -132,7 +132,7 @@ export default function AnalyticsFiltersPanel({ activeFilters, onFilterChange, o
                   <button
                     type="button"
                     onClick={() => setExpandedFilter(null)}
-                    className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/40 bg-background px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                    className="mt-1 flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/40 bg-background px-3 py-2 text-[11px] font-semibold uppercase tracking-normal text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <ChevronUp className="h-3.5 w-3.5" />
                     Roll up

@@ -16,7 +16,7 @@ html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-he
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header > p,
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading p {
   margin: 0 0 7px !important; color: var(--pricing-gold) !important; font-size: 11px !important;
-  font-weight: 700 !important; letter-spacing: .12em !important; text-transform: uppercase !important;
+  font-weight: 700 !important; letter-spacing: normal !important; text-transform: uppercase !important;
 }
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header h1 {
   margin: 0 !important; color: var(--pricing-ink) !important; font-size: clamp(34px, 5vw, 52px) !important;

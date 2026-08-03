@@ -229,7 +229,7 @@ export default function CivicPartner() {
       <section id="civic-map" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="mx-auto max-w-7xl px-5">
           <div className="mb-8 max-w-3xl">
-            <span className="dp-label mb-3 block">Civic map layer</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic map layer</span>
             <h2>Help more people discover what is happening downtown.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               Civic moments work best when they appear where people are already deciding what to do, where to go, and what is worth joining nearby.
@@ -250,7 +250,7 @@ export default function CivicPartner() {
       <section id="formats" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="max-w-7xl mx-auto px-5">
           <div className="mb-10 max-w-3xl">
-            <span className="dp-label mb-3 block">Civic formats</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic formats</span>
             <h2>Civic formats for downtown participation.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               Choose the civic format that fits the district, moment, initiative, or public objective. Every format shows up on the map where people are already looking.
@@ -354,7 +354,7 @@ export default function CivicPartner() {
       <section id="proof" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="mx-auto max-w-7xl px-5">
           <div className="mb-10 max-w-3xl">
-            <span className="dp-label mb-3 block">Launch planning</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Launch planning</span>
             <h2>What civic participation is likely to produce.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               These are planning ranges based on typical civic programs, residential entry points, partner onboarding pace, and the current Downtown Perks rollout model. They are meant to guide launch planning, not report live results.

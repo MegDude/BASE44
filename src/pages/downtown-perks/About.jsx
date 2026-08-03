@@ -52,7 +52,7 @@ export default function About() {
           >
             <p className="dp-editorial-context">About Downtown Perks</p>
             <h1>Downtown should feel easier to use.</h1>
-            <p className="dp-about-kicker">A resident-first layer for deciding where to go, what to use, and what is worth putting on the calendar.</p>
+            <p className="dp-about-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">A resident-first layer for deciding where to go, what to use, and what is worth putting on the calendar.</p>
             <p>
               Downtown Perks brings nearby places, verified offers, and useful local plans into one clear view. It gives residents a faster route to a good next step and gives partners a better way to be present when that decision is being made.
             </p>

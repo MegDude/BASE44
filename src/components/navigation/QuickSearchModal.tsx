@@ -450,7 +450,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             <ArrowLeft size={16} aria-hidden="true" />
           </button>
           <div>
-            <p className="dp-quick-search-eyebrow">Downtown Austin</p>
+            <p className="dp-quick-search-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Austin</p>
             <h2 id="dp-quick-search-title">Search downtown</h2>
             <p className="dp-quick-search-support">Find places, events, perks, and buildings.</p>
           </div>

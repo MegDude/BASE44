@@ -38,7 +38,7 @@ html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mo
   color: var(--shore-muted);
   font-size: 12px;
   font-weight: 560;
-  letter-spacing: 0;
+  letter-spacing: normal;
   text-transform: none;
 }
 
@@ -125,7 +125,7 @@ html body #root #dp-active-map-drawer .dp-shore-residential-drawer[data-shore-mo
   color: var(--shore-gold);
   font-size: 12px;
   font-weight: 640;
-  letter-spacing: 0;
+  letter-spacing: normal;
   text-transform: none;
 }
 

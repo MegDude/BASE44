@@ -54,7 +54,7 @@ export default function ResidentNowTab({ user }) {
               animate={{ opacity: 1, x: 0 }}
               className="rounded-lg border border-[#BFA46A]/35 bg-white/95 p-3 shadow-sm backdrop-blur-sm"
             >
-              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">Your RSVPs</div>
+              <div className="text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">Your RSVPs</div>
               <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{rsvps[0].title}</div>
               <div className="mt-1 text-xs text-[#0B1F33]/58">{rsvps[0].time} · {rsvps[0].venue}</div>
             </motion.div>

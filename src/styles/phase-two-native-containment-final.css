@@ -100,6 +100,31 @@ body,
   transform: scale(0.98);
 }
 
+/* Expanded tracking is reserved exclusively for canonical eyebrow text. */
+#root * {
+  letter-spacing: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(
+  .dp-eyebrow,
+  [class*="-eyebrow"],
+  [class*="__eyebrow"],
+  [class*="-kicker"],
+  [class*="__kicker"],
+  [class*="-overline"],
+  [class*="__overline"],
+  [class~="dp-label"],
+  [class*="section-label"],
+  [class*="panel-label"],
+  [class*="workspace-label"],
+  [class*="access-label"]
+) {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+}
+
 @media (max-width: 767px) {
   :is(.dp-native-drawer, .dp-workspace-shell, .dp-partner-workspace, .dp-admin-studio-shell, .dp-map-shell)
   :is(input, select, textarea) {

@@ -132,7 +132,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: rgba(11, 31, 51, .42);
   font-size: .64rem;
   font-weight: 500;
-  letter-spacing: .105em;
+  letter-spacing: normal;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
@@ -199,7 +199,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: rgba(11, 31, 51, .42) !important;
   font-size: .66rem !important;
   font-weight: 500 !important;
-  letter-spacing: .12em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase;
   transition: color 160ms ease;
@@ -215,7 +215,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: rgba(11, 31, 51, .5);
   font-size: .68rem;
   font-weight: 500;
-  letter-spacing: .13em;
+  letter-spacing: normal;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -271,7 +271,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   min-height: 42px !important;
   font-size: .68rem !important;
   font-weight: 500 !important;
-  letter-spacing: .105em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase;
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease, opacity 160ms ease;
@@ -332,7 +332,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   background: transparent !important;
   font-size: .66rem !important;
   font-weight: 500 !important;
-  letter-spacing: .105em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase;
   transition: color 160ms ease, opacity 160ms ease;
@@ -418,7 +418,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: rgba(11, 31, 51, .58) !important;
   font-size: .64rem !important;
   font-weight: 500 !important;
-  letter-spacing: .12em !important;
+  letter-spacing: normal !important;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -490,7 +490,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: rgba(11, 31, 51, .68) !important;
   font-size: .66rem !important;
   font-weight: 500 !important;
-  letter-spacing: .105em !important;
+  letter-spacing: normal !important;
   line-height: 1.35 !important;
   text-transform: uppercase;
 }
@@ -507,7 +507,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: var(--dp-page-gold) !important;
   font-size: .66rem !important;
   font-weight: 500 !important;
-  letter-spacing: .13em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase;
 }

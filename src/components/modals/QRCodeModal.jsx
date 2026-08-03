@@ -128,7 +128,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
       >
         <button
           onClick={onClose}
-          className="absolute left-4 top-4 inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/70 transition-colors hover:text-[#0B1F33]"
+          className="absolute left-4 top-4 inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/70 transition-colors hover:text-[#0B1F33]"
           aria-label="Back from QR code"
         >
           <ArrowLeft className="h-3.5 w-3.5" />

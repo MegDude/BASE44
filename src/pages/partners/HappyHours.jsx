@@ -100,7 +100,7 @@ export default function HappyHoursPartner() {
         </div>
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
           <motion.div initial="hidden" animate="show" variants={reveal}>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner happy hours</p>
+            <p className="text-[12px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Partner happy hours</p>
             <h1 className="mt-5 max-w-[13ch] font-heading text-[42px] font-semibold leading-[1.02] tracking-[-0.025em] sm:text-[50px] md:text-[72px] md:leading-[0.98] lg:text-[82px]">
               Put the first round on the map.
             </h1>

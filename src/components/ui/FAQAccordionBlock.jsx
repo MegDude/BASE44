@@ -104,7 +104,7 @@ export default function FAQAccordionBlock({
               className="md:sticky md:top-28"
             >
               {sectionEyebrow && (
-                <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
+                <span className={`text-[11px] font-medium uppercase tracking-normal block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
                   {sectionEyebrow}
                 </span>
               )}
@@ -133,7 +133,7 @@ export default function FAQAccordionBlock({
               className="mb-10"
             >
               {sectionEyebrow && (
-                <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
+                <span className={`text-[11px] font-medium uppercase tracking-normal block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
                   {sectionEyebrow}
                 </span>
               )}
@@ -215,7 +215,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
 
         {/* Tag badge */}
         {item.tag && (
-          <span className="text-[10px] font-medium text-primary/60 border border-primary/20 px-2 py-0.5 rounded-full shrink-0 uppercase tracking-[0.1em]">
+          <span className="text-[10px] text-primary/60 border border-primary/20 px-2 py-0.5 rounded-full shrink-0 uppercase text-[11px] font-bold uppercase tracking-normal">
             {item.tag}
           </span>
         )}

@@ -74,7 +74,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-3xl"
         >
-          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">
+          <p className="mb-4 text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
             How Downtown Perks works
           </p>
           <h2 className="font-heading text-[42px] font-medium leading-[0.96] tracking-[-0.035em] text-[#0B1F33] md:text-[72px]">
@@ -109,7 +109,7 @@ export default function DowntownPerksHowItWorks({ id = "how-it-works", className
               <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92),rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(11,31,51,0.16))]" />
 
               <div className="absolute left-5 top-5 z-10 max-w-[20rem] sm:left-6 sm:top-6">
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#BFA46A]">
+                <span className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
                   {active.label}
                 </span>
                 <h3 className="mt-3 font-heading text-[38px] font-medium leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[52px]">

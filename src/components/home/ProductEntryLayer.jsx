@@ -65,7 +65,7 @@ export default function ProductEntryLayer() {
           className="text-center"
         >
           <div className="mx-auto max-w-3xl">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#425466]">
+            <p className="mb-3 text-[11px] uppercase text-[#425466] text-[11px] font-bold uppercase tracking-normal">
               Ask the map
             </p>
 
@@ -204,14 +204,14 @@ export default function ProductEntryLayer() {
         >
           <button
             onClick={() => navigate("/downtown-perks/card")}
-            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33] shadow-none transition-colors duration-200 hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-normal text-[#0B1F33] shadow-none transition-colors duration-200 hover:text-[#A98B4A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
           >
             Get Your Card
           </button>
 
           <button
             onClick={() => navigate("/map?mode=resident&tab=map")}
-            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]/62 shadow-none transition-colors duration-200 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
+            className="group inline-flex h-8 items-center gap-2 bg-transparent px-0 text-[12px] font-bold uppercase tracking-normal text-[#0B1F33]/62 shadow-none transition-colors duration-200 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
           >
             Explore the Map
           </button>

@@ -77,7 +77,7 @@ html body #root#root main.dp-partner-lifecycle-page-register :is(
   .dp-partner-trust-strip > span,
   .dp-partner-register-form label > span
 ) {
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   text-transform: none !important;
 }
@@ -124,7 +124,7 @@ html body #root#root main.dp-partner-lifecycle-page-register .dp-partner-registe
 html body #root#root main.dp-partner-lifecycle-page-register .dp-partner-register-group legend {
   font-size: 17px !important;
   font-weight: 650 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 

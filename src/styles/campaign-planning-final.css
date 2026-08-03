@@ -21,7 +21,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-live-
   font-size: 14px !important;
   font-weight: 720 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   text-decoration: none !important;
 }
@@ -49,6 +49,6 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-previ
   box-shadow: none !important;
   font-size: 14px !important;
   font-weight: 680 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }

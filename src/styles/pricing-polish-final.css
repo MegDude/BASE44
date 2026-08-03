@@ -41,7 +41,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid
   color: rgba(11, 31, 51, 0.58) !important;
   font-size: 11px !important;
   font-weight: 720 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -105,7 +105,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rol
   color: #0B1F33 !important;
   font-size: 17px !important;
   font-weight: 680 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-options-rollup > summary small {

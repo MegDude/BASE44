@@ -159,7 +159,7 @@ function slugPeriod(value) {
 function ReportLabel({ children, muted = false }) {
   return (
     <p className={cx(
-      "m-0 font-body text-[10.5px] font-semibold uppercase tracking-[0.14em]",
+      "m-0 font-body text-[10.5px] font-semibold uppercase tracking-normal",
       muted ? "text-[#0B1F33]/50" : "text-[#BFA46A]",
     )}>
       {children}
@@ -364,7 +364,7 @@ export default function Dashboard() {
                   onClick={() => setPeriod(option)}
                   aria-pressed={active}
                   className={cx(
-                    "h-8 flex-none px-0 font-body text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
+                    "h-8 flex-none px-0 font-body text-[11px] font-semibold uppercase tracking-normal transition-colors",
                     active ? "text-[#BFA46A]" : "text-[#0B1F33]/50 hover:text-[#0B1F33]",
                   )}
                 >
@@ -380,8 +380,8 @@ export default function Dashboard() {
             {summaryMetrics.map(([value, label, trend]) => (
               <div key={label} className="min-w-[154px] snap-start border-r border-[rgba(11,31,51,.08)] pr-8 last:border-r-0">
                 <p className="m-0 whitespace-nowrap font-body text-[26px] font-semibold leading-none text-[#0B1F33] md:text-[30px]">{value}</p>
-                <p className="mt-2 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
-                {trend ? <p className="mt-2 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{trend}</p> : null}
+                <p className="mt-2 font-body text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</p>
+                {trend ? <p className="mt-2 font-body text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{trend}</p> : null}
               </div>
             ))}
           </div>
@@ -405,7 +405,7 @@ export default function Dashboard() {
                     {item.metrics.map(([value, label]) => (
                       <div key={label}>
                         <p className="m-0 font-body text-[20px] font-semibold text-[#0B1F33]">{value}</p>
-                        <p className="mt-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
+                        <p className="mt-1 font-body text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</p>
                       </div>
                     ))}
                   </div>
@@ -442,14 +442,14 @@ export default function Dashboard() {
             <h2 className="mt-3 font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-[42px]">
               {campaignReadout.campaign}
             </h2>
-            <p className="mt-2 font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{campaignReadout.partner}</p>
+            <p className="mt-2 font-body text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{campaignReadout.partner}</p>
             <p className="mt-4 max-w-[640px] font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{campaignReadout.description}</p>
             <TextRows rows={[["Why now", campaignReadout.whyNow], ["Best timing", campaignReadout.bestTiming]]} />
             <div className="mt-5 grid grid-cols-3 gap-4 border-y border-[#0B1F33]/[0.06] py-4">
               {campaignReadout.results.map(([value, label]) => (
                 <div key={label}>
                   <p className="m-0 font-body text-[22px] font-semibold text-[#0B1F33]">{value}</p>
-                  <p className="mt-1 font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/50">{label}</p>
+                  <p className="mt-1 font-body text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</p>
                 </div>
               ))}
             </div>
@@ -532,7 +532,7 @@ export default function Dashboard() {
               <article key={listing} className="grid gap-2 py-5 first:pt-0 md:grid-cols-[190px_minmax(0,1fr)] md:gap-6">
                 <h3 className="font-body text-[15px] font-semibold leading-snug text-[#0B1F33]">{listing}</h3>
                 <div>
-                  <p className="font-body text-[12px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{signal}</p>
+                  <p className="font-body text-[12px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{signal}</p>
                   <p className="mt-2 font-body text-[14px] leading-relaxed text-[#0B1F33]/68">{action}</p>
                 </div>
               </article>
@@ -553,7 +553,7 @@ export default function Dashboard() {
                   <h3 className="font-body text-[17px] font-semibold tracking-[-0.01em] text-[#0B1F33]">{title}</h3>
                   <p className="mt-2 font-body text-[14px] leading-relaxed text-[#0B1F33]/64">{reason}</p>
                 </div>
-                <span className="font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{cta}</span>
+                <span className="font-body text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{cta}</span>
               </article>
             ))}
           </div>

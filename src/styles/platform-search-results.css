@@ -16,7 +16,7 @@
   padding: 10px 2px 5px;
   color: rgba(11, 31, 51, 0.58);
   font: 650 11px/1.2 Inter, system-ui, sans-serif;
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 

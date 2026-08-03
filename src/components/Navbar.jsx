@@ -75,7 +75,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
         onClick={() => setOpenMenu(isOpen ? null : id)}
         aria-expanded={isOpen}
         aria-controls={`${id}-navigation`}
-        className={`relative inline-flex h-9 items-center gap-1.5 px-1 text-[12px] font-semibold uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
+        className={`relative inline-flex h-9 items-center gap-1.5 px-1 text-[12px] font-semibold uppercase tracking-normal transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
           isActiveGroup
             ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-1 after:h-px after:w-[calc(100%-0.5rem)] after:bg-[#BFA46A]"
             : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
@@ -96,7 +96,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
             className="absolute left-0 top-11 w-[340px] overflow-hidden rounded-md border border-[#0B1F33]/8 bg-white p-2 shadow-[0_18px_58px_rgba(11,31,51,0.13)]"
           >
             <div className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
+              <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
                 {label} paths
               </div>
               <button
@@ -123,7 +123,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
               <button
                 type="button"
                 onClick={() => setOpenMenu(null)}
-                className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#425466] shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:text-[#0B1F33] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+                className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-md bg-white px-3 py-2 text-[10px] font-semibold uppercase tracking-normal text-[#425466] shadow-[0_12px_40px_rgba(11,31,51,0.04)] transition hover:-translate-y-0.5 hover:text-[#0B1F33] hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 <ChevronUp className="h-3.5 w-3.5" />
                 Roll up
@@ -245,7 +245,7 @@ export default function Navbar() {
                 <Link
                   key={link.to + link.label}
                   to={link.to}
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-normal transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     isActive(link.to)
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
@@ -258,7 +258,7 @@ export default function Navbar() {
               <>
                 <Link
                   to="/map?mode=resident&tab=map&filter=Perks"
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-normal transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     residentMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
@@ -268,7 +268,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/app?mode=partner&tab=map&filter=All"
-                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-[0.12em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
+                  className={`relative inline-flex h-9 items-center px-0 text-[12px] font-semibold uppercase tracking-normal transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] ${
                     partnerMapActive
                       ? "text-[#0B1F33] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                       : "text-[#0B1F33]/56 hover:text-[#0B1F33]"
@@ -346,7 +346,7 @@ export default function Navbar() {
           >
             <div className="mx-auto max-h-[calc(100vh-64px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
               <div className="flex items-center justify-between gap-4">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#425466]">
+                <div className="text-[10px] uppercase text-[#425466] text-[11px] font-bold uppercase tracking-normal">
                   Navigation
                 </div>
                 {!isCommerceRoute && (
@@ -361,7 +361,7 @@ export default function Navbar() {
                         role="tab"
                         aria-selected={mobileAudience === value}
                         onClick={() => setMobileAudience(value)}
-                        className={`relative h-7 border-0 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-[0.14em] shadow-none outline-none transition focus-visible:outline-none focus-visible:ring-0 ${
+                        className={`relative h-7 border-0 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-normal shadow-none outline-none transition focus-visible:outline-none focus-visible:ring-0 ${
                           mobileAudience === value
                             ? "text-[#BFA46A] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
                             : "text-[#425466] hover:text-[#0B1F33]"

@@ -260,7 +260,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   -webkit-text-fill-color: #b08a3f !important;
   box-shadow: none !important;
   font: 720 10px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
@@ -290,7 +290,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   color: var(--dp-search-gold) !important;
   box-shadow: none !important;
   font: 720 10px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
@@ -462,7 +462,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   padding: 0 4px !important;
   color: #0b1f33 !important;
   font: 750 13px/1.2 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -587,12 +587,12 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-switch.dp-search-intent-audience-tabs > button {
     padding-inline: 0 !important;
     font-size: 9px !important;
-    letter-spacing: 0.055em !important;
+    letter-spacing: normal !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-search-intent-console .dp-search-intent-ask-map {
     font-size: 9px !important;
-    letter-spacing: 0.055em !important;
+    letter-spacing: normal !important;
   }
 
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-search-intent-console .dp-platform-search-result-action {

@@ -266,7 +266,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page .dp-search-intent-c
   box-shadow: none !important;
   color: #0b1f33 !important;
   font: 650 11px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
   scroll-snap-align: start !important;
 }

@@ -212,7 +212,7 @@
 .dp-legends-founding-partner small {
   color: #8b6f36;
   font: 600 0.6875rem/1.2 Inter, sans-serif;
-  letter-spacing: 0.12em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 

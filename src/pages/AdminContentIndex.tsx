@@ -5,7 +5,7 @@ type CountCardProps = { label: string; value: number };
 function CountCard({ label, value }: CountCardProps) {
   return (
     <div className="border-t border-[#C8A96A] py-4">
-      <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#526171]">{label}</p>
+      <p className="uppercase text-[#526171] text-[11px] font-bold uppercase tracking-normal">{label}</p>
       <p className="mt-1 text-2xl font-semibold tracking-tight text-[#0B1F33]">{value.toLocaleString()}</p>
     </div>
   );
@@ -26,7 +26,7 @@ export default function AdminContentIndex() {
     <main className="min-h-screen bg-white px-5 py-8 text-[#0B1F33] sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <header className="border-b border-[#DDE3EA] pb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#927641]">Internal content audit</p>
+          <p className="uppercase text-[#927641] text-[11px] font-bold uppercase tracking-normal">Internal content audit</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">See what the app contains</h1>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-[#526171]">
             Review routes, places, partner records, search content, and quality gaps across Downtown Perks. Correct the original item, then refresh this index.
@@ -52,7 +52,7 @@ export default function AdminContentIndex() {
           <div className="mt-5 overflow-x-auto border-y border-[#DDE3EA]">
             <table className="w-full min-w-[760px] border-collapse text-left text-sm">
               <thead className="bg-[#0B1F33] text-white">
-                <tr>{["Priority", "Type", "Record", "Problem", "Next action"].map((label) => <th key={label} className="px-3 py-3 text-xs font-semibold uppercase tracking-[0.1em]">{label}</th>)}</tr>
+                <tr>{["Priority", "Type", "Record", "Problem", "Next action"].map((label) => <th key={label} className="px-3 py-3 text-xs font-semibold uppercase tracking-normal">{label}</th>)}</tr>
               </thead>
               <tbody>
                 {highPriority.map((issue) => (

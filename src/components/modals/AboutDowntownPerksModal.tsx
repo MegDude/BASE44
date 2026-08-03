@@ -202,7 +202,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
 <button type="button" onClick={onClose} className="dp-modal-back inline-flex h-11 w-11 items-center justify-center" aria-label="Back from Downtown Perks overview">
 <ArrowLeft className="h-4 w-4" />
 </button>
-<p className="dp-modal-kicker text-center">How Downtown Perks works</p>
+<p className="dp-modal-kicker text-center text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How Downtown Perks works</p>
               <button
                 type="button"
                 onClick={onClose}
@@ -241,7 +241,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               </section>
 
               <section className="dp-overview-section">
-                <span className="dp-section-eyebrow">What it does</span>
+                <span className="dp-section-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What it does</span>
                 <h2>One map for everyday downtown decisions.</h2>
                 <div className="dp-overview-feature-grid">
                   {features.filter((feature) => primaryFeatureTitles.has(feature.title)).map((feature) => {
@@ -267,7 +267,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               </section>
 
               <section className="dp-overview-section">
-                <span className="dp-section-eyebrow">Built for the people using downtown.</span>
+                <span className="dp-section-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Built for the people using downtown.</span>
                 <div className="dp-audience-list">
                   {audiences.map((audience) => {
                     const Icon = audience.icon;
@@ -287,7 +287,7 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
               </section>
 
               <section className="dp-overview-section">
-                <span className="dp-section-eyebrow">How it works</span>
+                <span className="dp-section-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</span>
                 <ol className="dp-overview-steps">
                   {steps.map((step, index) => (
                     <li key={step}><span>0{index + 1}</span><p>{step}</p></li>

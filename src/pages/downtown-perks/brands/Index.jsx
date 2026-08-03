@@ -48,7 +48,7 @@ function BrandCard({ brand, index }) {
       >
         <CardImage image={brand.image} alt={`${brand.category} campaign`} />
         <div className="flex items-start justify-between mb-4">
-          <span className="text-[11px] font-medium text-[#BFA46A] uppercase tracking-[0.12em]">
+          <span className="text-[11px] text-[#BFA46A] uppercase text-[11px] font-bold uppercase tracking-normal">
             {brand.tag}
           </span>
           <ArrowRight className="w-3.5 h-3.5 text-[#0B1F33]/35 group-hover:text-[#BFA46A] group-hover:translate-x-0.5 transition-all" />
@@ -56,7 +56,7 @@ function BrandCard({ brand, index }) {
         <h3 className="font-heading text-xl font-medium mb-1 group-hover:text-primary transition-colors duration-300">
           {brand.headline}
         </h3>
-        <div className="text-[11px] text-muted-foreground/60 uppercase tracking-wide mb-3">{brand.category}</div>
+        <div className="text-[11px] text-muted-foreground/60 uppercase mb-3 text-[11px] font-bold uppercase tracking-normal">{brand.category}</div>
         <p className="text-[13px] text-muted-foreground leading-relaxed">{brand.description}</p>
       </Link>
     </motion.div>
@@ -75,7 +75,7 @@ export default function BrandsIndex() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] text-primary/70 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
               Partner Directory
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end mb-14">
@@ -132,7 +132,7 @@ export default function BrandsIndex() {
       <section className="py-12 px-5 border-t border-border/40">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-10">
-            <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">
+            <span className="text-[11px] text-muted-foreground uppercase text-[11px] font-bold uppercase tracking-normal">
               All Partners
             </span>
             <span className="text-[11px] text-muted-foreground/40">—</span>

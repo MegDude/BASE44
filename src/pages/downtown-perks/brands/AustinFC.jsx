@@ -14,7 +14,7 @@ const demo = (
       ]}
     />
     <div className="rounded-lg border border-border bg-card p-7">
-      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Match Day District Flow</div>
+      <div className="text-muted-foreground uppercase tracking-normalr mb-5 text-[11px] font-bold uppercase tracking-normal">Match Day District Flow</div>
       <div className="space-y-4">
         {[
           { step: "01", label: "Pre-match: member meetup", sub: "District bar takeover — members gather at Bangers" },

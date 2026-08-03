@@ -39,7 +39,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-
   color: #927331 !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   line-height: 1.3 !important;
   text-transform: uppercase !important;
 }
@@ -161,7 +161,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-lifecycle-
   color: #927331 !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   line-height: 1.3 !important;
   text-transform: uppercase !important;
 }

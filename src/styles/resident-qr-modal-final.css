@@ -160,7 +160,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   margin: 0 0 6px !important;
   color: #9a7a3e !important;
   font: 700 11px/1.2 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0.07em !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   text-transform: uppercase !important;
 }
@@ -311,7 +311,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta code {
   overflow-wrap: anywhere !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-resident-qr-meta small {

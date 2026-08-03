@@ -33,7 +33,7 @@ export default function CTA({
   const variantClass = variants[variant];
   const sizeClass = sizes[size];
 
-  const classes = `inline-flex items-center justify-center gap-1.5 rounded-none bg-transparent px-0 font-semibold uppercase tracking-[0.09em] shadow-none transition-all duration-300 ${variantClass} ${sizeClass} ${
+  const classes = `inline-flex items-center justify-center gap-1.5 rounded-none bg-transparent px-0 font-semibold uppercase tracking-normal shadow-none transition-all duration-300 ${variantClass} ${sizeClass} ${
     disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
   }`;
 

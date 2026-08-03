@@ -31,7 +31,7 @@ html body #root#root .dp-resident-home__continue :is(a,button) > svg:first-child
 
 html body #root#root .dp-resident-section-title p,
 html body #root#root .dp-resident-hero-card span {
-  letter-spacing: 0; text-transform: none;
+  letter-spacing: normal; text-transform: none;
 }
 
 html body #root#root .dp-resident-hero-card { min-height: 300px; border-radius: 14px; }

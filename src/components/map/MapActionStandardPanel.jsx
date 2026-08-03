@@ -125,7 +125,7 @@ export default function MapActionStandardPanel({
     <section className="dp-map-action-standard" aria-label={`${standard.title} actions`}>
       <div className="dp-map-action-standard__head">
         <div>
-          <p className="dp-map-action-standard__eyebrow">{standard.eyebrow}</p>
+          <p className="dp-map-action-standard__eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{standard.eyebrow}</p>
           <h3>{standard.verb} {standard.label}</h3>
           <p>{standard.promise}</p>
         </div>

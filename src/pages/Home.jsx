@@ -216,7 +216,7 @@ function CommunityStoriesSection() {
     <section className="dp-community-stories-section py-12 md:py-16" aria-labelledby="community-stories-title">
       <div className="dp-layout-shell">
         <div className="mb-7 max-w-2xl">
-          <span className="dp-label mb-3 block">Resident Favorite</span>
+          <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Favorite</span>
           <h2 id="community-stories-title" className="font-heading text-3xl font-medium">Community Stories</h2>
           <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
             See how downtown residents are using local perks in real life.
@@ -291,7 +291,7 @@ export default function Home() {
         <div className="relative dp-layout-shell">
           <div className="dp-marketing-hero-grid">
             <div className="dp-marketing-hero-copy">
-              <span className="dp-label mb-4 block">{hero.eyebrow}</span>
+              <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{hero.eyebrow}</span>
               <h1>{hero.title}</h1>
               <p className="mt-5 max-w-2xl text-[16px] leading-[1.65] text-[#0B1F33]/68">{hero.subhead}</p>
               {hero.body && <p className="mt-5 max-w-2xl text-[15px] leading-[1.75] text-[#0B1F33]/68">{hero.body}</p>}
@@ -343,7 +343,7 @@ export default function Home() {
           <div className="dp-marketing-value-grid">
             {marketingValueSections.map((section) => (
               <article key={section.eyebrow} className="dp-marketing-value-panel">
-                <span className="dp-label">{section.eyebrow}</span>
+                <span className="dp-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{section.eyebrow}</span>
                 <h2>{section.title}</h2>
                 <p>{section.body}</p>
                 <ul>
@@ -360,7 +360,7 @@ export default function Home() {
       <section className="dp-marketing-partner-types">
         <div className="dp-layout-shell">
           <div className="dp-marketing-section-head">
-            <span className="dp-label">Partner Types</span>
+            <span className="dp-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner Types</span>
             <h2>Built around how downtown actually works.</h2>
             <p>Properties, hotels, venues, brands, civic teams, and real estate partners can each show up in the way that matches their role.</p>
           </div>
@@ -382,7 +382,7 @@ export default function Home() {
           {!isPartner ? (
             <>
               <div className="mb-7 max-w-2xl">
-                <span className="dp-label mb-3 block">Residents</span>
+                <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residents</span>
                 <h2 className="font-heading text-3xl font-medium">Downtown, in one place</h2>
                 <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
                   You live downtown but expect it to be easier. Easier to navigate. Easier to connect. More useful day to day. Instead, everything you want is spread across too many places. Google for restaurants. Instagram for events. Text three friends to find the best happy hour. Downtown Perks fixes that. Because the problem isn’t what to do next — it’s the effort it takes to decide.
@@ -401,7 +401,7 @@ export default function Home() {
           ) : (
             <>
               <div className="mb-7 max-w-3xl">
-                <span className="dp-label mb-3 block">Your role</span>
+                <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Your role</span>
                 <h2 className="font-heading text-3xl font-medium">Spend less. Do more.</h2>
                 <p className="mt-3 text-[14px] leading-relaxed text-[#0B1F33]/64">
                   Start with a focused launch. Decide with real data. No setup. No long-term commitment. Just a clear path to downtown action.
@@ -432,9 +432,9 @@ export default function Home() {
                       <p className="mt-5 font-heading text-2xl italic">You're not selling square footage. You're selling everything around it.</p>
                     </div>
                     <div className="bg-white p-4 shadow-[0_14px_44px_rgba(11,31,51,0.05),0_0_26px_rgba(191,164,106,0.045)]">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Pricing</div>
+                      <div className="text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">Pricing</div>
                       <div className="mt-2 text-2xl font-semibold">{partner.pricing}</div>
-                      <Link to={partner.href} className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-white">
+                      <Link to={partner.href} className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#0B1F33] px-4 text-xs font-semibold uppercase tracking-normal text-white">
                         {partner.cta}
                       </Link>
                     </div>
@@ -452,7 +452,7 @@ export default function Home() {
         <div className="pointer-events-none absolute right-[8%] top-0 h-40 w-40 bg-white/6 blur-3xl" aria-hidden="true" />
         <div className="dp-layout-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="relative">
-            <span className="dp-label mb-3 block">Pricing</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Pricing</span>
             <h2 className="font-heading text-3xl font-medium">
               {isPartner ? "A smarter way to activate downtown" : "Ready when you are."}
             </h2>
@@ -476,7 +476,7 @@ export default function Home() {
                 ]
             ).map(([label, value]) => (
               <div key={label} className="flex min-h-[58px] items-center justify-between gap-3 bg-white px-3.5 py-3 shadow-[0_10px_30px_rgba(11,31,51,0.04),0_0_20px_rgba(191,164,106,0.035)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(11,31,51,0.055),0_0_24px_rgba(191,164,106,0.05)]">
-                <div className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#BFA46A]">{label}</div>
+                <div className="text-[10.5px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{label}</div>
                 <div className="shrink-0 text-[13px] font-semibold text-[#0B1F33]">{value}</div>
               </div>
             ))}
@@ -487,7 +487,7 @@ export default function Home() {
       <section className="py-12 md:py-16">
         <div className="dp-layout-shell">
           <div className="mb-7 max-w-2xl">
-            <span className="dp-label mb-3 block">{isPartner ? "Partner questions" : "Resident questions"}</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isPartner ? "Partner questions" : "Resident questions"}</span>
             <h2 className="font-heading text-3xl font-medium">FAQs</h2>
           </div>
           <div className="grid gap-3 md:grid-cols-2">
@@ -513,7 +513,7 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(11,31,51,0.08),transparent)]" aria-hidden="true" />
         <div className="dp-layout-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <span className="dp-label mb-3 block">{isPartner ? "Partner access" : "Resident access"}</span>
+            <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isPartner ? "Partner access" : "Resident access"}</span>
             <h2 className="font-heading text-3xl font-medium">
               {isPartner ? "Tell us what you want to activate" : "Check if your building is part of Downtown Perks."}
             </h2>
@@ -526,7 +526,7 @@ export default function Home() {
               const isBuildingSelect = !isPartner && label === "Building";
               return (
                 <label key={label} className="grid gap-1.5">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/50">{label}</span>
+                  <span className="text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</span>
                   {isBuildingSelect ? (
                     <select
                       defaultValue=""

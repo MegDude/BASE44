@@ -23,7 +23,7 @@ html body #root#root :is(.dp-home-page, .dp-about-page, .dp-partner-access-page,
   font-size: 11px !important;
   font-weight: 700 !important;
   line-height: 1.45 !important;
-  letter-spacing: .14em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   white-space: normal !important;
   overflow: visible !important;

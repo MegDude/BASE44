@@ -120,7 +120,7 @@ function DrawerPreview({ selected }) {
   return (
     <div className="p-4 space-y-3">
       <div>
-        <div className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">
+        <div className="text-primary mb-1 uppercase tracking-normalr text-[11px] font-bold uppercase tracking-normal">
           {selected._type}
         </div>
         <h2 className="text-xl font-bold text-foreground">{selected.name}</h2>
@@ -168,7 +168,7 @@ function DrawerFull({ selected }) {
     <div className="p-5 space-y-5 pb-20">
       {/* Header */}
       <div>
-        <div className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">
+        <div className="text-primary mb-1 uppercase tracking-normalr text-[11px] font-bold uppercase tracking-normal">
           {selected._type}
         </div>
         <h1 className="text-2xl font-bold text-foreground">{selected.name}</h1>

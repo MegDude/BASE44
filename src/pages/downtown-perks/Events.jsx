@@ -216,7 +216,7 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
           >
             <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-[#0B1F33]/8 bg-white/96 px-4 py-3 backdrop-blur-xl">
               <div className="min-w-0">
-                <div className="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B1F33]/50">Event details</div>
+                <div className="truncate text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">Event details</div>
               </div>
               <button
                 type="button"
@@ -233,17 +233,17 @@ function EventBottomDrawer({ event, open, onClose, rsvped, onToggleRsvp }) {
                 <div className="relative min-h-[220px] overflow-hidden rounded-[6px] border border-[#0B1F33]/8 bg-white">
                   <img src={event.image} alt={event.imageAlt} className="h-full min-h-[220px] w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F33]/46 via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-3 rounded-[2px] border border-white/18 bg-[#0B1F33]/42 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md">
+                  <span className="absolute bottom-3 left-3 rounded-[2px] border border-white/18 bg-[#0B1F33]/42 px-2.5 py-1 text-[10px] uppercase text-white backdrop-blur-md text-[11px] font-bold uppercase tracking-normal">
                     {event.imageLabel}
                   </span>
                 </div>
 
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={cn("rounded-[2px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]", categoryTone[event.category] || "border-[#0B1F33]/8 bg-white text-[#0B1F33]")}>
+                    <span className={cn("rounded-[2px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-normal", categoryTone[event.category] || "border-[#0B1F33]/8 bg-white text-[#0B1F33]")}>
                       {event.category}
                     </span>
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">
+                    <span className="text-[11px] uppercase text-[#0B1F33]/46 text-[11px] font-bold uppercase tracking-normal">
                       {formatMonthDay(event.date)} · {event.time.split("·").pop().trim()}
                     </span>
                   </div>
@@ -300,7 +300,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
     <div className="mt-4 rounded-[2px] border border-[#0B1F33]/8 bg-white p-3">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">Selected day</div>
+          <div className="text-[10px] uppercase text-[#0B1F33]/46 text-[11px] font-bold uppercase tracking-normal">Selected day</div>
           <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{formatWeekday(date)}</div>
         </div>
         <span className="rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1 text-[11px] font-medium text-[#0B1F33]/62">
@@ -321,7 +321,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
                   active ? "border-[#0B1F33]/18 bg-white shadow-[0_10px_24px_rgba(11,31,51,0.08)]" : "border-[#0B1F33]/8 bg-white/72"
                 )}
               >
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52">
+                <span className="text-[11px] uppercase text-[#0B1F33]/52 text-[11px] font-bold uppercase tracking-normal">
                   {event.time.split("·").pop().trim()}
                 </span>
                 <span className="min-w-0">
@@ -340,7 +340,7 @@ function DayAgenda({ date, eventsForDay, onSelectEvent, selectedEvent }) {
           <button
             type="button"
             onClick={() => setExpanded((current) => !current)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
+            className="flex w-full items-center justify-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
             aria-expanded={expanded}
           >
             {expanded ? (
@@ -379,7 +379,7 @@ function EventImagePanel({ event }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F33]/56 via-[#0B1F33]/14 to-transparent" />
         <figcaption className="absolute bottom-3 left-3 max-w-[min(78%,360px)] rounded-[2px] border border-white/18 bg-[#0B1F33]/38 p-2.5 text-white shadow-[0_10px_26px_rgba(11,31,51,0.16)] backdrop-blur-[8px]">
-          <div className="truncate text-[9px] font-semibold uppercase tracking-[0.14em] text-white/72">
+          <div className="truncate text-[9px] uppercase text-white/72 text-[11px] font-bold uppercase tracking-normal">
             {event.imageLabel}
           </div>
           <div className="mt-1 truncate font-heading text-xl font-medium leading-none tracking-normal">
@@ -423,7 +423,7 @@ function EventMapPanel({ events: mapEvents, selectedEvent, onSelectEvent }) {
       <div className="pointer-events-none absolute left-[32%] top-[10%] h-[72%] w-px rotate-[8deg] bg-[#0B1F33]/10" />
 
       <div className="absolute left-4 top-4 z-10 max-w-[15rem] bg-white/82 px-3 py-2 shadow-[0_12px_30px_rgba(11,31,51,0.055)] backdrop-blur-md">
-        <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#A98B4A]">Event map</div>
+        <div className="text-[10px] uppercase text-[#A98B4A] text-[11px] font-bold uppercase tracking-normal">Event map</div>
         <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/62">Tap a marker to open the full event details.</p>
       </div>
 
@@ -541,7 +541,7 @@ export default function Events() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
             <div className="max-w-3xl">
-              <span className="dp-label mb-4 block">Downtown Events</span>
+              <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Events</span>
               <h1 className="font-heading text-[52px] font-bold leading-[0.92] tracking-[-0.04em] md:text-[92px]">
                 Search less.
                 <br />
@@ -600,7 +600,7 @@ export default function Events() {
               <div className="border-b border-[#0B1F33]/8 bg-white p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#A98B4A]">Downtown Calendar</div>
+                    <div className="text-[11px] uppercase text-[#A98B4A] text-[11px] font-bold uppercase tracking-normal">Downtown Calendar</div>
                     <div className="mt-2 font-heading text-[28px] font-bold leading-[1] tracking-[-0.025em] text-[#0B1F33]">June events</div>
                     <div className="mt-2 text-[14px] leading-6 text-[#0B1F33]/62">Browse what’s coming up and open any event to save or RSVP.</div>
                   </div>
@@ -615,7 +615,7 @@ export default function Events() {
                       onClick={() => chooseCategory(category)}
                       aria-pressed={active}
                       className={cn(
-                        "inline-flex shrink-0 items-center gap-1.5 bg-transparent px-0 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/58 shadow-[inset_0_-1px_0_rgba(11,31,51,0.10)] transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]",
+                        "inline-flex shrink-0 items-center gap-1.5 bg-transparent px-0 py-1 text-[10px] font-semibold uppercase tracking-normal text-[#0B1F33]/58 shadow-[inset_0_-1px_0_rgba(11,31,51,0.10)] transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]",
                         active
                           ? "text-[#0B1F33] shadow-[inset_0_-2px_0_#A98B4A]"
                           : ""
@@ -667,14 +667,14 @@ export default function Events() {
                           <CalendarDays className="h-4 w-4 text-[#A98B4A]" />
                         </span>
                         <div className="min-w-0">
-                          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#A98B4A]">Event map</div>
+                          <div className="text-[11px] uppercase text-[#A98B4A] text-[11px] font-bold uppercase tracking-normal">Event map</div>
                           <div className="font-heading text-xl font-medium text-[#0B1F33]">Find something worth showing up for.</div>
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => setEventResultsCollapsed((current) => !current)}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-[2px] border border-[#0B1F33]/8 bg-white px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-normal text-[#0B1F33]/62 transition hover:border-[#0B1F33]/10 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A98B4A]"
                         aria-expanded={!eventResultsCollapsed}
                       >
                         {eventResultsCollapsed ? (

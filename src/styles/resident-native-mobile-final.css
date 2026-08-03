@@ -19,14 +19,14 @@
 
 .dp-resident-home__section { margin-top: 30px; }
 .dp-resident-section-title { display: flex; align-items: end; justify-content: space-between; margin-bottom: 13px; }
-.dp-resident-section-title p { margin: 0 0 3px; color: #c8a96a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.dp-resident-section-title p { margin: 0 0 3px; color: #c8a96a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: normal; }
 .dp-resident-section-title h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.02em; }
 
 .dp-resident-hero-card { position: relative; display: block; min-height: 330px; overflow: hidden; border-radius: 16px; background: #132238; color: white; text-decoration: none; }
 .dp-resident-hero-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 25%, rgba(11, 31, 51, .9) 100%); }
 .dp-resident-hero-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
 .dp-resident-hero-card > div { position: absolute; z-index: 1; right: 20px; bottom: 20px; left: 20px; }
-.dp-resident-hero-card span { color: #e0c98f; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.dp-resident-hero-card span { color: #e0c98f; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: normal; }
 .dp-resident-hero-card h3 { margin: 7px 0 5px; font-size: 27px; line-height: 1.08; letter-spacing: -.025em; }
 .dp-resident-hero-card p { max-width: 30ch; margin: 0 0 15px; color: rgba(255, 255, 255, .8); font-size: 15px; line-height: 1.45; }
 .dp-resident-hero-card strong { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; font-size: 15px; }

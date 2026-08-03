@@ -168,7 +168,7 @@ html body #root .dp-map-page :is(
   font-size: 11px !important;
   font-weight: 750 !important;
   line-height: 1.35 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.62) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
@@ -213,7 +213,7 @@ html body #root .dp-map-page :is(
   font-size: 18px !important;
   font-weight: 650 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page :is(
@@ -692,7 +692,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   font-size: 11px !important;
   font-weight: 750 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -757,7 +757,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   margin: 0 !important;
   font-size: 10px !important;
   line-height: 1.15 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 /* Compact district drawer finish: keep safe-area breathing room without a blank bottom block. */
@@ -1960,7 +1960,7 @@ html body #root .dp-map-page.dp-map-page .dp-route-mini-kicker {
   -webkit-text-fill-color: #C8A96A !important;
   font-size: 10px !important;
   font-weight: 740 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1.15 !important;
   text-overflow: ellipsis !important;
   text-transform: uppercase !important;
@@ -1990,7 +1990,7 @@ html body #root .dp-map-page.dp-map-page .dp-route-panel-control {
   -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-decoration: underline !important;
   text-decoration-thickness: 1px !important;
@@ -2022,7 +2022,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__description
   -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
   font-size: 13px !important;
   font-weight: 440 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.42 !important;
   overflow-wrap: anywhere !important;
 }
@@ -2081,7 +2081,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__actions > .
   -webkit-text-fill-color: #0B1F33 !important;
   font-size: 12px !important;
   font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.1 !important;
   text-align: center !important;
   text-decoration: none !important;
@@ -2159,7 +2159,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops butto
   -webkit-text-fill-color: inherit !important;
   font-size: 12px !important;
   font-weight: 660 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.16 !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -2665,7 +2665,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detai
   font-size: 34px !important;
   font-weight: 600 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detail-drawer :is(.dp-why-people-go, .dp-entity-dek, .dp-destination-section p) {
@@ -2684,7 +2684,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detai
   font-size: 11px !important;
   font-weight: 760 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.56) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.56) !important;
@@ -3229,7 +3229,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-status.dp-search-inte
   font-size: 12px !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-search-area-button {
@@ -3250,7 +3250,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-searc
   backdrop-filter: blur(18px) saturate(140%) !important;
   font-size: 13px !important;
   font-weight: 760 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-search-area-button:is(:hover, :focus-visible) {
@@ -3353,7 +3353,7 @@ html body #root .dp-map-page.dp-map-page :is(
   font-size: 15px !important;
   font-weight: 720 !important;
   line-height: 1.24 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page.dp-map-page :is(
@@ -3409,7 +3409,7 @@ html body #root .dp-map-page.dp-map-page :is(
   font-size: 11px !important;
   font-weight: 780 !important;
   line-height: 1 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -3449,7 +3449,7 @@ html body #root .dp-map-page.dp-map-page :is(
   font-size: 11px !important;
   font-weight: 780 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
 }
@@ -3597,7 +3597,7 @@ html body #root .dp-map-page.dp-map-page :is(
   font-size: 13px !important;
   font-weight: 740 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   white-space: nowrap !important;
   scroll-snap-align: start !important;
@@ -3917,7 +3917,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-colla
   font-size: 13px !important;
   font-weight: 720 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
 }
 
@@ -3951,7 +3951,7 @@ html body #root#root .dp-resident-card-signout {
   background: transparent;
   color: #0b1f33;
   font: 700 11px/1.2 Inter, ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: .08em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 html body #root#root .dp-resident-card-signout:is(:hover,:focus-visible) { color: #9a7a3e; }

@@ -46,7 +46,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root .dp-partn
   color: var(--dp-journey-gold) !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.045em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: none !important;
 }

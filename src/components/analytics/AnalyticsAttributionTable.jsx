@@ -45,7 +45,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
+        <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal mb-1">
           Source Attribution
         </h3>
         <p className="text-[13px] text-muted-foreground">

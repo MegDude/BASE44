@@ -174,7 +174,7 @@ function MapPreviewPanel({ activeCategory }) {
         animate={{ y: [0, -3, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease }}
       >
-        <div className="mb-2 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#BFA46A]">
+        <div className="mb-2 flex items-center gap-2 text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
           <Star className="h-3 w-3 fill-[#BFA46A]" />
           Saved place
         </div>
@@ -184,7 +184,7 @@ function MapPreviewPanel({ activeCategory }) {
 
       <div className="absolute bottom-5 left-5 right-5">
         <div className="max-w-md rounded-[6px] border border-[#0B1F33]/8 bg-white/92 p-4 shadow-[0_14px_34px_rgba(11,31,51,0.05)]">
-          <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#BFA46A]">5-minute walk</div>
+          <div className="mb-2 text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">5-minute walk</div>
           <div className="font-heading text-xl font-medium text-[#0B1F33]">Coffee, events, and perks nearby.</div>
           <p className="mt-2 text-[12px] leading-[1.6] text-[#0B1F33]/60">Open the map, tap what looks useful, and move through downtown faster.</p>
         </div>
@@ -207,7 +207,7 @@ function CategoryPanel({ category }) {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.35, ease }}
         >
-          <span className="dp-label mb-2 block text-[10px]">{category.eyebrow}</span>
+          <span className="dp-label mb-2 block text-[10px] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{category.eyebrow}</span>
           <h3 className="font-heading text-2xl font-medium leading-[1.08] tracking-normal text-[#0B1F33]">
             {category.headline}
           </h3>
@@ -229,7 +229,7 @@ function CategoryPanel({ category }) {
                   <span className={cn("h-2 w-2 rounded-[999px]", index === 0 ? "bg-[#BFA46A]" : "bg-[#0B1F33]/18")} />
                   {card}
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.16em] text-[#0B1F33]/38">
+                <span className="text-[10px] uppercase text-[#0B1F33]/38 text-[11px] font-bold uppercase tracking-normal">
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </motion.div>
@@ -271,7 +271,7 @@ function JourneyPanel() {
     >
       <SplitLayout className="items-start gap-5 md:grid-cols-[0.8fr_1.2fr]">
         <div>
-          <span className="dp-label mb-2 block">How It Works</span>
+          <span className="dp-label mb-2 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How It Works</span>
           <h3 className="font-heading text-2xl font-medium leading-tight text-[#0B1F33]">Decide quickly. Move easily.</h3>
           <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/64">
             Open the map, save something for later or head there now, then use your resident card when you arrive.
@@ -308,7 +308,7 @@ function JourneyPanel() {
               className="relative z-10 h-full"
             >
               <div className="mb-4 flex items-center justify-between">
-                <span className="dp-label">{step.label}</span>
+                <span className="dp-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{step.label}</span>
                 <span className="rounded-[6px] border border-[#BFA46A]/40 bg-[#0B1F33]/10 px-2.5 py-1 text-[11px] font-medium text-[#0B1F33]/70">
                   5 min walk
                 </span>
@@ -342,7 +342,7 @@ function JourneyPanel() {
                 {stepIndex === 2 && (
                   <motion.div className="relative max-w-[260px] rounded-[10px] border border-[#0B1F33]/10 bg-[#0B1F33] p-4 text-white shadow-[0_18px_46px_rgba(11,31,51,0.18)]" initial={{ y: 22 }} animate={{ y: 0 }} transition={{ duration: 0.45, ease }}>
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/58">Resident Card</span>
+                      <span className="text-[11px] uppercase text-white/58 text-[11px] font-bold uppercase tracking-normal">Resident Card</span>
                       <CreditCard className="h-4 w-4 text-[#BFA46A]" />
                     </div>
                     <div className="mt-8 font-heading text-xl font-medium">Perk confirmed</div>
@@ -363,7 +363,7 @@ function NearbyStrip() {
     <div className="border-t border-[#0B1F33]/8 pt-6">
       <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <span className="dp-label mb-2 block">What’s Around the Corner</span>
+          <span className="dp-label mb-2 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What’s Around the Corner</span>
           <p className="max-w-2xl text-[13px] leading-[1.65] text-[#0B1F33]/64">
             Everything you need, within walking distance. See what’s close, decide quickly, and go.
           </p>
@@ -392,7 +392,7 @@ export default function ResidentDiscoverySystem() {
     <SectionContainer>
       <SplitLayout className="mb-8 items-end">
         <RevealSection>
-          <span className="dp-label mb-4 block">Resident Experience</span>
+          <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Experience</span>
           <h2 className="font-heading text-3xl font-medium leading-[1.1] tracking-normal md:text-4xl">
             One map. Everything nearby.
           </h2>

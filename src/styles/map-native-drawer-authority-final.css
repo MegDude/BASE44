@@ -203,7 +203,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell :is(
   color: var(--dp-native-sheet-gold) !important;
   -webkit-text-fill-color: var(--dp-native-sheet-gold) !important;
   font: 700 10px/1.15 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -245,7 +245,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell :is(
   color: var(--dp-native-sheet-muted) !important;
   -webkit-text-fill-color: var(--dp-native-sheet-muted) !important;
   font: 450 13px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-resident-tab-panel-header > strong {
@@ -254,7 +254,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-drawer-shell .dp-resident-tab-p
   color: var(--dp-native-sheet-subtle) !important;
   -webkit-text-fill-color: var(--dp-native-sheet-subtle) !important;
   font: 650 11px/1.2 Inter, ui-sans-serif, system-ui, sans-serif !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

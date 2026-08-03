@@ -70,7 +70,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Amenity
         </label>
         <select
@@ -87,7 +87,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
       </div>
 
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Date
         </label>
         <input
@@ -101,7 +101,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Time
           </label>
           <input
@@ -113,7 +113,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
           />
         </div>
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Duration
           </label>
           <select

@@ -86,7 +86,7 @@ html body #root#root#root main.dp-campaigns-page .dp-campaigns-eyebrow {
   color: #667386 !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

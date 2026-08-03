@@ -171,7 +171,7 @@ export default function PropertiesPartner() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] font-medium text-[#E7C875] uppercase tracking-[0.16em] block mb-4">Property Partner Layer</span>
+              <span className="text-[11px] text-[#E7C875] uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">Property Partner Layer</span>
               <h1 className="dp-property-partner-hero-title font-body text-[31px] md:text-[38px] lg:text-[40px] font-semibold leading-[1.08] tracking-normal text-white mb-5">
                 Connect your building to what is happening around it.
               </h1>
@@ -190,7 +190,7 @@ export default function PropertiesPartner() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
               className="self-end border-l border-white/24 pl-5">
-              <span className="font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#E7C875]">Resident context</span>
+              <span className="font-body text-[11px] uppercase text-[#E7C875] text-[11px] font-bold uppercase tracking-normal">Resident context</span>
               <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.04] tracking-normal text-white md:text-[34px]">
                 Give residents a useful reason to open the map.
               </p>
@@ -207,7 +207,7 @@ export default function PropertiesPartner() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Property Map</span>
+              <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Property Map</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">See each building beside the places residents can reach easily.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select a building to see the nearby offers, events, and places that show up in the resident experience.</p>
@@ -385,7 +385,7 @@ function HowItWorks({ steps, proof }) {
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How it works</span>
+          <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">How it works</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">From building to the neighborhood around it.</h2>
         </motion.div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
@@ -421,7 +421,7 @@ function BuildingCards({ buildings, selectBuilding }) {
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live buildings</span>
+          <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Live buildings</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Buildings ready for the resident map.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -446,7 +446,7 @@ function BuildingCards({ buildings, selectBuilding }) {
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Good first placement</div>
+                <div className="text-[10px] text-muted-foreground/60 uppercase mb-1 text-[11px] font-bold uppercase tracking-normal">Good first placement</div>
                 <div className="text-[12px] text-foreground truncate">{b.top}</div>
               </div>
             </motion.div>
@@ -465,7 +465,7 @@ function PartnerForm({ headline, body, formText, setFormText, prompts }) {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Contact</span>
+            <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Contact</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
@@ -475,12 +475,12 @@ function PartnerForm({ headline, body, formText, setFormText, prompts }) {
             <div className="p-8 md:border-r border-border/40 space-y-4">
               {[["Organization / Building Name", "text"], ["Your Name & Role", "text"], ["Email", "email"], ["Phone", "tel"]].map(([label, type]) => (
                 <div key={label}>
-                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">{label}</label>
+                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">{label}</label>
                   <input type={type} className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
                 </div>
               ))}
               <div className="dp-partner-form-message">
-                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">What are you looking to do</label>
+                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">What are you looking to do</label>
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)}
                   placeholder="Tell us about your building and what you want to connect."
                   className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />

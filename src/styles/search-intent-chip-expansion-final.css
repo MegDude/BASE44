@@ -35,7 +35,7 @@ html body #root .dp-map-page .dp-search-intent-console button.dp-expanding-inten
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 13px !important;
   font-weight: 650 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-align: left !important;
   text-transform: none !important;
@@ -103,7 +103,7 @@ html body #root .dp-map-page .dp-search-intent-console .dp-expanding-intent-chip
   font-size: 13px !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -120,7 +120,7 @@ html body #root .dp-map-page .dp-search-intent-console .dp-expanding-intent-chip
   font-size: 11px !important;
   font-weight: 500 !important;
   line-height: 1.35 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   opacity: 0 !important;
   overflow: hidden !important;
   transform: translateY(-2px) !important;
@@ -157,7 +157,7 @@ html body #root .dp-map-page .dp-search-more-intent-panel__header {
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 12px !important;
   font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page .dp-search-more-intent-panel__header small {
@@ -212,7 +212,7 @@ html body #root .dp-map-page .dp-search-more-intent-panel__header small {
     font-size: 13px !important;
     font-weight: 650 !important;
     line-height: 1.2 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
   }
 
   html body #root .dp-map-page .dp-search-intent-description-strip__copy {
@@ -224,7 +224,7 @@ html body #root .dp-map-page .dp-search-more-intent-panel__header small {
     font-size: 11px !important;
     font-weight: 500 !important;
     line-height: 1.35 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     overflow: hidden !important;
   }
 }
@@ -281,7 +281,7 @@ html body #root .dp-map-page .dp-search-intent-console button.dp-expanding-inten
   font-size: 13px !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-map-page .dp-search-intent-console button.dp-expanding-intent-chip:not(#dp-chip-lock-1):not(#dp-chip-lock-2):not(#dp-chip-lock-3):not(#dp-chip-lock-4):not(#dp-chip-lock-5):not(#dp-chip-lock-6):not(#dp-chip-lock-7):not(#dp-chip-lock-8):not(#dp-chip-lock-9):not(#dp-chip-lock-10):not(#dp-chip-lock-11):not(#dp-chip-lock-12) .dp-expanding-intent-chip__description {
@@ -1001,7 +1001,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 12px !important;
   font-weight: 680 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.1 !important;
   text-align: left !important;
   text-transform: none !important;
@@ -1366,6 +1366,6 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   font-size: 13px !important;
   font-weight: 720 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
 }

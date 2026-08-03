@@ -26,7 +26,7 @@ export default function PerksPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <span className="text-primary text-[13px] font-medium uppercase tracking-widest">
+          <span className="text-primary text-[13px] uppercase tracking-normalst text-[11px] font-bold uppercase tracking-normal">
             Members Only
           </span>
           <h1 className="font-heading text-4xl md:text-4xl font-bold mt-2 mb-4">

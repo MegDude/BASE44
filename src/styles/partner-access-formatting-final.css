@@ -93,7 +93,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   font-size: 10px !important;
   font-weight: 760 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-title.dp-partner-access-title {
@@ -233,7 +233,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   font-size: 9px !important;
   font-weight: 760 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card strong {
@@ -363,7 +363,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   .dp-partner-access-label,
   .dp-partner-type-card span
 ) {
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid.dp-partner-type-grid {
@@ -406,7 +406,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card strong {
   font-size: 13.5px !important;
   font-weight: 720 !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-type-card.dp-partner-type-card small {
@@ -421,7 +421,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   background: transparent !important;
   box-shadow: none !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 @media (max-width: 639px) {
@@ -461,7 +461,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow.dp-partner-access-eyebrow,
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-action.dp-partner-access-action {
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 @media (max-width: 359px) {
@@ -500,7 +500,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   .dp-partner-type-card span,
   .dp-partner-access-action
 ) {
-  letter-spacing: 0.01em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-back-button.dp-partner-back-button {
@@ -745,7 +745,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action,
 html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page.dp-partner-access-page .dp-partner-access-actions.dp-partner-access-actions .dp-partner-access-action.dp-partner-access-action:last-child {
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 /* Final alignment and spacing lock. */

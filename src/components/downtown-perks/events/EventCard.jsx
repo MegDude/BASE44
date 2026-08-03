@@ -33,7 +33,7 @@ export default function EventCard({ event }) {
       )}
 
       <div className="p-5">
-        <span className="text-primary text-xs font-medium uppercase tracking-wider capitalize">
+        <span className="text-primary uppercase tracking-normalr capitalize text-[11px] font-bold uppercase tracking-normal">
           {event.category?.replace("_", " ")}
         </span>
         <h3 className="font-heading text-lg font-bold mt-1 mb-2 group-hover:text-primary transition-colors">

@@ -11,7 +11,7 @@
 .dp-resident-signin-header a:first-child span { width: 10px; height: 10px; border-radius: 50%; background: #C8A96A; }
 .dp-resident-signin-header svg { width: 16px; height: 16px; }
 .dp-resident-signin-content { padding: clamp(48px, 10vh, 88px) 0; }
-.dp-resident-signin-eyebrow { margin: 0; color: #9A7B42; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.dp-resident-signin-eyebrow { margin: 0; color: #9A7B42; font-size: 12px; font-weight: 700; letter-spacing: normal; text-transform: uppercase; }
 .dp-resident-signin-content h1 { max-width: 10ch; margin: 16px 0 0; font-size: clamp(44px, 12vw, 56px); line-height: .98; letter-spacing: -.045em; font-weight: 650; }
 .dp-resident-signin-content > p:not(.dp-resident-signin-eyebrow):not(.dp-resident-signin-note) { max-width: 36ch; margin: 22px 0 0; color: #526075; font-size: 16px; line-height: 1.7; }
 .dp-resident-signin-content form { margin-top: 36px; }

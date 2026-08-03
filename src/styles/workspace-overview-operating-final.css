@@ -41,7 +41,7 @@ html body #root .dp-partner-workspace-eyebrow {
   color: #667386 !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -137,7 +137,7 @@ html body #root .dp-workspace-nav-group > p {
   color: #8a94a3 !important;
   font-size: 10px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -185,7 +185,7 @@ html body #root .dp-workspace-eyebrow {
   color: #667386 !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -921,7 +921,7 @@ html body #root .dp-experience-metric-grid span {
   color: #8a94a3 !important;
   font-size: 10px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

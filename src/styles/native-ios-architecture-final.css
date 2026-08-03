@@ -233,7 +233,7 @@ html body #root#root#root#root#root#root#root#root#root#root :where(button, .dp-
   border-radius: var(--dp-radius-button) !important;
   font-size: 13px !important;
   font-weight: 600 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   transition-duration: var(--dp-motion-duration) !important;
   transition-property: color, background-color, border-color, box-shadow, opacity, transform !important;
@@ -376,7 +376,7 @@ html body #root#root#root#root#root#root#root#root#root#root .dp-map-page :is(.d
   color: var(--dp-muted) !important;
   font-size: var(--dp-type-meta) !important;
   font-weight: 600 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -495,7 +495,7 @@ html body #root#root#root#root#root#root#root#root#root#root :is(.dp-workspace-e
   color: var(--dp-muted) !important;
   font-size: var(--dp-type-meta) !important;
   font-weight: 600 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -1076,7 +1076,7 @@ html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspa
 html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-eyebrow, .dp-workspace-analytics-kicker, .dp-workspace-report-label) {
   color: var(--dp-muted) !important;
   font-size: 11px !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 

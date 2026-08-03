@@ -443,7 +443,7 @@ export default function CampaignsPage() {
         <div className="dp-campaign-plan-main">
           <section className="dp-campaign-plan-header" aria-label="Campaign header">
             <div>
-              <p className="dp-campaigns-eyebrow">Campaigns</p>
+              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaigns</p>
               <h1>{campaignName}</h1>
               <p className="dp-campaign-plan-intro">Choose the goal, connect it to a real map context, and send one clear brief for setup.</p>
             </div>
@@ -459,7 +459,7 @@ export default function CampaignsPage() {
 
           <section className="dp-campaign-type-selector" aria-labelledby="campaign-type-heading">
             <div>
-              <p className="dp-campaigns-eyebrow">Choose a campaign type</p>
+              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Choose a campaign type</p>
               <h2 id="campaign-type-heading">What do you want people to do?</h2>
               <p>Select one option. The audience, map context, and brief fields update together.</p>
             </div>
@@ -499,7 +499,7 @@ export default function CampaignsPage() {
         <aside className="dp-campaign-live-preview dp-campaign-real-panel" aria-label="Campaign data panel">
           <div className="dp-campaign-preview-head">
             <div>
-              <p className="dp-campaigns-eyebrow">Map layer</p>
+              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Map layer</p>
               <h2>Where this could work</h2>
             </div>
             <Link to={mapHref}><MapPin size={14} /> Open map</Link>
@@ -559,7 +559,7 @@ export default function CampaignsPage() {
 
           <section className="dp-campaigns-section dp-campaign-daa-layer" aria-label="DAA civic campaign layer">
             <div>
-              <p className="dp-campaigns-eyebrow">Civic layer</p>
+              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic layer</p>
               <h2>{daaCampaignStrategy.title}</h2>
               <p>{daaCampaignStrategy.use}</p>
             </div>
@@ -578,7 +578,7 @@ export default function CampaignsPage() {
 
           <section id="launch-campaign" className="dp-campaigns-section dp-launch-section dp-campaign-next-step">
             <div>
-              <p className="dp-campaigns-eyebrow">Brief</p>
+              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Brief</p>
               <h2>{routeContext.isCivic ? "Send the programme brief." : "Send the campaign brief."}</h2>
               <p>{routeContext.isCivic ? "Confirm the programme focus, timing, and call to action before scheduling publication." : "Confirm the goal, placement, and primary action before scheduling."}</p>
               {draftSummary && <small>{draftSummary}</small>}

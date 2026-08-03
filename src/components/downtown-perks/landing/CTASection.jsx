@@ -17,7 +17,7 @@ export default function CTASection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] text-primary/70 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
               Your Neighborhood
             </span>
             <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal">

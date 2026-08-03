@@ -66,7 +66,7 @@ export function NotificationDemoPanel({ items }) {
     <div className="rounded-xl border border-border/60 bg-card/60 p-5 space-y-2.5">
       <div className="flex items-center gap-2 mb-4 pb-4 border-b border-border/40">
         <Bell className="w-3.5 h-3.5 text-primary/60" />
-        <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">
+        <span className="text-[11px] text-muted-foreground uppercase text-[11px] font-bold uppercase tracking-normal">
           Live Member Feed
         </span>
       </div>

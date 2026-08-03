@@ -102,7 +102,7 @@ function PartnerPageShell({ children }) {
 
 function Eyebrow({ children }) {
   return (
-    <p className="m-0 font-body text-[11px] font-bold uppercase tracking-[0.12em] text-[#BFA46A]">
+    <p className="m-0 font-body text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
       {children}
     </p>
   );

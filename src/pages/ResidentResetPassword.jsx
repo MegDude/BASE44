@@ -102,7 +102,7 @@ export default function ResidentResetPassword() {
           <Link to="/residents/login"><ArrowLeft aria-hidden="true" />Sign in</Link>
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-reset-title">
-          <p className="dp-resident-signin-eyebrow">Resident access</p>
+          <p className="dp-resident-signin-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident access</p>
           <h1 id="resident-reset-title">Set a new password.</h1>
           <p>Use the secure link from your email to update your Downtown Perks password.</p>
           {state.status === "complete" ? <p className="dp-resident-signin-status is-success" role="status"><Check aria-hidden="true" />{state.message}</p> : (

@@ -110,7 +110,7 @@ function ContactForm({ form }) {
     <div className="space-y-3">
       {form.fields.map((f) => (
         <div key={f.name}>
-          <label className="block text-[11px] font-medium text-foreground/50 uppercase tracking-[0.1em] mb-1.5">
+          <label className="block text-[11px] font-medium text-foreground/50 uppercase tracking-normal mb-1.5">
             {f.label}
           </label>
           <input
@@ -146,7 +146,7 @@ export default function ContactSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-[11px] text-primary/80 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
               Contact Downtown Perks
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
@@ -207,7 +207,7 @@ export default function ContactSection() {
             {/* Sidebar */}
             <div className="p-8 bg-white flex flex-col justify-between">
               <div>
-                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-4">
+                <div className="text-[11px] text-foreground/50 uppercase mb-4 text-[11px] font-bold uppercase tracking-normal">
                   Also Available
                 </div>
                 <div className="space-y-2">

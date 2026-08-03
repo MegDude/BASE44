@@ -70,7 +70,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="mb-5 flex items-center gap-2"
         >
-          <span className="dp-resident-hero-kicker text-[11px] font-medium uppercase tracking-[0.22em] text-[#0B1F33]">
+          <span className="dp-resident-hero-kicker text-[11px] uppercase text-[#0B1F33] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Built for residents
           </span>
         </motion.div>
@@ -142,7 +142,7 @@ export default function HeroSection() {
                         onClick={() => handlePromptClick(item.fill)}
                         className="group w-full px-4 py-2.5 text-left transition-colors hover:bg-white"
                       >
-                        <div className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary/80 transition-colors group-hover:text-primary">
+                        <div className="mb-0.5 text-[11px] uppercase text-primary/80 transition-colors group-hover:text-primary text-[11px] font-bold uppercase tracking-normal">
                           {item.q}
                         </div>
                         <div className="text-[12px] leading-relaxed text-foreground/60">{item.a}</div>
@@ -152,7 +152,7 @@ export default function HeroSection() {
                     <button
                       type="button"
                       onClick={() => setIntentExpanded(false)}
-                      className="flex w-full items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52 transition-colors hover:text-[#0B1F33]"
+                      className="flex w-full items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/52 transition-colors hover:text-[#0B1F33]"
                     >
                       <ChevronUp className="h-3.5 w-3.5" />
                       Roll up
@@ -173,7 +173,7 @@ export default function HeroSection() {
                     key={chip.label}
                     type="button"
                     onClick={() => setActiveChip(chip.label)}
-                    className={`inline-flex h-9 items-center gap-2 border px-3.5 text-xs font-semibold tracking-[0.01em] transition-all ${
+                    className={`inline-flex h-9 items-center gap-2 border px-3.5 text-xs font-semibold tracking-normal transition-all ${
                       isActive
                         ? "border-[#BFA46A]/45 bg-[#0B1F33]/12 text-[#0B1F33]"
                         : "border-white/70 bg-white/76 text-foreground/70 backdrop-blur-sm hover:border-primary/25 hover:bg-white hover:text-foreground"

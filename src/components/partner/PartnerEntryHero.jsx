@@ -15,7 +15,7 @@ export default function PartnerEntryHero() {
           transition={{ duration: 0.8 }}
           className="max-w-3xl"
         >
-          <div className="text-[12px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-6">
+          <div className="text-[12px] uppercase text-[#0B1F33]/50 mb-6 text-[11px] font-bold uppercase tracking-normal">
             Partner Program
           </div>
 

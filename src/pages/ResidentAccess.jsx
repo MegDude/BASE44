@@ -232,7 +232,7 @@ export default function ResidentAccess() {
       <div className="dp-resident-access-editorial">
         <section className="dp-resident-access-hero" aria-labelledby="resident-access-title">
           <div className="dp-resident-access-copy">
-            <p className="dp-resident-access-eyebrow">Resident Card</p>
+            <p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Card</p>
             <h1 id="resident-access-title">Your resident card for downtown.</h1>
             <p>Verify your building to activate the card and see eligible perks. If your building is not participating yet, choose individual access for $25 a year.</p>
             <div className="dp-resident-access-includes" aria-label="Included with resident access">
@@ -246,7 +246,7 @@ export default function ResidentAccess() {
           </div>
           <section className="dp-resident-card-preview" aria-label="Downtown Perks resident card preview">
             <div className="dp-resident-card-preview-head">
-              <div><p className="dp-resident-access-eyebrow">Current status</p><strong>{visibleCard ? "Resident access ready" : "Ready to activate"}</strong></div>
+              <div><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Current status</p><strong>{visibleCard ? "Resident access ready" : "Ready to activate"}</strong></div>
               <Sparkles aria-hidden="true" />
             </div>
             <div className="dp-resident-card-preview-qr">
@@ -258,31 +258,31 @@ export default function ResidentAccess() {
         </section>
 
         <section className="dp-resident-editorial-section" aria-labelledby="benefits-title">
-          <header><p className="dp-resident-access-eyebrow">What you can do</p><h2 id="benefits-title">Keep downtown within reach.</h2><p>Use the card with the map to find eligible perks, save places, and see what is happening nearby.</p></header>
+          <header><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What you can do</p><h2 id="benefits-title">Keep downtown within reach.</h2><p>Use the card with the map to find eligible perks, save places, and see what is happening nearby.</p></header>
           <div className="dp-resident-benefit-list">
             {BENEFITS.map(({ title, body, icon: Icon, href }) => <a key={title} href={href}><Icon aria-hidden="true" /><span><strong>{title}</strong><small>{body}</small></span><ArrowRight aria-hidden="true" /></a>)}
           </div>
         </section>
 
         <section id="how-it-works" className="dp-resident-editorial-section" aria-labelledby="process-title">
-          <header><p className="dp-resident-access-eyebrow">How it works</p><h2 id="process-title">Use it in four steps.</h2><p>Open the card, show the QR, confirm the perk, and continue with the available benefit.</p></header>
+          <header><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p><h2 id="process-title">Use it in four steps.</h2><p>Open the card, show the QR, confirm the perk, and continue with the available benefit.</p></header>
           <ol className="dp-resident-process-list">
             {PROCESS.map(([number, title, body]) => <li key={number}><span>{number}</span><div><strong>{title}</strong><p>{body}</p></div></li>)}
           </ol>
         </section>
 
         <section className="dp-resident-editorial-section" aria-labelledby="places-title">
-          <header><p className="dp-resident-access-eyebrow">Start nearby</p><h2 id="places-title">A few places to explore.</h2><p>Open a place on the resident map to see what is nearby and whether a card benefit is available.</p></header>
+          <header><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Start nearby</p><h2 id="places-title">A few places to explore.</h2><p>Open a place on the resident map to see what is nearby and whether a card benefit is available.</p></header>
           <div className="dp-resident-place-grid">
-            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Open place <ArrowRight aria-hidden="true" /></a></article>)}
+            {PLACES.map((place) => <article key={place.name}><img src={place.image} alt={`${place.name} in downtown Austin`} /><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{place.title}</p><h3>{place.name}</h3><p>{place.body}</p><a href={place.href}>Open place <ArrowRight aria-hidden="true" /></a></article>)}
           </div>
         </section>
 
         <form id="resident-card-access" className="dp-resident-access-panel" onSubmit={handleSubmit}>
-          <header className="dp-resident-access-form-header"><p className="dp-resident-access-eyebrow">Resident access</p><h2>Choose how to activate.</h2><p>Start with building verification. If your building is not participating yet, you can continue with individual access.</p></header>
+          <header className="dp-resident-access-form-header"><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident access</p><h2>Choose how to activate.</h2><p>Start with building verification. If your building is not participating yet, you can continue with individual access.</p></header>
           <div className="dp-resident-access-plan">
             <div>
-              <p className="dp-resident-access-eyebrow">{isBuildingPath ? "Building access" : "Individual access"}</p>
+              <p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isBuildingPath ? "Building access" : "Individual access"}</p>
               <h2>{isBuildingPath ? "Included" : "$25 / year"}</h2>
               <span>{isBuildingPath ? "Available when your building participates in Downtown Perks." : "Use the card even when your building is not participating yet."}</span>
             </div>
@@ -376,7 +376,7 @@ export default function ResidentAccess() {
           {visibleCard ? (
             <section className="dp-resident-access-card" aria-label="Your Downtown Perks QR card">
               <div className="dp-resident-access-card-copy">
-                <p className="dp-resident-access-eyebrow">Your QR Card</p>
+                <p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Your QR Card</p>
                 <h3>{residentCard.fullName || "Resident access"}</h3>
                 <p>Show this code when a partner needs to scan your Downtown Perks Card.</p>
               </div>
@@ -410,14 +410,14 @@ export default function ResidentAccess() {
         </form>
 
         <section className="dp-resident-editorial-section dp-resident-faq" aria-labelledby="faq-title">
-          <header><p className="dp-resident-access-eyebrow">Before you activate</p><h2 id="faq-title">Resident card questions.</h2><p>What to expect from building verification, individual access, and partner scans.</p></header>
+          <header><p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Before you activate</p><h2 id="faq-title">Resident card questions.</h2><p>What to expect from building verification, individual access, and partner scans.</p></header>
           <details><summary>How does building verification work?<ChevronDown aria-hidden="true" /></summary><p>Choose your building and provide your unit details. Active buildings may verify immediately; other requests move into review.</p></details>
           <details><summary>What happens when my building is not active?<ChevronDown aria-hidden="true" /></summary><p>You can continue with individual Perks Card access for $25 per year.</p></details>
           <details><summary>What does a partner see when scanning?<ChevronDown aria-hidden="true" /></summary><p>The QR confirms the card identifier and current access context needed for the participating benefit.</p></details>
         </section>
 
         <section className="dp-resident-card-final-cta" aria-label="Resident card call to action">
-          <p className="dp-resident-access-eyebrow">Resident Card</p><h2>{visibleCard ? "Your card is ready." : "Start with your building."}</h2><p>{visibleCard ? "Open your QR card or return to the resident map." : "Verify where you live to see whether resident access is already included."}</p>
+          <p className="dp-resident-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Card</p><h2>{visibleCard ? "Your card is ready." : "Start with your building."}</h2><p>{visibleCard ? "Open your QR card or return to the resident map." : "Verify where you live to see whether resident access is already included."}</p>
           <div className="dp-resident-access-hero-actions"><a href={primaryCardHref} className="is-primary">{visibleCard ? "Open my card" : "Verify my building"}</a><a href={APP_HREF}>Explore perks</a></div>
         </section>
         <footer className="dp-resident-access-footer"><span>Downtown Perks</span><nav aria-label="Resident card footer"><a href={APP_HREF}>Map</a><a href="#benefits-title">Benefits</a><a href="#faq-title">Support</a></nav></footer>

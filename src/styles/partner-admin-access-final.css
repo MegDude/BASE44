@@ -12,7 +12,7 @@ html body #root#root .dp-partner-access-page .dp-admin-workspace-access>p:not(.d
 }
 html body #root#root .dp-partner-access-page .dp-admin-workspace-search { display:grid!important;gap:7px!important; }
 html body #root#root .dp-partner-access-page .dp-admin-workspace-search>span {
-  color:#5f6e7b!important;font-size:10px!important;font-weight:700!important;letter-spacing:.08em!important;text-transform:uppercase!important;
+  color:#5f6e7b!important;font-size:10px!important;font-weight:700!important;letter-spacing: normal!important;text-transform:uppercase!important;
 }
 html body #root#root .dp-partner-access-page .dp-admin-workspace-search input {
   width:100%!important;min-height:46px!important;padding:0 13px!important;border:1px solid rgba(11,31,51,.12)!important;
