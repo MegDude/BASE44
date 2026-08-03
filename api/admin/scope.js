@@ -8,10 +8,16 @@ import {
 const ADMIN_ROLES = new Set(["admin", "platform_admin", "super_admin"]);
 const clean = (value, max = 180) => String(value || "").trim().slice(0, max);
 
-function platformRole(user) {
-  const app = user?.app_metadata || {};
-  if (app.is_super_admin === true) return "super_admin";
-  return clean(app.platform_role || app.role || user?.user_metadata?.platform_role || user?.user_metadata?.role, 80).toLowerCase();
+async function activePlatformRole(database, userId) {
+  const { data: profile, error } = await database
+    .from("platform_profiles")
+    .select("platform_role,is_super_admin,is_active")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) throw error;
+  if (profile?.is_active !== true) return "";
+  if (profile.is_super_admin === true) return "super_admin";
+  return clean(profile.platform_role, 80).toLowerCase();
 }
 
 export default async function handler(req, res) {
@@ -20,8 +26,8 @@ export default async function handler(req, res) {
   try {
     const database = requireTransactionDatabase();
     const user = await requireAuthenticatedUser(req);
-    const role = platformRole(user);
-    if (!ADMIN_ROLES.has(role)) throw new TransactionApiError(403, "ADMIN_ACCESS_REQUIRED", "Administrator access is required.");
+    const role = await activePlatformRole(database, user.id);
+    if (!ADMIN_ROLES.has(role)) throw new TransactionApiError(403, "ADMIN_ACCESS_REQUIRED", "An active administrator profile is required.");
 
     let organizationQuery = database.from("partner_organizations").select("id,name,external_id,status,legacy_partner_id").order("name");
     if (role !== "super_admin") {

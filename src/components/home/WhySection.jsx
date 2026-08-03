@@ -45,7 +45,7 @@ export default function WhySection() {
           transition={{ duration: 0.7 }}
           className="mb-10 max-w-3xl"
         >
-          <span className="text-[11px] text-primary/80 uppercase block mb-5 text-[11px] font-bold uppercase tracking-normal">
+          <span className="text-primary/80 block mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Two clear paths
           </span>
           <h2 className="font-heading text-3xl md:text-[40px] font-medium leading-[1.08] tracking-normal mb-4 text-foreground">
@@ -71,7 +71,7 @@ export default function WhySection() {
                 <div className="mb-5 flex h-10 w-10 items-center justify-center border border-primary/15 bg-white text-primary">
                   <Icon className="h-4 w-4" />
                 </div>
-                <span className="text-[11px] text-primary/75 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+                <span className="text-primary/75 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   {section.label}
                 </span>
                 <h3 className="font-heading text-2xl md:text-[30px] font-medium leading-[1.08] tracking-normal text-foreground">

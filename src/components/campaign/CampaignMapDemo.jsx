@@ -25,7 +25,7 @@ export default function CampaignMapDemo({
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-8">
-          <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Map preview</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Map preview</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">How it appears on the map</h2>
         </motion.div>
 

@@ -111,7 +111,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {/* Description */}
           {entity.description && (
             <div>
-              <p className="text-[12px] uppercase text-[#0B1F33]/44 mb-1.5 text-[11px] font-bold uppercase tracking-normal">About</p>
+              <p className="text-[#0B1F33]/44 mb-1.5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">About</p>
               <p className="text-[13.5px] text-[#0B1F33]/72 leading-relaxed line-clamp-3">{entity.description}</p>
             </div>
           )}
@@ -137,7 +137,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {/* Perk highlight */}
           {entity.perk_description && (
             <div className="rounded-[8px] border border-[rgba(191,164,106,0.2)] bg-[rgba(191,164,106,0.06)] p-3.5">
-              <p className="text-[10.5px] uppercase text-[#BFA46A] mb-1.5 text-[11px] font-bold uppercase tracking-normal">Member perk</p>
+              <p className="text-[#BFA46A] mb-1.5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Member perk</p>
               <p className="text-[13px] font-medium text-[#0B1F33]">{entity.perk_description}</p>
               {entity.perk_value && <p className="text-[17px] font-bold text-[#0B1F33] mt-1 tracking-tight">{entity.perk_value}</p>}
             </div>

@@ -28,9 +28,14 @@ for (const file of await walk(root)) {
     continue;
   }
   assert.doesNotMatch(source, forbiddenTracking, `Non-eyebrow expanded tracking is forbidden: ${file}`);
+  for (const classMatch of source.matchAll(/className=["']([^"']+)["']/g)) {
+    const tokens = classMatch[1].split(/\s+/).filter(Boolean);
+    assert.equal(tokens.length, new Set(tokens).size, `Duplicate static utility found: ${file}`);
+  }
   for (const match of source.matchAll(semanticPattern)) {
     eyebrowCount += 1;
     assert.ok(match[0].includes(canonical), `Eyebrow is missing the canonical utilities: ${file}`);
+    assert.equal((match[0].match(/tracking-\[0\.15em\]/g) || []).length, 1, `Eyebrow tracking must occur exactly once: ${file}`);
   }
 }
 

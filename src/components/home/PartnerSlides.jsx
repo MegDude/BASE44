@@ -115,7 +115,7 @@ export default function PartnerSlides() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] text-primary/80 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary/80 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Turn Residents Into Regulars
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
@@ -179,7 +179,7 @@ export default function PartnerSlides() {
               <p className="text-[13px] text-foreground/60 leading-relaxed mb-8">{slide.body}</p>
 
               <div className="border-t border-[#0B1F33]/8 pt-6">
-                <div className="text-[11px] text-foreground/50 uppercase mb-1 text-[11px] font-bold uppercase tracking-normal">
+                <div className="text-foreground/50 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   Pricing
                 </div>
                 <div className="font-heading font-medium text-foreground text-[13px] mb-1">{slide.pricing}</div>
@@ -195,7 +195,7 @@ export default function PartnerSlides() {
 
             {/* Right — what's included */}
             <div className="p-8 bg-white">
-              <div className="text-[11px] text-foreground/50 uppercase mb-5 text-[11px] font-bold uppercase tracking-normal">
+              <div className="text-foreground/50 mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 What's Included
               </div>
               <ul className="space-y-3">
@@ -208,7 +208,7 @@ export default function PartnerSlides() {
               </ul>
 
               <div className="mt-8 pt-6 border-t border-[#0B1F33]/8">
-                <div className="text-[11px] text-foreground/50 uppercase mb-3 text-[11px] font-bold uppercase tracking-normal">
+                <div className="text-foreground/50 mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   How It Works
                 </div>
                 {["Launch", "Measure", "Decide"].map((step, i) => (

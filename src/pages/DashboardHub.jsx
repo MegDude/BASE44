@@ -36,7 +36,7 @@ export default function DashboardHub() {
     <div className="min-h-screen bg-white pt-[68px] text-[#0B1F33]">
       <section className="border-b border-[#0B1F33]/8 px-5 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
-          <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+          <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Dashboard
           </p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -73,7 +73,7 @@ export default function DashboardHub() {
                 </div>
 
                 <div>
-                  <p className="text-[11px] uppercase text-[#425466]/72 text-[11px] font-bold uppercase tracking-normal">
+                  <p className="text-[#425466]/72 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                     {option.eyebrow}
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold tracking-normal">{option.title}</h2>
@@ -99,7 +99,7 @@ export default function DashboardHub() {
         <div className="mx-auto max-w-6xl border-t border-[#0B1F33]/8 pt-10">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+              <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 Shared system
               </p>
               <h2 className="mt-4 text-4xl font-semibold tracking-normal">

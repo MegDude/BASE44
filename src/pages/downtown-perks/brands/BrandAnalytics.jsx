@@ -81,7 +81,7 @@ function CampaignAnalyticsSnapshot({ analytics }) {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Campaign performance</p>
+          <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign performance</p>
           <h2 className="mt-1 text-[18px] font-semibold leading-tight text-[#0B1F33]">Live activity snapshot</h2>
         </div>
         <div className="text-[12px] leading-5 text-[#0B1F33]/62 sm:max-w-[250px]">
@@ -203,7 +203,7 @@ export default function BrandAnalytics() {
               <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
               Campaign Formats
             </Link>
-            <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Campaign Proof Layer</span>
+            <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign Proof Layer</span>
             <h1 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">
               See what downtown campaign behavior is actually converting.
             </h1>
@@ -543,7 +543,7 @@ export default function BrandAnalytics() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Ready to Invest</span>
+              <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Ready to Invest</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal mb-3">
                 Plan your next campaign.
               </h2>

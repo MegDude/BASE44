@@ -171,7 +171,7 @@ export default function PropertiesPartner() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] text-[#E7C875] uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">Property Partner Layer</span>
+              <span className="text-[#E7C875] block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Property Partner Layer</span>
               <h1 className="dp-property-partner-hero-title font-body text-[31px] md:text-[38px] lg:text-[40px] font-semibold leading-[1.08] tracking-normal text-white mb-5">
                 Connect your building to what is happening around it.
               </h1>
@@ -179,7 +179,7 @@ export default function PropertiesPartner() {
                 Residents get a working map of nearby places, offers, and events. Your team gets a clearer picture of how they use the surrounding neighborhood.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-white text-[#0B1F33] font-medium text-[13px] hover:bg-white/90 transition-all ">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-white text-[#0B1F33] font-medium text-[13px] hover:bg-white/90 transition-all">
                   Activate your building <ArrowRight className="w-4 h-4" />
                 </a>
                 <a href="#property-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-white/32 text-white/80 font-medium text-[13px] hover:text-white transition-all">
@@ -190,7 +190,7 @@ export default function PropertiesPartner() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }}
               className="self-end border-l border-white/24 pl-5">
-              <span className="font-body text-[11px] uppercase text-[#E7C875] text-[11px] font-bold uppercase tracking-normal">Resident context</span>
+              <span className="font-body text-[#E7C875] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident context</span>
               <p className="mt-4 max-w-md font-heading text-[28px] font-bold leading-[1.04] tracking-normal text-white md:text-[34px]">
                 Give residents a useful reason to open the map.
               </p>
@@ -207,7 +207,7 @@ export default function PropertiesPartner() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
-              <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Property Map</span>
+              <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Property Map</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">See each building beside the places residents can reach easily.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select a building to see the nearby offers, events, and places that show up in the resident experience.</p>
@@ -385,7 +385,7 @@ function HowItWorks({ steps, proof }) {
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
-          <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">How it works</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">From building to the neighborhood around it.</h2>
         </motion.div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
@@ -421,7 +421,7 @@ function BuildingCards({ buildings, selectBuilding }) {
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Live buildings</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Live buildings</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Buildings ready for the resident map.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -446,7 +446,7 @@ function BuildingCards({ buildings, selectBuilding }) {
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase mb-1 text-[11px] font-bold uppercase tracking-normal">Good first placement</div>
+                <div className="text-muted-foreground/60 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Good first placement</div>
                 <div className="text-[12px] text-foreground truncate">{b.top}</div>
               </div>
             </motion.div>
@@ -465,7 +465,7 @@ function PartnerForm({ headline, body, formText, setFormText, prompts }) {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
-            <span className="text-[11px] text-primary/70 uppercase block mb-3 text-[11px] font-bold uppercase tracking-normal">Contact</span>
+            <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Contact</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>

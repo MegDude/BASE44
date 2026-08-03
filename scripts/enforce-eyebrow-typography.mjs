@@ -5,8 +5,8 @@ const root = path.resolve("src");
 const codeExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 const eyebrowTokens = ["eyebrow", "kicker", "overline", "section-label", "section-kicker", "panel-label", "workspace-label", "access-label", "dp-label"];
 const expandedTracking = /\btracking-(?:wide|wider|widest|\[(?!(?:-)|0\.15em\])[^\]]+\])/g;
-const sizeUtility = /\btext-(?:xs|sm|base|lg|xl|\d+xl|\[(?:\d+(?:\.\d+)?)(?:px|rem|em)\])\b/g;
-const weightUtility = /\bfont-(?:thin|extralight|light|normal|medium|semibold|bold|extrabold|black)\b/g;
+const sizeUtility = /\btext-(?:xs|sm|base|lg|xl|\d+xl|\[(?:\d+(?:\.\d+)?)(?:px|rem|em)\])(?=\s|$)/g;
+const weightUtility = /\bfont-(?:thin|extralight|light|normal|medium|semibold|bold|extrabold|black)(?=\s|$)/g;
 
 async function filesUnder(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -18,15 +18,10 @@ async function filesUnder(directory) {
 }
 
 function cleanClasses(value) {
-  return value.replace(/\s+/g, " ").trim();
+  return [...new Set(value.split(/\s+/).filter(Boolean))].join(" ");
 }
 
 function standardizeOpeningTag(match, tag, before, quote, classes, after) {
-  if (!expandedTracking.test(classes)) {
-    expandedTracking.lastIndex = 0;
-    const semantic = eyebrowTokens.some((token) => classes.toLowerCase().includes(token)) || classes.includes("tracking-[0.15em]");
-    if (!semantic) return match;
-  }
   expandedTracking.lastIndex = 0;
   const semantic = eyebrowTokens.some((token) => classes.toLowerCase().includes(token)) || classes.includes("tracking-[0.15em]");
   const microLabel = /\buppercase\b/.test(classes) && /^(p|span|div|small)$/i.test(tag);
@@ -36,9 +31,12 @@ function standardizeOpeningTag(match, tag, before, quote, classes, after) {
     next = next
       .replace(sizeUtility, "")
       .replace(weightUtility, "")
+      .replace(/\bdp-eyebrow\b/g, "")
+      .replace(/\buppercase\b/g, "")
       .replace(/\bnormal-case\b/g, "")
       .replace(/\blowercase\b/g, "")
-      .replace(/\btracking-normal\b/g, "");
+      .replace(/\btracking-normal\b/g, "")
+      .replace(/\btracking-\[0\.15em\](?=\s|$)/g, "");
     next = `${next} dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]`;
   }
   return `<${tag}${before}className=${quote}${cleanClasses(next)}${quote}${after}>`;

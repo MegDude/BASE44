@@ -81,8 +81,8 @@ export const AuthProvider = ({ children }) => {
           applySupabaseUser(null);
           return;
         }
-        // Re-read the Auth user after sign-in, refresh, or account updates so
-        // authoritative app_metadata roles are not taken from a stale session.
+        // Re-read the Auth user and live access context after sign-in, refresh,
+        // or account updates so authorization never comes from stale browser state.
         if (["SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"].includes(event)) {
           window.setTimeout(() => hydrateSupabaseSession(), 0);
           return;

@@ -53,7 +53,7 @@ export default function ResidentMembership() {
   return <main className="dp-membership-page">
     <section className="dp-membership-hero" aria-labelledby="membership-title">
       <div>
-        <p className="dp-membership-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residents</p>
+        <p className="dp-membership-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residents</p>
         <h1 id="membership-title">One membership.<br /><span>Everything Downtown.</span></h1>
         <p>Join Downtown Perks for a personal map, resident benefits, local events, useful downtown updates, and clearer ways to take part in your community.</p>
         <div className="dp-membership-actions"><a href="#join">Become a member <ArrowRight aria-hidden="true" /></a><Link to="/residents/login">Already have an account? Sign in</Link></div>
@@ -62,19 +62,19 @@ export default function ResidentMembership() {
     </section>
 
     <section className="dp-membership-includes" aria-labelledby="membership-includes-title">
-      <div><p className="dp-membership-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What is included</p><h2 id="membership-includes-title">Your downtown, ready when you are.</h2></div>
+      <div><p className="dp-membership-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What is included</p><h2 id="membership-includes-title">Your downtown, ready when you are.</h2></div>
       <div>{membershipIncludes.map(([title, body]) => <article key={title}><h3>{title}</h3><p>{body}</p></article>)}</div>
     </section>
 
     <section className="dp-membership-join" id="join" aria-labelledby="join-title">
       <div className="dp-membership-plan">
-        <p className="dp-membership-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident membership</p><h2 id="join-title">Everything included.</h2>
+        <p className="dp-membership-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident membership</p><h2 id="join-title">Everything included.</h2>
         <p className="dp-membership-price"><strong>$25</strong><span>per year</span></p>
         <p>No hidden fees. Cancel any time before renewal.</p>
         <ul>{["Personal Downtown map", "Resident QR card", "Exclusive perks", "Event access", "Saved places", "Building communities", "Governance participation", "Civic surveys", "Downtown updates", "Personal dashboard"].map(item => <li key={item}><Check aria-hidden="true" />{item}</li>)}</ul>
       </div>
       <div className="dp-membership-building">
-        <p className="dp-membership-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Start with where you live</p><h2>See whether your building includes membership.</h2>
+        <p className="dp-membership-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Start with where you live</p><h2>See whether your building includes membership.</h2>
         <label htmlFor="membership-building">My building</label>
         <div className="dp-membership-search"><Search aria-hidden="true" /><input id="membership-building" value={query} onChange={event => { setQuery(event.target.value); setSelected(null); setEligibility(null); }} placeholder="Search your building…" autoComplete="off" /></div>
         {buildings.length ? <div className="dp-membership-results" role="listbox">{buildings.map(building => <button type="button" role="option" aria-selected={selected?.id === building.id} key={building.id} onClick={() => chooseBuilding(building)}><strong>{building.name}</strong><span>{building.district || building.address || "Downtown Austin"}</span></button>)}</div> : null}

@@ -14,7 +14,7 @@ const demo = (
       ]}
     />
     <div className="rounded-lg border border-border bg-card p-7">
-      <div className="text-muted-foreground uppercase tracking-normalr mb-5 text-[11px] font-bold uppercase tracking-normal">Resident Dining Card</div>
+      <div className="text-muted-foreground tracking-normalr mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Dining Card</div>
       <div className="p-5 rounded-xl bg-primary/5 border border-primary/20 mb-4">
         <div className="font-heading text-lg font-bold mb-1">Fabi & Rosi</div>
         <div className="text-xs text-muted-foreground mb-3">Neighborhood table — Downtown Austin</div>

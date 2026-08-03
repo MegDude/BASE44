@@ -57,7 +57,7 @@ export default function InteractionSystemPreview() {
             </nav>
           </div>
           <div className="dp-is-hero__content">
-            <p className="dp-is-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks product system</p>
+            <p className="dp-is-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks product system</p>
             <h1>Interaction patterns for <strong>real downtown moments.</strong></h1>
             <p>Reusable motion, actions, preferences, navigation, and feedback for resident and partner workflows—built with restrained movement and accessible behavior.</p>
             <div className="dp-is-hero__actions">

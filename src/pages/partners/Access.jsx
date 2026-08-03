@@ -442,7 +442,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
         <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="dp-partner-access-copy">
-            <p className="dp-partner-access-eyebrow text-[10px] uppercase text-[#BFA46A] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
+            <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading font-medium text-[#0B1F33]">
@@ -477,7 +477,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
-                  <p className="dp-partner-access-eyebrow text-[10px] uppercase text-[#BFA46A] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Sign up</p>
+                  <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Sign up</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                     Confirm your partner setup
                   </h2>
@@ -518,7 +518,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
 
                 <div>
-                  <label className="dp-partner-access-label mb-1.5 block text-[11px] uppercase text-[#0B1F33]/55 text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Launch timing</label>
+                  <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Launch timing</label>
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
@@ -533,7 +533,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <PartnerAccessField label="Website" type="url" value={form.website} onChange={(value) => updateField("website", value)} />
 
                 <div>
-                  <label className="dp-partner-access-label mb-1.5 block text-[11px] uppercase text-[#0B1F33]/55 text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What should we help you make happen?</label>
+                  <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What should we help you make happen?</label>
                   <textarea
                     rows={4}
                     value={form.bio}
@@ -565,7 +565,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
               </form>
             ) : (
               <div className="dp-partner-access-signin">
-                <p className="dp-partner-access-eyebrow text-[10px] uppercase text-[#BFA46A] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Account access</p>
+                <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Account access</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Choose your access path
                 </h2>
@@ -574,7 +574,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </p>
                 <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
                   <div className="dp-partner-type-section-head">
-                    <p className="dp-partner-access-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Access type</p>
+                    <p className="dp-partner-access-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Access type</p>
                     <h3 id="signin-type-heading">Who is signing in?</h3>
                   </div>
                   <div className="dp-partner-type-grid dp-partner-signin-type-grid" role="radiogroup" aria-label="Account access type">
@@ -668,7 +668,7 @@ function AdminWorkspaceChooser({ user, onOpenWorkspace }) {
 
   return (
     <section className="dp-admin-workspace-access" aria-labelledby="admin-workspace-access-title">
-      <p className="dp-partner-access-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Administrator access</p>
+      <p className="dp-partner-access-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Administrator access</p>
       <h2 id="admin-workspace-access-title">Choose a workspace.</h2>
       <p>
         Signed in as {user?.full_name || "Meg Dude"}{user?.email ? ` · ${user.email}` : ""}. Each selection is stored as an admin workspace context before opening.
@@ -724,7 +724,7 @@ function formatSetupText(value) {
 function PartnerAccessField({ label, value, onChange, type = "text", required = false, placeholder = "" }) {
   return (
     <div>
-      <label className="dp-partner-access-label mb-1.5 block text-[11px] uppercase text-[#0B1F33]/55 text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</label>
+      <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</label>
       <input
         type={type}
         value={value}

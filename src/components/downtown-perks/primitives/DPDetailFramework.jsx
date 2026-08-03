@@ -43,7 +43,7 @@ export function DPDetailFramework({
       <header className="dp-detail-framework-header">
         <div className="dp-detail-heading-row">
           <div className="min-w-0">
-            <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>
+            <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>
             <h2 className="dp-detail-title">{title}</h2>
           </div>
 
@@ -150,7 +150,7 @@ export function DPQuickActions({ title = "Quick Actions", actions = [], onAction
   return (
     <section className="dp-surface-section-block dp-quick-actions">
       <div className="dp-section-header">
-        <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
+        <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
       </div>
 
       <div className="dp-quick-action-grid">
@@ -205,7 +205,7 @@ export function DPRelatedCarousel({ title, items = [], onSelect }) {
   return (
     <section className="dp-related-carousel">
       <div className="dp-section-header">
-        <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
+        <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
       </div>
 
       <div className="dp-related-rail">
@@ -252,7 +252,7 @@ export function DPPricingRail({ title = "Packages", items = [], onSelect }) {
   return (
     <section className="dp-pricing-rail-section">
       <div className="dp-section-header">
-        <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
+        <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</p>
       </div>
 
       <div className="dp-pricing-rail">
@@ -295,7 +295,7 @@ export function DPScheduleSessions({
   return (
     <section className="dp-schedule-sessions">
       <header className="dp-section-header-stack">
-        <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>
+        <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>
         <h3>{title}</h3>
         {description && <p>{description}</p>}
       </header>
@@ -395,7 +395,7 @@ export function DPParkingReservation({ item, mode = "resident", onReserve, onEdi
   return (
     <section className="dp-parking-reservation">
       <header className="dp-section-header-stack">
-        <p className="dp-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{mode === "resident" ? "Reserve Parking" : "Parking Inventory"}</p>
+        <p className="dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{mode === "resident" ? "Reserve Parking" : "Parking Inventory"}</p>
         <h3>{mode === "resident" ? "Choose a time window" : "Manage reservable spaces"}</h3>
       </header>
 

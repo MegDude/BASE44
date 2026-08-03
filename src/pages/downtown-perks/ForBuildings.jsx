@@ -83,7 +83,7 @@ export default function ForBuildings() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] text-primary/70 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               For Buildings
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-end">
@@ -135,7 +135,7 @@ export default function ForBuildings() {
       <section className="py-10 px-5 border-t border-border/40">
         <div className="max-w-4xl mx-auto">
           <div className="mb-7">
-            <span className="text-[11px] text-muted-foreground uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-muted-foreground block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Pricing
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
@@ -166,7 +166,7 @@ export default function ForBuildings() {
                     Most Popular
                   </span>
                 )}
-                <div className="text-[11px] text-muted-foreground uppercase mb-4 text-[11px] font-bold uppercase tracking-normal">
+                <div className="text-muted-foreground mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   {tier.name}
                 </div>
                 <div className="mb-6">
@@ -204,7 +204,7 @@ export default function ForBuildings() {
           <div className="border border-border/60 rounded-lg p-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div>
-                <span className="text-[11px] text-primary/70 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+                <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   For Local Businesses
                 </span>
                 <h3 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] mb-4">

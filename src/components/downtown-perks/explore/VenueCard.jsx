@@ -43,7 +43,7 @@ export default function VenueCard({ venue, onClose }) {
         <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 mb-6">
           <div className="flex items-center gap-2 mb-2">
             <Tag className="w-4 h-4 text-primary" />
-            <span className="text-primary uppercase tracking-normalr text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary tracking-normalr dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Member Perk
             </span>
           </div>

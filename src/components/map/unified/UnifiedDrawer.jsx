@@ -120,7 +120,7 @@ function DrawerPreview({ selected }) {
   return (
     <div className="p-4 space-y-3">
       <div>
-        <div className="text-primary mb-1 uppercase tracking-normalr text-[11px] font-bold uppercase tracking-normal">
+        <div className="text-primary mb-1 tracking-normalr dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {selected._type}
         </div>
         <h2 className="text-xl font-bold text-foreground">{selected.name}</h2>
@@ -135,7 +135,7 @@ function DrawerPreview({ selected }) {
         <div className="bg-primary/10 rounded-lg p-3">
           <div className="flex items-center gap-2 mb-1">
             <Tag className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-semibold uppercase text-primary">
+            <span className="text-primary dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Member perk
             </span>
           </div>
@@ -168,7 +168,7 @@ function DrawerFull({ selected }) {
     <div className="p-5 space-y-5 pb-20">
       {/* Header */}
       <div>
-        <div className="text-primary mb-1 uppercase tracking-normalr text-[11px] font-bold uppercase tracking-normal">
+        <div className="text-primary mb-1 tracking-normalr dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {selected._type}
         </div>
         <h1 className="text-2xl font-bold text-foreground">{selected.name}</h1>
@@ -217,7 +217,7 @@ function DrawerFull({ selected }) {
       {/* Perk highlight */}
       {selected._type === 'venue' && selected.perk_value && (
         <div className="bg-primary/10 rounded-xl p-4">
-          <div className="text-xs font-semibold text-primary mb-2 uppercase">
+          <div className="text-primary mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Member perk
           </div>
           <p className="text-[14px] font-semibold text-foreground">

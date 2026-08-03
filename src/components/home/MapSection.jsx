@@ -34,7 +34,7 @@ export default function MapSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] text-primary/80 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary/80 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               What You Can Do
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
@@ -79,7 +79,7 @@ export default function MapSection() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="text-[11px] text-foreground/50 uppercase mb-5 text-[11px] font-bold uppercase tracking-normal">Find What You Need</div>
+              <div className="text-foreground/50 mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Find What You Need</div>
               <ul className="space-y-3 mb-8">
                 {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-3 text-[13px] text-foreground/60">
@@ -124,7 +124,7 @@ export default function MapSection() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="text-[11px] text-foreground/50 uppercase mb-5 text-[11px] font-bold uppercase tracking-normal">How It Works</div>
+              <div className="text-foreground/50 mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How It Works</div>
               <div className="divide-y divide-[#0B1F33]/8">
                 {howSteps.map((s, i) => (
                   <div key={i} className="py-5 first:pt-0 last:pb-0">

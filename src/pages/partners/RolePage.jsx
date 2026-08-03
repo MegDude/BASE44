@@ -17,7 +17,7 @@ export default function PartnerRolePage() {
     <main className="min-h-screen bg-[#F7F8FB] px-5 py-16 text-[#071B2F] md:px-10">
       <section className="mx-auto grid max-w-5xl gap-8 rounded-[18px] border border-[rgba(7,27,47,0.08)] bg-white p-6 md:grid-cols-[1.2fr_.8fr] md:p-10">
         <div>
-          <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{config.label}</p>
+          <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{config.label}</p>
           <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] md:text-6xl">{config.hook}</h1>
           <p className="mt-5 max-w-2xl text-[16px] leading-7 text-[rgba(7,27,47,0.68)]">{config.audience}</p>
           <div className="mt-7 flex flex-wrap gap-3">

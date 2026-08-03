@@ -36,7 +36,7 @@ export function RevealSection({ children, delay = 0, className = "" }) {
 export function EditorialHero({ eyebrow, title, children, ctaLabel, ctaHref = "/map?mode=resident&tab=map", aside }) {
   const content = (
     <RevealSection>
-      {eyebrow && <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
+      {eyebrow && <span className="dp-label mb-4 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
       <h1 className="font-heading text-4xl font-medium leading-[1.05] tracking-normal text-[#0B1F33] md:text-4xl">
         {title}
       </h1>
@@ -74,7 +74,7 @@ export function InsightCard({ eyebrow, title, children, icon: Icon = MapPin, cla
       <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-[6px] border border-[#0B1F33]/8 bg-white">
         <Icon className="h-4 w-4 text-[#BFA46A]" />
       </div>
-      {eyebrow && <div className="dp-label mb-2 text-[10px] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</div>}
+      {eyebrow && <div className="dp-label mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</div>}
       <h3 className="font-heading text-lg font-medium leading-tight text-[#0B1F33]">{title}</h3>
       <div className="mt-3 text-[13px] leading-[1.65] text-[#0B1F33]/62">{children}</div>
     </div>
@@ -123,7 +123,7 @@ export function ProgressLoopCards({ steps, activeIndex = 0 }) {
             )}
           >
             <div className="mb-4 flex items-center justify-between">
-              <span className="dp-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{step.step}</span>
+              <span className="dp-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{step.step}</span>
               <span className={cn("h-1.5 w-10 rounded-sm", active ? "bg-[#BFA46A]" : "bg-[#0B1F33]/10")} />
             </div>
             <h3 className="font-heading text-lg font-medium text-[#0B1F33]">{step.title}</h3>
@@ -139,7 +139,7 @@ export function PerksCardCTA({ title = "Get Your Perks Card Now", body, href = "
     <div className="dp-surface p-5 md:p-6">
       <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Card</span>
+          <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Card</span>
           <h3 className="font-heading text-2xl font-medium text-[#0B1F33]">{title}</h3>
           {body && <p className="dp-copy mt-3">{body}</p>}
         </div>
@@ -157,7 +157,7 @@ export function WalkabilityModule({ title = "What’s Around the Corner", childr
     <div className="dp-surface overflow-hidden">
       <div className="grid gap-0 md:grid-cols-[1fr_1.1fr]">
         <div className="p-5 md:p-6">
-          <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby</span>
+          <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby</span>
           <h3 className="font-heading text-2xl font-medium text-[#0B1F33]">{title}</h3>
           <p className="dp-copy mt-3">{children}</p>
         </div>

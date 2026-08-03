@@ -70,7 +70,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6 }}
           className="mb-5 flex items-center gap-2"
         >
-          <span className="dp-resident-hero-kicker text-[11px] uppercase text-[#0B1F33] text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
+          <span className="dp-resident-hero-kicker text-[#0B1F33] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Built for residents
           </span>
         </motion.div>
@@ -142,7 +142,7 @@ export default function HeroSection() {
                         onClick={() => handlePromptClick(item.fill)}
                         className="group w-full px-4 py-2.5 text-left transition-colors hover:bg-white"
                       >
-                        <div className="mb-0.5 text-[11px] uppercase text-primary/80 transition-colors group-hover:text-primary text-[11px] font-bold uppercase tracking-normal">
+                        <div className="mb-0.5 text-primary/80 transition-colors group-hover:text-primary dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                           {item.q}
                         </div>
                         <div className="text-[12px] leading-relaxed text-foreground/60">{item.a}</div>

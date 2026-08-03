@@ -140,7 +140,7 @@ function Section({ id, eyebrow, title, children, className = "" }) {
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
           <div className="mb-8 max-w-3xl">
-            {eyebrow && <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
+            {eyebrow && <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
             {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] text-[#0B1F33] md:text-4xl">{title}</h2>}
           </div>
         )}
@@ -188,7 +188,7 @@ export default function BrandsPartner() {
 
           <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-              <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Brand Partner Layer</span>
+              <span className="dp-label mb-4 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Brand Partner Layer</span>
               <h1 className="font-heading text-[38px] font-medium leading-[1.03] md:text-[56px]">
                 Buy the moment, not the impression.
               </h1>
@@ -208,7 +208,7 @@ export default function BrandsPartner() {
               className="dp-glass-card p-5"
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">Campaign preview</span>
+                <span className="text-[#0B1F33]/50 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign preview</span>
                 <Sparkles className="h-4 w-4 text-[#BFA46A]" />
               </div>
               <div className="mt-5 rounded-md border border-[#0B1F33]/8 bg-white p-4">
@@ -295,7 +295,7 @@ export default function BrandsPartner() {
         <div className="grid gap-3 md:grid-cols-4">
           {WORKFLOW.map(([num, title, copy]) => (
             <article key={num} className="rounded-md border border-[#0B1F33]/8 bg-white p-5">
-              <div className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{num}</div>
+              <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{num}</div>
               <h3 className="mt-4 font-body text-[14px] font-semibold text-[#0B1F33]">{title}</h3>
               <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/62">{copy}</p>
             </article>
@@ -361,12 +361,12 @@ export default function BrandsPartner() {
           <form onSubmit={submitPlan} className="grid gap-3 rounded-lg border border-[#0B1F33]/8 bg-white p-5">
             {["Brand/Company Name", "Your Name & Role", "Email", "Phone", "Timeline"].map((label) => (
               <label key={label} className="grid gap-1.5">
-                <span className="text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</span>
+                <span className="text-[#0B1F33]/50 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
                 <input required={label !== "Phone"} className="h-10 rounded-md border border-[#0B1F33]/10 bg-white px-3 text-[13px] outline-none focus:border-[#BFA46A]" />
               </label>
             ))}
             <label className="grid gap-1.5">
-              <span className="text-[11px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">What are you activating?</span>
+              <span className="text-[#0B1F33]/50 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What are you activating?</span>
               <textarea
                 value={selectedPrompt}
                 onChange={(event) => setSelectedPrompt(event.target.value)}

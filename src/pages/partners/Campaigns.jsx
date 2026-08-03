@@ -375,20 +375,22 @@ export default function CampaignsPage() {
     ["Call to Action", routeContext.callToAction],
   ];
   const reach = routeContext.isCivic
-    ? [
-        ["Expected audience", "People looking for galleries, performances, workshops, tours, and family-friendly cultural programming."],
-        ["Where it appears", "Partner map, civic discovery cards, nearby recommendations, and QR entry points at the center or partner locations."],
-        ["Suggested timing", "Publish before the programme window, then refresh copy on the day of the activity."],
-        ["Nearby destinations", "Rainey Street Trailhead, Lady Bird Lake, Palm Park, the Convention Center, and eastside cultural stops."],
-        ["Partner recommendations", "Pair with nearby transit, parking, dining, and public-art routes so attendance feels easier to plan."],
-      ]
-    : [
-        ["Expected audience", activeRail.audience],
-        ["Where it appears", "Downtown Perks map, nearby recommendations, QR links, and relevant discovery moments."],
-        ["Suggested timing", "Publish before the strongest expected foot-traffic window."],
-        ["Nearby destinations", "Connect the campaign to relevant places, events, and services nearby."],
-        ["Partner recommendations", "Use one primary action and only the nearby context that helps someone decide."],
-      ];
+  ? [
+  ["Audience context", "People looking for galleries, performances, workshops, tours, and family-friendly cultural programming."],
+  ["Where it appears", "Partner map, civic discovery cards, nearby recommendations, and QR entry points at the center or partner locations."],
+  ["Evidence window", "Current measured map and campaign records; no predicted attendance or foot-traffic claims."],
+  ["Confidence", liveCampaignRows.length ? "Medium — supported by current campaign records." : "Low — no active campaign record is connected yet."],
+  ["Draft action", "Review a programme brief with nearby transit, parking, dining, and public-art context."],
+  ["Partner review", "Required before scheduling or publication."],
+  ]
+  : [
+  ["Audience context", activeRail.audience],
+  ["Where it appears", "Downtown Perks map, nearby recommendations, QR links, and relevant discovery moments."],
+  ["Evidence window", "Current measured map and campaign records; no predicted attendance or foot-traffic claims."],
+  ["Confidence", liveCampaignRows.length ? "Medium — supported by current campaign records." : "Low — no active campaign record is connected yet."],
+  ["Draft action", "Use one primary action and only the nearby context supported by current records."],
+  ["Partner review", "Required before scheduling or publication."],
+  ];
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const requestedSlug = params.get("type") || params.get("campaignType");
@@ -443,7 +445,7 @@ export default function CampaignsPage() {
         <div className="dp-campaign-plan-main">
           <section className="dp-campaign-plan-header" aria-label="Campaign header">
             <div>
-              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaigns</p>
+              <p className="dp-campaigns-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaigns</p>
               <h1>{campaignName}</h1>
               <p className="dp-campaign-plan-intro">Choose the goal, connect it to a real map context, and send one clear brief for setup.</p>
             </div>
@@ -459,7 +461,7 @@ export default function CampaignsPage() {
 
           <section className="dp-campaign-type-selector" aria-labelledby="campaign-type-heading">
             <div>
-              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Choose a campaign type</p>
+              <p className="dp-campaigns-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Choose a campaign type</p>
               <h2 id="campaign-type-heading">What do you want people to do?</h2>
               <p>Select one option. The audience, map context, and brief fields update together.</p>
             </div>
@@ -499,7 +501,7 @@ export default function CampaignsPage() {
         <aside className="dp-campaign-live-preview dp-campaign-real-panel" aria-label="Campaign data panel">
           <div className="dp-campaign-preview-head">
             <div>
-              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Map layer</p>
+              <p className="dp-campaigns-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Map layer</p>
               <h2>Where this could work</h2>
             </div>
             <Link to={mapHref}><MapPin size={14} /> Open map</Link>
@@ -559,7 +561,7 @@ export default function CampaignsPage() {
 
           <section className="dp-campaigns-section dp-campaign-daa-layer" aria-label="DAA civic campaign layer">
             <div>
-              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic layer</p>
+              <p className="dp-campaigns-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic layer</p>
               <h2>{daaCampaignStrategy.title}</h2>
               <p>{daaCampaignStrategy.use}</p>
             </div>
@@ -578,7 +580,7 @@ export default function CampaignsPage() {
 
           <section id="launch-campaign" className="dp-campaigns-section dp-launch-section dp-campaign-next-step">
             <div>
-              <p className="dp-campaigns-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Brief</p>
+              <p className="dp-campaigns-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Brief</p>
               <h2>{routeContext.isCivic ? "Send the programme brief." : "Send the campaign brief."}</h2>
               <p>{routeContext.isCivic ? "Confirm the programme focus, timing, and call to action before scheduling publication." : "Confirm the goal, placement, and primary action before scheduling."}</p>
               {draftSummary && <small>{draftSummary}</small>}

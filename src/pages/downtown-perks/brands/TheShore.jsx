@@ -7,7 +7,7 @@ import { NotificationDemoPanel } from "../../../components/downtown-perks/brands
 const demo = (
   <div className="rounded-xl border border-border/60 bg-card/60 overflow-hidden">
     <div className="p-5 border-b border-border/40">
-      <div className="text-[11px] text-primary/70 uppercase mb-1 text-[11px] font-bold uppercase tracking-normal">Residential Partner</div>
+      <div className="text-primary/70 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residential Partner</div>
       <div className="font-heading font-semibold text-lg text-foreground">The Shore</div>
       <div className="text-[12px] text-muted-foreground mt-0.5">Your downtown layer is live.</div>
       <p className="text-[12px] text-muted-foreground mt-3 leading-relaxed">

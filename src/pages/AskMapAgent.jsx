@@ -169,7 +169,7 @@ export default function AskMapAgent() {
       <section className="border-b border-[#0B1F33]/8 px-5 py-10 md:py-14">
         <div className="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-            <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Ask the Map</span>
+            <span className="dp-label mb-4 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Ask the Map</span>
             <h1 className="font-heading text-[34px] font-medium leading-[1.02] md:text-[56px]">
               Find the best nearby move.
             </h1>
@@ -258,7 +258,7 @@ export default function AskMapAgent() {
             <CardContent className="p-5 md:p-6">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
-                  <span className="dp-label block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Agent output</span>
+                  <span className="dp-label block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Agent output</span>
                   <h2 className="mt-2 font-heading text-2xl font-medium text-[#0B1F33] md:text-3xl">
                     {answer?.title || "Ready for a live map answer."}
                   </h2>
@@ -314,7 +314,7 @@ export default function AskMapAgent() {
                 </Button>
               </div>
 
-              <div className="mt-4 text-[11px] uppercase text-[#0B1F33]/42 text-[11px] font-bold uppercase tracking-normal">
+              <div className="mt-4 text-[#0B1F33]/42 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 Source: Backend agent gateway
               </div>
             </CardContent>

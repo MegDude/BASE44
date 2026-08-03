@@ -143,7 +143,7 @@ function Section({ id, eyebrow, title, children, className = "" }) {
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title) && (
           <div className="mb-8 max-w-3xl">
-            {eyebrow && <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
+            {eyebrow && <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>}
             {title && <h2 className="font-heading text-3xl font-medium leading-[1.08] tracking-normal text-[#0B1F33] md:text-4xl">{title}</h2>}
           </div>
         )}
@@ -190,7 +190,7 @@ function SearchIntentCard() {
 
   return (
     <div className="rounded-[2px] border border-[#0B1F33]/8 bg-white/86 p-5 shadow-[0_14px_34px_rgba(6,27,51,0.04)]">
-      <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Search Intent Integration</span>
+      <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Search Intent Integration</span>
       <div className="rounded-[2px] border border-[#0B1F33]/8 bg-white p-3">
         <div className="flex items-center gap-2 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[13px] text-[#0B1F33]/58">
           <Search className="h-4 w-4 text-[#BFA46A]" />
@@ -284,7 +284,7 @@ function MiniMapVisual({ activeStep }) {
             transition={{ duration: 0.42, ease }}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] uppercase text-white/60 text-[11px] font-bold uppercase tracking-normal">Resident Card</span>
+              <span className="text-white/60 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Card</span>
               <CreditCard className="h-4 w-4 text-[#BFA46A]" />
             </div>
             <div className="mt-8 font-heading text-2xl font-medium">Perk confirmed</div>
@@ -319,7 +319,7 @@ function ResidentsHowItWorksStepper() {
     >
       <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
         <div>
-          <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</span>
+          <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</span>
           <h3 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">Less planning. More going.</h3>
           <div className="mt-5 border-y border-[#0B1F33]/8 bg-white/58 shadow-[0_16px_44px_rgba(11,31,51,0.04),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-xl">
             {stepperSteps.map((step, index) => {
@@ -423,7 +423,7 @@ function MapMoveModules() {
             className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
             aria-live="polite"
           >
-            <span className="font-body text-[11px] uppercase text-[#A98B4A] text-[11px] font-bold uppercase tracking-normal">
+            <span className="font-body text-[#A98B4A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {current.label}
             </span>
             <span className="font-heading text-[22px] font-bold leading-tight tracking-[-0.02em] text-[#0B1F33] md:text-[28px]">
@@ -462,7 +462,7 @@ function PerksCardBlock() {
   return (
     <div className="grid gap-5 rounded-[2px] border border-[#0B1F33]/8 bg-white p-5 shadow-[0_14px_34px_rgba(6,27,51,0.04)] md:grid-cols-[1fr_220px] md:p-7">
       <div>
-        <span className="dp-label mb-3 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Get Your Perks Card Now</span>
+        <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Get Your Perks Card Now</span>
         <h2 className="font-heading text-3xl font-medium leading-tight text-[#0B1F33]">Sign Me Up</h2>
         <p className="mt-3 max-w-2xl text-[14px] leading-[1.7] text-[#0B1F33]/66">
           Scan the QR code to get your Perks Card sent directly to your phone.
@@ -508,7 +508,7 @@ function ResidentSignupForm() {
             ["Building Address", "text"],
           ].map(([label, type]) => (
             <label key={label} className="grid gap-1.5">
-              <span className="text-[11px] uppercase text-[#0B1F33]/45 text-[11px] font-bold uppercase tracking-normal">
+              <span className="text-[#0B1F33]/45 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {label}
                 {label === "Phone Number" && <span className="normal-case tracking-normal"> (Used for QR perks card login)</span>}
                 {label === "Email" && <span className="normal-case tracking-normal"> (Optional)</span>}
@@ -517,7 +517,7 @@ function ResidentSignupForm() {
             </label>
           ))}
           <div>
-            <span className="text-[11px] uppercase text-[#0B1F33]/45 text-[11px] font-bold uppercase tracking-normal">How did you hear about us?</span>
+            <span className="text-[#0B1F33]/45 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How did you hear about us?</span>
             <div className="mt-2 flex flex-wrap gap-2">
               {heardOptions.map((option) => (
                 <label key={option} className="inline-flex cursor-pointer items-center gap-2 rounded-[2px] border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-medium text-[#0B1F33]/66">
@@ -543,7 +543,7 @@ export default function Landing() {
       <section className="px-5 py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>
-            <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residents</span>
+            <span className="dp-label mb-4 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Residents</span>
             <h1 className="font-heading text-4xl font-medium leading-[1.04] tracking-normal md:text-4xl">Where downtown meets you</h1>
             <p className="mt-6 max-w-2xl font-heading text-2xl font-medium leading-tight text-[#0B1F33]">
               Built for people who actually live here — and the places that make it feel like home.

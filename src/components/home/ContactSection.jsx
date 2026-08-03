@@ -146,7 +146,7 @@ export default function ContactSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] text-primary/80 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary/80 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Contact Downtown Perks
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
@@ -207,7 +207,7 @@ export default function ContactSection() {
             {/* Sidebar */}
             <div className="p-8 bg-white flex flex-col justify-between">
               <div>
-                <div className="text-[11px] text-foreground/50 uppercase mb-4 text-[11px] font-bold uppercase tracking-normal">
+                <div className="text-foreground/50 mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   Also Available
                 </div>
                 <div className="space-y-2">

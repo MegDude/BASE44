@@ -71,7 +71,7 @@ export function WorkspaceAudience({ scope = {} }) {
   return (
     <section className="dp-audience-operations" aria-labelledby="audience-operations-title">
       <header className="dp-audience-operations__header">
-        <p className="dp-audience-operations__eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Audience operations</p>
+        <p className="dp-audience-operations__eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Audience operations</p>
         <h2 id="audience-operations-title">Use verified reach. Keep it consent-aware.</h2>
         <p className="dp-audience-operations__lede">
           This workspace shows only aggregate records from buildings explicitly connected to {authorizedScope.organizationName}. It never exposes a resident list.
@@ -91,7 +91,7 @@ export function WorkspaceAudience({ scope = {} }) {
 
       {isSetupRequired ? (
         <div className="dp-audience-operations__empty">
-          <p className="dp-audience-operations__eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Connection required</p>
+          <p className="dp-audience-operations__eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Connection required</p>
           <h3>No building is connected to this workspace yet.</h3>
           <p className="dp-audience-operations__status">Connect a building only after confirming the organization has permission to use its aggregate resident audience.</p>
           {authorizedScope.isSuperAdmin ? (

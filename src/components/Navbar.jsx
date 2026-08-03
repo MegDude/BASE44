@@ -96,7 +96,7 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
             className="absolute left-0 top-11 w-[340px] overflow-hidden rounded-md border border-[#0B1F33]/8 bg-white p-2 shadow-[0_18px_58px_rgba(11,31,51,0.13)]"
           >
             <div className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
-              <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+              <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {label} paths
               </div>
               <button
@@ -346,7 +346,7 @@ export default function Navbar() {
           >
             <div className="mx-auto max-h-[calc(100vh-64px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
               <div className="flex items-center justify-between gap-4">
-                <div className="text-[10px] uppercase text-[#425466] text-[11px] font-bold uppercase tracking-normal">
+                <div className="text-[#425466] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   Navigation
                 </div>
                 {!isCommerceRoute && (

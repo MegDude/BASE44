@@ -215,7 +215,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
 
         {/* Tag badge */}
         {item.tag && (
-          <span className="text-[10px] text-primary/60 border border-primary/20 px-2 py-0.5 rounded-full shrink-0 uppercase text-[11px] font-bold uppercase tracking-normal">
+          <span className="text-primary/60 border border-primary/20 px-2 py-0.5 rounded-full shrink-0 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             {item.tag}
           </span>
         )}

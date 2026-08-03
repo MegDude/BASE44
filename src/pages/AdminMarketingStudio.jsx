@@ -280,7 +280,7 @@ export default function AdminMarketingStudio() {
         </div>
         <header className="dp-os-studio-hero">
           <div>
-            <span className="dp-os-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks · Admin Workspace</span>
+            <span className="dp-os-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks · Admin Workspace</span>
             <h1>Platform operations in one authorized workspace.</h1>
             <p>Review organizations, people, places, campaigns, publishing, and data health without leaving the Downtown Perks platform shell.</p>
           </div>

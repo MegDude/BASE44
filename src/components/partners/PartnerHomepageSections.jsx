@@ -151,7 +151,7 @@ export function SharedOperatingLayer() {
               transition={{ duration: 0.45, delay: index * 0.06, ease }}
               className="border border-[#0B1F33]/[0.06] bg-white p-5"
             >
-              <p className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">0{index + 1}</p>
+              <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">0{index + 1}</p>
               <h3 className="mt-4 text-[18px] font-semibold leading-tight text-[#0B1F33]">{card.title}</h3>
               <p className="mt-3 text-[13px] leading-[1.65] text-[#0B1F33]/62">{card.body}</p>
             </motion.article>
@@ -230,7 +230,7 @@ export function RotatingPartnerSystem() {
           </div>
           <div className="mt-8 grid gap-4 border-y border-[#0B1F33]/[0.06] py-5 md:grid-cols-[1fr_auto] md:items-end">
             <div>
-              <p className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Pilot and pricing</p>
+              <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Pilot and pricing</p>
               <div className="mt-2 space-y-1 text-[14px] leading-6 text-[#0B1F33]/70">
                 {activePartner.pricing.map((line) => (
                   <p key={line}>{line}</p>
@@ -240,7 +240,7 @@ export function RotatingPartnerSystem() {
             <TextLink to={activePartner.ctaHref}>{activePartner.cta}</TextLink>
           </div>
           <div className="mt-6 border-t border-[#0B1F33]/[0.06] pt-5">
-            <p className="text-[10px] uppercase text-[#0B1F33] text-[11px] font-bold uppercase tracking-normal">What you can review</p>
+            <p className="text-[#0B1F33] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What you can review</p>
             <p className="mt-2 max-w-3xl text-[13px] leading-[1.68] text-[#0B1F33]/64">{activePartner.analyticsFraming}</p>
           </div>
         </motion.div>
@@ -263,7 +263,7 @@ export function IntelligenceLayer() {
           <article key={metric.label} className="border border-[#0B1F33]/[0.06] bg-[#F7F8FB] p-4">
             <p className="text-[25px] font-semibold leading-none text-[#0B1F33]">{metric.value}</p>
             <p className="mt-2 text-[11px] font-semibold text-[#0B1F33]">{metric.label}</p>
-            <p className="mt-4 text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{metric.window}</p>
+            <p className="mt-4 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{metric.window}</p>
             <p className="mt-2 text-[12px] leading-5 text-[#0B1F33]/58">{metric.source}</p>
             <p className="mt-3 border-t border-[#0B1F33]/[0.06] pt-3 text-[12px] leading-5 text-[#0B1F33]/72">{metric.action}</p>
           </article>
@@ -464,7 +464,7 @@ export function PartnerWorkspaceBridge() {
             <Link key={item.title} to={item.href} className="group border border-[#0B1F33]/[0.06] bg-white p-5 transition-colors hover:border-[#BFA46A]/40">
               <h3 className="mt-4 text-[17px] font-semibold text-[#0B1F33]">{item.title}</h3>
               <p className="mt-2 text-[13px] leading-[1.65] text-[#0B1F33]/62">{item.body}</p>
-              <span className="mt-5 inline-flex text-[11px] uppercase text-[#0B1F33] group-hover:text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Open</span>
+              <span className="mt-5 inline-flex text-[#0B1F33] group-hover:text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Open</span>
             </Link>
           );
         })}

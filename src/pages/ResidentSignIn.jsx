@@ -71,7 +71,7 @@ export default function ResidentSignIn() {
           <Link to="/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured"><ArrowLeft aria-hidden="true" />Back to map</Link>
         </header>
         <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
-          <p className="dp-resident-signin-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident access</p>
+          <p className="dp-resident-signin-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident access</p>
           <h1 id="resident-signin-title">Sign in to your downtown.</h1>
           <p>Use your email and password to open your resident map, perks, saved places, events, and card.</p>
           <form onSubmit={submit}>

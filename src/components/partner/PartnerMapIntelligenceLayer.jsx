@@ -152,7 +152,7 @@ export default function PartnerMapIntelligenceLayer({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_24%,rgba(179,143,79,0.10),transparent_30%),radial-gradient(circle_at_74%_70%,rgba(11,31,51,0.08),transparent_32%)]" />
 
       <div className="absolute left-5 right-5 top-5 z-20 max-w-[24rem] bg-white/72 p-4 text-[#0B1F33] shadow-[0_16px_44px_rgba(11,31,51,0.08),inset_0_1px_0_rgba(255,255,255,0.74)] backdrop-blur-[18px] sm:left-6 sm:right-auto sm:top-6">
-        <span className="font-body text-[11px] uppercase text-[#A98B4A] text-[11px] font-bold uppercase tracking-normal">
+        <span className="font-body text-[#A98B4A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {caption || story.eyebrow}
         </span>
         <h3 className="mt-3 font-heading text-[34px] font-bold leading-[0.96] tracking-[-0.03em] text-[#0B1F33] md:text-[48px]">

@@ -85,7 +85,7 @@ function buildingMarkerIcon(item, active) {
 function StatTile({ label, value, detail }) {
   return (
     <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-4 shadow-[0_14px_34px_rgba(11,31,51,0.04)]">
-      <div className="text-[10px] uppercase text-[#0B1F33]/50 text-[11px] font-bold uppercase tracking-normal">{label}</div>
+      <div className="text-[#0B1F33]/50 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
       <div className="mt-2 font-heading text-2xl font-medium text-[#0B1F33]">{value}</div>
       {detail ? <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/58">{detail}</p> : null}
     </div>
@@ -95,7 +95,7 @@ function StatTile({ label, value, detail }) {
 function SectionIntro({ eyebrow, title, body }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{eyebrow}</p>
+      <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>
       <h2 className="mt-3 font-heading text-3xl font-medium leading-tight tracking-normal text-[#0B1F33] md:text-4xl">{title}</h2>
       <p className="mt-3 text-[14px] leading-7 text-[#0B1F33]/64">{body}</p>
     </div>
@@ -143,7 +143,7 @@ export default function BuildingIntelligence() {
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
             <div>
-              <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Building intelligence</p>
+              <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Building intelligence</p>
               <h1 className="mt-3 font-heading text-4xl font-medium leading-none tracking-normal text-[#0B1F33] md:text-6xl">
                 {building.name}
               </h1>
@@ -151,7 +151,7 @@ export default function BuildingIntelligence() {
 
               <div className="mt-5 flex flex-wrap gap-2">
                 {[building.address, building.district, building.walkScore, building.availability].map((chip) => (
-                  <span key={chip} className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[11px] uppercase text-[#0B1F33]/64 text-[11px] font-bold uppercase tracking-normal">
+                  <span key={chip} className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[#0B1F33]/64 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                     {chip}
                   </span>
                 ))}
@@ -191,7 +191,7 @@ export default function BuildingIntelligence() {
                 <StatTile label="From" value={building.priceFrom} />
               </div>
               <div className="mt-3 rounded-lg bg-[#0B1F33] p-4 text-white">
-                <div className="text-[10px] uppercase text-white/58 text-[11px] font-bold uppercase tracking-normal">Resident mix</div>
+                <div className="text-white/58 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident mix</div>
                 <p className="mt-2 text-[13px] leading-6 text-white/78">{building.residentMix}</p>
               </div>
             </div>
@@ -225,7 +225,7 @@ export default function BuildingIntelligence() {
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <SectionIntro {...activeCopy} />
             <div className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
-              <div className="text-[10px] uppercase text-[#0B1F33]/48 text-[11px] font-bold uppercase tracking-normal">Why this is useful</div>
+              <div className="text-[#0B1F33]/48 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Why this is useful</div>
               <div className="mt-4 space-y-3">
                 {building.lifestyleUnlocks.map((item) => (
                   <div key={item} className="flex gap-3">
@@ -307,7 +307,7 @@ export default function BuildingIntelligence() {
                         </div>
                         <div className="mt-2 text-[13px] text-[#0B1F33]/62">Location: {ticket.location}</div>
                       </div>
-                      <div className="flex gap-2 text-[10px] uppercase text-[11px] font-bold uppercase tracking-normal">
+                      <div className="flex gap-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                         <span className="rounded-[3px] border border-[#BFA46A]/30 bg-white px-3 py-1.5 text-[#0B1F33]">{ticket.priority}</span>
                         <span className="rounded-[3px] border border-[#0B1F33]/10 bg-white px-3 py-1.5 text-[#0B1F33]/62">{ticket.status}</span>
                       </div>
@@ -323,7 +323,7 @@ export default function BuildingIntelligence() {
                   <div key={report.label} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="text-[10px] uppercase text-[#0B1F33]/48 text-[11px] font-bold uppercase tracking-normal">{report.label}</div>
+                        <div className="text-[#0B1F33]/48 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{report.label}</div>
                         <div className="mt-2 font-heading text-3xl font-medium tracking-normal text-[#BFA46A]">{report.value}</div>
                       </div>
                       <ClipboardList className="h-4 w-4 text-[#0B1F33]" />
@@ -338,7 +338,7 @@ export default function BuildingIntelligence() {
               <CardGrid>
                 {building.partners.map((partner) => (
                   <div key={partner.name} className="rounded-lg border border-[#0B1F33]/8 bg-white p-5">
-                    <div className="text-[10px] uppercase text-[#0B1F33]/48 text-[11px] font-bold uppercase tracking-normal">{partner.category}</div>
+                    <div className="text-[#0B1F33]/48 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{partner.category}</div>
                     <div className="mt-2 font-heading text-xl font-medium tracking-normal">{partner.name}</div>
                     <div className="mt-2 text-[13px] font-semibold text-[#BFA46A]">{partner.result}</div>
                     <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{partner.context}</p>
@@ -354,7 +354,7 @@ export default function BuildingIntelligence() {
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.25fr_0.75fr]">
           <div>
             <div className="mb-4">
-              <p className="text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{building.shortLabel} nearby map</p>
+              <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{building.shortLabel} nearby map</p>
               <h2 className="mt-2 font-heading text-3xl font-medium tracking-normal">The building and what is close enough to matter.</h2>
             </div>
             <div className="h-[420px] overflow-hidden rounded-lg border border-[#0B1F33]/8">
@@ -371,7 +371,7 @@ export default function BuildingIntelligence() {
           <aside className="rounded-lg border border-[#0B1F33]/8 bg-white p-5 lg:self-end">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[10px] uppercase text-[#0B1F33]/48 text-[11px] font-bold uppercase tracking-normal">
+                <p className="text-[#0B1F33]/48 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   {selectedMapItem?.label || "Nearby"}
                 </p>
                 <h3 className="mt-2 font-heading text-2xl font-medium tracking-normal">{selectedMapItem?.title}</h3>
@@ -389,7 +389,7 @@ export default function BuildingIntelligence() {
             </div>
             <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/64">{selectedMapItem?.description}</p>
             <div className="mt-4 rounded-lg bg-[#0B1F33] p-4 text-white">
-              <div className="text-[10px] uppercase text-white/58 text-[11px] font-bold uppercase tracking-normal">Activity</div>
+              <div className="text-white/58 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Activity</div>
               <div className="mt-2 font-heading text-3xl font-medium text-[#BFA46A]">
                 {selectedMapItem?.value?.toLocaleString?.() || selectedMapItem?.value || "Live"}
               </div>

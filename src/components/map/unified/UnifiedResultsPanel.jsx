@@ -84,7 +84,7 @@ export default function UnifiedResultsPanel({ items = [] }) {
                       : 'bg-white border-border hover:border-foreground/30'
                   }`}
                 >
-                  <div className="text-xs font-semibold uppercase text-muted-foreground mb-0.5 capitalize">
+                  <div className="text-muted-foreground mb-0.5 capitalize dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                     {item._type}
                   </div>
                   <h3 className="font-semibold text-foreground text-[13px]">

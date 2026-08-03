@@ -12,7 +12,7 @@ export function PageContainer({ children, className = "", as: Tag = "main", ...p
 export function SectionHeader({ eyebrow, title, supporting, action, className = "" }) {
   return (
     <header className={join("dp-platform-section", className)}>
-      {eyebrow ? <p className="m-0 text-[11px] uppercase text-[var(--color-gold)] text-[11px] font-bold uppercase tracking-normal">{eyebrow}</p> : null}
+      {eyebrow ? <p className="m-0 text-[var(--color-gold)] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p> : null}
       <h1 className="dp-platform-page-title">{title}</h1>
       {supporting ? <p className="dp-platform-supporting-copy">{supporting}</p> : null}
       {action ? <div className="mt-5">{action}</div> : null}

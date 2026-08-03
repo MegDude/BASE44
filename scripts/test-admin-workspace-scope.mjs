@@ -8,6 +8,9 @@ const styles = readFileSync(new URL("../src/styles/downtown-command-center.css",
 
 assert.match(api, /requireAuthenticatedUser/);
 assert.match(api, /ADMIN_ACCESS_REQUIRED/);
+assert.match(api, /platform_profiles/);
+assert.match(api, /profile\?\.is_active !== true/);
+assert.doesNotMatch(api, /user\?\.(?:app_metadata|user_metadata)/, "JWT metadata alone must not authorize an inactive admin profile");
 assert.match(api, /role !== "super_admin"/);
 assert.match(api, /partner_users/);
 assert.match(api, /activeScope/);

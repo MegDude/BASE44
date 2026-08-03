@@ -22,7 +22,7 @@ export default function CampaignHero({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Left: copy + proof */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <span className="text-[11px] text-primary/70 uppercase block mb-4 text-[11px] font-bold uppercase tracking-normal">
+            <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {eyebrow}
             </span>
             <h1 className="font-heading text-4xl md:text-4xl font-medium leading-[1.05] tracking-normal mb-5">

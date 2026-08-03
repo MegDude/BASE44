@@ -65,7 +65,7 @@ export default function ProductEntryLayer() {
           className="text-center"
         >
           <div className="mx-auto max-w-3xl">
-            <p className="mb-3 text-[11px] uppercase text-[#425466] text-[11px] font-bold uppercase tracking-normal">
+            <p className="mb-3 text-[#425466] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Ask the map
             </p>
 

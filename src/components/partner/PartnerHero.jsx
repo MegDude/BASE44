@@ -41,7 +41,7 @@ export default function PartnerHero({
           className={alignment === 'right' ? 'md:order-2' : ''}
         >
           {eyebrow && (
-            <div className="mb-4 text-[11px] font-medium uppercase tracking-normal text-[#BFA46A] md:text-[13px]">
+            <div className="mb-4 text-[#BFA46A] md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {eyebrow}
             </div>
           )}
@@ -84,7 +84,7 @@ export default function PartnerHero({
               {stats.map((stat, i) => (
                 <div key={i}>
                   <div className="font-heading text-[24px] font-medium leading-none text-[#0B1F33]">{stat.value}</div>
-                  <div className="mt-1 text-[11px] font-medium uppercase tracking-normal text-[#425466]">{stat.label}</div>
+                  <div className="mt-1 text-[#425466] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{stat.label}</div>
                 </div>
               ))}
             </div>

@@ -37,7 +37,7 @@ export default function HappyHourMap() {
       <section className="border-b border-[#0B1F33]/8 px-5 py-14 md:py-20">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <span className="dp-label mb-4 block text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Walking Map</span>
+            <span className="dp-label mb-4 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Walking Map</span>
             <h1 className="font-heading text-[30px] font-medium leading-[1.04] md:text-[42px]">
               Happy hour, mapped around movement.
             </h1>
@@ -100,7 +100,7 @@ export default function HappyHourMap() {
                 </div>
               ))}
               <div className="absolute bottom-4 left-4 right-4 border border-white/60 bg-white/78 p-4 backdrop-blur-[20px]">
-                <div className="flex items-center gap-2 text-[11px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+                <div className="flex items-center gap-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   <Sparkles className="h-3.5 w-3.5" />
                   Live map guide
                 </div>

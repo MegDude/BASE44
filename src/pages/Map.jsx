@@ -4242,7 +4242,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           transition={{ duration: 0.18, ease: "easeOut" }}
           onClick={(event) => event.stopPropagation()}
         >
-          <p className="dp-resident-qr-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isPerkRedemption ? "Resident perk" : "Verified resident"}</p>
+          <p className="dp-resident-qr-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isPerkRedemption ? "Resident perk" : "Verified resident"}</p>
           <h2 id="resident-qr-title">{title}</h2>
           <p className="dp-resident-qr-value">{valueLine}</p>
           <p className={`dp-resident-qr-status is-${redemptionStatus}`} role="status">{validityLabel}</p>
@@ -4418,7 +4418,7 @@ function PartnerQrScanner({ onVerified }) {
     <section className="mt-3 dp-info-section p-3 md:mt-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+          <div className="flex items-center gap-1.5 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Scan access
             <ScanLine className="h-3.5 w-3.5 text-[#BFA46A]" />
           </div>
@@ -4900,7 +4900,7 @@ function BusinessServiceDetails({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+          <div className="flex items-center gap-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             <Building2 className="h-3.5 w-3.5 text-[#BFA46A]" />
             {panel.eyebrow || "Local service"}
           </div>
@@ -4911,7 +4911,7 @@ function BusinessServiceDetails({ place }) {
             {panel.description || place.raw?.summary || "Save this local service for later, get directions, or contact the business directly."}
           </p>
         </div>
-        <div className="shrink-0 px-0 py-1 text-[9px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">
+        <div className="shrink-0 px-0 py-1 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           Service
         </div>
       </div>
@@ -5627,7 +5627,7 @@ function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, an
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer dp-business-detail-drawer">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary dp-local-service-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{getLocalServiceCategoryLabel(profile)}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{getLocalServiceCategoryLabel(profile)}</p>
         <h2 className="dp-entity-title">{place.name}</h2>
         <p className="dp-entity-meta">{profile.serviceType}{place.district ? ` · ${place.district}` : ""}</p>
         <p className="dp-entity-dek">{profile.prompt}</p>
@@ -6160,7 +6160,7 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-event-detail-drawer">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary dp-event-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{profile.eyebrow}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{profile.eyebrow}</p>
         <h2 className="dp-entity-title">{profile.title}</h2>
         <p className="dp-entity-dek">{profile.oneSentence}</p>
         {!!metaItems.length && (
@@ -6635,7 +6635,7 @@ function BurgerBarCongressDetails({ place, places = [], mode = "resident", saved
           <div className="grid gap-3 sm:grid-cols-2">
             {BURGER_BAR_CONGRESS_CONTENT.businessOverview.map(([label, value]) => (
               <div key={label} className="border-t border-[rgba(11,31,51,.06)] pt-3">
-                <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{label}</div>
+                <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
                 <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/72">{value}</p>
               </div>
             ))}
@@ -6908,7 +6908,7 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-inkind-governed-drawer dp-inkind-resident-drawer" data-inkind-renderer="resident">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{venue.subcategory} · {venue.district}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{venue.subcategory} · {venue.district}</p>
         <h2 className="dp-entity-title">{venue.name}</h2>
         <p className="dp-entity-dek">{venue.residentView.summary}</p>
         <p className="dp-inkind-benefit-status">{activeBenefit ? "Downtown Perks benefit available" : "Benefit availability unverified"}</p>
@@ -6986,7 +6986,7 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
     <motion.div className="dp-map-panel-content dp-partner-detail-content dp-inkind-governed-drawer dp-inkind-partner-opportunity" data-inkind-renderer="partner">
       <DestinationHero place={place} mode="partner" />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">inKind dining partner · {venue.district}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">inKind dining partner · {venue.district}</p>
         <h2 className="dp-entity-title">{venue.name}</h2>
         <p className="dp-entity-dek">{partnerCopy.description}</p>
       </header>
@@ -7060,7 +7060,7 @@ function HospitalityNetworkDrawer({ place, places = [], mode = "resident", saved
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-hospitality-network-drawer" data-hospitality-renderer={mode}>
       <DestinationHero place={place} mode={mode} />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isOffer ? "Hotel offer" : "Shared hotel amenity"} · {place.district || raw.district || "Downtown Austin"}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isOffer ? "Hotel offer" : "Shared hotel amenity"} · {place.district || raw.district || "Downtown Austin"}</p>
         <h2 className="dp-entity-title">{place.name}</h2>
         <p className="dp-entity-meta">{hotelName}</p>
         <p className="dp-entity-dek">{mode === "partner" ? partnerSummary : residentSummary}</p>
@@ -7327,7 +7327,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </header>
 
       <section className="dp-drawer-section dp-partner-summary">
-        <p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown dining network</p>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown dining network</p>
         <h1>inKind</h1>
         <p className="dp-drawer-deck">Discover participating restaurants, activate dining offers, and connect downtown residents, hotel guests, workers, and visitors with places they can use now.</p>
         <p className="dp-partner-context-line">Available through participating downtown venues and selected Downtown Perks campaigns.</p>
@@ -7348,7 +7348,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
 
       {activeOffer && (
         <section className="dp-drawer-section dp-inkind-active-offer">
-          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Available now</p><h2>Current dining offers</h2></div></div>
+          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Available now</p><h2>Current dining offers</h2></div></div>
           <article className="dp-offer-card">
             <span className="dp-offer-status">Available now</span>
             <h3>{activeOffer.offer || "Dining credit at participating downtown restaurants"}</h3>
@@ -7360,7 +7360,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
 
       <section className="dp-drawer-section dp-inkind-participating-venues">
         <div className="dp-section-heading-row">
-          <div><p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby</p><h2>Participating restaurants</h2></div>
+          <div><p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby</p><h2>Participating restaurants</h2></div>
           <button type="button" className="dp-text-action" onClick={onShowVenues}>Show on map</button>
         </div>
         {participatingVenues.length ? (
@@ -7376,7 +7376,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </section>
 
       <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p><h2>How inKind works here</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p><h2>How inKind works here</h2>
         <p className="dp-drawer-intro">inKind brings the dining offer and restaurant network. Downtown Perks brings the local audience, map placement, building access, campaign targeting, and measurable resident action.</p>
         <ol className="dp-step-list">
           <li><span>01</span><div><h3>Restaurants provide the experience</h3><p>Participating restaurants supply the dining destination and any active inKind offer.</p></div></li>
@@ -7386,12 +7386,12 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </section>
 
       <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Useful context</p><h2>Built for downtown partner accounts</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Useful context</p><h2>Built for downtown partner accounts</h2>
         <div className="dp-partner-context-list">{partnerContexts.map(([title, copy]) => <div key={title}><h3>{title}</h3><p>{copy}</p></div>)}</div>
       </section>
 
       <section className="dp-drawer-section dp-inkind-related-collections">
-        <p className="dp-drawer-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Related content</p><h2>Explore more downtown dining</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Related content</p><h2>Explore more downtown dining</h2>
         <div className="dp-inkind-grid-list dp-inkind-related-list">{relatedCollections.map((label) => <button type="button" key={label} onClick={onShowVenues}>{label}</button>)}</div>
       </section>
       <p className="dp-partner-disclosure">Offers, eligibility, activation, and redemption are managed through participating restaurants and inKind. Downtown Perks provides discovery, local context, and map access.</p>
@@ -8497,7 +8497,7 @@ function MapSheetToolbar({ eyebrow, onBack, onClose }) {
 function MapPanelMatrix({ id, label, children }) {
   return (
     <section id={id} className="dp-map-panel-section" aria-label={label}>
-      <p className="dp-map-panel-section-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</p>
+      <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</p>
       <h3 className="dp-map-panel-section-title">Active resident access</h3>
       <div className="dp-map-panel-matrix">{children}</div>
     </section>
@@ -8536,7 +8536,7 @@ function InteractiveMatrix({
   if (!items.length) {
     return (
       <section className={`dp-interactive-matrix ${className}`.trim()}>
-        {eyebrow && <p className="dp-interactive-matrix-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
         <h3>{title}</h3>
         {description && <p className="dp-interactive-matrix-copy">{description}</p>}
         <div className="dp-matrix-empty-state">Nothing to show yet.</div>
@@ -8552,7 +8552,7 @@ function InteractiveMatrix({
   return (
     <section className={`dp-interactive-matrix ${className}`.trim()} aria-label={title}>
       <div className="dp-interactive-matrix-header">
-        {eyebrow && <p className="dp-interactive-matrix-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
         <h3>{title}</h3>
         {description && <p className="dp-interactive-matrix-copy">{description}</p>}
       </div>
@@ -8577,7 +8577,7 @@ function InteractiveMatrix({
         </div>
 
         <div className="dp-matrix-detail-panel" role="tabpanel" aria-live="polite">
-          {selectedItem.eyebrow && <p className="dp-interactive-matrix-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{selectedItem.eyebrow}</p>}
+          {selectedItem.eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{selectedItem.eyebrow}</p>}
           <h4>{selectedItem.title}</h4>
           {selectedItem.meta?.length ? (
             <div className="dp-matrix-meta-row">
@@ -9253,7 +9253,7 @@ function PartnerSectionHeader({ label, title }) {
   return (
     <div className="dp-section-heading-block">
       <div className="dp-section-header">
-        <span className="dp-section-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
+        <span className="dp-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
         <div className="dp-section-rule" />
       </div>
       {title && <h3 className="dp-section-title">{title}</h3>}
@@ -9518,7 +9518,7 @@ function CommunityStoriesMapLayer() {
   return (
     <section className="dp-community-stories-map-layer" aria-label="Community Stories">
       <div>
-        <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Favorite</p>
+        <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Favorite</p>
         <h3>Community Stories</h3>
         <p>See how downtown residents are using local perks in real life.</p>
       </div>
@@ -10008,7 +10008,7 @@ function WaterlooDetails({ place, mode }) {
       <div className="space-y-4">
         <p className="whitespace-pre-line text-[13px] leading-6 text-[#0B1F33]/68">{drawerCopy}</p>
         <div>
-          <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Good for</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Good for</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.slice(0, 6).map((tag) => (
               <span key={tag} className="rounded-[5px] border border-[#0B1F33]/[0.08] px-2 py-1 text-[10px] font-medium text-[#0B1F33]/58">
@@ -10090,7 +10090,7 @@ function DaaCivicVideoRail({ place }) {
   return (
     <section className="dp-destination-section dp-daa-video-section" aria-label="DAA civic media">
       <div className="dp-daa-video-section-head">
-        <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA civic media</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA civic media</p>
         <h3>Downtown updates in motion.</h3>
       </div>
       <div className="dp-daa-video-rail">
@@ -10135,7 +10135,7 @@ function DaaArtWalkImageRail({ primaryImage }) {
   return (
     <section className="dp-destination-section dp-daa-art-image-section" aria-label="DAA Art Walk images">
       <div className="dp-daa-video-section-head">
-        <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA Art Walk</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA Art Walk</p>
         <h3>Images from the route.</h3>
       </div>
       <div className="dp-daa-art-image-rail">
@@ -10230,7 +10230,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   return (
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
-        <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
         <h3>{stop.detailHeadline || "Why stop here"}</h3>
         <p>{introCopy}</p>
         <p>{reasonCopy}</p>
@@ -10255,7 +10255,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       </section>
 
       <section className="dp-civic-image-card-section" aria-label="What this stop is good for">
-        <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What It's Good For</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What It's Good For</p>
         {goodForLabels.length > 0 ? (
           <ul className="dp-daa-clean-list dp-daa-good-for-list" aria-label="Good for">
             {goodForLabels.map((item) => <li key={item}>{item}</li>)}
@@ -10276,7 +10276,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
       {stop.localTip && (
         <section className="dp-daa-story-block dp-daa-local-tip" aria-label="Local tip">
-          <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Local Tip</p>
+          <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Local Tip</p>
           <h3>Go before sunset.</h3>
           <p>{stop.localTip}</p>
         </section>
@@ -10284,7 +10284,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
       {stop.ctaHeadline && stop.ctaBody && (
         <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks note">
-          <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks</p>
+          <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks</p>
           <h3>{stop.ctaHeadline}</h3>
           <p>{stop.ctaBody}</p>
         </section>
@@ -10334,7 +10334,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       </section>
 
       <section className="dp-daa-next-stops" aria-label="Next nearby stops">
-        <p className="dp-daa-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Keep Exploring</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Keep Exploring</p>
         <h3>Continue the route nearby.</h3>
         <div className="dp-daa-next-rail">
           {nearbyPlaces.map((nearby) => {
@@ -10347,7 +10347,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
                 onClick={() => nearbyPlace && onSelect(nearbyPlace)}
                 className="dp-daa-next-card"
               >
-                <span className="dp-daa-next-card-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Next stop</span>
+                <span className="dp-daa-next-card-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Next stop</span>
                 <strong>{nearbyStop.name}</strong>
                 <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
               </button>
@@ -10783,7 +10783,7 @@ function LegendsContactForm({ listing, formId }) {
       }}
     >
       <div className="max-w-2xl text-left">
-        <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Interested?</div>
+        <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
         <h3 className="mt-1 text-[14px] font-semibold leading-tight text-[#0B1F33] md:text-[15px]">{listing.address}</h3>
         <p className="mt-1 text-[12px] leading-5 text-[#425466]">
           Send interest directly from the map. Legends receives the listing, your timing, and how to follow up.
@@ -10870,7 +10870,7 @@ function LegendsListingDetails({ listing }) {
             className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
           />
           <div className="min-w-0 text-left">
-              <div className="inline-flex dp-map-status-badge px-2 py-1 text-[9px] uppercase text-[11px] font-bold uppercase tracking-normal">
+              <div className="inline-flex dp-map-status-badge px-2 py-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {listing.listingTypeLabel}
             </div>
             <h3 className="mt-2 text-[18px] font-semibold leading-tight text-[#0B1F33] md:text-[20px]">{title}</h3>
@@ -10878,7 +10878,7 @@ function LegendsListingDetails({ listing }) {
           </div>
         </div>
         <div className="text-left md:text-right">
-          <div className="text-[10px] uppercase text-[#0B1F33]/46 text-[11px] font-bold uppercase tracking-normal">Listed at</div>
+          <div className="text-[#0B1F33]/46 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Listed at</div>
           <div className="mt-1 text-[20px] font-semibold text-[#0B1F33]">{listing.priceDisplay}</div>
         </div>
       </div>
@@ -10886,7 +10886,7 @@ function LegendsListingDetails({ listing }) {
       <div className="dp-editorial-detail-list mt-6 grid gap-0">
         {stats.map(([label, value]) => (
           <div key={label} className="dp-editorial-detail-row py-3 text-left">
-            <div className="text-[9px] uppercase text-[#0B1F33]/52 text-[11px] font-bold uppercase tracking-normal">{label}</div>
+            <div className="text-[#0B1F33]/52 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
             <div className="mt-1 text-[13px] font-medium leading-5 text-[#0B1F33]">{value}</div>
           </div>
         ))}
@@ -10913,7 +10913,7 @@ function LegendsListingGallery({ listing }) {
 
   return (
     <div className="mt-4">
-      <div className="mb-2 text-[9px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Listing images</div>
+      <div className="mb-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Listing images</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {images.slice(0, 6).map((image, index) => (
           <div key={`${image}-${index}`} className="relative aspect-[4/3] overflow-hidden rounded-[14px]">
@@ -10956,7 +10956,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
               className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
             />
             <div className="min-w-0">
-              <div className="inline-flex dp-map-status-badge px-2 py-1 text-[9px] uppercase text-[11px] font-bold uppercase tracking-normal">
+              <div className="inline-flex dp-map-status-badge px-2 py-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {listing.listingTypeLabel}
               </div>
               <h3 className="mt-2 text-[18px] font-semibold leading-tight text-[#0B1F33] md:text-[20px]">{title}</h3>
@@ -10964,7 +10964,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
             </div>
           </div>
           <div className="text-left md:text-right">
-            <div className="text-[10px] uppercase text-[#0B1F33]/46 text-[11px] font-bold uppercase tracking-normal">Partner read</div>
+            <div className="text-[#0B1F33]/46 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner read</div>
             <div className="mt-1 text-[18px] font-semibold text-[#0B1F33] md:text-[20px]">{insights.placement}</div>
           </div>
         </div>
@@ -10976,7 +10976,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
         <div className="dp-editorial-detail-list mt-6 grid gap-0">
           {stats.map(([label, value]) => (
             <div key={label} className="dp-editorial-detail-row py-3">
-              <div className="text-[9px] uppercase text-[#0B1F33]/45 text-[11px] font-bold uppercase tracking-normal">{label}</div>
+              <div className="text-[#0B1F33]/45 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
               <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{value}</div>
             </div>
           ))}
@@ -11188,7 +11188,7 @@ function MapNativeCampaignDetails({ place, mode }) {
 
   return (
     <section className="dp-destination-section dp-map-native-campaign-detail">
-      <p className="dp-destination-section-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{mode === "partner" ? "Active campaign" : "Featured experience"}</p>
+      <p className="dp-destination-section-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{mode === "partner" ? "Active campaign" : "Featured experience"}</p>
       <h3>{mode === "partner" ? "What this campaign is for" : "How to use it"}</h3>
       {(place.partnerLine || place.sponsorName) && (
         <p className="dp-destination-section-note">Featured by {place.partnerLine || place.sponsorName}</p>
@@ -11708,7 +11708,7 @@ function TheShoreResidentialEntityDrawer({
           </div>
 
           <section className="dp-entity-section dp-shore-partner-lead">
-            <span className="dp-shore-partner-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">The Shore</span>
+            <span className="dp-shore-partner-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">The Shore</span>
             <h3>A Rainey residential address connected to downtown routines.</h3>
             <p>
               The Shore sits between Lady Bird Lake, Rainey Street, Hotel Van Zandt, and the downtown core.
@@ -11920,7 +11920,7 @@ function TheShoreResidentialEntityDrawer({
             }}
           >
             <div>
-              <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Interested?</div>
+              <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
               <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
             </div>
             {agentFormSubmitted ? (
@@ -12260,7 +12260,7 @@ function LegendsResidentialIntelligenceDrawer({
       </figure>
 
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isListingPanel ? `${isTopLegendsListingPanel ? "Legends Top Listing" : "For sale"} · ${panelTitle}` : `Residential · ${panelEyebrow}`}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isListingPanel ? `${isTopLegendsListingPanel ? "Legends Top Listing" : "For sale"} · ${panelTitle}` : `Residential · ${panelEyebrow}`}</p>
         <h2 className="dp-entity-title">{panelTitle}</h2>
         <p className="dp-entity-meta">{panelMeta}</p>
         {isListingPanel && listingFacts && <p className="dp-entity-meta">{listingFacts}</p>}
@@ -12699,7 +12699,7 @@ function DrawerContactStrip({ place }) {
             <div className="grid gap-2 bg-white/72 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.68)]">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[9px] uppercase text-[#0B1F33]/52 text-[11px] font-bold uppercase tracking-normal">{activeLabel}</div>
+                  <div className="text-[#0B1F33]/52 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{activeLabel}</div>
                   <div className="mt-1 break-words text-[12px] font-medium leading-5 text-[#0B1F33]">
                     {activeContact.value}
                   </div>
@@ -12893,7 +12893,7 @@ function PanelInsightGrid({ items, columns = "md:grid-cols-3" }) {
       {visibleItems.map((item) => {
         const content = (
           <>
-            <div className="text-[9px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">{item.label}</div>
+            <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{item.label}</div>
             <p className={`mt-1.5 text-[12px] leading-5 ${item.emphasis ? "font-semibold text-[#0B1F33]" : "text-[#425466]"}`}>
               {item.value || item.body}
             </p>
@@ -12934,10 +12934,10 @@ function PartnerBusinessInsights({ place }) {
     <section className="mt-4 dp-info-section p-3 md:mt-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Nearby guide</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby guide</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">How this place fits downtown</h3>
         </div>
-        <div className="text-[10px] uppercase text-[#0B1F33]/70 md:text-[11px] text-[11px] font-bold uppercase tracking-normal">
+        <div className="text-[#0B1F33]/70 md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {insights.placement}
         </div>
       </div>
@@ -12954,7 +12954,7 @@ function PartnerMetricInsight({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Partner next step</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner next step</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">What should happen next</h3>
           <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#425466]">{insights.action}</p>
         </div>
@@ -16083,7 +16083,7 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner activity</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner activity</p>
             <h2>Nearby activity, simplified.</h2>
             <p>See what people open, save, scan, and use without the extra noise.</p>
           </section>
@@ -16215,13 +16215,13 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel dp-campaign-drawer">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero dp-campaign-hero">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isCampaignOverview ? "Partner campaigns" : isBrandActivation ? "Brand activation" : "Campaign"}</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isCampaignOverview ? "Partner campaigns" : isBrandActivation ? "Brand activation" : "Campaign"}</p>
             <h2>{isCampaignOverview ? "Campaigns built around real downtown decisions." : `${partnerLabel}: ${campaignTitle}`}</h2>
             <p>{strategyLine}</p>
           </section>
 
           <section className="dp-campaign-moment">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Best move</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Best move</p>
             <h3>{bestMoveTitle}</h3>
             <p>{bestMoveCopy}</p>
             <div className="dp-campaign-meta-row" aria-label="Recommended campaign context">
@@ -16237,7 +16237,7 @@ export default function MapPage() {
           </div>
 
           <section className="dp-campaign-suggestion">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign brief</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign brief</p>
             <h3>{campaignTitle}</h3>
             <p>{momentLine}</p>
             <div className="dp-campaign-detail-list">
@@ -16249,7 +16249,7 @@ export default function MapPage() {
 
           {isCampaignOverview ? (
             <section className="dp-campaign-layer-list" aria-label="Recommended campaign options">
-              <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Recommended campaign options</p>
+              <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Recommended campaign options</p>
               <div>
                 {recommendedCampaignRows.map((campaign) => (
                   <button
@@ -16273,7 +16273,7 @@ export default function MapPage() {
           ) : null}
 
           <section className="dp-campaign-readout" aria-label="Campaign readiness">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Check before launch</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Check before launch</p>
             <div>
               {[
                 ["Map placement", selectedPinCopy],
@@ -16632,7 +16632,7 @@ export default function MapPage() {
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero dp-info-guide-hero">
             <div>
-              <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.eyebrow}</p>
+              <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.eyebrow}</p>
               <h2>{content.headline}</h2>
               <p>{content.copy}</p>
             </div>
@@ -16657,7 +16657,7 @@ export default function MapPage() {
           />
 
           <section className="dp-partner-info-steps" aria-label="Getting started">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Getting started</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Getting started</p>
             {content.steps.map((step, index) => (
               <div key={step}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
@@ -16667,7 +16667,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-partner-feed-list dp-info-guide-list" aria-label="How it works">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p>
             {content.how.map(([title, copy]) => (
               <article key={title} className="dp-tab-row dp-partner-feed-row">
                 <span className="dp-partner-feed-main">
@@ -16679,14 +16679,14 @@ export default function MapPage() {
           </section>
 
           <section className="dp-info-guide-tips" aria-label={content.tipsTitle}>
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.tipsTitle}</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.tipsTitle}</p>
             <div>
               {content.tips.map((tip) => <span key={tip}>{tip}</span>)}
             </div>
           </section>
 
           <section className="dp-info-guide-faq" aria-label="Frequently Asked Questions">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Frequently Asked Questions</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Frequently Asked Questions</p>
             {content.faq.map(([question, answer], index) => (
               <details key={question} open={index === 0}>
                 <summary><span>{question}</span><ChevronDown aria-hidden="true" /></summary>
@@ -16726,7 +16726,7 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel dp-civic-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic</p>
             <h2>Public places in the map.</h2>
             <p>Art Walk, parks, plazas, trailheads, and civic stops with nearby context.</p>
           </section>
@@ -16761,7 +16761,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-campaign-panel">
-            <p className="dp-tab-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic pins</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic pins</p>
             <div className="dp-partner-feed-list dp-horizontal-entity-rail" aria-label="Civic map entities">
               {civicPlaces.map((place) => renderCompactEntityRow(place, "Open"))}
             </div>
@@ -18451,7 +18451,7 @@ export default function MapPage() {
               <button type="button" onClick={restorePreviousMapPanel} className="dp-panel-back" aria-label="Back to previous panel">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
-              <span className="dp-panel-header-title text-[9px] uppercase text-[#BFA46A] md:text-[10px] md: text-[11px] font-bold uppercase tracking-normal">
+              <span className="dp-panel-header-title text-[#BFA46A] md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 Partner scanner
               </span>
               <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close inline-flex h-8 w-8 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] md:h-9 md:w-9" aria-label="Close">
@@ -18460,7 +18460,7 @@ export default function MapPage() {
             </div>
             <div className="dp-pass-panel-body min-h-0 flex-1 overflow-y-auto px-2.5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2 sm:px-4 md:pb-4 md:pt-3">
                 <div className="px-3 pt-1 sm:px-3">
-                  <p className="text-[9px] uppercase text-[#BFA46A] md:text-[10px] md: text-[11px] font-bold uppercase tracking-normal">QR verification</p>
+                  <p className="text-[#BFA46A] md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">QR verification</p>
                   <h2 className="mt-1 text-[22px] font-semibold leading-none tracking-[-0.025em] text-[#0B1F33] md:mt-1.5 md:text-[25px]">Scan a resident pass</h2>
                   <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
                     Check eligibility, review the perk, and record the result.
@@ -18492,14 +18492,14 @@ export default function MapPage() {
             <div className="dp-map-sheet-scroll">
               {!isAuthenticated && !isLoadingAuth ? (
                 <section className="dp-resident-card-identity dp-resident-card-identity--signed-out">
-                  <p className="dp-map-panel-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
+                  <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                   <h2 className="dp-map-panel-title">Sign in to your resident card.</h2>
                   <p className="dp-map-panel-subtitle">See your membership, home property, saved places, and one-time QR pass in one secure view.</p>
                 </section>
               ) : null}
               {isLoadingAuth ? (
                 <section className="dp-resident-card-identity" role="status">
-                  <p className="dp-map-panel-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
+                  <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                   <h2 className="dp-map-panel-title">Checking your account.</h2>
                   <p className="dp-map-panel-subtitle">Your resident details will appear here when they are ready.</p>
                 </section>
@@ -18507,7 +18507,7 @@ export default function MapPage() {
               {isAuthenticated ? (
                 <>
                   <section className="dp-resident-card-identity">
-                    <p className="dp-map-panel-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
+                    <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                     <h2 className="dp-map-panel-title">{residentAccount?.fullName || "Your Downtown Card"}</h2>
                     <p className="dp-map-panel-subtitle">
                       {residentAccount?.buildingName ? `${residentAccount.buildingName} is connected to this resident card.` : "Use your card when a participating place or event asks to confirm resident access."}
@@ -18516,7 +18516,7 @@ export default function MapPage() {
 
                   <section className={`dp-card-credential ${passPresented ? "is-ready" : ""}`} aria-label="Resident QR code">
                     <div className="dp-card-credential-header">
-                      <span className="dp-card-credential-kicker text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{residentAccountStatus(residentAccount).toUpperCase()}</span>
+                      <span className="dp-card-credential-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{residentAccountStatus(residentAccount).toUpperCase()}</span>
                       <span className="dp-card-credential-status">{passPresented ? "Scanned" : "Ready"}</span>
                     </div>
                     <h3 className="dp-card-credential-title">{residentAccount?.buildingName || residentAccount?.buildingDistrict || "Downtown Austin"}</h3>
@@ -18543,13 +18543,13 @@ export default function MapPage() {
                   </MapPanelMatrix>
 
                   <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Current access">
-                    <p className="dp-map-panel-section-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">WHAT YOU CAN USE</p>
+                    <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">WHAT YOU CAN USE</p>
                     <h3 className="dp-map-panel-section-title">Resident benefits nearby</h3>
                     <p className="dp-map-panel-body-copy">Open a participating perk to review its current terms, then show a one-time QR when the partner asks.</p>
                   </section>
 
                   <section className="dp-map-panel-note">
-                    <p className="dp-map-panel-section-label text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">BUILDING MEMBERSHIP</p>
+                    <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">BUILDING MEMBERSHIP</p>
                     <p className="dp-map-panel-body-copy">If your building is an active Downtown Perks or DANA member, eligible resident access is included automatically.</p>
                   </section>
                 </>
@@ -18786,7 +18786,7 @@ export default function MapPage() {
               {isLegendsDirectoryLayer && (
                 <>
                   <section className="dp-map-directory-header">
-                    <p className="dp-map-directory-eyebrow text-[11px] uppercase text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] text-[11px] uppercase tracking-[0.15em] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">LEGENDS REAL ESTATE</p>
+                    <p className="dp-map-directory-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">LEGENDS REAL ESTATE</p>
                     <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
                     <span className="dp-map-directory-subtitle">
                       Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
@@ -18865,7 +18865,7 @@ export default function MapPage() {
                       ["What to try next", "Places and moments that are close enough for people to act on."],
                     ]).map(([title, body]) => (
                   <div key={title} className="dp-partner-intel-card p-3">
-                    <div className="text-[10px] uppercase text-[#0B1F33] text-[11px] font-bold uppercase tracking-normal">{title}</div>
+                    <div className="text-[#0B1F33] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</div>
                     <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/68">{body}</p>
                   </div>
                 ))}
@@ -19710,7 +19710,7 @@ export default function MapPage() {
                         className="dp-contact-continuation mt-8 md:mt-10"
                       >
                         <div>
-                          <div className="text-[10px] uppercase text-[#BFA46A] text-[11px] font-bold uppercase tracking-normal">Interested?</div>
+                          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
                           <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Interested in living here?</h3>
                         </div>
 

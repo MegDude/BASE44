@@ -128,7 +128,7 @@ export default function PartnerDashboard() {
                 className="bg-card rounded-xl border border-border p-5"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase">
+                  <span className="text-muted-foreground dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                     {metric.label}
                   </span>
                   <Icon className={`w-4 h-4 ${metric.color}`} />
