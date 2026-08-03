@@ -13324,7 +13324,7 @@ function GoogleMapCanvas({
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
     const markerPositionKey = (position) => `${Number(position?.lat).toFixed(7)}:${Number(position?.lng).toFixed(7)}`;
-    const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
+    const updateMarker = (marker, { position, content, title, icon, iconKey, zIndex = 1 }) => {
       const nextPositionKey = markerPositionKey(position);
       const positionChanged = marker.__dpLastPositionKey !== nextPositionKey;
       if (canUseAdvancedMarkers && "content" in marker) {
@@ -13334,17 +13334,37 @@ function GoogleMapCanvas({
         // content on every selection/filter pass can momentarily detach the
         // projected element while Google Maps is moving it.
         if (marker.content !== content) marker.content = content;
-        marker.title = title;
-        marker.zIndex = zIndex;
-        marker.map = map;
+        if (marker.__dpLastTitle !== title) {
+          marker.title = title;
+          marker.__dpLastTitle = title;
+        }
+        if (marker.__dpLastZIndex !== zIndex) {
+          marker.zIndex = zIndex;
+          marker.__dpLastZIndex = zIndex;
+        }
+        if (marker.map !== map) marker.map = map;
         return;
       }
       if (positionChanged) marker.setPosition?.(position);
       marker.__dpLastPositionKey = nextPositionKey;
-      marker.setTitle?.(title);
-      marker.setIcon?.(icon);
-      marker.setZIndex?.(zIndex);
-      marker.setMap?.(map);
+      if (marker.__dpLastTitle !== title) {
+        marker.setTitle?.(title);
+        marker.__dpLastTitle = title;
+      }
+      // Only re-apply the icon when its rendered signature actually changes.
+      // Re-setting a freshly built data-URI icon on every reconciliation pass
+      // forces Google to redecode the image, which flashes the pin during pans,
+      // drags, and zooms. Guarding it keeps every classic marker rock-steady.
+      const nextIconKey = iconKey || (typeof icon === "object" && icon ? icon.url || "" : String(icon || ""));
+      if (marker.__dpLastIconKey !== nextIconKey) {
+        marker.setIcon?.(icon);
+        marker.__dpLastIconKey = nextIconKey;
+      }
+      if (marker.__dpLastZIndex !== zIndex) {
+        marker.setZIndex?.(zIndex);
+        marker.__dpLastZIndex = zIndex;
+      }
+      if (marker.getMap?.() !== map) marker.setMap?.(map);
     };
 
     const openCluster = (item) => {
@@ -13385,6 +13405,7 @@ function GoogleMapCanvas({
           content: element,
           title: `${item.count} places nearby`,
           icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
+          iconKey: `cluster|${item.count}|${markerRenderZoom}`,
           zIndex: 500,
         };
         if (existing) {
@@ -13481,6 +13502,10 @@ function GoogleMapCanvas({
         content: wrapper,
         title: place.name,
         icon: legacyDowntownMarkerIcon(maps, place, markerSelected, markerRenderZoom),
+        // Pin icon art is constant across zoom (only cluster art scales), so the
+        // signature omits zoom: the icon is only redecoded on selection or data
+        // changes, never during a pan/drag/zoom gesture.
+        iconKey: `pin|${place.id}|${markerRecord.sourceVersion}|${markerSelected ? "s" : ""}|${pinClasses.trim()}`,
         zIndex: markerSelected
           ? 1000
           : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
