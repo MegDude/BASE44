@@ -408,6 +408,10 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
           entity?.raw?.entityId,
           entity?.slug,
           entity?.raw?.slug,
+          entity?.name,
+          entity?.title,
+          entity?.raw?.name,
+          entity?.raw?.title,
         ].some((value) => String(value || "").toLowerCase() === canonicalNormalized || normalizePropertyId(value) === canonicalSlug);
       })
     : null;
@@ -420,6 +424,10 @@ export function resolveMapEntityFromCollection(entityId, entities = []) {
       entity?.raw?.entityId,
       entity?.slug,
       entity?.raw?.slug,
+      entity?.name,
+      entity?.title,
+      entity?.raw?.name,
+      entity?.raw?.title,
     ].some((value) => String(value || "").toLowerCase() === rawNormalized || normalizePropertyId(value) === rawSlug);
   });
   if (exactMatch) return exactMatch;

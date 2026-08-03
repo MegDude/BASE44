@@ -14869,7 +14869,7 @@ export default function MapPage() {
   const requestScopedMapResults = useCallback(async (options = {}) => {
     const scope = buildScopedMapQuery(options);
     recentScopedQueryRef.current = scope.query || "";
-    const result = await runScopedMapSearch(scope, options.trigger || scope.trigger || "search");
+    const result = await runScopedMapSearch(scope, options.trigger || scope.trigger || "search", options.requestReason || scope.requestReason || "text_search");
     if (!result?.resultIds?.length) return [];
     setSearchAreaDirty(false);
     return result.resultIds.map((id) => result.entitiesById[id]).filter(Boolean);
@@ -14923,6 +14923,7 @@ export default function MapPage() {
         filterOverride: "All",
         activeEntityId: "",
         trigger: "default-discovery",
+        requestReason: "initial_discovery",
       });
       return;
     }
@@ -14935,6 +14936,7 @@ export default function MapPage() {
       collectionId: urlState.collection,
       activeEntityId: urlState.entityId,
       trigger: hasUrlEntity ? "entity_url" : hasCollection ? "curated_route" : hasCampaign ? "campaign_url" : activeFilter === "Saved" ? "saved" : /qr/i.test(urlState.source) ? "qr_url" : hasUrlQuery ? "url_query" : "url_filter",
+      requestReason: hasUrlEntity ? "entity_selection" : hasCollection ? "route_change" : hasUrlQuery ? "text_search" : hasExplicitFilter || hasScopedDistrict ? "filter_change" : "intent_change",
       limit: hasUrlEntity ? 6 : hasCollection ? Math.min(25, getMapCollectionById(urlState.collection)?.stopIds?.length || 25) : undefined,
     });
   }, [
@@ -17542,6 +17544,7 @@ export default function MapPage() {
       collectionId: routeCollection?.id || "",
       activeEntityId: "",
       trigger: routeCollection?.id ? "curated_route" : "text_search",
+      requestReason: routeCollection?.id ? "route_change" : "text_search",
       limit: routeCollection?.stopIds?.length || undefined,
     });
     const normalizedExactQuery = query.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -17596,6 +17599,7 @@ export default function MapPage() {
       collectionId: routeCollection?.id || "",
       activeEntityId: "",
       trigger: routeCollection?.id ? "curated_route" : "prompt_search",
+      requestReason: routeCollection?.id ? "route_change" : "text_search",
       limit: routeCollection?.stopIds?.length || undefined,
     });
     recordMapUserAction("search", {
@@ -17635,6 +17639,7 @@ export default function MapPage() {
         intentOverride: item.id,
         activeEntityId: "",
         trigger: "partner_intent",
+        requestReason: "intent_change",
       });
       setMapAnswer(buildAgenticMapAnswer(item.label || item.id, localResults, "partner", district, nextFilter));
       recordMapUserAction("filter", { intent: item.id, filter: nextFilter, resultCount: localResults.length, source: "partner_intent_console" });
@@ -17668,6 +17673,7 @@ export default function MapPage() {
       filterOverride: committedFilter,
       activeEntityId: "",
       trigger: "time_intent",
+      requestReason: "intent_change",
     });
     setFiltersOpen(false);
     setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, committedFilter));
@@ -17688,6 +17694,7 @@ export default function MapPage() {
       filterOverride: committedFilter,
       activeEntityId: "",
       trigger: "radius_intent",
+      requestReason: "filter_change",
     });
     setFiltersOpen(false);
     setMapAnswer(buildAgenticMapAnswer(nextQuery, localResults, urlState.mode, district, committedFilter));
@@ -17720,6 +17727,7 @@ export default function MapPage() {
         intentOverride: nextIntentId,
         activeEntityId: "",
         trigger: "intent_filter",
+        requestReason: "intent_change",
       });
       setMapAnswer(buildAgenticMapAnswer(nextFilter, localResults, urlState.mode, district, nextFilter));
       recordMapUserAction("filter", { filter: nextFilter, resultCount: localResults.length, source: "intent_console" });
