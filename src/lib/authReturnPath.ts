@@ -106,7 +106,10 @@ export function normalizeResidentReturnPath(value?: string | null) {
 }
 
 export function getAuthenticatedAccountRole(account?: Record<string, unknown> | null) {
-  const role = String(account?.role || account?.platform_role || "").toLowerCase();
+  const appMetadata = account?.app_metadata as Record<string, unknown> | undefined;
+  const role = String(
+    account?.platform_role || appMetadata?.platform_role || appMetadata?.role || account?.role || "",
+  ).toLowerCase();
   if (role === "resident" || role === "partner" || ADMIN_ROLES.has(role)) return role;
   return "resident";
 }
