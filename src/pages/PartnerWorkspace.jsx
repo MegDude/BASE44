@@ -636,7 +636,7 @@ export default function PartnerWorkspace() {
 
 function PartnerWorkspaceContent() {
   const location = useLocation();
-  const { user: authenticatedUser } = useAuth();
+  const { user: authenticatedUser, logout } = useAuth();
   const [user, setUser] = useState(() => ({
     ...PUBLIC_PARTNER_USER,
     ...(getStoredProfile() || {}),
@@ -799,7 +799,7 @@ function PartnerWorkspaceContent() {
               <Search className="h-4 w-4" aria-hidden="true" />
               <span>Search Downtown Perks</span>
             </button>
-            {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
+            {isPartnerLoggedIn ? <button type="button" onClick={() => navigate(withPartnerWorkspaceScope("/partner-workspace/connections", workspaceScope))} aria-label="Notification settings"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
               <button type="button" onClick={handleAccount} disabled={!isPartnerLoggedIn && !accountAccessEnabled} className="dp-partner-workspace-signin">
                 {isPartnerLoggedIn ? "Account" : "Sign in"}
@@ -868,7 +868,7 @@ function PartnerWorkspaceContent() {
           {tab === "reports" && <WorkspaceReportsSurface key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
-          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
+          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} onSignOut={() => logout(true, "/partners/sign-in")} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
@@ -3108,7 +3108,7 @@ function EventForm({ user, event, scope, onClose, onSave }) {
 
 // ─── PROFILE ──────────────────────────────────────────────────────────────────
 
-function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false }) {
+function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false, onSignOut }) {
   const storedProfile = getStoredProfile() || {};
   const defaultStory = "";
   const defaultAction = "";
@@ -3353,12 +3353,20 @@ function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasP
         </section>
 
         <section className="dp-workspace-ia-summary" aria-label="Profile and settings overview">
-          {profileSections.map((section) => (
+          {profileSections.map((section) => {
+            const destination = section.title === "Public presence"
+              ? "/map?mode=partner&tab=map&filter=All"
+              : section.title === "Notifications"
+                ? "/partner-workspace/connections"
+                : section.title === "Active scope"
+                  ? "/partner-workspace/overview"
+                  : "/partner-workspace/settings";
+            return (
             <article key={section.title}>
-              <button type="button">
+              <Link to={destination} aria-label={`Open ${section.title.toLowerCase()} settings`}>
                 <span><strong>{section.title}</strong><small>{section.summary}</small></span>
                 <ChevronRight aria-hidden="true" />
-              </button>
+              </Link>
               <dl>
                 {section.rows.map(([label, value]) => (
                   <div key={label}>
@@ -3368,13 +3376,14 @@ function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasP
                 ))}
               </dl>
             </article>
-          ))}
+            );
+          })}
         </section>
 
         <div className="dp-workspace-ia-actions">
           <Link to="/map?mode=partner&tab=map&filter=All">Preview public presence</Link>
           <Link to="/partner-workspace/settings">Billing and settings</Link>
-          <button type="button">Sign out</button>
+          <button type="button" onClick={onSignOut}>Sign out</button>
         </div>
       </form>
     </motion.div>
@@ -3418,7 +3427,7 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
   );
 }
 
-// ─── SHARED UTILITIES ────────���──��──────────────────────────────────────��──────
+// ─── SHARED UTILITIES ────────���──��──────────────────────────────���───────��──────
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (

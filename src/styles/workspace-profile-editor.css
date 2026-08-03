@@ -542,7 +542,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
 .dp-workspace-ia-primary:focus-visible,
 .dp-workspace-ia-actions a:focus-visible,
 .dp-workspace-ia-actions button:focus-visible,
-.dp-workspace-ia-summary button:focus-visible {
+.dp-workspace-ia-summary :is(button, a):focus-visible {
   outline: 2px solid #c8a96a;
   outline-offset: 2px;
 }
@@ -646,7 +646,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
   padding: 0;
 }
 
-.dp-workspace-ia-summary button {
+.dp-workspace-ia-summary :is(button, a) {
   align-items: center;
   background: #fff;
   border: 0;
@@ -656,10 +656,11 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
   min-height: 58px;
   padding: 0;
   text-align: left;
+  text-decoration: none;
   width: 100%;
 }
 
-.dp-workspace-ia-summary button strong {
+.dp-workspace-ia-summary :is(button, a) strong {
   display: block;
   font-size: 15px;
 }
