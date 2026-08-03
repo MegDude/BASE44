@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  ArrowLeft,
   BarChart3,
   Building2,
   CalendarDays,
@@ -197,9 +198,11 @@ export default function AboutDowntownPerksModal({ open, onClose }: AboutDowntown
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.985 }}
             transition={{ duration, ease }}
           >
-            <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center justify-between gap-3 border-b border-[#0B1F33]/8 bg-white/92 px-4 backdrop-blur-xl">
-              <span aria-hidden="true" />
-              <p className="dp-modal-kicker">How Downtown Perks works</p>
+<header className="sticky top-0 z-20 grid h-14 shrink-0 grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-3 border-b border-[#0B1F33]/8 bg-white/92 px-4 backdrop-blur-xl">
+<button type="button" onClick={onClose} className="dp-modal-back inline-flex h-11 w-11 items-center justify-center" aria-label="Back from Downtown Perks overview">
+<ArrowLeft className="h-4 w-4" />
+</button>
+<p className="dp-modal-kicker text-center">How Downtown Perks works</p>
               <button
                 type="button"
                 onClick={onClose}

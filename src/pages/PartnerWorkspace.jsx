@@ -783,14 +783,12 @@ function PartnerWorkspaceContent() {
             <Menu aria-hidden="true" />
           </button>
           <nav className="dp-workspace-history-controls" aria-label="Page controls">
-            <button type="button" onClick={handleWorkspaceBack} aria-label="Go back">
-              <ChevronLeft aria-hidden="true" />
-              <span>Back</span>
-            </button>
-            <button type="button" onClick={handleWorkspaceClose} aria-label="Close workspace">
-              <X aria-hidden="true" />
-              <span>Close</span>
-            </button>
+<button type="button" onClick={handleWorkspaceBack} aria-label="Go back">
+<ChevronLeft aria-hidden="true" />
+</button>
+<button type="button" onClick={handleWorkspaceClose} aria-label="Close workspace">
+<X aria-hidden="true" />
+</button>
           </nav>
           <Link className="dp-partner-workspace-brand" to={withPartnerWorkspaceScope("/partner-workspace/home", workspaceScope)} aria-label="Downtown Perks workspace home">
             <strong>Downtown Perks</strong>
@@ -816,9 +814,10 @@ function PartnerWorkspaceContent() {
         <aside className="dp-workspace-sidebar" data-open={mobileNavOpen ? "true" : "false"}>
           <div className="dp-workspace-sidebar-head">
             <span>Workspace</span>
-            <div className="dp-workspace-surface-controls">
-              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /><span>Close</span></button>
-            </div>
+<div className="dp-workspace-surface-controls">
+<button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Go back from workspace navigation"><ChevronLeft aria-hidden="true" /></button>
+<button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /></button>
+</div>
           </div>
           <nav aria-label="Workspace navigation">
             {WORKSPACE_NAV_GROUPS.map((group) => {
@@ -2394,8 +2393,8 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
             onClick={(event) => event.stopPropagation()}
           >
             <div className="dp-workspace-surface-controls dp-workspace-upgrade-controls">
-              <button type="button" aria-label="Go back from upgrade prompt" onClick={() => setUpgradePrompt(null)}><ChevronLeft aria-hidden="true" /><span>Back</span></button>
-              <button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}><X aria-hidden="true" /><span>Close</span></button>
+<button type="button" aria-label="Go back from upgrade prompt" onClick={() => setUpgradePrompt(null)}><ChevronLeft aria-hidden="true" /></button>
+<button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}><X aria-hidden="true" /></button>
             </div>
             <p className="dp-workspace-eyebrow">Add-on</p>
             <h2 id="workspace-upgrade-title">Add {upgradePrompt.label}</h2>
@@ -3419,7 +3418,7 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
   );
 }
 
-// ─── SHARED UTILITIES ───────────��──────────────────────────────────────��──────
+// ─── SHARED UTILITIES ────────���──��──────────────────────────────────────��──────
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (

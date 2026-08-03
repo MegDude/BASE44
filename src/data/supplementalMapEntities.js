@@ -228,7 +228,7 @@ const BRAND_ACTIVATION_PERKS = [
     address: "Downtown Austin, TX 78701",
     summary: "A downtown style stop for residents and visitors looking for a quick eyewear, accessory, or shopping moment near the route.",
     description: "Fine Eyewear belongs in the Downtown Perks Brand Activations layer as a style-focused retail stop for resident shopping routes, hotel guest discovery paths, and measurable partner campaigns.",
-    offer: "Partner-approved style stop offer, accessory credit, eyewear consult, or Perks Card prompt.",
+    offer: "A resident style benefit is being finalized with Fine Eyewear. Save this stop to receive the approved offer when it launches.",
     campaignObjective: "Feature Fine Eyewear inside the Brand Activations layer and connect it to retail, style, hotel guest, and resident discovery routes.",
     partnerInsight: "Use Fine Eyewear as a style-oriented retail stop that can convert nearby residents, hotel guests, and downtown workers through a simple route-based shopping prompt.",
     audience: "Downtown residents, visitors, hotel guests, downtown workers, shoppers, and brand activation audiences.",

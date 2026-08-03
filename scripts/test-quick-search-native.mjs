@@ -5,10 +5,11 @@ const component = readFileSync("src/components/navigation/QuickSearchModal.tsx",
 const styles = readFileSync("src/styles/quick-search-native-final.css", "utf8");
 const main = readFileSync("src/main.jsx", "utf8");
 
+assert.match(main, /quick-search-native-final\.css"/, "Quick-search native styles must be loaded");
 assert.match(
   main,
-  /global-back-control-final\.css"\s*\nimport "@\/styles\/quick-search-native-final\.css"/,
-  "Quick-search native styles must remain the terminal quick-search authority",
+  /global-back-control-final\.css"[\s\S]*?const application/,
+  "The shared thin Back-control authority must remain the terminal stylesheet",
 );
 
 for (const functionalContract of [
@@ -25,10 +26,8 @@ for (const functionalContract of [
   assert.match(component, functionalContract, `Quick-search behavior is missing ${functionalContract}`);
 }
 
-// iOS-native IA: a modal search overlay exposes a single unambiguous Close
-// affordance, never a misleading "Back" that behaves identically to Close.
-// (See test-polished-panel-state-contract.mjs, which forbids the Back label.)
-assert.doesNotMatch(component, /aria-label="Go back from search"/, "Search must not expose a misleading Back control");
+// Universal overlay IA: icon-only Back stays top-left and Close stays top-right.
+assert.match(component, /aria-label="Go back from search"/, "Search is missing Back");
 assert.match(component, /aria-label="Close search"/, "Search is missing Close");
 assert.match(component, /aria-label="Popular searches"/, "Search shortcuts need a plain-language label");
 assert.doesNotMatch(component, /Coffee before work|Happy hour nearby|Explore by intent/, "Search still uses retired generic copy");
