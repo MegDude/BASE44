@@ -309,7 +309,7 @@ export default function ResidentHome() {
           </button>
         ) : (
           <button type="button" className="dp-resident-header-back" data-page-back="true" onClick={() => openPanel("home")} aria-label="Back to resident home">
-            <ArrowLeft aria-hidden="true" /><span>Back</span>
+            <ArrowLeft aria-hidden="true" />
           </button>
         )}
         <button type="button" className="dp-resident-home-close" onClick={closeResidentHome} aria-label="Close resident home">

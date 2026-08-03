@@ -140,7 +140,6 @@ import "@/styles/map-detail-panel-live-final.css"
 import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
-import "@/styles/global-back-control-final.css"
 import "@/styles/quick-search-native-final.css"
 import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
@@ -155,6 +154,9 @@ import "@/styles/native-luxury-platform-release.css"
 import "@/styles/panel-media-system-final.css"
 import "@/styles/workspace-founding-partner-targets-final.css"
 import "@/styles/perk-action-visibility-final.css"
+// Canonical thin/sharp/chic Back-control spec — must remain the terminal
+// stylesheet so its 15px sharp Back rules win the cascade on every surface.
+import "@/styles/global-back-control-final.css"
 
 const application = <App />
 

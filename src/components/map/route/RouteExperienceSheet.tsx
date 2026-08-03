@@ -158,7 +158,7 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
             <header className="dp-route-sheet-header dp-route-stop-detail-header">
               <div>
                 <button type="button" className="dp-route-back-button" onClick={returnToRoute} aria-label={`Back to ${route.shortTitle || route.title}`}>
-                  <ArrowLeft aria-hidden="true" /> Back to {route.shortTitle || route.title}
+                  <ArrowLeft aria-hidden="true" />
                 </button>
                 <strong id={`dp-route-stop-sheet-title-${activeStop.id}`}>{stopTitle(activeStop)}</strong>
               </div>
