@@ -12,14 +12,13 @@ const AuthContext = createContext();
 const PARTNER_SESSION_KEY = "dp_partner_workspace:session";
 const PLATFORM_ROLES = new Set(["resident", "partner", "admin", "platform_admin", "super_admin"]);
 
-function buildSupabaseProfile(currentUser) {
+function buildSupabaseProfile(currentUser, accessContext = null) {
   if (!currentUser) return null;
   const appMetadata = currentUser.app_metadata || {};
   const userMetadata = currentUser.user_metadata || {};
   const declaredRole = String(
+    accessContext?.platform_role ||
     appMetadata.platform_role ||
-    appMetadata.role ||
-    appMetadata.account_type ||
     "resident",
   ).toLowerCase();
   const role = appMetadata.is_super_admin === true
@@ -41,6 +40,9 @@ function buildSupabaseProfile(currentUser) {
     platform_role: role,
     is_super_admin: role === "super_admin",
     has_global_scope: isPlatformAdmin,
+    partner_id: accessContext?.partner_id || null,
+    is_impersonating: accessContext?.is_impersonating === true,
+    impersonation_expires_at: accessContext?.impersonation_expires_at || null,
     authProvider: "supabase",
   };
 }
@@ -104,7 +106,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const applySupabaseUser = (currentUser) => {
+  const applySupabaseUser = (currentUser, accessContext = null) => {
     if (!currentUser) {
       setIsLoadingAuth(false);
       setUser(null);
@@ -112,11 +114,17 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const profile = buildSupabaseProfile(currentUser);
+    const profile = buildSupabaseProfile(currentUser, accessContext);
     setUser(profile);
     setIsAuthenticated(true);
     setIsLoadingAuth(false);
     setAuthError(null);
+  };
+
+  const loadAccessContext = async () => {
+    const { data, error } = await supabaseClient.rpc("current_access_context");
+    if (error) throw error;
+    return Array.isArray(data) ? (data[0] || null) : data;
   };
 
   const applySupabaseSession = (session) => {
@@ -138,7 +146,8 @@ export const AuthProvider = ({ children }) => {
       // authoritative for platform authorization.
       const { data: userData, error: userError } = await supabaseClient.auth.getUser();
       if (userError) throw userError;
-      applySupabaseUser(userData?.user || null);
+      const accessContext = await loadAccessContext();
+      applySupabaseUser(userData?.user || null, accessContext);
     } catch (error) {
       setUser(null);
       setIsAuthenticated(false);
@@ -202,6 +211,27 @@ export const AuthProvider = ({ children }) => {
     return null;
   };
 
+  const refreshAccessContext = async () => {
+    if (!supabaseClient || !isAuthenticated) return null;
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError) throw userError;
+    const accessContext = await loadAccessContext();
+    applySupabaseUser(userData?.user || null, accessContext);
+    return accessContext;
+  };
+
+  const startPartnerImpersonation = async (partnerId, reason = "Workspace support") => {
+    const { error } = await supabaseClient.rpc("start_partner_impersonation", { target_partner_id: partnerId, session_reason: reason });
+    if (error) throw error;
+    return refreshAccessContext();
+  };
+
+  const stopPartnerImpersonation = async () => {
+    const { error } = await supabaseClient.rpc("stop_partner_impersonation");
+    if (error) throw error;
+    return refreshAccessContext();
+  };
+
   const signInPartner = async (profile = {}) => {
     if (!canUseProductionAccountAccess()) {
       setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
@@ -223,34 +253,30 @@ export const AuthProvider = ({ children }) => {
         setAuthError(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
         return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
       }
-      if (!email) {
-        const message = "Enter the email for this account before requesting sign-in access.";
+      if (!email || !profile.password) {
+        const message = "Enter your workspace email and password.";
         setAuthError(message);
         return { type: "error", message };
       }
-      const { error } = await supabaseClient.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}${redirectPath}`,
-          shouldCreateUser: false,
-          data: {
-            organization_name: organizationName,
-            partner_type: partnerType,
-            partner_type_label: profile.partner_type_label || "",
-          },
-        },
-      });
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: profile.password });
       if (error) {
-        const rateLimited = error.status === 429 || /rate|too many/i.test(error.message || "");
-        const message = rateLimited
-          ? "Too many sign-in links were requested. Wait a few minutes, then try again."
-          : (error.message || "The secure sign-in link could not be sent.");
+        const message = error.message || "We could not sign you in with that email and password.";
         setAuthError(message);
-        return { type: rateLimited ? "rate_limited" : "delivery_failed", message };
+        return { type: "error", message };
       }
-      const message = "Check your email for the secure sign-in link.";
-      setAuthError(null);
-      return { type: "link_sent", email, message, redirectPath };
+      const { data: verifiedUserData, error: userError } = await supabaseClient.auth.getUser();
+      if (userError) return { type: "error", message: userError.message };
+      const accessContext = await loadAccessContext();
+      const verifiedUser = verifiedUserData?.user || data?.user;
+      const verifiedProfile = buildSupabaseProfile(verifiedUser, accessContext);
+      if (!["partner", "platform_admin", "super_admin"].includes(verifiedProfile?.role)) {
+        await supabaseClient.auth.signOut();
+        const message = "This account does not have partner workspace access.";
+        setAuthError(message);
+        return { type: "error", message };
+      }
+      applySupabaseUser(verifiedUser, accessContext);
+      return { type: "authenticated", user: verifiedProfile, redirectPath };
     }
 
     const nextSession = {
@@ -429,6 +455,9 @@ export const AuthProvider = ({ children }) => {
       authError,
       appPublicSettings,
       logout,
+      refreshAccessContext,
+      startPartnerImpersonation,
+      stopPartnerImpersonation,
       signInPartner,
       signInResidentWithPassword,
       registerResidentWithPassword,

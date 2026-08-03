@@ -55,10 +55,11 @@ function ProtectedRoute({ children }) {
   if (isAuthenticated) {
     const role = String(user?.role || "resident").toLowerCase();
     if (role === "resident") return <Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />;
-    if (["admin", "platform_admin", "super_admin"].includes(role)) {
+    if (["admin", "platform_admin", "super_admin"].includes(role) && !user?.is_impersonating) {
       const adminDestination = location.pathname === "/partner-workspace/residents" ? "/admin-studio/residents" : "/admin-studio/command-center";
       return <Navigate to={adminDestination} replace />;
     }
+    if (!user?.partner_id) return <Navigate to="/partners/sign-in?error=partner_access_required" replace />;
     return children;
   }
   return (

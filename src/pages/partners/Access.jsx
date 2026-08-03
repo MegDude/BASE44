@@ -147,7 +147,7 @@ function getAuthFailureMessage(code) {
   return value.replace(/_/g, " ");
 }
 
-async function startPartnerSignIn(navigate, signInPartner, { email, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
+async function startPartnerSignIn(navigate, signInPartner, { email, password, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
   const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
@@ -157,6 +157,7 @@ async function startPartnerSignIn(navigate, signInPartner, { email, accountType,
   const redirectPath = `/auth/callback?audience=partner&returnTo=${encodeURIComponent(destination)}`;
   const session = await signInPartner({
     email,
+    password,
     organization_name: `${accessLabel} Access`,
     contact_name: email || accessLabel,
     partner_type: partnerType,
@@ -164,7 +165,10 @@ async function startPartnerSignIn(navigate, signInPartner, { email, accountType,
     role: getAccessRoleForType(partnerType),
     redirectPath,
   });
-  if (session?.type === "partner") navigate(destination);
+  if (session?.type === "authenticated") {
+    const role = String(session.user?.role || "").toLowerCase();
+    navigate(["platform_admin", "super_admin"].includes(role) ? "/admin-studio/command-center" : destination);
+  }
   return session;
 }
 
@@ -226,6 +230,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
   const [submissionMessage, setSubmissionMessage] = useState(getAuthFailureMessage(callbackError));
   const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
   const [signInType, setSignInType] = useState(
     SIGN_IN_ACCESS_TYPES.some((type) => type.value === initialType) ? initialType : "property",
   );
@@ -404,21 +409,22 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       setSubmissionMessage(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
       return;
     }
-    if (!signInEmail && !user?.email) {
-      setSubmissionState("error");
-      setSubmissionMessage("Enter the email for this account before requesting sign-in access.");
+  if ((!signInEmail && !user?.email) || !signInPassword) {
+    setSubmissionState("error");
+    setSubmissionMessage("Enter your workspace email and password.");
       return;
     }
     setSubmissionState("submitting");
     setSubmissionMessage("");
     const session = await startPartnerSignIn(navigate, signInPartner, {
-      email: signInEmail || user?.email || "account@downtownperks.local",
-      accountType: signInType,
+    email: signInEmail || user?.email || "",
+    password: signInPassword,
+    accountType: signInType,
       returnTo: requestedReturnTo,
     });
-    if (session?.type === "partner") return;
-    setSubmissionState(session?.type === "link_sent" ? "success" : "error");
-    setSubmissionMessage(session?.message || "Check your email for the secure sign-in link.");
+  if (session?.type === "authenticated") return;
+  setSubmissionState("error");
+  setSubmissionMessage(session?.message || "We could not sign you in with those credentials.");
   }
 
   return (
@@ -597,15 +603,23 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     })}
                   </div>
                 </section>
-                <PartnerAccessField
-                  label={`${selectedSignInType?.label || "Account"} email`}
-                  type="email"
-                  placeholder="name@organization.com"
-                  value={signInEmail}
-                  onChange={setSignInEmail}
-                  required={accountAccessEnabled}
-                />
-                {submissionMessage ? (
+  <PartnerAccessField
+  label={`${selectedSignInType?.label || "Account"} email`}
+  type="email"
+  placeholder="name@organization.com"
+  value={signInEmail}
+  onChange={setSignInEmail}
+  required={accountAccessEnabled}
+  />
+  <PartnerAccessField
+  label="Password"
+  type="password"
+  placeholder="Enter your workspace password"
+  value={signInPassword}
+  onChange={setSignInPassword}
+  required={accountAccessEnabled}
+  />
+  {submissionMessage ? (
                   <p
                     className={`text-[12px] leading-5 ${
                       submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
@@ -623,7 +637,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     className={`${accessActionClass} dp-acquisition-primary`}
                   >
                     <LogIn className="h-4 w-4 text-[#BFA46A]" />
-                    {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
+                    {submissionState === "submitting" ? "Signing in" : accountAccessEnabled ? "Sign in to workspace" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
