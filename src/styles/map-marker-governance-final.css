@@ -15,6 +15,20 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-ma
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  /* Promote each anchored marker to its own compositor layer so it stays
+     razor-sharp and never shimmers or flickers while the map is panned,
+     dragged, or zoomed. This is a rendering-quality hint only: it does not
+     shift the pin, which remains anchored to its canonical coordinate. */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-marker-shell :is(svg, img) {
+  /* Keep glyph and logo art crisp on high-DPI screens during motion. */
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(

@@ -41,6 +41,9 @@ jobs:
       - name: Validate required outputs
         run: npm run test:partner-content-inventory
 
+      - name: Validate map panel actions and Show QR
+        run: node scripts/test-map-panel-action-rail.mjs
+
       - name: Validate Founding Partner Collection
         run: node scripts/test-founding-partner-collection.mjs
 

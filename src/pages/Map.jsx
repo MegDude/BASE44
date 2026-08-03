@@ -13370,9 +13370,15 @@ function GoogleMapCanvas({
         const existing = registry.get(key);
         const element = existing?.element || document.createElement("button");
         if (!existing) element.type = "button";
-        element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
-        element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
-        element.setAttribute("aria-label", `Open ${item.count} places nearby`);
+        // Only rewrite cluster markup when the count changes; panning/dragging at a
+        // steady count leaves the cluster untouched and anchored without flashing.
+        const clusterSignature = `count:${item.count}`;
+        if (!existing || existing.contentSignature !== clusterSignature) {
+          element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
+          element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
+          element.setAttribute("aria-label", `Open ${item.count} places nearby`);
+          if (existing) existing.contentSignature = clusterSignature;
+        }
         applyZoomMarkerStyle(element, markerRenderZoom, { clusterCount: item.count });
         const markerOptions = {
           position: { lat: item.coords[0], lng: item.coords[1] },
@@ -13385,7 +13391,7 @@ function GoogleMapCanvas({
           existing.currentItem = item;
           updateMarker(existing.marker, markerOptions);
         } else {
-          const entry = { currentItem: item, type: "cluster", marker: null, element };
+          const entry = { currentItem: item, type: "cluster", marker: null, element, contentSignature: clusterSignature };
           element.addEventListener("click", () => openCluster(entry.currentItem));
           entry.marker = createDowntownMarker({
             maps,
@@ -13415,35 +13421,60 @@ function GoogleMapCanvas({
 
       const existing = registry.get(key);
       const wrapper = existing?.element || document.createElement("div");
+      const entry = existing || { currentPlace: place, type: "pin", marker: null, element: wrapper };
+      // Keep the closure source of truth fresh so listeners bound once still act
+      // on the latest place data across reconciliation passes.
+      entry.currentPlace = place;
       wrapper.className = "dp-google-map-marker-shell";
       wrapper.dataset.markerEntityId = markerRecord.markerId;
       wrapper.dataset.entityId = markerRecord.entityId;
       wrapper.dataset.sourceVersion = markerRecord.sourceVersion;
+      // Sizing is driven by CSS custom properties on the shell, so refreshing it
+      // every pass is cheap and never repaints (or reflows) the pin content.
       applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: markerSelected });
-      wrapper.innerHTML = mapPinButtonHtml({
-        place,
-        pin: resolveEntityPin(place),
-        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
-        selected: markerSelected,
-        pulsing: markerRecord.markerId === pulsingPinId || place.id === pulsingPinId,
-        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
-        zoom: markerRenderZoom,
-      });
-      const button = wrapper.querySelector(".dp-map-pin");
-      button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
-      button?.setAttribute("data-entity-id", markerRecord.entityId);
-      button?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        markUserNavigated();
-        markerActionHandlersRef.current.onSelect?.(place);
-      });
-      button?.addEventListener("dblclick", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        markUserNavigated();
-        markerActionHandlersRef.current.onSelectNearestLegends?.(place);
-      });
+
+      const markerPulsing = markerRecord.markerId === pulsingPinId || place.id === pulsingPinId;
+      const stopNumber = Number(place?.routeStopNumber || 0);
+      const pinClasses = `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`;
+      // Only rebuild the pin's DOM when its own visual signature changes. Panning,
+      // dragging, and zooming never alter an individual pin's markup, so this keeps
+      // every anchored pin perfectly stable and flash-free during map gestures.
+      const contentSignature = [
+        markerRecord.sourceVersion,
+        markerRecord.markerId,
+        place.name,
+        markerSelected ? "s" : "",
+        markerPulsing ? "p" : "",
+        stopNumber,
+        pinClasses,
+      ].join("|");
+      if (entry.contentSignature !== contentSignature) {
+        entry.contentSignature = contentSignature;
+        wrapper.innerHTML = mapPinButtonHtml({
+          place,
+          pin: resolveEntityPin(place),
+          ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
+          selected: markerSelected,
+          pulsing: markerPulsing,
+          classes: pinClasses,
+          zoom: markerRenderZoom,
+        });
+        const button = wrapper.querySelector(".dp-map-pin");
+        button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
+        button?.setAttribute("data-entity-id", markerRecord.entityId);
+        button?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          markUserNavigated();
+          markerActionHandlersRef.current.onSelect?.(entry.currentPlace);
+        });
+        button?.addEventListener("dblclick", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          markUserNavigated();
+          markerActionHandlersRef.current.onSelectNearestLegends?.(entry.currentPlace);
+        });
+      }
 
       const markerOptions = {
         position: { lat: coords[0], lng: coords[1] },
@@ -13457,10 +13488,8 @@ function GoogleMapCanvas({
             : 1,
       };
       if (existing) {
-        existing.currentPlace = place;
         updateMarker(existing.marker, markerOptions);
       } else {
-        const entry = { currentPlace: place, type: "pin", marker: null, element: wrapper };
         entry.marker = createDowntownMarker({
           maps,
           map,
