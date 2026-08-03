@@ -135,15 +135,12 @@
     "test:native-drawer-map-recovery": "node scripts/test-native-drawer-map-recovery-contract.mjs",
     "test:google-map-marker-anchoring": "node scripts/test-google-map-marker-anchoring-contract.mjs",
     "test:workspace-campaign-drawer-contract": "node scripts/test-workspace-campaign-drawer-contract.mjs",
-<<<<<<< HEAD
-    "test:authenticated-routes-scope": "node scripts/test-authenticated-routes-scope-contract.mjs"
-=======
+    "test:authenticated-routes-scope": "node scripts/test-authenticated-routes-scope-contract.mjs",
     "sync:production-map-inventory": "node scripts/sync-production-map-inventory.mjs",
     "test:workspace-live-inventory": "node scripts/test-workspace-live-inventory.mjs",
     "test:audience-backend-operations": "node scripts/test-audience-backend-operations.mjs",
     "test:workspace-connections": "node scripts/test-workspace-connections.mjs",
     "test:protected-audience-connections-release": "node scripts/test-protected-audience-connections-release.mjs"
->>>>>>> origin/main
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",

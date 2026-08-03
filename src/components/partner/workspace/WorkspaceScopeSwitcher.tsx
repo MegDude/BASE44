@@ -30,19 +30,6 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
     : [];
   if (accessMode === "admin") {
     return (
-<<<<<<< HEAD
-      <section className="dp-workspace-scope dp-workspace-scope--admin" aria-label="Choose admin workspace scope">
-        <div className="dp-workspace-scope__summary">
-          <p>Admin workspace</p>
-          <strong>{scope.organizationId ? "Organization administration" : "Platform control"}</strong>
-          <span>{scope.organizationId ? "Manage only the organizations, portfolios, listings, and members assigned to this scope." : "All authorized organizations, portfolios, listings, members, and system activity."}</span>
-        </div>
-        <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
-        <div className="dp-workspace-scope__admin-actions">
-          <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope(scope.organizationId ? "/partner-workspace/team" : "/partner-workspace/residents", scope)}>
-            {scope.listingId ? "View listing access →" : scope.organizationId ? "View organization members →" : "Manage people & access →"}
-          </Link>
-=======
       <section className="dp-workspace-scope dp-workspace-scope--admin" data-expanded={isExpanded ? "true" : "false"} aria-label="Administrator workspace scope">
         <button
           type="button"
@@ -66,7 +53,6 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
               People & access
             </Link>
           </div>
->>>>>>> origin/main
         </div>
       </section>
     );

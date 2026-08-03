@@ -1627,19 +1627,10 @@ function NativeMobileWorkspaceDashboard({
   workspaceSummary,
 }) {
   const workspaceHref = (path) => withPartnerWorkspaceScope(path, scope);
-<<<<<<< HEAD
-  const potentialReach = getPotentialReachSummary();
-  const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : potentialReach.total === null ? "—" : formatWorkspaceNumber(potentialReach.total);
-  const heroLabel = isLegends ? "Recorded search visits" : "Potential audience";
-  const heroSource = isLegends
-    ? "Source: SEO Snapshot"
-    : "No consented audience source is connected";
-=======
   const liveInventory = workspaceSummary?.inventory;
   const heroMetric = isLegends ? formatWorkspaceNumber(report.summary.organicClicks) : workspaceSummary?.audience?.eligibleResidents == null ? "—" : formatWorkspaceNumber(workspaceSummary.audience.eligibleResidents);
   const heroLabel = isLegends ? "Recorded search visits" : "Eligible resident audience";
   const heroSource = isLegends ? "Source: SEO Snapshot" : workspaceSummary?.audience?.status === "connected" ? "Source: consented audience segment" : "Audience source not connected";
->>>>>>> origin/main
   const kpis = isLegends
     ? [
         [formatWorkspaceNumber(report.summary.organicImpressions), "Search views", "SEO Snapshot"],
@@ -1818,11 +1809,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
   const [perks, setPerks] = useState([]);
   const [events, setEvents] = useState([]);
-<<<<<<< HEAD
-  const [workspaceSummary, setWorkspaceSummary] = useState({ status: "idle", data: null, error: "" });
-=======
   const [workspaceSummary, setWorkspaceSummary] = useState(null);
->>>>>>> origin/main
   const selectedOrganizationId = organizationId;
 
   useEffect(() => {
@@ -1830,45 +1817,13 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
     listWorkspaceItems("Event", "events", user.email).then((items) => setEvents((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
   }, [user.email, selectedOrganizationId, scope?.listingId]);
 
-<<<<<<< HEAD
 
-  useEffect(() => {
-    let active = true;
-    async function loadWorkspaceSummary() {
-      if (!supabaseClient) {
-        if (active) setWorkspaceSummary({ status: "unavailable", data: null, error: "Source not connected" });
-        return;
-      }
-      try {
-        setWorkspaceSummary((current) => ({ ...current, status: "loading", error: "" }));
-        const { data } = await supabaseClient.auth.getSession();
-        const token = data?.session?.access_token;
-        if (!token) {
-          if (active) setWorkspaceSummary({ status: "unavailable", data: null, error: "Source not connected" });
-          return;
-        }
-        const params = new URLSearchParams();
-        if (selectedOrganizationId) params.set("organizationId", selectedOrganizationId);
-        if (scope?.portfolioId) params.set("portfolioId", scope.portfolioId);
-        if (scope?.listingId) params.set("listingId", scope.listingId);
-        const response = await fetch(`/api/partner/workspace-summary?${params.toString()}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const payload = await response.json().catch(() => null);
-        if (!response.ok || !payload?.ok) throw new Error(payload?.error || "Workspace summary unavailable");
-        if (active) setWorkspaceSummary({ status: "ready", data: payload, error: "" });
-      } catch (error) {
-        if (active) setWorkspaceSummary({ status: "error", data: null, error: error?.message || "Your available workspace summary could not load." });
-      }
-    }
-    loadWorkspaceSummary();
-=======
   useEffect(() => {
     let active = true;
     getPartnerWorkspaceSummary({ organizationId: selectedOrganizationId, portfolioId: scope?.portfolioId, listingId: scope?.listingId })
       .then((summary) => { if (active) setWorkspaceSummary(summary); })
       .catch(() => { if (active) setWorkspaceSummary(null); });
->>>>>>> origin/main
+
     return () => { active = false; };
   }, [selectedOrganizationId, scope?.portfolioId, scope?.listingId]);
 
@@ -1928,22 +1883,13 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
-<<<<<<< HEAD
-        ["Partner listings", metricValue(workspaceSummary.data, "connectedActiveListings", formatWorkspaceNumber(ownedEntities.length)), metricDetail(workspaceSummary.data, "connectedActiveListings", "Authorized partner inventory")],
-        ["Map inventory", workspaceSummary.data?.sections?.mapCoverage?.metrics?.publicMapEntities?.value ?? metricValue(workspaceSummary.data, "connectedMapEntities", "—"), workspaceSummary.data?.sections?.mapCoverage?.description || "Discovery coverage, not partner performance"],
-        ["Live offers", metricValue(workspaceSummary.data, "liveOffers", formatWorkspaceNumber(activePerks.length)), metricDetail(workspaceSummary.data, "liveOffers", "Authorized offer source")],
-        ["Upcoming events", metricValue(workspaceSummary.data, "upcomingEvents", formatWorkspaceNumber(upcomingEvents.length)), metricDetail(workspaceSummary.data, "upcomingEvents", "Persisted event source")],
-        ["Campaigns", metricValue(workspaceSummary.data, "persistedCampaigns", "—"), metricDetail(workspaceSummary.data, "persistedCampaigns", "Persisted campaign source")],
-        ["Attributed actions", metricValue(workspaceSummary.data, "attributedActivity", "—"), metricDetail(workspaceSummary.data, "attributedActivity", "Only events with partner/entity identifiers")],
-        ["Verified resident audience", workspaceSummary.data ? `${metricValue(workspaceSummary.data, "activeResidentProfiles", "—")} profiles / ${metricValue(workspaceSummary.data, "activeResidentIdentities", "—")} identities` : "—", workspaceSummary.status === "loading" ? "Loading source" : "Aggregate-only platform count"],
-        ["Contactable audience", metricValue(workspaceSummary.data, "contactableAudience", "—"), metricDetail(workspaceSummary.data, "contactableAudience", "Source not connected")],
-=======
+
         ["Connected places", formatWorkspaceNumber(workspaceSummary?.inventory?.connectedPlaces)],
         ["Map inventory", formatWorkspaceNumber(workspaceSummary?.inventory?.mapInventory?.total)],
         ["Live offers", formatWorkspaceNumber(workspaceSummary?.inventory?.liveOffers)],
         ["Upcoming events", formatWorkspaceNumber(workspaceSummary?.inventory?.upcomingEvents)],
         ["Eligible resident audience", workspaceSummary?.audience?.eligibleResidents == null ? "Not connected" : formatWorkspaceNumber(workspaceSummary.audience.eligibleResidents)],
->>>>>>> origin/main
+
       ];
   const nextAction = isLarryAndGuy && selectedEntity
     ? {
