@@ -43,15 +43,12 @@ function perkAvailabilityLabel(item, redeemed) {
   return "Available now";
 }
 
-const PERK_FILTERS = [
-  { label: "Active", icon: null },
-  { label: "Nearby", icon: Navigation },
-  { label: "Dining", icon: null },
-  { label: "Fitness", icon: null },
-  { label: "Wellness", icon: null },
-  { label: "Events", icon: null },
-  { label: "Saved", icon: Star },
-];
+// Canonical mobile perk categories, in required display order. Kept as a flat
+// label list so the shared Perks/Saved/Nearby mobile contract can verify the
+// category set, then decorated with optional icons for the data-driven rail.
+const PERK_FILTER_LABELS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+const PERK_FILTER_ICONS = { Nearby: Navigation, Saved: Star };
+const PERK_FILTERS = PERK_FILTER_LABELS.map((label) => ({ label, icon: PERK_FILTER_ICONS[label] ?? null }));
 const CATEGORY_TERMS = {
   Dining: ["dining", "restaurant", "food", "coffee", "cafe", "bar", "drink"],
   Fitness: ["fitness", "gym", "workout", "sport", "yoga", "pilates"],
