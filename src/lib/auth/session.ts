@@ -21,7 +21,7 @@ export type SessionClaims = {
   organizationId?: string;
 };
 
-const DEFAULT_SUPER_ADMIN_EMAILS = ["me@megdude.com"];
+const DEFAULT_SUPER_ADMIN_EMAILS = ["meg@megdude.com"];
 
 function normalizeEmail(value: unknown) {
   return String(value || "").trim().toLowerCase();

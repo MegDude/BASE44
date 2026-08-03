@@ -59,6 +59,7 @@ alter table public.platform_profiles add constraint platform_profiles_platform_r
 
 insert into public.account_assignments (email, platform_role, protected_account)
 values
+  ('meg@megdude.com', 'super_admin', true),
   ('me@megdude.com', 'super_admin', true),
   ('meganatx@icloud.com', 'super_admin', true)
 on conflict (email) do update set platform_role=excluded.platform_role, protected_account=true, updated_at=now();
@@ -213,8 +214,8 @@ create trigger sync_account_assignment_after_auth_user_write after insert or upd
 for each row execute function private.sync_account_assignment();
 
 update public.platform_profiles set platform_role='super_admin',is_super_admin=true,protected_account=true,updated_at=now()
-where lower(email) in ('me@megdude.com','meganatx@icloud.com');
+where lower(email) in ('meg@megdude.com','me@megdude.com','meganatx@icloud.com');
 update auth.users u set raw_app_meta_data=coalesce(u.raw_app_meta_data,'{}'::jsonb)||jsonb_build_object('platform_role','super_admin','is_super_admin',true)
-where lower(u.email) in ('me@megdude.com','meganatx@icloud.com');
+where lower(u.email) in ('meg@megdude.com','me@megdude.com','meganatx@icloud.com');
 
 commit;

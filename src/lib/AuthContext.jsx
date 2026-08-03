@@ -14,18 +14,9 @@ const PLATFORM_ROLES = new Set(["resident", "partner", "admin", "platform_admin"
 
 function buildSupabaseProfile(currentUser, accessContext = null) {
   if (!currentUser) return null;
-  const appMetadata = currentUser.app_metadata || {};
   const userMetadata = currentUser.user_metadata || {};
-  const declaredRole = String(
-    accessContext?.platform_role ||
-    appMetadata.platform_role ||
-    "resident",
-  ).toLowerCase();
-  const role = appMetadata.is_super_admin === true
-    ? "super_admin"
-    : PLATFORM_ROLES.has(declaredRole)
-      ? declaredRole
-      : "resident";
+  const declaredRole = String(accessContext?.platform_role || "").toLowerCase();
+  const role = PLATFORM_ROLES.has(declaredRole) ? declaredRole : "resident";
   const isPlatformAdmin = role === "platform_admin" || role === "super_admin";
 
   return {
@@ -124,7 +115,9 @@ export const AuthProvider = ({ children }) => {
   const loadAccessContext = async () => {
     const { data, error } = await supabaseClient.rpc("current_access_context");
     if (error) throw error;
-    return Array.isArray(data) ? (data[0] || null) : data;
+    const context = Array.isArray(data) ? (data[0] || null) : data;
+    if (!context?.platform_role) throw new Error("This account does not have an active access profile.");
+    return context;
   };
 
   const applySupabaseSession = (session) => {
@@ -318,9 +311,20 @@ export const AuthProvider = ({ children }) => {
         setAuthError(message);
         return { type: "error", code: error.code || "sign_in_failed", confirmationRequired, message };
       }
-      const { data: verifiedUserData } = await supabaseClient.auth.getUser();
-      applySupabaseUser(verifiedUserData?.user || data?.user || null);
-      return { type: "authenticated", session: data?.session, user: verifiedUserData?.user || data?.user };
+      const { data: verifiedUserData, error: userError } = await supabaseClient.auth.getUser();
+      if (userError) return { type: "error", message: userError.message };
+      try {
+        const accessContext = await loadAccessContext();
+        const verifiedUser = verifiedUserData?.user || data?.user || null;
+        const verifiedProfile = buildSupabaseProfile(verifiedUser, accessContext);
+        applySupabaseUser(verifiedUser, accessContext);
+        return { type: "authenticated", session: data?.session, user: verifiedProfile };
+      } catch (accessError) {
+        await supabaseClient.auth.signOut();
+        const message = accessError.message || "This account does not have an active access profile.";
+        setAuthError(message);
+        return { type: "error", message };
+      }
     }
 
     return signInPartner({ email, partner_type: "resident", organization_name: "Downtown Perks Resident" });

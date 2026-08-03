@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { demoOrganizations } from "@/config/workspaceArchitecture";
-import { getSuperAdminEmails, isSuperAdminSession } from "@/lib/auth/session";
+import { isSuperAdminSession } from "@/lib/auth/session";
 import { DEFAULT_PARTNER_RETURN_PATH, getSafeReturnPath } from "@/lib/authReturnPath";
 import {
   canUseProductionAccountAccess,
@@ -151,9 +151,7 @@ async function startPartnerSignIn(navigate, signInPartner, { email, password, ac
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
   const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
-  const normalizedEmail = String(email || "").trim().toLowerCase();
-  const isAdminEmail = getSuperAdminEmails().includes(normalizedEmail);
-  const destination = isAdminEmail && returnTo === DEFAULT_PARTNER_RETURN_PATH ? "/admin-studio/command-center" : returnTo;
+  const destination = returnTo;
   const redirectPath = `/auth/callback?audience=partner&returnTo=${encodeURIComponent(destination)}`;
   const session = await signInPartner({
     email,
