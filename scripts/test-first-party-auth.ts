@@ -76,8 +76,11 @@ assert.match(appSource, /path="\/residents\/register".*\/residents\/login/s);
 assert.match(appSource, /path="\/partner-workspace\/overview".*ProtectedRoute/s);
 assert.doesNotMatch(appSource, /canBootstrapWorkspace|hasWorkspaceActivation/);
 assert.match(appSource, /function ProtectedAdminStudio\(\)[\s\S]*?<AdminProtectedRoute>/);
+assert.ok(
+  appSource.includes('path="/admin-studio" element={<Navigate to="/admin-studio/command-center" replace />}'),
+  "/admin-studio must redirect to the guarded command center",
+);
 for (const adminPath of [
-  "/admin-studio",
   "/admin-studio/command-center",
   "/admin-studio/campaign-builder",
   "/admin-studio/audience-builder",

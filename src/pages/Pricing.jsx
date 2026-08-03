@@ -63,9 +63,15 @@ function readPartnerSetup() {
 }
 
 function persistPartnerSetup(setup) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(PARTNER_SETUP_KEY, JSON.stringify(setup));
+  if (typeof window === "undefined") return false;
+  try {
+    window.localStorage.setItem(PARTNER_SETUP_KEY, JSON.stringify(setup));
+  } catch {
+    window.dispatchEvent(new CustomEvent("dp:partner-setup-storage-unavailable", { detail: setup }));
+    return false;
+  }
   window.dispatchEvent(new CustomEvent("dp:partner-setup-updated", { detail: setup }));
+  return true;
 }
 
 function trackPricingEvent(eventName, payload) {
