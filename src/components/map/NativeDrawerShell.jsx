@@ -92,6 +92,32 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     if (typeof ref === "function") ref(node);
     else if (ref) ref.current = node;
   }, [ref]);
+  // Swipe-to-resize on the grip: dragging down steps the drawer toward the
+  // bottom (full → expanded → medium → peek → close); dragging up steps it back.
+  const dragRef = useRef({ y: 0, active: false });
+  const handleGripPointerDown = useCallback((event) => {
+    dragRef.current = { y: event.clientY, active: true };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  }, []);
+  const handleGripPointerUp = useCallback((event) => {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const dy = event.clientY - dragRef.current.y;
+    if (Math.abs(dy) < 36) return;
+    const order = ["peek", "medium", "expanded", "full"];
+    const index = order.indexOf(drawerState);
+    if (dy > 0) {
+      if (index <= 0) onRequestClose?.();
+      else onDrawerStateChange?.(order[index - 1]);
+    } else if (index >= 0 && index < order.length - 1) {
+      onDrawerStateChange?.(order[index + 1]);
+    }
+  }, [drawerState, onDrawerStateChange, onRequestClose]);
+  const cycleGripState = useCallback(() => {
+    const order = ["peek", "medium", "expanded", "full"];
+    const index = order.indexOf(drawerState);
+    onDrawerStateChange?.(order[Math.min(index + 1, order.length - 1)]);
+  }, [drawerState, onDrawerStateChange]);
   const drawerClassName = [
     "dp-native-drawer",
     ...className.split(/\s+/).filter((token) => token && token !== "dp-native-drawer"),
@@ -110,6 +136,16 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       {...props}
     >
       <div className="dp-native-drawer-surface">
+        <button
+          type="button"
+          className="dp-native-drawer-grip"
+          aria-label={`Drawer size: ${drawerState}. Swipe down to minimise, up to expand.`}
+          onPointerDown={handleGripPointerDown}
+          onPointerUp={handleGripPointerUp}
+          onClick={cycleGripState}
+        >
+          <span aria-hidden="true" />
+        </button>
         {header ? <div className="dp-native-drawer-header">{header}</div> : null}
         <div className={`dp-native-drawer-content-viewport ${contentClassName}`.trim()}>
           <div ref={scrollRef} className={`dp-native-drawer-scroll ${scrollClassName}`.trim()} {...scrollProps}>
