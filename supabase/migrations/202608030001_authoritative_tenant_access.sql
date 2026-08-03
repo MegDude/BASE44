@@ -15,6 +15,28 @@ on conflict (external_id) do update set
   status = 'active',
   updated_at = now();
 
+-- Operational workspace tables retain the legacy partners key. Bridge each
+-- canonical organization to exactly one operational partner record.
+insert into public.partners (name, partner_type, status)
+select o.name,
+  case o.external_id
+    when 'legends-real-estate' then 'real_estate'
+    when 'hotel-van-zandt' then 'property'
+    else o.organization_type
+  end,
+  'active'
+from public.partner_organizations o
+where o.external_id in ('legends-real-estate','waterloo-greenway','larry-and-guy','hotel-van-zandt')
+  and o.legacy_partner_id is null
+  and not exists (select 1 from public.partners p where lower(p.name)=lower(o.name));
+
+update public.partner_organizations o
+set legacy_partner_id=p.id, updated_at=now()
+from public.partners p
+where o.external_id in ('legends-real-estate','waterloo-greenway','larry-and-guy','hotel-van-zandt')
+  and o.legacy_partner_id is null
+  and lower(p.name)=lower(o.name);
+
 create table if not exists public.account_assignments (
   email text primary key check (email = lower(email)),
   platform_role text not null check (platform_role in ('resident','partner','platform_admin','super_admin')),
@@ -76,8 +98,10 @@ $$;
 
 create or replace function private.direct_partner_id(request_user uuid default auth.uid())
 returns uuid language sql stable security definer set search_path = public, auth, pg_temp as $$
-  select pu.partner_id from public.partner_users pu
-  where pu.auth_user_id=request_user and pu.active
+  select o.id
+  from public.partner_users pu
+  join public.partner_organizations o on o.legacy_partner_id=pu.partner_id
+  where pu.auth_user_id=request_user and pu.active and o.status='active'
   order by pu.created_at limit 1;
 $$;
 
@@ -156,7 +180,9 @@ end; $$;
 
 create or replace function private.sync_account_assignment()
 returns trigger language plpgsql security definer set search_path=public,auth,pg_temp as $$
-declare assignment public.account_assignments%rowtype;
+declare
+  assignment public.account_assignments%rowtype;
+  operational_partner_id uuid;
 begin
   select * into assignment from public.account_assignments where email=lower(new.email);
   if not found then assignment.platform_role := 'resident'; assignment.protected_account := false; end if;
@@ -164,8 +190,14 @@ begin
   values(new.id,lower(new.email),assignment.platform_role,true,assignment.platform_role='super_admin',coalesce(assignment.protected_account,false))
   on conflict(user_id) do update set email=excluded.email, platform_role=excluded.platform_role, is_active=true, is_super_admin=excluded.is_super_admin, protected_account=excluded.protected_account, updated_at=now();
   if assignment.platform_role='partner' then
+    select legacy_partner_id into operational_partner_id
+    from public.partner_organizations
+    where id=assignment.partner_id and status='active';
+    if operational_partner_id is null then
+      raise exception 'partner organization is not linked to an operational workspace';
+    end if;
     insert into public.partner_users(partner_id,auth_user_id,role,active)
-    values(assignment.partner_id,new.id,assignment.partner_role,true)
+    values(operational_partner_id,new.id,assignment.partner_role,true)
     on conflict(partner_id,auth_user_id) do update set role=excluded.role,active=true;
   end if;
   return new;
