@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import {
   Activity,
+  ArrowLeft,
   Building2,
   CalendarDays,
   ChevronRight,
@@ -445,6 +446,9 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
         onKeyDown={handleKeyDown}
       >
         <div className="dp-quick-search-head">
+          <button type="button" className="dp-quick-search-back" onClick={onClose} aria-label="Go back from search">
+            <ArrowLeft size={16} aria-hidden="true" />
+          </button>
           <div>
             <p className="dp-quick-search-eyebrow">Downtown Austin</p>
             <h2 id="dp-quick-search-title">Search downtown</h2>
@@ -452,7 +456,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           </div>
           <div className="dp-quick-search-actions" aria-label="Search controls">
             <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
-              <X size={18} aria-hidden="true" /><span>Close</span>
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
         </div>

@@ -1386,7 +1386,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
     >
       <header className="dp-workspace-analytics-header">
         <span>Results</span>
-        <h2>See what is working from one place.</h2>
+        <h2>See what needs attention and what is working.</h2>
         <p>
           Use this page to review the app link, read the reports, and see which partners, links, and campaigns need attention before the next release.
         </p>
@@ -3419,7 +3419,7 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
   );
 }
 
-// ─── SHARED UTILITIES ──────────────────────────────────────────────────��──────
+// ─── SHARED UTILITIES ───────────��──────────────────────────────────────��──────
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (

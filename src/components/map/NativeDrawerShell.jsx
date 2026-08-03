@@ -94,16 +94,17 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
   }, [ref]);
   // Swipe-to-resize on the grip: dragging down steps the drawer toward the
   // bottom (full → expanded → medium → peek → close); dragging up steps it back.
-  const dragRef = useRef({ y: 0, active: false });
+  const dragRef = useRef({ y: 0, active: false, moved: false });
   const handleGripPointerDown = useCallback((event) => {
-    dragRef.current = { y: event.clientY, active: true };
+    dragRef.current = { y: event.clientY, active: true, moved: false };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   }, []);
-  const handleGripPointerUp = useCallback((event) => {
+  const settleGripDrag = useCallback((clientY) => {
     if (!dragRef.current.active) return;
     dragRef.current.active = false;
-    const dy = event.clientY - dragRef.current.y;
-    if (Math.abs(dy) < 36) return;
+    const dy = clientY - dragRef.current.y;
+    dragRef.current.moved = Math.abs(dy) >= 36;
+    if (!dragRef.current.moved) return;
     const order = ["peek", "medium", "expanded", "full"];
     const index = order.indexOf(drawerState);
     if (dy > 0) {
@@ -113,10 +114,23 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       onDrawerStateChange?.(order[index + 1]);
     }
   }, [drawerState, onDrawerStateChange, onRequestClose]);
+  const handleGripPointerUp = useCallback((event) => settleGripDrag(event.clientY), [settleGripDrag]);
+  const handleGripTouchStart = useCallback((event) => {
+    const touch = event.touches[0];
+    if (touch) dragRef.current = { y: touch.clientY, active: true, moved: false };
+  }, []);
+  const handleGripTouchEnd = useCallback((event) => {
+    const touch = event.changedTouches[0];
+    if (touch) settleGripDrag(touch.clientY);
+  }, [settleGripDrag]);
   const cycleGripState = useCallback(() => {
+    if (dragRef.current.moved) {
+      dragRef.current.moved = false;
+      return;
+    }
     const order = ["peek", "medium", "expanded", "full"];
     const index = order.indexOf(drawerState);
-    onDrawerStateChange?.(order[Math.min(index + 1, order.length - 1)]);
+    onDrawerStateChange?.(order[Math.min(Math.max(index, 0) + 1, order.length - 1)]);
   }, [drawerState, onDrawerStateChange]);
   const drawerClassName = [
     "dp-native-drawer",
@@ -142,6 +156,8 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
           aria-label={`Drawer size: ${drawerState}. Swipe down to minimise, up to expand.`}
           onPointerDown={handleGripPointerDown}
           onPointerUp={handleGripPointerUp}
+          onTouchStart={handleGripTouchStart}
+          onTouchEnd={handleGripTouchEnd}
           onClick={cycleGripState}
         >
           <span aria-hidden="true" />

@@ -57,7 +57,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-head.dp-quick-search-head {
   position: static !important;
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-columns: 44px minmax(0, 1fr) 44px !important;
   align-items: start !important;
   gap: 8px !important;
   flex: 0 0 auto !important;
@@ -69,7 +69,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   -webkit-backdrop-filter: none !important;
 }
 
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-head.dp-quick-search-head > div:first-child {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-head.dp-quick-search-head > div:nth-child(2) {
   display: flex !important;
   min-width: 0 !important;
   flex-direction: column !important;
@@ -118,7 +118,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   background: #ffffff !important;
 }
 
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-actions.dp-quick-search-actions :is(.dp-quick-search-back.dp-quick-search-back, .dp-quick-search-close.dp-quick-search-close) {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(.dp-quick-search-head.dp-quick-search-head > .dp-quick-search-back.dp-quick-search-back, .dp-quick-search-actions.dp-quick-search-actions .dp-quick-search-close.dp-quick-search-close) {
   position: static !important;
   display: inline-flex !important;
   width: auto !important;
@@ -141,13 +141,13 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-transform: uppercase !important;
 }
 
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-actions.dp-quick-search-actions :is(.dp-quick-search-back.dp-quick-search-back, .dp-quick-search-close.dp-quick-search-close) svg {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(.dp-quick-search-head.dp-quick-search-head > .dp-quick-search-back.dp-quick-search-back, .dp-quick-search-actions.dp-quick-search-actions .dp-quick-search-close.dp-quick-search-close) svg {
   width: 14px !important;
   height: 14px !important;
   stroke-width: 1.8 !important;
 }
 
-html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-actions.dp-quick-search-actions :is(.dp-quick-search-back.dp-quick-search-back, .dp-quick-search-close.dp-quick-search-close):is(:hover, :focus-visible) {
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(.dp-quick-search-head.dp-quick-search-head > .dp-quick-search-back.dp-quick-search-back, .dp-quick-search-actions.dp-quick-search-actions .dp-quick-search-close.dp-quick-search-close):is(:hover, :focus-visible) {
   background: #ffffff !important;
   color: var(--dp-quick-gold) !important;
 }
