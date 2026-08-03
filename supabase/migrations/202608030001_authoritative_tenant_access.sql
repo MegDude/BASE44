@@ -30,6 +30,11 @@ create table if not exists public.account_assignments (
 alter table public.account_assignments enable row level security;
 revoke all on public.account_assignments from anon, authenticated;
 
+-- Keep the canonical access roles accepted by the existing profile table.
+alter table public.platform_profiles drop constraint if exists platform_profiles_platform_role_check;
+alter table public.platform_profiles add constraint platform_profiles_platform_role_check
+  check (platform_role in ('super_admin','platform_admin','admin','partner','partner_admin','partner_member','resident'));
+
 insert into public.account_assignments (email, platform_role, protected_account)
 values
   ('me@megdude.com', 'super_admin', true),
