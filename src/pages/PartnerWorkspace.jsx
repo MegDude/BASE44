@@ -636,7 +636,7 @@ export default function PartnerWorkspace() {
 
 function PartnerWorkspaceContent() {
   const location = useLocation();
-  const { user: authenticatedUser, logout } = useAuth();
+  const { user: authenticatedUser, logout, stopPartnerImpersonation } = useAuth();
   const [user, setUser] = useState(() => ({
     ...PUBLIC_PARTNER_USER,
     ...(getStoredProfile() || {}),
@@ -648,7 +648,7 @@ function PartnerWorkspaceContent() {
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
   const accountAccessEnabled = canUseProductionAccountAccess();
-  const hasPrivilegedWorkspaceAccess = canViewEverything(user);
+  const hasPrivilegedWorkspaceAccess = canViewEverything(user) && !user.is_impersonating;
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [authorizedAdminScope, setAuthorizedAdminScope] = useState({});
@@ -664,6 +664,7 @@ function PartnerWorkspaceContent() {
     ].filter(Boolean).includes(organization.id)
     || organization.name.trim().toLowerCase() === normalizedOrganizationName
   ));
+  const authorizedOrganizationId = user.partner_id || authorizedPartnerOrganization?.id;
   const workspaceScope = hasPrivilegedWorkspaceAccess
     ? {
         ...authorizedAdminScope,
@@ -679,11 +680,11 @@ function PartnerWorkspaceContent() {
       }
     : resolvePartnerWorkspaceScope({
           ...requestedScope,
-          organizationId: authorizedPartnerOrganization?.id,
-          portfolioId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+          organizationId: authorizedOrganizationId,
+          portfolioId: requestedScope.organizationId === authorizedOrganizationId
             ? requestedScope.portfolioId
             : undefined,
-          listingId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+          listingId: requestedScope.organizationId === authorizedOrganizationId
             ? requestedScope.listingId
             : undefined,
         });
@@ -775,8 +776,19 @@ function PartnerWorkspaceContent() {
     navigate("/map?mode=partner&tab=map&filter=All");
   }
 
+  async function handleExitImpersonation() {
+    await stopPartnerImpersonation();
+    navigate("/admin-studio/command-center", { replace: true });
+  }
+
   return (
     <div data-workspace-view={tab} className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+      {user.is_impersonating ? (
+        <aside className="dp-impersonation-banner" aria-label="Super Admin workspace session">
+          <span><ShieldCheck aria-hidden="true" /><strong>Super Admin mode</strong> You are managing this partner workspace with full access.</span>
+          <button type="button" onClick={handleExitImpersonation}>Exit workspace</button>
+        </aside>
+      ) : null}
       <header className="dp-partner-workspace-header">
         <div className="dp-partner-workspace-header-inner">
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
@@ -3106,7 +3118,7 @@ function EventForm({ user, event, scope, onClose, onSave }) {
   );
 }
 
-// ─── PROFILE ──────────────────────────────────────────────────────────────────
+// ─── PROFILE ───────────────────────────────────────────────────────���──────────
 
 function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false, onSignOut }) {
   const storedProfile = getStoredProfile() || {};
