@@ -21,7 +21,9 @@ assert.match(
 assert.match(switcher, /Search organization, portfolio, or listing/);
 assert.match(switcher, /sessionStorage/);
 assert.match(switcher, /DialogPrimitive\.Content/);
-assert.match(studio, /<AdminScopeSwitcher \/>/);
+assert.match(studio, /<AdminScopeSwitcher onScopeResolved=\{setSelectedScope\} \/>/);
+assert.match(studio, /startPartnerImpersonation/);
+assert.match(studio, /Enter selected workspace/);
 assert.match(studio, /Admin Workspace/);
 assert.match(styles, /min-height: 44px/);
 assert.match(styles, /max-height: 85dvh/);

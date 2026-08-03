@@ -85,6 +85,8 @@ create table if not exists public.admin_impersonation_sessions (
   constraint valid_impersonation_window check (expires_at > started_at and expires_at <= started_at + interval '4 hours')
 );
 create unique index if not exists one_active_impersonation_per_admin on public.admin_impersonation_sessions(actor_user_id) where ended_at is null;
+create index if not exists account_assignments_partner_id_idx on public.account_assignments(partner_id);
+create index if not exists admin_impersonation_sessions_partner_id_idx on public.admin_impersonation_sessions(partner_id);
 alter table public.admin_impersonation_sessions enable row level security;
 
 create or replace function private.is_platform_admin(request_user uuid default auth.uid())
