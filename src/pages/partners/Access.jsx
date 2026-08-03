@@ -13,7 +13,6 @@ import {
 import {
   formatCurrency,
   getPlansForPartnerType,
-  getPriceText,
   PRICING_MODULES,
 } from "@/config/pricingRegistry";
 
@@ -71,7 +70,7 @@ const PARTNER_TYPES = [
   },
 ];
 
-const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES;
+const SIGN_IN_ACCESS_TYPES = PARTNER_TYPES.filter((type) => type.value !== "resident");
 
 const ACCESS_ROUTE_BY_TYPE = {
   resident: "/map?mode=resident&tab=map&filter=All",
@@ -182,7 +181,7 @@ function toPricingPartnerType(value) {
 }
 
 const accessActionClass =
-  "dp-partner-access-action inline-flex min-h-11 items-center justify-center gap-2 border-0 border-b border-[#0B1F33]/14 bg-transparent px-0 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33] shadow-none transition hover:border-[#BFA46A] hover:text-[#0B1F33] focus-visible:border-[#BFA46A] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:border-[#0B1F33]/10 disabled:text-[#0B1F33]/40";
+  "dp-partner-access-action inline-flex min-h-11 items-center justify-start gap-2 border-0 bg-transparent px-0 py-2 text-[13px] font-semibold normal-case tracking-normal text-[#0B1F33] shadow-none transition hover:text-[#B8963E] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:text-[#0B1F33]/40";
 
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
@@ -227,7 +226,9 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
   const [submissionMessage, setSubmissionMessage] = useState(getAuthFailureMessage(callbackError));
   const [signInEmail, setSignInEmail] = useState("");
-  const [signInType, setSignInType] = useState(initialType || "property");
+  const [signInType, setSignInType] = useState(
+    SIGN_IN_ACCESS_TYPES.some((type) => type.value === initialType) ? initialType : "property",
+  );
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
@@ -288,14 +289,6 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   function selectPartnerType(value) {
     updateField("partner_type", value);
     setSubmissionMessage("");
-  }
-
-  function toggleModule(moduleId) {
-    setSelectedModuleIds((current) => (
-      current.includes(moduleId)
-        ? current.filter((id) => id !== moduleId)
-        : [...current, moduleId]
-    ));
   }
 
   async function handleSubmit(event) {
@@ -448,26 +441,25 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
-            <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading text-4xl font-medium leading-[0.98] tracking-normal text-[#0B1F33] md:text-5xl">
-              {isSignUp ? "Register your partner setup." : "Sign in to Downtown Perks."}
+            <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading font-medium text-[#0B1F33]">
+              {isSignUp ? "Set up your partner account." : "Sign in to Downtown Perks."}
             </h1>
             <p className="dp-partner-access-lede mt-5 max-w-lg text-[15px] leading-7 text-[#0B1F33]/66">
               {isSignUp
-                ? "Choose the right path first, then add your profile, map listing, campaigns, and billing."
+                ? "Your plan travels with you from pricing. Add the details needed to open the right account."
                 : accountAccessEnabled
-                  ? "Use one secure sign-in for properties, hotels, venues, brands, civic teams, real estate teams, residents, and custom partner accounts."
+                  ? "Use the email attached to your partner, portfolio, or platform administrator account."
                   : PRODUCTION_ACCOUNT_ACCESS_MESSAGE}
             </p>
 
             <div className="dp-partner-access-list mt-8 grid gap-3 text-[13px] leading-6 text-[#0B1F33]/68">
               {(isSignUp ? [
-                "Choose the plan and add-ons that match your launch.",
-                "Share the details your account needs.",
-                "Continue without re-entering the same information.",
+                "Review the plan, then add your organization and contact details.",
+                "Optional support can be added later.",
               ] : [
-                "Choose the access type that matches your account.",
-                "Use the same secure link pattern for partner and resident access.",
-                "Request team access if someone else owns the organization.",
+                "Choose the partner account type, then use its account email.",
+                "A secure link returns you to the right workspace.",
+                "Resident access uses the resident sign-in page.",
               ]).map((item) => (
                 <div key={item} className="flex gap-3">
                   <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-[#BFA46A]" />
@@ -477,114 +469,42 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </div>
           </div>
 
-          <div className="dp-partner-access-panel rounded-[10px] border border-[#0B1F33]/[0.08] bg-white/88 p-5 shadow-[0_8px_24px_rgba(11,31,51,.055)]">
+          <div className="dp-partner-access-panel border border-[#0B1F33]/[0.08] bg-white/88 p-5">
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
                   <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Sign up</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Register your partner setup
+                    Confirm your partner setup
                   </h2>
                 </div>
 
-                <section className="dp-partner-type-section" aria-labelledby="partner-type-heading">
-                  <div className="dp-partner-type-section-head">
-                    <p className="dp-partner-access-label">Partner type</p>
-                    <h3 id="partner-type-heading">Choose the section that fits you.</h3>
-                  </div>
-                  <div className="dp-partner-type-grid" role="radiogroup" aria-label="Partner type">
-                    {PARTNER_TYPES.map((type) => {
-                      const isActive = form.partner_type === type.value;
-                      return (
-                        <button
-                          key={type.value}
-                          type="button"
-                          role="radio"
-                          aria-checked={isActive}
-                          data-active={isActive}
-                          onClick={() => selectPartnerType(type.value)}
-                          className="dp-partner-type-card"
-                        >
-                          <span>{type.section}</span>
-                          <strong>{type.label}</strong>
-                          <small>{type.summary}</small>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <input value={form.partner_type} tabIndex={-1} aria-hidden="true" className="sr-only" onChange={() => {}} />
-                </section>
-
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
                   <div className="dp-partner-access-setup-head">
-                    <p className="dp-partner-access-setup-label">Plan</p>
-                    <strong>{!hasPartnerType ? "Choose partner type" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
+                    <p className="dp-partner-access-setup-label">Your selection</p>
+                    <strong>{!hasPartnerType ? "Choose a plan" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
                   </div>
                   <div className="dp-partner-access-setup-fields">
                     <label>
-                      <span>Subscription plan</span>
+                      <span>Partner type</span>
                       <select
                         className="dp-partner-access-control"
-                        value={selectedPlan?.id || ""}
-                        disabled={!hasPartnerType || !availablePlans.length}
-                        onChange={(event) => setSelectedPlanId(event.target.value)}
+                        value={form.partner_type}
+                        onChange={(event) => selectPartnerType(event.target.value)}
                       >
-                        {!hasPartnerType ? (
-                          <option value="">Choose partner type first</option>
-                        ) : availablePlans.length ? (
-                          availablePlans.map((plan) => (
-                            <option key={plan.id} value={plan.id}>
-                              {plan.label} - {getPriceText(plan)}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="">Custom setup</option>
-                        )}
-                      </select>
-                    </label>
-                    <label>
-                      <span>Campaign interest</span>
-                      <select
-                        className="dp-partner-access-control"
-                        value={campaignInterest}
-                        onChange={(event) => setCampaignInterest(event.target.value)}
-                      >
-                        {CAMPAIGN_INTERESTS.map((option) => <option key={option}>{option}</option>)}
-                      </select>
-                    </label>
-                    <label>
-                      <span>Reporting</span>
-                      <select
-                        className="dp-partner-access-control"
-                        value={reportingNeeds}
-                        onChange={(event) => setReportingNeeds(event.target.value)}
-                      >
-                        {REPORTING_NEEDS.map((option) => <option key={option}>{option}</option>)}
+                        <option value="">Choose partner type</option>
+                        {PARTNER_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
                       </select>
                     </label>
                   </div>
-                  <div className="dp-partner-access-addon-list" aria-label="Available add-ons">
-                    {PRICING_MODULES.filter((module) => module.id !== "residentJoinBuildingNotMember").slice(0, 10).map((module) => (
-                      <button
-                        key={module.id}
-                        type="button"
-                        data-active={selectedModuleIds.includes(module.id)}
-                        onClick={() => toggleModule(module.id)}
-                      >
-                        <span>{module.label}</span>
-                        <small>{getPriceText(module)}</small>
-                      </button>
-                    ))}
-                  </div>
+                  <p className="dp-partner-access-plan-summary"><strong>{selectedPlan?.label || "Choose a plan"}</strong>{selectedModules.length ? ` · ${selectedModules.length} optional service${selectedModules.length === 1 ? "" : "s"}` : ""}</p>
+                  <Link className="dp-partner-access-edit-plan" to="/pricing">Change plan or add optional support</Link>
                   <dl>
                     <div>
                       <dt>Annual estimate</dt>
                       <dd>{annualEstimate == null ? "Custom" : `${formatCurrency(annualEstimate)}/year`}</dd>
                     </div>
-                    <div>
-                      <dt>One-time add-ons</dt>
-                      <dd>{formatCurrency(oneTimeTotal)}</dd>
-                    </div>
+                    {oneTimeTotal ? <div><dt>One-time support</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div> : null}
                   </dl>
                 </section>
 
@@ -598,7 +518,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
-                    className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
                   >
                     {TIMELINES.map((timeline) => (
                       <option key={timeline} value={timeline}>{timeline}</option>
@@ -614,7 +534,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="dp-partner-access-control w-full resize-none rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full resize-none border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
                     placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
                   />
                 </div>
@@ -633,7 +553,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 <button
                   type="submit"
                   disabled={submissionState === "submitting"}
-                  className={accessActionClass}
+                  className={`${accessActionClass} dp-acquisition-primary`}
                 >
                   {saved ? <Check className="h-4 w-4 text-[#BFA46A]" /> : <UserPlus className="h-4 w-4 text-[#BFA46A]" />}
                   {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
@@ -646,7 +566,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   Choose your access path
                 </h2>
                 <p className="dp-partner-access-panel-copy mt-3 text-[13px] leading-6 text-[#0B1F33]/64">
-                  Select the account type first. The secure link will return you to the right workspace or resident experience.
+                  Choose the partner account type first. The secure link returns you to the right workspace.
                 </p>
                 <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
                   <div className="dp-partner-type-section-head">
@@ -667,7 +587,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                             setSignInType(type.value);
                             setSubmissionMessage("");
                           }}
-                          className="dp-partner-type-card"
+                          className="dp-partner-access-type-row"
                         >
                           <span>{type.section}</span>
                           <strong>{type.label}</strong>
@@ -700,21 +620,21 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     type="button"
                     onClick={handleSignIn}
                     disabled={!accountAccessEnabled || submissionState === "submitting"}
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-primary`}
                   >
                     <LogIn className="h-4 w-4 text-[#BFA46A]" />
                     {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-secondary`}
                   >
                     Submit setup request
                     <ArrowRight className="h-4 w-4 text-[#BFA46A]" />
                   </Link>
                   <Link
                     to="/partners/apply?intent=request-access"
-                    className={accessActionClass}
+                    className={`${accessActionClass} dp-acquisition-secondary`}
                   >
                     Request team access
                   </Link>
@@ -799,7 +719,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="dp-partner-access-control w-full rounded-[6px] border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+        className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
       />
     </div>
   );

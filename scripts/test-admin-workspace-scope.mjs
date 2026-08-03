@@ -11,6 +11,8 @@ assert.match(api, /ADMIN_ACCESS_REQUIRED/);
 assert.match(api, /role !== "super_admin"/);
 assert.match(api, /partner_users/);
 assert.match(api, /activeScope/);
+assert.match(api, /id,organization_id,portfolio_id,name,status,entity_id,metadata/);
+assert.doesNotMatch(api, /name,address,status,entity_id/);
 assert.match(
   api,
   /export default async function handler\(req, res\) \{\s+res\.setHeader\("Cache-Control", "private, no-store"\);/,

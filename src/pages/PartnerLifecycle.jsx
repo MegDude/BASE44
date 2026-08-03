@@ -4,19 +4,14 @@ import {
   ArrowRight,
   BadgeCheck,
   Building2,
-  CalendarDays,
-  Camera,
   Check,
   CreditCard,
   Hotel,
   Landmark,
-  Megaphone,
   MapPin,
-  QrCode,
   Receipt,
   Sparkles,
   Store,
-  Users,
 } from "lucide-react";
 import { ANNUAL_PLANS, PRICING_MODULES, formatCurrency } from "@/config/pricingRegistry";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
@@ -122,7 +117,7 @@ const partnerTypes = [
   },
 ];
 
-const trustPartners = ["Toast", "BuildingLink", "SevenRooms", "OpenTable", "Eventbrite", "Stripe", "Square", "HubSpot", "Salesforce", "Google", "Shopify", "Zapier"];
+const publicPartnerTypes = partnerTypes.filter((type) => !["restaurant", "retail"].includes(type.id));
 
 const impactGroups = [
   {
@@ -159,15 +154,35 @@ const impactGroups = [
   },
 ];
 
-const professionalServices = [
-  ["Launch Kit", QrCode, "QR setup, welcome materials, and publishing support."],
-  ["Photography", Camera, "Polished images for profiles, offers, events, and listings."],
-  ["Creative", Megaphone, "Campaign copy, offer framing, and resident-facing messaging."],
-  ["Resident launch", Users, "Clear launch communication that tells people what to do."],
-  ["Street Team", MapPin, "On-site support for QR placement and events."],
-  ["Training", BadgeCheck, "A practical workspace handoff for your team."],
-  ["Research", Sparkles, "Resident feedback, survey setup, and insight packaging."],
-  ["Custom Campaign", CalendarDays, "A tailored launch or district campaign."],
+const launchSupportPaths = [
+  {
+    id: "opening",
+    label: "Set up an opening",
+    title: "Get the essentials live, in the right order.",
+    copy: "A practical launch path for a new location, listing, or partner profile.",
+    includes: "Launch kit · QR setup · welcome materials · publishing support",
+  },
+  {
+    id: "story",
+    label: "Shape the story",
+    title: "Make the first impression feel considered.",
+    copy: "Use this when the profile, offer, or campaign needs sharper imagery and clearer resident-facing language.",
+    includes: "Photography · campaign framing · copy and creative direction",
+  },
+  {
+    id: "activation",
+    label: "Activate in person",
+    title: "Turn a local moment into a clear action.",
+    copy: "For QR placement, an event, or an on-site moment where people need a simple next step.",
+    includes: "Street team · QR placement · event support · launch communication",
+  },
+  {
+    id: "program",
+    label: "Build a program",
+    title: "Plan a more tailored partnership.",
+    copy: "For ongoing launches, district work, training, resident insight, or a campaign that does not fit a standard package.",
+    includes: "Training · research · resident feedback · custom campaign",
+  },
 ];
 
 const integrationPartners = [
@@ -327,12 +342,10 @@ const integrationLogoAliases = {
 };
 
 const timelineSteps = [
-  "Choose your membership",
-  "Create your workspace",
-  "Connect your existing software",
-  "Publish your first offer or event",
-  "Reach nearby residents",
-  "Track visits and results",
+  "Choose the plan that fits your location",
+  "Set up your partner account",
+  "Publish an offer, event, or profile update",
+  "Review what residents use",
 ];
 
 const faqItems = [
@@ -497,27 +510,18 @@ function LifecycleShell({ stage, children }) {
               : "Publish offers and events, appear on the map, and see what people use."}
           </span>
           <div className="dp-partner-lifecycle-hero-actions">
-            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/partners/register" : "/partners/pricing"}>
+            <Link to={stage === "register" ? "#partner-signup" : isTools ? "/partner-workspace/overview" : stage === "start" ? "/pricing" : "/partners/pricing"}>
               {isTools ? "Open workspace" : stage === "register" ? "Continue to signup" : "Join Downtown Perks"}
               <ArrowRight aria-hidden="true" />
             </Link>
             <Link to={isTools ? "/partners#partners" : "/partners/tools#platform-tools"}>{isTools ? "View membership" : "View partner tools"}</Link>
           </div>
         </div>
-        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/register" : "/partner-workspace/overview"}>
+        <Link className="dp-partner-lifecycle-utility-link" to={isTools ? "/partners/sign-up" : "/partners/sign-in"}>
           {isTools ? "Create partner account" : "Partner sign in"}
           <ArrowRight aria-hidden="true" />
         </Link>
       </header>
-
-      {!isTools ? (
-        <section className="dp-partner-trust-strip" aria-label="Connected tools">
-          <span>Works with</span>
-          <div>
-            {trustPartners.map((partner) => <strong key={partner}>{partner}</strong>)}
-          </div>
-        </section>
-      ) : null}
 
       {children}
     </main>
@@ -548,7 +552,7 @@ function ChooseBusinessSection({ setup, setSetup }) {
         <span>Choose the closest match. We’ll recommend the right membership.</span>
       </div>
       <div className="dp-partner-lifestyle-grid">
-        {partnerTypes.slice(0, 7).map((type) => {
+        {publicPartnerTypes.map((type) => {
           const isSelected = selectedType.id === type.id;
           const TypeIcon = type.icon;
           return (
@@ -591,7 +595,7 @@ function RecommendedMembership({ setup }) {
           <p>{selectedType.overview}</p>
           <strong>{total === "Custom" ? "Custom setup" : `${total} annually`}</strong>
           <div>
-            {selectedType.includes.map((item) => (
+            {selectedType.includes.slice(0, 3).map((item) => (
               <span key={item}><Check aria-hidden="true" />{item}</span>
             ))}
           </div>
@@ -603,7 +607,7 @@ function RecommendedMembership({ setup }) {
         <details className="dp-partner-plan-comparison">
           <summary>View all memberships</summary>
           <div>
-            {partnerTypes.slice(0, 7).map((type) => (
+            {publicPartnerTypes.map((type) => (
               <Link key={type.id} to={`/pricing?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
                 <span>{type.label}</span>
                 <strong>{type.plan}</strong>
@@ -731,27 +735,43 @@ function GrowthProgramsSection() {
 }
 
 function ProfessionalServicesSection() {
+  const [selectedPathId, setSelectedPathId] = useState(launchSupportPaths[0].id);
+  const selectedPath = launchSupportPaths.find((path) => path.id === selectedPathId) || launchSupportPaths[0];
+  const requestHref = `/contact?intent=partner-registration&interest=support&message=${encodeURIComponent(`Launch support request: ${selectedPath.label}. ${selectedPath.includes}.`)}`;
+
   return (
     <section className="dp-partner-lifecycle-section dp-partner-services-section">
       <div className="dp-partner-lifecycle-section-head">
-        <p>Professional launch services</p>
-        <h2>Want us to help?</h2>
-        <span>
-          Whether you need photography, campaign planning, QR installation, or a complete launch, our team can help you get everything live quickly.
-        </span>
+        <p>Launch assistance</p>
+        <h2>Where would a little help matter most?</h2>
+        <span>Choose the outcome. We will shape the scope around your plan, timing, and location.</span>
       </div>
-      <div className="dp-professional-service-list">
-        {professionalServices.map(([title, , copy]) => (
-          <article key={title}>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-          </article>
-        ))}
+      <div className="dp-launch-support" role="radiogroup" aria-label="Launch support path">
+        <div className="dp-launch-support-list">
+          {launchSupportPaths.map((path) => (
+            <button
+              key={path.id}
+              type="button"
+              role="radio"
+              aria-checked={path.id === selectedPath.id}
+              data-active={path.id === selectedPath.id}
+              onClick={() => setSelectedPathId(path.id)}
+            >
+              <span>{path.label}</span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+        <div className="dp-launch-support-detail" aria-live="polite">
+          <h3>{selectedPath.title}</h3>
+          <p>{selectedPath.copy}</p>
+          <small>{selectedPath.includes}</small>
+          <Link className="dp-partner-section-action" to={requestHref}>
+            Request this support
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </div>
       </div>
-      <Link className="dp-partner-section-action" to="/contact">
-        Discuss launch support
-        <ArrowRight aria-hidden="true" />
-      </Link>
     </section>
   );
 }
@@ -879,7 +899,7 @@ function FinalCtaSection() {
       <h2>Ready to join?</h2>
       <span>Choose a membership and bring your business into the downtown map.</span>
       <div>
-        <Link to="/partners/register">Join Downtown Perks</Link>
+        <Link to="/pricing">Choose a plan</Link>
         <Link to="/contact">Contact us</Link>
       </div>
     </section>

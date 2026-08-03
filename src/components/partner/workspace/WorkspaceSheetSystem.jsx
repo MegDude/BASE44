@@ -68,7 +68,7 @@ export function WorkspaceSheetHost() {
   return createPortal(
     <div className="dp-workspace-sheet-layer" data-state={sheet.state || "summary"}>
       <button className="dp-workspace-sheet-backdrop" type="button" aria-label="Close sheet" onClick={context.closeSheet} />
-      <section className="dp-workspace-sheet" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <section className="dp-workspace-sheet" data-workspace-drawer="true" role="dialog" aria-modal="true" aria-labelledby={titleId}>
         <div className="dp-workspace-sheet-handle" aria-hidden="true"><span /></div>
         <header className="dp-workspace-sheet-header">
           <div>

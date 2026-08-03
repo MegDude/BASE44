@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AdminScopeSwitcher } from "@/components/admin/AdminScopeSwitcher";
 import {
@@ -23,23 +23,36 @@ export function WorkspaceScopeSwitcher({ scope, accessMode, organizationName, on
   const navigate = useNavigate();
   const portfolioLabelId = useId();
   const listingLabelId = useId();
+  const [isExpanded, setIsExpanded] = useState(false);
   const portfolios = scope.organizationId ? getOrganizationPortfolios(scope.organizationId) : [];
   const listings = scope.organizationId
     ? getOrganizationListings(scope.organizationId, scope.portfolioId)
     : [];
   if (accessMode === "admin") {
     return (
-      <section className="dp-workspace-scope dp-workspace-scope--admin" aria-label="Choose admin workspace scope">
-        <div className="dp-workspace-scope__summary">
-          <p>Admin workspace</p>
-          <strong>Authorized platform scope</strong>
-          <span>Organizations, portfolios, and listings from your verified access.</span>
-        </div>
-        <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
-        <div className="dp-workspace-scope__admin-actions">
-          <Link className="dp-workspace-scope__accounts" to={replacePartnerWorkspaceScope("/partner-workspace/residents", scope)}>
-            People & access
-          </Link>
+      <section className="dp-workspace-scope dp-workspace-scope--admin" data-expanded={isExpanded ? "true" : "false"} aria-label="Administrator workspace scope">
+        <button
+          type="button"
+          className="dp-workspace-scope__collapse"
+          aria-expanded={isExpanded}
+          aria-controls="admin-workspace-scope-details"
+          onClick={() => setIsExpanded((value) => !value)}
+        >
+          <span><small>Admin workspace</small><strong>Authorized platform scope</strong></span>
+          <span>{isExpanded ? "Hide scope" : "Change scope"}</span>
+        </button>
+        <div id="admin-workspace-scope-details" hidden={!isExpanded} className="dp-workspace-scope__details">
+          <div className="dp-workspace-scope__summary">
+            <p>Authorized platform scope</p>
+            <strong>Choose the organization, portfolio, or listing you need.</strong>
+            <span>Every result, person, campaign, map item, and connection below is limited to verified access.</span>
+          </div>
+          <AdminScopeSwitcher onScopeResolved={onAdminScopeResolved} />
+          <div className="dp-workspace-scope__admin-actions">
+            <Link className="dp-workspace-scope__accounts" to="/partner-workspace/residents">
+              People & access
+            </Link>
+          </div>
         </div>
       </section>
     );

@@ -1,7 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { inject } from '@vercel/analytics'
-import { injectSpeedInsights } from '@vercel/speed-insights'
 import App from '@/App.jsx'
 import '@/index.css'
 import '@/styles/map-glass-final.css'
@@ -128,7 +126,6 @@ import "@/styles/search-input-rail-compact-final.css"
 import "@/styles/resident-civic-native-final.css"
 import "@/styles/quick-search-native-final.css"
 import "@/styles/panel-navigation-contract-final.css"
-import "@/styles/panel-media-system-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/platform-cleanup-polish-final.css"
 import "@/styles/detail-panel-fixed-actions-final.css"
@@ -145,17 +142,39 @@ import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
 import "@/styles/global-back-control-final.css"
-import "@/styles/pricing-page-finish.css"
-import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
 import "@/styles/route-native-map-sheet-final.css"
-
+import "@/styles/workspace-campaign-drawer-contract.css"
 import "@/styles/native-drawer-scroll-contract.css"
+import "@/styles/partner-acquisition-flow-final.css"
+import "@/styles/workspace-unified-native-release.css"
+import "@/styles/map-drawer-native-luxury-final.css"
+import "@/styles/perks-saved-nearby-mobile-system.css"
+import "@/styles/native-luxury-platform-release.css"
+import "@/styles/panel-media-system-final.css"
 
-inject()
-injectSpeedInsights()
+const application = <App />
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <App />
+  import.meta.env.DEV ? <React.StrictMode>{application}</React.StrictMode> : application
 )
+
+function scheduleObservability() {
+  const start = async () => {
+    const [{ inject }, { injectSpeedInsights }] = await Promise.all([
+      import('@vercel/analytics'),
+      import('@vercel/speed-insights'),
+    ])
+    inject()
+    injectSpeedInsights()
+  }
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => void start(), { timeout: 2500 })
+  } else {
+    window.setTimeout(() => void start(), 1500)
+  }
+}
+
+if (import.meta.env.PROD) scheduleObservability()

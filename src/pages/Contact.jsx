@@ -143,10 +143,10 @@ export default function ContactPage() {
             <p className="dp-contact-eyebrow">Contact</p>
             <h1>Send a setup request.</h1>
             <p>
-              Pricing handles the plan and capability selection. This page simply captures who to contact and where the request should go.
+              Choose a plan first when you can. Use this form when you need a tailored setup or a quick answer.
             </p>
             <div className="dp-contact-actions">
-              <a href="/marketing/pricing" className="dp-contact-button">
+              <a href="/pricing" className="dp-contact-button">
                 <span>Review pricing</span>
                 <ArrowRight aria-hidden="true" />
               </a>
