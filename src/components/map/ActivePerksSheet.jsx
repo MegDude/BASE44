@@ -161,7 +161,7 @@ export default function ActivePerksSheet({
                 {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"} available
               </span>
             </div>
-            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close perks">
+            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close active perks">
               <X aria-hidden="true" />
             </button>
           </header>

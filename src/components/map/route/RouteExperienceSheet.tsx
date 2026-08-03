@@ -6,7 +6,6 @@ import { RouteRelatedList } from "./RouteRelatedList";
 import { RouteStopList } from "./RouteStopList";
 import type { RouteAccessibility } from "@/types/routeExperience";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
-import { handlePanelMediaError } from "@/lib/map/panelMediaPresentation";
 
 type SheetState = "peek" | "medium" | "expanded" | "full";
 
@@ -107,11 +106,13 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
   const activeStopDirectionsHref = useMemo(() => stopDirectionsUrl(activeStop), [activeStop]);
   const publicLabel = route.routeType || "route";
   const primaryLabel = isStarted ? (selectedStopId ? "Continue walk" : "Continue walk") : `Start ${publicLabel}`;
+  const visibleRelatedRoutes = sheetState === "expanded" || sheetState === "full" ? relatedRoutes : [];
   const cycleSheet = () => setSheetState((current) => {
     const states: SheetState[] = ["peek", "medium", "expanded", "full"];
     return states[(states.indexOf(current) + 1) % states.length];
   });
   const toggleMapVisibility = () => setSheetState((current) => current === "peek" ? "medium" : "peek");
+  const collapseToMap = () => setSheetState("peek");
   const enterStopDetail = (stop: RouteStop) => {
     previousRouteScrollTopRef.current = scrollRef.current?.scrollTop || 0;
     previousRouteSheetStateRef.current = sheetState === "full" ? "expanded" : sheetState;
@@ -142,6 +143,7 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
       className={`dp-route-experience-sheet is-${sheetState} ${isStopDetail ? "is-stop-detail" : "is-route-view"}`}
       drawerState={sheetState}
       panelKind={isStopDetail ? "route-stop" : "route"}
+      hasInternalActions={isStarted}
       onDrawerStateChange={setSheetState}
       onRequestClose={onExit}
       aria-labelledby={isStopDetail ? `dp-route-stop-sheet-title-${activeStop.id}` : `dp-route-sheet-title-${route.id}`}
@@ -181,23 +183,13 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
           )}
         </>
       )}
-      actions={isStopDetail ? (
-        <>
-          {activeStopDirectionsHref ? <a className="dp-route-primary-action" href={activeStopDirectionsHref} target="_blank" rel="noreferrer">Directions</a> : <button type="button" className="dp-route-primary-action" onClick={() => onOpenStop(activeStop)}>View details</button>}
-          <button type="button" className="dp-route-secondary-action" onClick={continueToNextStop}>Continue <ChevronRight aria-hidden="true" /></button>
-        </>
-      ) : (
-        <>
-          <button type="button" className="dp-route-primary-action" onClick={() => onPrimaryAction(activeStop)}>{primaryLabel}</button>
-          <button type="button" className="dp-route-sheet-size" onClick={toggleMapVisibility} aria-label={sheetState === "peek" ? "Show route stops" : "Minimise route to show map"} aria-expanded={sheetState !== "peek"}>
-            <ChevronDown aria-hidden="true" />
-          </button>
-        </>
-      )}
     >
       {isStopDetail ? (
         <article className="dp-route-stop-detail" data-route-stop-id={activeStop.id}>
-          {stopHero(activeStop) ? <img className="dp-route-stop-detail__image" src={stopHero(activeStop)} alt="" loading="eager" decoding="async" onError={handlePanelMediaError} /> : null}
+          <div className="dp-route-active-action-bar">
+            {activeStopDirectionsHref ? <a className="dp-route-primary-action" href={activeStopDirectionsHref} target="_blank" rel="noreferrer">Directions</a> : <button type="button" className="dp-route-primary-action" onClick={() => onOpenStop(activeStop)}>View details</button>}
+            <button type="button" className="dp-route-secondary-action" onClick={continueToNextStop}>Continue <ChevronRight aria-hidden="true" /></button>
+          </div>
           <section className="dp-route-stop-detail__summary">
             <span>Stop {(selectedIndex >= 0 ? selectedIndex : 0) + 1} of {route.stops.length}</span>
             <p>{activeStop.drawerCopy || activeStop.description || activeStop.summary || "Use this stop as a pause in the route, then continue to the next marker."}</p>
@@ -213,8 +205,13 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
         </article>
       ) : (
         <>
+          <div className="dp-route-active-action-bar">
+            <button type="button" className="dp-route-primary-action" onClick={() => onPrimaryAction(activeStop)}>{primaryLabel}</button>
+            <button type="button" className="dp-route-sheet-size" onClick={collapseToMap} aria-label={sheetState === "peek" ? "Show route stops" : "Minimise route to show map"} aria-expanded={sheetState !== "peek"}>
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
           <section className="dp-route-hero">
-            {route.heroImageUrl ? <img src={route.heroImageUrl} alt="" loading="eager" decoding="async" onError={handlePanelMediaError} /> : null}
             <div>
               <p>{route.summary || route.description}</p>
               <div className="dp-route-facts" aria-label="Route facts">
@@ -238,7 +235,7 @@ export function RouteExperienceSheet({ route, mode, routeState = "", selectedSto
           ) : null}
 
           <RouteStopList stops={route.stops} selectedStopId={selectedStopId} visitedStopIds={visitedStopIds} onSelectStop={enterStopDetail} />
-          <RouteRelatedList routes={relatedRoutes} onOpenRoute={onOpenRelatedRoute} />
+          <RouteRelatedList routes={visibleRelatedRoutes} onOpenRoute={onOpenRelatedRoute} />
           <RouteDetails
             description={route.description}
             beforeYouGo={route.beforeYouGo}
