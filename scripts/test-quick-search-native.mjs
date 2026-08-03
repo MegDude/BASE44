@@ -25,7 +25,10 @@ for (const functionalContract of [
   assert.match(component, functionalContract, `Quick-search behavior is missing ${functionalContract}`);
 }
 
-assert.match(component, /aria-label="Go back from search"/, "Search is missing Back");
+// iOS-native IA: a modal search overlay exposes a single unambiguous Close
+// affordance, never a misleading "Back" that behaves identically to Close.
+// (See test-polished-panel-state-contract.mjs, which forbids the Back label.)
+assert.doesNotMatch(component, /aria-label="Go back from search"/, "Search must not expose a misleading Back control");
 assert.match(component, /aria-label="Close search"/, "Search is missing Close");
 assert.match(component, /aria-label="Popular searches"/, "Search shortcuts need a plain-language label");
 assert.doesNotMatch(component, /Coffee before work|Happy hour nearby|Explore by intent/, "Search still uses retired generic copy");
