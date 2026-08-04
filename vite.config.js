@@ -288,7 +288,9 @@ export default defineConfig(({ mode }) => {
       hmrNotifier: true,
       navigationNotifier: true,
       analyticsTracker: true,
-      visualEditAgent: true
+      // visualEditAgent uses @babel/generator which deoptimises files >500KB (Map.jsx is ~950KB).
+      // Disabled to prevent the ~90s cold-start stall on every dev server restart.
+      visualEditAgent: false
     }),
     react(),
   ]
