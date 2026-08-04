@@ -9672,7 +9672,6 @@ function PartnerCampaignDrawer({ place, places = [], onSelect, organizationId })
       <MapNativeCampaignDetails place={place} mode="partner" />
       <PartnerCampaignTrailSection place={place} places={places} onSelect={onSelect} />
       <PartnerWorkspaceLink place={place} organizationId={organizationId} />
-      <PartnerSourceSection place={place} />
     </motion.div>
   );
 }
