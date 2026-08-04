@@ -99,6 +99,21 @@ const REPORTING_NEEDS = [
   "Custom reporting",
 ];
 
+const FUNNEL_STAGES = ["Category", "Plan", "Integrations", "Account"];
+const FUNNEL_INTEGRATIONS = [
+  { id: "toast", label: "Toast", summary: "Restaurant operations and offer references." },
+  { id: "buildinglink", label: "BuildingLink", summary: "Resident welcome paths and property context." },
+  { id: "opentable", label: "OpenTable", summary: "Reservation links and dining profiles." },
+  { id: "eventbrite", label: "Eventbrite", summary: "Event registration and schedule details." },
+  { id: "stripe", label: "Stripe", summary: "Secure billing and membership references." },
+  { id: "square", label: "Square", summary: "Commerce links and redemption references." },
+  { id: "hubspot", label: "HubSpot", summary: "Partner leads and campaign context." },
+  { id: "salesforce", label: "Salesforce", summary: "Account and campaign references." },
+  { id: "google", label: "Google", summary: "Business Profile, Calendar, and Maps." },
+  { id: "shopify", label: "Shopify", summary: "Product links and checkout handoff." },
+  { id: "zapier", label: "Zapier", summary: "Workflow triggers and notifications." },
+];
+
 function getPartnerTypeLabel(value) {
   return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
 }
@@ -216,6 +231,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const pricingPartnerType = toPricingPartnerType(form.partner_type);
   const availablePlans = useMemo(() => getPlansForPartnerType(pricingPartnerType), [pricingPartnerType]);
   const [selectedPlanId, setSelectedPlanId] = useState(initialPlan);
+  const [funnelStage, setFunnelStage] = useState(initialType ? 1 : 0);
+  const [selectedIntegrationIds, setSelectedIntegrationIds] = useState([]);
   const selectedPlan = availablePlans.find((plan) => plan.id === selectedPlanId) || availablePlans[0] || null;
   const selectedModules = PRICING_MODULES.filter((module) => selectedModuleIds.includes(module.id));
   const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
@@ -323,6 +340,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       selected_plan: selectedPlan?.id || "",
       selected_plan_label: selectedPlan?.label || "",
       selected_modules: selectedModuleIds,
+      selected_integrations: selectedIntegrationIds,
+      onboarding_stage: FUNNEL_STAGES[funnelStage],
       campaign_interest: campaignInterest,
       reporting_needs: reportingNeeds,
       recurring_annual_total: annualEstimate,
@@ -347,6 +366,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           planInterest: selectedPlan?.label || "Partner account registration",
           selectedPlan: selectedPlan?.label || "Partner account registration",
           selectedAddOns: selectedModules.map((module) => module.label).join(", "),
+          selectedIntegrations: selectedIntegrationIds.map((id) => FUNNEL_INTEGRATIONS.find((item) => item.id === id)?.label).filter(Boolean).join(", "),
           estimatedTotal: firstYearEstimate == null ? "Custom" : firstYearEstimate,
           recurringAnnualTotal: annualEstimate == null ? "Custom" : annualEstimate,
           firstYearEstimate: firstYearEstimate == null ? "Custom" : firstYearEstimate,
@@ -477,12 +497,35 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
-                  <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Sign up</p>
+                  <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner onboarding</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Confirm your partner setup
+                    {FUNNEL_STAGES[funnelStage]}
                   </h2>
                 </div>
 
+                <ol className="dp-partner-funnel-progress" aria-label="Partner onboarding progress">
+                  {FUNNEL_STAGES.map((stage, index) => (
+                    <li key={stage} data-active={index === funnelStage} data-complete={index < funnelStage}>
+                      <span>{index + 1}</span><small>{stage}</small>
+                    </li>
+                  ))}
+                </ol>
+
+                {funnelStage === 0 ? (
+                  <section className="dp-partner-funnel-stage" aria-labelledby="partner-category-title">
+                    <h3 id="partner-category-title">Choose your partner category</h3>
+                    <p>This shapes the plans, tools, and workspace we recommend.</p>
+                    <div className="dp-partner-funnel-options" role="radiogroup" aria-label="Partner category">
+                      {PARTNER_TYPES.filter((type) => type.value !== "resident").map((type) => (
+                        <button key={type.value} type="button" role="radio" aria-checked={form.partner_type === type.value} data-active={form.partner_type === type.value} onClick={() => selectPartnerType(type.value)}>
+                          <strong>{type.label}</strong><small>{type.summary}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
+
+                {funnelStage === 1 ? (
                 <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
                   <div className="dp-partner-access-setup-head">
                     <p className="dp-partner-access-setup-label">Your selection</p>
@@ -510,8 +553,43 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     </div>
                     {oneTimeTotal ? <div><dt>One-time support</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div> : null}
                   </dl>
+                  {availablePlans.length ? (
+                    <div className="dp-partner-funnel-options" role="radiogroup" aria-label="Annual plan">
+                      {availablePlans.map((plan) => (
+                        <button key={plan.id} type="button" role="radio" aria-checked={selectedPlan?.id === plan.id} data-active={selectedPlan?.id === plan.id} onClick={() => setSelectedPlanId(plan.id)}>
+                          <strong>{plan.label}</strong><small>{plan.bestFor}</small><em>{plan.annualPrice == null ? "Custom" : `${formatCurrency(plan.annualPrice)}/year`}</em>
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                  <div className="dp-partner-funnel-modules">
+                    <h3>Optional support</h3>
+                    {PRICING_MODULES.slice(0, 8).map((module) => (
+                      <label key={module.id}>
+                        <input type="checkbox" checked={selectedModuleIds.includes(module.id)} onChange={() => setSelectedModuleIds((current) => current.includes(module.id) ? current.filter((id) => id !== module.id) : [...current, module.id])} />
+                        <span><strong>{module.label}</strong><small>{module.billing}</small></span><em>{formatCurrency(module.price)}</em>
+                      </label>
+                    ))}
+                  </div>
                 </section>
+                ) : null}
 
+                {funnelStage === 2 ? (
+                  <section className="dp-partner-funnel-stage" aria-labelledby="partner-integrations-title">
+                    <h3 id="partner-integrations-title">Connect the tools you already use</h3>
+                    <p>Optional. We will carry these choices into implementation planning.</p>
+                    <div className="dp-partner-funnel-options dp-partner-funnel-integrations">
+                      {FUNNEL_INTEGRATIONS.map((integration) => (
+                        <button key={integration.id} type="button" aria-pressed={selectedIntegrationIds.includes(integration.id)} data-active={selectedIntegrationIds.includes(integration.id)} onClick={() => setSelectedIntegrationIds((current) => current.includes(integration.id) ? current.filter((id) => id !== integration.id) : [...current, integration.id])}>
+                          <strong>{integration.label}</strong><small>{integration.summary}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
+
+                {funnelStage === 3 ? (
+                <div className="dp-partner-funnel-account">
                 <PartnerAccessField label="Organization name" value={form.organization_name} onChange={(value) => updateField("organization_name", value)} required />
                 <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
                 <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
@@ -560,8 +638,19 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   className={`${accessActionClass} dp-acquisition-primary`}
                 >
                   {saved ? <Check className="h-4 w-4 text-[#BFA46A]" /> : <UserPlus className="h-4 w-4 text-[#BFA46A]" />}
-                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
+                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Create partner account"}
                 </button>
+                </div>
+                ) : null}
+
+                <div className="dp-partner-funnel-actions">
+                  {funnelStage > 0 ? <button type="button" onClick={() => setFunnelStage((stage) => stage - 1)}>Back</button> : <Link to="/partners">Cancel</Link>}
+                  {funnelStage < FUNNEL_STAGES.length - 1 ? (
+                    <button type="button" disabled={funnelStage === 0 && !hasPartnerType} onClick={() => setFunnelStage((stage) => Math.min(stage + 1, FUNNEL_STAGES.length - 1))}>
+                      Continue <ArrowRight aria-hidden="true" />
+                    </button>
+                  ) : null}
+                </div>
               </form>
             ) : (
               <div className="dp-partner-access-signin">
