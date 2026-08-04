@@ -38,12 +38,12 @@ html body #root .dp-map-page.dp-map-page :is(
   overflow: hidden !important;
   border: 1px solid var(--dp-native-sheet-line) !important;
   border-bottom: 0 !important;
-  border-radius: 18px 18px 0 0 !important;
+  border-radius: 32px 32px 0 0 !important;
   background: var(--dp-native-sheet-bg) !important;
   background-image: none !important;
   color: var(--dp-native-sheet-ink) !important;
   -webkit-text-fill-color: var(--dp-native-sheet-ink) !important;
-  box-shadow: 0 -14px 36px rgba(11, 31, 51, 0.12) !important;
+  box-shadow: 0 -12px 48px rgba(11, 31, 51, 0.16) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   transform: translateZ(0) !important;
