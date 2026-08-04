@@ -53,63 +53,104 @@
   background: var(--dp-navy-secondary);
 }
 
-/* Header: eyebrow + title + count on the left, close on the right. Two slots
-   only, matching the shared mobile system header grid so the close control
-   always lands top-right. */
-.dp-active-perks-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 44px;
-  align-items: start;
-  gap: 10px;
-  min-height: 60px;
-  padding: 8px max(16px, env(safe-area-inset-right, 0px)) 14px max(20px, env(safe-area-inset-left, 0px));
+/* ── Perks drawer header — spec: grabber → eyebrow → title → count ───────── */
+.dp-perks-drawer-header {
+  position: relative;
+  min-height: 136px;
+  padding: 34px 56px 16px 24px;
+  border-bottom: 1px solid rgba(11, 31, 51, 0.12);
+  background: #fff;
 }
 
-.dp-active-perks-heading {
+.dp-perks-drawer-grabber {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* reset button chrome */
   display: grid;
-  gap: 2px;
-  min-width: 0;
+  width: 48px;
+  min-height: 20px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
-.dp-active-perks-heading p {
-  margin: 0;
-  color: var(--dp-gold);
-  font: 600 11px/1.2 var(--dp-font-ui);
-  letter-spacing: normal;
+.dp-perks-drawer-grabber > span {
+  width: 36px;
+  height: 5px;
+  border-radius: 12px;
+  background: var(--dp-handle, rgba(11, 31, 51, 0.18));
+  transition: background 160ms ease, width 160ms ease;
+}
+
+.dp-perks-drawer-grabber:is(:hover, :focus-visible) > span {
+  width: 44px;
+  background: var(--dp-navy-secondary, #526075);
+}
+
+.dp-perks-drawer-eyebrow {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #637386;
   text-transform: uppercase;
 }
 
-.dp-active-perks-heading h2 {
+.dp-perks-drawer-title {
   margin: 0;
-  font: 400 26px/1.05 var(--dp-font-display, Georgia, "Times New Roman", serif);
-  letter-spacing: -0.01em;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 650;
+  color: #0b1f33;
 }
 
-.dp-active-perks-count {
+.dp-perks-drawer-summary {
+  display: block;
   margin-top: 4px;
-  color: var(--dp-navy-secondary);
-  font: 600 12px/1.2 var(--dp-font-ui);
-  letter-spacing: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #637386;
 }
 
-.dp-active-perks-close {
-  display: grid;
+.dp-perks-drawer-close {
+  position: absolute;
+  top: 58px;
+  right: 20px;
   width: 44px;
   height: 44px;
+  display: grid;
   padding: 0;
   place-items: center;
   border: 0;
   border-radius: 12px;
-  background: var(--dp-soft-neutral);
-  color: var(--dp-navy);
+  background: var(--dp-soft-neutral, #f2f2f7);
+  color: var(--dp-navy, #0b1f33);
   transition: background 150ms ease, color 150ms ease;
+  cursor: pointer;
 }
 
-.dp-active-perks-close:is(:hover, :focus-visible) {
+.dp-perks-drawer-close:is(:hover, :focus-visible) {
   background: var(--dp-surface-alt, #f4f1ea);
 }
 
-.dp-active-perks-close svg,
+.dp-perks-drawer-close svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+/* Context row: sits immediately below the header divider */
+.dp-perks-drawer-context {
+  padding: 10px 24px 12px !important;
+}
+
+/* Legacy classes: keep the save-icon size consistent */
 .dp-active-perk-save svg {
   width: 18px;
   height: 18px;

@@ -145,34 +145,32 @@ export default function ActivePerksSheet({
         if (node && initialScrollTop > 0 && node.scrollTop === 0) node.scrollTop = initialScrollTop;
       }}
       header={(
-        <>
+        <header className="dp-perks-drawer-header">
           <button
             type="button"
-            className="dp-active-perks-handle"
+            className="dp-perks-drawer-grabber"
             onClick={() => onDrawerStateChange(nextState)}
             aria-label={`Panel size: ${safeState}. Activate to change the panel height.`}
             aria-expanded={safeState === "expanded"}
           >
             <span aria-hidden="true" />
           </button>
-          <header className="dp-active-perks-header">
-            <div className="dp-active-perks-heading">
-              <p>Resident benefits</p>
-              <h2>Perks</h2>
-              <span className="dp-active-perks-count" aria-live="polite">
-                {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"} available
-              </span>
-            </div>
-            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close active perks">
-              <X aria-hidden="true" />
-            </button>
-          </header>
-        </>
+          <div>
+            <span className="dp-perks-drawer-eyebrow">Resident benefits</span>
+            <h1 className="dp-perks-drawer-title">Perks</h1>
+            <span className="dp-perks-drawer-summary" aria-live="polite">
+              {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"}
+            </span>
+          </div>
+          <button type="button" className="dp-perks-drawer-close" onClick={onClose} aria-label="Close perks">
+            <X aria-hidden="true" />
+          </button>
+        </header>
       )}
     >
       {safeState !== "peek" && (
         <div className="dp-active-perks-body">
-          <p className="dp-active-perks-context">
+          <p className="dp-active-perks-context dp-perks-drawer-context">
             {selectedFilter === "Active"
               ? "Available near this map area"
               : isCatalogFallback
