@@ -1094,6 +1094,17 @@ function CheckoutStage({ setup, setSetup }) {
     setSetup(nextSetup);
     saveSetup(nextSetup);
 
+    // Direct Payment Link — open immediately without creating a session.
+    if (checkoutTarget?.type === "url" && checkoutTarget.url) {
+      trackLifecycleEvent("stripe_checkout_started", {
+        partnerType: nextSetup.partnerType,
+        plan: selectedPlan,
+        checkoutTargetType: "url",
+      });
+      window.location.assign(checkoutTarget.url);
+      return;
+    }
+
     if (isStripeReady && (checkoutTarget.priceId || checkoutTarget.productId)) {
       setIsSubmittingCheckout(true);
       try {

@@ -182,6 +182,13 @@ export default function PricingPage() {
       window.location.href = "/card";
       return;
     }
+    // If the plan has a direct Stripe Payment Link, go straight to checkout.
+    // The sign-up page is only needed when no Payment Link exists (lead path).
+    if (checkoutTarget?.type === "url" && checkoutTarget.url && selectedModuleIds.length === 0) {
+      trackPricingEvent("pricing_cta_clicked", { label: "Checkout via payment link", partnerType, planId: selectedPlan?.id, checkoutUrl: checkoutTarget.url });
+      window.location.href = checkoutTarget.url;
+      return;
+    }
     trackPricingEvent("pricing_cta_clicked", { label: "Continue to account setup", partnerType, planId: selectedPlan?.id });
     window.location.href = setupHref;
   }
@@ -264,7 +271,7 @@ export default function PricingPage() {
               <span>{isResident ? "Annual access" : "First year"}</span>
               <div><strong>{chosenTitle}</strong></div>
               {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
-              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get Perks Card" : "Continue to account setup"}</span></button>
+              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get Perks Card" : checkoutTarget?.type === "url" && selectedModuleIds.length === 0 ? "Choose this plan" : "Continue to account setup"}</span></button>
             </aside>
           </div>
 
@@ -284,7 +291,7 @@ export default function PricingPage() {
 
       <div className="dp-pricing-mobile-action">
         <span><small>{isResident ? "Annual access" : "Selected plan"}</small><strong>{totalText}</strong></span>
-        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span></button>
+        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : checkoutTarget?.type === "url" && selectedModuleIds.length === 0 ? "Choose plan" : "Continue"}</span></button>
       </div>
     </main>
   );
