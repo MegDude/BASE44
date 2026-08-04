@@ -204,14 +204,21 @@ export default function PricingPage() {
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
                 <div className="dp-pricing-step-heading"><span>01</span><h2 id="pricing-role-title">What are you building?</h2></div>
-                <label className="dp-pricing-role-select">
-                  <span>Select your partner type</span>
-                  <select value={partnerType} onChange={(event) => choosePartner(event.target.value)}>
-                    {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate", "Custom"].map((type) => (
-                      <option key={type} value={type}>{partnerCopy[type].label}</option>
-                    ))}
-                  </select>
-                </label>
+                <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
+                  {[
+                    { value: "Venue", label: "Venue" },
+                    { value: "Property", label: "Property" },
+                    { value: "Hotel", label: "Hotel" },
+                    { value: "Brand", label: "Brand" },
+                    { value: "Civic", label: "Community" },
+                    { value: "Real Estate", label: "Real Estate" },
+                  ].map(({ value, label }) => (
+                    <button key={value} type="button" role="radio" aria-checked={partnerType === value} data-active={partnerType === value} onClick={() => choosePartner(value)}>
+                      <span>{label}</span>
+                      <i aria-hidden="true" />
+                    </button>
+                  ))}
+                </div>
                 <p className="dp-pricing-role-context">{partnerCopy[partnerType].short}</p>
               </section>
 
