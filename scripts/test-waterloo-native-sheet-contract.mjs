@@ -39,7 +39,7 @@ assert.match(routeSheet, /data-sheet-view=\{isStopDetail \? "stop-detail" : "rou
 assert.match(routeSheet, /previousRouteScrollTopRef/, "RouteExperienceSheet must preserve route scroll before stop detail");
 assert.match(routeSheet, /previousRouteSheetStateRef/, "RouteExperienceSheet must preserve prior route sheet height");
 assert.match(routeSheet, /<RouteStopList[\s\S]*onSelectStop=\{enterStopDetail\}/, "Route stop rows must enter in-sheet stop detail");
-assert.match(routeSheet, /Back to \{route\.shortTitle \|\| route\.title\}/, "Stop detail must render an in-sheet route Back control");
+assert.match(routeSheet, /aria-label=\{`Back to \$\{route\.shortTitle \|\| route\.title\}`\}/, "Stop detail must render an in-sheet route Back control");
 assert.doesNotMatch(routeSheet, /onClick=\{\(\) => onOpenStop\(activeStop\)\}>View stop/, "Route active stop must not open the standalone entity drawer");
 assert.doesNotMatch(mapPage, /searchParams\.get\("entityId"\) \|\| searchParams\.get\("entity"\) \|\| stopId/, "Route stopId must not automatically open the standalone entity drawer");
 assert.match(mapPage, /urlState\.update\(\{ collection: urlState\.collection, routeId: urlState\.collection, stop: "", stopId: stop\.id, entityId: "", drawerClosed: "true" \}\)/, "Route stop selection must keep durable stopId without opening entityId");

@@ -26,19 +26,34 @@ assert.equal(normalizeAuthReturnPath("//attacker.example", DEFAULT_PARTNER_RETUR
 assert.equal(normalizeAuthReturnPath("/\\attacker.example", DEFAULT_PARTNER_RETURN_PATH), DEFAULT_PARTNER_RETURN_PATH);
 assert.equal(normalizeAuthReturnPath("/auth/callback", DEFAULT_PARTNER_RETURN_PATH), DEFAULT_PARTNER_RETURN_PATH);
 assert.equal(normalizeAuthReturnPath("/partner-workspace/reports", DEFAULT_PARTNER_RETURN_PATH), "/partner-workspace/reports");
+assert.equal(normalizeAuthReturnPath("/partner-workspace/audience", DEFAULT_PARTNER_RETURN_PATH), "/partner-workspace/audience");
+assert.equal(normalizeAuthReturnPath("/partner-workspace/connections", DEFAULT_PARTNER_RETURN_PATH), "/partner-workspace/connections");
 assert.equal(getAuthenticatedDestination({ role: "resident" }), DEFAULT_RESIDENT_MAP_PATH);
 assert.equal(getAuthenticatedDestination({ role: "partner" }), DEFAULT_PARTNER_RETURN_PATH);
+assert.equal(getAuthenticatedDestination({ role: "admin" }), DEFAULT_ADMIN_RETURN_PATH);
 assert.equal(getAuthenticatedDestination({ role: "super_admin" }), DEFAULT_ADMIN_RETURN_PATH);
 
 assert.match(worker, /url\.pathname === "\/api" \|\| url\.pathname\.startsWith\(API_PREFIX\)/);
 assert.match(worker, /Authorization|new Headers\(request\.headers\)/);
+assert.match(worker, /ORIGIN_NOT_ALLOWED/);
+assert.match(worker, /WEBSOCKET_NOT_SUPPORTED/);
+assert.match(worker, /response\.body/);
 assert.match(wrangler, /"run_worker_first": \["\/api", "\/api\/\*", "\/resident-app"\]/);
 assert.match(wrangler, /"not_found_handling": "single-page-application"/);
 assert.match(envExample, /^BACKEND_ORIGIN=/m);
+assert.match(envExample, /^APP_ORIGINS=/m);
 assert.doesNotMatch(envExample, /^VITE_.*(?:SECRET|PASSWORD|PRIVATE|SERVICE_ROLE|AUTH_TOKEN)=/m);
 assert.match(map, /const title = navigationTitle \|\| place\?\.name \|\| "Details"/);
 assert.match(map, /aria-hidden="true">\{title\}<\/span>/);
 assert.match(adminScope, /"loading" \| "ready" \| "empty" \| "error"/);
 assert.match(adminScope, /no organization or listing has been assigned/i);
+for (const path of ["/partner-workspace/audience", "/partner-workspace/connections"]) {
+  assert.ok(app.includes(`path="${path}"`), `missing protected workspace route ${path}`);
+}
+assert.match(app, /role === "resident"/);
+assert.match(app, /"admin", "platform_admin", "super_admin"/);
+assert.match(app, /!user\?\.partner_id/);
+assert.match(app, /partner_access_required/);
+assert.match(app, /\/resident\/card" element=\{<Navigate to="\/map\?mode=resident&tab=pass"/);
 
 console.log("Cloudflare route and role readiness contract passed.");
