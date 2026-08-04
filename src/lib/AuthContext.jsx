@@ -438,7 +438,7 @@ export const AuthProvider = ({ children }) => {
     if (!canUseProductionAccountAccess() || !isProductionLike() || !supabaseClient) return { type: "error", message: PRODUCTION_ACCOUNT_ACCESS_MESSAGE };
     const { error } = await supabaseClient.auth.signInWithOtp({ email, options: { emailRedirectTo: `${window.location.origin}${redirectPath}`, shouldCreateUser: false } });
     if (error) return { type: "error", message: error.message || "A secure sign-in link could not be sent." };
-    return { type: "confirmation_sent", message: "Check your email for a secure sign-in link." };
+    return { type: "link_sent", message: "Check your email for a secure sign-in link." };
   };
 
   const sendResidentPasswordReset = async ({ email = "", redirectPath = "/residents/reset-password" } = {}) => {
