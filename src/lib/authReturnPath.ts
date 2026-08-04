@@ -69,7 +69,16 @@ function deleteTransientContext(target: URLSearchParams) {
 }
 
 export function isSafeFirstPartyPath(value?: string | null): value is string {
-  return Boolean(value && value.startsWith("/") && !value.startsWith("//") && !/^[a-z][a-z0-9+.-]*:/i.test(value));
+  if (!value || !value.startsWith("/") || value.startsWith("//") || /^[a-z][a-z0-9+.-]*:/i.test(value)) return false;
+  try {
+    const parsed = new URL(value, "https://downtownperks.local");
+    return parsed.origin === "https://downtownperks.local"
+      && !parsed.username
+      && !parsed.password
+      && !parsed.pathname.includes("\\");
+  } catch {
+    return false;
+  }
 }
 
 export function normalizeResidentReturnPath(value?: string | null) {

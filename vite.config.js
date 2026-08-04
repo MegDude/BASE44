@@ -1,6 +1,7 @@
 import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig, loadEnv } from 'vite'
+import { cp, mkdir } from 'node:fs/promises'
 import { pathToFileURL } from 'node:url'
 
 const DEFAULT_BASE44_APP_ID = "cbef744a8545c389ef439ea6";
@@ -255,6 +256,28 @@ function localApiRoutes() {
   };
 }
 
+function cloudflareAssetLimit() {
+  const oversizedOriginals = new Set([
+    "assets-originals/buildings/404-rio-grande.pdf",
+    "assets-originals/buildings/quincy.pdf",
+  ]);
+
+  return {
+    name: "downtown-perks-cloudflare-asset-limit",
+    enforce: "post",
+    async writeBundle() {
+      await mkdir("dist", { recursive: true });
+      await cp("public", "dist", {
+        recursive: true,
+        filter: (source) => {
+          const relative = source.replace(/^public\//, "").replace(`${process.cwd()}/public/`, "");
+          return !oversizedOriginals.has(relative);
+        },
+      });
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const { googleMapsApiKey, googleMapsMapId } = normalizeGoogleMapsEnv(mode);
@@ -262,7 +285,7 @@ export default defineConfig(({ mode }) => {
 
   return {
   logLevel: 'error', // Suppress warnings, only show errors
-  publicDir: process.env.DP_SKIP_PUBLIC_COPY === "true" ? false : undefined,
+  publicDir: false,
   // Keep this app's optimized dependency graph isolated from stale preview chunks.
   cacheDir: 'node_modules/.vite-base44-single-react',
   resolve: {
@@ -280,6 +303,7 @@ export default defineConfig(({ mode }) => {
     "import.meta.env.VITE_GOOGLE_MAPS_MAP_ID": JSON.stringify(googleMapsMapId),
   },
   plugins: [
+    cloudflareAssetLimit(),
     localApiRoutes(),
     base44({
       // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.

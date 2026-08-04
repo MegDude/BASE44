@@ -18,7 +18,7 @@ assert.match(api, /id,organization_id,portfolio_id,name,status,entity_id,metadat
 assert.doesNotMatch(api, /name,address,status,entity_id/);
 assert.match(
   api,
-  /export default async function handler\(req, res\) \{\s+res\.setHeader\("Cache-Control", "private, no-store"\);/,
+  /export default async function handler\(req, res\) \{\s+res\.setHeader\("Cache-Control", "private, no-store(?:, max-age=0)?"\);/,
   "the private cache policy must be applied before method, authentication, and authorization responses",
 );
 assert.match(switcher, /Search organization, portfolio, or listing/);
