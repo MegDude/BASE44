@@ -1,5 +1,6 @@
 import { forwardRef, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { LIST_DRAWER_STATES, NATIVE_DRAWER_STATES } from "@/lib/map/nativeDrawerState";
 
 let openDrawerCount = 0;
 let previousBodyOverflow = "";
@@ -120,7 +121,9 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     const dy = clientY - dragRef.current.y;
     dragRef.current.moved = Math.abs(dy) >= 36;
     if (!dragRef.current.moved) return;
-    const order = ["peek", "medium", "expanded", "full"];
+    // List drawers only travel between peek and expanded; detail drawers keep
+    // the full peek → medium → expanded → full ladder.
+    const order = panelKind === "list" ? LIST_DRAWER_STATES : NATIVE_DRAWER_STATES;
     const index = order.indexOf(drawerState);
     if (dy > 0) {
       if (index <= 0) onRequestClose?.();
@@ -128,7 +131,7 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     } else if (index >= 0 && index < order.length - 1) {
       onDrawerStateChange?.(order[index + 1]);
     }
-  }, [drawerState, onDrawerStateChange, onRequestClose]);
+  }, [drawerState, onDrawerStateChange, onRequestClose, panelKind]);
   const handleGripPointerUp = useCallback((event) => settleGripDrag(event.clientY), [settleGripDrag]);
   const handleGripTouchStart = useCallback((event) => {
     const touch = event.touches[0];
