@@ -41,8 +41,8 @@ export function buildMapAgentContext(payload = {}) {
     activeCollection: compactString(payload.activeCollection, 80),
     selectedEntity: selectedEntity ? compactEntity(selectedEntity) : null,
     selectedEntityId: compactString(payload.selectedEntityId || payload.activeEntity || agentContext.activeEntity, 100),
-    visibleEntities: mapContext.slice(0, 25).map(compactEntity),
-    registryEntities: registry.slice(0, 25).map(compactEntity),
+    visibleEntities: mapContext.slice(0, 12).map(compactEntity),
+    registryEntities: registry.slice(0, 8).map(compactEntity),
     currentDistrict: compactString(payload.currentDistrict || payload.district || agentContext.selectedDistrict, 100),
     mapBounds: payload.mapBounds || agentContext.mapBounds || null,
     savedEntityIds: Array.isArray(payload.savedEntities) ? payload.savedEntities.slice(0, 30).map(String) : [],
@@ -289,7 +289,7 @@ async function runOpenAIAskMap(payload = {}) {
       model: process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL,
       instructions: systemPromptForMode(context.mode),
       input: JSON.stringify(context),
-      max_output_tokens: 1400,
+      max_output_tokens: 900,
       store: false,
       text: {
         format: {

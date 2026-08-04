@@ -60,6 +60,7 @@
     "test:accessible-surfaces-pin-art": "node scripts/test-accessible-surfaces-pin-art.mjs",
     "test:map-camera-stability": "node scripts/test-map-camera-stability.mjs",
     "test:geographic-integrity": "node scripts/test-geographic-integrity.mjs",
+    "test:canonical-map-results": "node scripts/test-canonical-map-results.mjs",
     "test:platform-search": "tsx scripts/test-platform-search.ts",
     "inventory:platform-search-index": "node scripts/generate-platform-search-index.mjs",
     "audit:content:report": "tsx scripts/audit-content-governance.ts",

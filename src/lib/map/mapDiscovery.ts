@@ -240,17 +240,16 @@ export function backendPinToMapEntity(pin: ResolvedMapPin) {
   };
 }
 
-function operationsBaseUrl() {
+function mapResultsUrl() {
   const env = (import.meta.env || {}) as Record<string, string | undefined>;
   const configured = env.VITE_OPERATIONS_API_BASE_URL || env.VITE_BACKEND_PLATFORM_URL;
-  return configured ? String(configured).replace(/\/$/, "") : "";
+  const baseUrl = configured ? String(configured).replace(/\/$/, "") : "";
+  return baseUrl ? `${baseUrl}/api/map/results` : "/api/map/results";
 }
 
 export async function searchOperationalMap(request: MapSearchRequest, signal?: AbortSignal) {
-  const baseUrl = operationsBaseUrl();
-  if (!baseUrl) return null;
   const parsedRequest = mapSearchRequestSchema.parse(request);
-  const response = await fetch(`${baseUrl}/api/map/search`, {
+  const response = await fetch(mapResultsUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(parsedRequest),

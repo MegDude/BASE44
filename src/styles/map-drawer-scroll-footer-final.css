@@ -14,6 +14,10 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-header {
   min-width: 0 !important;
 }
 
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-surface:has(.dp-native-drawer-header) > .dp-native-drawer-grip {
+  display: none !important;
+}
+
 /* The shared header always presents one centered expand/minimise control and
    one close control anchored to the right safe edge. Hidden titles must never
    collapse the close button into the centre grid track. */

@@ -92,6 +92,21 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     if (typeof ref === "function") ref(node);
     else if (ref) ref.current = node;
   }, [ref]);
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell || !header) return;
+    const duplicateTitle = shell.querySelector(".dp-map-detail-navigation-title");
+    duplicateTitle?.style.setProperty("display", "none", "important");
+    const grabber = shell.querySelector(".dp-native-detail-grabber");
+    grabber?.style.setProperty("display", "grid", "important");
+    grabber?.style.setProperty("visibility", "visible", "important");
+    grabber?.style.setProperty("opacity", "1", "important");
+    grabber?.style.setProperty("left", "50%", "important");
+    grabber?.style.setProperty("transform", "translateX(-50%)", "important");
+    const close = shell.querySelector(".dp-map-detail-close");
+    close?.style.setProperty("grid-column", "3", "important");
+    close?.style.setProperty("justify-self", "end", "important");
+  }, [header]);
   // Swipe-to-resize on the grip: dragging down steps the drawer toward the
   // bottom (full → expanded → medium → peek → close); dragging up steps it back.
   const dragRef = useRef({ y: 0, active: false, moved: false });

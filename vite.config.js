@@ -78,6 +78,17 @@ function localApiRoutes() {
       runLocalHandler(req, res, "./api/ask-map.js", logger, "Local ask-map handler failed");
     });
 
+    middlewares.use("/api/map/results", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      runLocalHandler(req, res, "./api/map/results.js", logger, "Local map results handler failed");
+    });
+
     middlewares.use("/api/agent/query", async (req, res) => {
       if (req.method !== "POST") {
         res.statusCode = 405;
