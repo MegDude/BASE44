@@ -205,7 +205,7 @@ function ProductRoutes() {
             }
           />
           <Route path="/admin" element={<ProtectedAdminStudio />} />
-          <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+          <Route path="/admin/dashboard" element={<RedirectWithSearch to="/admin" />} />
           <Route path="/admin-studio" element={<ProtectedAdminStudio />} />
           <Route path="/admin-studio/command-center" element={<ProtectedAdminStudio />} />
           <Route path="/admin-studio/campaign-builder" element={<ProtectedAdminStudio />} />
