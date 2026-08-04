@@ -80,11 +80,9 @@ Allowed referrers should include:
 ```text
 http://127.0.0.1:5173/*
 http://localhost:5173/*
-https://base-44-h2iq.vercel.app/*
-https://base-44-h2iq-meg-dude.vercel.app/*
-https://base-44-h2iq-megdude-meg-dude.vercel.app/*
-approved base-44-h2iq preview deployment URLs
-future approved app domain
+https://app.downtownperks.com/*
+https://*.downtown-perks-app.workers.dev/*
+the explicit Cloudflare staging custom domain, if one is used
 ```
 
 APIs to confirm:

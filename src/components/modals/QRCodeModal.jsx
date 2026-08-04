@@ -57,7 +57,7 @@ export default function QRCodeModal({ item, onClose, onSuccess }) {
   const perkValue = item.perk_value || item.offer || item.primaryAction || 'resident perk';
   const perkDescription = item.perk_description || item.description || item.summary || `${item.name} includes a resident perk through Downtown Perks, giving verified residents a specific local benefit tied to this pin.`;
   const qrPayload = useMemo(() => {
-    const cardUrl = new URL('/card', typeof window !== 'undefined' ? window.location.origin : 'https://base-44-h2iq.vercel.app');
+    const cardUrl = new URL('/card', typeof window !== 'undefined' ? window.location.origin : 'https://app.downtownperks.com');
     cardUrl.searchParams.set('residentUid', residentUid);
     cardUrl.searchParams.set('touchpoint', 'use_perk');
     cardUrl.searchParams.set('entityId', item.id);

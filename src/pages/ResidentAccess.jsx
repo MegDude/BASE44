@@ -95,7 +95,7 @@ function getResidentMapHref(record) {
 }
 
 function getResidentQrSrc(record) {
-  const fallbackBase = "https://base-44-h2iq.vercel.app";
+  const fallbackBase = "https://app.downtownperks.com";
   const base = typeof window === "undefined" ? fallbackBase : window.location.origin;
   const url = new URL(getResidentMapHref(record), base);
   url.searchParams.set("card", getResidentCardCode(record));
