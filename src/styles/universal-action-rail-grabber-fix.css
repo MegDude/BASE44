@@ -1,0 +1,101 @@
+/* ========================================================================== */
+/* DOWNTOWN PERKS: UNIVERSAL ACTION RAIL & DRAWER GRABBER FIX RELEASE         */
+/* 1. Eliminates duplicate drawer grabbers (.dp-perks-drawer-grabber).         */
+/* 2. Standardizes action rails into clean, high-density iOS button groups.   */
+/* 3. Forces primary action links (Directions, Save, Street View) into flat,  */
+/*    border-defined iOS buttons with zero dark/gold color collisions.         */
+/* ========================================================================== */
+
+@media (min-width: 0px) {
+  /* 01. Deduplicate Drawer Grabbers (Keep strictly the first grabber at top) */
+  html body .dp-native-drawer-surface > .dp-perks-drawer-grabber ~ .dp-perks-drawer-grabber,
+  html body .dp-panel-shell .dp-perks-drawer-grabber + .dp-perks-drawer-grabber {
+    display: none !important;
+  }
+
+  /* 02. Canonical Top-Anchor Grabber Styling */
+  html body .dp-perks-drawer-grabber {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 0 8px !important;
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 24px 24px 0 0 !important;
+    cursor: grab !important;
+    touch-action: none !important;
+  }
+
+  html body .dp-perks-drawer-grabber span {
+    display: block !important;
+    width: 36px !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    background-color: rgba(11, 31, 51, 0.22) !important;
+  }
+
+  /* 03. Universal Action Rail Alignment (.dp-universal-action-rail) */
+  html body .dp-universal-action-rail {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 16px 20px !important;
+    background: #FFFFFF !important;
+    border-top: 0.5px solid rgba(11, 31, 51, 0.08) !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+  }
+
+  /* 04. Unified iOS Button Architecture inside Action Rail */
+  html body .dp-universal-action-rail a,
+  html body .dp-universal-action-rail button {
+    display: inline-flex !important;
+    flex: 1 1 0 !important;
+    min-height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 12px !important;
+    border-radius: 12px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Primary Action Button (Directions) */
+  html body .dp-universal-action-rail a.is-primary,
+  html body .dp-universal-action-rail a[href*="maps/dir"] {
+    background: #0B1F33 !important;
+    color: #FFFFFF !important;
+    border: 0.5px solid #0B1F33 !important;
+  }
+
+  html body .dp-universal-action-rail a.is-primary:active,
+  html body .dp-universal-action-rail a[href*="maps/dir"]:active {
+    background: #132f4c !important;
+    transform: scale(0.98) !important;
+  }
+
+  /* Secondary Action Buttons (Save, Street View) */
+  html body .dp-universal-action-rail button,
+  html body .dp-universal-action-rail a:not(.is-primary):not([href*="maps/dir"]) {
+    background: #FFFFFF !important;
+    color: #0B1F33 !important;
+    border: 0.5px solid rgba(11, 31, 51, 0.16) !important;
+  }
+
+  html body .dp-universal-action-rail button:active,
+  html body .dp-universal-action-rail a:not(.is-primary):not([href*="maps/dir"]):active {
+    background: rgba(11, 31, 51, 0.04) !important;
+    border-color: rgba(11, 31, 51, 0.3) !important;
+    transform: scale(0.98) !important;
+  }
+}
