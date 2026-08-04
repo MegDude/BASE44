@@ -8992,16 +8992,17 @@ function NearbyImageRail({ place, places = [], onSelect, mode = "resident", titl
 
   return (
     <DestinationSection title={title} support={support} className="dp-discovery-context-section dp-nearby-image-section">
-      <div className="dp-nearby-image-rail" aria-label={`${title} places`}>
+      <div className="dp-nearby-image-rail dp-nearby-list" aria-label={`${title} places`}>
         {items.map((item) => (
-          <button key={item.id} type="button" className="dp-nearby-image-card" onClick={() => onSelect?.(item.place)}>
-            <span className="dp-nearby-image-media">
+          <button key={item.id} type="button" className="dp-nearby-image-card dp-nearby-list-card" onClick={() => onSelect?.(item.place)}>
+            <span className="dp-nearby-image-media dp-nearby-list-thumb">
               <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} />
             </span>
-            <span className="dp-nearby-image-copy">
+            <span className="dp-nearby-image-copy dp-nearby-list-copy">
               <strong>{item.title}</strong>
               <em>{item.meta}</em>
             </span>
+            <span className="dp-nearby-list-arrow" aria-hidden="true">→</span>
           </button>
         ))}
       </div>
