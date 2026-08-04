@@ -13884,6 +13884,13 @@ function MapSearchConsole({
     });
   };
   const handleSearchInputKeyDown = (event) => {
+    // Submit on Enter — guard against CJK IME composition (Safari desktop
+    // reports keyCode 229 on the final composition event which is unreliable).
+    if (event.key === "Enter" && !event.nativeEvent.isComposing && event.keyCode !== 229) {
+      event.preventDefault();
+      onSubmit?.(event);
+      return;
+    }
     if (event.key !== "ArrowDown" || !showCatalogResults) return;
     const firstResult = consolePanelRef.current?.querySelector?.("[data-search-result-id]");
     if (!firstResult) return;
@@ -14237,7 +14244,10 @@ function MapSearchConsole({
             <input
               id="dp-ask-map-search-input"
               ref={inputRef}
-              type="text"
+              type="search"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
               className="dp-ask-map-input"
               aria-label="Ask the Map search"
               role="combobox"

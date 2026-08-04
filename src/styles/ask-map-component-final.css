@@ -166,6 +166,14 @@ html body #root .dp-map-page .dp-ask-map-input::placeholder {
   opacity: 1 !important;
 }
 
+/* Suppress the browser-native clear (×) button that appears on
+   type="search" inputs — the component renders its own clear control. */
+html body #root .dp-map-page .dp-ask-map-input::-webkit-search-cancel-button,
+html body #root .dp-map-page .dp-ask-map-input::-webkit-search-decoration {
+  -webkit-appearance: none !important;
+  display: none !important;
+}
+
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-ask-map-panel :is(.dp-search-intent-clear, .dp-ask-map-submit) {
   flex: 0 0 44px !important;
   display: inline-grid !important;
