@@ -120,7 +120,9 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     const dy = clientY - dragRef.current.y;
     dragRef.current.moved = Math.abs(dy) >= 36;
     if (!dragRef.current.moved) return;
-    const order = ["peek", "medium", "expanded", "full"];
+    const order = panelKind === "list"
+      ? ["peek", "expanded"]
+      : ["peek", "medium", "expanded", "full"];
     const index = order.indexOf(drawerState);
     if (dy > 0) {
       if (index <= 0) onRequestClose?.();
@@ -128,7 +130,7 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     } else if (index >= 0 && index < order.length - 1) {
       onDrawerStateChange?.(order[index + 1]);
     }
-  }, [drawerState, onDrawerStateChange, onRequestClose]);
+  }, [drawerState, onDrawerStateChange, onRequestClose, panelKind]);
   const handleGripPointerUp = useCallback((event) => settleGripDrag(event.clientY), [settleGripDrag]);
   const handleGripTouchStart = useCallback((event) => {
     const touch = event.touches[0];
@@ -143,10 +145,16 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       dragRef.current.moved = false;
       return;
     }
-    const order = ["peek", "medium", "expanded", "full"];
+    const order = panelKind === "list"
+      ? ["peek", "expanded"]
+      : ["peek", "medium", "expanded", "full"];
     const index = order.indexOf(drawerState);
+    if (panelKind === "list") {
+      onDrawerStateChange?.(drawerState === "expanded" ? "peek" : "expanded");
+      return;
+    }
     onDrawerStateChange?.(order[Math.min(Math.max(index, 0) + 1, order.length - 1)]);
-  }, [drawerState, onDrawerStateChange]);
+  }, [drawerState, onDrawerStateChange, panelKind]);
   const drawerClassName = [
     "dp-native-drawer",
     ...className.split(/\s+/).filter((token) => token && token !== "dp-native-drawer"),

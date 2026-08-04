@@ -53,42 +53,13 @@
   background: var(--dp-navy-secondary);
 }
 
-/* ── Perks drawer header — spec: grabber → eyebrow → title → count ───────── */
+/* ── Perks drawer header — shell grip → eyebrow → title → count ──────────── */
 .dp-perks-drawer-header {
   position: relative;
-  min-height: 136px;
-  padding: 34px 56px 16px 24px;
+  min-height: 102px;
+  padding: 18px 72px 16px 24px;
   border-bottom: 1px solid rgba(11, 31, 51, 0.12);
   background: #fff;
-}
-
-.dp-perks-drawer-grabber {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  /* reset button chrome */
-  display: grid;
-  width: 48px;
-  min-height: 20px;
-  padding: 0;
-  place-items: center;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-}
-
-.dp-perks-drawer-grabber > span {
-  width: 36px;
-  height: 5px;
-  border-radius: 12px;
-  background: var(--dp-handle, rgba(11, 31, 51, 0.18));
-  transition: background 160ms ease, width 160ms ease;
-}
-
-.dp-perks-drawer-grabber:is(:hover, :focus-visible) > span {
-  width: 44px;
-  background: var(--dp-navy-secondary, #526075);
 }
 
 .dp-perks-drawer-eyebrow {
@@ -120,7 +91,7 @@
 
 .dp-perks-drawer-close {
   position: absolute;
-  top: 58px;
+  top: 18px;
   right: 20px;
   width: 44px;
   height: 44px;

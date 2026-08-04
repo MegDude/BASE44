@@ -252,7 +252,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     border: 1px solid var(--dp-mobile-system-line) !important;
     border-radius: 10px !important;
     background: var(--dp-mobile-system-surface) !important;
-    box-shadow: 0 8px 22px rgba(11, 31, 51, 0.08) !important;
+    box-shadow: none !important;
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-main {
