@@ -344,4 +344,57 @@
     color: inherit !important;
     -webkit-text-fill-color: inherit !important;
   }
+
+  /* ── Structural spec fixes: grip pill, header border, scroll viewport, footer */
+
+  /* Grip handle: pill shape */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-native-drawer-grip {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    cursor: grab !important;
+  }
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-native-drawer-grip span {
+    display: block !important;
+    width: 40px !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    -webkit-text-fill-color: unset !important;
+    color: unset !important;
+  }
+
+  /* Header: hairline bottom border */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-native-drawer-header {
+    border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+    background: #fff !important;
+    flex-shrink: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Content viewport: must scroll, not be hidden */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-native-drawer-content-viewport {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 20px !important;
+    overscroll-behavior: contain !important;
+  }
+
+  /* Footer: hairline top border, white bg, proper padding */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-native-drawer-actions {
+    border-top: 1px solid rgba(11, 31, 51, 0.06) !important;
+    background: #fff !important;
+    flex-shrink: 0 !important;
+    padding: 16px !important;
+  }
 }

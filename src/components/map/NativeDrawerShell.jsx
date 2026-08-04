@@ -167,7 +167,7 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       <div className="dp-native-drawer-surface">
         <button
           type="button"
-          className="dp-native-drawer-grip"
+          className="dp-native-drawer-grip flex w-full items-center justify-center py-2.5 shrink-0 cursor-grab active:cursor-grabbing bg-white border-0"
           aria-label={`Drawer size: ${drawerState}. Swipe down to minimise, up to expand.`}
           onPointerDown={handleGripPointerDown}
           onPointerUp={handleGripPointerUp}
@@ -175,16 +175,16 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
           onTouchEnd={handleGripTouchEnd}
           onClick={cycleGripState}
         >
-          <span aria-hidden="true" />
+          <span className="h-1 w-10 rounded-full bg-black/20" aria-hidden="true" />
         </button>
-        {header ? <div className="dp-native-drawer-header">{header}</div> : null}
-        <div className={`dp-native-drawer-content-viewport ${contentClassName}`.trim()}>
+        {header ? <div className="dp-native-drawer-header shrink-0 border-b border-black/5 bg-white">{header}</div> : null}
+        <div className={`dp-native-drawer-content-viewport flex-1 min-h-0 overflow-y-auto px-5 py-5 overscroll-contain ${contentClassName}`.trim()}>
           <div ref={scrollRef} className={`dp-native-drawer-scroll ${scrollClassName}`.trim()} {...scrollProps}>
             {children}
             <div className="dp-native-drawer-content-end" aria-hidden="true" />
           </div>
         </div>
-        {actions ? <footer className="dp-native-drawer-actions">{actions}</footer> : null}
+        {actions ? <footer className="dp-native-drawer-actions shrink-0 border-t border-black/5 bg-white p-4">{actions}</footer> : null}
         <div className="dp-native-drawer-underlay" aria-hidden="true" />
       </div>
     </motion.aside>
