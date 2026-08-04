@@ -397,4 +397,46 @@
     flex-shrink: 0 !important;
     padding: 16px !important;
   }
+
+  /* ── Legends directory list container: vertical stack ── */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-legends-directory-sheet .dp-map-directory-list {
+    display: block !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex-direction: unset !important;
+  }
+
+  /* ── Legends directory listing rows: full-width image-grid layout ── */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-legends-listing-row {
+    display: grid !important;
+    grid-template-columns: 56px minmax(0, 1fr) 20px !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    min-height: 88px !important;
+    height: auto !important;
+    padding: 16px 20px !important;
+    text-align: left !important;
+    background: #fff !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(11, 31, 51, 0.06) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #0b1f33 !important;
+  }
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-legends-listing-row:hover {
+    background: #f7f6f3 !important;
+  }
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-legends-listing-row img.dp-legends-listing-image {
+    display: block !important;
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+    background: #f2f2f7 !important;
+    flex-shrink: 0 !important;
+  }
 }

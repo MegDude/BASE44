@@ -8462,11 +8462,22 @@ function getLegendsDirectoryRowCopy(place) {
   const listing = getResolvedLegendsListing(place);
   const profile = getLegendsResidentialProfileForPlace(place);
   const facts = listing ? getListingFactLine(listing) : "";
+
+  // Spec: never use generic filler. Derive a clean display address and use facts only when verified.
+  const rawAddress = place?.legendsListing?.address || place?.address || listing?.address || "";
+  const unit = place?.legendsListing?.unit || "";
+  const displayAddress = unit && !rawAddress.includes(`#${unit}`)
+    ? rawAddress.replace(/,\s*Austin.*/, ``) + (unit ? ` #${unit}` : "")
+    : rawAddress.replace(/,\s*Austin.*/, "") || place?.name || "Downtown residence";
+  const buildingName = place?.legendsListing?.buildingName || profile?.buildingName || "";
+  const district = place?.legendsListing?.neighborhood || place?.district || profile?.neighborhood || "Downtown Austin";
+  const contextLine = [buildingName, district].filter(Boolean).join(" · ");
+
   return {
-    meta: "Legends Real Estate",
-    title: place?.name || profile?.buildingName || listing?.address || "Downtown residence",
-    address: place?.address || profile?.neighborhood || place?.district || "Downtown Austin",
-    details: facts || "Listing interest with walkable context",
+    meta: "Legends Real Estate · Austin",
+    title: displayAddress,
+    address: contextLine || "Downtown Austin",
+    details: facts || null,
   };
 }
 
@@ -18849,14 +18860,15 @@ export default function MapPage() {
             aria-modal="true"
             aria-label={isLegendsDirectoryLayer ? "Legends Real Estate listings" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
           >
-            <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
+            <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar grid grid-cols-[44px_minmax(0,1fr)_44px] items-center min-h-[56px] px-3 shrink-0 border-b border-black/[0.09] bg-white" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
               {isLegendsDirectoryLayer ? (
                 <>
-                  <MapPanelButton action="back" label="Back" ariaLabel="Return to previous panel" variant="secondary" size="sm" className="dp-map-directory-back" onPress={restorePreviousMapPanel}>
-                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  <MapPanelButton action="back" label="Back" ariaLabel="Return to previous panel" variant="secondary" size="sm" className="dp-map-directory-back h-11 w-11 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[#0B1F33]" onPress={restorePreviousMapPanel}>
+                    <ArrowLeft className="h-[18px] w-[18px]" aria-hidden="true" />
                   </MapPanelButton>
-                  <MapPanelButton action="close" label="Close" ariaLabel="Close Legends Real Estate listings panel" variant="icon" size="sm" className="dp-map-directory-close" onPress={closeDirectoryToMap}>
-                    <X className="h-4 w-4" aria-hidden="true" />
+                  <span className="text-center text-[14px] font-semibold text-[#0B1F33] tracking-tight truncate px-1">Legends Real Estate MLS</span>
+                  <MapPanelButton action="close" label="Close" ariaLabel="Close Legends Real Estate listings panel" variant="icon" size="sm" className="dp-map-directory-close h-11 w-11 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[#0B1F33]" onPress={closeDirectoryToMap}>
+                    <X className="h-[18px] w-[18px]" aria-hidden="true" />
                   </MapPanelButton>
                 </>
               ) : (
@@ -18878,63 +18890,99 @@ export default function MapPage() {
             </div>
 
             <div
-              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "dp-map-directory-body flex-1 overflow-y-auto" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
+              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "dp-map-directory-body flex-1 overflow-y-auto overscroll-contain" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
               data-panel-body
             >
               {isLegendsDirectoryLayer && (
                 <>
-                  <section className="dp-map-directory-header">
-                    <p className="dp-map-directory-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">LEGENDS REAL ESTATE</p>
-                    <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
-                    <span className="dp-map-directory-subtitle">
-                      Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
-                    </span>
-                    <strong className="dp-map-directory-count">
-                      {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "listing" : "listings"}
-                    </strong>
+                  {/* ── Partner inventory header ─────────────────────── */}
+                  <section className="dp-map-directory-header space-y-3 px-5 py-5 border-b border-black/[0.06]">
+                    <p className="dp-map-directory-eyebrow text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">
+                      Legends Real Estate · Founding Real Estate Partner · Downtown Austin
+                    </p>
+                    <h2 className="dp-map-directory-title text-[21px] font-semibold tracking-tight text-[#0B1F33] leading-snug">
+                      Homes currently represented by Legends, with relevant building and neighborhood context.
+                    </h2>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="dp-map-directory-count inline-flex items-center px-3 py-1 rounded-full bg-[#C9A66B]/10 text-[12px] font-semibold text-[#C9A66B]">
+                        {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "home" : "homes"}
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#F2F2F7] text-[11px] font-medium text-[#0B1F33]/60">
+                        Live inventory
+                      </span>
+                    </div>
                   </section>
-                  <div className="dp-map-directory-list">
-                    {legendsDirectoryPlaces.map((place) => (
-                      isRentalEntity(place) ? (
-                        <LegendsRentalResultRow
+
+                  {/* ── Inventory list ───────────────────────────────── */}
+                  <div className="dp-map-directory-list divide-y divide-black/[0.06]">
+                    {legendsDirectoryPlaces.map((place) => {
+                      const row = getLegendsDirectoryRowCopy(place);
+                      const primaryImage = place?.gallery?.[0] || place?.image || place?.legendsListing?.image || null;
+                      const isSelected = place.id === selectedId;
+                      return (
+                        <button
                           key={place.id}
-                          place={place}
-                          selected={place.id === selectedId}
-                          onSelect={() => selectPlace(place)}
-                        />
-                      ) : (
-                        (() => {
-                          const row = getLegendsDirectoryRowCopy(place);
-                          return (
-                            <button
-                              key={place.id}
-                              type="button"
-                              className="dp-legends-result-row"
-                              data-action="select"
-                              data-selected={place.id === selectedId ? "true" : "false"}
-                              onClick={() => selectPlace(place)}
-                              aria-label={`View ${row.title}`}
+                          type="button"
+                          className={`dp-legends-listing-row group w-full text-left bg-white transition-colors hover:bg-[#F7F6F3] focus-visible:outline-2 focus-visible:outline-[#C9A66B] focus-visible:outline-offset-[-2px]${isSelected ? " bg-[#F7F6F3]" : ""}`}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "56px minmax(0,1fr) 20px",
+                            alignItems: "center",
+                            gap: "12px",
+                            minHeight: "88px",
+                            padding: "16px 20px",
+                            border: "0",
+                            borderBottom: "1px solid rgba(11,31,51,0.06)",
+                          }}
+                          data-action="select-listing"
+                          data-listing-id={place.id}
+                          data-selected={isSelected ? "true" : "false"}
+                          onClick={() => selectPlace(place)}
+                          aria-label={`View ${row.title}`}
+                        >
+                          {/* Listing image or Legends brand mark */}
+                          {primaryImage ? (
+                            <img
+                              className="dp-legends-listing-image object-cover bg-[#F2F2F7]"
+                              src={primaryImage}
+                              alt=""
+                              aria-hidden="true"
+                              style={{ width: 56, height: 56, borderRadius: 4, flexShrink: 0, display: "block" }}
+                            />
+                          ) : (
+                            <span
+                              aria-hidden="true"
+                              style={{ display: "flex", width: 56, height: 56, flexShrink: 0, alignItems: "center", justifyContent: "center", background: "#0B1F33", borderRadius: 4, border: "1px solid rgba(11,31,51,0.12)" }}
                             >
-                              <span className="dp-legends-result-pin" aria-hidden="true">
-                                <PinBadge place={place} selected={place.id === selectedId} size="sm" />
-                              </span>
-                              <span className="min-w-0">
-                                <span className="dp-legends-result-meta">{row.meta}</span>
-                                <span className="dp-legends-result-title">{row.title}</span>
-                                <span className="dp-legends-result-address">{row.address}</span>
-                                <span className="dp-legends-result-details">{row.details}</span>
-                              </span>
-                              <span className="dp-legends-result-action">View</span>
-                            </button>
-                          );
-                        })()
-                      )
-                    ))}
+                              <img style={{ width: 30, height: 30, objectFit: "contain", display: "block" }} src="/pins/downtown-perks/legends-logo-gold.svg" alt="" aria-hidden="true" />
+                            </span>
+                          )}
+
+                          {/* Listing content */}
+                          <span style={{ display: "grid", minWidth: 0, gap: 3 }}>
+                            <span className="dp-legends-listing-title" style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 15, fontWeight: 650, lineHeight: "20px", color: "#0B1F33" }}>{row.title}</span>
+                            {row.details ? (
+                              <span style={{ display: "block", fontSize: 13, lineHeight: "18px", color: "rgba(11,31,51,0.72)" }}>{row.details}</span>
+                            ) : null}
+                            <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 12, lineHeight: "16px", color: "rgba(11,31,51,0.52)" }}>{row.address}</span>
+                          </span>
+
+                          {/* Chevron */}
+                          <ChevronRight style={{ width: 16, height: 16, flexShrink: 0, color: "rgba(11,31,51,0.3)", display: "block" }} aria-hidden="true" />
+                        </button>
+                      );
+                    })}
                     {!legendsDirectoryPlaces.length && (
-                      <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                        No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
+                      <div className="px-5 py-10 text-center space-y-3">
+                        <p className="text-[14px] font-medium text-[#0B1F33]">No active Legends homes are currently published.</p>
+                        <p className="text-[13px] text-[#0B1F33]/60">For current availability or a private showing, contact Legends Real Estate.</p>
                       </div>
                     )}
+                  </div>
+
+                  {/* ── Source footer ────────────────────────────────── */}
+                  <div className="px-5 py-4 border-t border-black/[0.06]">
+                    <p className="text-[11px] text-[#0B1F33]/40">Inventory from Legends&apos; verified listing feed. Contact Legends to confirm current availability.</p>
                   </div>
                 </>
               )}
