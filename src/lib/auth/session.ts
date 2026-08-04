@@ -21,26 +21,12 @@ export type SessionClaims = {
   organizationId?: string;
 };
 
-const DEFAULT_SUPER_ADMIN_EMAILS = ["meg@megdude.com"];
+// Canonical super-admin allowlist lives in the shared module so the client and
+// serverless API never drift (session.ts previously held a typo'd address).
+export { getSuperAdminEmails, isSuperAdminEmail } from "./superAdminEmails.js";
 
 function normalizeEmail(value: unknown) {
   return String(value || "").trim().toLowerCase();
-}
-
-function splitAllowlist(value: unknown) {
-  return String(value || "")
-    .split(",")
-    .map(normalizeEmail)
-    .filter(Boolean);
-}
-
-export function getSuperAdminEmails() {
-  const env = (import.meta as any)?.env || {};
-  return Array.from(new Set([
-    ...DEFAULT_SUPER_ADMIN_EMAILS,
-    ...splitAllowlist(env.VITE_SUPER_ADMIN_EMAILS),
-    ...splitAllowlist(env.SUPER_ADMIN_EMAILS),
-  ]));
 }
 
 export function normalizeSessionClaims(claims: Record<string, unknown> = {}): SessionClaims {

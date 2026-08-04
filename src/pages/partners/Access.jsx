@@ -252,10 +252,14 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const selectedSignInType = SIGN_IN_ACCESS_TYPES.find((type) => type.value === signInType) || SIGN_IN_ACCESS_TYPES[0];
   const hasPartnerType = Boolean(form.partner_type);
   const accountAccessEnabled = canUseProductionAccountAccess();
-  const isSuperAdmin = Boolean(isAuthenticated && isSuperAdminSession({
-    email: user?.email,
-    role: user?.role,
-  }));
+  // Super admin is derived from trusted role claims, with the shared email
+  // allowlist as a recovery safety net (mirrors the server-side bypass).
+  const superAdminEmails = getSuperAdminEmails();
+  const normalizedUserEmail = String(user?.email || "").trim().toLowerCase();
+  const isSuperAdmin = Boolean(isAuthenticated && (
+    isSuperAdminSession({ email: user?.email, role: user?.role })
+    || superAdminEmails.includes(normalizedUserEmail)
+  ));
 
   useEffect(() => {
     if (!hasPartnerType) {

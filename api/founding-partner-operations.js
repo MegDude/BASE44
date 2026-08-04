@@ -24,27 +24,16 @@ import {
   collectionPilotOptions,
   collectionWarmRelationships,
 } from "../src/server/foundingPartnerBriefSupport.js";
-
-const DEFAULT_OPERATOR_EMAILS = ["me@megdude.com"];
+import { isSuperAdminEmail } from "../src/lib/auth/superAdminEmails.js";
 
 function normalize(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-function operatorEmails() {
-  return Array.from(new Set([
-    ...DEFAULT_OPERATOR_EMAILS,
-    ...String(process.env.SUPER_ADMIN_EMAILS || process.env.FOUNDING_PARTNER_OPERATOR_EMAILS || "")
-      .split(",")
-      .map(normalize)
-      .filter(Boolean),
-  ]));
-}
-
 function canAccessOperations(user) {
   const role = normalize(user?.app_metadata?.role || user?.user_metadata?.role || user?.role);
-  const email = normalize(user?.email);
-  return ["admin", "super_admin"].includes(role) || Boolean(email && operatorEmails().includes(email));
+  // Legacy FOUNDING_PARTNER_OPERATOR_EMAILS is merged in alongside the canonical allowlist.
+  return ["admin", "super_admin"].includes(role) || isSuperAdminEmail(user?.email, ["FOUNDING_PARTNER_OPERATOR_EMAILS"]);
 }
 
 export default async function handler(req, res) {

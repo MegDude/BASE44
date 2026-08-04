@@ -4,6 +4,7 @@ import {
   sendTransactionError,
   TransactionApiError,
 } from "../../src/lib/api/transactionAuth.js";
+import { isSuperAdminEmail } from "../../src/lib/auth/superAdminEmails.js";
 
 const ADMIN_ROLES = new Set(["admin", "platform_admin", "super_admin"]);
 const clean = (value, max = 180) => String(value || "").trim().slice(0, max);
@@ -27,10 +28,9 @@ export default async function handler(req, res) {
     const database = requireTransactionDatabase();
     const user = await requireAuthenticatedUser(req);
 
-    // Explicit Super Admin Bypass
-    const userEmail = String(user?.email || "").toLowerCase().trim();
+    // Explicit Super Admin Bypass — uses server-authenticated user.email
     let role = await activePlatformRole(database, user.id);
-    if (userEmail === "me@megdude.com") {
+    if (isSuperAdminEmail(user?.email)) {
       role = "super_admin";
     }
 

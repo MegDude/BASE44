@@ -28,7 +28,7 @@ import {
   canUseProductionAccountAccess,
   markLocalRecord,
 } from "@/lib/productionGuards";
-import { canViewEverything } from "@/lib/auth/session";
+  import { canViewEverything, getSuperAdminEmails } from "@/lib/auth/session";
 import { useAuth } from "@/lib/AuthContext";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
@@ -2187,8 +2187,9 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
   // Production-global workspace live state resolver — bypasses billing gates
   // for super admin and in all deployment environments (Production, Preview, Dev).
   const userEmail = String(user?.email || "").toLowerCase().trim();
+  const isSuperAdminEmail = getSuperAdminEmails().includes(userEmail);
   const forceLive = import.meta.env.VITE_FORCE_LIVE_WORKSPACES === "true" || import.meta.env.PROD;
-  const workspaceLiveState = (userEmail === "me@megdude.com" || forceLive)
+  const workspaceLiveState = (isSuperAdminEmail || forceLive)
     ? { isLive: true, workspaceStatus: "active", billingActive: true, bypassActive: true }
     : { isLive: false, workspaceStatus: selectedOrganization?.status || (isPreviewMode ? "unlinked" : "active"), billingActive: false };
 

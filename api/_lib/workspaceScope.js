@@ -3,6 +3,7 @@ import {
   requirePartnerMembership,
   TransactionApiError,
 } from "../../src/lib/api/transactionAuth.js";
+import { isSuperAdminEmail } from "../../src/lib/auth/superAdminEmails.js";
 
 export function cleanWorkspaceValue(value, max = 180) {
   return String(value || "").trim().slice(0, max);
@@ -35,9 +36,9 @@ export async function resolveAuthorizedWorkspaceScope(req, database) {
   const user = await requireAuthenticatedUser(req);
   const requestedOrganization = cleanWorkspaceValue(req.query?.organization || req.query?.organizationId);
 
-  // Super admin email bypass — resolve directly without DB profile lookup
-  const userEmail = String(user?.email || "").toLowerCase().trim();
-  if (userEmail === "me@megdude.com" || isBillingCheckBypassed()) {
+  // Super admin email bypass — resolve directly without DB profile lookup.
+  // Uses the server-authenticated user.email, never client-supplied data.
+  if (isSuperAdminEmail(user?.email) || isBillingCheckBypassed()) {
     let query = database
       .from("partner_organizations")
       .select("id,external_id,legacy_partner_id,name,organization_type,status")
