@@ -67,7 +67,7 @@ export default function SystemSection() {
               transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
               className="py-8 md:px-5 first:pl-0 last:pr-0 group"
             >
-              <div className="w-9 h-9 rounded-full border border-border flex items-center justify-center mb-5 group-hover:border-primary/40 transition-colors">
+              <div className="w-9 h-9 rounded-xl border border-border flex items-center justify-center mb-5 group-hover:border-primary/40 transition-colors">
                 <pillar.icon className="w-4 h-4 text-primary" />
               </div>
               <div className="font-heading text-xl font-medium mb-1">{pillar.title}</div>
@@ -75,7 +75,7 @@ export default function SystemSection() {
               <ul className="space-y-2.5">
                 {pillar.features.map((f, j) => (
                   <li key={j} className="flex items-center gap-2.5 text-[13px] text-muted-foreground">
-                    <div className="w-1 h-1 rounded-full bg-primary/60" />
+                    <div className="w-1 h-1 rounded-xl bg-primary/60" />
                     {f}
                   </li>
                 ))}

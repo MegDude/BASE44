@@ -61,7 +61,7 @@ export default function MapSection() {
           className="flex gap-2 mb-8 overflow-x-auto pb-0.5"
         >
           {filterTabs.map((tab, i) => (
-            <span key={i} className={`px-4 py-1.5 rounded-full text-[12px] font-medium whitespace-nowrap border cursor-default flex-shrink-0 ${
+            <span key={i} className={`px-4 py-1.5 rounded-xl text-[12px] font-medium whitespace-nowrap border cursor-default flex-shrink-0 ${
               i === 0 ? "border-primary/50 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground"
             }`}>
               {tab}
@@ -83,7 +83,7 @@ export default function MapSection() {
               <ul className="space-y-3 mb-8">
                 {features.map((f, i) => (
                   <li key={i} className="flex items-start gap-3 text-[13px] text-foreground/60">
-                    <div className="w-1 h-1 rounded-full bg-primary/60 mt-2 shrink-0" />
+                    <div className="w-1 h-1 rounded-xl bg-primary/60 mt-2 shrink-0" />
                     {f}
                   </li>
                 ))}
@@ -92,7 +92,7 @@ export default function MapSection() {
               {/* Sample venue card */}
               <div className="p-4 rounded-lg bg-white border border-[#0B1F33]/8 mb-6">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-xl border border-border/60 bg-muted/60 flex items-center justify-center shrink-0">
                     <Coffee className="w-3.5 h-3.5 text-primary/60" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -180,7 +180,7 @@ export default function MapSection() {
               transition={{ duration: 0.5, delay: 0.4 + i * 0.08 }}
               className="p-6 rounded-xl border border-[#0B1F33]/8 bg-white hover:border-[#0B1F33]/10 hover:shadow-[0_12px_40px_rgba(11,31,51,0.05)] transition-all group shadow-[0_8px_24px_rgba(11,31,51,0.035)]"
             >
-              <div className="w-8 h-8 rounded-full border border-[#0B1F33]/8 flex items-center justify-center mb-4">
+              <div className="w-8 h-8 rounded-xl border border-[#0B1F33]/8 flex items-center justify-center mb-4">
                 <item.icon className="w-3.5 h-3.5 text-primary/70" />
               </div>
               <div className="font-heading font-medium text-[13px] text-foreground mb-2">{item.label}</div>

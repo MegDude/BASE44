@@ -7,7 +7,7 @@ import { QRDemoPanel } from "../../../components/downtown-perks/brands/DemoPanel
 const demo = (
   <div className="grid md:grid-cols-2 gap-5">
     <div className="rounded-lg border border-border bg-card p-7">
-      <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-6">YETI × Downtown Perks</div>
+      <div className="inline-block px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-medium mb-6">YETI × Downtown Perks</div>
       <div className="space-y-4">
         {[
           { event: "YETI Cold Gear Drop — Exclusive Preview", loc: "Downtown Austin · This Saturday" },
@@ -15,7 +15,7 @@ const demo = (
           { event: "YETI x Live Music Late Night Pop-Up", loc: "6th Street District · Members Only" },
         ].map((e, i) => (
           <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-muted/40 border border-border/50">
-            <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
+            <div className="w-2 h-2 rounded-xl bg-primary mt-1.5 shrink-0" />
             <div>
               <div className="text-[13px] font-medium">{e.event}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{e.loc}</div>

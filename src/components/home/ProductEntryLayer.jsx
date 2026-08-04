@@ -54,8 +54,8 @@ export default function ProductEntryLayer() {
 
   return (
     <section className="relative overflow-hidden bg-white pt-[68px] pb-12">
-      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-[#0B1F33]/[0.06] blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[#0B1F33]/[0.035] blur-3xl" />
+      <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-xl bg-[#0B1F33]/[0.06] blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-1/4 h-72 w-72 rounded-xl bg-[#0B1F33]/[0.035] blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-5">
         <motion.div
@@ -111,7 +111,7 @@ export default function ProductEntryLayer() {
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="rounded-full p-1 transition-colors hover:bg-white"
+                    className="rounded-xl p-1 transition-colors hover:bg-white"
                   >
                     <X className="h-4 w-4 text-[#425466]/72" />
                   </button>
@@ -130,7 +130,7 @@ export default function ProductEntryLayer() {
               <button
                 key={prompt}
                 onClick={() => handlePromptClick(prompt)}
-                className="rounded-full border border-[#0B1F33]/8 bg-white px-4 py-2 text-[13px] font-medium text-[#0B1F33] transition-all duration-200 hover:border-[#0B1F33]/10 hover:bg-[#0B1F33]/[0.04]"
+                className="rounded-xl border border-[#0B1F33]/8 bg-white px-4 py-2 text-[13px] font-medium text-[#0B1F33] transition-all duration-200 hover:border-[#0B1F33]/10 hover:bg-[#0B1F33]/[0.04]"
               >
                 {prompt}
               </button>
@@ -173,7 +173,7 @@ export default function ProductEntryLayer() {
                 <p className="mb-3 text-xs leading-5 text-[#425466]">{card.line}</p>
 
                 {card.perk && (
-                  <div className="inline-flex rounded-full bg-[#0B1F33]/[0.08] px-2.5 py-1 text-[10px] font-medium text-[#0B1F33]">
+                  <div className="inline-flex rounded-xl bg-[#0B1F33]/[0.08] px-2.5 py-1 text-[10px] font-medium text-[#0B1F33]">
                     {card.perk}
                   </div>
                 )}

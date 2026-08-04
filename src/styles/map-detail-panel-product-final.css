@@ -246,7 +246,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   max-height: 38px !important;
   padding: 0 13px !important;
   border: 1px solid #cfd7df !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   color: var(--dp-detail-ink) !important;
   -webkit-text-fill-color: var(--dp-detail-ink) !important;
@@ -368,7 +368,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   min-height: 38px !important;
   padding: 0 13px !important;
   border: 1px solid #cfd7df !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   text-align: center !important;
   justify-content: center !important;

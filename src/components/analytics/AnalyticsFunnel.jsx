@@ -53,12 +53,12 @@ export default function AnalyticsFunnel({ data = {} }) {
                 </div>
               </div>
 
-              <div className="h-2.5 rounded-full bg-border/30 overflow-hidden">
+              <div className="h-2.5 rounded-xl bg-border/30 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 0.8, delay: idx * 0.05 }}
-                  className={`h-full rounded-full ${stage.color}`}
+                  className={`h-full rounded-xl ${stage.color}`}
                 />
               </div>
             </motion.div>

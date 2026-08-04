@@ -120,7 +120,7 @@ export default function ForBuildings() {
                 transition={{ delay: i * 0.08 }}
                 className={`p-8 ${i >= 2 ? "border-t border-border/40" : ""}`}
               >
-                <div className="w-9 h-9 rounded-full border border-border/60 flex items-center justify-center mb-5">
+                <div className="w-9 h-9 rounded-xl border border-border/60 flex items-center justify-center mb-5">
                   <b.icon className="w-4 h-4 text-primary" />
                 </div>
                 <h3 className="font-heading text-lg font-medium mb-2">{b.title}</h3>
@@ -162,7 +162,7 @@ export default function ForBuildings() {
                 }`}
               >
                 {tier.highlight && (
-                  <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-medium tracking-normal">
+                  <span className="absolute -top-3 left-6 px-3 py-1 rounded-xl bg-primary text-primary-foreground text-[11px] font-medium tracking-normal">
                     Most Popular
                   </span>
                 )}
@@ -184,7 +184,7 @@ export default function ForBuildings() {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-2.5 rounded-full text-[13px] font-medium transition-all duration-300 ${
+                  className={`w-full py-2.5 rounded-xl text-[13px] font-medium transition-all duration-300 ${
                     tier.highlight
                       ? "bg-primary text-primary-foreground hover:bg-primary/90"
                       : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"

@@ -292,7 +292,7 @@
   width: 30px !important;
   height: 30px !important;
   border: 0 !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
@@ -312,7 +312,7 @@
   width: 30px !important;
   height: 30px !important;
   border: 1.5px solid rgba(255,255,255,0.9) !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 12px rgba(11,31,51,0.12) !important;
@@ -404,7 +404,7 @@
     height: 26px !important;
     min-width: 26px !important;
     min-height: 26px !important;
-    border-radius: 50% !important;
+    border-radius: 12px !important;
   }
 
   .dp-map-page .dp-live-pin:not(.dp-live-pin--legends) .dp-pin-svg {
@@ -452,7 +452,7 @@
   min-height: 30px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
@@ -470,7 +470,7 @@
   min-height: 30px !important;
   padding: 0 !important;
   border: 1.5px solid rgba(255,255,255,0.88) !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 2px 6px rgba(11,31,51,0.18), 0 4px 12px rgba(11,31,51,0.12) !important;
@@ -513,7 +513,7 @@
   height: 34px !important;
   min-width: 34px !important;
   min-height: 34px !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   border-color: rgba(255,255,255,0.95) !important;
   box-shadow:
     0 0 0 2.5px rgba(191,164,106,0.65),
@@ -778,9 +778,9 @@
 }
 
 :where(main, .dp-partner-page, .dp-map-page) :where(
-  button[class*="rounded-full"],
-  a[class*="rounded-full"],
-  [role="button"][class*="rounded-full"]
+  button[class*="rounded-xl"],
+  a[class*="rounded-xl"],
+  [role="button"][class*="rounded-xl"]
 ) {
   border-radius: 2px !important;
 }
@@ -4489,9 +4489,9 @@ a.dp-button {
 }
 
 .dp-brand-page :is(section, article, aside, div)[class*="rounded-"],
-.dp-brand-page :is(.rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-\[18px\], [class*="rounded-full"]),
+.dp-brand-page :is(.rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-\[18px\], [class*="rounded-xl"]),
 .dp-brand-analytics-page :is(section, article, aside, div)[class*="rounded-"],
-.dp-brand-analytics-page :is(.rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-\[18px\], [class*="rounded-full"]) {
+.dp-brand-analytics-page :is(.rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-\[18px\], [class*="rounded-xl"]) {
   border-radius: var(--dp-brand-radius) !important;
 }
 
@@ -4548,8 +4548,8 @@ a.dp-button {
   box-shadow: var(--dp-brand-shadow) !important;
 }
 
-.dp-brand-page :is(.w-1\.5, .w-2, .w-3\.5)[class*="rounded-full"],
-.dp-brand-analytics-page :is(.w-1\.5, .w-2, .w-3\.5)[class*="rounded-full"] {
+.dp-brand-page :is(.w-1\.5, .w-2, .w-3\.5)[class*="rounded-xl"],
+.dp-brand-analytics-page :is(.w-1\.5, .w-2, .w-3\.5)[class*="rounded-xl"] {
   width: 6px !important;
   height: 6px !important;
   border-radius: 2px !important;
@@ -5521,7 +5521,7 @@ body,
   .rounded-xl,
   .rounded-2xl,
   .rounded-3xl,
-  [class*="rounded-full"],
+  [class*="rounded-xl"],
   [class*="rounded-[999"]
 ) {
   border-radius: 8px !important;
@@ -6231,7 +6231,7 @@ body,
   width: 9px;
   height: 9px;
   flex: 0 0 auto;
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(11, 31, 51, 0.18);
   box-shadow: 0 0 0 0 rgba(191, 164, 106, 0.0);
   transition:
@@ -7108,7 +7108,7 @@ body,
   place-items: center !important;
   overflow: hidden !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16), 0 0 18px rgba(191, 164, 106, 0.12) !important;
   color: #BFA46A !important;
@@ -7543,7 +7543,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-directory-handle {
   width: 44px;
   height: 4px;
   margin: 0 auto 12px;
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(11,31,51,.14);
 }
 
@@ -7949,7 +7949,7 @@ html body #root .dp-map-page.dp-map-page .dp-card-credential-status {
   min-height: 24px;
   padding: 0 8px;
   border: 1px solid rgba(191,164,106,.32);
-  border-radius: 999px;
+  border-radius: 12px;
   color: #BFA46A;
   background: #FFFFFF;
   font: 700 10px/1 Inter, sans-serif;
@@ -8125,7 +8125,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-rollup-pulse {
   width: 26px;
   height: 26px;
   min-width: 26px;
-  border-radius: 999px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -8179,7 +8179,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-switch {
   width: fit-content;
   max-width: calc(100% - 40px);
   padding: 3px;
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(11,31,51,.05);
   border: 1px solid rgba(11,31,51,.06);
   overflow: hidden;
@@ -8189,7 +8189,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-switch button {
   min-height: 28px;
   padding: 0 10px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 12px;
   background: transparent;
   font-size: 11px;
   font-weight: 650;
@@ -8207,7 +8207,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-collapse {
   width: 30px;
   height: 30px;
   min-width: 30px;
-  border-radius: 999px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -8319,7 +8319,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-prompt-rail button {
   min-height: 30px;
   flex: 0 0 auto;
   padding: 0 10px;
-  border-radius: 999px;
+  border-radius: 12px;
   white-space: nowrap;
   font-size: 12px;
   font-weight: 600;
@@ -8591,7 +8591,7 @@ html body #root .dp-map-page.dp-map-page :is(button, a, input, select, textarea)
 
 html body #root .dp-map-page.dp-map-page :is(.dp-console-chip, .dp-map-control, .dp-panel-tab, .dp-search-intent-prompt-rail button) {
   min-height: 36px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11,31,51,.72) !important;
   border: 1px solid rgba(11,31,51,.10) !important;
@@ -9415,7 +9415,7 @@ html body #root footer.dp-site-footer.dp-site-footer a:is(:hover, :focus-visible
   min-height: 24px;
   align-items: center;
   border: 1px solid rgba(191, 164, 106, .28);
-  border-radius: 999px;
+  border-radius: 12px;
   padding: 0 9px;
   color: #0B3E31;
   background: rgba(191, 164, 106, .12);
@@ -9438,7 +9438,7 @@ html body #root footer.dp-site-footer.dp-site-footer a:is(:hover, :focus-visible
   align-items: center;
   gap: 4px;
   border: 1px solid rgba(11, 31, 51, .07);
-  border-radius: 999px;
+  border-radius: 12px;
   padding: 0 8px;
   color: rgba(11, 31, 51, .72);
   background: rgba(255, 255, 255, .74);
@@ -9720,7 +9720,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-li
   max-height: 32px !important;
   padding: 0 !important;
   border: 1.5px solid var(--dp-map-gold) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background:
     radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.2), transparent 30%),
     linear-gradient(145deg, var(--dp-map-navy-elevated) 0%, var(--dp-map-navy) 64%, #071A2C 100%) !important;
@@ -9768,7 +9768,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin.dp-li
   max-width: 30px !important;
   max-height: 30px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: var(--dp-map-gold) !important;
   box-shadow: none !important;
@@ -9804,7 +9804,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-pane .leaflet-marker-ic
   max-height: 36px !important;
   padding: 0 !important;
   border: 1.5px solid var(--dp-map-gold) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background:
     radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.2), transparent 30%),
     linear-gradient(145deg, var(--dp-map-green) 0%, var(--dp-map-navy) 68%, #071A2C 100%) !important;
@@ -9861,7 +9861,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-stop::before {
   position: absolute !important;
   inset: 2px !important;
   border: 1px solid rgba(255, 255, 255, 0.86) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   box-shadow: 0 0 0 4px rgba(191, 164, 106, 0.22), 0 8px 18px rgba(11, 62, 49, 0.18) !important;
   pointer-events: none !important;
   z-index: 0 !important;
@@ -9881,7 +9881,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-stop__number {
   width: 17px !important;
   height: 17px !important;
   border: 1px solid var(--dp-map-navy) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-map-white) !important;
   color: var(--dp-map-navy) !important;
   font-size: 9px !important;

@@ -863,7 +863,7 @@ html body #root#root#root#root#root#root#root#root#root#root :is(.dp-resident-mo
 }
 
 .dp-route-stop-list button.is-selected { background: rgba(200,169,106,.09); }
-.dp-route-stop-list__number { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--dp-border-strong); border-radius: 50%; font-size: 12px; font-weight: 700; }
+.dp-route-stop-list__number { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--dp-border-strong); border-radius: 12px; font-size: 12px; font-weight: 700; }
 .dp-route-stop-list__number svg { width: 15px; height: 15px; }
 .dp-route-stop-list__copy { display: grid; min-width: 0; gap: 2px; }
 .dp-route-stop-list__copy strong { overflow: hidden; font-size: 16px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }

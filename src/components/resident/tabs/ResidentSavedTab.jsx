@@ -22,7 +22,7 @@ export default function ResidentSavedTab({ user }) {
           {["All", "Places", "Events", "Perks"].map((filter) => (
             <button
               key={filter}
-              className="px-4 py-2 rounded-full border border-border/40 bg-white hover:border-primary/50 text-foreground text-[13px] font-medium transition-colors"
+              className="px-4 py-2 rounded-xl border border-border/40 bg-white hover:border-primary/50 text-foreground text-[13px] font-medium transition-colors"
             >
               {filter}
             </button>
@@ -42,7 +42,7 @@ export default function ResidentSavedTab({ user }) {
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground">{item.name}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-xl">
                     {item.type}
                   </span>
                   <span className="text-xs text-muted-foreground flex items-center gap-1">

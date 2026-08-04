@@ -315,7 +315,7 @@ html body #root .dp-partner-workspace-page :is(button, a):is(:hover, :active) {
   box-shadow: none !important;
 }
 
-html body #root .dp-partner-workspace-page :is(.rounded-full, [class*="rounded-"], [class*="shadow-"], [class*="backdrop-blur"]) {
+html body #root .dp-partner-workspace-page :is(.rounded-xl, [class*="rounded-"], [class*="shadow-"], [class*="backdrop-blur"]) {
   border-radius: 4px !important;
   box-shadow: none !important;
   filter: none !important;

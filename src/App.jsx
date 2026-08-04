@@ -43,7 +43,7 @@ const ROUTER_FUTURE_FLAGS = {
 function MarketingFallback() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
+      <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-xl animate-spin" />
     </div>
   );
 }

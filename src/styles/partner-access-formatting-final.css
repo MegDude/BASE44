@@ -569,7 +569,7 @@ html body #root#root main.dp-partner-page.dp-partner-page.dp-partner-access-page
   width: 5px !important;
   height: 5px !important;
   border: 0 !important;
-  border-radius: 50% !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.18) !important;
   box-shadow: none !important;
 }

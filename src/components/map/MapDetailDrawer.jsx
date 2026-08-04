@@ -97,7 +97,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
           {/* Context chip */}
           {reason && (
             <div className="inline-flex items-center gap-1.5 rounded-[8px] border border-[rgba(191,164,106,0.24)] bg-[rgba(191,164,106,0.08)] px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#BFA46A]" />
+              <span className="h-1.5 w-1.5 rounded-xl bg-[#BFA46A]" />
               <span className="text-[11.5px] font-semibold text-[#8B6B2F]">
                 {reason === 'nearby' && `${distance || '0'} min walk`}
                 {reason === 'campaign' && 'Featured campaign'}
@@ -121,7 +121,7 @@ export default function MapDetailDrawer({ entity, onClose, reason, distance }) {
             <div className="space-y-2">
               {entity.isActive && (
                 <div className="flex items-center gap-2.5 rounded-[8px] border border-[rgba(191,164,106,0.2)] bg-[rgba(191,164,106,0.07)] px-3 py-2">
-                  <span className="flex h-1.5 w-1.5 rounded-full bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.6)]" />
+                  <span className="flex h-1.5 w-1.5 rounded-xl bg-[#BFA46A] shadow-[0_0_4px_rgba(191,164,106,0.6)]" />
                   <span className="text-[12.5px] font-semibold text-[#8B6B2F]">Open now</span>
                 </div>
               )}

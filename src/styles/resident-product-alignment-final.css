@@ -8,7 +8,7 @@
 .dp-resident-signin-shell { width: min(100%, 480px); min-height: 100dvh; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom)); }
 .dp-resident-signin-header { min-height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(11,31,51,.08); }
 .dp-resident-signin-header a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: #0B1F33; font-size: 14px; font-weight: 650; }
-.dp-resident-signin-header a:first-child span { width: 10px; height: 10px; border-radius: 50%; background: #C8A96A; }
+.dp-resident-signin-header a:first-child span { width: 10px; height: 10px; border-radius: 12px; background: #C8A96A; }
 .dp-resident-signin-header svg { width: 16px; height: 16px; }
 .dp-resident-signin-content { padding: clamp(48px, 10vh, 88px) 0; }
 .dp-resident-signin-eyebrow { margin: 0; color: #9A7B42; font-size: 12px; font-weight: 700; letter-spacing: normal; text-transform: uppercase; }
@@ -42,7 +42,7 @@ html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-si
 html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-content form > button[type="submit"] { width: 100% !important; min-height: 48px !important; padding: 0 18px !important; border-radius: 2px !important; background: #0B1F33 !important; color: #FFF !important; box-shadow: none !important; }
 html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-google { width: 100% !important; justify-content: flex-start !important; min-height: 48px !important; padding: 0 !important; border: 0 !important; border-bottom: 1px solid rgba(11,31,51,.09) !important; border-radius: 0 !important; background: #FFF !important; box-shadow: none !important; }
 .dp-auth-callback { display: grid; place-items: center; padding: 20px; text-align: center; }
-.dp-auth-callback span { display: block; width: 32px; height: 32px; margin: 0 auto 18px; border: 2px solid rgba(11,31,51,.12); border-top-color: #C8A96A; border-radius: 50%; animation: dp-auth-spin .8s linear infinite; }
+.dp-auth-callback span { display: block; width: 32px; height: 32px; margin: 0 auto 18px; border: 2px solid rgba(11,31,51,.12); border-top-color: #C8A96A; border-radius: 12px; animation: dp-auth-spin .8s linear infinite; }
 .dp-auth-callback strong { font-size: 16px; }
 .dp-auth-callback p { margin: 8px 0 0; color: #697589; font-size: 14px; }
 @keyframes dp-auth-spin { to { transform: rotate(360deg); } }

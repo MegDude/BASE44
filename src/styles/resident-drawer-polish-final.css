@@ -2616,7 +2616,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   min-height: 4px !important;
   margin: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.18) !important;
   box-shadow: none !important;
   transform: translateX(-50%) !important;

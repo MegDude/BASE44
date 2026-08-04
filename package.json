@@ -101,6 +101,7 @@
     "test:panel-state-contract": "node scripts/test-polished-panel-state-contract.mjs",
     "test:viewport-containment": "node scripts/test-viewport-containment-contract.mjs",
     "test:eyebrow-typography": "node scripts/test-global-eyebrow-typography.mjs",
+    "test:panel-geometry-radius": "node scripts/test-panel-geometry-and-radius.mjs",
     "test:via313-panel-pin": "node scripts/test-via313-panel-pin-contract.mjs",
     "test:interface-density": "node scripts/test-interface-density-regressions.mjs",
     "test:legends-seo-snapshot": "node scripts/test-legends-seo-snapshot.mjs",

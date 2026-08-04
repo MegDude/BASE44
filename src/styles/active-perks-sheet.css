@@ -43,7 +43,7 @@
 .dp-active-perks-handle > span {
   width: 36px;
   height: 5px;
-  border-radius: 9999px;
+  border-radius: 12px;
   background: var(--dp-handle);
   transition: background 160ms ease, width 160ms ease;
 }
@@ -99,7 +99,7 @@
   padding: 0;
   place-items: center;
   border: 0;
-  border-radius: 9999px;
+  border-radius: 12px;
   background: var(--dp-soft-neutral);
   color: var(--dp-navy);
   transition: background 150ms ease, color 150ms ease;
@@ -254,7 +254,7 @@
   padding: 0;
   place-items: center;
   border: 1px solid var(--dp-border);
-  border-radius: 9999px;
+  border-radius: 12px;
   background: var(--dp-surface);
   color: var(--dp-navy-secondary);
   transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
@@ -299,7 +299,7 @@
 .dp-active-perks-empty-actions button {
   min-height: 44px;
   padding: 0 18px;
-  border-radius: 9999px;
+  border-radius: 12px;
   font: 600 13px/1 var(--dp-font-ui);
 }
 

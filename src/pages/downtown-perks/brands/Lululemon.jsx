@@ -52,7 +52,7 @@ export default function Lululemon() {
             ].map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                <div className="w-2 h-2 rounded-xl bg-primary mt-2 shrink-0" />
                 <div>
                   <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>

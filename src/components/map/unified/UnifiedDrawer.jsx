@@ -85,7 +85,7 @@ export default function UnifiedDrawer({ selected, onMarkerSelect }) {
           >
             {/* Handle bar + close */}
             <div className="relative flex items-center justify-center py-2.5 px-4 border-b border-border cursor-grab active:cursor-grabbing">
-              <div className="w-10 h-1 rounded-full bg-border" />
+              <div className="w-10 h-1 rounded-xl bg-border" />
               <button
                 type="button"
                 onClick={() => {

@@ -14,7 +14,7 @@ const VENUES = [
 const getMarkerIcon = (category) => {
   const colors = { coffee: "#BFA46A", bar: "#BFA46A", wellness: "#0B1F33", default: "#0B1F33" };
   return L.divIcon({
-    html: `<div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background-color: ${colors[category] || colors.default}"></div>`,
+    html: `<div class="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold" style="background-color: ${colors[category] || colors.default}"></div>`,
     className: "",
     iconSize: [32, 32],
   });

@@ -569,7 +569,7 @@ html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong 
   min-height: 30px !important;
   padding: 0 10px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   color: rgba(11, 31, 51, 0.74) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.74) !important;
   background: #fff !important;
@@ -641,7 +641,7 @@ html body #root .dp-partner-lifecycle-page-start :is(.dp-partner-system-grid spa
   min-height: 30px !important;
   padding: 0 10px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   color: rgba(11, 31, 51, 0.72) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
   background: #fff !important;
@@ -1278,7 +1278,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choic
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-plan-choice em,
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary .dp-pricing-guide-primary {
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.04) !important;
   color: #0b1f33 !important;
   -webkit-text-fill-color: #0b1f33 !important;
@@ -1348,7 +1348,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail
   min-height: 42px !important;
   padding: 8px 12px !important;
   border: 1px solid rgba(11, 31, 51, 0.09) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   box-shadow: none !important;
 }
@@ -1485,7 +1485,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, p,
     min-height: 30px !important;
     padding-inline: 11px !important;
     border: 1px solid rgba(11, 31, 51, 0.1) !important;
-    border-radius: 999px !important;
+    border-radius: 12px !important;
   }
 
   html body #root .dp-partner-lifecycle-page-start .dp-partner-trust-strip strong:first-child {

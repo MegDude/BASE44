@@ -2251,7 +2251,7 @@ html body #root .dp-home-page .dp-community-story-cta {
   justify-content: center;
   gap: 8px;
   border: 1px solid rgba(11, 31, 51, .08);
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, .82);
   padding: 0 16px;
   color: #0B1F33;
@@ -2389,7 +2389,7 @@ html body #root .dp-map-page.dp-map-page .dp-survey-action-row :is(button, a) {
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(11, 31, 51, .08);
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, .74);
   padding: 0 13px;
   color: #0B1F33;
@@ -2481,7 +2481,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-rai
   flex: 0 0 auto !important;
   min-height: 30px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, .52) !important;
   padding: 0 12px !important;
   color: rgba(11, 31, 51, .68) !important;
@@ -2903,7 +2903,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-visual-map > 
   min-height: 16px !important;
   padding: 0 !important;
   border: 2px solid rgba(255, 255, 255, .92) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
@@ -3169,7 +3169,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-progres
   height: 1px !important;
   width: 100% !important;
   overflow: hidden !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, .08) !important;
 }
 
@@ -3212,7 +3212,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-visual-orbit 
   position: absolute !important;
   inset: 8% !important;
   border: 1px solid rgba(191, 164, 106, .2) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   animation: dpStoryDrift 9s cubic-bezier(.22, 1, .36, 1) infinite alternate !important;
 }
 
@@ -3220,7 +3220,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-visual-orbit 
   position: absolute !important;
   width: 8px !important;
   height: 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   box-shadow: 0 0 24px rgba(191, 164, 106, .42) !important;
 }
@@ -3267,7 +3267,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-visual-map > 
   min-height: 28px !important;
   padding: 0 9px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, .86) !important;
   color: #0B1F33 !important;
   font-family: Inter, system-ui, sans-serif !important;
@@ -3847,7 +3847,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-visual-map > 
   min-height: 16px !important;
   padding: 0 !important;
   border: 2px solid rgba(255, 255, 255, .92) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
@@ -4120,7 +4120,7 @@ html body #root#root .dp-map-page.dp-map-page :is(aside.dp-panel-shell.dp-map-dr
   width: 44px !important;
   height: 3px !important;
   margin: 0 auto 12px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, .16) !important;
   box-shadow: none !important;
 }
@@ -4271,7 +4271,7 @@ html body #root#root .dp-map-page.dp-map-page :is(aside.dp-panel-shell.dp-map-dr
   height: 34px !important;
   min-height: 34px !important;
   border: 1px solid rgba(191, 164, 106, .26) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
@@ -5225,7 +5225,7 @@ html body #root .dp-map-page.dp-map-page .dp-community-stories-map-layer > a {
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(11, 31, 51, .08);
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, .76);
   padding: 0 13px;
   color: #0B1F33;
@@ -5915,7 +5915,7 @@ body {
   line-height: 1 !important;
   text-transform: none !important;
   white-space: nowrap;
-  border-radius: 999px;
+  border-radius: 12px;
 }
 
 .dp-resident-discovery-section .dp-section-shell {
@@ -6771,7 +6771,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin .dp
   min-height: 30px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   box-shadow: none !important;
   transform: none !important;
@@ -6794,7 +6794,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin .dp
   padding: 0 !important;
   overflow: hidden !important;
   border: 1px solid rgba(191, 164, 106, .42) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0b1f33 !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, .16) !important;
 }
@@ -6807,7 +6807,7 @@ html body #root .dp-map-page.dp-map-page .leaflet-marker-icon.dp-leaflet-pin .dp
   max-height: 100% !important;
   display: block !important;
   object-fit: cover !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   transform: none !important;
 }
 
@@ -6822,7 +6822,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-pin-badge :is(.dp-live-pin__leg
   height: 100% !important;
   display: block !important;
   object-fit: cover !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 /* ================================
@@ -6905,7 +6905,7 @@ html body #root .dp-map-page.dp-map-page :is(.dp-drawer-control, .dp-drawer-icon
   color: var(--dp-ink) !important;
   background: rgba(11, 31, 51, 0.045) !important;
   border: 1px solid transparent !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
   transition: background 160ms ease, border-color 160ms ease, transform 160ms ease !important;
 }
@@ -7083,7 +7083,7 @@ html body #root .dp-map-page.dp-map-page .dp-partner-signal-list li::before {
   width: 6px !important;
   height: 6px !important;
   background: currentColor !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   opacity: .36 !important;
 }
 
@@ -7258,7 +7258,7 @@ html body #root .dp-map-page.dp-map-page .dp-panel-action {
   white-space: nowrap !important;
   background: rgba(11, 31, 51, .055) !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-panel-action.dp-primary-action {
@@ -7304,7 +7304,7 @@ html body #root .dp-map-page.dp-map-page .dp-partner-ask-rail button {
   white-space: nowrap !important;
   background: rgba(255, 255, 255, .86) !important;
   border: 1px solid var(--dp-line) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 [data-platform-layout='downtown-perks'] .dp-entity-action-row,
@@ -7662,7 +7662,7 @@ html body #root .dp-quick-search-close.dp-quick-search-close {
   color: var(--dp-search-soft) !important;
   background: transparent !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
   cursor: pointer !important;
   transition: color 160ms ease, background-color 160ms ease, transform 160ms ease !important;
@@ -7731,7 +7731,7 @@ html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap > span[ar
   width: 6px !important;
   height: 6px !important;
   background: var(--dp-search-gold) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   opacity: .72 !important;
 }
 
@@ -7745,7 +7745,7 @@ html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap > button 
   color: rgba(11, 31, 51, .48) !important;
   background: transparent !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root .dp-quick-search-input-wrap.dp-quick-search-input-wrap:focus-within {
@@ -8234,7 +8234,7 @@ html body #root .dp-map-page.dp-map-page .dp-daa-read-more-list li::before {
   width: 5px !important;
   height: 5px !important;
   background: #c8a96a !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root .dp-map-page.dp-map-page .dp-legends-directory-sheet {
@@ -9375,7 +9375,7 @@ html body #root :where(
   color: var(--dp-governance-ink) !important;
 }
 
-html body #root :where(.rounded-full):not(.dp-mode-switch):not(.dp-mode-toggle):not(.leaflet-control-container *) {
+html body #root :where(.rounded-xl):not(.dp-mode-switch):not(.dp-mode-toggle):not(.leaflet-control-container *) {
   border-radius: 8px !important;
 }
 
@@ -10189,7 +10189,7 @@ html body #root :is(
   main[class*="partner"],
   main[class*="Partner"]
 ) :is(
-  .rounded-full,
+  .rounded-xl,
   .rounded-2xl,
   .rounded-3xl,
   .rounded-\[20px\],
@@ -11627,7 +11627,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-cue-rai
   flex: 0 0 auto !important;
   min-height: 30px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, .52) !important;
   padding: 0 12px !important;
   color: rgba(11, 31, 51, .68) !important;
@@ -25325,7 +25325,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 32px !important;
   min-width: 32px !important;
   min-height: 32px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer a.dp-button.dp-button-wide {

@@ -72,7 +72,7 @@ export default function ExperienceGrid({ images = [] }) {
           {experiences.map((exp, i) => (
             <span
               key={i}
-              className="px-4 py-2 rounded-full border border-border/60 text-[12px] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all cursor-default"
+              className="px-4 py-2 rounded-xl border border-border/60 text-[12px] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all cursor-default"
             >
               {exp.label}
             </span>

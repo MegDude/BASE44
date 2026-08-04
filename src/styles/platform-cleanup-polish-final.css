@@ -38,7 +38,7 @@ html body #root :is(a, button, input, select, textarea):focus-visible {
   outline-offset: 2px;
 }
 
-html body #root :is(button, a)[class*="rounded-full"],
+html body #root :is(button, a)[class*="rounded-xl"],
 html body #root :is(button, a)[class*="rounded-[999"] {
   border-radius: 8px !important;
 }

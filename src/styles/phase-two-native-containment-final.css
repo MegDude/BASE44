@@ -29,11 +29,23 @@ body,
   max-width: 100dvw;
 }
 
-:is(.dp-native-drawer, .dp-workspace-sheet, .dp-quick-search-modal, .dp-workspace-upgrade-modal) {
+:is(
+  .dp-native-drawer,
+  .dp-workspace-sheet,
+  .dp-quick-search-modal,
+  .dp-workspace-upgrade-modal,
+  .dp-active-map-drawer,
+  .dp-map-detail-sheet,
+  .dp-ios-fullscreen-map-panel,
+  [role="dialog"]
+) {
   display: flex !important;
+  width: min(100%, 100dvw) !important;
   max-width: 100dvw !important;
-  max-height: 90dvh !important;
+  height: min(85dvh, 760px) !important;
+  max-height: 85dvh !important;
   min-width: 0 !important;
+  min-height: 0 !important;
   flex-direction: column !important;
   overflow: hidden !important;
   background: var(--dp-phase2-row) !important;
@@ -47,7 +59,8 @@ body,
 
 .dp-native-drawer-surface {
   display: flex !important;
-  max-height: 90dvh !important;
+  height: 100% !important;
+  max-height: 85dvh !important;
   flex: 1 1 auto !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -81,6 +94,38 @@ body,
 .dp-native-drawer-scroll {
   padding-right: 20px !important;
   padding-left: 20px !important;
+}
+
+/* Keep the centered drag affordance from covering Back and Close hit targets. */
+html body #root #dp-active-map-drawer#dp-active-map-drawer .dp-native-detail-grabber {
+  right: auto !important;
+  left: 50% !important;
+  width: 96px !important;
+  max-width: 96px !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Global shape contract: no pill or fully circular surfaces. */
+#root :is(
+  button,
+  [role="button"],
+  [role="switch"],
+  [role="radio"],
+  input,
+  select,
+  textarea,
+  img,
+  [class*="avatar"],
+  [class*="badge"],
+  [class*="chip"],
+  [class*="pill"],
+  [class*="marker"],
+  [class*="pin"],
+  [class*="dot"],
+  [class*="indicator"],
+  [class*="progress"]
+) {
+  border-radius: min(12px, var(--radius, 12px)) !important;
 }
 
 :is(.dp-native-drawer, .dp-workspace-shell, .dp-partner-workspace, .dp-admin-studio-shell, .dp-map-shell)

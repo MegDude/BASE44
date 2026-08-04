@@ -145,7 +145,7 @@ html body #root .dp-map-page .dp-map-detail-status {
 html body #root .dp-map-page .dp-map-detail-status::before {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 12px;
   background: var(--dp-success, #28584a);
   content: "";
 }

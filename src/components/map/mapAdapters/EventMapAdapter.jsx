@@ -80,7 +80,7 @@ export function EventCard({ event, active, onClick }) {
       </div>
       <div className="p-4 bg-white">
         <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
+          <span className="w-2 h-2 rounded-xl shrink-0" style={{ background: color }} />
           <span className="tracking-normalr text-[#0B1F33]/58 capitalize dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             {event.category?.replace("_", " ")}
           </span>

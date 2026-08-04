@@ -176,7 +176,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-active-perks-handle > span, .dp-map-sheet-handle, .dp-panel-handle::before, .dp-drawer-handle::before) {
     width: 36px !important;
     height: 4px !important;
-    border-radius: 999px !important;
+    border-radius: 12px !important;
     background: rgba(11, 31, 51, 0.22) !important;
   }
 

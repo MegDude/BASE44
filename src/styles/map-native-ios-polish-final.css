@@ -43,7 +43,7 @@
   width: 36px !important;
   height: 4px !important;
   display: block !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   touch-action: none !important;
   pointer-events: none !important;
@@ -93,7 +93,7 @@
   width: 36px !important;
   height: 4px !important;
   display: block !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   content: "" !important;
 }

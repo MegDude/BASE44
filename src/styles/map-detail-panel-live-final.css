@@ -61,7 +61,7 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-native-detail-grabber > s
   width: 34px !important;
   height: 4px !important;
   margin: 6px auto 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.18) !important;
 }
 

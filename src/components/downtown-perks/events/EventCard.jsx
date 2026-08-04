@@ -15,7 +15,7 @@ export default function EventCard({ event }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
           {event.is_members_only && (
-            <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
+            <span className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-primary/90 text-primary-foreground text-xs font-semibold">
               Members Only
             </span>
           )}

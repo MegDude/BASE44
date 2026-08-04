@@ -190,7 +190,7 @@ export default function BrandAnalytics() {
   };
 
   if (loading || !analytics) {
-    return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
+    return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-xl h-8 w-8 border-b-2 border-primary" /></div>;
   }
 
   return (
@@ -226,17 +226,17 @@ export default function BrandAnalytics() {
                 <span className="text-[11px] text-muted-foreground">Placement types</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#BFA46A]" />
+                <span className="w-1.5 h-1.5 rounded-xl bg-[#BFA46A]" />
                 <span className="text-[11px] text-muted-foreground">Live now</span>
               </div>
             </div>
 
             {/* CTA row */}
             <div className="flex flex-wrap gap-3">
-              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 View campaign formats <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 Plan a campaign
               </button>
             </div>
@@ -402,7 +402,7 @@ export default function BrandAnalytics() {
                           <div className="font-medium text-foreground text-[13px]">{v.name}</div>
                           <div className="text-[11px] text-muted-foreground">{v.district}</div>
                         </div>
-                        <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
+                        <span className={`text-[11px] font-medium px-2 py-1 rounded-xl ${
                           v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#BFA46A]' : 'bg-muted/50 text-muted-foreground'
                         }`}>
                           {v.trend === 'up' ? '+18%' : 'Stable'}
@@ -552,10 +552,10 @@ export default function BrandAnalytics() {
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-3">
-              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 Plan a campaign <ArrowRight className="w-4 h-4" />
               </button>
-              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 View campaign formats
               </Link>
             </div>

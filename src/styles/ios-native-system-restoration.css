@@ -289,7 +289,7 @@ textarea { min-height: 112px; }
 :where(.dp-sheet-handle, .dp-drawer-handle, .dp-panel-handle) {
   width: 36px !important;
   height: 5px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   box-shadow: none !important;
 }

@@ -12,7 +12,7 @@ const demo = (
       <div className="text-[12px] text-muted-foreground mt-1 leading-relaxed">
         Curated nearby experiences for today, tonight, and tomorrow morning.
       </div>
-      <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-primary text-primary-foreground text-[12px] font-medium">
+      <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium">
         <Zap className="w-3 h-3" /> Open Guest Guide
       </div>
     </div>

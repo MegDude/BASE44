@@ -508,7 +508,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   min-height: 38px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: none !important;
   color: #0B1F33 !important;
@@ -1148,7 +1148,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-console-chip
 ) {
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
   letter-spacing: normal !important;
@@ -2891,7 +2891,7 @@ html body #root#root .dp-quick-search-close.dp-quick-search-close {
   min-width: 38px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
@@ -2909,7 +2909,7 @@ html body #root#root .dp-quick-search-input-wrap.dp-quick-search-input-wrap {
   min-height: 44px !important;
   padding: 0 12px !important;
   border: 1px solid rgba(11, 31, 51, .09) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(248, 247, 244, .9) !important;
 }
 
@@ -2970,7 +2970,7 @@ html body #root#root .dp-quick-search-intent-rail.dp-quick-search-intent-rail bu
   max-width: 128px !important;
   padding: 0 10px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   box-shadow: none !important;
   font-size: 11.2px !important;
@@ -3256,7 +3256,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-cluster {
   min-height: 36px !important;
   padding: 0 !important;
   border: 1px solid rgba(191, 164, 106, 0.86) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
@@ -3459,7 +3459,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
@@ -3899,7 +3899,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions :is(a, button) {
   height: 38px !important;
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 11px !important;
   font-weight: 650 !important;
@@ -5013,7 +5013,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   width: 34px !important;
   height: 3px !important;
   margin: 8px auto 2px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.18) !important;
 }
 
@@ -6072,7 +6072,7 @@ html body #root#root .dp-partner-page .dp-property-mini-map button {
   height: 12px !important;
   padding: 0 !important;
   border: 2px solid #ffffff !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   box-shadow: 0 8px 22px rgba(11, 31, 51, 0.14) !important;
 }
@@ -6105,7 +6105,7 @@ html body #root#root .dp-partner-page .dp-property-nearby-pin {
   max-width: 128px !important;
   padding: 5px 7px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.84) !important;
   color: rgba(11, 31, 51, 0.62) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
@@ -6143,7 +6143,7 @@ html body #root#root .dp-partner-page .dp-property-detail-header button {
   width: 30px !important;
   height: 30px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.045) !important;
   color: rgba(11, 31, 51, 0.58) !important;
 }
@@ -6189,7 +6189,7 @@ html body #root#root .dp-partner-page .dp-property-chip-rail span {
   min-height: 28px !important;
   padding: 6px 10px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.045) !important;
   color: rgba(11, 31, 51, 0.68) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
@@ -6214,7 +6214,7 @@ html body #root#root .dp-partner-page .dp-property-detail-actions a {
   min-height: 34px !important;
   padding: 8px 10px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -6822,7 +6822,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
 /* Final map icon lock: non-Legends pins use SVG category icons inside the existing circular pin. */
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo),
 html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge:not(:has(.dp-live-pin__legends-logo)) {
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo) .dp-live-pin__core,
@@ -6831,7 +6831,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge:not(:has(.dp-liv
   align-items: center !important;
   justify-content: center !important;
   overflow: hidden !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo) .dp-map-icon-svg,
@@ -6915,9 +6915,9 @@ html body #root#root :is(
   .rounded-xl,
   .rounded-2xl,
   .rounded-3xl,
-  .rounded-full,
+  .rounded-xl,
   [class*="rounded-["],
-  [class*="rounded-full"]
+  [class*="rounded-xl"]
 ):not(.dp-live-pin):not(.dp-live-pin *):not(.dp-map-pin-badge):not(.dp-map-pin-badge *):not(.leaflet-marker-icon):not(.leaflet-marker-icon *):not(.dp-collection-route-panel__actions *):not(.dp-perk-cta):not(.dp-panel-action):not(.dp-panel-action-text):not(.dp-map-panel-button):not(.dp-map-answer-action):not(img):not(video):not(canvas):not(svg) {
   border-radius: 0 !important;
 }
@@ -8362,7 +8362,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 82px !important;
   padding: 10px !important;
   border: 1px solid rgba(191, 164, 106, 0.42) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0b1f33 !important;
   color: #ffffff !important;
   text-align: center !important;
@@ -8395,7 +8395,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 132px !important;
   padding: 6px 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.09) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.92) !important;
   color: #0b1f33 !important;
   box-shadow: 0 10px 24px rgba(11, 31, 51, 0.10) !important;
@@ -8408,7 +8408,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin i {
   width: 7px !important;
   height: 7px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #c8a96a !important;
   box-shadow: 0 0 0 5px rgba(191, 164, 106, 0.14) !important;
 }
@@ -8509,7 +8509,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 34px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
   color: #0b1f33 !important;
   box-shadow: none !important;
@@ -8640,7 +8640,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-width: 34px !important;
   min-height: 34px !important;
   padding: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-top-search.dp-story-top-search {
@@ -8903,7 +8903,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-height: 34px !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search {
@@ -9538,7 +9538,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-row, .dp-tab-row, .d
 
 html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-action, .dp-panel-action-text, .dp-primary-action, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-pass-action, .dp-entity-action, .dp-map-sheet-action-footer button, .dp-map-sheet-action-footer a, .dp-search-intent-console button, .dp-search-segment, .dp-console-chip) {
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
   letter-spacing: normal !important;
@@ -9844,7 +9844,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 44px !important;
   min-width: 44px !important;
   min-height: 44px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button:disabled {
@@ -9863,7 +9863,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 8px !important;
   min-width: 8px !important;
   min-height: 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button.is-active {
@@ -10274,7 +10274,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   height: 4px !important;
   min-height: 4px !important;
   margin: 10px auto 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.14) !important;
 }
 
@@ -10316,7 +10316,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   min-height: var(--dp-control-height) !important;
   padding: 0 !important;
   border: 1px solid var(--dp-panel-border) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
   color: var(--dp-panel-text) !important;
   box-shadow: none !important;
@@ -10533,7 +10533,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   min-height: 38px !important;
   min-width: 38px !important;
   padding: 0 14px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-family: var(--dp-font-sans) !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
@@ -10623,7 +10623,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-nav-activity-badge) {
   right: 8px !important;
   min-width: 16px !important;
   height: 16px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-panel-text) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -11744,7 +11744,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-saved-ask-section button, .dp-saved-action-row button) {
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.055) !important;
   box-shadow: none !important;
 }
@@ -12411,7 +12411,7 @@ html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-clust
   height: 36px !important;
   min-width: 36px !important;
   min-height: 36px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
@@ -12691,7 +12691,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 100% !important;
   min-height: 42px !important;
   height: 42px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 @media (max-width: 640px) {
@@ -12856,7 +12856,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin {
   min-height: 36px !important;
   max-width: 36px !important;
   max-height: 36px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #BFA46A !important;
   border: 3px solid #BFA46A !important;
@@ -12908,7 +12908,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin.is-pulsing::before {
   content: "" !important;
   position: absolute !important;
   inset: 4px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(191, 164, 106, 0.28) !important;
   transform: scale(1) !important;
   opacity: 0.55 !important;
@@ -12960,7 +12960,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin.is-saved::after {
   bottom: -2px !important;
   width: 10px !important;
   height: 10px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   border: 2px solid #FFFFFF !important;
 }
@@ -13004,7 +13004,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-cluster {
   height: 42px !important;
   min-width: 42px !important;
   min-height: 42px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B3E31 !important;
   color: #FFFFFF !important;
   border: 2px solid #BFA46A !important;
@@ -13049,7 +13049,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-stop__number {
   right: -8px !important;
   width: 18px !important;
   height: 18px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   display: grid !important;
   place-items: center !important;
   background: #BFA46A !important;
@@ -13198,7 +13198,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-route-panel__stops 
   place-items: center !important;
   width: 22px !important;
   height: 22px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   color: #0B3E31 !important;
   font: 700 10px/1 Inter, system-ui, sans-serif !important;
@@ -13733,7 +13733,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   padding: 7px 11px !important;
   font: 760 11.5px/1.1 Inter, system-ui, sans-serif !important;
   letter-spacing: normal !important;
@@ -15163,7 +15163,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-handle,
   height: 3px !important;
   margin: 0 auto 8px !important;
   flex-shrink: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.16) !important;
 }
 
@@ -15396,7 +15396,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-pin, .dp-c
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pin-navy) !important;
   color: var(--dp-pin-gold) !important;
   border: 1.5px solid var(--dp-pin-gold) !important;
@@ -15417,7 +15417,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-cluster, .
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pin-navy) !important;
   color: #FFFFFF !important;
   border: 1.5px solid var(--dp-pin-gold) !important;
@@ -15800,7 +15800,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   min-height: 22px !important;
   padding: 0 8px !important;
   border: 1px solid rgba(15, 90, 67, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(15, 90, 67, 0.08) !important;
   color: #0F5A43 !important;
   -webkit-text-fill-color: #0F5A43 !important;
@@ -15833,7 +15833,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   top: 0.58em !important;
   width: 5px !important;
   height: 5px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
 }
 
@@ -16286,7 +16286,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   margin: 0 !important;
   padding: 3px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.82) !important;
   box-shadow: 0 10px 28px rgba(11, 31, 51, 0.08) !important;
   backdrop-filter: blur(18px) !important;
@@ -16303,7 +16303,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 28px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: rgba(11, 31, 51, 0.72) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
@@ -16342,7 +16342,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 5px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   box-shadow: none !important;
 }
@@ -16492,7 +16492,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-close {
   max-height: 34px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.72) !important;
 }
@@ -16689,7 +16689,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   align-items: center !important;
   justify-content: center !important;
   justify-self: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -16940,7 +16940,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail
   gap: 2px !important;
   padding: 9px 12px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   text-align: left !important;
@@ -17090,7 +17090,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected :
   min-height: 32px !important;
   padding: 7px 10px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: 11.5px !important;
@@ -17990,7 +17990,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
   min-height: 34px !important;
   padding: 0 12px 0 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.9) !important;
   color: rgba(11, 31, 51, 0.66) !important;
   box-shadow: 0 16px 38px rgba(11, 31, 51, 0.075) !important;
@@ -18007,7 +18007,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin i {
   width: 10px !important;
   height: 10px !important;
   border: 2px solid #BFA46A !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: 0 0 0 4px rgba(191, 164, 106, 0.12) !important;
 }
@@ -18071,7 +18071,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-to
   width: 9px !important;
   height: 9px !important;
   border: 2px solid #BFA46A !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs {
@@ -18086,7 +18086,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ta
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.07) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.58) !important;
   font-size: 10px !important;
@@ -18116,7 +18116,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ma
   right: 18px !important;
   top: 52% !important;
   height: 2px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: linear-gradient(90deg, transparent, rgba(191, 164, 106, 0.86), transparent) !important;
   transform: rotate(-9deg) !important;
 }
@@ -18126,7 +18126,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ma
   width: 12px !important;
   height: 12px !important;
   border: 2px solid #FFFFFF !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
 }
@@ -18192,7 +18192,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient::
   position: absolute !important;
   inset: 14% 10% 18% !important;
   border: 1px solid rgba(11, 31, 51, 0.055) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   transform: rotate(-7deg) !important;
 }
 
@@ -18204,7 +18204,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient-c
   justify-content: center !important;
   padding: 0 13px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.82) !important;
   color: rgba(11, 31, 51, 0.58) !important;
   box-shadow: 0 18px 44px rgba(11, 31, 51, 0.055) !important;
@@ -18361,7 +18361,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__controls 
   gap: 10px !important;
   padding: 5px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.86) !important;
   box-shadow: 0 18px 44px rgba(11, 31, 51, 0.10) !important;
   backdrop-filter: blur(20px) !important;
@@ -18375,7 +18375,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__controls 
   align-items: center !important;
   justify-content: center !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: #0B1F33 !important;
   box-shadow: none !important;
@@ -18413,7 +18413,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__progress 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__progress div {
   height: 2px !important;
   overflow: hidden !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.1) !important;
 }
 
@@ -18495,7 +18495,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
@@ -19233,7 +19233,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   gap: 9px !important;
   padding: 4px !important;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: none !important;
   transform: translateX(-50%) !important;
@@ -19381,7 +19381,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   opacity: 1 !important;
@@ -20556,7 +20556,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-card
   right: 10px !important;
   width: 7px !important;
   height: 7px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pricing-accent) !important;
   box-shadow: 0 0 0 3px rgba(191, 164, 106, 0.16) !important;
 }
@@ -20596,7 +20596,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-lis
   align-self: start !important;
   padding: 6px 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pricing-surface-soft) !important;
   font-size: 12px !important;
 }
@@ -20649,7 +20649,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button {
   min-height: 44px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
 }
 
@@ -21102,7 +21102,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-previ
   content: "" !important;
   width: 12px !important;
   height: 12px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   box-shadow: 0 0 0 6px rgba(191, 164, 106, 0.16) !important;
 }
@@ -22754,7 +22754,7 @@ html body #root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-pa
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   box-shadow: none !important;
   color: #0B1F33 !important;

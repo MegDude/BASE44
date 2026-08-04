@@ -45,7 +45,7 @@ export default function UniversalSearch({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <div className={`${variantClass} rounded-full px-5 py-2.5 flex items-center gap-3 w-full`}>
+      <div className={`${variantClass} rounded-xl px-5 py-2.5 flex items-center gap-3 w-full`}>
         <Search className={`w-5 h-5 ${variant === "dark" ? "text-white/50" : "text-muted-foreground"}`} />
         
         <input
@@ -72,7 +72,7 @@ export default function UniversalSearch({
         <button
           onClick={handleSearch}
           disabled={loading || !query.trim()}
-          className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-[13px] font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Search"}
         </button>

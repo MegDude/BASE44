@@ -2143,7 +2143,7 @@ html body #root .dp-map-page.dp-map-page .dp-collection-route-panel__stops butto
   width: 22px !important;
   height: 22px !important;
   border: 1px solid rgba(200, 169, 106, 0.55) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #C8A96A !important;
   -webkit-text-fill-color: #C8A96A !important;
@@ -2779,7 +2779,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-chip 
   height: 36px !important;
   min-height: 36px !important;
   padding: 0 13px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
   background: #fff !important;
   color: #0b1f33 !important;
@@ -2826,7 +2826,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-tag {
   align-items: center !important;
   min-height: 32px !important;
   padding: 0 11px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #f7f8fb !important;
   color: #0b1f33 !important;
   font-size: 12px !important;
@@ -3008,7 +3008,7 @@ html body #root .dp-map-page.dp-map-page.dp-map-page-resident .dp-district-detai
   min-width: 0 !important;
   min-height: 34px !important;
   padding: 7px 12px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #f7f8fb !important;
   color: #0b1f33 !important;
   white-space: normal !important;
@@ -3242,7 +3242,7 @@ html body #root .dp-map-page.dp-map-page .dp-map-search-area-button.dp-map-searc
   padding: 0 16px !important;
   transform: translateX(-50%) !important;
   border: 1px solid rgba(11, 31, 51, 0.14) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.94) !important;
   color: #0B1F33 !important;
   box-shadow: 0 14px 32px rgba(11, 31, 51, 0.14) !important;
@@ -3589,7 +3589,7 @@ html body #root .dp-map-page.dp-map-page :is(
   max-height: 44px !important;
   padding: 0 16px !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.94) !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.06) !important;
   color: #0b1f33 !important;
@@ -3813,7 +3813,7 @@ html body #root:is(#root):is(#root):is(#root):is(#root):is(#root):is(#root):is(#
   height: 44px !important;
   max-height: 44px !important;
   padding: 0 16px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   white-space: nowrap !important;
   text-decoration: none !important;
 }
@@ -3887,7 +3887,7 @@ html body #root .dp-map-page.dp-map-page .dp-search-intent-console-wrap.is-colla
   height: 40px !important;
   min-height: 40px !important;
   padding: 0 13px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   pointer-events: auto !important;
 }
 

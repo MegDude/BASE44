@@ -52,7 +52,7 @@
   padding: 10px 13px;
   color: var(--dp-page-white);
   background: var(--dp-page-ink);
-  border-radius: 999px;
+  border-radius: 12px;
   font-size: .78rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -283,7 +283,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: var(--dp-page-white) !important;
   background: var(--dp-page-ink) !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
 }
 
@@ -560,7 +560,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: currentColor;
   background: transparent !important;
   border: 0 !important;
-  border-radius: 999px;
+  border-radius: 12px;
   box-shadow: none !important;
   transition: color 160ms ease, background-color 160ms ease;
 }
@@ -664,7 +664,7 @@ footer a[aria-label='Downtown Perks app'] svg {
   color: var(--dp-page-ink) !important;
   background: rgba(255, 255, 255, .84) !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   box-shadow: 0 18px 50px rgba(11, 31, 51, .14) !important;
   font-size: .82rem !important;
   font-weight: 500 !important;

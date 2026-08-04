@@ -50,7 +50,7 @@ html body #root .dp-map-page.dp-map-page-partner .dp-map-bottom-nav.dp-map-botto
   left: 50% !important;
   width: 32px !important;
   height: 3px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   transform: translateX(-50%) !important;
 }
@@ -98,7 +98,7 @@ html body #root .dp-map-page.dp-map-page-partner .dp-map-bottom-nav .dp-nav-acti
   min-height: 16px !important;
   padding: 0 !important;
   border: 1px solid rgba(255, 255, 255, 0.92) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0b1f33 !important;
   color: #ffffff !important;
   font-size: 10px !important;
@@ -127,7 +127,7 @@ html body #root .dp-map-page.dp-map-page-partner .dp-map-sheet-handle {
   height: 4px !important;
   margin-top: 0 !important;
   margin-bottom: 10px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.16) !important;
 }
 
@@ -279,7 +279,7 @@ html body #root .dp-map-page.dp-map-page-partner .dp-grouped-title {
 html body #root .dp-map-page.dp-map-page-partner .dp-grouped-status {
   min-height: 32px !important;
   padding: 0 10px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.06) !important;
   color: var(--dp-partner-map-ink) !important;
   font-size: 12px !important;
@@ -782,7 +782,7 @@ html body #root#root#root .dp-map-page.dp-map-page .dp-tab-signal {
   justify-content: center !important;
   min-height: 30px !important;
   padding: 0 10px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.06) !important;
   color: #0B1F33 !important;
   font-size: 12px !important;
@@ -946,7 +946,7 @@ html body #root#root#root .dp-map-page.dp-map-page .dp-collection-route-panel__m
   align-items: center !important;
   justify-content: center !important;
   padding: 0 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.06) !important;
   color: rgba(11, 31, 51, 0.76) !important;
   font-size: 12px !important;
@@ -980,7 +980,7 @@ html body #root#root#root .dp-map-page.dp-map-page .dp-collection-route-panel__s
   justify-content: center !important;
   width: 28px !important;
   height: 28px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.06) !important;
   color: #0B1F33 !important;
   font-size: 12px !important;

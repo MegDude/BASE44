@@ -62,7 +62,7 @@ export function createCompactMarker(entity) {
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 999px;
+      border-radius: 12px;
       background: #0B1F33;
       border: 1.25px solid rgba(200,169,106,0.92);
       box-shadow: 0 5px 14px rgba(11,31,51,0.18);
@@ -100,7 +100,7 @@ export function createSelectedMarker(entity) {
     <div style="
       width: ${size}px;
       height: ${size}px;
-      border-radius: 999px;
+      border-radius: 12px;
       background: #C8A96A;
       border: 1.25px solid #0B1F33;
       box-shadow: 0 0 0 2px rgba(255,255,255,0.94), 0 7px 16px rgba(11,31,51,0.2);

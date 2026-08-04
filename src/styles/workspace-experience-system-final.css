@@ -185,7 +185,7 @@
 }
 .dp-experience-builder > nav ol { margin: 0; padding: 0; list-style: none; }
 .dp-experience-builder > nav button { display: grid; grid-template-columns: 24px minmax(0,1fr); align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 5px 0; border: 0; background: transparent; color: rgba(11,31,51,.55); text-align: left; }
-.dp-experience-builder > nav button span { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid rgba(11,31,51,.12); border-radius: 50%; font: 600 11px/1 Inter, sans-serif; }
+.dp-experience-builder > nav button span { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid rgba(11,31,51,.12); border-radius: 12px; font: 600 11px/1 Inter, sans-serif; }
 .dp-experience-builder > nav button strong { font: 550 12px/1.25 Inter, sans-serif; }
 .dp-experience-builder > nav li[aria-current="step"] button { color: #0b1f33; }
 .dp-experience-builder > nav li[aria-current="step"] button span { border-color: #c8a96a; background: #c8a96a; }
