@@ -105,8 +105,20 @@ html body #root #dp-active-map-drawer#dp-active-map-drawer .dp-native-detail-gra
   transform: translateX(-50%) !important;
 }
 
-/* Global shape contract: no pill or fully circular surfaces. */
-#root :is(
+/* Terminal geometry contract: strict rectangular surfaces throughout the app. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root * {
+  border-radius: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root :is(
+  .dp-search-intent-console,
+  .dp-search-intent-input-row
+) {
+  border-radius: 0 !important;
+}
+
+html body #root#root#root :is(
   button,
   [role="button"],
   [role="switch"],
@@ -115,17 +127,28 @@ html body #root #dp-active-map-drawer#dp-active-map-drawer .dp-native-detail-gra
   select,
   textarea,
   img,
+  svg,
+  article,
+  section,
+  [class*="card"],
+  [class*="panel"],
+  [class*="sheet"],
+  [class*="drawer"],
+  [class*="modal"],
   [class*="avatar"],
   [class*="badge"],
   [class*="chip"],
   [class*="pill"],
+  [class*="tag"],
+  [class*="cluster"],
   [class*="marker"],
   [class*="pin"],
   [class*="dot"],
   [class*="indicator"],
-  [class*="progress"]
+  [class*="progress"],
+  [class*="action"]
 ) {
-  border-radius: min(12px, var(--radius, 12px)) !important;
+  border-radius: 0 !important;
 }
 
 :is(.dp-native-drawer, .dp-workspace-shell, .dp-partner-workspace, .dp-admin-studio-shell, .dp-map-shell)
