@@ -161,6 +161,8 @@ import "@/styles/partner-signup-apple-final.css"
 import "@/styles/nearby-list-grid-final.css"
 // Guided pricing builder: final rounded, Apple-like visual layer over the pricing route.
 import "@/styles/pricing-guided-final.css"
+// Global mobile-first safe margins, drawer alignment, hero bleed, iOS touch feedback.
+import "@/styles/global-mobile-margin-system.css"
 // Canonical thin/sharp/chic Back-control spec — must remain the terminal
 // stylesheet so its 15px sharp Back rules win the cascade on every surface.
 import "@/styles/global-back-control-final.css"

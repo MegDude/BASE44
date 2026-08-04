@@ -1,0 +1,105 @@
+/* ========================================================================== */
+/* DOWNTOWN PERKS: GLOBAL MOBILE-FIRST MARGIN & CALM iOS NATIVE SYSTEM        */
+/* Enforces strict left-hand and right-hand safe margins across every page,   */
+/* drawer, and screen container. Eliminates edge-to-edge crowding and delivers */
+/* a smooth, calm, Apple-grade mobile-first iOS native layout on iPhone 15.    */
+/* ========================================================================== */
+
+:root {
+  --dp-safe-gutter: 20px;
+  --dp-safe-max-width: 1200px;
+}
+
+@media (max-width: 767px) {
+  /* 01. Global Page Content Safe Margins (iPhone 15 Mobile-First Optimization) */
+  html body main,
+  html body .dp-map-page,
+  html body .dp-partner-workspace-page,
+  html body .dp-destination-section,
+  html body .dp-entity-panel-header,
+  html body .dp-map-directory-header,
+  html body article,
+  html body section:not(.dp-panel-detail-hero):not(.dp-destination-hero) {
+    padding-left: var(--dp-safe-gutter) !important;
+    padding-right: var(--dp-safe-gutter) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 02. Native Drawers & Floating Bottom Sheets Safe Alignment */
+  html body .dp-native-drawer,
+  html body .dp-map-detail-sheet,
+  html body .dp-map-panel,
+  html body .dp-panel-shell,
+  html body .dp-destination-drawer,
+  html body .dp-map-drawer-panel,
+  html body .dp-ios-fullscreen-map-panel,
+  html body .dp-route-experience-sheet,
+  html body .dp-legends-directory-sheet {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Internal drawer viewports maintain safe internal margins so text never touches edges */
+  html body .dp-native-drawer-content-viewport,
+  html body .dp-native-drawer-scroll,
+  html body .dp-map-detail-scroll,
+  html body .dp-map-panel-scroll,
+  html body .dp-destination-scroll,
+  html body .dp-drawer-scroll,
+  html body .dp-panel-body {
+    padding-left: var(--dp-safe-gutter) !important;
+    padding-right: var(--dp-safe-gutter) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 03. Edge-to-Edge Hero Media Safety (Bleeds correctly without squishing copy) */
+  html body .dp-panel-detail-hero,
+  html body .dp-destination-hero {
+    width: calc(100% + (var(--dp-safe-gutter) * 2)) !important;
+    margin-left: calc(var(--dp-safe-gutter) * -1) !important;
+    margin-right: calc(var(--dp-safe-gutter) * -1) !important;
+    border-radius: 0 !important;
+  }
+
+  /* 04. Buttons, Cards, and Action Grids Safe Containment */
+  html body .dp-contained-action-grid,
+  html body .dp-primary-action-row,
+  html body .dp-editorial-hero-actions,
+  html body .grid-cols-1,
+  html body .grid-cols-2 {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 05. Smooth Calm iOS Native Touch Feedback */
+  html body button,
+  html body a {
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;
+  }
+
+  html body button:active,
+  html body a:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Tablet & Desktop Centered Safe Container Layout */
+  html body main,
+  html body .dp-map-page,
+  html body .dp-partner-workspace-page {
+    max-width: var(--dp-safe-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
+  }
+}
