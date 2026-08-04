@@ -55,3 +55,5 @@ Authenticated browser cases remain blocked until dedicated staging credentials e
 ## Auth and Partner Intelligence product audit
 
 See `APP_AUTH_AND_INTELLIGENCE_ARCHITECTURE.md`. The canonical datastore remains Supabase plus the Backend Platform; Firebase collections do not exist and were not introduced. Public guest browsing and server-authorized resident/partner gates are retained. Complete redemption history and metric-backed Partner Intelligence across opens, saves, RSVPs, scans, visits, lift, and repeat activity remain explicit Backend Platform dependencies, not client-side placeholder work.
+
+The platform integration gate now enforces trusted super-admin session claims rather than requiring the partner sign-in screen to consult a public email allowlist. Email configuration is recovery metadata only and must not grant browser authorization. Cloudflare also preserves the standalone Founding Partner Collection for `/founding-partners` and `/founding-partner-collection` instead of resolving those extensionless routes through the SPA fallback.

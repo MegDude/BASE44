@@ -29,6 +29,10 @@ const RETURNED_RESPONSE_HEADERS = new Set([
   "vary",
   "www-authenticate",
 ]);
+const STATIC_ROUTE_REWRITES = new Map([
+  ["/founding-partners", "/founding-partners.html"],
+  ["/founding-partner-collection", "/founding-partners.html"],
+]);
 
 function jsonError(status, code, error) {
   return new Response(JSON.stringify({ error, code }), {
@@ -168,6 +172,12 @@ export default {
 
     if (url.pathname === "/api" || url.pathname.startsWith(API_PREFIX)) {
       return proxyApi(request, env);
+    }
+
+    const staticAssetPath = STATIC_ROUTE_REWRITES.get(url.pathname);
+    if (staticAssetPath) {
+      const assetUrl = new URL(staticAssetPath, request.url);
+      return env.ASSETS.fetch(new Request(assetUrl, request));
     }
 
     return env.ASSETS.fetch(request);

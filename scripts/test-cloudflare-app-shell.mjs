@@ -5,7 +5,11 @@ const assetRequests = [];
 const assets = {
   fetch(request) {
     assetRequests.push(request.url);
-    return new Response("<!doctype html><div id=\"root\"></div>", {
+    const pathname = new URL(request.url).pathname;
+    const body = pathname === "/founding-partners.html"
+      ? "<!doctype html><title>Downtown Perks · Founding Partner Collection</title>"
+      : "<!doctype html><div id=\"root\"></div>";
+    return new Response(body, {
       headers: { "Content-Type": "text/html" },
     });
   },
@@ -22,6 +26,13 @@ assert.equal(assetRequests.length, 0, "API requests must never fall through to t
 const directLoad = await worker.fetch(new Request("https://app.example/partner-workspace/reports"), { ASSETS: assets });
 assert.equal(directLoad.status, 200);
 assert.match(await directLoad.text(), /id="root"/);
+
+for (const route of ["/founding-partners", "/founding-partner-collection"]) {
+  const standalone = await worker.fetch(new Request(`https://app.example${route}`), { ASSETS: assets });
+  assert.equal(standalone.status, 200);
+  assert.match(await standalone.text(), /Founding Partner Collection/);
+  assert.equal(assetRequests.at(-1), "https://app.example/founding-partners.html");
+}
 
 const redirect = await worker.fetch(new Request("https://app.example/resident-app"), { ASSETS: assets });
 assert.equal(redirect.status, 308);

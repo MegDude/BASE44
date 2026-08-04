@@ -1,7 +1,7 @@
 import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig, loadEnv } from 'vite'
-import { cp, mkdir } from 'node:fs/promises'
+import { cp, mkdir, readFile } from 'node:fs/promises'
 import { pathToFileURL } from 'node:url'
 
 const DEFAULT_BASE44_APP_ID = "cbef744a8545c389ef439ea6";
@@ -248,9 +248,37 @@ function localApiRoutes() {
   return {
     name: "downtown-perks-local-api-routes",
     configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        if (
+          req.url === "/founding-partners"
+          || req.url === "/founding-partner-collection"
+          || req.url === "/founding-partners.html"
+        ) {
+          req.url = "/founding-partners.html";
+        }
+        next();
+      });
+      server.middlewares.use("/founding-partners.html", async (_req, res) => {
+        const page = await readFile("public/founding-partners.html", "utf8");
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.end(page);
+      });
       attachMiddleware(server.middlewares, server.config.logger);
     },
     configurePreviewServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        if (req.url === "/founding-partners" || req.url === "/founding-partner-collection") {
+          req.url = "/founding-partners.html";
+        }
+        next();
+      });
+      server.middlewares.use("/founding-partners.html", async (_req, res) => {
+        const page = await readFile("dist/founding-partners.html", "utf8");
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.end(page);
+      });
       attachMiddleware(server.middlewares, server.config.logger);
     },
   };
