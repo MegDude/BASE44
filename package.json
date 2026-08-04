@@ -142,7 +142,9 @@
     "test:workspace-live-inventory": "node scripts/test-workspace-live-inventory.mjs",
     "test:audience-backend-operations": "node scripts/test-audience-backend-operations.mjs",
     "test:workspace-connections": "node scripts/test-workspace-connections.mjs",
-    "test:protected-audience-connections-release": "node scripts/test-protected-audience-connections-release.mjs"
+    "test:protected-audience-connections-release": "node scripts/test-protected-audience-connections-release.mjs",
+    "verify:cloudflare-portability": "node scripts/verify-cloudflare-portability.mjs",
+    "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name downtown-perks-independent"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.41",
@@ -180,8 +182,6 @@
     "@stripe/stripe-js": "^5.2.0",
     "@supabase/supabase-js": "^2.103.3",
     "@tanstack/react-query": "^5.84.1",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
