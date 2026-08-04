@@ -210,20 +210,24 @@ export default function PricingPage() {
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
                 <div className="dp-pricing-step-heading"><span>01</span><h2 id="pricing-role-title">What are you building?</h2></div>
-                <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
-                  {[
-                    { value: "Venue", label: "Venue" },
-                    { value: "Property", label: "Property" },
-                    { value: "Hotel", label: "Hotel" },
-                    { value: "Brand", label: "Brand" },
-                    { value: "Civic", label: "Community" },
-                    { value: "Real Estate", label: "Real Estate" },
-                  ].map(({ value, label }) => (
-                    <button key={value} type="button" role="radio" aria-checked={partnerType === value} data-active={partnerType === value} onClick={() => choosePartner(value)}>
-                      <span>{label}</span>
-                      <i aria-hidden="true" />
-                    </button>
-                  ))}
+                <div className="dp-pricing-role-select-wrap">
+                  <label className="dp-pricing-role-label sr-only" htmlFor="dp-partner-type-select">Partner type</label>
+                  <select
+                    id="dp-partner-type-select"
+                    className="dp-pricing-role-select"
+                    value={partnerType}
+                    onChange={(e) => choosePartner(e.target.value)}
+                    aria-label="Select partner type"
+                  >
+                    <option value="Venue">Venue</option>
+                    <option value="Property">Property</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Brand">Brand</option>
+                    <option value="Civic">Community</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Resident">Resident</option>
+                    <option value="Custom">Enterprise / Portfolio</option>
+                  </select>
                 </div>
                 <p className="dp-pricing-role-context">{partnerCopy[partnerType].short}</p>
                 <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Include portfolio, real estate, or sponsorship options?</button></p>
