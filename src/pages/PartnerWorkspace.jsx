@@ -2183,7 +2183,16 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
   const selectedOrganization = demoOrganizations.find((organization) => organization.id === selectedOrganizationId) || demoOrganizations[0];
   const ownedEntities = selectedOrganization ? getOrganizationEntities(selectedOrganization.id) : [];
   const isPreviewMode = mode === "unlinked";
-  const workspaceStatus = selectedOrganization?.status || (isPreviewMode ? "unlinked" : "active");
+
+  // Production-global workspace live state resolver — bypasses billing gates
+  // for super admin and in all deployment environments (Production, Preview, Dev).
+  const userEmail = String(user?.email || "").toLowerCase().trim();
+  const forceLive = import.meta.env.VITE_FORCE_LIVE_WORKSPACES === "true" || import.meta.env.PROD;
+  const workspaceLiveState = (userEmail === "me@megdude.com" || forceLive)
+    ? { isLive: true, workspaceStatus: "active", billingActive: true, bypassActive: true }
+    : { isLive: false, workspaceStatus: selectedOrganization?.status || (isPreviewMode ? "unlinked" : "active"), billingActive: false };
+
+  const workspaceStatus = workspaceLiveState.workspaceStatus;
   const workspaceCopy = workspaceStatusCopy[workspaceStatus];
   const activePerks = perks.filter(p => p.status === "active").length;
   const upcomingEvents = events.filter(e => e.status === "upcoming" || e.status === "live").length;
