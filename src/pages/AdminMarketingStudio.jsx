@@ -31,7 +31,7 @@ function getActiveStudioRoute(pathname) {
 }
 
 function getAdminActionTarget(route) {
-  return ADMIN_ACTION_TARGETS[route?.id] || "/partner-workspace/overview";
+  return ADMIN_ACTION_TARGETS[route?.id] || "/admin-studio/command-center";
 }
 
 function StudioShell({ activeRoute }) {
