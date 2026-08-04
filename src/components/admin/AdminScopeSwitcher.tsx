@@ -26,7 +26,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
     listingId: params.get("listingId") || undefined,
   }), [params]);
   const [data, setData] = useState<AdminScopeResponse>(EMPTY);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "empty" | "error">("loading");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -38,7 +38,10 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
     return getAuthorizedAdminScope(requested, signal)
       .then((next) => {
         setData(next);
-        setStatus((next.organizations.length || next.role === "super_admin") ? "ready" : "error");
+        // A 200 response with no organizations for a non-super-admin is a valid
+        // "no scope assigned yet" state, not a load failure. Only the .catch
+        // branch below represents an actual error.
+        setStatus((next.organizations.length || next.role === "super_admin") ? "ready" : "empty");
         onScopeResolved?.(next.activeScope);
       })
       .catch(() => setStatus("error"));
@@ -80,7 +83,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
         <DialogPrimitive.Trigger asChild>
           <button type="button" className="dp-admin-scope__trigger" aria-haspopup="dialog" aria-expanded={open && isSelectable}>
             <span>{status === "loading" ? "Active scope" : data.role === "super_admin" ? "Platform workspace" : "Active workspace"}</span>
-            <strong>{status === "loading" ? "Loading authorized access…" : status === "error" ? "We could not load your authorized scope." : label}</strong>
+            <strong>{status === "loading" ? "Loading authorized access…" : status === "error" ? "We could not load your authorized scope." : status === "empty" ? "No workspace access yet." : label}</strong>
             {isSelectable ? <ChevronDown aria-hidden="true" /> : null}
           </button>
         </DialogPrimitive.Trigger>
@@ -99,6 +102,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
       </DialogPrimitive.Root>
+      {status === "empty" ? <p className="dp-admin-scope__empty">No workspace access yet. Your account is active, but no organization or listing has been assigned.</p> : null}
       {status === "error" ? <button type="button" className="dp-admin-scope__retry" onClick={() => loadScope()}><RefreshCw aria-hidden="true" />Try again</button> : null}
     </section>
   );
