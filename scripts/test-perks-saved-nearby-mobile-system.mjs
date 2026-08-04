@@ -9,7 +9,11 @@ const shellSource = await readFile(new URL("../src/components/map/NativeDrawerSh
 
 assert.match(shellSource, /dp-native-drawer-content-viewport[\s\S]*?dp-native-drawer-scroll/, "shared NativeDrawerShell must keep one internal scroll viewport");
 assert.match(shellSource, /window\.addEventListener\("keydown", handleKeyDown\)/, "drawers must keep Escape handling centralized");
-assert.match(mainSource, /perks-saved-nearby-mobile-system\.css["'];?\s*\n\s*inject\(\)/, "Perks/Saved/Nearby system stylesheet must be the final UI stylesheet before instrumentation");
+assert.match(mainSource, /perks-saved-nearby-mobile-system\.css["'];?/, "Perks/Saved/Nearby system stylesheet must be loaded");
+assert.ok(
+  mainSource.indexOf("perks-saved-nearby-mobile-system.css") < mainSource.indexOf("mobile-drawer-height-containment.css"),
+  "Perks/Saved/Nearby styles must load before the terminal mobile containment layer",
+);
 
 assert.match(sheetSource, /function perkAvailabilityLabel/, "Perks must expose one shared availability-state resolver");
 assert.match(sheetSource, /data-perk-state=\{availability\.toLowerCase\(\)/, "Perk rows must expose normalized availability state");
@@ -17,7 +21,7 @@ assert.match(sheetSource, /data-canonical-entity-id=\{item\.id\}/, "Perk rows mu
 assert.match(sheetSource, /dp-perks-filter-rail/, "Perks tab must expose the shared filter rail");
 assert.match(sheetSource, /\["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"\]/, "Perks filters must include the required mobile categories");
 assert.match(sheetSource, /Use perk/, "Perk primary action must use the canonical action label");
-assert.match(sheetSource, /aria-label="Close perks"/, "Perks drawer must expose the canonical close action");
+assert.match(sheetSource, /aria-label="Close active perks"/, "Perks drawer must expose the canonical close action");
 
 assert.match(mapSource, /const \[savedPanelFilter, setSavedPanelFilter\] = useState\("all"\)/, "Saved filter state must persist while opening and closing drawers");
 assert.match(mapSource, /function renderSavedMobileRow/, "Saved must render through shared mobile result rows");

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { demoOrganizations } from "@/config/workspaceArchitecture";
-import { isSuperAdminSession, getSuperAdminEmails } from "@/lib/auth/session";
+import { isSuperAdminSession } from "@/lib/auth/session";
 import { DEFAULT_PARTNER_RETURN_PATH, getSafeReturnPath } from "@/lib/authReturnPath";
 import {
   canUseProductionAccountAccess,

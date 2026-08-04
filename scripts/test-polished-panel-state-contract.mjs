@@ -27,13 +27,17 @@ assert.match(drawerState, /DETAIL_DRAWER_STATES = \["medium", "expanded", "full"
 assert.match(map, /normalizeDrawerState\(nextState, "detail"\)/);
 assert.match(map, /window\.sessionStorage\.setItem\("dp-detail-drawer-state", safeState\)/);
 assert.match(map, /data-drawer-state=\{detailDrawerState\}/);
-assert.match(map, /const stateOrder = \["medium", "expanded", "full"\]/);
 assert.match(map, /className="dp-native-bottom-nav dp-map-bottom-nav-shell[^\n]+fixed inset-x-0 bottom-0/);
 
 assert.match(drawerState, /LIST_DRAWER_STATES = \["peek", "expanded"\]/);
 assert.match(map, /window\.sessionStorage\.setItem\("dp-active-perks-drawer-state", safeState\)/);
 assert.match(perks, /drawerState=\{safeState\}/);
+assert.match(perks, /panelKind="list"/);
+assert.match(perks, /onDrawerStateChange=\{onDrawerStateChange\}/);
 assert.match(perks, /onRequestClose=\{onClose\}/);
+assert.doesNotMatch(perks, /dp-perks-drawer-grabber/);
+assert.match(nativeDrawer, /panelKind === "list"\s*\?\s*\["peek", "expanded"\]/);
+assert.match(nativeDrawer, /drawerState === "expanded" \? "peek" : "expanded"/);
 assert.match(perks, /className=\{`dp-active-perks-sheet is-\$\{safeState\}`\}/);
 assert.match(perks, /aria-label="Close active perks"/);
 assert.doesNotMatch(perks, /className="dp-active-perks-back"/);

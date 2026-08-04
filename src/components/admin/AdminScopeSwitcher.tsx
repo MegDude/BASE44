@@ -26,7 +26,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
     listingId: params.get("listingId") || undefined,
   }), [params]);
   const [data, setData] = useState<AdminScopeResponse>(EMPTY);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "empty" | "error">("loading");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -39,7 +39,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
     getAuthorizedAdminScope(requested, controller.signal)
       .then((next) => {
         setData(next);
-        setStatus("ready");
+        setStatus(next.organizations.length || next.role === "super_admin" ? "ready" : "empty");
         onScopeResolved?.(next.activeScope);
       })
       .catch(() => setStatus("error"));
@@ -69,12 +69,13 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
   }
 
   const label = listing?.name || portfolio?.name || organization?.name || "All organizations";
+  const isSelectable = status === "ready";
   return (
     <section className="dp-admin-scope" aria-label="Administrator organization scope">
       <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
         <DialogPrimitive.Trigger asChild>
-          <button type="button" className="dp-admin-scope__trigger" disabled={status !== "ready"}>
-            <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "error" ? "Scope unavailable" : label}</strong>
+          <button type="button" className="dp-admin-scope__trigger" disabled={!isSelectable}>
+            <span>Active scope</span><strong>{status === "loading" ? "Loading authorized organizations…" : status === "empty" ? "No workspace access yet." : status === "error" ? "Scope unavailable" : label}</strong>
           </button>
         </DialogPrimitive.Trigger>
         <DialogPrimitive.Portal>
@@ -91,6 +92,7 @@ export function AdminScopeSwitcher({ onScopeResolved }: { onScopeResolved?: (sco
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
       </DialogPrimitive.Root>
+      {status === "empty" ? <p>Your account is active, but no organization or listing has been assigned.</p> : null}
     </section>
   );
 }

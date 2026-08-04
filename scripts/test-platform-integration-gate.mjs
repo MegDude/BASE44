@@ -38,7 +38,6 @@ requireMatch('auth', auth, /super_admin/, 'super-admin role hydration is missing
 requireMatch('auth', auth, /platform_admin/, 'platform-admin role hydration is missing');
 requireMatch('auth', auth, /partner_type/, 'partner type hydration is missing');
 
-requireMatch('access', access, /getSuperAdminEmails/, 'super-admin email allowlist is not connected');
 requireMatch('access', access, /isSuperAdminSession/, 'super-admin session detection is not connected');
 requireMatch('access', access, /Request team access/, 'team-access recovery path is missing');
 requireMatch('access', access, /Send sign-in link/, 'secure sign-in action is missing');
