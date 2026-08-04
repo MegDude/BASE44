@@ -29,11 +29,29 @@ for (const functionalContract of [
 // Universal overlay IA: icon-only Back stays top-left and Close stays top-right.
 assert.match(component, /aria-label="Go back from search"/, "Search is missing Back");
 assert.match(component, /aria-label="Close search"/, "Search is missing Close");
-assert.match(component, /aria-label="Popular searches"/, "Search shortcuts need a plain-language label");
+assert.match(component, /aria-label="Grounded discovery prompts"/, "Search prompts need a grounded plain-language label");
+for (const prompt of ["Best Coffee Nearby", "Happy Hour Specials", "Live Music Tonight", "Rainey Street Dining", "Active Perks"]) {
+  assert.ok(component.includes(prompt), `Search is missing the grounded prompt: ${prompt}`);
+}
 assert.doesNotMatch(component, /Coffee before work|Happy hour nearby|Explore by intent/, "Search still uses retired generic copy");
 
-assert.match(styles, /max-width:\s*420px\s*!important;/, "Desktop search width is not reduced by 25%");
-assert.match(styles, /max-height:\s*min\(60dvh,\s*470px\)\s*!important;/, "Search height is not compact");
+for (const agentContract of [
+  /fetch\("\/api\/ask-map"/,
+  /agentRequestRef\.current\?\.abort\(\)/,
+  /requestId !== agentRequestIdRef\.current/,
+  /mapContext/,
+  /resolveAgentResult/,
+  /status: "loading"/,
+  /status: "success"/,
+  /status: "error"/,
+  /nativeEvent\.isComposing/,
+]) {
+  assert.match(component, agentContract, `Intelligent search contract is missing ${agentContract}`);
+}
+
+assert.match(styles, /max-width:\s*420px\s*!important;/, "Desktop search width is not bounded");
+assert.match(styles, /height:\s*100dvh\s*!important;/, "Mobile search is not full-height and safe-area aware");
+assert.match(styles, /overflow-y:\s*auto\s*!important;/, "Search content is not internally scrollable");
 assert.match(styles, /@media \(max-width:\s*480px\)/, "iPhone layout is missing");
 assert.match(styles, /@media \(max-width:\s*350px\)/, "320px layout is missing");
 assert.match(styles, /font-size:\s*16px\s*!important;/, "Mobile search input can still trigger iOS zoom");

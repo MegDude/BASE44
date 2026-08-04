@@ -546,11 +546,198 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   }
 }
 
+/* Agentic search states — terminal authority. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent.dp-quick-search-agent {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  padding: 12px 0 14px !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  color: var(--dp-quick-ink) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-label.dp-quick-search-agent-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: var(--dp-quick-gold) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-label.dp-quick-search-agent-label svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-label.dp-quick-search-agent-label small {
+  margin-left: auto !important;
+  color: var(--dp-quick-soft) !important;
+  font-size: 9px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-answer.dp-quick-search-agent-answer {
+  margin: 0 !important;
+  color: var(--dp-quick-ink) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities > button {
+  display: grid !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  grid-template-columns: 18px minmax(0, 1fr) 14px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 5px 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  color: var(--dp-quick-ink) !important;
+  text-align: left !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities > button > svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: var(--dp-quick-gold) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities > button > span {
+  display: flex !important;
+  min-width: 0 !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities strong {
+  color: currentColor !important;
+  font-size: 12px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-entities.dp-quick-search-agent-entities small {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: var(--dp-quick-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-followups.dp-quick-search-agent-followups {
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent-followups.dp-quick-search-agent-followups > button {
+  min-height: 44px !important;
+  flex: 0 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  color: var(--dp-quick-gold) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent:is(.is-loading, .is-error) {
+  display: grid !important;
+  grid-template-columns: 20px minmax(0, 1fr) auto !important;
+  align-items: start !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent:is(.is-loading, .is-error) > svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--dp-quick-gold) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent.is-loading > svg {
+  animation: dp-quick-search-spin 900ms linear infinite !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent:is(.is-loading, .is-error) div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent:is(.is-loading, .is-error) strong {
+  font-size: 12px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent:is(.is-loading, .is-error) p {
+  margin: 0 !important;
+  color: var(--dp-quick-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-agent.is-error > button {
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  color: var(--dp-quick-gold) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+@keyframes dp-quick-search-spin { to { transform: rotate(360deg); } }
+
+@media (min-width: 481px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal {
+    max-height: min(82dvh, 720px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-overlay.dp-quick-search-overlay {
+    align-items: stretch !important;
+    padding: 0 !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: max(8px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom)) !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-head.dp-quick-search-head h2 {
+    overflow: visible !important;
+    font-size: 15px !important;
+    letter-spacing: -0.035em !important;
+    white-space: normal !important;
+  }
+}
+
+@media (max-width: 350px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal {
+    width: 100vw !important;
+    max-height: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal *,
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal *::before,
   html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-quick-search-modal.dp-quick-search-modal *::after {
     scroll-behavior: auto !important;
     transition: none !important;
+    animation: none !important;
   }
 }
