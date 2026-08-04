@@ -2394,7 +2394,14 @@ function isUtilityServiceEntity(place, utilityFilter = "") {
     "visitor info": /\b(visitor info|visitor information|tourist information)\b/i,
     shipping: /\b(shipping|mail|package|ups|post office)\b/i,
     services: /\b(service|errand|utility|concierge|coworking|business center)\b/i,
+    // Spec: plumbing, repair, and municipal maintenance are always search-only
+    plumbing: /\b(plumb|plumbing|plumber|pipe|drain|water heater|leak)\b/i,
+    repair: /\b(repair|restoration|water damage|roofing|roofer|contractor|hvac|electrician)\b/i,
   };
+
+  // Spec: "Local Service / *" category format from supplementalMapEntities is always a utility
+  const category = String(place?.category || place?.raw?.category || "").toLowerCase();
+  if (category.startsWith("local service")) return true;
 
   if (normalizedFilter && utilityMatchers[normalizedFilter]) return utilityMatchers[normalizedFilter].test(text);
   return Object.values(utilityMatchers).some((matcher) => matcher.test(text));
@@ -2403,7 +2410,10 @@ function isUtilityServiceEntity(place, utilityFilter = "") {
 function isSearchOnlyRuntimeUtility(place) {
   if (isHappyHourEntity(place)) return false;
   if (coreMatches(place, FILTER_MATCHERS.Wellness) || String(place.type || place.kind || place.raw?.kind || "").toLowerCase() === "wellness") return false;
-  return isParkingEntity(place) || isUtilityServiceEntity(place);
+  // Spec (utility-pin-cull): local service entities (plumbing, repair, contractors,
+  // municipal maintenance) are culled from ambient view; surfaced only on explicit
+  // search query or "Services" / "Utilities" filter activation.
+  return isParkingEntity(place) || isUtilityServiceEntity(place) || isLocalServiceEntity(place);
 }
 
 function isDiningEntity(place) {
