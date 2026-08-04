@@ -9768,16 +9768,6 @@ function PartnerWorkspaceLink({ place, organizationId }) {
   );
 }
 
-function PartnerSourceSection({ place }) {
-  const sourceUrl = place?.sourceUrl || place?.raw?.sourceUrl || place?.website || place?.raw?.website;
-  return (
-    <section className="dp-partner-destination-section dp-partner-source-section" aria-labelledby={`partner-source-${place.id}`}>
-      <h3 id={`partner-source-${place.id}`}>Source</h3>
-      <p>Official place information and connected partner data.</p>
-      {sourceUrl && <a href={sourceUrl} target="_blank" rel="noreferrer" className="dp-partner-inline-action">Open source<ChevronRight aria-hidden="true" /></a>}
-    </section>
-  );
-}
 
 function PartnerIntelligenceDrawer({ place, places = [], onSelect, onViewNearby, organizationId }) {
   if (isCampaignEntity(place)) {
@@ -9802,7 +9792,6 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onViewNearby,
       <PartnerOpportunitySection place={place} organizationId={organizationId} />
       <PartnerNearbyPlacesSection place={place} places={places} onSelect={onSelect} onViewNearby={onViewNearby} />
       <PartnerWorkspaceLink place={place} organizationId={organizationId} />
-      <PartnerSourceSection place={place} />
     </motion.div>
   );
 }
