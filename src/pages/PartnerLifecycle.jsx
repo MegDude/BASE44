@@ -342,10 +342,10 @@ const integrationLogoAliases = {
 };
 
 const timelineSteps = [
-  "Choose the plan that fits your location",
-  "Set up your partner account",
-  "Publish an offer, event, or profile update",
-  "Review what residents use",
+  { title: "Match your location", description: "Choose the ideal tier based on your footprint and neighborhood goals.", timing: "Est. 2 minutes" },
+  { title: "Configure account", description: "Securely set up your workspace and connect optional hospitality integrations.", timing: "Est. 5 minutes" },
+  { title: "Publish live assets", description: "Deploy offers, curated events, or profile updates directly to the map.", timing: "Instant deployment" },
+  { title: "Track engagement", description: "Monitor map saves, direction requests, and resident redemptions.", timing: "Live analytics" },
 ];
 
 const faqItems = [
@@ -548,10 +548,11 @@ function ChooseBusinessSection({ setup, setSetup }) {
   return (
     <section id="partners" className="dp-partner-lifecycle-section dp-partner-business-section">
       <div className="dp-partner-lifecycle-section-head">
+        <p>Classification</p>
         <h2>Choose your business</h2>
-        <span>Choose the closest match. We’ll recommend the right membership.</span>
+        <span>Swipe or select your category to configure your ecosystem.</span>
       </div>
-      <div className="dp-partner-lifestyle-grid">
+      <div className="dp-partner-business-carousel" role="radiogroup" aria-label="Partner category selection">
         {publicPartnerTypes.map((type) => {
           const isSelected = selectedType.id === type.id;
           const TypeIcon = type.icon;
@@ -559,8 +560,9 @@ function ChooseBusinessSection({ setup, setSetup }) {
             <button
               key={type.id}
               type="button"
+              role="radio"
               className={isSelected ? "is-selected" : ""}
-              aria-pressed={isSelected}
+              aria-checked={isSelected}
               onClick={() => selectType(type)}
             >
               <span className="dp-partner-business-icon" aria-hidden="true"><TypeIcon /></span>
@@ -568,7 +570,10 @@ function ChooseBusinessSection({ setup, setSetup }) {
                 <strong>{type.eyebrow}</strong>
                 <small>{type.outcome}</small>
               </span>
-              <span className="dp-partner-business-state">{isSelected ? "Selected" : "Select"}</span>
+              <span className="dp-partner-business-state">
+                <span>{isSelected ? "Selected" : "Select"}</span>
+                <ArrowRight aria-hidden="true" />
+              </span>
             </button>
           );
         })}
@@ -858,16 +863,21 @@ function IntegrationsSection() {
 
 function TimelineSection() {
   return (
-    <section className="dp-partner-lifecycle-section dp-partner-timeline-section">
+    <section id="launch-timeline" className="dp-partner-lifecycle-section dp-partner-timeline-section">
       <div className="dp-partner-lifecycle-section-head">
+        <p>Operational roadmap</p>
         <h2>How launch works</h2>
-        <span>Most partners can publish within a few days.</span>
+        <span>From initial configuration to live resident engagement in four streamlined steps.</span>
       </div>
       <ol className="dp-partner-timeline" aria-label="Partner launch timeline">
         {timelineSteps.map((step, index) => (
-          <li key={step}>
+          <li key={step.title}>
             <b>0{index + 1}</b>
-            <span>{step}</span>
+            <div>
+              <strong>{step.title}</strong>
+              <p>{step.description}</p>
+            </div>
+            <small>{step.timing}</small>
           </li>
         ))}
       </ol>
