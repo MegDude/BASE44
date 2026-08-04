@@ -146,10 +146,14 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       dragRef.current.moved = false;
       return;
     }
-    const order = ["peek", "medium", "expanded", "full"];
-    const index = order.indexOf(drawerState);
-    onDrawerStateChange?.(order[Math.min(Math.max(index, 0) + 1, order.length - 1)]);
-  }, [drawerState, onDrawerStateChange]);
+    // Tap-to-cycle: list drawers toggle peek ↔ expanded (wrap at the top);
+    // detail drawers step up the ladder and hold at the tallest state.
+    const order = panelKind === "list" ? LIST_DRAWER_STATES : NATIVE_DRAWER_STATES;
+    const index = Math.max(order.indexOf(drawerState), 0);
+    const atEnd = index >= order.length - 1;
+    const nextIndex = atEnd ? (panelKind === "list" ? 0 : index) : index + 1;
+    onDrawerStateChange?.(order[nextIndex]);
+  }, [drawerState, onDrawerStateChange, panelKind]);
   const drawerClassName = [
     "dp-native-drawer",
     ...className.split(/\s+/).filter((token) => token && token !== "dp-native-drawer"),

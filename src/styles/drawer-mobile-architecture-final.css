@@ -171,7 +171,7 @@
 
   html body .dp-panel-action,
   html body .dp-primary-action,
-  html body .dp-native-drawer button:not(.dp-native-drawer-grip),
+  html body .dp-native-drawer button:not(.dp-native-drawer-grip):not(.dp-perks-drawer-close),
   html body .dp-native-drawer a.dp-panel-action {
     display: flex !important;
     align-items: center !important;
@@ -199,7 +199,7 @@
   }
 
   html body .dp-panel-action:not(.dp-primary-action),
-  html body .dp-native-drawer button:not(.is-primary):not(.dp-primary-action):not(.dp-route-primary-action):not(.dp-native-drawer-grip) {
+  html body .dp-native-drawer button:not(.is-primary):not(.dp-primary-action):not(.dp-route-primary-action):not(.dp-native-drawer-grip):not(.dp-perks-drawer-close) {
     background-color: var(--dp-ios-surface) !important;
     color: var(--dp-ios-ink) !important;
     -webkit-text-fill-color: var(--dp-ios-ink) !important;

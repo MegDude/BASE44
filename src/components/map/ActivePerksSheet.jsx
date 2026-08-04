@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Navigation, Star, X } from "lucide-react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
-import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
+import { normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
 function formatExpiry(value) {
   if (!value) return "";
@@ -119,7 +119,6 @@ export default function ActivePerksSheet({
   onSave,
 }) {
   const safeState = normalizeDrawerState(drawerState, "list");
-  const nextState = nextDrawerState(safeState, "list");
   const [selectedFilter, setSelectedFilter] = useState("Active");
   const matchingItems = useMemo(
     () => items.filter((item) => matchesPerkFilter(item, selectedFilter, savedIds)),
@@ -133,6 +132,7 @@ export default function ActivePerksSheet({
       className={`dp-active-perks-sheet is-${safeState}`}
       drawerState={safeState}
       panelKind="list"
+      onDrawerStateChange={onDrawerStateChange}
       onRequestClose={onClose}
       aria-label="Active perks"
       initial={{ opacity: 0, y: 44 }}
@@ -146,15 +146,6 @@ export default function ActivePerksSheet({
       }}
       header={(
         <header className="dp-perks-drawer-header">
-          <button
-            type="button"
-            className="dp-perks-drawer-grabber"
-            onClick={() => onDrawerStateChange(nextState)}
-            aria-label={`Panel size: ${safeState}. Activate to change the panel height.`}
-            aria-expanded={safeState === "expanded"}
-          >
-            <span aria-hidden="true" />
-          </button>
           <div>
             <span className="dp-perks-drawer-eyebrow">Resident benefits</span>
             <h1 className="dp-perks-drawer-title">Perks</h1>
