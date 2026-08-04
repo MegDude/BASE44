@@ -33,6 +33,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { normalizeLuxuryPresenceSeoSnapshot } from "@/lib/analytics/seoMetrics";
 import { PartnerAnalyticsExperience } from "@/components/analytics/PartnerAnalyticsExperience";
 import { queryAgent } from "@/services/agent/agentClient";
+import { supabaseClient } from "@/lib/supabase/client";
 import {
   readPartnerWorkspaceScope,
   resolvePartnerWorkspaceScope,
@@ -1362,7 +1363,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
   /* Legacy launch/onboarding analytics retained in Git history for rollback reference.
   const launchMetrics = [
     ["35", "Active partners", "Venues, hotels, properties, civic spaces, and brands now in the workspace."],
-    ["—", "Potential audience", "No verified audience total is connected."],
+    ["—", "Potential audience", "No consented audience source is connected."],
     ["81,904", "Views", "Views across the map, campaigns, events, and partner pages."],
     ["31,511", "Actions taken", "Searches, saves, directions, scans, RSVPs, and offer opens."],
   ];
@@ -1799,6 +1800,21 @@ function NativeMobileWorkspaceDashboard({
   );
 }
 
+
+function metricValue(summary, key, fallback = null) {
+  const metric = summary?.metrics?.[key];
+  if (!metric || metric.value === null || metric.value === undefined) return fallback;
+  return formatWorkspaceNumber(metric.value);
+}
+
+function metricDetail(summary, key, fallback = "Live source") {
+  const metric = summary?.metrics?.[key];
+  if (!metric) return fallback;
+  if (metric.sourceStatus === "not_connected") return "Source not connected";
+  if (metric.sourceStatus === "unavailable") return "Source unavailable";
+  return metric.detail || fallback;
+}
+
 function WorkspaceOverview({ user, setTab, scope, organizationId = "", activation = null, hasPrivilegedAccess = false }) {
   const navigate = useNavigate();
   const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
@@ -1812,11 +1828,13 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
     listWorkspaceItems("Event", "events", user.email).then((items) => setEvents((items || []).filter((item) => item.organization_id === selectedOrganizationId && (!scope?.listingId || item.listing_id === scope.listingId))));
   }, [user.email, selectedOrganizationId, scope?.listingId]);
 
+
   useEffect(() => {
     let active = true;
     getPartnerWorkspaceSummary({ organizationId: selectedOrganizationId, portfolioId: scope?.portfolioId, listingId: scope?.listingId })
       .then((summary) => { if (active) setWorkspaceSummary(summary); })
       .catch(() => { if (active) setWorkspaceSummary(null); });
+
     return () => { active = false; };
   }, [selectedOrganizationId, scope?.portfolioId, scope?.listingId]);
 
@@ -1876,11 +1894,13 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         ["Tracked impressions", formatWorkspaceNumber(legendsSeoReport.summary.organicImpressions)],
       ]
     : [
+
         ["Connected places", formatWorkspaceNumber(workspaceSummary?.inventory?.connectedPlaces)],
         ["Map inventory", formatWorkspaceNumber(workspaceSummary?.inventory?.mapInventory?.total)],
         ["Live offers", formatWorkspaceNumber(workspaceSummary?.inventory?.liveOffers)],
         ["Upcoming events", formatWorkspaceNumber(workspaceSummary?.inventory?.upcomingEvents)],
         ["Eligible resident audience", workspaceSummary?.audience?.eligibleResidents == null ? "Not connected" : formatWorkspaceNumber(workspaceSummary.audience.eligibleResidents)],
+
       ];
   const nextAction = isLarryAndGuy && selectedEntity
     ? {
@@ -2043,8 +2063,10 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
           )}
         </div>
         <div className="dp-metric-grid">
-          {metrics.map(([label, value]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span></div>)}
+          {metrics.map(([label, value, detail]) => <div className="dp-metric" key={label}><strong>{value}</strong><span>{label}</span>{detail ? <small>{detail}</small> : null}</div>)}
         </div>
+        {!isLegends && workspaceSummary.status === "error" ? <p className="dp-workspace-source-note">Your available workspace summary could not load. Try again from the workspace controls.</p> : null}
+        {!isLegends && workspaceSummary.data?.audienceBasis ? <p className="dp-workspace-source-note">{workspaceSummary.data.audienceBasis}</p> : null}
         {isLegends ? <WorkspaceAnalyticsSnapshotGraphs report={legendsSeoReport} /> : null}
       </section>
 

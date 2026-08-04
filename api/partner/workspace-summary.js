@@ -1,4 +1,5 @@
 import {
+
   requireAuthenticatedUser,
   requirePartnerMembership,
   requireTransactionDatabase,
@@ -15,9 +16,11 @@ const MAP_COVERAGE = {
 
 const ACTIVE_EVENT_STATUSES = ["upcoming", "scheduled", "active", "live", "published"];
 
+
 function clean(value, max = 180) {
   return String(value || "").trim().slice(0, max);
 }
+
 
 function isUuid(value) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
@@ -46,6 +49,7 @@ async function resolveListingId(database, organizationId, requestedListingId) {
   if (error) throw error;
   if (!data?.id) throw new TransactionApiError(404, "WORKSPACE_LISTING_NOT_FOUND", "This listing is not available in the active workspace.");
   return data.id;
+
 }
 
 async function countRows(query) {
@@ -53,6 +57,7 @@ async function countRows(query) {
   if (error) throw error;
   return Number(count || 0);
 }
+
 
 async function resolveScope(req, database) {
   const user = await requireAuthenticatedUser(req);
@@ -94,10 +99,12 @@ async function resolveScope(req, database) {
     throw new TransactionApiError(403, "WORKSPACE_SCOPE_FORBIDDEN", "That workspace is not available to this account.");
   }
   return { user, organization, role: membership.role };
+
 }
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "private, no-store");
+
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 
   try {
@@ -202,6 +209,7 @@ export default async function handler(req, res) {
           refreshedAt: new Date().toISOString(),
         },
       },
+
     });
   } catch (error) {
     return sendTransactionError(res, error);
