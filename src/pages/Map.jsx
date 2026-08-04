@@ -5627,98 +5627,131 @@ function LocalServiceRail({ title, items = [], onSelect, kind = "text" }) {
   );
 }
 
+function LocalServiceCapabilitiesGrid({ items = [] }) {
+  if (!items.length) return null;
+  // Pair items into 2-column grid cards; first 4 shown
+  const capped = items.slice(0, 4);
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {capped.map((item) => (
+        <div key={item} className="rounded-xl border border-black/10 bg-[#F8F9FA] p-3">
+          <strong className="block text-[13px] font-semibold text-[#0B1F33]">{item}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LocalServiceBuildingChips({ items = [] }) {
+  if (!items.length) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {items.map((item) => (
+        <span key={item} className="px-2.5 py-1 rounded-lg bg-[#F2F2F7] text-[12px] font-medium text-[#0B1F33]">{item}</span>
+      ))}
+    </div>
+  );
+}
+
 function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, answer, loading, onAsk, onCloseAnswer, mode = "resident" }) {
   const profile = getLocalServiceProfile(place);
-  const relatedServices = getServiceRelatedPlaces(place, places, profile);
   const isSaved = savedIds?.has?.(place?.id);
-  const whyChoose = getWhyPeopleChooseService(profile);
+  const categoryLabel = getLocalServiceCategoryLabel(profile);
+  const locationLabel = place.district || profile.serviceType || "Downtown Core";
+  const streetViewUrl = place?.streetViewUrl || place?.raw?.streetViewUrl ||
+    (place?.lat && place?.lng ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${place.lat}%2C${place.lng}` : null);
+  const websiteDisplay = profile.website ? profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : null;
 
   return (
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer dp-business-detail-drawer">
-      <DestinationHero place={place} mode="resident" />
-      <header className="dp-entity-panel-header dp-entity-summary dp-local-service-summary">
-        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{getLocalServiceCategoryLabel(profile)}</p>
-        <h2 className="dp-entity-title">{place.name}</h2>
-        <p className="dp-entity-meta">{profile.serviceType}{place.district ? ` · ${place.district}` : ""}</p>
-        <p className="dp-entity-dek">{profile.prompt}</p>
-        <p className="dp-business-one-line">{profile.oneSentence}</p>
-      </header>
+      <article className="dp-map-detail-content space-y-5">
 
-      <div className="dp-primary-action-row dp-editorial-hero-actions">
-        {profile.website && (
-          <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
-            Website
-          </a>
+        {/* Entity Summary */}
+        <header className="dp-entity-panel-header space-y-1.5">
+          <p className="dp-entity-eyebrow text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">
+            {categoryLabel} · {locationLabel}
+          </p>
+          <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F33]">{place.name}</h2>
+          {profile.oneSentence ? <p className="text-[14px] leading-relaxed text-[#0B1F33]/70">{profile.oneSentence}</p> : null}
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A66B]/10 text-[12px] font-semibold text-[#C9A66B]">
+            Verified Downtown Service Partner
+          </span>
+        </header>
+
+        {/* Core Capabilities grid */}
+        {profile.bestFor.length > 0 && (
+          <section className="space-y-3">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Core Capabilities</h3>
+            <LocalServiceCapabilitiesGrid items={profile.bestFor} />
+          </section>
         )}
-        {profile.phone && (
-          <a href={`tel:${profile.phone}`} className="dp-panel-action">
-            Call
-          </a>
+
+        {/* Connected Service Buildings chips */}
+        {profile.nearbyBuildings.length > 0 && (
+          <section className="space-y-2.5">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Connected Service Buildings</h3>
+            <p className="text-[12px] text-[#0B1F33]/70">Directly supporting resident infrastructure at nearby towers:</p>
+            <LocalServiceBuildingChips items={profile.nearbyBuildings} />
+          </section>
         )}
-        <button type="button" onClick={onSave} className="dp-panel-action">
-          {isSaved ? "Saved" : "Save"}
-        </button>
-        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
-          Directions
-        </a>
-      </div>
 
-      <DestinationSection title="About" className="dp-local-service-section">
-        <p>{profile.about}</p>
-      </DestinationSection>
+        {/* Service Details infobox */}
+        <section className="space-y-2 rounded-2xl bg-[#F8F9FA] p-4 border border-black/10">
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Service Details</h3>
+          <div className="space-y-1 text-[13px] text-[#0B1F33]/80">
+            {websiteDisplay && <p><strong>Website:</strong> {websiteDisplay}</p>}
+            {profile.phone && <p><strong>Phone:</strong> {profile.phone}</p>}
+            <p><strong>Location:</strong> {place.address || `${locationLabel}, Austin, TX`}</p>
+            {profile.goodToKnow.length > 0 && (
+              <p className="text-[12px] text-[#0B1F33]/60 pt-0.5">{profile.goodToKnow[0]}</p>
+            )}
+          </div>
+        </section>
 
-      <DestinationSection title="Best for" className="dp-local-service-section">
-        <LocalServiceRail title="Services" items={profile.bestFor} />
-      </DestinationSection>
+        {onAsk && (
+          <EntityAssistant
+            place={place}
+            mode={mode}
+            answer={answer}
+            loading={loading}
+            onAsk={onAsk}
+            onClose={onCloseAnswer}
+            onSelect={onSelect}
+          />
+        )}
+      </article>
 
-      <DestinationSection title="Why people choose them" className="dp-local-service-section">
-        <LocalServiceRail title="Why people choose them" items={whyChoose} />
-      </DestinationSection>
-
-      <DestinationSection title="Good to know" className="dp-local-service-section">
-        <LocalServiceRail title="Good to know" items={profile.goodToKnow} />
-      </DestinationSection>
-
-      <DestinationSection title="Downtown connection" className="dp-local-service-section">
-        <p>{profile.downtownConnection}</p>
-      </DestinationSection>
-
-      <DestinationSection title="Nearby buildings" className="dp-local-service-section">
-        <LocalServiceRail title="Nearby buildings" items={profile.nearbyBuildings} />
-      </DestinationSection>
-
-      <NearbyImageRail
-        place={place}
-        places={places.filter((candidate) => !isServiceEntity(candidate))}
-        onSelect={onSelect}
-        title="Nearby perks"
-        support="Places nearby that help this service stay connected to the rest of downtown."
-      />
-
-      <DestinationSection title="Related services" className="dp-local-service-section">
-        <LocalServiceRail title="Similar businesses" items={relatedServices} onSelect={onSelect} kind="places" />
-      </DestinationSection>
-
-      <DestinationSection title="Contact" className="dp-local-service-section">
-        <div className="dp-business-contact-list">
-          {profile.website && <span><strong>Website</strong>{profile.website.replace(/^https?:\/\//, "")}</span>}
-          {profile.phone && <span><strong>Phone</strong>{profile.phone}</span>}
-          {place.address && <span><strong>Where</strong>{place.address}</span>}
-          <span><strong>Hours</strong>Check current availability before you go.</span>
+      {/* Single consolidated action footer */}
+      <footer className="dp-native-drawer-actions shrink-0 border-t border-black/5 bg-white p-4">
+        <div className="flex items-center gap-2">
+          <a
+            href={directionsUrl(place)}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 min-h-[46px] inline-flex items-center justify-center rounded-xl bg-[#0B1F33] px-4 text-[14px] font-semibold text-white shadow-sm transition-transform active:scale-95 hover:bg-[#0B1F33]/90"
+          >
+            Directions
+          </a>
+          <button
+            type="button"
+            aria-pressed={isSaved}
+            onClick={onSave}
+            className="min-h-[46px] px-5 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[14px] font-semibold text-[#0B1F33] transition-transform active:scale-95 hover:bg-black/15"
+          >
+            {isSaved ? "Saved" : "Save"}
+          </button>
+          {streetViewUrl && (
+            <a
+              href={streetViewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="min-h-[46px] px-4 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[14px] font-semibold text-[#0B1F33] transition-transform active:scale-95 hover:bg-black/15"
+            >
+              Street View
+            </a>
+          )}
         </div>
-      </DestinationSection>
-
-      {onAsk && (
-        <EntityAssistant
-          place={place}
-          mode={mode}
-          answer={answer}
-          loading={loading}
-          onAsk={onAsk}
-          onClose={onCloseAnswer}
-          onSelect={onSelect}
-        />
-      )}
+      </footer>
     </motion.div>
   );
 }
@@ -5808,7 +5841,7 @@ function buildCanonicalPerkModel(place, places = []) {
   );
   const offerWithoutVenue = rawOfferName.toLowerCase() === venueName.toLowerCase()
     ? rawOfferName
-    : rawOfferName.replace(new RegExp(`^${venueName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[-:–—]?\\s*`, "i"), "");
+    : rawOfferName.replace(new RegExp(`^${venueName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[-:–���]?\\s*`, "i"), "");
   const title = offerWithoutVenue
     .replace(/\s+Perk$/i, "")
     .trim() || cleanDisplayCopy(fallback.value || "Resident benefit");
