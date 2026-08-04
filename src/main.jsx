@@ -167,8 +167,12 @@ import "@/styles/global-mobile-margin-system.css"
 // stylesheet so its 15px sharp Back rules win the cascade on every surface.
 import "@/styles/global-back-control-final.css"
 // Universal mobile drawer architecture — viewport containment, zero double
-// scroll, high-contrast buttons. Loaded absolutely last to win the cascade.
+// scroll, high-contrast buttons.
 import "@/styles/drawer-mobile-architecture-final.css"
+// Native drawer shell contract — absolute terminal layer. Fixes grip position,
+// nav-button transparency, grouped-row flex layout, and expanded-default state.
+// Must remain the final import to win every cascade conflict.
+import "@/styles/native-drawer-shell-contract-final.css"
 
 const application = <App />
 
