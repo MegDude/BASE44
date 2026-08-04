@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { demoOrganizations } from "@/config/workspaceArchitecture";
-import { isSuperAdminSession } from "@/lib/auth/session";
+import { isSuperAdminSession, getSuperAdminEmails } from "@/lib/auth/session";
 import { DEFAULT_PARTNER_RETURN_PATH, getSafeReturnPath } from "@/lib/authReturnPath";
 import {
   canUseProductionAccountAccess,
@@ -831,6 +831,12 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     className={`${accessActionClass} dp-acquisition-secondary`}
                   >
                     Request team access
+                  </Link>
+                  <Link
+                    to={`/partners/sign-in?magic=1&email=${encodeURIComponent(signInEmail)}`}
+                    className={`${accessActionClass} dp-acquisition-ghost`}
+                  >
+                    Send sign-in link
                   </Link>
                 </div>
               </div>
