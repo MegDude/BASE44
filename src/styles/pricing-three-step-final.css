@@ -108,8 +108,8 @@ html body #root main.dp-pricing-page fieldset.dp-pricing-decision > legend > spa
 
 html body #root main.dp-pricing-page .dp-pricing-partner-type-grid {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0 18px !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
 }
 
 html body #root main.dp-pricing-page .dp-pricing-partner-type-grid > button {
@@ -164,7 +164,7 @@ html body #root main.dp-pricing-page .dp-pricing-plan-selector {
   padding: 3px !important;
   background: rgba(11, 31, 51, .045) !important;
   border: 0 !important;
-  border-radius: 10px !important;
+  border-radius: 0 !important;
   scrollbar-width: none;
 }
 
@@ -175,7 +175,7 @@ html body #root main.dp-pricing-page .dp-pricing-plan-selector > button {
   min-height: 44px !important;
   padding: 7px 13px !important;
   border: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 0 !important;
   background: transparent !important;
   color: var(--dp-pricing-ink) !important;
   box-shadow: none !important;
@@ -249,7 +249,7 @@ html body #root main.dp-pricing-page .dp-pricing-summary {
   padding: 24px !important;
   background: #fff !important;
   border: 1px solid var(--dp-pricing-line) !important;
-  border-radius: 12px !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
   color: var(--dp-pricing-ink) !important;
 }
