@@ -175,10 +175,6 @@ import "@/styles/native-drawer-shell-contract-final.css"
 // Universal action rail + drawer grabber fix — deduplicates grabbers, enforces
 // iOS flat button groups in .dp-universal-action-rail.
 import "@/styles/universal-action-rail-grabber-fix.css"
-// Mobile bottom sheet & drawer height containment — caps drawers at 65vh,
-// enforces frictionless scroll, hides all grip/grabber handles on mobile.
-// Absolute final import — wins every cascade conflict on max-width: 767px.
-import "@/styles/mobile-drawer-height-containment.css"
 
 const application = <App />
 
