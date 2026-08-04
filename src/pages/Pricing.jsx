@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
@@ -220,6 +219,7 @@ export default function PricingPage() {
                   ))}
                 </div>
                 <p className="dp-pricing-role-context">{partnerCopy[partnerType].short}</p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Include portfolio, real estate, or sponsorship options?</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
@@ -264,7 +264,7 @@ export default function PricingPage() {
               <span>{isResident ? "Annual access" : "First year"}</span>
               <div><strong>{chosenTitle}</strong></div>
               {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
-              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
+              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get Perks Card" : "Continue to account setup"}</span></button>
             </aside>
           </div>
 
@@ -284,7 +284,7 @@ export default function PricingPage() {
 
       <div className="dp-pricing-mobile-action">
         <span><small>{isResident ? "Annual access" : "Selected plan"}</small><strong>{totalText}</strong></span>
-        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
+        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span></button>
       </div>
     </main>
   );
