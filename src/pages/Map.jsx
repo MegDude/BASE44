@@ -13381,7 +13381,7 @@ function GoogleMapCanvas({
       });
     };
 
-    mapItems.forEach((item) => {
+    const reconcileVisibleMarkers = () => mapItems.forEach((item) => {
       if (item.type === "cluster") {
         const clusterPlaces = Array.isArray(item.places) ? item.places : [];
         if (collectionStopIds.size && !clusterPlaces.some((place) => collectionStopIds.has(place.id))) return;
@@ -13530,32 +13530,39 @@ function GoogleMapCanvas({
       }
     });
 
-    const reconciliation = reconcileMarkerIds(registry.keys(), nextKeys);
-    reconciliation.release.forEach((key) => {
-      const entry = registry.get(key);
-      if (!entry) return;
-      removeGoogleMapMarker(entry.marker);
-      registry.delete(key);
-      releasedMarkerCount += 1;
-    });
-    containerRef.current?.setAttribute("data-marker-count", String(registry.size));
-    containerRef.current?.setAttribute("data-result-item-count", String(mapItems.length));
+    let markerWorkFrame = window.requestAnimationFrame(() => {
+      markerWorkFrame = 0;
+      reconcileVisibleMarkers();
 
-    if (typeof window !== "undefined" && import.meta.env.DEV) {
-      window.__DP_MAP_MARKER_LIFECYCLE__ = {
-        mountedMarkerCount: registry.size,
-        markerRegistrySize: registry.size,
-        releasedMarkerCount,
-        reusedMarkerCount: reconciliation.keep.length,
-        createdMarkerCount: reconciliation.create.length,
-        resultItemCount: mapItems.length,
-        updatedAt: new Date().toISOString(),
-      };
-      const visibleLimit = window.innerWidth <= 767 ? 15 : 25;
-      if (registry.size > visibleLimit) {
-        console.warn("[map-search] mounted marker count exceeds cap", registry.size);
+      const reconciliation = reconcileMarkerIds(registry.keys(), nextKeys);
+      reconciliation.release.forEach((key) => {
+        const entry = registry.get(key);
+        if (!entry) return;
+        removeGoogleMapMarker(entry.marker);
+        registry.delete(key);
+        releasedMarkerCount += 1;
+      });
+      containerRef.current?.setAttribute("data-marker-count", String(registry.size));
+      containerRef.current?.setAttribute("data-result-item-count", String(mapItems.length));
+
+      if (typeof window !== "undefined" && import.meta.env.DEV) {
+        window.__DP_MAP_MARKER_LIFECYCLE__ = {
+          mountedMarkerCount: registry.size,
+          markerRegistrySize: registry.size,
+          releasedMarkerCount,
+          reusedMarkerCount: reconciliation.keep.length,
+          createdMarkerCount: reconciliation.create.length,
+          resultItemCount: mapItems.length,
+          updatedAt: new Date().toISOString(),
+        };
+        const visibleLimit = window.innerWidth <= 767 ? 15 : 25;
+        if (registry.size > visibleLimit) console.warn("[map-search] mounted marker count exceeds cap", registry.size);
       }
-    }
+    });
+
+    return () => {
+      if (markerWorkFrame) window.cancelAnimationFrame(markerWorkFrame);
+    };
   }, [collectionRoute, loadState, mapItems, markerRenderZoom, pulsingPinId, runProgrammaticMove, selectedId, markUserNavigated]);
 
   useEffect(() => () => {
@@ -17867,7 +17874,12 @@ export default function MapPage() {
   }
 
   function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
-    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
+  if (mode === "resident" && tab === "pass" && !isLoadingAuth && !isAuthenticated) {
+  const returnTo = "/map?mode=resident&tab=pass";
+  navigate(`/residents/login?returnTo=${encodeURIComponent(returnTo)}`);
+  return;
+  }
+  const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
     clearOpenMapSelection();
     setSearch("");
     setActiveFilter(nextFilter);
@@ -18568,7 +18580,7 @@ export default function MapPage() {
               ) : !isLoadingAuth ? (
                 <div className="dp-map-sheet-action-grid">
                   <MapPanelButton action="open-detail" label="Sign in" ariaLabel="Sign in to resident access" variant="primary" onPress={() => navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}`)} />
-                  <MapPanelButton action="open-detail" label="Create account" ariaLabel="Create a resident account" variant="secondary" onPress={() => navigate("/residents/membership")} />
+                  <MapPanelButton action="open-detail" label="Create account" ariaLabel="Create a resident account" variant="secondary" onPress={() => navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}&intent=create-account`)} />
                 </div>
               ) : null}
             </footer>

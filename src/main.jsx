@@ -30,6 +30,7 @@ import '@/styles/partner-signup-cleanup-final.css'
 import '@/styles/inkind-partner-drawer-final.css'
 import '@/styles/partner-native-mobile-final.css'
 import '@/styles/resident-native-mobile-final.css'
+import { preloadGoogleMaps } from '@/lib/googleMapsLoader'
 
 import "@/styles/partner-public-platform-final.css"
 
@@ -160,6 +161,10 @@ import "@/styles/phase-two-native-containment-final.css"
 import "@/styles/global-back-control-final.css"
 
 const application = <App />
+
+// Start the secure async Maps request before React route work. The loader remains
+// the single script owner and reads the key from the Vite environment only.
+void preloadGoogleMaps().catch(() => undefined)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   import.meta.env.DEV ? <React.StrictMode>{application}</React.StrictMode> : application
