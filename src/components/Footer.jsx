@@ -13,7 +13,7 @@ const FOOTER_LINKS = {
   ],
   Platform: [
     { to: "/pricing", label: "Pricing" },
-    { to: "/partners/sign-up", label: "Contact" },
+    { to: "/contact", label: "Contact" },
   ],
 };
 

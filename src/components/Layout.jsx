@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Search } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import HomeFooter from "./HomeFooter";
 import QuickSearchModal from "@/components/navigation/QuickSearchModal";
 import { PlatformShell } from "@/components/platform/PlatformShell";
 
@@ -112,21 +111,6 @@ export default function Layout() {
     pathname === "/reports" ||
     pathname === "/analytics";
 
-  // Pages that use the full Downtown Perks editorial footer
-  const usesEditorialFooter =
-    pathname.startsWith("/downtown-perks") ||
-    pathname.startsWith("/brands") ||
-    pathname.startsWith("/partners") ||
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/partner-workspace") ||
-    pathname.startsWith("/ask-map") ||
-    pathname.startsWith("/happy-hour-walking-map") ||
-    pathname === "/explore" ||
-    pathname === "/events" ||
-    pathname === "/perks" ||
-    pathname === "/card" ||
-    pathname === "/about" ||
-    pathname === "/";
 
   // Pages that suppress the footer entirely (full-screen map/app views)
   const noFooter =
@@ -224,7 +208,7 @@ export default function Layout() {
       <div className="dp-route-outlet" ref={routeOutletRef}>
         <Outlet />
       </div>
-      {!noFooter && (usesEditorialFooter ? <Footer /> : <HomeFooter />)}
+      {!noFooter && <Footer />}
       <QuickSearchModal
         isOpen={quickSearchOpen}
         onClose={() => setQuickSearchOpen(false)}

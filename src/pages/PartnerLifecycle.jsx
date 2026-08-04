@@ -580,7 +580,7 @@ function ChooseBusinessSection({ setup, setSetup }) {
 function RecommendedMembership({ setup }) {
   const selectedType = getSelectedPartnerType(setup);
   const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
-  const pricingHref = `/pricing?intent=partner-registration&partnerType=${encodeURIComponent(selectedType.id)}`;
+  const pricingHref = `/partners/sign-up?intent=partner-registration&partnerType=${encodeURIComponent(selectedType.id)}`;
 
   return (
     <section className="dp-partner-lifecycle-section dp-partner-recommendation-section">
@@ -608,7 +608,7 @@ function RecommendedMembership({ setup }) {
           <summary>View all memberships</summary>
           <div>
             {publicPartnerTypes.map((type) => (
-              <Link key={type.id} to={`/pricing?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
+              <Link key={type.id} to={`/partners/sign-up?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
                 <span>{type.label}</span>
                 <strong>{type.plan}</strong>
                 <em>{type.price}</em>
@@ -724,7 +724,7 @@ function GrowthProgramsSection() {
               ? `${selectedPrograms.length} selected${customCount ? ` · ${customCount} custom quote` : ""}`
               : "Select programs to build an estimate."}
           </p>
-          <Link to={`/pricing?intent=partner-registration&modules=${encodeURIComponent(selectedPrograms.join(","))}`}>
+          <Link to={`/partners/sign-up?intent=partner-registration&modules=${encodeURIComponent(selectedPrograms.join(","))}`}>
             Continue with estimate
             <ArrowRight aria-hidden="true" />
           </Link>
@@ -899,7 +899,7 @@ function FinalCtaSection() {
       <h2>Ready to join?</h2>
       <span>Choose a membership and bring your business into the downtown map.</span>
       <div>
-        <Link to="/pricing">Choose a plan</Link>
+        <Link to="/partners/sign-up">Choose a plan</Link>
         <Link to="/contact">Contact us</Link>
       </div>
     </section>
