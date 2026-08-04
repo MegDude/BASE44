@@ -113,6 +113,19 @@ html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-button sv
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action svg { width: 16px !important; height: 16px !important; }
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-reassurance { display: block !important; margin-top: 10px !important; color: var(--pricing-muted) !important; font-size: 12px !important; line-height: 1.35 !important; }
 
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support {
+  display: flex !important; align-items: flex-end !important; justify-content: space-between !important; gap: 32px !important;
+  margin-top: 64px !important; padding: 28px 0 !important; border-top: 1px solid var(--pricing-line) !important; border-bottom: 1px solid var(--pricing-line) !important;
+}
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support > div:first-child { max-width: 600px !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support p { margin: 0 0 6px !important; color: var(--pricing-gold) !important; font-size: 11px !important; font-weight: 700 !important; text-transform: uppercase !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support h2 { margin: 0 !important; color: var(--pricing-ink) !important; font-size: 26px !important; line-height: 1.15 !important; letter-spacing: -.03em !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support > div:first-child > span { display: block !important; margin-top: 8px !important; color: var(--pricing-muted) !important; font-size: 14px !important; line-height: 1.5 !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions { display: flex !important; gap: 10px !important; flex: 0 0 auto !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions a { display: inline-flex !important; align-items: center !important; justify-content: center !important; min-height: 46px !important; padding: 0 16px !important; border: 1px solid var(--pricing-ink) !important; font-size: 14px !important; font-weight: 650 !important; text-decoration: none !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-primary { background: var(--pricing-ink) !important; color: #fff !important; }
+html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-secondary { background: #fff !important; color: var(--pricing-ink) !important; }
+
 html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action { display: none !important; }
 
 @media (max-width: 767px) {
@@ -124,6 +137,9 @@ html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-ac
   html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button { grid-template-columns: minmax(0, 1fr) auto !important; min-height: 66px !important; }
   html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list i { display: none !important; }
   html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-review { display: none !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support { display: block !important; margin-top: 38px !important; padding: 22px 0 !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions { display: grid !important; grid-template-columns: 1fr !important; gap: 8px !important; margin-top: 18px !important; }
+  html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions a { width: 100% !important; }
   html body #root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action {
     position: fixed !important; right: 0 !important; bottom: 0 !important; left: 0 !important; z-index: 40 !important;
     display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 14px !important;

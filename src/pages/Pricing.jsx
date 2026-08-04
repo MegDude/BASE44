@@ -204,15 +204,15 @@ export default function PricingPage() {
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
                 <div className="dp-pricing-step-heading"><span>01</span><h2 id="pricing-role-title">What are you building?</h2></div>
-                <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
-                  {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate"].map((type) => (
-                    <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      <span><strong>{partnerCopy[type].label}</strong></span>
-                      <i aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
-                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real estate, or sponsorship?</button></p>
+                <label className="dp-pricing-role-select">
+                  <span>Select your partner type</span>
+                  <select value={partnerType} onChange={(event) => choosePartner(event.target.value)}>
+                    {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate", "Custom"].map((type) => (
+                      <option key={type} value={type}>{partnerCopy[type].label}</option>
+                    ))}
+                  </select>
+                </label>
+                <p className="dp-pricing-role-context">{partnerCopy[partnerType].short}</p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
@@ -260,6 +260,18 @@ export default function PricingPage() {
               <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
             </aside>
           </div>
+
+          <section className="dp-pricing-support" aria-labelledby="pricing-support-title">
+            <div>
+              <p>Need a hand?</p>
+              <h2 id="pricing-support-title">Talk through the right setup.</h2>
+              <span>We&apos;ll help you choose a partner type, annual plan, and only the support your launch needs.</span>
+            </div>
+            <div className="dp-pricing-support-actions">
+              <Link className="dp-pricing-support-primary" to="/contact?topic=partner-demo">Book a demo</Link>
+              <Link className="dp-pricing-support-secondary" to="/contact?topic=pricing-support">Contact support</Link>
+            </div>
+          </section>
         </div>
       </section>
 
