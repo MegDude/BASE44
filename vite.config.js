@@ -313,7 +313,7 @@ export default defineConfig(({ mode }) => {
 
   return {
   logLevel: 'error', // Suppress warnings, only show errors
-  publicDir: false,
+  publicDir: mode === 'production' ? false : 'public',
   // Keep this app's optimized dependency graph isolated from stale preview chunks.
   cacheDir: 'node_modules/.vite-base44-single-react',
   resolve: {
