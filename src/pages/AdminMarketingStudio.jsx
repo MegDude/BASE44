@@ -95,7 +95,6 @@ function CampaignFlowCard() {
 }
 
 function StudioRouteModule({ route }) {
-  const target = getAdminActionTarget(route);
   return (
     <section className="dp-os-wire-card dp-os-route-wireframe" aria-label={`${route.label} operating module`}>
       <header>
@@ -112,14 +111,14 @@ function StudioRouteModule({ route }) {
           <article>
             <span>Primary</span>
             <strong>{route.priority}</strong>
-            <Link to={target}>{route.primaryCta}</Link>
+            <button type="button" disabled aria-disabled="true">{route.primaryCta}</button>
           </article>
           <div>
             {route.cards.slice(0, 4).map((card) => (
-              <Link key={card} to={target} aria-label={`${card} in ${route.label}`}>
+              <button key={card} type="button" disabled aria-disabled="true" aria-label={`${card} in ${route.label}`}>
                 <span>{card}</span>
                 <ChevronRight aria-hidden="true" />
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -249,7 +248,6 @@ export default function AdminMarketingStudio() {
   }
   const activeRoute = getActiveStudioRoute(location.pathname);
   const ActiveIcon = activeRoute.icon;
-  const activeTarget = getAdminActionTarget(activeRoute);
   return (
     <div className="dp-os-studio-page">
       <StudioShell activeRoute={activeRoute} />
@@ -262,7 +260,7 @@ export default function AdminMarketingStudio() {
             <p>Review organizations, people, places, campaigns, publishing, and data health without leaving the Downtown Perks platform shell.</p>
           </div>
           <div className="dp-os-studio-hero__actions">
-            <button type="button" onClick={() => navigate("/admin-studio/campaign-builder")}>Build campaign <ArrowRight aria-hidden="true" /></button>
+            <button type="button" onClick={() => navigate(getAdminActionTarget({ id: "campaign-builder" }))}>Build campaign <ArrowRight aria-hidden="true" /></button>
             <Link to="/map?mode=resident&tab=map&filter=All">Open resident map</Link>
           </div>
         </header>
@@ -274,7 +272,7 @@ export default function AdminMarketingStudio() {
         <section className="dp-os-active-panel" aria-label={activeRoute.label}>
           <div className="dp-os-active-panel__icon"><ActiveIcon aria-hidden="true" /></div>
           <div><span>{activeRoute.label}</span><h2>{activeRoute.purpose}</h2><p>{activeRoute.priority}</p></div>
-          <Link to={activeTarget}>{activeRoute.primaryCta}<Sparkles aria-hidden="true" /></Link>
+          <button type="button" disabled aria-disabled="true">{activeRoute.primaryCta}<Sparkles aria-hidden="true" /></button>
         </section>
         <div className="dp-os-studio-grid">
           {activeRoute.id === "residents" ? <ResidentAdminPanel /> : null}
