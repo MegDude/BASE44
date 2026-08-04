@@ -18661,7 +18661,19 @@ export default function MapPage() {
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
                 </button>
-                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-label="Card"
+                  onClick={() => {
+                    if (!isAuthenticated && !isLoadingAuth) {
+                      navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}`);
+                      return;
+                    }
+                    switchMode("resident", "pass");
+                  }}
+                  aria-selected={urlState.tab === "pass"}
+                >
                   <CreditCard className="h-4 w-4" />
                   <span className="dp-native-tab-label">Card</span>
                 </button>

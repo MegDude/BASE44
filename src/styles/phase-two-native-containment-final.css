@@ -170,7 +170,110 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-transform: uppercase !important;
 }
 
+/* Terminal map-panel contract: every active entity panel uses one fixed-height
+   shell, one scroll owner, and one in-flow action footer. */
+html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+  display: block !important;
+  width: min(100dvw, 480px) !important;
+  height: min(85dvh, calc(100dvh - var(--dp-bottom-nav-total-height, 64px))) !important;
+  max-height: min(85dvh, calc(100dvh - var(--dp-bottom-nav-total-height, 64px))) !important;
+  overflow: visible !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer :is(.dp-native-drawer-content-viewport, .dp-native-drawer-scroll) {
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-content-viewport {
+  grid-row: 2 !important;
+  overflow: hidden !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-scroll {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: auto !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-content-end {
+  height: 12px !important;
+  min-height: 12px !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-actions {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 8 !important;
+  grid-row: 3 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 68px !important;
+  margin: 0 !important;
+  padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)) !important;
+  overflow: hidden !important;
+  border-top: 1px solid var(--dp-phase2-divider) !important;
+  background: var(--dp-phase2-row) !important;
+  box-sizing: border-box !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-universal-action-rail {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-universal-action-rail > :is(a, button) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 7px 6px !important;
+  overflow: hidden !important;
+  font-size: 11px !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+html body #root .dp-map-page #dp-active-map-drawer .dp-native-drawer-underlay {
+  position: absolute !important;
+  inset: 100% 0 auto !important;
+  width: 100% !important;
+  height: var(--dp-bottom-nav-total-height, 64px) !important;
+  background: var(--dp-phase2-row) !important;
+  pointer-events: none !important;
+}
+
 @media (max-width: 767px) {
+  html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
+    inset: auto 0 var(--dp-bottom-nav-total-height, 64px) !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+  }
+
+  html body #root .dp-map-page #dp-active-map-drawer[data-drawer-state="full"] {
+    bottom: 0 !important;
+    height: 85dvh !important;
+    max-height: 85dvh !important;
+  }
+
   :is(.dp-native-drawer, .dp-workspace-shell, .dp-partner-workspace, .dp-admin-studio-shell, .dp-map-shell)
   :is(input, select, textarea) {
     font-size: 16px !important;
