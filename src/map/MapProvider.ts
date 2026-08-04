@@ -11,7 +11,7 @@ export function createDowntownGoogleMap(
 ): any {
   return new maps.Map(container, {
     disableDefaultUI: true,
-    zoomControl: true,
+    zoomControl: false,
     streetViewControl: false,
     mapTypeControl: false,
     fullscreenControl: false,
@@ -19,7 +19,8 @@ export function createDowntownGoogleMap(
     gestureHandling: "greedy",
     draggable: true,
     scrollwheel: true,
-    keyboardShortcuts: true,
+    keyboardShortcuts: false,
+    isFractionalZoomEnabled: true,
     disableDoubleClickZoom: false,
     draggableCursor: "grab",
     draggingCursor: "grabbing",
