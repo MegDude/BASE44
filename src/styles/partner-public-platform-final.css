@@ -24,7 +24,7 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-
 }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero-actions a {
   width: auto !important; min-height: 48px !important; padding: 13px 18px !important; border-radius: 12px !important;
-  font-size: 14px !important; font-weight: 650 !important; letter-spacing: 0 !important; text-transform: none !important;
+  font-size: 14px !important; font-weight: 650 !important; letter-spacing: normal !important; text-transform: none !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-utility-link {
   justify-self: end !important; display: inline-flex !important; align-items: center !important; gap: 8px !important;
@@ -109,7 +109,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-pan
   padding: 24px !important; border-bottom: 1px solid var(--partner-line) !important; background: var(--partner-grouped) !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-panel-head p {
-  margin: 0 !important; color: var(--partner-gold) !important; font-size: 10px !important; font-weight: 720 !important; letter-spacing: .1em !important; text-transform: uppercase !important;
+  margin: 0 !important; color: var(--partner-gold) !important; font-size: 10px !important; font-weight: 720 !important; letter-spacing: normal !important; text-transform: uppercase !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-panel-head h3 {
   margin: 0 !important; color: var(--partner-ink) !important; font-size: 24px !important; font-weight: 650 !important; letter-spacing: -.025em !important;
@@ -201,7 +201,7 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline >
 }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline > li::before {
   content: "" !important; z-index: 1 !important; display: block !important; width: 22px !important; height: 22px !important;
-  border: 5px solid #fff !important; border-radius: 50% !important; background: var(--partner-ink) !important;
+  border: 5px solid #fff !important; border-radius: 12px !important; background: var(--partner-ink) !important;
   box-shadow: 0 0 0 1px var(--partner-line) !important; animation: dp-partner-timeline-step 5.4s ease-in-out infinite !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline > li:nth-child(2)::before { animation-delay: .6s !important; }
@@ -211,7 +211,7 @@ html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline >
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline > li:nth-child(6)::before { animation-delay: 3s !important; }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline b {
   position: absolute !important; top: -18px !important; color: var(--partner-gold) !important;
-  font-size: 9px !important; font-weight: 720 !important; line-height: 1 !important; letter-spacing: .06em !important;
+  font-size: 9px !important; font-weight: 720 !important; line-height: 1 !important; letter-spacing: normal !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-start .dp-partner-timeline span {
   max-width: 150px !important; color: var(--partner-ink) !important; font-size: 12px !important; font-weight: 620 !important; line-height: 1.35 !important;

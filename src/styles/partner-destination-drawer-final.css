@@ -59,7 +59,7 @@ html body #root .dp-map-page .dp-partner-destination-detail .dp-entity-meta {
   margin: 0 0 7px !important;
   color: rgba(11, 31, 51, 0.62) !important;
   font: 600 12px/1.3 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -275,37 +275,54 @@ html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-performa
 }
 
 html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
   margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
 }
 
 html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list li + li {
-  border-top: 1px solid var(--dp-partner-divider) !important;
+  border-top: 0 !important;
 }
 
 html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list button {
   display: grid !important;
-  grid-template-columns: 64px minmax(0, 1fr) 20px !important;
-  gap: 12px !important;
-  align-items: center !important;
+  grid-template-rows: 92px minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  align-items: start !important;
   width: 100% !important;
   min-width: 0 !important;
-  min-height: 76px !important;
-  padding: 10px 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
+  min-height: 178px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  border: 1px solid var(--dp-partner-divider) !important;
+  border-radius: 10px !important;
+  background: var(--dp-white, #fff) !important;
   color: var(--dp-navy, #0b1f33) !important;
   text-align: left !important;
-  box-shadow: none !important;
+  box-shadow: 0 8px 22px rgba(11, 31, 51, 0.08) !important;
 }
 
 html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list img {
-  width: 64px !important;
-  height: 54px !important;
-  border-radius: 7px !important;
+  width: 100% !important;
+  height: 92px !important;
+  border-radius: 0 !important;
   object-fit: cover !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list button > span {
+  align-self: stretch !important;
+  padding: 10px 30px 10px 10px !important;
+}
+
+html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list button > svg {
+  position: absolute !important;
+  right: 8px !important;
+  bottom: 12px !important;
 }
 
 html body #root .dp-map-page .dp-partner-destination-detail .dp-partner-nearby-list span {

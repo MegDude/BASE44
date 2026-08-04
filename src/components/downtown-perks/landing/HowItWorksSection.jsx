@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               How It Works
             </span>
             <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal">

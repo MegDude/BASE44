@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ChevronLeft, X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 
 const WorkspaceSheetContext = createContext(null);
 
@@ -76,8 +76,8 @@ export function WorkspaceSheetHost() {
             <h2 id={titleId}>{sheet.title}</h2>
           </div>
           <div className="dp-workspace-surface-controls">
-            {typeof sheet.onBack === "function" ? <button type="button" onClick={sheet.onBack} aria-label={`Go back from ${sheet.title}`}><ChevronLeft aria-hidden="true" /><span>Back</span></button> : null}
-            <button ref={closeButtonRef} type="button" onClick={context.closeSheet} aria-label={`Close ${sheet.title}`}><X aria-hidden="true" /><span>Close</span></button>
+            {typeof sheet.onBack === "function" ? <button type="button" onClick={sheet.onBack} aria-label={`Go back from ${sheet.title}`}><ArrowLeft aria-hidden="true" /></button> : null}
+            <button ref={closeButtonRef} type="button" onClick={context.closeSheet} aria-label={`Close ${sheet.title}`}><X aria-hidden="true" /></button>
           </div>
         </header>
         <div className="dp-workspace-sheet-body">{sheet.content}</div>

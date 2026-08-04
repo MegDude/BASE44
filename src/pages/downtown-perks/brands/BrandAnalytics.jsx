@@ -81,7 +81,7 @@ function CampaignAnalyticsSnapshot({ analytics }) {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">Campaign performance</p>
+          <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign performance</p>
           <h2 className="mt-1 text-[18px] font-semibold leading-tight text-[#0B1F33]">Live activity snapshot</h2>
         </div>
         <div className="text-[12px] leading-5 text-[#0B1F33]/62 sm:max-w-[250px]">
@@ -190,7 +190,7 @@ export default function BrandAnalytics() {
   };
 
   if (loading || !analytics) {
-    return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
+    return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-xl h-8 w-8 border-b-2 border-primary" /></div>;
   }
 
   return (
@@ -203,7 +203,7 @@ export default function BrandAnalytics() {
               <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
               Campaign Formats
             </Link>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign Proof Layer</span>
+            <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign Proof Layer</span>
             <h1 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">
               See what downtown campaign behavior is actually converting.
             </h1>
@@ -226,17 +226,17 @@ export default function BrandAnalytics() {
                 <span className="text-[11px] text-muted-foreground">Placement types</span>
               </div>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/40">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#BFA46A]" />
+                <span className="w-1.5 h-1.5 rounded-xl bg-[#BFA46A]" />
                 <span className="text-[11px] text-muted-foreground">Live now</span>
               </div>
             </div>
 
             {/* CTA row */}
             <div className="flex flex-wrap gap-3">
-              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 View campaign formats <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 Plan a campaign
               </button>
             </div>
@@ -320,7 +320,7 @@ export default function BrandAnalytics() {
                 className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div>
-                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
+                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal mb-1">
                     Placement Intelligence
                   </h3>
                   <p className="text-[13px] text-muted-foreground mb-6">
@@ -380,7 +380,7 @@ export default function BrandAnalytics() {
                 className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div className="mb-6">
-                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
+                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal mb-1">
                     Venue Performance
                   </h3>
                   <p className="text-[13px] text-muted-foreground">
@@ -402,7 +402,7 @@ export default function BrandAnalytics() {
                           <div className="font-medium text-foreground text-[13px]">{v.name}</div>
                           <div className="text-[11px] text-muted-foreground">{v.district}</div>
                         </div>
-                        <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
+                        <span className={`text-[11px] font-medium px-2 py-1 rounded-xl ${
                           v.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#BFA46A]' : 'bg-muted/50 text-muted-foreground'
                         }`}>
                           {v.trend === 'up' ? '+18%' : 'Stable'}
@@ -431,7 +431,7 @@ export default function BrandAnalytics() {
                 className="rounded-lg border border-border/50 bg-card/40 p-6 md:p-8"
               >
                 <div className="mb-6">
-                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
+                  <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal mb-1">
                     Event Campaign Performance
                   </h3>
                   <p className="text-[13px] text-muted-foreground">
@@ -491,7 +491,7 @@ export default function BrandAnalytics() {
                 transition={{ delay: 0.44 }}
                 className="space-y-3"
               >
-                <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em]">
+                <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal">
                   Campaign Planning Insights
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -543,7 +543,7 @@ export default function BrandAnalytics() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Ready to Invest</span>
+              <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Ready to Invest</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal mb-3">
                 Plan your next campaign.
               </h2>
@@ -552,10 +552,10 @@ export default function BrandAnalytics() {
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-3">
-              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
+              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                 Plan a campaign <ArrowRight className="w-4 h-4" />
               </button>
-              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
+              <Link to="/map?mode=partner&tab=map&filter=Brands" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border/70 text-foreground font-medium text-[13px] hover:bg-muted/30 transition-all">
                 View campaign formats
               </Link>
             </div>

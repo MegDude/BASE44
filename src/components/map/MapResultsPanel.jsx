@@ -64,7 +64,7 @@ export default function MapResultsPanel({
             {/* Roll up / expand toggle (mobile & desktop) */}
             <button
               onClick={() => setIsHidden((value) => !value)}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
               title={isHidden ? 'Show results' : 'Hide results'}
               aria-label={isHidden ? 'Show results list' : 'Hide results list'}
               aria-expanded={!isHidden}
@@ -75,7 +75,7 @@ export default function MapResultsPanel({
             <button
               onClick={() => setPanelExpanded(!isPanelExpanded)}
               disabled={isHidden}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-[#0B1F33]/8 bg-white px-2.5 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/68 transition-colors hover:bg-white hover:text-[#0B1F33]"
               title={isPanelExpanded ? 'Collapse results' : 'Expand results'}
               aria-label={isPanelExpanded ? 'Collapse results panel' : 'Expand results panel'}
             >
@@ -187,7 +187,7 @@ export default function MapResultsPanel({
               {hiddenCount > 0 && (
                 <button
                   onClick={() => setPanelExpanded(true)}
-                  className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
+                  className="w-full rounded-md border border-[#0B1F33]/8 bg-white px-3 py-2 text-[12px] font-semibold uppercase tracking-normal text-[#0B1F33]/62 transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
                   aria-label={`View ${hiddenCount} more results`}
                 >
                   Expand list ({hiddenCount} more)
@@ -219,7 +219,7 @@ export default function MapResultsPanel({
               {results.length > previewCount && (
                 <button
                   onClick={() => setPanelExpanded(false)}
-                  className="sticky bottom-0 w-full rounded-md border border-[#0B1F33]/8 bg-white/92 px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 shadow-[0_-10px_24px_rgba(11,31,51,0.05)] backdrop-blur-xl transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
+                  className="sticky bottom-0 w-full rounded-md border border-[#0B1F33]/8 bg-white/92 px-3 py-2 text-[12px] font-semibold uppercase tracking-normal text-[#0B1F33]/62 shadow-[0_-10px_24px_rgba(11,31,51,0.05)] backdrop-blur-xl transition hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
                   aria-label="Show preview only"
                 >
                   Roll up results

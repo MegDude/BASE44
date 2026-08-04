@@ -14,7 +14,7 @@ const demo = (
       ]}
     />
     <div className="rounded-lg border border-border bg-card p-7">
-      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Match Day District Flow</div>
+      <div className="text-muted-foreground tracking-normalr mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Match Day District Flow</div>
       <div className="space-y-4">
         {[
           { step: "01", label: "Pre-match: member meetup", sub: "District bar takeover — members gather at Bangers" },
@@ -22,7 +22,7 @@ const demo = (
           { step: "03", label: "Post-match: late night map", sub: "Active venues surface in real time after the whistle" },
         ].map((s, i) => (
           <div key={i} className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
               <span className="text-primary font-heading font-bold text-xs">{s.step}</span>
             </div>
             <div>
@@ -67,7 +67,7 @@ export default function AustinFC() {
             ].map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                <div className="w-2 h-2 rounded-xl bg-primary mt-2 shrink-0" />
                 <div>
                   <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>

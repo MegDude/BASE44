@@ -79,7 +79,7 @@
   font-size: 11px;
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
   color: rgba(11, 31, 51, 0.5);
 }
@@ -282,12 +282,12 @@
   display: inline-flex;
   min-height: 28px;
   align-items: center;
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.88);
   padding: 0 10px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
   color: var(--dp-profile-navy);
 }
@@ -542,7 +542,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
 .dp-workspace-ia-primary:focus-visible,
 .dp-workspace-ia-actions a:focus-visible,
 .dp-workspace-ia-actions button:focus-visible,
-.dp-workspace-ia-summary button:focus-visible {
+.dp-workspace-ia-summary :is(button, a):focus-visible {
   outline: 2px solid #c8a96a;
   outline-offset: 2px;
 }
@@ -561,7 +561,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
   color: #c8a96a;
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: normal;
   margin: 0;
   text-transform: uppercase;
 }
@@ -646,7 +646,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
   padding: 0;
 }
 
-.dp-workspace-ia-summary button {
+.dp-workspace-ia-summary :is(button, a) {
   align-items: center;
   background: #fff;
   border: 0;
@@ -656,10 +656,11 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-profile-edit
   min-height: 58px;
   padding: 0;
   text-align: left;
+  text-decoration: none;
   width: 100%;
 }
 
-.dp-workspace-ia-summary button strong {
+.dp-workspace-ia-summary :is(button, a) strong {
   display: block;
   font-size: 15px;
 }

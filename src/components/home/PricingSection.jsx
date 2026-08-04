@@ -63,7 +63,7 @@ export default function PricingSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-primary/80 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Pricing
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">

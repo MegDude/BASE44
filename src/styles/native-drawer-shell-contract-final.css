@@ -1,0 +1,331 @@
+/* ========================================================================== */
+/* DOWNTOWN PERKS: NATIVE DRAWER SHELL CONTRACT — ABSOLUTE TERMINAL LAYER    */
+/* Corrects grip placement, nav-button transparency, grouped-row flex layout, */
+/* and enforces the expanded-default platform mandate for all drawer surfaces. */
+/* Imported last — wins every cascade conflict above all other sheets.        */
+/* ========================================================================== */
+
+/* ==========================================================================
+   01. DRAWER SHELL FLEX ORDER
+   The winning `display: grid !important` on `.dp-native-drawer-surface` comes
+   from `html body #root .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface`
+   (specificity ≈ 1,3,0). We need 4×IDs to beat it.
+   ========================================================================== */
+
+/* Beat the winning grid rule — 4 IDs wins over 3 IDs */
+html body #root#root .dp-map-page #dp-active-map-drawer > .dp-native-drawer-surface,
+html body #root#root#root#root .dp-native-drawer > .dp-native-drawer-surface,
+html body #root#root#root#root .dp-native-drawer-surface {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+}
+
+html body .dp-native-drawer-grip {
+  order: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+html body .dp-native-drawer-header {
+  order: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+html body .dp-native-drawer-content-viewport {
+  order: 2 !important;
+}
+
+html body .dp-native-drawer-actions {
+  order: 3 !important;
+  flex-shrink: 0 !important;
+}
+
+
+/* ==========================================================================
+   02. GRIP HANDLE — TOP ANCHOR, NO HEIGHT INFLATION
+   The broad `button:not(.dp-native-drawer-grip)` rule in
+   drawer-mobile-architecture-final.css applies min-height:48px to every
+   drawer button. The grip must be excluded from that min-height so it stays
+   compact at the top of the sheet.
+   ========================================================================== */
+
+/* 11×#root beats the winning 10×#root :where(button) min-height:44px rule */
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-native-drawer .dp-native-drawer-grip,
+html body #root#root#root#root#root#root#root#root#root#root#root .dp-native-drawer-grip,
+html body .dp-native-drawer .dp-native-drawer-grip,
+html body .dp-native-drawer-grip {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: unset !important;
+  height: auto !important;
+  padding: 10px 0 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: grab !important;
+  touch-action: none !important;
+}
+
+html body .dp-native-drawer .dp-native-drawer-grip span,
+html body .dp-native-drawer-grip span {
+  display: block !important;
+  width: 36px !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+  background-color: rgba(11, 31, 51, 0.2) !important;
+  color: unset !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+
+/* ==========================================================================
+   03. DRAWER HEADER NAV BUTTONS — TRANSPARENT, NO GREY FILL
+   The secondary-button override in drawer-mobile-architecture-final.css
+   applies bg:#F2F2F7 to all non-primary drawer buttons. The Back and Close
+   controls in .dp-native-drawer-header must stay transparent — they are
+   typographic nav controls, not action buttons.
+   ========================================================================== */
+
+/* 49×#root beats the 48×#root secondary-button grey rule in drawer-mobile-architecture-final.css */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer [data-map-drawer-back],
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer [data-map-drawer-close],
+/* Fallback lower-specificity rules */
+html body .dp-native-drawer .dp-native-drawer-header [data-map-drawer-back],
+html body .dp-native-drawer .dp-native-drawer-header [data-map-drawer-close],
+html body .dp-native-drawer [data-map-drawer-back],
+html body .dp-native-drawer [data-map-drawer-close] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: unset !important;
+  height: auto !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  transform: none !important;
+}
+
+/* Close button: 41×#root beats the 40×#root border-radius:0 geometry lock (sheetIdx 147) */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-native-drawer [data-map-drawer-close],
+html body .dp-native-drawer [data-map-drawer-close] {
+  border-radius: 999px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer [data-map-drawer-back]:active,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer [data-map-drawer-close]:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  transform: scale(0.96) !important;
+  opacity: 0.7 !important;
+}
+
+html body .dp-native-drawer [data-map-drawer-close]:hover {
+  background: rgba(11, 31, 51, 0.06) !important;
+  background-color: rgba(11, 31, 51, 0.06) !important;
+}
+
+/* Spans inside nav buttons: inherit */
+html body .dp-native-drawer [data-map-drawer-back] span,
+html body .dp-native-drawer [data-map-drawer-close] span {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  font: inherit !important;
+  background: transparent !important;
+}
+
+
+/* ==========================================================================
+   04. GROUPED-ROW LAYOUT — FLEX (overrides grid from canonical-surface-system)
+   The platform spec defines .dp-grouped-row as a horizontal flex row:
+     [icon badge] [copy block] [status label]
+   The earlier canonical-surface-system.css forces display:grid with fixed
+   column sizes. This terminal layer resets it to flex.
+   ========================================================================== */
+
+html body .dp-grouped-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  min-height: unset !important;
+  padding: 14px 0 !important;
+  border: 0 !important;
+  border-bottom: 0.5px solid rgba(11, 31, 51, 0.07) !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: opacity 0.12s ease !important;
+}
+
+html body .dp-grouped-row:active {
+  opacity: 0.72 !important;
+  transform: none !important;
+  background: transparent !important;
+}
+
+/* Icon badge (h-9 w-9 rounded-xl warm gold) */
+html body .dp-grouped-row > .dp-grouped-icon,
+html body .dp-grouped-row .dp-grouped-icon {
+  display: flex !important;
+  flex-shrink: 0 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  background: #FFF9F0 !important;
+  color: #C9A66B !important;
+  background-color: #FFF9F0 !important;
+}
+
+/* Copy block */
+html body .dp-grouped-row .dp-grouped-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+}
+
+html body .dp-grouped-row .dp-grouped-title {
+  display: block !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body .dp-grouped-row .dp-grouped-meta,
+html body .dp-grouped-row .dp-grouped-offer {
+  display: block !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Status label (right) */
+html body .dp-grouped-row .dp-grouped-status,
+html body .dp-grouped-row > span:last-child {
+  flex-shrink: 0 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #C9A66B !important;
+  -webkit-text-fill-color: #C9A66B !important;
+  background: transparent !important;
+  min-height: unset !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/* ==========================================================================
+   05. EXPANDED DEFAULT STATE — CONTEXT LIST & ALL MAP DRAWERS
+   The platform directive mandates expanded as the default state: 85vh on
+   mobile. "Peek" is kept for intentional collapsed states only.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  html body .dp-native-drawer[data-drawer-state="expanded"],
+  html body .dp-context-list-drawer[data-drawer-state="expanded"] {
+    max-height: 85vh !important;
+  }
+
+  html body .dp-context-list-drawer[data-drawer-state="expanded"] {
+    max-height: 85vh !important;
+  }
+
+  /* Safe-area bottom padding for content viewport */
+  html body .dp-native-drawer-content-viewport {
+    padding-bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 24px)) !important;
+  }
+}
+
+
+/* ==========================================================================
+   06. PURE WHITE SURFACES — ZERO BENTO SHADING
+   Eliminate any residual #F8F9FA or #F2F2F7 applied to the drawer surface
+   itself or to workspace row lists.
+   ========================================================================== */
+
+html body .dp-native-drawer-surface,
+html body .dp-native-drawer > .dp-native-drawer-surface {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html body .dp-context-list-scroll,
+html body .dp-grouped-list {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+
+/* ==========================================================================
+   07. CONTEXT LIST HEADING — FONT HIERARCHY
+   h2 in the cluster result heading uses font-serif (Canela); its meta line
+   is Inter light. Ensure neither is overridden to a non-serif or heavy weight.
+   ========================================================================== */
+
+html body .dp-context-list-heading h2 {
+  font-family: var(--font-serif, 'Canela', Georgia, serif) !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: #0B1F33 !important;
+  -webkit-text-fill-color: #0B1F33 !important;
+}
+
+html body .dp-context-list-heading p {
+  font-size: 13px !important;
+  font-weight: 300 !important;
+  color: rgba(11, 31, 51, 0.58) !important;
+  -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
+}
+
+
+/* ==========================================================================
+   08. DESKTOP SIDE-PANEL OVERRIDE (≥ 1024px)
+   Context list drawer becomes a right-side panel on desktop.
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+  html body .dp-native-drawer.dp-context-list-drawer {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    right: 0 !important;
+    width: 440px !important;
+    max-width: 440px !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border-left: 0.5px solid rgba(11, 31, 51, 0.08) !important;
+    box-shadow: -8px 0 32px rgba(11, 31, 51, 0.08) !important;
+  }
+}

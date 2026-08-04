@@ -72,7 +72,7 @@ html body #root .dp-partner-workspace-page :is(.dp-workspace-eyebrow, .dp-worksp
   font-size: 11px !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -138,7 +138,7 @@ html body #root .dp-partner-workspace-page .dp-workspace-nav-group > p {
   color: rgba(11, 31, 51, 0.48) !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -315,7 +315,7 @@ html body #root .dp-partner-workspace-page :is(button, a):is(:hover, :active) {
   box-shadow: none !important;
 }
 
-html body #root .dp-partner-workspace-page :is(.rounded-full, [class*="rounded-"], [class*="shadow-"], [class*="backdrop-blur"]) {
+html body #root .dp-partner-workspace-page :is(.rounded-xl, [class*="rounded-"], [class*="shadow-"], [class*="backdrop-blur"]) {
   border-radius: 4px !important;
   box-shadow: none !important;
   filter: none !important;

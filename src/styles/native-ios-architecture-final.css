@@ -233,7 +233,7 @@ html body #root#root#root#root#root#root#root#root#root#root :where(button, .dp-
   border-radius: var(--dp-radius-button) !important;
   font-size: 13px !important;
   font-weight: 600 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   transition-duration: var(--dp-motion-duration) !important;
   transition-property: color, background-color, border-color, box-shadow, opacity, transform !important;
@@ -376,7 +376,7 @@ html body #root#root#root#root#root#root#root#root#root#root .dp-map-page :is(.d
   color: var(--dp-muted) !important;
   font-size: var(--dp-type-meta) !important;
   font-weight: 600 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -495,7 +495,7 @@ html body #root#root#root#root#root#root#root#root#root#root :is(.dp-workspace-e
   color: var(--dp-muted) !important;
   font-size: var(--dp-type-meta) !important;
   font-weight: 600 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -863,7 +863,7 @@ html body #root#root#root#root#root#root#root#root#root#root :is(.dp-resident-mo
 }
 
 .dp-route-stop-list button.is-selected { background: rgba(200,169,106,.09); }
-.dp-route-stop-list__number { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--dp-border-strong); border-radius: 50%; font-size: 12px; font-weight: 700; }
+.dp-route-stop-list__number { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--dp-border-strong); border-radius: 12px; font-size: 12px; font-weight: 700; }
 .dp-route-stop-list__number svg { width: 15px; height: 15px; }
 .dp-route-stop-list__copy { display: grid; min-width: 0; gap: 2px; }
 .dp-route-stop-list__copy strong { overflow: hidden; font-size: 16px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
@@ -1076,7 +1076,7 @@ html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspa
 html body #root#root#root#root#root#root#root#root#root#root .dp-partner-workspace-page :is(.dp-workspace-eyebrow, .dp-workspace-analytics-kicker, .dp-workspace-report-label) {
   color: var(--dp-muted) !important;
   font-size: 11px !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 

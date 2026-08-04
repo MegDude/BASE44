@@ -129,13 +129,13 @@ export default function HotelsPartner() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Hotel Partner Layer</span>
+              <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Hotel Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
                 Help guests find what to do <em className="text-primary">from the moment they arrive.</em>
               </h1>
               <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">One QR code gives guests access to nearby dining, events, and local offers — without asking your front desk to handle it.</p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all ">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                   Connect your hotel <ArrowRight className="w-4 h-4" />
                 </a>
                 <a href="#hotel-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
@@ -176,7 +176,7 @@ export default function HotelsPartner() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Hotel Map</span>
+              <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Hotel Map</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">What guests can reach from each location.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select a hotel to see the nearby events, places, and offers your guests can access during their stay.</p>
@@ -206,7 +206,7 @@ export default function HotelsPartner() {
               {!hotel ? (
                 <>
                   <div className="p-5 border-b border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-1">Guest flow in action</div>
+                    <div className="text-muted-foreground mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Guest flow in action</div>
                   </div>
                   <div className="flex-1 divide-y divide-border/40 overflow-y-auto">
                     {LIVE_FEED.map((item, i) => (
@@ -221,7 +221,7 @@ export default function HotelsPartner() {
                     ))}
                   </div>
                   <div className="p-4 border-t border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Hotels</div>
+                    <div className="text-muted-foreground mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Hotels</div>
                     <div className="space-y-2">
                       {HOTELS.slice(0, 4).map(h => (
                         <button key={h.id} onClick={() => selectHotel(h)} className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-border/40 hover:border-primary/30 transition-all text-left">
@@ -253,7 +253,7 @@ export default function HotelsPartner() {
                       <div className="text-[12px] font-medium text-primary">{hotel.trend}</div>
                     </div>
                     <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Guest activity nearby</div>
+                      <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Guest activity nearby</div>
                       <div className="space-y-1.5">
                         {hotel.nearby.map((n, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
@@ -263,7 +263,7 @@ export default function HotelsPartner() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Access</div>
+                      <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Access</div>
                       <div className="space-y-1">
                         {hotel.access.map((a, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-foreground/70">
@@ -351,7 +351,7 @@ function StepsSection({ label, headline, steps, proof }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
         </motion.div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
@@ -387,7 +387,7 @@ function GuestFlowSection({ steps, feed }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Guest experience</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Guest experience</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">What a guest does from scan to visit.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -405,7 +405,7 @@ function GuestFlowSection({ steps, feed }) {
           </div>
           <div className="rounded-xl border border-border/50 bg-card/40 overflow-hidden">
             <div className="p-5 border-b border-border/40">
-              <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em]">Live guest activity</div>
+              <div className="text-muted-foreground dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Live guest activity</div>
             </div>
             <div className="divide-y divide-border/40">
               {feed.map((item, i) => (
@@ -433,7 +433,7 @@ function HotelCards({ hotels, selectHotel }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live hotels</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Live hotels</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Activity across live hotels.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -454,7 +454,7 @@ function HotelCards({ hotels, selectHotel }) {
                 <div className="flex justify-between text-muted-foreground"><span>Trend</span><span className="text-primary font-medium">{h.trend}</span></div>
               </div>
               <div className="mt-3 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Top nearby</div>
+                <div className="text-muted-foreground/60 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Top nearby</div>
                 <div className="text-[12px] text-foreground truncate">{h.top}</div>
               </div>
             </motion.div>
@@ -474,7 +474,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Contact</span>
+            <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Contact</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
@@ -489,12 +489,12 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
             <div className="p-8 md:border-r border-border/40 space-y-4">
               {[["Hotel Name", "text"], ["Your Name & Role", "text"], ["Email", "email"], ["Phone", "tel"]].map(([label, type]) => (
                 <div key={label}>
-                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">{label}</label>
+                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">{label}</label>
                   <input type={type} className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
                 </div>
               ))}
               <div>
-                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">What are you looking to set up</label>
+                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">What are you looking to set up</label>
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your hotel and what you want to offer guests."
                   className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
                 <div className="dp-partner-prompt-inline" aria-label="Suggested prompts">
@@ -521,7 +521,7 @@ function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondL
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
+            <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>
             <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>

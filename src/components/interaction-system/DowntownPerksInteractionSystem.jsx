@@ -280,7 +280,7 @@ export function RedemptionDialog({ onRedeemed }) {
     <Dialog>
       <DialogTrigger asChild><DPButton variant="gold">Preview redemption</DPButton></DialogTrigger>
       <DialogContent className="dp-is-dialog">
-        <span className="dp-is-dialog__eyebrow">Resident perk</span>
+        <span className="dp-is-dialog__eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident perk</span>
         <DialogTitle>Redeem your Stay Put welcome drink?</DialogTitle>
         <DialogDescription>Confirm this with a team member at the venue. The perk can be redeemed once per resident account.</DialogDescription>
         <dl className="dp-is-redemption-summary">

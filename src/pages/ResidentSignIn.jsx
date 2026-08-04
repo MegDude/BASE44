@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, LogIn } from "lucide-react";
+import { ArrowLeft, LogIn, MapPin } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { DEFAULT_RESIDENT_MAP_PATH, getAuthenticatedDestination, getSafeReturnPath, storeAuthReturnPath } from "@/lib/authReturnPath";
 
@@ -39,20 +39,20 @@ export default function ResidentSignIn() {
   async function submitGoogle() {
     setStatus({ type: "loading", message: "" });
     storeAuthReturnPath(returnTo);
-    const result = await signInWithGoogle({
-      redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}`,
-    });
+    const result = await signInWithGoogle({ redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}` });
     if (result?.type === "error") setStatus({ type: "error", message: result.message });
   }
 
   async function submitApple() {
-    setStatus({ type: "loading", message: "" }); storeAuthReturnPath(returnTo);
+    setStatus({ type: "loading", message: "" });
+    storeAuthReturnPath(returnTo);
     const result = await signInWithApple({ redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}` });
     if (result?.type === "error") setStatus({ type: "error", message: result.message });
   }
 
   async function submitMagicLink() {
-    setStatus({ type: "loading", message: "" }); storeAuthReturnPath(returnTo);
+    setStatus({ type: "loading", message: "" });
+    storeAuthReturnPath(returnTo);
     const result = await signInResidentWithMagicLink({ email, redirectPath: `/auth/callback?returnTo=${encodeURIComponent(returnTo)}` });
     setStatus({ type: result?.type === "error" ? "error" : "confirmation", message: result?.message || "Check your email to continue." });
   }
@@ -63,31 +63,131 @@ export default function ResidentSignIn() {
     setStatus({ type: result?.type === "error" ? "error" : "confirmation", message: result?.message || "Check your email to continue." });
   }
 
+  const isLoading = status.type === "loading";
+
   return (
-    <main className="dp-resident-signin-page">
-      <div className="dp-resident-signin-shell">
-        <header className="dp-resident-signin-header">
-          <Link to="/" aria-label="Downtown Perks home"><span aria-hidden="true" />Downtown Perks</Link>
-          <Link to="/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured"><ArrowLeft aria-hidden="true" />Back to map</Link>
+    <main className="min-h-screen bg-white px-5 py-12 text-[#0B1F33]">
+      <div className="mx-auto max-w-md space-y-8">
+
+        {/* Header Navigation */}
+        <header className="flex items-center justify-between border-b border-black/5 pb-4">
+          <Link to="/" aria-label="Downtown Perks home" className="flex items-center gap-2 text-[14.5px] font-semibold text-[#0B1F33] hover:text-[#C9A66B] transition-colors no-underline">
+            <MapPin size={16} className="text-[#C9A66B]" aria-hidden="true" />
+            <span>Downtown Perks</span>
+          </Link>
         </header>
-        <section className="dp-resident-signin-content" aria-labelledby="resident-signin-title">
-          <p className="dp-resident-signin-eyebrow">Resident access</p>
-          <h1 id="resident-signin-title">Sign in to your downtown.</h1>
-          <p>Use your email and password to open your resident map, perks, saved places, events, and card.</p>
-          <form onSubmit={submit}>
-            <label htmlFor="resident-email">Email address</label>
-            <input id="resident-email" name="email" type="email" autoComplete="email" inputMode="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" />
-            <label htmlFor="resident-password">Password</label>
-            <input id="resident-password" name="password" type="password" autoComplete="current-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" />
-            {status.message ? <p className={`dp-resident-signin-status is-${status.type}`} role={status.type === "error" ? "alert" : "status"}>{status.message}</p> : null}
-            <button type="submit" disabled={status.type === "loading"}><LogIn aria-hidden="true" />{status.type === "loading" ? "Please wait…" : "Sign in"}</button>
+
+        {/* Content & Form */}
+        <section className="space-y-6" aria-labelledby="resident-signin-title">
+
+          <div className="space-y-2">
+            <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#C9A66B]">Resident Access</span>
+            <h1 id="resident-signin-title" className="font-serif text-3xl font-semibold tracking-tight text-[#0B1F33]">Sign in to your downtown.</h1>
+            <p className="text-[14.5px] font-light leading-relaxed text-[#0B1F33]/70">Open your resident map, active perks, saved places, and card.</p>
+          </div>
+
+          {/* Sign-In Form */}
+          <form className="space-y-4" onSubmit={submit}>
+            <div className="space-y-1.5">
+              <label htmlFor="resident-email" className="block text-[12px] font-bold uppercase tracking-wider text-[#0B1F33]/70">Email address</label>
+              <input
+                id="resident-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                inputMode="email"
+                required
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-white px-4 py-3 rounded-xl border border-black/10 text-[15px] text-[#0B1F33] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/20 placeholder:text-[#0B1F33]/30"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label htmlFor="resident-password" className="block text-[12px] font-bold uppercase tracking-wider text-[#0B1F33]/70">Password</label>
+                <button type="button" onClick={submitPasswordReset} className="text-[12px] font-semibold text-[#C9A66B] hover:underline">Forgot password?</button>
+              </div>
+              <input
+                id="resident-password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                minLength={8}
+                required
+                placeholder="At least 8 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-white px-4 py-3 rounded-xl border border-black/10 text-[15px] text-[#0B1F33] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/20 placeholder:text-[#0B1F33]/30"
+              />
+            </div>
+
+            {status.message ? (
+              <p
+                className={`text-[13px] rounded-xl px-4 py-2.5 ${status.type === "error" ? "bg-red-50 text-red-700" : status.type === "confirmation" || status.type === "success" ? "bg-emerald-50 text-emerald-700" : "bg-[#F2F2F7] text-[#0B1F33]/70"}`}
+                role={status.type === "error" ? "alert" : "status"}
+              >
+                {status.message}
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#0B1F33] px-5 text-[13px] font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#0B1F33]/90 active:scale-95 disabled:opacity-50 disabled:cursor-wait"
+            >
+              <LogIn size={16} className="text-[#C8A96A]" aria-hidden="true" />
+              <span>{isLoading ? "Please wait…" : "Sign in"}</span>
+            </button>
           </form>
-          <div className="dp-resident-signin-divider" aria-hidden="true"><span />Or<span /></div>
-          <button type="button" className="dp-resident-signin-google" onClick={submitGoogle} disabled={status.type === "loading"}>Continue with Google</button>
-          <button type="button" className="dp-resident-signin-google" onClick={submitApple} disabled={status.type === "loading"}>Continue with Apple</button>
-          <button type="button" className="dp-resident-signin-google" onClick={submitMagicLink} disabled={status.type === "loading"}>Email me a magic link</button>
-          <button type="button" className="dp-resident-resend-confirmation" onClick={submitPasswordReset}>Forgot password?</button>
-          <p className="dp-resident-signin-note">After sign-in, Downtown Perks opens directly to your resident map.</p>
+
+          {/* Divider */}
+          <div className="relative flex items-center justify-center py-2" aria-hidden="true">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-black/10" /></div>
+            <span className="relative bg-white px-3 text-[12px] font-medium text-[#0B1F33]/40 uppercase tracking-widest">or</span>
+          </div>
+
+          {/* OAuth / Quick Actions */}
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={submitGoogle}
+              disabled={isLoading}
+              className="flex min-h-[48px] w-full items-center justify-center gap-3 rounded-xl border border-black/10 bg-white px-4 text-[13px] font-semibold text-[#0B1F33] transition-all hover:border-[#C9A66B] active:scale-95 disabled:opacity-50"
+            >
+              <span>Continue with Google</span>
+            </button>
+            <button
+              type="button"
+              onClick={submitApple}
+              disabled={isLoading}
+              className="flex min-h-[48px] w-full items-center justify-center gap-3 rounded-xl border border-black/10 bg-white px-4 text-[13px] font-semibold text-[#0B1F33] transition-all hover:border-[#C9A66B] active:scale-95 disabled:opacity-50"
+            >
+              <span>Continue with Apple</span>
+            </button>
+            <button
+              type="button"
+              onClick={submitMagicLink}
+              disabled={isLoading}
+              className="flex min-h-[48px] w-full items-center justify-center gap-3 rounded-xl border border-black/10 bg-white px-4 text-[13px] font-semibold text-[#0B1F33] transition-all hover:border-[#C9A66B] active:scale-95 disabled:opacity-50"
+            >
+              <span>Email me a magic link</span>
+            </button>
+          </div>
+
+          {/* Footer — Back to map + descriptor */}
+          <div className="flex flex-col gap-4 border-t border-black/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <Link
+              to="/map?mode=resident&tab=map&filter=Featured&collection=downtown-perks-featured"
+              className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-wider text-[#0B1F33]/60 hover:text-[#C9A66B] transition-colors no-underline"
+            >
+              <ArrowLeft size={14} aria-hidden="true" />
+              <span>Back to map</span>
+            </Link>
+            <p className="text-[12px] font-light text-[#0B1F33]/50">Opens directly to your resident map.</p>
+          </div>
+
         </section>
       </div>
     </main>

@@ -81,6 +81,33 @@ const SEARCH_INTENT_COPY = {
     includesCampaigns: true,
     includesCollections: true,
   },
+  performance: {
+    fullLabel: "Compare performance",
+    description: "See verified views, saves, scans, visits, and redemptions.",
+  },
+  campaigns: {
+    fullLabel: "Campaign opportunities",
+    description: "Review active campaigns and nearby opportunities worth acting on.",
+    includesCampaigns: true,
+  },
+  trails: {
+    fullLabel: "Discovery trail placements",
+    description: "See routes where your place or campaign can join the journey.",
+    includesRoutes: true,
+  },
+  audience: {
+    fullLabel: "Nearby interest",
+    description: "See verified resident interest and the places shaping demand.",
+  },
+  activation: {
+    fullLabel: "Campaign ideas",
+    description: "Find timely ideas grounded in nearby places, audiences, and activity.",
+    includesCampaigns: true,
+  },
+  insights: {
+    fullLabel: "Downtown insights",
+    description: "Understand what is changing nearby and what to do next.",
+  },
   more: {
     fullLabel: "More",
     description: "",

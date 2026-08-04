@@ -98,7 +98,7 @@ html body #root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-hero-
   -webkit-text-fill-color: var(--dp-onboarding-navy) !important;
   font-size: 13px !important;
   font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   transition: border-color 220ms cubic-bezier(.22,1,.36,1), opacity 220ms cubic-bezier(.22,1,.36,1) !important;
 }
@@ -230,7 +230,7 @@ html body #root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-secti
 .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button img { width: 100% !important; height: auto !important; aspect-ratio: 16/10 !important; display: block !important; border-radius: 11px !important; object-fit: cover !important; }
 .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button > span { margin: 8px 8px 0 !important; }
 .dp-partner-lifecycle-page-start .dp-partner-lifestyle-grid button > strong { margin: 0 8px !important; font-size: 18px !important; line-height: 1.3 !important; }
-.dp-partner-lifecycle-page-start .dp-partner-business-selected-icon { position: absolute !important; top: 18px !important; right: 18px !important; width: 24px !important; height: 24px !important; padding: 4px !important; border-radius: 50% !important; background: var(--dp-onboarding-gold) !important; color: var(--dp-onboarding-navy) !important; opacity: 0 !important; }
+.dp-partner-lifecycle-page-start .dp-partner-business-selected-icon { position: absolute !important; top: 18px !important; right: 18px !important; width: 24px !important; height: 24px !important; padding: 4px !important; border-radius: 12px !important; background: var(--dp-onboarding-gold) !important; color: var(--dp-onboarding-navy) !important; opacity: 0 !important; }
 .dp-partner-lifecycle-page-start button.is-selected .dp-partner-business-selected-icon { opacity: 1 !important; }
 
 .dp-partner-lifecycle-page-start .dp-partner-recommendation-grid { display: grid !important; grid-template-columns: minmax(0,1fr) minmax(300px,.72fr) !important; gap: 24px !important; }
@@ -267,7 +267,7 @@ html body #root main.dp-partner-lifecycle-page-start .dp-partner-lifecycle-secti
 .dp-partner-lifecycle-page-start .dp-partner-integration-grid article > div span { min-height: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; font-size: 12px !important; }
 .dp-partner-lifecycle-page-start .dp-partner-integration-grid dl { margin: 22px 0 0 !important; }
 .dp-partner-lifecycle-page-start .dp-partner-integration-grid dl > div { padding: 13px 0 !important; border-top: 1px solid var(--dp-onboarding-border) !important; }
-.dp-partner-lifecycle-page-start .dp-partner-integration-grid dt { color: #8A6A2F !important; font-size: 10px !important; font-weight: 720 !important; letter-spacing: .08em !important; text-transform: uppercase !important; }
+.dp-partner-lifecycle-page-start .dp-partner-integration-grid dt { color: #8A6A2F !important; font-size: 10px !important; font-weight: 720 !important; letter-spacing: normal !important; text-transform: uppercase !important; }
 .dp-partner-lifecycle-page-start .dp-partner-integration-grid dd { margin: 5px 0 0 !important; color: rgba(11,31,51,.65) !important; font-size: 13px !important; line-height: 1.45 !important; }
 
 .dp-partner-lifecycle-page-start .dp-partner-timeline { margin: 0 !important; padding: 0 !important; list-style: none !important; }
@@ -460,7 +460,7 @@ html body #root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-pa
     border-radius: 14px !important;
     font-size: 13px !important;
     font-weight: 680 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-transform: none !important;
     box-shadow: none !important;
     transform: none !important;
@@ -580,7 +580,7 @@ html body #root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-pa
   ) {
     min-height: 44px !important;
     border-radius: 12px !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-transform: none !important;
   }
 
@@ -590,7 +590,7 @@ html body #root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-pa
     min-height: 52px !important;
     border-radius: 14px !important;
     font-size: 13px !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-transform: none !important;
     box-shadow: 0 10px 28px rgba(11,31,51,.14) !important;
   }
@@ -646,7 +646,7 @@ html body #root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-pa
     border-radius: 14px !important;
     font-size: 13px !important;
     font-weight: 680 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-transform: none !important;
     box-shadow: none !important;
     transform: none !important;
@@ -727,7 +727,7 @@ html body #root#root#root main.dp-partner-lifecycle-page.dp-partner-lifecycle-pa
   ) {
     min-height: 48px !important;
     border-radius: 12px !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-transform: none !important;
     box-shadow: none !important;
     transform: none !important;

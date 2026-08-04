@@ -115,7 +115,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     margin: 0 !important;
     color: var(--dp-mobile-system-gold) !important;
     font: 700 10px/1.1 Inter, system-ui, sans-serif !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: normal !important;
     text-transform: uppercase !important;
   }
 
@@ -135,6 +135,17 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     letter-spacing: -0.01em !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perks-header {
+    position: relative !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perks-close {
+    position: absolute !important;
+    top: 6px !important;
+    right: 8px !important;
+    z-index: 2 !important;
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -176,7 +187,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-active-perks-handle > span, .dp-map-sheet-handle, .dp-panel-handle::before, .dp-drawer-handle::before) {
     width: 36px !important;
     height: 4px !important;
-    border-radius: 999px !important;
+    border-radius: 12px !important;
     background: rgba(11, 31, 51, 0.22) !important;
   }
 
@@ -200,7 +211,6 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
-    .dp-active-perk-row,
     .dp-mobile-result-row,
     .dp-saved-mobile-row,
     .dp-tab-row,
@@ -221,6 +231,78 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     box-shadow: none !important;
     color: var(--dp-mobile-system-ink) !important;
     text-align: left !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perks-collection {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-row.dp-mobile-result-row {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    min-width: 0 !important;
+    min-height: 224px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid var(--dp-mobile-system-line) !important;
+    border-radius: 10px !important;
+    background: var(--dp-mobile-system-surface) !important;
+    box-shadow: 0 8px 22px rgba(11, 31, 51, 0.08) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-main {
+    display: grid !important;
+    grid-template-rows: 88px minmax(0, 1fr) !important;
+    gap: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: var(--dp-mobile-system-ink) !important;
+    text-align: left !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-main:not(.has-media) {
+    grid-template-rows: minmax(0, 1fr) !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-media,
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-hero {
+    width: 100% !important;
+    height: 88px !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-hero {
+    display: block !important;
+    object-fit: cover !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-copy {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+    padding: 10px !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 44px !important;
+    gap: 6px !important;
+    padding: 0 10px 10px !important;
+    background: transparent !important;
+  }
+
+  html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-active-perk-actions > button {
+    min-width: 0 !important;
+    min-height: 44px !important;
   }
 
   html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -298,7 +380,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     background: transparent !important;
     color: var(--dp-mobile-system-muted) !important;
     font: 700 11px/1 Inter, system-ui, sans-serif !important;
-    letter-spacing: 0.06em !important;
+    letter-spacing: normal !important;
     text-transform: uppercase !important;
     white-space: nowrap !important;
     box-shadow: none !important;
@@ -326,7 +408,6 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     .dp-primary-action-row,
     .dp-universal-action-rail,
     .dp-map-detail-actions,
-    .dp-active-perk-actions,
     .dp-saved-action-row
   ) {
     display: grid !important;
@@ -342,7 +423,6 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page {
     .dp-primary-action-row,
     .dp-universal-action-rail,
     .dp-map-detail-actions,
-    .dp-active-perk-actions,
     .dp-saved-action-row
   ) > :is(button, a, .dp-panel-action, .dp-perk-cta) {
     min-height: 44px !important;

@@ -118,13 +118,13 @@ export default function VenuesPartner() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">Venue Partner Layer</span>
+              <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Venue Partner Layer</span>
               <h1 className="font-heading text-4xl md:text-4xl lg:text-4xl font-medium leading-[1.05] tracking-normal mb-5">
                 Be on the map when people nearby are <em className="text-primary">deciding where to go.</em>
               </h1>
               <p className="text-muted-foreground text-[14px] leading-relaxed mb-8 max-w-lg">Your place shows up at the right moment — when someone close by is looking for food, a drink, a class, or somewhere to go.</p>
               <div className="flex flex-wrap gap-3">
-                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all ">
+                <a href="#partner-form" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all">
                   Add your venue <ArrowRight className="w-4 h-4" />
                 </a>
                 <a href="#venue-map" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-border/70 text-foreground/70 font-medium text-[13px] hover:text-foreground transition-all">
@@ -165,7 +165,7 @@ export default function VenuesPartner() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
             <div>
-              <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Venue Map</span>
+              <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Venue Map</span>
               <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">Where your venue fits in the neighborhood search.</h2>
             </div>
             <p className="text-muted-foreground text-[13px] leading-relaxed">Select any pin to see how it surfaces in context — category, distance, offer, and the moment that triggered it.</p>
@@ -194,7 +194,7 @@ export default function VenuesPartner() {
               {!venue ? (
                 <>
                   <div className="p-5 border-b border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-1">Decision moments happening now</div>
+                    <div className="text-muted-foreground mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Decision moments happening now</div>
                   </div>
                   <div className="flex-1 divide-y divide-border/40 overflow-y-auto">
                     {DECISION_MOMENTS.map((m, i) => (
@@ -209,7 +209,7 @@ export default function VenuesPartner() {
                     ))}
                   </div>
                   <div className="p-4 border-t border-border/40">
-                    <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.12em] mb-3">Venues</div>
+                    <div className="text-muted-foreground mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Venues</div>
                     <div className="space-y-2">
                       {VENUES.slice(0, 4).map(v => (
                         <button key={v.id} onClick={() => selectVenue(v)} className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-border/40 hover:border-primary/30 transition-all text-left">
@@ -240,7 +240,7 @@ export default function VenuesPartner() {
                       ))}
                     </div>
                     <div>
-                      <div className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-2">Live now</div>
+                      <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Live now</div>
                       <div className="space-y-1">
                         {venue.live.map((l, i) => (
                           <div key={i} className="flex items-center gap-2 text-[12px] text-muted-foreground">
@@ -250,7 +250,7 @@ export default function VenuesPartner() {
                       </div>
                     </div>
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
-                      <div className="text-[11px] font-medium text-primary uppercase tracking-[0.1em] mb-1">Offer active</div>
+                      <div className="text-primary mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Offer active</div>
                       <div className="text-[12px] text-foreground">{venue.offer}</div>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/40">
@@ -337,7 +337,7 @@ function StepsSection({ label, headline, steps, proof }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-10">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">{label}</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
         </motion.div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-6">
@@ -373,7 +373,7 @@ function DecisionMomentsSection({ moments }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">How people find places</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How people find places</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">The moment between "I want to go somewhere" and walking in the door.</h2>
         </motion.div>
         <div className={PARTNER_GRIDS.gridCardTwoCol}>
@@ -401,7 +401,7 @@ function VenueCards({ venues, selectVenue }) {
     <section ref={ref} className={`${PARTNER_SPACING.subsectionVertical} px-5 border-t border-border/40`}>
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Live venues</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Live venues</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">Activity across live venues.</h2>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -422,7 +422,7 @@ function VenueCards({ venues, selectVenue }) {
                 <div className="flex justify-between text-muted-foreground"><span>Trend</span><span className="text-primary font-medium">{v.trend}</span></div>
               </div>
               <div className="mt-3 pt-3 border-t border-border/40">
-                <div className="text-[10px] text-muted-foreground/60 uppercase tracking-[0.1em] mb-1">Top trigger</div>
+                <div className="text-muted-foreground/60 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Top trigger</div>
                 <div className="text-[12px] text-foreground">{v.trigger}</div>
               </div>
             </motion.div>
@@ -442,7 +442,7 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8 items-end">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}}>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Contact</span>
+            <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Contact</span>
             <h2 className="font-heading text-2xl md:text-3xl font-medium tracking-normal">{headline}</h2>
           </motion.div>
           <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
@@ -457,12 +457,12 @@ function PartnerForm({ headline, body, formType, setFormType, formText, setFormT
             <div className="p-8 md:border-r border-border/40 space-y-4">
               {[["Venue Name", "text"], ["Your Name & Role", "text"], ["Email", "email"], ["Phone", "tel"]].map(([label, type]) => (
                 <div key={label}>
-                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">{label}</label>
+                  <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">{label}</label>
                   <input type={type} className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors" />
                 </div>
               ))}
               <div>
-                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-[0.1em] mb-1.5">What are you looking to do</label>
+                <label className="block text-[11px] font-medium text-[#0B1F33] uppercase tracking-normal mb-1.5">What are you looking to do</label>
                 <textarea rows={4} value={formText} onChange={e => setFormText(e.target.value)} placeholder="Tell us about your venue and what you want to offer."
                   className="w-full bg-muted/30 border border-border/50 px-4 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/40 transition-colors resize-none placeholder-muted-foreground/30" />
                 <div className="dp-partner-prompt-inline" aria-label="Suggested prompts">
@@ -489,7 +489,7 @@ function ClosingCTA({ eyebrow, headline, body, proof, ctaLabel, ctaHref, secondL
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div>
-            <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">{eyebrow}</span>
+            <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>
             <h2 className="font-heading text-3xl md:text-4xl font-medium leading-[1.15] tracking-normal mb-3">{headline}</h2>
             <p className="text-muted-foreground text-[13px] leading-relaxed">{body}</p>
           </div>

@@ -19,6 +19,34 @@ export default function MobileTabDrawerShell({ title, subtitle, state = "medium"
   const stateRef = useRef(state);
   const closeRef = useRef(onClose);
   const stateChangeRef = useRef(onStateChange);
+  const dragRef = useRef({ y: 0, active: false, moved: false });
+
+  const handleGripPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    dragRef.current = { y: event.clientY, active: true, moved: false };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+  const handleGripPointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const dy = event.clientY - dragRef.current.y;
+    dragRef.current.moved = Math.abs(dy) >= 36;
+    if (!dragRef.current.moved) return;
+    const index = states.indexOf(state);
+    if (dy > 0) {
+      if (index <= 0) onClose();
+      else onStateChange?.(states[index - 1]);
+    } else if (index >= 0 && index < states.length - 1) {
+      onStateChange?.(states[index + 1]);
+    }
+  };
+  const handleGripClick = () => {
+    if (dragRef.current.moved) {
+      dragRef.current.moved = false;
+      return;
+    }
+    const index = states.indexOf(state);
+    onStateChange?.(states[Math.min(Math.max(index, 0) + 1, states.length - 1)]);
+  };
 
   useEffect(() => {
     stateRef.current = state;
@@ -50,7 +78,14 @@ export default function MobileTabDrawerShell({ title, subtitle, state = "medium"
 
   return (
     <section className="dp-mobile-tab-drawer" data-drawer-state={state} role="dialog" aria-modal={state === "full"} aria-labelledby="dp-mobile-tab-title">
-      <button type="button" className="dp-mobile-tab-drag-handle" aria-label={`Drawer size: ${state}. Activate to expand.`} onClick={() => onStateChange?.(states[Math.min(states.indexOf(state) + 1, states.length - 1)])}><span /></button>
+      <button
+        type="button"
+        className="dp-mobile-tab-drag-handle"
+        aria-label={`Drawer size: ${state}. Swipe down to minimise, up to expand.`}
+        onPointerDown={handleGripPointerDown}
+        onPointerUp={handleGripPointerUp}
+        onClick={handleGripClick}
+      ><span aria-hidden="true" /></button>
       <header className="dp-mobile-tab-header">
         {onBack ? <button type="button" onClick={onBack} aria-label={`Go back from ${title}`}><ArrowLeft aria-hidden="true" /></button> : <span aria-hidden="true" />}
         <div><h2 id="dp-mobile-tab-title">{title}</h2>{subtitle ? <p>{subtitle}</p> : null}</div>

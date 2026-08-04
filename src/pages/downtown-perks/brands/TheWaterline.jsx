@@ -13,7 +13,7 @@ const demo = (
     />
     <div className="rounded-lg border border-border bg-card p-7 flex flex-col justify-between">
       <div>
-        <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-5">Live Resident Feed</div>
+        <div className="inline-block px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-medium mb-5">Live Resident Feed</div>
         <div className="space-y-3">
           {[
             { title: "Rooftop social — tonight 7pm", tag: "Members Only" },
@@ -21,7 +21,7 @@ const demo = (
             { title: "Run club departs lobby at 6am", tag: "Fitness" },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border/50">
-              <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
+              <div className="w-2 h-2 rounded-xl bg-primary shrink-0" />
               <div>
                 <div className="text-[13px] font-medium">{item.title}</div>
                 <div className="text-xs text-muted-foreground">{item.tag}</div>

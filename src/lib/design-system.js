@@ -75,7 +75,7 @@ export const TYPOGRAPHY = {
   uiLarge: "text-[14px] font-medium",
   uiStandard: "text-[13px] font-medium",
   uiSmall: "text-[12px] font-medium",
-  uiTiny: "text-[11px] font-medium uppercase tracking-[0.16em]",
+  uiTiny: "text-[11px] font-medium uppercase tracking-normal",
   
   // Supporting text
   caption: "text-[12px] text-muted-foreground",

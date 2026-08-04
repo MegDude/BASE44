@@ -15,6 +15,20 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-ma
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  /* Promote each anchored marker to its own compositor layer so it stays
+     razor-sharp and never shimmers or flickers while the map is panned,
+     dragged, or zoomed. This is a rendering-quality hint only: it does not
+     shift the pin, which remains anchored to its canonical coordinate. */
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-google-map-marker-shell :is(svg, img) {
+  /* Keep glyph and logo art crisp on high-DPI screens during motion. */
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -35,7 +49,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   padding: 0 !important;
   place-items: center !important;
   border: 1.25px solid rgba(200, 169, 106, 0.92) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   outline: 0 !important;
   background: var(--dp-canonical-pin-navy) !important;
   color: var(--dp-canonical-pin-gold) !important;
@@ -53,7 +67,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-map-pin::afte
   display: block !important;
   content: "" !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   box-shadow: none !important;
 }
@@ -154,7 +168,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-st
   height: 16px !important;
   place-items: center !important;
   border: 2px solid #FFFFFF !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-canonical-pin-gold) !important;
   color: var(--dp-canonical-pin-navy) !important;
   box-shadow: 0 3px 8px rgba(11, 31, 51, 0.18) !important;
@@ -163,7 +177,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-st
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-cluster, .dp-google-map-cluster) {
   border: 1.25px solid var(--dp-canonical-pin-gold) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-canonical-pin-navy) !important;
   color: #FFFFFF !important;
   box-shadow: 0 5px 12px rgba(11, 31, 51, 0.18) !important;

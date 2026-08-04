@@ -3,7 +3,7 @@ import type { WaterlooParkPin } from "@/data/waterlooParkInventory";
 export default function WaterlooParkCard({ pin }: { pin: WaterlooParkPin }) {
   return (
     <article className="rounded-[8px] border border-[#0B1F33]/[0.08] bg-white p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">{pin.category}</p>
+      <p className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{pin.category}</p>
       <h3 className="mt-2 text-[16px] font-semibold text-[#0B1F33]">{pin.name}</h3>
       <p className="mt-3 text-[13px] leading-6 text-[#0B1F33]/66">{pin.description}</p>
       <div className="mt-4 flex flex-wrap gap-2">

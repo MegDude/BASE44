@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { demoOrganizations } from "@/config/workspaceArchitecture";
-import { getSuperAdminEmails, isSuperAdminSession } from "@/lib/auth/session";
+import { isSuperAdminSession } from "@/lib/auth/session";
 import { DEFAULT_PARTNER_RETURN_PATH, getSafeReturnPath } from "@/lib/authReturnPath";
 import {
   canUseProductionAccountAccess,
@@ -99,6 +99,21 @@ const REPORTING_NEEDS = [
   "Custom reporting",
 ];
 
+const FUNNEL_STAGES = ["Category", "Plan", "Integrations", "Account"];
+const FUNNEL_INTEGRATIONS = [
+  { id: "toast", label: "Toast", summary: "Restaurant operations and offer references." },
+  { id: "buildinglink", label: "BuildingLink", summary: "Resident welcome paths and property context." },
+  { id: "opentable", label: "OpenTable", summary: "Reservation links and dining profiles." },
+  { id: "eventbrite", label: "Eventbrite", summary: "Event registration and schedule details." },
+  { id: "stripe", label: "Stripe", summary: "Secure billing and membership references." },
+  { id: "square", label: "Square", summary: "Commerce links and redemption references." },
+  { id: "hubspot", label: "HubSpot", summary: "Partner leads and campaign context." },
+  { id: "salesforce", label: "Salesforce", summary: "Account and campaign references." },
+  { id: "google", label: "Google", summary: "Business Profile, Calendar, and Maps." },
+  { id: "shopify", label: "Shopify", summary: "Product links and checkout handoff." },
+  { id: "zapier", label: "Zapier", summary: "Workflow triggers and notifications." },
+];
+
 function getPartnerTypeLabel(value) {
   return PARTNER_TYPES.find((type) => type.value === value)?.label || value;
 }
@@ -147,16 +162,15 @@ function getAuthFailureMessage(code) {
   return value.replace(/_/g, " ");
 }
 
-async function startPartnerSignIn(navigate, signInPartner, { email, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
+async function startPartnerSignIn(navigate, signInPartner, { email, password, accountType, returnTo = DEFAULT_PARTNER_RETURN_PATH } = {}) {
   if (!canUseProductionAccountAccess()) return null;
   const partnerType = normalizePartnerType(accountType) || "property";
   const accessLabel = getAccessTypeLabel(partnerType) || "Downtown Perks";
-  const normalizedEmail = String(email || "").trim().toLowerCase();
-  const isAdminEmail = getSuperAdminEmails().includes(normalizedEmail);
-  const destination = isAdminEmail && returnTo === DEFAULT_PARTNER_RETURN_PATH ? "/admin-studio/command-center" : returnTo;
+  const destination = returnTo;
   const redirectPath = `/auth/callback?audience=partner&returnTo=${encodeURIComponent(destination)}`;
   const session = await signInPartner({
     email,
+    password,
     organization_name: `${accessLabel} Access`,
     contact_name: email || accessLabel,
     partner_type: partnerType,
@@ -164,7 +178,10 @@ async function startPartnerSignIn(navigate, signInPartner, { email, accountType,
     role: getAccessRoleForType(partnerType),
     redirectPath,
   });
-  if (session?.type === "partner") navigate(destination);
+  if (session?.type === "authenticated") {
+    const role = String(session.user?.role || "").toLowerCase();
+    navigate(["platform_admin", "super_admin"].includes(role) ? "/admin-studio/command-center" : destination);
+  }
   return session;
 }
 
@@ -181,7 +198,7 @@ function toPricingPartnerType(value) {
 }
 
 const accessActionClass =
-  "dp-partner-access-action inline-flex min-h-11 items-center justify-start gap-2 border-0 bg-transparent px-0 py-2 text-[13px] font-semibold normal-case tracking-normal text-[#0B1F33] shadow-none transition hover:text-[#B8963E] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:text-[#0B1F33]/40";
+  "dp-partner-access-action inline-flex min-h-[52px] items-center justify-center gap-2 border-0 px-5 py-3 text-[14px] font-semibold normal-case tracking-normal shadow-none transition-transform active:scale-95 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50";
 
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
@@ -214,6 +231,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const pricingPartnerType = toPricingPartnerType(form.partner_type);
   const availablePlans = useMemo(() => getPlansForPartnerType(pricingPartnerType), [pricingPartnerType]);
   const [selectedPlanId, setSelectedPlanId] = useState(initialPlan);
+  const [funnelStage, setFunnelStage] = useState(initialType ? 1 : 0);
+  const [selectedIntegrationIds, setSelectedIntegrationIds] = useState([]);
   const selectedPlan = availablePlans.find((plan) => plan.id === selectedPlanId) || availablePlans[0] || null;
   const selectedModules = PRICING_MODULES.filter((module) => selectedModuleIds.includes(module.id));
   const annualAddOnTotal = selectedModules.filter((module) => module.billing === "Annual add-on").reduce((sum, module) => sum + module.price, 0);
@@ -226,6 +245,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
   const [submissionState, setSubmissionState] = useState(callbackError ? "error" : "idle");
   const [submissionMessage, setSubmissionMessage] = useState(getAuthFailureMessage(callbackError));
   const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
   const [signInType, setSignInType] = useState(
     SIGN_IN_ACCESS_TYPES.some((type) => type.value === initialType) ? initialType : "property",
   );
@@ -320,6 +340,8 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       selected_plan: selectedPlan?.id || "",
       selected_plan_label: selectedPlan?.label || "",
       selected_modules: selectedModuleIds,
+      selected_integrations: selectedIntegrationIds,
+      onboarding_stage: FUNNEL_STAGES[funnelStage],
       campaign_interest: campaignInterest,
       reporting_needs: reportingNeeds,
       recurring_annual_total: annualEstimate,
@@ -344,6 +366,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           planInterest: selectedPlan?.label || "Partner account registration",
           selectedPlan: selectedPlan?.label || "Partner account registration",
           selectedAddOns: selectedModules.map((module) => module.label).join(", "),
+          selectedIntegrations: selectedIntegrationIds.map((id) => FUNNEL_INTEGRATIONS.find((item) => item.id === id)?.label).filter(Boolean).join(", "),
           estimatedTotal: firstYearEstimate == null ? "Custom" : firstYearEstimate,
           recurringAnnualTotal: annualEstimate == null ? "Custom" : annualEstimate,
           firstYearEstimate: firstYearEstimate == null ? "Custom" : firstYearEstimate,
@@ -404,21 +427,22 @@ export default function PartnerAccess({ mode = "sign-in" }) {
       setSubmissionMessage(PRODUCTION_ACCOUNT_ACCESS_MESSAGE);
       return;
     }
-    if (!signInEmail && !user?.email) {
-      setSubmissionState("error");
-      setSubmissionMessage("Enter the email for this account before requesting sign-in access.");
+  if ((!signInEmail && !user?.email) || !signInPassword) {
+    setSubmissionState("error");
+    setSubmissionMessage("Enter your workspace email and password.");
       return;
     }
     setSubmissionState("submitting");
     setSubmissionMessage("");
     const session = await startPartnerSignIn(navigate, signInPartner, {
-      email: signInEmail || user?.email || "account@downtownperks.local",
-      accountType: signInType,
+    email: signInEmail || user?.email || "",
+    password: signInPassword,
+    accountType: signInType,
       returnTo: requestedReturnTo,
     });
-    if (session?.type === "partner") return;
-    setSubmissionState(session?.type === "link_sent" ? "success" : "error");
-    setSubmissionMessage(session?.message || "Check your email for the secure sign-in link.");
+  if (session?.type === "authenticated") return;
+  setSubmissionState("error");
+  setSubmissionMessage(session?.message || "We could not sign you in with those credentials.");
   }
 
   return (
@@ -428,7 +452,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           <button
             type="button"
             onClick={() => navigate("/partners")}
-            className="dp-partner-back-button inline-flex items-center justify-center text-[#0B1F33]/68 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="dp-partner-back-button inline-flex min-h-[52px] min-w-[52px] items-center justify-center text-[#0B1F33]/68 transition-transform active:scale-95"
             aria-label="Back to partners"
             title="Back to partners"
           >
@@ -438,7 +462,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
 
         <section className="dp-partner-access-grid grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="dp-partner-access-copy">
-            <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
+            <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {isSignUp ? "Partner access" : "Downtown Perks access"}
             </p>
             <h1 className="dp-partner-access-title mt-4 max-w-xl font-heading font-medium text-[#0B1F33]">
@@ -469,99 +493,261 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </div>
           </div>
 
-          <div className="dp-partner-access-panel border border-[#0B1F33]/[0.08] bg-white/88 p-5">
+          <div className="dp-partner-access-panel bg-white p-2">
             {isSignUp ? (
-              <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
-                <div className="dp-partner-access-form-head">
-                  <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Sign up</p>
+              <form onSubmit={handleSubmit} className="dp-partner-access-form dp-partner-signup-wizard space-y-0">
+
+                {/* ── Head ─────────────────────────────────────────────────── */}
+                <div className="dp-partner-access-form-head dp-signup-head">
+                  <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner onboarding</p>
                   <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
-                    Confirm your partner setup
+                    {FUNNEL_STAGES[funnelStage]}
                   </h2>
                 </div>
 
-                <section className="dp-partner-access-setup dp-partner-access-setup-editor" aria-label="Selected plan">
-                  <div className="dp-partner-access-setup-head">
-                    <p className="dp-partner-access-setup-label">Your selection</p>
-                    <strong>{!hasPartnerType ? "Choose a plan" : firstYearEstimate == null ? "Custom setup" : `${formatCurrency(firstYearEstimate)} first year`}</strong>
-                  </div>
-                  <div className="dp-partner-access-setup-fields">
-                    <label>
-                      <span>Partner type</span>
-                      <select
-                        className="dp-partner-access-control"
-                        value={form.partner_type}
-                        onChange={(event) => selectPartnerType(event.target.value)}
-                      >
-                        <option value="">Choose partner type</option>
-                        {PARTNER_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
-                      </select>
-                    </label>
-                  </div>
-                  <p className="dp-partner-access-plan-summary"><strong>{selectedPlan?.label || "Choose a plan"}</strong>{selectedModules.length ? ` · ${selectedModules.length} optional service${selectedModules.length === 1 ? "" : "s"}` : ""}</p>
-                  <Link className="dp-partner-access-edit-plan" to="/pricing">Change plan or add optional support</Link>
-                  <dl>
-                    <div>
-                      <dt>Annual estimate</dt>
-                      <dd>{annualEstimate == null ? "Custom" : `${formatCurrency(annualEstimate)}/year`}</dd>
+                {/* ── Progress bar ─────────────────────────────────────────── */}
+                <div className="dp-signup-progress-bar" aria-label={`Step ${funnelStage + 1} of ${FUNNEL_STAGES.length}`} role="progressbar" aria-valuenow={funnelStage + 1} aria-valuemin={1} aria-valuemax={FUNNEL_STAGES.length}>
+                  {FUNNEL_STAGES.map((stage, index) => (
+                    <span key={stage} data-active={index === funnelStage} data-complete={index < funnelStage} aria-hidden="true" />
+                  ))}
+                </div>
+                <ol className="dp-partner-funnel-progress sr-only" aria-label="Partner onboarding progress">
+                  {FUNNEL_STAGES.map((stage, index) => (
+                    <li key={stage} data-active={index === funnelStage} data-complete={index < funnelStage}>
+                      <span>{index + 1}</span><small>{stage}</small>
+                    </li>
+                  ))}
+                </ol>
+
+                {/* ── Stage 0: Category ─────────────────────────────────────── */}
+                {funnelStage === 0 ? (
+                  <section className="dp-signup-stage" aria-labelledby="partner-category-title">
+                    <h3 id="partner-category-title" className="dp-signup-stage-heading">Choose your partner category</h3>
+                    <p className="dp-signup-stage-lede">This shapes the plans, tools, and workspace we recommend.</p>
+                    <div className="dp-partner-type-grid" role="radiogroup" aria-label="Partner category">
+                      {PARTNER_TYPES.filter((type) => type.value !== "resident").map((type) => (
+                        <button
+                          key={type.value}
+                          type="button"
+                          role="radio"
+                          aria-checked={form.partner_type === type.value}
+                          data-active={form.partner_type === type.value}
+                          onClick={() => selectPartnerType(type.value)}
+                          className="dp-partner-type-card"
+                        >
+                          <span>{type.section}</span>
+                          <strong>{type.label}</strong>
+                          <small>{type.summary}</small>
+                        </button>
+                      ))}
                     </div>
-                    {oneTimeTotal ? <div><dt>One-time support</dt><dd>{formatCurrency(oneTimeTotal)}</dd></div> : null}
-                  </dl>
-                </section>
-
-                <PartnerAccessField label="Organization name" value={form.organization_name} onChange={(value) => updateField("organization_name", value)} required />
-                <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
-                <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
-                <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
-
-                <div>
-                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">Launch timing</label>
-                  <select
-                    value={form.timeline}
-                    onChange={(event) => updateField("timeline", event.target.value)}
-                    className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
-                  >
-                    {TIMELINES.map((timeline) => (
-                      <option key={timeline} value={timeline}>{timeline}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <PartnerAccessField label="Website" type="url" value={form.website} onChange={(value) => updateField("website", value)} />
-
-                <div>
-                  <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">What should we help you make happen?</label>
-                  <textarea
-                    rows={4}
-                    value={form.bio}
-                    onChange={(event) => updateField("bio", event.target.value)}
-                    className="dp-partner-access-control w-full resize-none border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
-                    placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
-                  />
-                </div>
-
-                {submissionMessage ? (
-                  <p
-                    className={`text-[12px] leading-5 ${
-                      submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
-                    }`}
-                    role="status"
-                  >
-                    {submissionMessage}
-                  </p>
+                  </section>
                 ) : null}
 
-                <button
-                  type="submit"
-                  disabled={submissionState === "submitting"}
-                  className={`${accessActionClass} dp-acquisition-primary`}
-                >
-                  {saved ? <Check className="h-4 w-4 text-[#BFA46A]" /> : <UserPlus className="h-4 w-4 text-[#BFA46A]" />}
-                  {submissionState === "submitting" ? "Sending" : saved ? "Registration sent" : "Submit setup request"}
-                </button>
+                {/* ── Stage 1: Plan ─────────────────────────────────────────── */}
+                {funnelStage === 1 ? (
+                  <section className="dp-signup-stage" aria-label="Annual plan selection">
+                    <h3 className="dp-signup-stage-heading">Choose your annual plan</h3>
+                    <p className="dp-signup-stage-lede">Select the presence level that matches your footprint.</p>
+                    {availablePlans.length ? (
+                      <div className="dp-signup-plan-list" role="radiogroup" aria-label="Annual plan">
+                        {availablePlans.map((plan) => (
+                          <button
+                            key={plan.id}
+                            type="button"
+                            role="radio"
+                            aria-checked={selectedPlan?.id === plan.id}
+                            data-active={selectedPlan?.id === plan.id}
+                            onClick={() => setSelectedPlanId(plan.id)}
+                            className="dp-signup-plan-row"
+                          >
+                            <span className="dp-signup-plan-row-info">
+                              <strong>{plan.tier}</strong>
+                              <small>{plan.bestFor}</small>
+                            </span>
+                            <span className="dp-signup-plan-row-price">
+                              <em>{plan.annualPrice == null ? "Custom" : formatCurrency(plan.annualPrice)}</em>
+                              <small>{plan.annualPrice == null ? "Enterprise" : "Annually"}</small>
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="dp-signup-stage-lede">Go back and choose a partner category first.</p>
+                    )}
+                    <div className="dp-partner-access-setup-fields" style={{ marginTop: "16px" }}>
+                      <label>
+                        <span className="dp-partner-access-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner type</span>
+                        <select
+                          className="dp-partner-access-control"
+                          value={form.partner_type}
+                          onChange={(event) => selectPartnerType(event.target.value)}
+                        >
+                          <option value="">Choose partner type</option>
+                          {PARTNER_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
+                        </select>
+                      </label>
+                    </div>
+                  </section>
+                ) : null}
+
+                {/* ── Stage 2: Integrations / Add-ons ──────────────────────── */}
+                {funnelStage === 2 ? (
+                  <section className="dp-signup-stage" aria-labelledby="partner-integrations-title">
+                    <h3 id="partner-integrations-title" className="dp-signup-stage-heading">Add support, if useful</h3>
+                    <p className="dp-signup-stage-lede">Select optional add-ons or integrations. You can add these later.</p>
+                    <div className="dp-signup-addons-list">
+                      {PRICING_MODULES.slice(0, 8).map((module) => (
+                        <label key={module.id} className="dp-signup-addon-row" data-active={selectedModuleIds.includes(module.id)}>
+                          <span className="dp-signup-addon-info">
+                            <strong>{module.label}</strong>
+                            <small>{module.billing}</small>
+                          </span>
+                          <span className="dp-signup-addon-right">
+                            <em>{formatCurrency(module.price)}</em>
+                            <input
+                              type="checkbox"
+                              checked={selectedModuleIds.includes(module.id)}
+                              onChange={() => setSelectedModuleIds((current) =>
+                                current.includes(module.id)
+                                  ? current.filter((id) => id !== module.id)
+                                  : [...current, module.id]
+                              )}
+                            />
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <div className="dp-signup-integration-section">
+                      <p className="dp-signup-stage-lede" style={{ marginTop: "20px" }}>Connect tools you already use (optional).</p>
+                      <div className="dp-partner-funnel-options dp-partner-funnel-integrations" style={{ marginTop: "8px" }}>
+                        {FUNNEL_INTEGRATIONS.map((integration) => (
+                          <button
+                            key={integration.id}
+                            type="button"
+                            aria-pressed={selectedIntegrationIds.includes(integration.id)}
+                            data-active={selectedIntegrationIds.includes(integration.id)}
+                            onClick={() => setSelectedIntegrationIds((current) =>
+                              current.includes(integration.id)
+                                ? current.filter((id) => id !== integration.id)
+                                : [...current, integration.id]
+                            )}
+                          >
+                            <strong>{integration.label}</strong>
+                            <small>{integration.summary}</small>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+                ) : null}
+
+                {/* ── Stage 3: Account ──────────────────────────────────────── */}
+                {funnelStage === 3 ? (
+                  <div className="dp-partner-funnel-account dp-signup-stage">
+                    <h3 className="dp-signup-stage-heading">Finalize your account</h3>
+                    <p className="dp-signup-stage-lede">Enter your organization details to activate your workspace.</p>
+
+                    <div className="dp-signup-account-fields">
+                      <PartnerAccessField label="Organization name" value={form.organization_name} onChange={(value) => updateField("organization_name", value)} required />
+                      <PartnerAccessField label="Contact name" value={form.contact_name} onChange={(value) => updateField("contact_name", value)} />
+                      <PartnerAccessField label="Email" type="email" value={form.email} onChange={(value) => updateField("email", value)} required />
+                      <PartnerAccessField label="Phone" type="tel" value={form.phone} onChange={(value) => updateField("phone", value)} />
+
+                      <div>
+                        <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Launch timing</label>
+                        <select
+                          value={form.timeline}
+                          onChange={(event) => updateField("timeline", event.target.value)}
+                          className="dp-partner-access-control w-full"
+                        >
+                          {TIMELINES.map((timeline) => (
+                            <option key={timeline} value={timeline}>{timeline}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <PartnerAccessField label="Website" type="url" value={form.website} onChange={(value) => updateField("website", value)} />
+
+                      <div>
+                        <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What should we help you make happen?</label>
+                        <textarea
+                          rows={4}
+                          value={form.bio}
+                          onChange={(event) => updateField("bio", event.target.value)}
+                          className="dp-partner-access-control w-full resize-none"
+                          placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
+                        />
+                      </div>
+                    </div>
+
+                    {/* Summary box */}
+                    {selectedPlan ? (
+                      <div className="dp-signup-summary">
+                        <div className="dp-signup-summary-row">
+                          <span>{selectedPlan.label}</span>
+                          <strong>{selectedPlan.annualPrice == null ? "Custom" : `${formatCurrency(selectedPlan.annualPrice)}/year`}</strong>
+                        </div>
+                        {selectedModules.length ? (
+                          <div className="dp-signup-summary-row">
+                            <span>{selectedModules.length} optional {selectedModules.length === 1 ? "service" : "services"}</span>
+                            <strong>{formatCurrency(annualAddOnTotal + oneTimeTotal)}</strong>
+                          </div>
+                        ) : null}
+                        <div className="dp-signup-summary-row dp-signup-summary-total">
+                          <span>Total due today</span>
+                          <strong>{firstYearEstimate == null ? "Custom" : formatCurrency(firstYearEstimate)}</strong>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {submissionMessage ? (
+                      <p
+                        className={`text-[12px] leading-5 mt-3 ${
+                          submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
+                        }`}
+                        role="status"
+                      >
+                        {submissionMessage}
+                      </p>
+                    ) : null}
+
+                    <button
+                      type="submit"
+                      disabled={submissionState === "submitting"}
+                      className="dp-signup-submit-btn"
+                    >
+                      {saved ? <Check className="h-4 w-4" aria-hidden="true" /> : <UserPlus className="h-4 w-4" aria-hidden="true" />}
+                      <span>{submissionState === "submitting" ? "Sending..." : saved ? "Registration sent" : "Activate workspace"}</span>
+                      {!saved && submissionState !== "submitting" ? <ArrowRight className="h-4 w-4" aria-hidden="true" /> : null}
+                    </button>
+                  </div>
+                ) : null}
+
+                {/* ── Stage navigation ─────────────────────────────────────── */}
+                <div className="dp-signup-actions">
+                  <div className="dp-signup-actions-back">
+                    {funnelStage > 0
+                      ? <button type="button" className="dp-signup-back-btn" onClick={() => setFunnelStage((stage) => stage - 1)}>Back</button>
+                      : <Link to="/partners" className="dp-signup-back-btn">Cancel</Link>
+                    }
+                  </div>
+                  {funnelStage < FUNNEL_STAGES.length - 1 ? (
+                    <button
+                      type="button"
+                      className="dp-signup-continue-btn"
+                      disabled={funnelStage === 0 && !hasPartnerType}
+                      onClick={() => setFunnelStage((stage) => Math.min(stage + 1, FUNNEL_STAGES.length - 1))}
+                    >
+                      <span>Continue</span>
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  ) : null}
+                </div>
               </form>
             ) : (
               <div className="dp-partner-access-signin">
-                <p className="dp-partner-access-eyebrow text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Account access</p>
+                <p className="dp-partner-access-eyebrow text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Account access</p>
                 <h2 className="dp-partner-access-form-title font-body mt-1 text-[18px] font-semibold leading-snug tracking-normal text-[#0B1F33]">
                   Choose your access path
                 </h2>
@@ -570,7 +756,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                 </p>
                 <section className="dp-partner-type-section dp-partner-signin-type-section mt-5" aria-labelledby="signin-type-heading">
                   <div className="dp-partner-type-section-head">
-                    <p className="dp-partner-access-label">Access type</p>
+                    <p className="dp-partner-access-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Access type</p>
                     <h3 id="signin-type-heading">Who is signing in?</h3>
                   </div>
                   <div className="dp-partner-type-grid dp-partner-signin-type-grid" role="radiogroup" aria-label="Account access type">
@@ -597,15 +783,23 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     })}
                   </div>
                 </section>
-                <PartnerAccessField
-                  label={`${selectedSignInType?.label || "Account"} email`}
-                  type="email"
-                  placeholder="name@organization.com"
-                  value={signInEmail}
-                  onChange={setSignInEmail}
-                  required={accountAccessEnabled}
-                />
-                {submissionMessage ? (
+  <PartnerAccessField
+  label={`${selectedSignInType?.label || "Account"} email`}
+  type="email"
+  placeholder="name@organization.com"
+  value={signInEmail}
+  onChange={setSignInEmail}
+  required={accountAccessEnabled}
+  />
+  <PartnerAccessField
+  label="Password"
+  type="password"
+  placeholder="Enter your workspace password"
+  value={signInPassword}
+  onChange={setSignInPassword}
+  required={accountAccessEnabled}
+  />
+  {submissionMessage ? (
                   <p
                     className={`text-[12px] leading-5 ${
                       submissionState === "error" ? "text-[#8A4B12]" : "text-[#0B1F33]/68"
@@ -623,7 +817,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     className={`${accessActionClass} dp-acquisition-primary`}
                   >
                     <LogIn className="h-4 w-4 text-[#BFA46A]" />
-                    {submissionState === "submitting" ? "Sending link" : accountAccessEnabled ? "Send sign-in link" : "Sign-in unavailable"}
+                    {submissionState === "submitting" ? "Signing in" : accountAccessEnabled ? "Sign in to workspace" : "Sign-in unavailable"}
                   </button>
                   <Link
                     to="/partners/sign-up"
@@ -656,7 +850,7 @@ function AdminWorkspaceChooser({ user, onOpenWorkspace }) {
 
   return (
     <section className="dp-admin-workspace-access" aria-labelledby="admin-workspace-access-title">
-      <p className="dp-partner-access-eyebrow">Administrator access</p>
+      <p className="dp-partner-access-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Administrator access</p>
       <h2 id="admin-workspace-access-title">Choose a workspace.</h2>
       <p>
         Signed in as {user?.full_name || "Meg Dude"}{user?.email ? ` · ${user.email}` : ""}. Each selection is stored as an admin workspace context before opening.
@@ -712,14 +906,14 @@ function formatSetupText(value) {
 function PartnerAccessField({ label, value, onChange, type = "text", required = false, placeholder = "" }) {
   return (
     <div>
-      <label className="dp-partner-access-label mb-1.5 block text-[11px] font-medium uppercase tracking-[0.1em] text-[#0B1F33]/55">{label}</label>
+      <label className="dp-partner-access-label mb-1.5 block text-[#0B1F33]/55 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</label>
       <input
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+        className="dp-partner-access-control w-full min-h-[52px] bg-[#F2F2F7] px-4 py-3 text-[14px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35"
       />
     </div>
   );

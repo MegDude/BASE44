@@ -34,8 +34,12 @@
   grid-template-columns: minmax(104px, .42fr) minmax(0, 1fr) !important;
   gap: 10px !important;
   width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
   margin: 0 !important;
   padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
   border-top: 1px solid rgba(11, 31, 51, .09) !important;
   background: rgba(255, 255, 255, .97) !important;
   box-shadow: 0 -8px 24px rgba(11, 31, 51, .05) !important;

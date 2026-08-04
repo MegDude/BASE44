@@ -20,7 +20,7 @@ export default function CampaignConcept({
     <section ref={ref} className="py-10 px-5 border-t border-border/40">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-8">
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-3">Campaign concept</span>
+          <span className="text-primary/70 block mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign concept</span>
           <h2 className="font-heading text-2xl md:text-3xl font-medium leading-[1.2] tracking-normal">{name}</h2>
         </motion.div>
 
@@ -29,15 +29,15 @@ export default function CampaignConcept({
           <motion.div initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.1 }}>
             <div className="space-y-6">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">Objective</div>
+                <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Objective</div>
                 <p className="text-[14px] text-foreground">{objective}</p>
               </div>
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">Target audience</div>
+                <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Target audience</div>
                 <p className="text-[14px] text-foreground">{audience}</p>
               </div>
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">Offer / value</div>
+                <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Offer / value</div>
                 <p className="text-[14px] text-foreground">{offer}</p>
               </div>
             </div>
@@ -47,7 +47,7 @@ export default function CampaignConcept({
           <motion.div initial={{ opacity: 0, x: 16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.15 }}>
             <div className="space-y-6">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">Primary placements</div>
+                <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Primary placements</div>
                 <div className="space-y-2">
                   {placements?.map((p, i) => (
                     <div key={i} className="flex items-center gap-2">
@@ -58,7 +58,7 @@ export default function CampaignConcept({
                 </div>
               </div>
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">Key metrics</div>
+                <div className="text-muted-foreground mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Key metrics</div>
                 <div className="grid grid-cols-2 gap-3">
                   {keyMetrics?.map((m, i) => (
                     <div key={i} className="p-3 rounded-lg bg-primary/5 border border-primary/20">

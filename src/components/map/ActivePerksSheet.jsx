@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Navigation, Search, Star, X } from "lucide-react";
+import { Navigation, Star, X } from "lucide-react";
 import { NativeDrawerShell } from "@/components/map/NativeDrawerShell";
 import { nextDrawerState, normalizeDrawerState } from "@/lib/map/nativeDrawerState";
 
@@ -18,18 +18,17 @@ function PerkRowMedia({ image, pin }) {
 
   return (
     <span className="dp-active-perk-media" aria-hidden="true">
-      {source ? (
-        <img
-          className={`dp-active-perk-hero${fallbackImage ? " is-logo-fallback" : ""}`}
-          src={source}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          onError={(event) => {
-            event.currentTarget.hidden = true;
-          }}
-        />
-      ) : null}
+      <img
+        className={`dp-active-perk-hero${fallbackImage ? " is-logo-fallback" : ""}`}
+        src={source}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        onError={(event) => {
+          event.currentTarget.hidden = true;
+          event.currentTarget.closest(".dp-active-perk-media")?.setAttribute("data-media-unavailable", "true");
+        }}
+      />
     </span>
   );
 }
@@ -44,7 +43,12 @@ function perkAvailabilityLabel(item, redeemed) {
   return "Available now";
 }
 
-const PERK_FILTERS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+// Canonical mobile perk categories, in required display order. Kept as a flat
+// label list so the shared Perks/Saved/Nearby mobile contract can verify the
+// category set, then decorated with optional icons for the data-driven rail.
+const PERK_FILTER_LABELS = ["Active", "Nearby", "Dining", "Fitness", "Wellness", "Events", "Saved"];
+const PERK_FILTER_ICONS = { Nearby: Navigation, Saved: Star };
+const PERK_FILTERS = PERK_FILTER_LABELS.map((label) => ({ label, icon: PERK_FILTER_ICONS[label] ?? null }));
 const CATEGORY_TERMS = {
   Dining: ["dining", "restaurant", "food", "coffee", "cafe", "bar", "drink"],
   Fitness: ["fitness", "gym", "workout", "sport", "yoga", "pilates"],
@@ -68,7 +72,7 @@ function PerkRow({ item, saved, redeemed, onOpen, onRedeem, onSave }) {
   const expiry = formatExpiry(item.expiresAt);
   const availability = perkAvailabilityLabel(item, redeemed);
   return (
-    <article className="dp-active-perk-row dp-mobile-result-row" data-perk-state={availability.toLowerCase().replace(/[^a-z0-9]+/g, "-")} data-canonical-entity-id={item.id}>
+    <article className="dp-active-perk-row dp-mobile-result-row" role="listitem" data-perk-state={availability.toLowerCase().replace(/[^a-z0-9]+/g, "-")} data-canonical-entity-id={item.id}>
       <button
         id={`dp-active-perk-${item.focusKey}`}
         type="button"
@@ -117,10 +121,12 @@ export default function ActivePerksSheet({
   const safeState = normalizeDrawerState(drawerState, "list");
   const nextState = nextDrawerState(safeState, "list");
   const [selectedFilter, setSelectedFilter] = useState("Active");
-  const filteredItems = useMemo(
+  const matchingItems = useMemo(
     () => items.filter((item) => matchesPerkFilter(item, selectedFilter, savedIds)),
     [items, savedIds, selectedFilter],
   );
+  const filteredItems = matchingItems.length || selectedFilter === "Active" ? matchingItems : items;
+  const isCatalogFallback = selectedFilter !== "Active" && matchingItems.length === 0;
 
   return (
     <NativeDrawerShell
@@ -139,65 +145,64 @@ export default function ActivePerksSheet({
         if (node && initialScrollTop > 0 && node.scrollTop === 0) node.scrollTop = initialScrollTop;
       }}
       header={(
-        <>
+        <header className="dp-perks-drawer-header">
           <button
             type="button"
-            className="dp-active-perks-handle"
+            className="dp-perks-drawer-grabber"
             onClick={() => onDrawerStateChange(nextState)}
             aria-label={`Panel size: ${safeState}. Activate to change the panel height.`}
             aria-expanded={safeState === "expanded"}
           >
             <span aria-hidden="true" />
           </button>
-          <header className="dp-active-perks-header">
-            <div>
-              <p>Resident benefits</p>
-              <h2>Perks</h2>
-            </div>
-            <button type="button" className="dp-active-perks-close" onClick={onClose} aria-label="Close perks">
-              <X aria-hidden="true" />
-            </button>
-          </header>
-        </>
+          <div>
+            <span className="dp-perks-drawer-eyebrow">Resident benefits</span>
+            <h1 className="dp-perks-drawer-title">Perks</h1>
+            <span className="dp-perks-drawer-summary" aria-live="polite">
+              {filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"}
+            </span>
+          </div>
+          <button type="button" className="dp-perks-drawer-close" onClick={onClose} aria-label="Close perks">
+            <X aria-hidden="true" />
+          </button>
+        </header>
       )}
     >
       {safeState !== "peek" && (
-        <div>
-          <section className="dp-active-perks-intro" aria-label="Perks context">
-            <p>{selectedFilter === "Active" ? "Available near this map area" : `${selectedFilter} perks`}</p>
-            <strong aria-live="polite">{filteredItems.length} {filteredItems.length === 1 ? "offer" : "offers"}</strong>
-          </section>
+        <div className="dp-active-perks-body">
+          <p className="dp-active-perks-context dp-perks-drawer-context">
+            {selectedFilter === "Active"
+              ? "Available near this map area"
+              : isCatalogFallback
+                ? `No exact ${selectedFilter.toLowerCase()} matches yet — showing all active perks`
+                : `${selectedFilter} perks near you`}
+          </p>
           <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
-            {PERK_FILTERS.map((label, index) => (
+            {PERK_FILTERS.map(({ label, icon: Icon }) => (
               <button
                 key={label}
                 type="button"
                 aria-pressed={selectedFilter === label}
                 onClick={() => setSelectedFilter(label)}
               >
-                {index === 1 ? <Navigation aria-hidden="true" /> : index === 0 ? <Search aria-hidden="true" /> : null}
+                {Icon ? <Icon aria-hidden="true" /> : null}
                 <span>{label}</span>
               </button>
             ))}
           </div>
-          {filteredItems.length ? filteredItems.map((item) => (
-            <PerkRow
-              key={item.id}
-              item={item}
-              saved={savedIds.has(item.id)}
-              redeemed={redeemedIds.has(item.perkId) || redeemedIds.has(item.id)}
-              onOpen={onOpen}
-              onRedeem={onRedeem}
-              onSave={onSave}
-            />
-          )) : (
-            <div className="dp-active-perks-empty" role="status">
-              <strong>No {selectedFilter.toLowerCase()} perks found.</strong>
-              <span>Choose another filter or return to the map to explore a wider area.</span>
-              <button type="button" onClick={() => setSelectedFilter("Active")}>Show active perks</button>
-              <button type="button" onClick={onClose}>Back to map</button>
-            </div>
-          )}
+          <div className="dp-active-perks-collection" role="list">
+            {filteredItems.map((item) => (
+              <PerkRow
+                key={item.id}
+                item={item}
+                saved={savedIds.has(item.id)}
+                redeemed={redeemedIds.has(item.perkId) || redeemedIds.has(item.id)}
+                onOpen={onOpen}
+                onRedeem={onRedeem}
+                onSave={onSave}
+              />
+            ))}
+          </div>
         </div>
       )}
     </NativeDrawerShell>

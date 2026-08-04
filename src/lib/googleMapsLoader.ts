@@ -59,6 +59,10 @@ export function resetGoogleMapsLoaderForRetry() {
   }
 }
 
+export function preloadGoogleMaps() {
+  return loadGoogleMaps();
+}
+
 export function loadGoogleMaps(options: { libraries?: string[]; retry?: boolean } = {}) {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Google Maps can only load in the browser."));

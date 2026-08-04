@@ -77,7 +77,7 @@
   color: var(--dp-governance-gold);
   font-size: 11px;
   font-weight: 750;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 
@@ -185,7 +185,7 @@
   border-bottom: 1px solid var(--dp-governance-line);
 }
 .dp-governance-empty-section > svg { width: 20px; height: 20px; margin-top: 2px; color: var(--dp-governance-gold); }
-.dp-governance-empty-section small { color: var(--dp-governance-gold); font-size: 11px; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+.dp-governance-empty-section small { color: var(--dp-governance-gold); font-size: 11px; font-weight: 750; letter-spacing: normal; text-transform: uppercase; }
 .dp-governance-empty-section h2 { margin: 6px 0 0; font-size: 22px; line-height: 1.12; letter-spacing: -0.025em; }
 .dp-governance-empty-section p { margin: 8px 0 0; color: var(--dp-governance-muted); font-size: 14px; line-height: 1.5; }
 .dp-governance-empty-section a,

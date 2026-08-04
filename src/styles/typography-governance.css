@@ -318,7 +318,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   max-width: 100% !important;
   min-width: 0 !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
   hyphens: manual !important;
@@ -337,7 +337,7 @@ html body #root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 9.5px !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.055em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -508,7 +508,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   min-height: 38px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: none !important;
   color: #0B1F33 !important;
@@ -820,7 +820,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   max-width: 100% !important;
   min-width: 0 !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
   hyphens: manual !important;
@@ -839,7 +839,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 9.5px !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.055em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -859,7 +859,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 17px !important;
   font-weight: 660 !important;
   line-height: 1.18 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: pretty !important;
   -webkit-box-orient: vertical !important;
   -webkit-line-clamp: 2 !important;
@@ -879,7 +879,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 14px !important;
   font-weight: 640 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -895,7 +895,7 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 12px !important;
   font-weight: 420 !important;
   line-height: 1.42 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -910,14 +910,14 @@ html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 12.5px !important;
   font-weight: 640 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-campaign-row-copy small, .dp-campaign-row-copy em, .dp-campaign-status, .dp-campaign-visibility-card span) {
   font-size: 11px !important;
   font-weight: 560 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 @media (min-width: 700px) {
@@ -1010,7 +1010,7 @@ html body #root#root .dp-map-page.dp-map-page {
   background: #ffffff !important;
   color: var(--dp-map-text) !important;
   font-family: var(--dp-font-sans) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-x: hidden !important;
 }
 
@@ -1022,7 +1022,7 @@ html body #root#root .dp-map-page.dp-map-page *::after {
 
 html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, label, button, a, input, textarea, select, li, dd, dt) {
   font-family: var(--dp-font-sans) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left;
 }
 
@@ -1031,7 +1031,7 @@ html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, .dp-tab-title,
   -webkit-text-fill-color: var(--dp-map-text) !important;
   font-weight: var(--dp-weight-heading) !important;
   line-height: 1.16 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(p, li, dd, dt, .dp-map-panel-body-copy, .dp-map-panel-subtitle, .dp-destination-section-copy, .dp-destination-section-note, .dp-tab-subtitle, .dp-tab-row small, .dp-panel-row small, .dp-partner-feed-row small) {
@@ -1040,7 +1040,7 @@ html body #root#root .dp-map-page.dp-map-page :is(p, li, dd, dt, .dp-map-panel-b
   font-size: 13px !important;
   font-weight: var(--dp-weight-body) !important;
   line-height: 1.45 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map-panel-section-label, .dp-tab-eyebrow, .dp-destination-section-kicker, .dp-panel-header-title, .dp-card-credential-kicker, .dp-tab-signal, small) {
@@ -1049,7 +1049,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map
   font-size: 10px !important;
   font-weight: var(--dp-weight-label) !important;
   line-height: 1.25 !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -1148,10 +1148,10 @@ html body #root#root .dp-map-page.dp-map-page :is(
   .dp-console-chip
 ) {
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   line-height: 1.2 !important;
 }
@@ -1188,7 +1188,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-n
   -webkit-text-fill-color: var(--dp-map-faint) !important;
   font-size: 10.5px !important;
   font-weight: var(--dp-weight-medium) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-nav button[aria-pressed="true"] {
@@ -1407,7 +1407,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   max-width: none !important;
   margin: 0 !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -1583,7 +1583,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header.dp-resid
   font-size: clamp(23px, 6vw, 30px) !important;
   font-weight: 520 !important;
   line-height: 1.05 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header.dp-resident-tab-panel-header :is(p, strong) {
@@ -1591,7 +1591,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header.dp-resid
   color: #9a7a32 !important;
   font-size: 10px !important;
   font-weight: 560 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1.15 !important;
   text-transform: uppercase !important;
 }
@@ -1627,7 +1627,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-summary-grid.dp-saved-su
   font-size: 9.5px !important;
   font-weight: 560 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-summary-grid.dp-saved-summary-grid .dp-partner-summary-card strong {
@@ -1635,7 +1635,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-summary-grid.dp-saved-su
   font-size: clamp(18px, 5vw, 24px) !important;
   font-weight: 520 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-summary-grid.dp-saved-summary-grid .dp-partner-summary-card p {
@@ -1906,7 +1906,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: clamp(1rem, 4.2vw, 1.22rem) !important;
   font-weight: 700 !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   text-wrap: balance !important;
   overflow-wrap: normal !important;
@@ -1955,7 +1955,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: clamp(0.9rem, 3.6vw, 0.98rem) !important;
   line-height: 1.48 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   background: transparent !important;
 }
 
@@ -2137,7 +2137,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 0.88rem !important;
   font-weight: 700 !important;
   line-height: 1.15 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: normal !important;
 }
@@ -2161,7 +2161,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-style: normal !important;
   font-weight: 500 !important;
   line-height: 1.28 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow: hidden !important;
   -webkit-line-clamp: 3 !important;
@@ -2189,7 +2189,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
 /* Partner pages: global de-rounding, intake polish, and brand matrices */
 html body #root#root .dp-partner-page :is(button, a, input, textarea, select, [role="button"], [role="tab"]) {
   border-radius: 0 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-page :is(h1, h2, h3, h4, p, span, label, strong, small, dd, dt) {
@@ -2255,7 +2255,7 @@ html body #root#root .dp-partner-intake-controls h3 {
   font-size: 13px !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-intake-choice-rail {
@@ -2314,7 +2314,7 @@ html body #root#root .dp-partner-intake-form label > span {
   font-weight: 650 !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-intake-readout p {
@@ -2384,7 +2384,7 @@ html body #root#root .dp-brand-micro-label {
   font-size: 10px !important;
   font-weight: 650 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-brand-placement-panel h3 {
@@ -2416,7 +2416,7 @@ html body #root#root .dp-brand-placement-actions span {
   font-size: 11px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-brand-placement-actions strong {
@@ -2526,7 +2526,7 @@ html body #root#root .dp-brand-matrix-card dt {
   font-size: 10px !important;
   font-weight: 650 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-brand-measurement-table,
@@ -2554,7 +2554,7 @@ html body #root#root .dp-brand-pricing-row strong {
   font-size: 11px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-brand-measurement-row span,
@@ -2716,7 +2716,7 @@ html body #root#root :where(
   .dp-saved-downtown-panel
 ) :where(button, a, label, th, [class*="eyebrow"], [class*="label"], [class*="meta"], [class*="badge"], [class*="chip"]) {
   font-weight: var(--dp-weight-label) !important;
-  letter-spacing: 0.045em;
+  letter-spacing: normal;
 }
 
 html body #root#root .dp-map-page.dp-map-page :where(
@@ -2758,7 +2758,7 @@ html body #root#root .dp-map-page.dp-map-page :where(
 }
 
 html body #root#root :where([class*="tracking-"]) {
-  letter-spacing: 0.04em;
+  letter-spacing: normal;
 }
 
 html body #root#root :where(.tracking-tight, .tracking-[-0\\.01em], .tracking-[-0\\.02em], .tracking-[-0\\.03em], .tracking-[-0\\.04em]) {
@@ -2773,7 +2773,7 @@ html body #root#root :where(.tracking-tight, .tracking-[-0\\.01em], .tracking-[-
 
   html body #root#root :where(button, a, label, th, [class*="eyebrow"], [class*="label"], [class*="meta"], [class*="badge"], [class*="chip"]) {
     font-weight: 540 !important;
-    letter-spacing: 0.035em;
+    letter-spacing: normal;
   }
 }
 
@@ -2783,7 +2783,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage.d
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage.dp-fixed-story-stage .dp-fixed-story-copy.dp-fixed-story-copy :is(.dp-fixed-story-headline-row, .dp-fixed-story-headline-segment, .dp-fixed-story-line, .dp-fixed-story-headline-line) {
   font-family: var(--dp-font-story-serif) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   font-synthesis-weight: none !important;
 }
 
@@ -2853,7 +2853,7 @@ html body #root#root .dp-quick-search-eyebrow.dp-quick-search-eyebrow {
   font-size: 10px !important;
   font-weight: 650 !important;
   line-height: 1.1 !important;
-  letter-spacing: .13em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
@@ -2865,7 +2865,7 @@ html body #root#root .dp-quick-search-head.dp-quick-search-head h2 {
   font-size: clamp(20px, 5.1vw, 26px) !important;
   font-weight: 560 !important;
   line-height: 1.05 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -2891,7 +2891,7 @@ html body #root#root .dp-quick-search-close.dp-quick-search-close {
   min-width: 38px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
@@ -2909,7 +2909,7 @@ html body #root#root .dp-quick-search-input-wrap.dp-quick-search-input-wrap {
   min-height: 44px !important;
   padding: 0 12px !important;
   border: 1px solid rgba(11, 31, 51, .09) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(248, 247, 244, .9) !important;
 }
 
@@ -2938,7 +2938,7 @@ html body #root#root .dp-quick-search-section.dp-quick-search-section h3 {
   font-size: 10.5px !important;
   font-weight: 650 !important;
   line-height: 1.1 !important;
-  letter-spacing: .11em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, .5) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .5) !important;
@@ -2970,7 +2970,7 @@ html body #root#root .dp-quick-search-intent-rail.dp-quick-search-intent-rail bu
   max-width: 128px !important;
   padding: 0 10px !important;
   border: 1px solid rgba(11, 31, 51, .08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   box-shadow: none !important;
   font-size: 11.2px !important;
@@ -3256,7 +3256,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-cluster {
   min-height: 36px !important;
   padding: 0 !important;
   border: 1px solid rgba(191, 164, 106, 0.86) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
@@ -3364,7 +3364,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-summ
   font-size: clamp(22px, 5.7vw, 30px) !important;
   font-weight: 520 !important;
   line-height: 1.08 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-summary .dp-entity-dek,
@@ -3375,7 +3375,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-sect
   font-size: 13.5px !important;
   font-weight: 400 !important;
   line-height: 1.55 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, .72) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .72) !important;
 }
@@ -3411,7 +3411,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-business-contact-l
   font-weight: 650 !important;
   line-height: 1.1 !important;
   text-transform: uppercase !important;
-  letter-spacing: .11em !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, .46) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .46) !important;
 }
@@ -3459,7 +3459,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
@@ -3485,7 +3485,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip
   font-size: 12.5px !important;
   font-weight: 560 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -3495,7 +3495,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-local-service-chip
   font-size: 10.5px !important;
   font-weight: 500 !important;
   line-height: 1.25 !important;
-  letter-spacing: .02em !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, .52) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .52) !important;
 }
@@ -3527,7 +3527,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-event-summary .dp-
   font-size: clamp(22px, 5.7vw, 30px) !important;
   font-weight: 520 !important;
   line-height: 1.08 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-event-summary .dp-entity-dek,
@@ -3537,7 +3537,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-event-section p {
   font-size: 13.5px !important;
   font-weight: 400 !important;
   line-height: 1.55 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, .72) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .72) !important;
 }
@@ -3583,7 +3583,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-event-schedule-ite
   font-weight: 650 !important;
   line-height: 1.1 !important;
   text-transform: uppercase !important;
-  letter-spacing: .11em !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, .46) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, .46) !important;
 }
@@ -3672,7 +3672,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: inherit !important;
   font-weight: inherit !important;
   line-height: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
@@ -3805,7 +3805,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-weight: 650 !important;
   line-height: 1.1 !important;
   text-transform: uppercase !important;
-  letter-spacing: .13em !important;
+  letter-spacing: normal !important;
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
 }
@@ -3899,11 +3899,11 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-cta-footer.dp-fixed-story-cta-footer.dp-fixed-map-actions :is(a, button) {
   height: 38px !important;
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: .08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -3981,7 +3981,7 @@ html body #root#root .dp-splash-page :is(
 ) {
   font-family: var(--dp-font-story-serif) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   font-synthesis-weight: none;
 }
 
@@ -3995,7 +3995,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage .
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage .dp-fixed-story-copy h1.dp-fixed-story-headline .dp-fixed-story-headline-segment {
   font-family: var(--dp-font-story-serif) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   font-synthesis-weight: none;
 }
 
@@ -4186,7 +4186,7 @@ html body .dp-search-intent-label.dp-search-intent-label {
   font-size: 10px !important;
   font-weight: 540 !important;
   line-height: 1 !important;
-  letter-spacing: 0.13em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -4240,7 +4240,7 @@ html body .dp-search-intent-switch button {
   font-size: 10px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: 0.09em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -4471,7 +4471,7 @@ html body :is(
   font-size: 10.5px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: normal !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   transition: color 190ms ease, background 190ms ease, border-color 190ms ease, box-shadow 190ms ease, transform 190ms ease !important;
@@ -4647,7 +4647,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-inte
   font-size: 10px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: 0.13em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -4689,7 +4689,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-inte
   font-size: 10px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: 0.09em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -4815,7 +4815,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page section.dp-search-inte
   font-size: 11px !important;
   font-weight: 650 !important;
   line-height: 1.05 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-overflow: clip !important;
   white-space: normal !important;
@@ -5013,7 +5013,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   width: 34px !important;
   height: 3px !important;
   margin: 8px auto 2px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.18) !important;
 }
 
@@ -5035,7 +5035,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   white-space: nowrap !important;
   font-size: 9px !important;
   line-height: 1 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-panel-button:is(.dp-map-panel-button--secondary, .dp-map-panel-button--icon),
@@ -5050,7 +5050,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   background: rgba(11, 31, 51, 0.04) !important;
   box-shadow: none !important;
   font-size: 10.5px !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-toolbar .dp-map-panel-button--icon {
@@ -5085,7 +5085,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-eyebrow, .dp-map-panel-section-label, .dp-card-credential-kicker, .dp-card-credential-status) {
   font-size: 9px !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.11em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-title, .dp-card-credential-title, .dp-map-panel-section-title) {
@@ -5093,7 +5093,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.
   font-size: clamp(17px, 4.45vw, 21px) !important;
   font-weight: 520 !important;
   line-height: 1.08 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-subtitle, .dp-card-credential-copy, .dp-map-panel-body-copy, .dp-map-panel-small-note) {
@@ -5102,7 +5102,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.
   font-size: 12.5px !important;
   font-weight: 400 !important;
   line-height: 1.48 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential-header {
@@ -5190,7 +5190,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   box-shadow: none !important;
   font-size: 10.75px !important;
   line-height: 1 !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-map-sheet-action-footer :is(.dp-app-button, .dp-map-panel-button, button, a).dp-map-panel-button--primary {
@@ -5295,7 +5295,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 12.5px !important;
   font-weight: 560 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -5310,7 +5310,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 11px !important;
   font-weight: 400 !important;
   line-height: 1.35 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, 0.58) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.58) !important;
 }
@@ -5341,7 +5341,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet.dp-map-sheet--reside
   border-radius: 11px !important;
   font-size: 10.75px !important;
   line-height: 1 !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: normal !important;
   box-shadow: none !important;
 }
 
@@ -5396,7 +5396,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer .d
   font-size: 12.5px !important;
   font-weight: 560 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer .dp-partner-opportunity-item p {
@@ -5427,7 +5427,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer .d
   font-size: 10.75px !important;
   font-weight: 560 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -5517,7 +5517,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-drawer-actions :is(.dp
   font-size: 10.75px !important;
   font-weight: 560 !important;
   line-height: 1.15 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -5559,7 +5559,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer .d
   font-size: 10px !important;
   font-weight: 650 !important;
   line-height: 1.15 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.48) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
@@ -5588,13 +5588,13 @@ html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer .d
 html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel :is(h2, h3, strong),
 html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer :is(h2, h3, h4, strong) {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-partner-readable-panel :is(p, small, dd, dt, span, em),
 html body #root#root .dp-map-page.dp-map-page .dp-partner-intelligence-drawer :is(p, small, dd, dt, span, em, li) {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: anywhere !important;
 }
 
@@ -5655,7 +5655,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-bran
   white-space: nowrap !important;
   font-size: 13px !important;
   font-weight: 640 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -5675,7 +5675,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-menu
   -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
   font-size: 11px !important;
   font-weight: 620 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -5707,7 +5707,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-menu
   -webkit-text-fill-color: #0B1F33 !important;
   font-size: 12px !important;
   font-weight: 520 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -5755,7 +5755,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-type-
   -webkit-text-fill-color: rgba(11, 31, 51, 0.52) !important;
   font-size: 12px !important;
   font-weight: 560 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   white-space: nowrap !important;
 }
@@ -5844,7 +5844,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-examp
   font-size: 10px !important;
   font-weight: 650 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.45) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.45) !important;
@@ -5913,7 +5913,7 @@ html body #root#root .dp-partner-page .dp-property-detail-header span {
   font-size: 10px !important;
   font-weight: 680 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.48) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
@@ -5926,7 +5926,7 @@ html body #root#root .dp-partner-page .dp-property-detail-header h3 {
   font-size: clamp(18px, 5vw, 25px) !important;
   font-weight: 610 !important;
   line-height: 1.14 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -5939,7 +5939,7 @@ html body #root#root .dp-partner-page .dp-property-detail-section p {
   font-size: 13px !important;
   font-weight: 400 !important;
   line-height: 1.55 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: rgba(11, 31, 51, 0.66) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
 }
@@ -5990,7 +5990,7 @@ html body #root#root .dp-partner-page .dp-property-building-rail strong,
 html body #root#root .dp-partner-page .dp-property-chip-rail span,
 html body #root#root .dp-partner-page .dp-property-detail-actions a {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-page .dp-property-building-rail strong {
@@ -6072,7 +6072,7 @@ html body #root#root .dp-partner-page .dp-property-mini-map button {
   height: 12px !important;
   padding: 0 !important;
   border: 2px solid #ffffff !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   box-shadow: 0 8px 22px rgba(11, 31, 51, 0.14) !important;
 }
@@ -6105,7 +6105,7 @@ html body #root#root .dp-partner-page .dp-property-nearby-pin {
   max-width: 128px !important;
   padding: 5px 7px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.84) !important;
   color: rgba(11, 31, 51, 0.62) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
@@ -6143,7 +6143,7 @@ html body #root#root .dp-partner-page .dp-property-detail-header button {
   width: 30px !important;
   height: 30px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.045) !important;
   color: rgba(11, 31, 51, 0.58) !important;
 }
@@ -6163,7 +6163,7 @@ html body #root#root .dp-partner-page .dp-property-detail-section h4 {
   font-size: 12px !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-page .dp-property-chip-rail {
@@ -6189,7 +6189,7 @@ html body #root#root .dp-partner-page .dp-property-chip-rail span {
   min-height: 28px !important;
   padding: 6px 10px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.045) !important;
   color: rgba(11, 31, 51, 0.68) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.68) !important;
@@ -6214,7 +6214,7 @@ html body #root#root .dp-partner-page .dp-property-detail-actions a {
   min-height: 34px !important;
   padding: 8px 10px !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -6271,7 +6271,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 10px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -6282,7 +6282,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: clamp(18px, 5vw, 22px) !important;
   font-weight: 560 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.18 !important;
 }
 
@@ -6294,7 +6294,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-size: 13px !important;
   font-weight: 420 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.58 !important;
 }
 
@@ -6370,7 +6370,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: rgba(11, 31, 51, 0.52) !important;
   font-size: 10px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -6409,7 +6409,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: #0b1f33 !important;
   font-size: 10px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -6419,7 +6419,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: #0b1f33 !important;
   font-size: 17px !important;
   font-weight: 560 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.22 !important;
 }
 
@@ -6470,7 +6470,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   border-radius: 0 !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -6630,7 +6630,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 900px !important;
   font-size: 54px !important;
   line-height: 0.96 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline-row.dp-fixed-story-headline-row {
@@ -6643,7 +6643,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 100% !important;
   overflow-wrap: anywhere !important;
   word-break: normal !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-footer.dp-fixed-story-footer {
@@ -6822,7 +6822,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
 /* Final map icon lock: non-Legends pins use SVG category icons inside the existing circular pin. */
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo),
 html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge:not(:has(.dp-live-pin__legends-logo)) {
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo) .dp-live-pin__core,
@@ -6831,7 +6831,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin-badge:not(:has(.dp-liv
   align-items: center !important;
   justify-content: center !important;
   overflow: hidden !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-live-pin:not(.dp-live-pin--legends-logo) .dp-map-icon-svg,
@@ -6915,9 +6915,9 @@ html body #root#root :is(
   .rounded-xl,
   .rounded-2xl,
   .rounded-3xl,
-  .rounded-full,
+  .rounded-xl,
   [class*="rounded-["],
-  [class*="rounded-full"]
+  [class*="rounded-xl"]
 ):not(.dp-live-pin):not(.dp-live-pin *):not(.dp-map-pin-badge):not(.dp-map-pin-badge *):not(.leaflet-marker-icon):not(.leaflet-marker-icon *):not(.dp-collection-route-panel__actions *):not(.dp-perk-cta):not(.dp-panel-action):not(.dp-panel-action-text):not(.dp-map-panel-button):not(.dp-map-answer-action):not(img):not(video):not(canvas):not(svg) {
   border-radius: 0 !important;
 }
@@ -6936,12 +6936,12 @@ html body #root#root .dp-partner-home .dp-partner-label {
   font-family: Inter, system-ui, sans-serif !important;
   font-size: 10.5px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-home :is(h1, h2, h3) {
   font-family: Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-home .dp-partner-section-title {
@@ -6956,7 +6956,7 @@ html body #root#root .dp-partner-page .dp-property-partner-hero-title {
   font-size: clamp(31px, 7vw, 40px) !important;
   line-height: 1.08 !important;
   font-weight: 650 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -7036,7 +7036,7 @@ html body #root#root .dp-partner-access-page .dp-partner-access-grid {
 
 html body #root#root .dp-partner-access-page :is(.dp-partner-access-title, .dp-partner-access-form-title) {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
 }
@@ -7189,7 +7189,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-page-nav {
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-page-nav a,
 html body #root#root main.dp-pricing-page.dp-pricing-page :is(.dp-pricing-eyebrow, .dp-pricing-kicker, legend, label span, dt) {
   text-transform: none !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-page-nav a {
@@ -7285,7 +7285,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-button {
   color: #0B1F33 !important;
   font-size: 13px !important;
   font-weight: 650 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.1 !important;
   text-transform: none !important;
 }
@@ -7588,7 +7588,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page :is(
   .dp-pricing-summary *
 ) {
   text-transform: none !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-list span,
@@ -7693,7 +7693,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page :is(
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   text-transform: none !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-label,
@@ -7886,7 +7886,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   font-size: 15px !important;
   font-weight: 650 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-grid {
@@ -7915,7 +7915,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   font-size: 9.5px !important;
   font-weight: 720 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -7925,7 +7925,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   font-size: 13.5px !important;
   font-weight: 680 !important;
   line-height: 1.18 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card small {
@@ -7934,7 +7934,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   font-size: 11.5px !important;
   font-weight: 400 !important;
   line-height: 1.35 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-type-card[data-active="true"] {
@@ -7946,7 +7946,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-action {
   justify-content: flex-start !important;
   text-transform: none !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   font-size: 13px !important;
   font-weight: 650 !important;
 }
@@ -8362,7 +8362,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 82px !important;
   padding: 10px !important;
   border: 1px solid rgba(191, 164, 106, 0.42) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0b1f33 !important;
   color: #ffffff !important;
   text-align: center !important;
@@ -8375,7 +8375,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 10px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-core strong {
@@ -8383,7 +8383,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 11px !important;
   font-weight: 720 !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin {
@@ -8395,7 +8395,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 132px !important;
   padding: 6px 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.09) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.92) !important;
   color: #0b1f33 !important;
   box-shadow: 0 10px 24px rgba(11, 31, 51, 0.10) !important;
@@ -8408,7 +8408,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-visual-pin i {
   width: 7px !important;
   height: 7px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #c8a96a !important;
   box-shadow: 0 0 0 5px rgba(191, 164, 106, 0.14) !important;
 }
@@ -8450,7 +8450,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 10px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
@@ -8458,7 +8458,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 100% !important;
   font-size: 40px !important;
   line-height: 0.94 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-wrap: balance !important;
 }
@@ -8509,7 +8509,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 34px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
   color: #0b1f33 !important;
   box-shadow: none !important;
@@ -8640,7 +8640,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-width: 34px !important;
   min-height: 34px !important;
   padding: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-top-search.dp-story-top-search {
@@ -8903,7 +8903,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-height: 34px !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-mobile-actions.dp-story-mobile-actions .dp-story-top-search.dp-story-top-search {
@@ -9035,7 +9035,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
     margin: 0 0 7px !important;
     font-size: clamp(25px, 8.4vw, 34px) !important;
     line-height: 1.02 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     text-align: center !important;
     overflow: visible !important;
   }
@@ -9388,7 +9388,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
     margin: 0 !important;
     font-size: 30px !important;
     line-height: 1.04 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: normal !important;
     overflow: visible !important;
   }
 
@@ -9479,13 +9479,13 @@ html body #root#root .dp-map-page.dp-map-page {
   background: #ffffff !important;
   color: var(--dp-map-text) !important;
   font-family: var(--dp-font-sans) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-x: hidden !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, h5, h6, p, span, small, strong, em, label, button, a, input, textarea, select, li, dd, dt) {
   font-family: var(--dp-font-sans) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(h1, h2, h3, h4, .dp-tab-title, .dp-map-panel-title, .dp-destination-title, .dp-panel-title, .dp-card-credential-title) {
@@ -9509,7 +9509,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-map-panel-eyebrow, .dp-map
   font-size: 10px !important;
   font-weight: var(--dp-weight-label) !important;
   line-height: 1.25 !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-shell, .dp-map-panel, .dp-map-drawer-shell, .dp-destination-drawer, .dp-detail-drawer, .dp-pass-panel, .dp-resident-card-sheet, .dp-map-sheet, .dp-search-intent-console, .leaflet-popup-content-wrapper) {
@@ -9538,10 +9538,10 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-row, .dp-tab-row, .d
 
 html body #root#root .dp-map-page.dp-map-page :is(.dp-panel-action, .dp-panel-action-text, .dp-primary-action, .dp-tab-primary-action, .dp-tab-secondary-action, .dp-pass-action, .dp-entity-action, .dp-map-sheet-action-footer button, .dp-map-sheet-action-footer a, .dp-search-intent-console button, .dp-search-segment, .dp-console-chip) {
   min-height: 38px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   line-height: 1.2 !important;
 }
@@ -9715,7 +9715,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 12px !important;
   font-weight: var(--dp-weight-label) !important;
   line-height: 1 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-transform: uppercase !important;
 }
@@ -9737,7 +9737,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 52px !important;
   font-weight: 400 !important;
   line-height: 0.95 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   overflow: visible !important;
 }
@@ -9763,7 +9763,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: inherit !important;
   font-weight: 400 !important;
   line-height: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
@@ -9788,7 +9788,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 19px !important;
   font-weight: var(--dp-weight-heading) !important;
   line-height: 1.24 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   overflow: visible !important;
 }
@@ -9819,7 +9819,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: 16px !important;
   font-weight: var(--dp-weight-body) !important;
   line-height: 1.42 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   overflow: visible !important;
 }
@@ -9844,7 +9844,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 44px !important;
   min-width: 44px !important;
   min-height: 44px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-controls.dp-story-scene-controls > button:disabled {
@@ -9863,7 +9863,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   height: 8px !important;
   min-width: 8px !important;
   min-height: 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-story-scene-dots.dp-story-scene-dots button.is-active {
@@ -10142,14 +10142,14 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-kicker.dp-fixed-story-kicker {
   font-size: 13px !important;
   line-height: 1.05 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .dp-fixed-story-headline.dp-fixed-story-headline {
   gap: 0 !important;
   font-size: 58px !important;
   line-height: 0.96 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   padding-block: 0 4px !important;
   overflow: visible !important;
 }
@@ -10274,7 +10274,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   height: 4px !important;
   min-height: 4px !important;
   margin: 10px auto 8px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.14) !important;
 }
 
@@ -10316,7 +10316,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   min-height: var(--dp-control-height) !important;
   padding: 0 !important;
   border: 1px solid var(--dp-panel-border) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
   color: var(--dp-panel-text) !important;
   box-shadow: none !important;
@@ -10390,7 +10390,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 20px !important;
   font-weight: var(--dp-weight-heading) !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow: visible !important;
   text-overflow: clip !important;
@@ -10428,7 +10428,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 11px !important;
   font-weight: var(--dp-weight-medium) !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -10453,7 +10453,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   font-size: 13px !important;
   font-weight: var(--dp-weight-body) !important;
   line-height: 1.42 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -10533,12 +10533,12 @@ html body #root#root .dp-map-page.dp-map-page :is(
   min-height: 38px !important;
   min-width: 38px !important;
   padding: 0 14px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   font-family: var(--dp-font-sans) !important;
   font-size: 12px !important;
   font-weight: var(--dp-weight-medium) !important;
   line-height: 1.15 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   white-space: nowrap !important;
 }
@@ -10602,7 +10602,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button {
   font-size: 10.5px !important;
   font-weight: var(--dp-weight-medium) !important;
   line-height: 1.1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav button[aria-pressed="true"] {
@@ -10623,7 +10623,7 @@ html body #root#root .dp-map-page.dp-map-page :is(.dp-nav-activity-badge) {
   right: 8px !important;
   min-width: 16px !important;
   height: 16px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-panel-text) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -11023,7 +11023,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   max-width: none !important;
   margin: 0 !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -11236,7 +11236,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header h2 {
   font-size: clamp(22px, 5.8vw, 29px) !important;
   font-weight: 620 !important;
   line-height: 1.06 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header :is(p, strong) {
@@ -11245,7 +11245,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header :is(p, s
   font-size: 9.5px !important;
   font-weight: 620 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -11255,7 +11255,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-header span {
   font-size: 12px !important;
   font-weight: 400 !important;
   line-height: 1.38 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail.dp-saved-overview-rail {
@@ -11281,7 +11281,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail span {
   font-size: 10px !important;
   font-weight: 560 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   white-space: normal !important;
 }
@@ -11292,7 +11292,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail strong {
   font-size: 20px !important;
   font-weight: 620 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -11322,7 +11322,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved
   font-size: 13px !important;
   font-weight: 620 !important;
   line-height: 1.15 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved-collection-grid {
@@ -11376,7 +11376,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved
   font-size: 13px !important;
   font-weight: 620 !important;
   line-height: 1.16 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: anywhere !important;
 }
 
@@ -11386,7 +11386,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved
   font-size: 11px !important;
   font-weight: 400 !important;
   line-height: 1.28 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: anywhere !important;
   white-space: normal !important;
 }
@@ -11435,7 +11435,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-s
   font-size: 11px !important;
   font-weight: 560 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   white-space: nowrap !important;
 }
@@ -11494,7 +11494,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.
   font-size: clamp(17px, 4.45vw, 21px) !important;
   font-weight: 620 !important;
   line-height: 1.08 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.dp-map-panel-subtitle, .dp-card-credential-copy, .dp-map-panel-body-copy, .dp-map-panel-small-note) {
@@ -11502,7 +11502,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card :is(.
   font-size: 12px !important;
   font-weight: 400 !important;
   line-height: 1.45 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-card-credential::before,
@@ -11543,7 +11543,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-sheet--resident-card .dp-m
   font-size: 10.75px !important;
   font-weight: 560 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   white-space: nowrap !important;
 }
@@ -11698,7 +11698,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-overview-rail span {
   font-size: 11px !important;
   font-weight: 560 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -11744,7 +11744,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel .dp-saved
 
 html body #root#root .dp-map-page.dp-map-page .dp-saved-downtown-panel :is(.dp-saved-ask-section button, .dp-saved-action-row button) {
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.055) !important;
   box-shadow: none !important;
 }
@@ -11952,7 +11952,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-bottom-nav.dp-map-bottom-n
   font-size: 10px !important;
   font-weight: 560 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-transform: none !important;
   white-space: nowrap !important;
@@ -12085,7 +12085,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-info-guide-hero h2 {
   font-size: clamp(2rem, 7vw, 3.5rem) !important;
   font-weight: 600 !important;
   line-height: 0.94 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -12094,7 +12094,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-shared-info-panel :is(article 
   color: var(--dp-muted) !important;
   -webkit-text-fill-color: var(--dp-muted) !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: anywhere !important;
 }
 
@@ -12136,7 +12136,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-info-guide-help button {
   font-size: 0.82rem !important;
   font-weight: 780 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   white-space: normal !important;
 }
@@ -12229,7 +12229,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-info-guide-faq summary {
   -webkit-text-fill-color: var(--dp-ink) !important;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
   font-weight: 800 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-info-guide-tips > div {
@@ -12411,7 +12411,7 @@ html body #root#root .dp-map-page.dp-map-page .leaflet-marker-pane .dp-map-clust
   height: 36px !important;
   min-width: 36px !important;
   min-height: 36px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
@@ -12565,7 +12565,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   font-size: clamp(48px, 9.4vw, 116px) !important;
   font-weight: 780 !important;
   line-height: 0.9 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-wrap: balance !important;
   overflow-wrap: anywhere !important;
@@ -12592,7 +12592,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-width: 0 !important;
   font: inherit !important;
   line-height: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
   word-break: normal !important;
@@ -12609,7 +12609,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) :
   min-width: 0 !important;
   margin: 0 auto !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -12691,7 +12691,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   max-width: 100% !important;
   min-height: 42px !important;
   height: 42px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 @media (max-width: 640px) {
@@ -12856,7 +12856,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin {
   min-height: 36px !important;
   max-width: 36px !important;
   max-height: 36px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #BFA46A !important;
   border: 3px solid #BFA46A !important;
@@ -12908,7 +12908,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin.is-pulsing::before {
   content: "" !important;
   position: absolute !important;
   inset: 4px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(191, 164, 106, 0.28) !important;
   transform: scale(1) !important;
   opacity: 0.55 !important;
@@ -12960,7 +12960,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-map-pin.is-saved::after {
   bottom: -2px !important;
   width: 10px !important;
   height: 10px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   border: 2px solid #FFFFFF !important;
 }
@@ -13004,7 +13004,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-google-map-cluster {
   height: 42px !important;
   min-width: 42px !important;
   min-height: 42px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B3E31 !important;
   color: #FFFFFF !important;
   border: 2px solid #BFA46A !important;
@@ -13049,7 +13049,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-stop__number {
   right: -8px !important;
   width: 18px !important;
   height: 18px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   display: grid !important;
   place-items: center !important;
   background: #BFA46A !important;
@@ -13101,7 +13101,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-route-panel__header
   margin: 0 !important;
   color: #BFA46A !important;
   font: 700 10px/1.2 Inter, system-ui, sans-serif !important;
-  letter-spacing: .12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -13117,7 +13117,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-route-panel h2 {
   margin: 8px 0 4px !important;
   color: #0B1F33 !important;
   font: 700 18px/1.12 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-collection-route-panel__description {
@@ -13198,7 +13198,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-collection-route-panel__stops 
   place-items: center !important;
   width: 22px !important;
   height: 22px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   color: #0B3E31 !important;
   font: 700 10px/1 Inter, system-ui, sans-serif !important;
@@ -13372,7 +13372,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-legends-residential-drawer .dp
 html body #root#root .dp-map-page.dp-map-page .dp-legends-residential-drawer .dp-legends-inquiry-intro {
   color: rgba(11, 31, 51, 0.68) !important;
   font: 500 13px/1.65 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-legends-brand-card {
@@ -13473,7 +13473,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-legends-nearby-card em {
   color: #BFA46A !important;
   font: 700 10px/1 Inter, system-ui, sans-serif !important;
   font-style: normal !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -13733,10 +13733,10 @@ html body #root#root .dp-map-page.dp-map-page :is(
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   padding: 7px 11px !important;
   font: 760 11.5px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-decoration: none !important;
   white-space: normal !important;
@@ -13856,7 +13856,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-daa-video-section-head h3 {
   color: #0B1F33 !important;
   font-size: 15px !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-daa-video-rail {
@@ -13895,7 +13895,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-daa-video-card :is(strong, spa
   display: block !important;
   min-width: 0 !important;
   overflow-wrap: anywhere !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page .dp-daa-video-card strong {
@@ -13937,7 +13937,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   padding: 7px 11px !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.06) !important;
   font: 760 11.5px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: none !important;
   white-space: normal !important;
@@ -14001,7 +14001,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   padding: 5px 9px !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 5px 12px rgba(11, 31, 51, 0.04) !important;
   font: 740 10.75px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-decoration: none !important;
   text-transform: none !important;
@@ -14067,7 +14067,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   padding: 7px 11px !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.06) !important;
   font: 760 11.5px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-decoration: none !important;
   text-transform: none !important;
@@ -14131,7 +14131,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   padding: 6px 9px !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.06) !important;
   font: 760 11px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
   white-space: nowrap !important;
 }
@@ -14166,7 +14166,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   display: inline-flex !important;
   border-radius: 7px !important;
   text-transform: none !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   transform: none !important;
 }
 
@@ -14191,7 +14191,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
   font: 780 9.5px/1.05 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -14204,7 +14204,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
   font: 820 13px/1.12 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -14217,7 +14217,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-collection-route-p
   -webkit-text-fill-color: rgba(255, 255, 255, 0.78) !important;
   font: 650 10.5px/1.05 Inter, system-ui, sans-serif !important;
   font-style: normal !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -14295,14 +14295,14 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-daa-art-image-card
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   font: 780 12px/1.15 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-daa-art-image-card span {
   color: rgba(11, 31, 51, 0.66) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.66) !important;
   font: 620 11px/1.3 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
 }
 
@@ -14310,7 +14310,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-daa-action-primary
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
   font: 780 10.5px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -14359,7 +14359,7 @@ html body #root#root .dp-map-page .dp-event-detail-drawer .dp-editorial-hero-act
   border-radius: 7px !important;
   padding: 8px 11px !important;
   font: 760 11.5px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -14455,7 +14455,7 @@ html body #root#root .dp-os-status-grid span,
 html body #root#root .dp-os-mobile-frame__body article span {
   color: #8A6B2E !important;
   font: 800 10px/1.2 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -14463,7 +14463,7 @@ html body #root#root .dp-os-studio-hero h1 {
   max-width: 760px !important;
   color: #0B1F33 !important;
   font: 650 34px/1.03 var(--font-heading, Georgia, serif) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-os-studio-hero p,
@@ -14554,7 +14554,7 @@ html body #root#root .dp-os-wire-card h2 {
   margin-top: 5px !important;
   color: #0B1F33 !important;
   font: 650 22px/1.15 var(--font-heading, Georgia, serif) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-os-active-panel button {
@@ -15163,7 +15163,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-drawer-handle,
   height: 3px !important;
   margin: 0 auto 8px !important;
   flex-shrink: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.16) !important;
 }
 
@@ -15236,7 +15236,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
 html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-tab-header p, .dp-resident-tab-panel-header p, .dp-tab-eyebrow, .dp-map-directory-eyebrow) {
   margin: 0 0 4px !important;
   font: 700 10px/1.2 Inter, sans-serif !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.56) !important;
 }
@@ -15285,7 +15285,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-row,
 html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-directory-context, .dp-legends-result-meta) {
   display: block !important;
   font: 700 10px/1.2 Inter, sans-serif !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   color: rgba(11, 31, 51, 0.52) !important;
   white-space: nowrap !important;
@@ -15396,7 +15396,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-pin, .dp-c
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pin-navy) !important;
   color: var(--dp-pin-gold) !important;
   border: 1.5px solid var(--dp-pin-gold) !important;
@@ -15417,7 +15417,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(.dp-map-cluster, .
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pin-navy) !important;
   color: #FFFFFF !important;
   border: 1.5px solid var(--dp-pin-gold) !important;
@@ -15495,7 +15495,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
     inset 0 1px 0 rgba(255, 255, 255, 0.82),
     0 8px 18px rgba(11, 31, 51, 0.055) !important;
   font: 650 11px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: none !important;
   white-space: nowrap !important;
@@ -15556,7 +15556,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page :is(
   -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
   box-shadow: none !important;
   font: 450 12px/1.25 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -15610,7 +15610,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
     inset 0 1px 0 rgba(255, 255, 255, 0.84),
     0 8px 18px rgba(11, 31, 51, 0.055) !important;
   font: 650 11px/1.1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: none !important;
   white-space: nowrap !important;
@@ -15647,7 +15647,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
   -webkit-text-fill-color: rgba(11, 31, 51, 0.76) !important;
   box-shadow: none !important;
   font: 450 12px/1.25 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -15669,7 +15669,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-pane
   font-size: 12px !important;
   font-weight: 450 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: left !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -15701,7 +15701,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
   font: 720 9.5px/1.1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -15710,7 +15710,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   font: 620 16px/1.18 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -15721,7 +15721,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-size: 12.25px !important;
   font-weight: 400 !important;
   line-height: 1.45 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-perk-stat-grid {
@@ -15750,7 +15750,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-size: 14px !important;
   font-weight: 650 !important;
   line-height: 1.12 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -15780,7 +15780,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-size: 13.5px !important;
   font-weight: 620 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: anywhere !important;
 }
 
@@ -15791,7 +15791,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-size: 11.5px !important;
   font-weight: 400 !important;
   line-height: 1.4 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-perk-offer-card em {
@@ -15800,7 +15800,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   min-height: 22px !important;
   padding: 0 8px !important;
   border: 1px solid rgba(15, 90, 67, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(15, 90, 67, 0.08) !important;
   color: #0F5A43 !important;
   -webkit-text-fill-color: #0F5A43 !important;
@@ -15808,7 +15808,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-style: normal !important;
   font-weight: 720 !important;
   line-height: 1 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -15833,7 +15833,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   top: 0.58em !important;
   width: 5px !important;
   height: 5px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
 }
 
@@ -15865,7 +15865,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel .dp-partner-per
   font-size: 10px !important;
   font-weight: 700 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-decoration: none !important;
   text-transform: none !important;
@@ -15937,7 +15937,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   font: 700 12px/1.2 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-drawer-control, .dp-drawer-icon-control, .dp-map-panel-icon-button, .dp-panel-close) {
@@ -16029,7 +16029,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: #BFA46A !important;
   -webkit-text-fill-color: #BFA46A !important;
   font: 760 10px/1.1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -16040,7 +16040,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   font-size: clamp(24px, 6.4vw, 32px) !important;
   font-weight: 720 !important;
   line-height: 1.04 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -16048,14 +16048,14 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   color: #0B1F33 !important;
   -webkit-text-fill-color: #0B1F33 !important;
   font: 650 16px/1.22 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-entity-subtitle, .dp-entity-context, .dp-destination-section-copy, .dp-destination-section-note, .dp-map-panel-body-copy, .dp-map-panel-subtitle, .dp-partner-intelligence-section p, .dp-survey-intelligence-layer p, .dp-partner-ask-section p) {
   color: rgba(11, 31, 51, 0.64) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.64) !important;
   font: 500 14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.dp-map-drawer-shell :is(.dp-primary-action-row, .dp-secondary-action-row, .dp-destination-action-row, .dp-partner-action-row, .dp-partner-secondary-action-row, .dp-survey-action-row, .dp-daa-action-panel, .dp-neighborhood-actions) {
@@ -16098,7 +16098,7 @@ html body #root#root .dp-map-page.dp-map-page aside.dp-map-panel.dp-panel-shell.
   -webkit-text-fill-color: #0B1F33 !important;
   box-shadow: none !important;
   font: 700 10.5px/1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-decoration: none !important;
   text-transform: none !important;
@@ -16286,7 +16286,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   margin: 0 !important;
   padding: 3px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.82) !important;
   box-shadow: 0 10px 28px rgba(11, 31, 51, 0.08) !important;
   backdrop-filter: blur(18px) !important;
@@ -16303,7 +16303,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 28px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: rgba(11, 31, 51, 0.72) !important;
   -webkit-text-fill-color: rgba(11, 31, 51, 0.72) !important;
@@ -16342,7 +16342,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page:not(.is-intro-active) .
   min-height: 5px !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.2) !important;
   box-shadow: none !important;
 }
@@ -16492,7 +16492,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-close {
   max-height: 34px !important;
   padding: 0 !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.72) !important;
 }
@@ -16520,7 +16520,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-eyebrow {
   text-align: center !important;
   font-size: 10px !important;
   font-weight: 800 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   color: #9A7A2E !important;
 }
 
@@ -16605,7 +16605,7 @@ html body #root#root .dp-map-page.dp-map-page .dp-resident-qr-meta code {
   overflow-wrap: anywhere !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 @media (max-width: 420px) {
@@ -16689,7 +16689,7 @@ html body #root#root .dp-map-page.dp-map-page :is(
   align-items: center !important;
   justify-content: center !important;
   justify-self: center !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-map-page.dp-map-page :is(
@@ -16733,7 +16733,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-section-he
   color: #0B1F33 !important;
   font-size: clamp(31px, 4.6vw, 54px) !important;
   font-weight: 640 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.03 !important;
 }
 
@@ -16743,7 +16743,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-kicker {
   color: #9A7A2E !important;
   font-size: 10.5px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
 }
 
@@ -16788,7 +16788,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: 11px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -16833,7 +16833,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary-pl
   color: #0B1F33 !important;
   font-size: 14.5px !important;
   font-weight: 720 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.22 !important;
 }
 
@@ -16907,7 +16907,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-resident-a
   color: #0B1F33 !important;
   font-size: clamp(20px, 2.8vw, 28px) !important;
   font-weight: 680 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.14 !important;
 }
 
@@ -16940,7 +16940,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail
   gap: 2px !important;
   padding: 9px 12px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   text-align: left !important;
@@ -17090,7 +17090,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-selected :
   min-height: 32px !important;
   padding: 7px 10px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: 11.5px !important;
@@ -17114,7 +17114,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   box-shadow: none !important;
   font-size: 12px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1.1 !important;
   text-transform: uppercase !important;
 }
@@ -17198,7 +17198,7 @@ html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-
   margin-top: 0 !important;
   font-size: clamp(36px, 5vw, 58px) !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-partner-access-page.dp-partner-access-page .dp-partner-access-lede {
@@ -17396,7 +17396,7 @@ html body #root#root .dp-resident-access-eyebrow {
   color: #9A7A2E !important;
   font-size: 10.5px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -17407,7 +17407,7 @@ html body #root#root .dp-resident-access-copy h1 {
   color: #0B1F33 !important;
   font-size: clamp(38px, 6vw, 76px) !important;
   font-weight: 620 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 0.98 !important;
 }
 
@@ -17499,7 +17499,7 @@ html body #root#root .dp-resident-access-fields label > span {
   color: rgba(11, 31, 51, 0.72) !important;
   font-size: 11px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1.2 !important;
   text-transform: uppercase !important;
 }
@@ -17677,7 +17677,7 @@ html body #root#root .dp-resident-access-qr code {
   color: #0B1F33 !important;
   font-size: 12px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-os-resident-admin {
@@ -17785,7 +17785,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(11px, 1.1vw, 13px) !important;
   font-weight: 740 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: normal !important;
   line-height: 1.15 !important;
   text-transform: uppercase !important;
 }
@@ -17801,7 +17801,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   font-family: var(--dp-font-story-serif) !important;
   font-size: clamp(42px, 7.4vw, 72px) !important;
   font-weight: 420 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 0.94 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -17829,7 +17829,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   margin: 0 !important;
   font: inherit !important;
   font-weight: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: inherit !important;
   text-shadow: none !important;
   white-space: normal !important;
@@ -17853,7 +17853,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(17px, 2vw, 22px) !important;
   font-weight: 500 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.36 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -17878,7 +17878,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-stage[d
   font: inherit !important;
   font-size: clamp(14.5px, 1.45vw, 17px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.58 !important;
   text-align: center !important;
   text-wrap: pretty !important;
@@ -17990,7 +17990,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
   min-height: 34px !important;
   padding: 0 12px 0 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.9) !important;
   color: rgba(11, 31, 51, 0.66) !important;
   box-shadow: 0 16px 38px rgba(11, 31, 51, 0.075) !important;
@@ -17998,7 +17998,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 11px !important;
   font-weight: 720 !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   animation: dp-story-pin-float 5.6s ease-in-out infinite !important;
 }
@@ -18007,7 +18007,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__pin i {
   width: 10px !important;
   height: 10px !important;
   border: 2px solid #BFA46A !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: 0 0 0 4px rgba(191, 164, 106, 0.12) !important;
 }
@@ -18071,7 +18071,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-to
   width: 9px !important;
   height: 9px !important;
   border: 2px solid #BFA46A !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-tabs {
@@ -18086,7 +18086,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ta
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.07) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: rgba(11, 31, 51, 0.58) !important;
   font-size: 10px !important;
@@ -18116,7 +18116,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ma
   right: 18px !important;
   top: 52% !important;
   height: 2px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: linear-gradient(90deg, transparent, rgba(191, 164, 106, 0.86), transparent) !important;
   transform: rotate(-9deg) !important;
 }
@@ -18126,7 +18126,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__device-ma
   width: 12px !important;
   height: 12px !important;
   border: 2px solid #FFFFFF !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   box-shadow: 0 8px 18px rgba(11, 31, 51, 0.16) !important;
 }
@@ -18192,7 +18192,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient::
   position: absolute !important;
   inset: 14% 10% 18% !important;
   border: 1px solid rgba(11, 31, 51, 0.055) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   transform: rotate(-7deg) !important;
 }
 
@@ -18204,7 +18204,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient-c
   justify-content: center !important;
   padding: 0 13px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.82) !important;
   color: rgba(11, 31, 51, 0.58) !important;
   box-shadow: 0 18px 44px rgba(11, 31, 51, 0.055) !important;
@@ -18212,7 +18212,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__ambient-c
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 11px !important;
   font-weight: 680 !important;
-  letter-spacing: 0.02em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
 }
 
@@ -18253,7 +18253,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__kicker {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(10.5px, 1vw, 12.5px) !important;
   font-weight: 780 !important;
-  letter-spacing: 0.13em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
 }
@@ -18269,7 +18269,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__headline 
   font-family: var(--dp-font-story-serif), Inter, Georgia, "Times New Roman", serif !important;
   font-size: clamp(46px, 7.6vw, 76px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 0.92 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -18295,7 +18295,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__headline-
   display: inline !important;
   color: inherit !important;
   font: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: inherit !important;
   white-space: normal !important;
 }
@@ -18318,7 +18318,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__meaning {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(16px, 1.7vw, 21px) !important;
   font-weight: 520 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.38 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -18343,7 +18343,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__supportin
   font: inherit !important;
   font-size: clamp(14.5px, 1.35vw, 17px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.58 !important;
   text-wrap: pretty !important;
 }
@@ -18361,7 +18361,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__controls 
   gap: 10px !important;
   padding: 5px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.86) !important;
   box-shadow: 0 18px 44px rgba(11, 31, 51, 0.10) !important;
   backdrop-filter: blur(20px) !important;
@@ -18375,7 +18375,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__controls 
   align-items: center !important;
   justify-content: center !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   color: #0B1F33 !important;
   box-shadow: none !important;
@@ -18407,13 +18407,13 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__progress 
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 10px !important;
   font-weight: 760 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root .dp-splash-page.dp-fixed-story-page .dp-story-os__progress div {
   height: 2px !important;
   overflow: hidden !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: rgba(11, 31, 51, 0.1) !important;
 }
 
@@ -18495,7 +18495,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.1) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #0B1F33 !important;
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
@@ -18503,7 +18503,7 @@ html body #root#root .dp-splash-page.dp-fixed-story-page .dp-fixed-story-footer.
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 11px !important;
   font-weight: 820 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   padding: 0 18px !important;
   margin: 0 !important;
@@ -18665,7 +18665,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-titl
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 14.5px !important;
   font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.22 !important;
 }
 
@@ -18675,7 +18675,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-copy
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 13px !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.48 !important;
 }
 
@@ -18697,7 +18697,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-guide-eyeb
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 10.5px !important;
   font-weight: 800 !important;
-  letter-spacing: 0.13em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
 }
@@ -18708,7 +18708,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-deta
   font-family: var(--dp-font-story-serif), Inter, Georgia, "Times New Roman", serif !important;
   font-size: clamp(30px, 5vw, 42px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
 }
 
@@ -18732,7 +18732,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-deta
   color: #BFA46A !important;
   font-size: 11px !important;
   font-weight: 800 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
 }
@@ -19092,7 +19092,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-os__meta 
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 11px !important;
   font-weight: 720 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
 }
 
@@ -19128,7 +19128,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(10px, 1.2vw, 12px) !important;
   font-weight: 760 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
 }
@@ -19144,7 +19144,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: var(--dp-font-story-serif), Inter, Georgia, "Times New Roman", serif !important;
   font-size: clamp(48px, 8.4vw, 104px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 0.92 !important;
   text-align: center !important;
 }
@@ -19168,7 +19168,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   min-width: 0 !important;
   color: inherit !important;
   font: inherit !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: inherit !important;
   white-space: normal !important;
 }
@@ -19191,7 +19191,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(15.5px, 1.55vw, 20px) !important;
   font-weight: 500 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.48 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -19215,7 +19215,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font: inherit !important;
   font-size: clamp(14.5px, 1.25vw, 17px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.62 !important;
   text-wrap: balance !important;
 }
@@ -19233,7 +19233,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   gap: 9px !important;
   padding: 4px !important;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   box-shadow: none !important;
   transform: translateX(-50%) !important;
@@ -19359,7 +19359,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page .dp-story-skip-link
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
@@ -19381,7 +19381,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   align-items: center !important;
   justify-content: center !important;
   border: 1px solid rgba(11, 31, 51, 0.12) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
   color: #0B1F33 !important;
   opacity: 1 !important;
@@ -19409,7 +19409,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 10px !important;
   font-weight: 720 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   line-height: 1 !important;
 }
 
@@ -19589,7 +19589,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(15.5px, 1.55vw, 20px) !important;
   font-weight: 500 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.48 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -19627,7 +19627,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(15.5px, 1.55vw, 20px) !important;
   font-weight: 500 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.48 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -19641,7 +19641,7 @@ html body #root#root main.dp-splash-page.dp-fixed-story-page:not(.is-intro-activ
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: clamp(14.5px, 1.25vw, 17px) !important;
   font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.62 !important;
   text-align: center !important;
   text-wrap: balance !important;
@@ -19843,7 +19843,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-saved-downtown-pan
   font-size: 11px !important;
   font-weight: 650 !important;
   line-height: 1.16 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   text-wrap: balance !important;
   white-space: normal !important;
@@ -19997,7 +19997,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-hero h2
   font-size: clamp(26px, 7vw, 34px) !important;
   font-weight: 620 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   -webkit-box-orient: vertical !important;
   -webkit-line-clamp: 2 !important;
   overflow: hidden !important;
@@ -20029,7 +20029,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-media {
   font-size: 10px !important;
   font-weight: 720 !important;
   line-height: 1 !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
   overflow-wrap: anywhere !important;
 }
@@ -20072,7 +20072,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-help bu
   font-size: 11px !important;
   font-weight: 700 !important;
   line-height: 1.14 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-align: center !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
@@ -20122,7 +20122,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel 
   font-size: 9.5px !important;
   font-weight: 760 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -20132,7 +20132,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-shared-info-panel 
   -webkit-text-fill-color: rgba(11, 31, 51, 0.62) !important;
   font-size: 12px !important;
   line-height: 1.36 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
 }
@@ -20181,7 +20181,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page .dp-info-guide-faq sum
   font-size: 12px !important;
   font-weight: 760 !important;
   line-height: 1.25 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
 }
@@ -20345,7 +20345,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-production-r
   color: #BFA46A;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: normal;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -20355,7 +20355,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-production-r
   color: #0B1F33;
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1.25;
 }
 
@@ -20366,7 +20366,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-production-r
   color: rgba(11, 31, 51, 0.64);
   font-size: 12.5px;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1.55;
 }
 
@@ -20390,7 +20390,7 @@ html body #root#root .dp-partner-page.dp-partner-workspace-page .dp-production-r
   color: #0B1F33;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1.25;
 }
 
@@ -20492,7 +20492,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-field-grid
   margin-bottom: 12px !important;
   color: rgba(11, 31, 51, 0.58) !important;
   font-size: 10.5px !important;
-  letter-spacing: 0.11em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-partner-type-grid {
@@ -20556,7 +20556,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-card
   right: 10px !important;
   width: 7px !important;
   height: 7px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pricing-accent) !important;
   box-shadow: 0 0 0 3px rgba(191, 164, 106, 0.16) !important;
 }
@@ -20596,7 +20596,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-option-lis
   align-self: start !important;
   padding: 6px 8px !important;
   border: 1px solid rgba(11, 31, 51, 0.08) !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: var(--dp-pricing-surface-soft) !important;
   font-size: 12px !important;
 }
@@ -20649,7 +20649,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-addon-rail > button {
   min-height: 44px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #FFFFFF !important;
 }
 
@@ -20781,7 +20781,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page {
 
 html body #root#root main.dp-campaigns-page.dp-campaigns-page :is(h1, h2, h3, p, span, small, strong, em, a, button, label, input, select, textarea, dt, dd, li) {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaigns-header {
@@ -21102,7 +21102,7 @@ html body #root#root main.dp-campaigns-page.dp-campaigns-page .dp-campaign-previ
   content: "" !important;
   width: 12px !important;
   height: 12px !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: #BFA46A !important;
   box-shadow: 0 0 0 6px rgba(191, 164, 106, 0.16) !important;
 }
@@ -21558,7 +21558,7 @@ html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-
 html body #root#root .dp-map-page.dp-map-page.dp-map-page aside.dp-map-panel.dp-detail-drawer .dp-partner-intelligence-drawer .dp-partner-opportunity-item :is(h4, p, small, strong) {
   margin: 0 !important;
   max-width: 100% !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   white-space: normal !important;
   overflow-wrap: anywhere !important;
 }
@@ -21892,7 +21892,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 14px !important;
   line-height: 1.45 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -21904,7 +21904,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   .dp-resident-card-sheet
 ) :is(h1, h2, h3, h4, h5, p, span, strong, small, em, b, li, dt, dd, button, a, input, textarea, select, label) {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -21933,7 +21933,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 10px !important;
   font-weight: 680 !important;
   line-height: 1.15 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -21957,7 +21957,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 24px !important;
   font-weight: 680 !important;
   line-height: 1.08 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-wrap: balance !important;
 }
 
@@ -21988,7 +21988,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 16px !important;
   font-weight: 640 !important;
   line-height: 1.22 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22027,7 +22027,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 13px !important;
   font-weight: 420 !important;
   line-height: 1.48 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22050,7 +22050,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 14px !important;
   font-weight: 620 !important;
   line-height: 1.28 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22073,7 +22073,7 @@ html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
   font-size: 13px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root#root .dp-map-page.dp-map-page.dp-map-page :is(
@@ -22633,7 +22633,7 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :i
   max-width: 100% !important;
   min-width: 0 !important;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
   hyphens: manual !important;
@@ -22652,7 +22652,7 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page :i
   font-size: 9.5px !important;
   font-weight: 700 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.055em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -22754,7 +22754,7 @@ html body #root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-pa
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: 12px !important;
   background: transparent !important;
   box-shadow: none !important;
   color: #0B1F33 !important;
@@ -23050,7 +23050,7 @@ html body #root#root#root#root#root#root#root#root .dp-map-page.dp-map-page.dp-m
   font-size: 10px !important;
   font-weight: 680 !important;
   line-height: 1.1 !important;
-  letter-spacing: 0.045em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -23283,7 +23283,7 @@ html body #root#root#root#root#root#root .dp-map-page.dp-map-page.dp-map-page .d
   font-size: 13px !important;
   font-weight: 680 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 

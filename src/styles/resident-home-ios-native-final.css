@@ -181,7 +181,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   color: #9a7a3e !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  letter-spacing: .045em !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: uppercase !important;
 }
@@ -221,7 +221,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   color: #9a7a3e !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  letter-spacing: .045em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -338,7 +338,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   color: #9a7a3e !important;
   font-size: 10px !important;
   font-weight: 700 !important;
-  letter-spacing: .045em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -472,7 +472,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   box-shadow: none !important;
   font-size: 10px !important;
   font-weight: 670 !important;
-  letter-spacing: .085em !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   text-transform: uppercase !important;
 }

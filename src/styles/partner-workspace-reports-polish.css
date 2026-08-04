@@ -37,7 +37,7 @@ html body #root .dp-partner-workspace-page .dp-workspace-report-label {
   font-size: 10.5px !important;
   font-weight: 620 !important;
   line-height: 1 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 
@@ -79,7 +79,7 @@ html body #root .dp-partner-workspace-page .dp-partner-workspace-button {
   font-size: 12.5px !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-decoration: none !important;
   white-space: nowrap !important;
 }
@@ -252,7 +252,7 @@ html body #root .dp-partner-workspace-page .dp-workspace-report-readout dt {
   -webkit-text-fill-color: rgba(11, 31, 51, 0.48) !important;
   font-size: 10.5px !important;
   font-weight: 620 !important;
-  letter-spacing: 0.1em !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-partner-workspace-page .dp-workspace-report-readout dd {

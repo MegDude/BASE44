@@ -130,7 +130,7 @@ export function CanonicalDetailPanel({ model, saved, onSave, onPrimaryAction, on
         <>
           <DetailHero media={model.media} />
           <header className="dp-native-detail-panel__summary">
-            <p className="dp-native-detail-panel__eyebrow">{model.eyebrow}</p>
+            <p className="dp-native-detail-panel__eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{model.eyebrow}</p>
             <h2 id={model.titleId} title={model.title}>{model.title}</h2>
             {model.summary ? <p>{model.summary}</p> : null}
           </header>

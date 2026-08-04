@@ -48,7 +48,7 @@ body :is(
 ) {
   color: var(--dp-app-ink);
   font-family: var(--dp-app-font) !important;
-  letter-spacing: 0;
+  letter-spacing: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -100,7 +100,7 @@ body :is(
   [class*="font-serif"]
 ) {
   font-family: var(--dp-app-font) !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 body :is(
@@ -128,7 +128,7 @@ body :is(
 ) :where(h1, h2, h3, h4, .font-heading, .dp-panel-title, .dp-section-title, .dp-hero-title, .dp-destination-title, .dp-map-panel-title) {
   color: var(--dp-app-ink) !important;
   font-weight: 560 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   line-height: 1.12 !important;
   text-wrap: balance;
 }
@@ -454,7 +454,7 @@ body :is(
 .dp-pricing-page :where(h1, h2, h3, h4, .font-heading) {
   color: var(--dp-app-ink) !important;
   font-weight: 540 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 .dp-pricing-page :where(strong, b, .font-bold, .font-extrabold, .font-black) {
@@ -489,7 +489,7 @@ html body #root .dp-pricing-page.dp-pricing-page {
 html body #root .dp-pricing-page.dp-pricing-page :is(h1, h2, h3, h4, h5, h6, .font-heading, .font-serif) {
   font-family: var(--dp-app-font) !important;
   font-weight: 540 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root .dp-pricing-page.dp-pricing-page :is(strong, b, .font-bold, .font-extrabold, .font-black) {
@@ -526,7 +526,7 @@ html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-summary h3
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-custom-option-detail h3 {
   font-family: var(--dp-app-font) !important;
   font-weight: 540 !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
 }
 
 html body #root#root main.dp-pricing-page.dp-pricing-page .dp-pricing-calculator .dp-pricing-selected button,

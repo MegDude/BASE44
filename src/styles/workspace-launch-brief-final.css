@@ -22,7 +22,7 @@
   margin: 0 0 8px;
   color: #98793f;
   font: 650 11px/1.2 Inter, sans-serif;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 
@@ -169,7 +169,7 @@
   border-bottom: 1px solid rgba(11,31,51,.08);
 }
 .dp-launch-brief__metrics [role="row"] > :not(:first-child) { text-align: right; }
-.dp-launch-brief__metrics [role="columnheader"] { color: rgba(11,31,51,.55); font: 600 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: .05em; }
+.dp-launch-brief__metrics [role="columnheader"] { color: rgba(11,31,51,.55); font: 600 11px/1.2 Inter, sans-serif; text-transform: uppercase; letter-spacing: normal; }
 .dp-launch-brief__metrics [role="cell"] { font: 500 13px/1.3 Inter, sans-serif; }
 .dp-launch-brief__metrics strong[role="cell"] { font-variant-numeric: tabular-nums; }
 

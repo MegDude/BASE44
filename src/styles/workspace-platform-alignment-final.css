@@ -45,7 +45,7 @@ html body #root .dp-partner-workspace-page :is(
   color: #667386 !important;
   font-size: 11px !important;
   font-weight: 650 !important;
-  letter-spacing: 0.06em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

@@ -14,7 +14,7 @@ const demo = (
       ]}
     />
     <div className="rounded-lg border border-border bg-card p-7">
-      <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-5">Resident Dining Card</div>
+      <div className="text-muted-foreground tracking-normalr mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Dining Card</div>
       <div className="p-5 rounded-xl bg-primary/5 border border-primary/20 mb-4">
         <div className="font-heading text-lg font-bold mb-1">Fabi & Rosi</div>
         <div className="text-xs text-muted-foreground mb-3">Neighborhood table — Downtown Austin</div>
@@ -56,7 +56,7 @@ export default function FabiAndRosi() {
             ].map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
                 className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                <div className="w-2 h-2 rounded-xl bg-primary mt-2 shrink-0" />
                 <div>
                   <div className="font-semibold text-[13px] mb-0.5">{item.label}</div>
                   <div className="text-xs text-muted-foreground">{item.desc}</div>

@@ -26,7 +26,7 @@
 .dp-governance-resident__header small {
   color: var(--dp-governance-gold-accent) !important;
   font-weight: 750;
-  letter-spacing: 0.08em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 

@@ -1,0 +1,571 @@
+/* pricing-guided-final.css
+   Final visual layer for the guided pricing builder.
+   Loaded last — enforces rounded, Apple-like hierarchy over legacy square-geometry overrides.
+   Primary surface: 300×600 mobile portrait.
+*/
+
+html body #root#root#root#root#root main.dp-pricing-guided-page {
+  --pgf-ink: #0b1f33;
+  --pgf-muted: rgba(11, 31, 51, .60);
+  --pgf-gold: #c8a96a;
+  --pgf-line: rgba(11, 31, 51, .10);
+  --pgf-surface: #f8f9fa;
+  --pgf-radius: 14px;
+  --pgf-radius-sm: 10px;
+}
+
+/* ── Rounded overrides: use 22×#root to beat the 20×#root global geometry lock ── */
+/* Select picker */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select {
+  border-radius: var(--pgf-radius) !important;
+}
+/* Category tab pills */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button {
+  border-radius: 999px !important;
+}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button[data-active="true"] {
+  border-radius: 999px !important;
+}
+/* Upgrade toggle */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle {
+  border-radius: var(--pgf-radius) !important;
+}
+/* Active plan row highlight */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] {
+  border-radius: var(--pgf-radius-sm) !important;
+}
+/* Active upgrade module row */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button[data-active="true"] {
+  border-radius: var(--pgf-radius-sm) !important;
+}
+/* CTA buttons */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-button,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-acquisition-primary {
+  border-radius: var(--pgf-radius) !important;
+}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action button {
+  border-radius: var(--pgf-radius) !important;
+}
+/* Support action links */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-primary,
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-secondary {
+  border-radius: var(--pgf-radius) !important;
+}
+/* Review card (desktop) */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review {
+  border-radius: var(--pgf-radius) !important;
+}
+
+/* ── Step heading numbers — uses 22×#root to beat the 20×#root global geometry lock ── */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-step-heading > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid var(--pgf-gold) !important;
+  color: var(--pgf-gold) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  flex-shrink: 0 !important;
+  background: transparent !important;
+}
+
+/* ── Native select: compact partner-type picker ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select-wrap {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select {
+  display: block !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  padding: 0 40px 0 14px !important;
+  background: var(--pgf-surface) !important;
+  border: 1.5px solid var(--pgf-line) !important;
+  border-radius: var(--pgf-radius) !important;
+  color: var(--pgf-ink) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  cursor: pointer !important;
+  outline: none !important;
+  transition: border-color 160ms ease !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select:focus {
+  border-color: var(--pgf-gold) !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 106, .15) !important;
+}
+
+/* Chevron via background SVG */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select-wrap::after {
+  content: "" !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  right: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 16px !important;
+  height: 16px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23c8a96a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* ── Role context and alt link ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-context {
+  margin: 10px 0 0 !important;
+  color: var(--pgf-muted) !important;
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-alt {
+  margin: 8px 0 0 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-alt button {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  color: var(--pgf-gold) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  min-height: unset !important;
+  cursor: pointer !important;
+}
+
+/* ── Plan list rows ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list {
+  border-top: 1px solid var(--pgf-line) !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  padding: 12px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pgf-line) !important;
+  border-radius: 0 !important;
+  color: var(--pgf-ink) !important;
+  text-align: left !important;
+  transition: background 120ms ease !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] {
+  background: rgba(200, 169, 106, .06) !important;
+  border-radius: var(--pgf-radius-sm) !important;
+  padding: 12px 10px !important;
+  margin: 0 -10px !important;
+  width: calc(100% + 20px) !important;
+  border-bottom-color: transparent !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list span {
+  display: grid !important;
+  gap: 3px !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list strong {
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  color: var(--pgf-ink) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list small {
+  font-size: 12.5px !important;
+  color: var(--pgf-muted) !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list em {
+  font-style: normal !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+  color: var(--pgf-ink) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] em {
+  color: var(--pgf-gold) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list i {
+  font-style: normal !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: var(--pgf-muted) !important;
+  white-space: nowrap !important;
+  min-width: 52px !important;
+  text-align: right !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button[data-active="true"] i {
+  color: var(--pgf-gold) !important;
+}
+
+/* ── Upgrade toggle ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 12px 14px !important;
+  margin-top: 12px !important;
+  background: var(--pgf-surface) !important;
+  border: 1px solid var(--pgf-line) !important;
+  border-radius: var(--pgf-radius) !important;
+  color: var(--pgf-ink) !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: border-color 120ms ease !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle:hover {
+  border-color: var(--pgf-gold) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle[aria-expanded="true"] {
+  border-color: var(--pgf-gold) !important;
+  background: rgba(200, 169, 106, .06) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle span {
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-toggle small {
+  font-size: 12px !important;
+  color: var(--pgf-muted) !important;
+}
+
+/* ── Upgrade category tabs ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-content {
+  padding-top: 14px !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups {
+  display: flex !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 2px !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups::-webkit-scrollbar {
+  display: none;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button {
+  flex: 0 0 auto !important;
+  min-height: 34px !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--pgf-line) !important;
+  background: transparent !important;
+  color: var(--pgf-muted) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  transition: all 120ms ease !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups > button[data-active="true"] {
+  background: var(--pgf-ink) !important;
+  border-color: var(--pgf-ink) !important;
+  color: #fff !important;
+}
+
+/* ── Upgrade module rows ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-category-copy {
+  margin: 0 0 8px !important;
+  color: var(--pgf-muted) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: 60px !important;
+  padding: 10px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--pgf-line) !important;
+  border-radius: 0 !important;
+  color: var(--pgf-ink) !important;
+  text-align: left !important;
+  box-shadow: none !important;
+  transition: background 120ms ease !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list > button[data-active="true"] {
+  background: rgba(200, 169, 106, .06) !important;
+  border-radius: var(--pgf-radius-sm) !important;
+  padding: 10px 10px !important;
+  margin: 0 -10px !important;
+  width: calc(100% + 20px) !important;
+  border-bottom-color: transparent !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list span {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list strong {
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list small {
+  font-size: 12.5px !important;
+  color: var(--pgf-muted) !important;
+  line-height: 1.35 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-list em {
+  font-style: normal !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  white-space: nowrap !important;
+  color: var(--pgf-gold) !important;
+}
+
+/* ── Review sidebar (desktop) ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review {
+  position: sticky !important;
+  top: 24px !important;
+  padding: 20px !important;
+  background: #fff !important;
+  border: 1px solid var(--pgf-line) !important;
+  border-radius: var(--pgf-radius) !important;
+  box-shadow: 0 2px 12px rgba(11, 31, 51, .07) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > p {
+  margin: 0 0 4px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+  color: var(--pgf-gold) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review h2 {
+  font-size: 34px !important;
+  letter-spacing: -.04em !important;
+  margin: 0 !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > span {
+  display: block !important;
+  margin-top: 3px !important;
+  font-size: 12px !important;
+  color: var(--pgf-muted) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > div {
+  margin-top: 16px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid var(--pgf-line) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review > div strong {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+}
+
+/* ── CTA buttons ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-button,
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-acquisition-primary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 50px !important;
+  padding: 0 20px !important;
+  background: var(--pgf-ink) !important;
+  border: 0 !important;
+  border-radius: var(--pgf-radius) !important;
+  color: #fff !important;
+  font-size: 14.5px !important;
+  font-weight: 650 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: background 120ms ease, transform 80ms ease !important;
+  box-shadow: 0 2px 8px rgba(11, 31, 51, .14) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-button {
+  width: 100% !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-button:active,
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-acquisition-primary:active {
+  transform: scale(0.98) !important;
+}
+
+/* ── Support section ── */
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-primary {
+  background: var(--pgf-ink) !important;
+  color: #fff !important;
+  border-radius: var(--pgf-radius) !important;
+}
+
+html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-secondary {
+  background: transparent !important;
+  color: var(--pgf-ink) !important;
+  border: 1px solid var(--pgf-line) !important;
+  border-radius: var(--pgf-radius) !important;
+}
+
+/* ── Mobile: 300×600 primary surface ── */
+@media (max-width: 767px) {
+  html body #root#root#root#root#root main.dp-pricing-guided-page {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-container {
+    width: min(100% - 32px, 480px) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header {
+    margin-bottom: 28px !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-header h1 {
+    font-size: clamp(28px, 8vw, 38px) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-guided-layout {
+    display: block !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-step {
+    padding-bottom: 24px !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Select: full-width, tall enough for thumb tap */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-role-select {
+    min-height: 56px !important;
+    font-size: 16px !important;
+  }
+
+  /* Plan rows: compact but readable on 300px */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list > button {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    min-height: 60px !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-plan-list i {
+    display: none !important;
+  }
+
+  /* Review sidebar hidden; mobile action takes over */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-review {
+    display: none !important;
+  }
+
+  /* Category tabs: horizontally scrollable pill strip */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-upgrade-groups {
+    padding-bottom: 4px !important;
+  }
+
+  /* Support section: stacked */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support {
+    display: block !important;
+    margin-top: 32px !important;
+    padding: 20px 0 !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-support-actions a {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+
+  /* Mobile sticky action bar */
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 50 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+    background: #fff !important;
+    border-top: 1px solid var(--pgf-line) !important;
+    box-shadow: 0 -4px 16px rgba(11, 31, 51, .08) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action > span {
+    display: grid !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action small {
+    font-size: 11px !important;
+    color: var(--pgf-muted) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action strong {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.03em !important;
+    color: var(--pgf-ink) !important;
+  }
+
+  html body #root#root#root#root#root main.dp-pricing-guided-page .dp-pricing-mobile-action button {
+    flex: 0 0 auto !important;
+    min-width: 120px !important;
+    min-height: 46px !important;
+    padding: 0 16px !important;
+    background: var(--pgf-ink) !important;
+    border: 0 !important;
+    border-radius: var(--pgf-radius) !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 650 !important;
+    box-shadow: 0 2px 8px rgba(11, 31, 51, .14) !important;
+  }
+}

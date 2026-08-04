@@ -166,7 +166,7 @@ export default function BottomSheet({
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
               >
-                <div className="w-12 h-1 rounded-full bg-[#0B1F33]/8" />
+                <div className="w-12 h-1 rounded-xl bg-[#0B1F33]/8" />
                 {normalizedState === 'expanded' && (
                   <button
                     type="button"

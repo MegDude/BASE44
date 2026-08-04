@@ -15,7 +15,7 @@ export default function EventCard({ event }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
           {event.is_members_only && (
-            <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
+            <span className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-primary/90 text-primary-foreground text-xs font-semibold">
               Members Only
             </span>
           )}
@@ -24,7 +24,7 @@ export default function EventCard({ event }) {
               <div className="text-primary font-heading font-bold text-lg leading-none">
                 {date.format("DD")}
               </div>
-              <div className="text-muted-foreground text-xs uppercase">
+              <div className="text-muted-foreground dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {date.format("MMM")}
               </div>
             </div>
@@ -33,7 +33,7 @@ export default function EventCard({ event }) {
       )}
 
       <div className="p-5">
-        <span className="text-primary text-xs font-medium uppercase tracking-wider capitalize">
+        <span className="text-primary tracking-normalr capitalize dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {event.category?.replace("_", " ")}
         </span>
         <h3 className="font-heading text-lg font-bold mt-1 mb-2 group-hover:text-primary transition-colors">

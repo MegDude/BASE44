@@ -26,7 +26,7 @@ export default function ProofGrid({ metrics = [] }) {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="p-5 rounded-lg border border-[#0B1F33]/8 bg-white hover:border-[#BFA46A]/45 transition-colors"
             >
-              <div className="text-[11px] font-bold uppercase tracking-[.12em] text-[#0B1F33]/50 mb-3">
+              <div className="text-[#0B1F33]/50 mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {metric.label}
               </div>
               <div className="text-[28px] md:text-[32px] font-bold text-[#0B1F33] leading-tight">

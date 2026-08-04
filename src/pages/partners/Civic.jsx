@@ -229,7 +229,7 @@ export default function CivicPartner() {
       <section id="civic-map" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="mx-auto max-w-7xl px-5">
           <div className="mb-8 max-w-3xl">
-            <span className="dp-label mb-3 block">Civic map layer</span>
+            <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic map layer</span>
             <h2>Help more people discover what is happening downtown.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               Civic moments work best when they appear where people are already deciding what to do, where to go, and what is worth joining nearby.
@@ -250,7 +250,7 @@ export default function CivicPartner() {
       <section id="formats" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="max-w-7xl mx-auto px-5">
           <div className="mb-10 max-w-3xl">
-            <span className="dp-label mb-3 block">Civic formats</span>
+            <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic formats</span>
             <h2>Civic formats for downtown participation.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               Choose the civic format that fits the district, moment, initiative, or public objective. Every format shows up on the map where people are already looking.
@@ -286,7 +286,7 @@ export default function CivicPartner() {
           >
             <div className="grid gap-7 md:grid-cols-[0.82fr_1.18fr]">
               <div>
-                <div className="font-body text-[11px] font-medium uppercase tracking-normal text-[#BFA46A]">
+                <div className="font-body text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   {activeFormat.bestFor}
                 </div>
                 <h3 className="mt-3 font-heading text-[34px] font-medium leading-[0.98] tracking-[-0.03em] text-[#0B1F33] md:text-[50px]">
@@ -304,7 +304,7 @@ export default function CivicPartner() {
                   ['How it works', activeFormat.body],
                 ].map(([label, value]) => (
                   <div key={label}>
-                    <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]">{label}</div>
+                    <div className="mb-1.5 text-[#0B1F33] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
                     <p className="text-[13px] leading-[1.58] text-[#425466] md:text-[14px]">{value}</p>
                   </div>
                 ))}
@@ -335,7 +335,7 @@ export default function CivicPartner() {
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 className="w-[min(78vw,300px)] shrink-0 border-t border-[#0B1F33]/10 pt-4 md:w-auto"
               >
-                <div className="mb-2 text-[11px] font-semibold uppercase tracking-normal text-[#BFA46A]">
+                <div className="mb-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   {example.type}
                 </div>
                 <h3 className="text-[17px] font-medium leading-snug text-[#0B1F33]">{example.name}</h3>
@@ -354,7 +354,7 @@ export default function CivicPartner() {
       <section id="proof" className={`${PARTNER_SPACING.sectionVertical} border-b border-[#0B1F33]/8`}>
         <div className="mx-auto max-w-7xl px-5">
           <div className="mb-10 max-w-3xl">
-            <span className="dp-label mb-3 block">Launch planning</span>
+            <span className="dp-label mb-3 block dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Launch planning</span>
             <h2>What civic participation is likely to produce.</h2>
             <p className="mt-4 max-w-2xl text-[16px] leading-[1.6] text-[#425466]">
               These are planning ranges based on typical civic programs, residential entry points, partner onboarding pace, and the current Downtown Perks rollout model. They are meant to guide launch planning, not report live results.
@@ -372,7 +372,7 @@ export default function CivicPartner() {
                   transition={{ duration: 0.35, delay: index * 0.05 }}
                   className="min-w-0"
                 >
-                  <div className="text-[11px] font-semibold uppercase tracking-normal text-[#BFA46A]">{metric.label}</div>
+                  <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{metric.label}</div>
                   <div className="mt-2 font-heading text-[36px] font-medium leading-none tracking-[-0.03em] text-[#0B1F33] md:text-[48px]">
                     {metric.value}
                   </div>
@@ -383,7 +383,7 @@ export default function CivicPartner() {
 
             <div className="border-y border-[#0B1F33]/8 bg-white/84 p-5 backdrop-blur-[18px] md:p-6">
               <div className="mb-5">
-                <div className="text-[11px] font-semibold uppercase tracking-normal text-[#BFA46A]">Rollout notes</div>
+                <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Rollout notes</div>
                 <h3 className="mt-2 font-heading text-[32px] font-medium leading-[1] tracking-[-0.03em] text-[#0B1F33] md:text-[42px]">
                   What to watch during rollout.
                 </h3>
@@ -400,7 +400,7 @@ export default function CivicPartner() {
                     className="grid gap-1.5 border-t border-[#0B1F33]/8 pt-4 first:border-t-0 first:pt-0"
                   >
                     <p className="text-[14px] font-medium leading-[1.5] text-[#0B1F33]">{note.action}</p>
-                    <div className="flex flex-wrap gap-x-2 gap-y-1 text-[11px] font-medium uppercase tracking-normal text-[#425466]">
+                    <div className="flex flex-wrap gap-x-2 gap-y-1 text-[#425466] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                       <span>{note.source}</span>
                       <span className="text-[#BFA46A]">/</span>
                       <span>{note.window}</span>

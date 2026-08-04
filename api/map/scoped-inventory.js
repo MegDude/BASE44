@@ -22,10 +22,12 @@ export default async function handler(req, res) {
 
     let query = database
       .from("map_inventory")
-      .select("id,slug,name,entity_type,category,district,address,latitude,longitude,status,source_name,source_updated_at,verification_status,ownership_status,updated_at", { count: "exact" })
-      .eq("status", "active");
+      .select("id,canonical_entity_id,slug,name,entity_type,category,district,address,latitude,longitude,status,source_name,source_updated_at,verification_status,ownership_status,updated_at", { count: "exact" })
+      .eq("status", "active")
+      .not("latitude", "is", null)
+      .not("longitude", "is", null);
 
-    if (entityId) query = query.eq("id", entityId);
+    if (entityId) query = query.or(`id.eq.${entityId},canonical_entity_id.eq.${entityId}`);
     if (type && TYPES.has(type)) query = query.eq("entity_type", type);
     if (district) query = query.ilike("district", `%${district}%`);
     if (search) query = query.or(`name.ilike.%${search}%,slug.ilike.%${search}%,category.ilike.%${search}%`);

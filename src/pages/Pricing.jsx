@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { resolveCheckoutTarget } from "@/config/checkoutLinks";
 import {
@@ -183,6 +182,13 @@ export default function PricingPage() {
       window.location.href = "/card";
       return;
     }
+    // If the plan has a direct Stripe Payment Link, go straight to checkout.
+    // The sign-up page is only needed when no Payment Link exists (lead path).
+    if (checkoutTarget?.type === "url" && checkoutTarget.url && selectedModuleIds.length === 0) {
+      trackPricingEvent("pricing_cta_clicked", { label: "Checkout via payment link", partnerType, planId: selectedPlan?.id, checkoutUrl: checkoutTarget.url });
+      window.location.href = checkoutTarget.url;
+      return;
+    }
     trackPricingEvent("pricing_cta_clicked", { label: "Continue to account setup", partnerType, planId: selectedPlan?.id });
     window.location.href = setupHref;
   }
@@ -204,15 +210,27 @@ export default function PricingPage() {
             <div className="dp-pricing-journey">
               <section className="dp-pricing-step" aria-labelledby="pricing-role-title">
                 <div className="dp-pricing-step-heading"><span>01</span><h2 id="pricing-role-title">What are you building?</h2></div>
-                <div className="dp-pricing-role-list" role="radiogroup" aria-label="Partner type">
-                  {["Venue", "Property", "Hotel", "Brand", "Civic", "Real Estate"].map((type) => (
-                    <button key={type} type="button" role="radio" aria-checked={partnerType === type} data-active={partnerType === type} onClick={() => choosePartner(type)}>
-                      <span><strong>{partnerCopy[type].label}</strong></span>
-                      <i aria-hidden="true" />
-                    </button>
-                  ))}
+                <div className="dp-pricing-role-select-wrap">
+                  <label className="dp-pricing-role-label sr-only" htmlFor="dp-partner-type-select">Partner type</label>
+                  <select
+                    id="dp-partner-type-select"
+                    className="dp-pricing-role-select"
+                    value={partnerType}
+                    onChange={(e) => choosePartner(e.target.value)}
+                    aria-label="Select partner type"
+                  >
+                    <option value="Venue">Venue</option>
+                    <option value="Property">Property</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Brand">Brand</option>
+                    <option value="Civic">Community</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Resident">Resident</option>
+                    <option value="Custom">Enterprise / Portfolio</option>
+                  </select>
                 </div>
-                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Portfolio, real estate, or sponsorship?</button></p>
+                <p className="dp-pricing-role-context">{partnerCopy[partnerType].short}</p>
+                <p className="dp-pricing-role-alt"><button type="button" onClick={() => choosePartner("Custom")}>Include portfolio, real estate, or sponsorship options?</button></p>
               </section>
 
               <section className="dp-pricing-step" aria-labelledby="pricing-plan-title">
@@ -257,15 +275,27 @@ export default function PricingPage() {
               <span>{isResident ? "Annual access" : "First year"}</span>
               <div><strong>{chosenTitle}</strong></div>
               {selectedModules.length ? <p className="dp-pricing-review-services">{selectedModules.length} service{selectedModules.length === 1 ? "" : "s"} selected</p> : null}
-              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}>{isResident ? "Get Perks Card" : "Continue to account setup"} <ArrowRight aria-hidden="true" /></button>
+              <button className="dp-pricing-button dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get Perks Card" : checkoutTarget?.type === "url" && selectedModuleIds.length === 0 ? "Choose this plan" : "Continue to account setup"}</span></button>
             </aside>
           </div>
+
+          <section className="dp-pricing-support" aria-labelledby="pricing-support-title">
+            <div>
+              <p>Need a hand?</p>
+              <h2 id="pricing-support-title">Talk through the right setup.</h2>
+              <span>We&apos;ll help you choose a partner type, annual plan, and only the support your launch needs.</span>
+            </div>
+            <div className="dp-pricing-support-actions">
+              <Link className="dp-pricing-support-primary" to="/contact?topic=partner-demo">Book a demo</Link>
+              <Link className="dp-pricing-support-secondary" to="/contact?topic=pricing-support">Contact support</Link>
+            </div>
+          </section>
         </div>
       </section>
 
       <div className="dp-pricing-mobile-action">
         <span><small>{isResident ? "Annual access" : "Selected plan"}</small><strong>{totalText}</strong></span>
-        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : "Continue"}</span> <ArrowRight aria-hidden="true" /></button>
+        <button className="dp-acquisition-primary" type="button" onClick={continueWithSetup}><span>{isResident ? "Get card" : checkoutTarget?.type === "url" && selectedModuleIds.length === 0 ? "Choose plan" : "Continue"}</span></button>
       </div>
     </main>
   );

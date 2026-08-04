@@ -45,7 +45,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-[0.1em] mb-1">
+        <h3 className="text-[11px] font-medium text-muted-foreground uppercase tracking-normal mb-1">
           Source Attribution
         </h3>
         <p className="text-[13px] text-muted-foreground">
@@ -129,7 +129,7 @@ export default function AnalyticsAttributionTable({ data = {}, onSort, sortBy = 
                 <row.Icon className="h-3.5 w-3.5 text-[#BFA46A]" />
                 {row.label}
               </span>
-              <span className={`text-[11px] font-medium px-2 py-1 rounded-full ${
+              <span className={`text-[11px] font-medium px-2 py-1 rounded-xl ${
                 row.trend === 'up' ? 'bg-[#0B1F33]/10 text-[#BFA46A]' : row.trend === 'down' ? 'bg-[#0B1F33]/8 text-[#0B1F33]/58' : 'bg-muted/50 text-muted-foreground'
               }`}>
                 {row.trend === 'up' ? '+12%' : row.trend === 'down' ? '-8%' : 'Stable'}

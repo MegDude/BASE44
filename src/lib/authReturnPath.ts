@@ -107,20 +107,11 @@ export function normalizeResidentReturnPath(value?: string | null) {
 
 export function getAuthenticatedAccountRole(account?: Record<string, unknown> | null) {
   const appMetadata = account?.app_metadata as Record<string, unknown> | undefined;
-  const userMetadata = account?.user_metadata as Record<string, unknown> | undefined;
-  const candidates = [
-    appMetadata?.role,
-    appMetadata?.account_type,
-    userMetadata?.role,
-    userMetadata?.account_type,
-    userMetadata?.partner_type,
-    account?.role,
-    account?.partner_type,
-  ].map((value) => String(value || "").toLowerCase()).filter(Boolean);
-  const platformRole = candidates.find((role) => role === "resident" || role === "partner" || ADMIN_ROLES.has(role));
-  if (platformRole) return platformRole;
-  const partnerType = candidates.find((role) => !["authenticated", "anon"].includes(role));
-  return partnerType || "resident";
+  const role = String(
+    account?.platform_role || appMetadata?.platform_role || appMetadata?.role || account?.role || "",
+  ).toLowerCase();
+  if (role === "resident" || role === "partner" || ADMIN_ROLES.has(role)) return role;
+  return "resident";
 }
 
 export function getAuthenticatedDestination(

@@ -16,7 +16,7 @@ export function BrandSection({ label, title, children, className = "" }) {
             className="dp-editorial-section-heading"
           >
             {label && (
-              <span className="dp-editorial-kicker">
+              <span className="dp-editorial-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {label}
               </span>
             )}

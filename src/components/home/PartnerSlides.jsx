@@ -115,7 +115,7 @@ export default function PartnerSlides() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-[11px] font-medium text-primary/80 uppercase tracking-[0.16em] block mb-4">
+            <span className="text-primary/80 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Turn Residents Into Regulars
             </span>
             <h2 className="font-heading text-3xl md:text-[38px] font-medium leading-[1.1] tracking-normal text-foreground">
@@ -147,7 +147,7 @@ export default function PartnerSlides() {
               <button
                 key={s.id}
                 onClick={() => setActive(i)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-[12px] font-medium whitespace-nowrap border transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[12px] font-medium whitespace-nowrap border transition-all duration-200 ${
                   active === i
                     ? "border-[#0B1F33]/10 bg-[#0B1F33]/[0.06] text-[#0B1F33]"
                     : "border-[#0B1F33]/8 text-[#425466] hover:border-[#0B1F33]/10 hover:text-[#0B1F33]"
@@ -171,7 +171,7 @@ export default function PartnerSlides() {
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Left */}
             <div className="p-8 md:border-r border-[#0B1F33]/8 bg-white">
-              <div className="w-9 h-9 rounded-full border border-[#0B1F33]/8 flex items-center justify-center mb-6">
+              <div className="w-9 h-9 rounded-xl border border-[#0B1F33]/8 flex items-center justify-center mb-6">
                 <Icon className="w-4 h-4 text-primary" />
               </div>
               <h3 className="font-heading text-2xl font-medium leading-[1.08] mb-1.5 text-foreground">{slide.headline}</h3>
@@ -179,14 +179,14 @@ export default function PartnerSlides() {
               <p className="text-[13px] text-foreground/60 leading-relaxed mb-8">{slide.body}</p>
 
               <div className="border-t border-[#0B1F33]/8 pt-6">
-                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-1">
+                <div className="text-foreground/50 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   Pricing
                 </div>
                 <div className="font-heading font-medium text-foreground text-[13px] mb-1">{slide.pricing}</div>
                 <div className="text-[12px] text-foreground/55 italic mb-5">{slide.pricingNote}</div>
                 <Link
                   to={slide.href}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-[13px] hover:bg-primary/90 transition-all duration-300"
                 >
                   {slide.cta} <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
@@ -195,25 +195,25 @@ export default function PartnerSlides() {
 
             {/* Right — what's included */}
             <div className="p-8 bg-white">
-              <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-5">
+              <div className="text-foreground/50 mb-5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 What's Included
               </div>
               <ul className="space-y-3">
                 {slide.includes.map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-[13px] text-foreground/60">
-                    <div className="w-1 h-1 rounded-full bg-primary/60 mt-2 flex-shrink-0" />
+                    <div className="w-1 h-1 rounded-xl bg-primary/60 mt-2 flex-shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
 
               <div className="mt-8 pt-6 border-t border-[#0B1F33]/8">
-                <div className="text-[11px] font-medium text-foreground/50 uppercase tracking-[0.12em] mb-3">
+                <div className="text-foreground/50 mb-3 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                   How It Works
                 </div>
                 {["Launch", "Measure", "Decide"].map((step, i) => (
                   <div key={i} className="flex items-center gap-3 text-[13px] text-foreground/60 mb-2">
-                    <div className="w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center text-[10px] text-primary font-medium shrink-0">
+                    <div className="w-5 h-5 rounded-xl border border-primary/40 flex items-center justify-center text-[10px] text-primary font-medium shrink-0">
                       {i + 1}
                     </div>
                     {step === "Launch" && "Set up QR entry points and map visibility."}
@@ -231,7 +231,7 @@ export default function PartnerSlides() {
           <button
             onClick={() => setActive((a) => Math.max(0, a - 1))}
             disabled={active === 0}
-            className="p-2.5 rounded-full border border-[#0B1F33]/8 text-[#425466] hover:text-[#0B1F33] disabled:opacity-30 transition-all"
+            className="p-2.5 rounded-xl border border-[#0B1F33]/8 text-[#425466] hover:text-[#0B1F33] disabled:opacity-30 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -240,14 +240,14 @@ export default function PartnerSlides() {
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${active === i ? "bg-[#0B1F33] w-4" : "bg-[#DCE3EB]"}`}
+                className={`w-1.5 h-1.5 rounded-xl transition-all ${active === i ? "bg-[#0B1F33] w-4" : "bg-[#DCE3EB]"}`}
               />
             ))}
           </div>
           <button
             onClick={() => setActive((a) => Math.min(slides.length - 1, a + 1))}
             disabled={active === slides.length - 1}
-            className="p-2.5 rounded-full border border-[#0B1F33]/8 text-[#425466] hover:text-[#0B1F33] disabled:opacity-30 transition-all"
+            className="p-2.5 rounded-xl border border-[#0B1F33]/8 text-[#425466] hover:text-[#0B1F33] disabled:opacity-30 transition-all"
           >
             <ArrowRight className="w-4 h-4" />
           </button>

@@ -140,7 +140,7 @@ export default function ContactPage() {
       <section className="dp-contact-hero">
         <div className="dp-contact-container dp-contact-hero-grid">
           <div>
-            <p className="dp-contact-eyebrow">Contact</p>
+            <p className="dp-contact-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Contact</p>
             <h1>Send a setup request.</h1>
             <p>
               Choose a plan first when you can. Use this form when you need a tailored setup or a quick answer.
@@ -180,7 +180,7 @@ export default function ContactPage() {
       <section className="dp-contact-section" id="contact">
         <div className="dp-contact-container dp-contact-form-grid">
           <header>
-            <p className="dp-contact-eyebrow">Request Details</p>
+            <p className="dp-contact-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Request Details</p>
             <h2>Tell us who should handle the setup.</h2>
             <p>Keep it simple. The selected pricing setup, if present, is included with the request automatically.</p>
           </header>

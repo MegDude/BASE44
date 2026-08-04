@@ -52,7 +52,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
         animate={{ opacity: 1 }}
         className="p-5 text-center"
       >
-        <div className="w-12 h-10 rounded-full bg-white/35 flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-10 rounded-xl bg-white/35 flex items-center justify-center mx-auto mb-3">
           <span className="text-2xl">✓</span>
         </div>
         <h3 className="text-[18px] font-bold text-[#0B1F33] mb-1">Reserved!</h3>
@@ -70,7 +70,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Amenity
         </label>
         <select
@@ -87,7 +87,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
       </div>
 
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           Date
         </label>
         <input
@@ -101,7 +101,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Time
           </label>
           <input
@@ -113,7 +113,7 @@ export default function AmenityReservationForm({ building, amenities = [], onClo
           />
         </div>
         <div>
-          <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+          <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
             Duration
           </label>
           <select

@@ -30,6 +30,7 @@ import '@/styles/partner-signup-cleanup-final.css'
 import '@/styles/inkind-partner-drawer-final.css'
 import '@/styles/partner-native-mobile-final.css'
 import '@/styles/resident-native-mobile-final.css'
+import { preloadGoogleMaps } from '@/lib/googleMapsLoader'
 
 import "@/styles/partner-public-platform-final.css"
 
@@ -92,6 +93,7 @@ import "@/styles/partner-destination-drawer-final.css"
 import "@/styles/ask-map-component-final.css"
 import "@/styles/building-experience-engine.css"
 import "@/styles/pricing-three-step-final.css"
+import "@/styles/pricing-page-finish.css"
 import "@/styles/canonical-detail-panel-final.css"
 import "@/styles/workspace-experience-system-final.css"
 import "@/styles/workspace-launch-brief-final.css"
@@ -124,7 +126,6 @@ import "@/styles/resident-events-drawer-full.css"
 import "@/styles/inkind-redemption-compact-final.css"
 import "@/styles/search-input-rail-compact-final.css"
 import "@/styles/resident-civic-native-final.css"
-import "@/styles/quick-search-native-final.css"
 import "@/styles/panel-navigation-contract-final.css"
 import "@/styles/restaurant-program-layer-final.css"
 import "@/styles/platform-cleanup-polish-final.css"
@@ -141,20 +142,45 @@ import "@/styles/map-detail-panel-live-final.css"
 import "@/styles/map-bottom-drawer-contract-final.css"
 import "@/styles/building-experience-ios-native-final.css"
 import "@/styles/marketing-type-contrast-final.css"
-import "@/styles/global-back-control-final.css"
+import "@/styles/quick-search-native-final.css"
 import "@/styles/platform-tokens.css"
 import "@/styles/search-console-readable-rail-final.css"
 import "@/styles/route-native-map-sheet-final.css"
 import "@/styles/workspace-campaign-drawer-contract.css"
 import "@/styles/native-drawer-scroll-contract.css"
-import "@/styles/partner-acquisition-flow-final.css"
 import "@/styles/workspace-unified-native-release.css"
 import "@/styles/map-drawer-native-luxury-final.css"
 import "@/styles/perks-saved-nearby-mobile-system.css"
 import "@/styles/native-luxury-platform-release.css"
 import "@/styles/panel-media-system-final.css"
+import "@/styles/workspace-founding-partner-targets-final.css"
+import "@/styles/perk-action-visibility-final.css"
+import "@/styles/phase-two-native-containment-final.css"
+import "@/styles/partner-acquisition-flow-final.css"
+import "@/styles/partner-signup-apple-final.css"
+import "@/styles/nearby-list-grid-final.css"
+// Guided pricing builder: final rounded, Apple-like visual layer over the pricing route.
+import "@/styles/pricing-guided-final.css"
+// Global mobile-first safe margins, drawer alignment, hero bleed, iOS touch feedback.
+import "@/styles/global-mobile-margin-system.css"
+// Canonical thin/sharp/chic Back-control spec — must remain the terminal
+// stylesheet so its 15px sharp Back rules win the cascade on every surface.
+import "@/styles/global-back-control-final.css"
+// Universal mobile drawer architecture — viewport containment, zero double
+// scroll, high-contrast buttons.
+import "@/styles/drawer-mobile-architecture-final.css"
+// Native drawer shell contract — fixes grip position, nav-button transparency,
+// grouped-row flex layout, and expanded-default state.
+import "@/styles/native-drawer-shell-contract-final.css"
+// Universal action rail + drawer grabber fix — deduplicates grabbers, enforces
+// iOS flat button groups in .dp-universal-action-rail. Absolute final import.
+import "@/styles/universal-action-rail-grabber-fix.css"
 
 const application = <App />
+
+// Start the secure async Maps request before React route work. The loader remains
+// the single script owner and reads the key from the Vite environment only.
+void preloadGoogleMaps().catch(() => undefined)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   import.meta.env.DEV ? <React.StrictMode>{application}</React.StrictMode> : application

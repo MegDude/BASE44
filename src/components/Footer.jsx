@@ -13,7 +13,7 @@ const FOOTER_LINKS = {
   ],
   Platform: [
     { to: "/pricing", label: "Pricing" },
-    { to: "/partners/sign-up", label: "Contact" },
+    { to: "/contact", label: "Contact" },
   ],
 };
 
@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="dp-site-footer-link-grid grid min-w-0 grid-cols-[0.82fr_0.9fr_1.28fr] gap-2 sm:gap-4 lg:gap-6">
             {Object.entries(FOOTER_LINKS).map(([group, links]) => (
               <nav key={group} aria-label={group}>
-                <h4 className="mb-2.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] sm:mb-3 sm:text-[11px]">
+                <h4 className="mb-2.5 font-sans text-[10px] font-semibold uppercase tracking-normal text-[#BFA46A] sm:mb-3 sm:text-[11px]">
                   {group}
                 </h4>
                 <ul className="space-y-1.5 text-[13px] font-light leading-5 text-white/68 sm:space-y-2 sm:text-[14px]">

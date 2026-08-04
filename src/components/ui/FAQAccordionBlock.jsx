@@ -104,7 +104,7 @@ export default function FAQAccordionBlock({
               className="md:sticky md:top-28"
             >
               {sectionEyebrow && (
-                <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
+                <span className={`text-[11px] font-medium uppercase tracking-normal block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
                   {sectionEyebrow}
                 </span>
               )}
@@ -133,7 +133,7 @@ export default function FAQAccordionBlock({
               className="mb-10"
             >
               {sectionEyebrow && (
-                <span className={`text-[11px] font-medium uppercase tracking-[0.16em] block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
+                <span className={`text-[11px] font-medium uppercase tracking-normal block mb-4 ${isDark ? "text-primary/70" : "text-primary/70"}`}>
                   {sectionEyebrow}
                 </span>
               )}
@@ -215,7 +215,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
 
         {/* Tag badge */}
         {item.tag && (
-          <span className="text-[10px] font-medium text-primary/60 border border-primary/20 px-2 py-0.5 rounded-full shrink-0 uppercase tracking-[0.1em]">
+          <span className="text-primary/60 border border-primary/20 px-2 py-0.5 rounded-xl shrink-0 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             {item.tag}
           </span>
         )}
@@ -226,7 +226,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
         </span>
 
         {/* Icon */}
-        <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+        <span className={`shrink-0 w-6 h-6 rounded-xl flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? isDark ? "bg-primary/20 text-primary" : "bg-primary/10 text-primary"
             : isDark ? "bg-white/10 text-[rgba(255,255,255,0.55)]" : "bg-muted text-muted-foreground"
@@ -275,7 +275,7 @@ function FAQItem({ item, index, isOpen, onToggle, showNumber, isDark, isCard, is
 
 function CTAButton({ label, href, isDark }) {
   const isExternal = href.startsWith("http") || href.startsWith("mailto");
-  const cls = `inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-[13px] transition-all ${
+  const cls = `inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-[13px] transition-all ${
     isDark
       ? "bg-primary text-primary-foreground hover:bg-primary/90"
       : "border border-border/70 text-foreground/70 hover:text-foreground hover:border-border"

@@ -8,6 +8,9 @@ const styles = readFileSync(new URL("../src/styles/downtown-command-center.css",
 
 assert.match(api, /requireAuthenticatedUser/);
 assert.match(api, /ADMIN_ACCESS_REQUIRED/);
+assert.match(api, /platform_profiles/);
+assert.match(api, /profile\?\.is_active !== true/);
+assert.doesNotMatch(api, /user\?\.(?:app_metadata|user_metadata)/, "JWT metadata alone must not authorize an inactive admin profile");
 assert.match(api, /role !== "super_admin"/);
 assert.match(api, /partner_users/);
 assert.match(api, /activeScope/);
@@ -21,7 +24,9 @@ assert.match(
 assert.match(switcher, /Search organization, portfolio, or listing/);
 assert.match(switcher, /sessionStorage/);
 assert.match(switcher, /DialogPrimitive\.Content/);
-assert.match(studio, /<AdminScopeSwitcher \/>/);
+assert.match(studio, /<AdminScopeSwitcher onScopeResolved=\{setSelectedScope\} \/>/);
+assert.match(studio, /startPartnerImpersonation/);
+assert.match(studio, /Enter selected workspace/);
 assert.match(studio, /Admin Workspace/);
 assert.match(styles, /min-height: 44px/);
 assert.match(styles, /max-height: 85dvh/);

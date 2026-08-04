@@ -232,7 +232,9 @@ function ResidentAdminPanel() {
 export default function AdminMarketingStudio() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, isLoadingAuth, user } = useAuth();
+  const { isAuthenticated, isLoadingAuth, user, startPartnerImpersonation } = useAuth();
+  const [selectedScope, setSelectedScope] = useState({});
+  const [workspaceEntryState, setWorkspaceEntryState] = useState({ status: "idle", message: "" });
   if (isLoadingAuth) {
     return (
       <main className="dp-os-studio-page flex min-h-screen items-center justify-center bg-white text-[#0B1F33]" aria-busy="true">
@@ -250,14 +252,35 @@ export default function AdminMarketingStudio() {
   const activeRoute = getActiveStudioRoute(location.pathname);
   const ActiveIcon = activeRoute.icon;
   const activeTarget = getAdminActionTarget(activeRoute);
+
+  async function enterSelectedWorkspace() {
+    if (!selectedScope.organizationId) {
+      setWorkspaceEntryState({ status: "error", message: "Choose an organization before entering its workspace." });
+      return;
+    }
+    setWorkspaceEntryState({ status: "loading", message: "" });
+    try {
+      await startPartnerImpersonation(selectedScope.organizationId, "Command Center workspace management");
+      navigate("/partner-workspace/overview");
+    } catch (error) {
+      setWorkspaceEntryState({ status: "error", message: error?.message || "The workspace could not be opened." });
+    }
+  }
+
   return (
     <div className="dp-os-studio-page">
       <StudioShell activeRoute={activeRoute} />
       <main className="dp-os-studio-main">
-        <AdminScopeSwitcher />
+        <div className="dp-admin-workspace-entry">
+          <AdminScopeSwitcher onScopeResolved={setSelectedScope} />
+          <button type="button" onClick={enterSelectedWorkspace} disabled={!selectedScope.organizationId || workspaceEntryState.status === "loading"}>
+            {workspaceEntryState.status === "loading" ? "Opening workspace…" : "Enter selected workspace"}
+          </button>
+          {workspaceEntryState.message ? <p role="alert">{workspaceEntryState.message}</p> : null}
+        </div>
         <header className="dp-os-studio-hero">
           <div>
-            <span className="dp-os-kicker">Downtown Perks · Admin Workspace</span>
+            <span className="dp-os-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks · Admin Workspace</span>
             <h1>Platform operations in one authorized workspace.</h1>
             <p>Review organizations, people, places, campaigns, publishing, and data health without leaving the Downtown Perks platform shell.</p>
           </div>

@@ -57,12 +57,12 @@ assert.doesNotMatch(workspaceSheet, /else context\.closeSheet\(\)/);
 assert.match(workspaceSheet, /aria-label=\{`Close \$\{sheet\.title\}`\}/);
 assert.match(legendsSheet, /onClose: \(\) => void/);
 assert.match(legendsSheet, /<button type="button" onClick=\{onClose\}>Close<\/button>/);
-assert.doesNotMatch(quickSearch, /dp-quick-search-back/);
-assert.doesNotMatch(quickSearch, /Go back from search/);
-assert.doesNotMatch(workspaceSearch, /Go back from workspace search/);
-assert.doesNotMatch(aboutModal, /dp-modal-back/);
-assert.doesNotMatch(aboutModal, /Back from Downtown Perks overview/);
-assert.doesNotMatch(partnerWorkspace, /Go back from workspace navigation/);
+assert.match(quickSearch, /dp-quick-search-back/);
+assert.match(quickSearch, /Go back from search/);
+assert.match(workspaceSearch, /Go back from workspace search/);
+assert.match(aboutModal, /dp-modal-back/);
+assert.match(aboutModal, /Back from Downtown Perks overview/);
+assert.match(partnerWorkspace, /Go back from workspace navigation/);
 assert.match(eventsPage, /className="flex h-11 w-11 items-center justify-center[^"]+"/);
 
 assert.match(canonical, /\.dp-map-bottom-nav-shell\.dp-map-bottom-nav-shell[\s\S]*?inset: auto 0 0 !important/);

@@ -293,7 +293,7 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
           onClick={() => setIsMinimized(false)}
           aria-label={`Expand ${route.title} route panel`}
         >
-          <span className="dp-route-mini-kicker">{routeLabel}</span>
+          <span className="dp-route-mini-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{routeLabel}</span>
           <strong>{route.title}</strong>
           <em>{route.stops.length} stops active · expand</em>
         </button>
@@ -387,7 +387,7 @@ export default function CollectionRoutePanel({ route, selectedStopId, onSelectSt
         <div className="dp-route-check-in-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && closeCheckIn()}>
           <section className="dp-route-check-in" role="dialog" aria-modal="true" aria-labelledby="dp-route-check-in-title">
             <button type="button" className="dp-route-check-in__close" onClick={closeCheckIn} aria-label="Close route check-in"><X aria-hidden="true" /></button>
-            <p className="dp-route-check-in__eyebrow">Route check-in</p>
+            <p className="dp-route-check-in__eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Route check-in</p>
             <h3 id="dp-route-check-in-title">{checkInStop.name || checkInStop.title}</h3>
             <p className="dp-route-check-in__copy">Scan the posted stop QR or confirm you are nearby. Progress is saved to this device and recorded to Downtown Perks when the live service is available.</p>
             <div className="dp-route-check-in__camera" data-state={checkInState}>

@@ -22,7 +22,7 @@ export default function ProblemSection() {
           transition={{ duration: 0.7 }}
           className="mb-10"
         >
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em]">
+          <span className="text-primary/70 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             The Gap
           </span>
         </motion.div>

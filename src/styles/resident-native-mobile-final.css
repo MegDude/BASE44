@@ -9,7 +9,7 @@
 .dp-resident-home__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .dp-resident-home__header p { margin: 0 0 3px; color: rgba(11, 31, 51, .58); font-size: 14px; }
 .dp-resident-home__header h1 { margin: 0; font-size: clamp(28px, 8vw, 34px); font-weight: 600; line-height: 1.08; letter-spacing: -.035em; }
-.dp-resident-home__header > a { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(11, 31, 51, .1); border-radius: 50%; background: white; color: #0b1f33; }
+.dp-resident-home__header > a { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(11, 31, 51, .1); border-radius: 12px; background: white; color: #0b1f33; }
 .dp-resident-home__header svg { width: 20px; }
 
 .dp-resident-search-entry { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; margin-top: 24px; padding: 12px 14px; min-height: 52px; border: 1px solid rgba(11, 31, 51, .1); border-radius: 14px; background: white; color: #0b1f33; text-decoration: none; }
@@ -19,14 +19,14 @@
 
 .dp-resident-home__section { margin-top: 30px; }
 .dp-resident-section-title { display: flex; align-items: end; justify-content: space-between; margin-bottom: 13px; }
-.dp-resident-section-title p { margin: 0 0 3px; color: #c8a96a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.dp-resident-section-title p { margin: 0 0 3px; color: #c8a96a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: normal; }
 .dp-resident-section-title h2 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -.02em; }
 
 .dp-resident-hero-card { position: relative; display: block; min-height: 330px; overflow: hidden; border-radius: 16px; background: #132238; color: white; text-decoration: none; }
 .dp-resident-hero-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 25%, rgba(11, 31, 51, .9) 100%); }
 .dp-resident-hero-card img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
 .dp-resident-hero-card > div { position: absolute; z-index: 1; right: 20px; bottom: 20px; left: 20px; }
-.dp-resident-hero-card span { color: #e0c98f; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.dp-resident-hero-card span { color: #e0c98f; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: normal; }
 .dp-resident-hero-card h3 { margin: 7px 0 5px; font-size: 27px; line-height: 1.08; letter-spacing: -.025em; }
 .dp-resident-hero-card p { max-width: 30ch; margin: 0 0 15px; color: rgba(255, 255, 255, .8); font-size: 15px; line-height: 1.45; }
 .dp-resident-hero-card strong { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; font-size: 15px; }

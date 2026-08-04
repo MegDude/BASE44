@@ -69,9 +69,9 @@ async function resolveScope(req, database) {
   return { user, organization, role: membership.role, isSuperAdmin: false };
 }
 
-function safeCohortCount(count, isSuperAdmin) {
+function safeCohortCount(count) {
   const total = Number(count || 0);
-  if (isSuperAdmin || total >= MINIMUM_COHORT_SIZE) return { count: total, display: String(total), suppressed: false };
+  if (total >= MINIMUM_COHORT_SIZE) return { count: total, display: String(total), suppressed: false };
   return { count: null, display: total ? "<5" : "0", suppressed: total > 0 };
 }
 
@@ -144,7 +144,7 @@ async function readBindings(database, { organizationId, portfolioId, listingId }
   return data || [];
 }
 
-function aggregateMembers(members, buildings, sources, isSuperAdmin) {
+function aggregateMembers(members, buildings, sources) {
   const buildingById = new Map(buildings.map((building) => [building.id, building]));
   const sourceById = new Map(sources.map((source) => [source.id, source]));
   const byBuilding = new Map();
@@ -197,15 +197,15 @@ function aggregateMembers(members, buildings, sources, isSuperAdmin) {
 
   const projectGroup = (group) => ({
     ...group,
-    eligible: safeCohortCount(group.eligible, isSuperAdmin),
-    contactable: safeCohortCount(group.contactable, isSuperAdmin),
+    eligible: safeCohortCount(group.eligible),
+    contactable: safeCohortCount(group.contactable),
   });
 
   return {
     totals: {
-      eligible: safeCohortCount(eligible, isSuperAdmin),
-      contactable: safeCohortCount(contactable, isSuperAdmin),
-      personalizationEligible: safeCohortCount(personalizationEligible, isSuperAdmin),
+      eligible: safeCohortCount(eligible),
+      contactable: safeCohortCount(contactable),
+      personalizationEligible: safeCohortCount(personalizationEligible),
     },
     buildings: [...byBuilding.values()].map(projectGroup).sort((a, b) => b.eligible.count - a.eligible.count),
     districts: [...byDistrict.values()].map(projectGroup).sort((a, b) => b.eligible.count - a.eligible.count),
@@ -221,9 +221,9 @@ async function readAudience(database, scope) {
       status: "setup_required",
       bindings: [],
       totals: {
-        eligible: safeCohortCount(0, scope.isSuperAdmin),
-        contactable: safeCohortCount(0, scope.isSuperAdmin),
-        personalizationEligible: safeCohortCount(0, scope.isSuperAdmin),
+        eligible: safeCohortCount(0),
+        contactable: safeCohortCount(0),
+        personalizationEligible: safeCohortCount(0),
       },
       buildings: [],
       districts: [],
@@ -263,7 +263,7 @@ async function readAudience(database, scope) {
   if (memberError) throw memberError;
 
   const dedupedMembers = dedupeMembers(members || []);
-  const groups = aggregateMembers(dedupedMembers, buildings || [], sources || [], scope.isSuperAdmin);
+  const groups = aggregateMembers(dedupedMembers, buildings || [], sources || []);
   return {
     status: dedupedMembers.length ? "connected" : "connected_empty",
     bindings: (buildings || []).map((building) => ({

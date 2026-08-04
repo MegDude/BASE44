@@ -1,48 +1,97 @@
+/* ── Apple HIG auth surface — ResidentSignIn, ResidentResetPassword ─────────
+   Both pages use Tailwind utility classes directly. This block only handles
+   the auth-callback spinner and any legacy class fallbacks.               ── */
+
+/* Ensure the auth pages inherit white background cleanly */
 .dp-resident-signin-page,
-.dp-auth-callback {
+.dp-resident-password-reset {
   min-height: 100dvh;
-  background: #FFF;
+  background: #fff;
   color: #0B1F33;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
-.dp-resident-signin-shell { width: min(100%, 480px); min-height: 100dvh; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom)); }
-.dp-resident-signin-header { min-height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(11,31,51,.08); }
-.dp-resident-signin-header a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: #0B1F33; font-size: 14px; font-weight: 650; }
-.dp-resident-signin-header a:first-child span { width: 10px; height: 10px; border-radius: 50%; background: #C8A96A; }
-.dp-resident-signin-header svg { width: 16px; height: 16px; }
-.dp-resident-signin-content { padding: clamp(48px, 10vh, 88px) 0; }
-.dp-resident-signin-eyebrow { margin: 0; color: #9A7B42; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-.dp-resident-signin-content h1 { max-width: 10ch; margin: 16px 0 0; font-size: clamp(44px, 12vw, 56px); line-height: .98; letter-spacing: -.045em; font-weight: 650; }
-.dp-resident-signin-content > p:not(.dp-resident-signin-eyebrow):not(.dp-resident-signin-note) { max-width: 36ch; margin: 22px 0 0; color: #526075; font-size: 16px; line-height: 1.7; }
-.dp-resident-signin-content form { margin-top: 36px; }
-.dp-resident-signin-mode { display: grid; grid-template-columns: 1fr 1fr; margin-top: 28px; border-bottom: 1px solid rgba(11,31,51,.12); }
-.dp-resident-signin-mode button { min-height: 44px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: #FFF; color: #697589; font-size: 13px; font-weight: 700; }
-.dp-resident-signin-mode button.is-active { border-bottom-color: #C8A96A; color: #0B1F33; }
-.dp-resident-signin-content label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 650; }
-.dp-resident-signin-content input { width: 100%; min-height: 48px; border: 1px solid rgba(11,31,51,.14); border-radius: 2px; background: #FFF; padding: 0 16px; color: #0B1F33; font-size: 16px; outline: none; }
-.dp-resident-signin-content input:focus { border-color: #0B1F33; box-shadow: 0 0 0 2px rgba(11,31,51,.1); }
-.dp-resident-signin-content form > button { width: 100%; min-height: 48px; margin-top: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 2px; background: #0B1F33; color: #FFF; font-size: 14px; font-weight: 700; }
-.dp-resident-signin-content .dp-resident-signin-consent { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; margin-top: 18px; color: #526075; font-size: 12px; font-weight: 500; line-height: 1.5; }
-.dp-resident-signin-content .dp-resident-signin-consent input { width: 18px; min-height: 18px; height: 18px; margin-top: 1px; padding: 0; accent-color: #0B1F33; }
-.dp-resident-signin-content form > button svg { width: 16px; height: 16px; }
-.dp-resident-signin-content form > button:disabled { opacity: .58; cursor: wait; }
-.dp-resident-signin-status { margin: 12px 0 0; font-size: 14px; line-height: 1.5; }
-.dp-resident-signin-status.is-error { color: #A23832; }
-.dp-resident-signin-divider { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin: 24px 0 14px; color: #7B8795; font-size: 12px; }
-.dp-resident-signin-divider span { height: 1px; background: rgba(11,31,51,.1); }
-.dp-resident-signin-google { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; margin-top: 8px; border: 1px solid rgba(11,31,51,.14); border-radius: 2px; background: #FFF; color: #0B1F33; font-size: 14px; font-weight: 700; }
-.dp-resident-resend-confirmation { min-height: 44px; margin-top: 8px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #0B1F33; font-size: 13px; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
-.dp-resident-signin-note { margin: 22px 0 0; color: #697589; font-size: 14px; line-height: 1.65; }
-html body #root .dp-resident-signin-content input:not([type="checkbox"]) { border-radius: 2px !important; }
-html body #root .dp-resident-signin-mode button { border-radius: 0 !important; background: #FFF !important; box-shadow: none !important; }
-html body #root .dp-resident-signin-content form > button[type="submit"] { min-height: 48px !important; margin-top: 18px !important; border-radius: 2px !important; background: #0B1F33 !important; color: #FFF !important; box-shadow: none !important; }
-html body #root .dp-resident-signin-google { justify-content: flex-start !important; min-height: 48px !important; margin: 0 !important; border: 0 !important; border-bottom: 1px solid rgba(11,31,51,.09) !important; border-radius: 0 !important; background: #FFF !important; box-shadow: none !important; }
-html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-content input:not([type="checkbox"]) { border-radius: 2px !important; }
-html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-mode button { border-radius: 0 !important; background: #FFF !important; box-shadow: none !important; }
-html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-content form > button[type="submit"] { width: 100% !important; min-height: 48px !important; padding: 0 18px !important; border-radius: 2px !important; background: #0B1F33 !important; color: #FFF !important; box-shadow: none !important; }
-html body #root#root#root#root#root#root#root#root#root#root main.dp-resident-signin-page .dp-resident-signin-google { width: 100% !important; justify-content: flex-start !important; min-height: 48px !important; padding: 0 !important; border: 0 !important; border-bottom: 1px solid rgba(11,31,51,.09) !important; border-radius: 0 !important; background: #FFF !important; box-shadow: none !important; }
+
+/* ── High-specificity overrides: beat ios-native-system-restoration resets ── */
+/* Inputs on auth pages: soft grey surface, rounded-xl (12px), gold focus ring */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white input[type="email"],
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white input[type="password"] {
+  background-color: #F2F2F7 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 12px 16px !important;
+  font-size: 15px !important;
+  color: #0B1F33 !important;
+  outline: none !important;
+}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white input:focus {
+  box-shadow: 0 0 0 2px #C8A96A !important;
+}
+
+/* Span / text nodes inside auth buttons must inherit the button's own color,
+   not the sitewide  html body #root :is(span…) { color: rgba(11,31,51,.66) }
+   reset that overrides all descendant spans globally.                       */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white button span {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
+/* Primary submit button: navy rounded-xl */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white button[type="submit"] {
+  background-color: #0B1F33 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06) !important;
+  color: #fff !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white button[type="submit"]:disabled {
+  opacity: 0.5 !important;
+  cursor: wait !important;
+}
+
+/* OAuth / secondary buttons: white surface, `border border-black/10`, rounded-xl */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white .space-y-2\.5 button[type="button"] {
+  background-color: #fff !important;
+  border: 1px solid rgba(11,31,51,.10) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #0B1F33 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white .space-y-2\.5 button[type="button"]:hover {
+  border-color: #C8A96A !important;
+  background-color: #F8F9FA !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Legacy class safety net — used by any third-party OAuth redirect surfaces */
+.dp-resident-resend-confirmation {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-height: 44px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #C8A96A;
+  cursor: pointer;
+}
+.dp-resident-resend-confirmation:hover { text-decoration: underline; text-underline-offset: 4px; }
 .dp-auth-callback { display: grid; place-items: center; padding: 20px; text-align: center; }
-.dp-auth-callback span { display: block; width: 32px; height: 32px; margin: 0 auto 18px; border: 2px solid rgba(11,31,51,.12); border-top-color: #C8A96A; border-radius: 50%; animation: dp-auth-spin .8s linear infinite; }
+.dp-auth-callback span { display: block; width: 32px; height: 32px; margin: 0 auto 18px; border: 2px solid rgba(11,31,51,.12); border-top-color: #C8A96A; border-radius: 12px; animation: dp-auth-spin .8s linear infinite; }
 .dp-auth-callback strong { font-size: 16px; }
 .dp-auth-callback p { margin: 8px 0 0; color: #697589; font-size: 14px; }
 @keyframes dp-auth-spin { to { transform: rotate(360deg); } }

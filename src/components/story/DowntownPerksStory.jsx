@@ -74,7 +74,7 @@ export default function DowntownPerksStory({
             exit={reduceMotion ? undefined : "exit"}
           >
             <motion.p
-              className="dp-story-os__kicker"
+              className="dp-story-os__kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]"
               variants={itemVariants}
               initial={reduceMotion ? false : "hidden"}
               animate="visible"

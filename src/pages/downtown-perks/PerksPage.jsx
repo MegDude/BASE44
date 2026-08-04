@@ -26,7 +26,7 @@ export default function PerksPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <span className="text-primary text-[13px] font-medium uppercase tracking-widest">
+          <span className="text-primary tracking-normalst dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Members Only
           </span>
           <h1 className="font-heading text-4xl md:text-4xl font-bold mt-2 mb-4">
@@ -40,7 +40,7 @@ export default function PerksPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-xl animate-spin" />
           </div>
         ) : active.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -53,7 +53,7 @@ export default function PerksPage() {
                 className="group rounded-lg border border-border bg-card p-6 hover:border-primary/30 transition-all duration-300"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium capitalize">
+                  <span className="px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-medium capitalize">
                     {perk.category?.replace("_", " ")}
                   </span>
                   <Gift className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />

@@ -131,7 +131,7 @@ export default function DrawerActions({ item, itemType, onClose }) {
         >
           {isRedeeming && redeemingId === item.id ? (
             <>
-              <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-xl animate-spin" />
               Processing...
             </>
           ) : (

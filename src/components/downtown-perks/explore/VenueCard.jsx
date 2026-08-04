@@ -4,7 +4,7 @@ export default function VenueCard({ venue, onClose }) {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium capitalize">
+        <span className="px-3 py-1 rounded-xl bg-primary/10 text-primary text-xs font-medium capitalize">
           {venue.category}
         </span>
         <button
@@ -43,7 +43,7 @@ export default function VenueCard({ venue, onClose }) {
         <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 mb-6">
           <div className="flex items-center gap-2 mb-2">
             <Tag className="w-4 h-4 text-primary" />
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+            <span className="text-primary tracking-normalr dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               Member Perk
             </span>
           </div>
@@ -70,7 +70,7 @@ export default function VenueCard({ venue, onClose }) {
           {venue.tags.map((tag, i) => (
             <span
               key={i}
-              className="px-3 py-1 rounded-full bg-secondary text-muted-foreground text-xs"
+              className="px-3 py-1 rounded-xl bg-secondary text-muted-foreground text-xs"
             >
               {tag}
             </span>

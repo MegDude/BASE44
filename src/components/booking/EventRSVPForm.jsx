@@ -47,7 +47,7 @@ export default function EventRSVPForm({ event, onClose }) {
         animate={{ opacity: 1 }}
         className="p-5 text-center"
       >
-        <div className="w-12 h-10 rounded-full bg-white/35 flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-10 rounded-xl bg-white/35 flex items-center justify-center mx-auto mb-3">
           <span className="text-2xl">✓</span>
         </div>
         <h3 className="text-[18px] font-bold text-[#0B1F33] mb-1">You're all set!</h3>
@@ -65,7 +65,7 @@ export default function EventRSVPForm({ event, onClose }) {
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-4">
       <div className="bg-white border border-[#0B1F33]/8 rounded-lg p-3">
-        <div className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 mb-2">
+        <div className="tracking-normalst text-[#0B1F33]/50 mb-2 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           Event details
         </div>
         <div className="text-[13px] font-semibold text-[#0B1F33]">{event.title}</div>
@@ -73,7 +73,7 @@ export default function EventRSVPForm({ event, onClose }) {
       </div>
 
       <div>
-        <label className="text-[11px] font-bold uppercase tracking-widest text-[#0B1F33]/50 block mb-2">
+        <label className="text-[11px] font-bold uppercase tracking-normalst text-[#0B1F33]/50 block mb-2">
           How many guests?
         </label>
         <select

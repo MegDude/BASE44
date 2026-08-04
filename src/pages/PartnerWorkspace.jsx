@@ -636,7 +636,7 @@ export default function PartnerWorkspace() {
 
 function PartnerWorkspaceContent() {
   const location = useLocation();
-  const { user: authenticatedUser } = useAuth();
+  const { user: authenticatedUser, logout, stopPartnerImpersonation } = useAuth();
   const [user, setUser] = useState(() => ({
     ...PUBLIC_PARTNER_USER,
     ...(getStoredProfile() || {}),
@@ -648,7 +648,7 @@ function PartnerWorkspaceContent() {
   const isPublicWorkspaceUser = !activation && user.email === PUBLIC_PARTNER_USER.email;
   const isReportsTab = tab === "reports";
   const accountAccessEnabled = canUseProductionAccountAccess();
-  const hasPrivilegedWorkspaceAccess = canViewEverything(user);
+  const hasPrivilegedWorkspaceAccess = canViewEverything(user) && !user.is_impersonating;
   const isPartnerLoggedIn = !isPublicWorkspaceUser || Boolean(activation);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [authorizedAdminScope, setAuthorizedAdminScope] = useState({});
@@ -664,6 +664,7 @@ function PartnerWorkspaceContent() {
     ].filter(Boolean).includes(organization.id)
     || organization.name.trim().toLowerCase() === normalizedOrganizationName
   ));
+  const authorizedOrganizationId = user.partner_id || authorizedPartnerOrganization?.id;
   const workspaceScope = hasPrivilegedWorkspaceAccess
     ? {
         ...authorizedAdminScope,
@@ -679,11 +680,11 @@ function PartnerWorkspaceContent() {
       }
     : resolvePartnerWorkspaceScope({
           ...requestedScope,
-          organizationId: authorizedPartnerOrganization?.id,
-          portfolioId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+          organizationId: authorizedOrganizationId,
+          portfolioId: requestedScope.organizationId === authorizedOrganizationId
             ? requestedScope.portfolioId
             : undefined,
-          listingId: requestedScope.organizationId === authorizedPartnerOrganization?.id
+          listingId: requestedScope.organizationId === authorizedOrganizationId
             ? requestedScope.listingId
             : undefined,
         });
@@ -775,22 +776,31 @@ function PartnerWorkspaceContent() {
     navigate("/map?mode=partner&tab=map&filter=All");
   }
 
+  async function handleExitImpersonation() {
+    await stopPartnerImpersonation();
+    navigate("/admin-studio/command-center", { replace: true });
+  }
+
   return (
     <div data-workspace-view={tab} className={`dp-partner-page dp-partner-workspace-page min-h-screen text-[#0B1F33] ${isReportsTab ? "dp-partner-workspace-page--reports" : ""}`}>
+      {user.is_impersonating ? (
+        <aside className="dp-impersonation-banner" aria-label="Super Admin workspace session">
+          <span><ShieldCheck aria-hidden="true" /><strong>Super Admin mode</strong> You are managing this partner workspace with full access.</span>
+          <button type="button" onClick={handleExitImpersonation}>Exit workspace</button>
+        </aside>
+      ) : null}
       <header className="dp-partner-workspace-header">
         <div className="dp-partner-workspace-header-inner">
           <button className="dp-workspace-mobile-menu" type="button" onClick={() => setMobileNavOpen(true)} aria-label="Open workspace navigation">
             <Menu aria-hidden="true" />
           </button>
           <nav className="dp-workspace-history-controls" aria-label="Page controls">
-            <button type="button" onClick={handleWorkspaceBack} aria-label="Go back">
-              <ChevronLeft aria-hidden="true" />
-              <span>Back</span>
-            </button>
-            <button type="button" onClick={handleWorkspaceClose} aria-label="Close workspace">
-              <X aria-hidden="true" />
-              <span>Close</span>
-            </button>
+<button type="button" onClick={handleWorkspaceBack} aria-label="Go back">
+<ChevronLeft aria-hidden="true" />
+</button>
+<button type="button" onClick={handleWorkspaceClose} aria-label="Close workspace">
+<X aria-hidden="true" />
+</button>
           </nav>
           <Link className="dp-partner-workspace-brand" to={withPartnerWorkspaceScope("/partner-workspace/home", workspaceScope)} aria-label="Downtown Perks workspace home">
             <strong>Downtown Perks</strong>
@@ -801,7 +811,7 @@ function PartnerWorkspaceContent() {
               <Search className="h-4 w-4" aria-hidden="true" />
               <span>Search Downtown Perks</span>
             </button>
-            {isPartnerLoggedIn ? <button type="button" aria-label="Notifications"><Bell aria-hidden="true" /></button> : null}
+            {isPartnerLoggedIn ? <button type="button" onClick={() => navigate(withPartnerWorkspaceScope("/partner-workspace/connections", workspaceScope))} aria-label="Notification settings"><Bell aria-hidden="true" /></button> : null}
             {(isPartnerLoggedIn || accountAccessEnabled) ? (
               <button type="button" onClick={handleAccount} disabled={!isPartnerLoggedIn && !accountAccessEnabled} className="dp-partner-workspace-signin">
                 {isPartnerLoggedIn ? "Account" : "Sign in"}
@@ -816,9 +826,10 @@ function PartnerWorkspaceContent() {
         <aside className="dp-workspace-sidebar" data-open={mobileNavOpen ? "true" : "false"}>
           <div className="dp-workspace-sidebar-head">
             <span>Workspace</span>
-            <div className="dp-workspace-surface-controls">
-              <button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /><span>Close</span></button>
-            </div>
+<div className="dp-workspace-surface-controls">
+<button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Go back from workspace navigation"><ChevronLeft aria-hidden="true" /></button>
+<button type="button" onClick={() => setMobileNavOpen(false)} aria-label="Close workspace navigation"><X aria-hidden="true" /></button>
+</div>
           </div>
           <nav aria-label="Workspace navigation">
             {WORKSPACE_NAV_GROUPS.map((group) => {
@@ -869,7 +880,7 @@ function PartnerWorkspaceContent() {
           {tab === "reports" && <WorkspaceReportsSurface key="reports" scope={workspaceScope} />}
           {tab === "analytics" && <WorkspaceAnalytics key="analytics" scope={workspaceScope} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
           {tab === "assistant" && <WorkspaceAgent key="assistant" user={user} scope={workspaceScope} />}
-          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} />}
+          {tab === "profile" && <ProfileSection key="profile" user={user} setUser={setUser} scope={workspaceScope} organizationName={authorizedPartnerOrganization?.name || user.organization_name || user.partner_name} hasPrivilegedAccess={hasPrivilegedWorkspaceAccess} onSignOut={() => logout(true, "/partners/sign-in")} />}
           {tab === "team" && <WorkspaceRegistryPanel key="team" tabId="team" />}
           {tab === "billing" && <WorkspaceRegistryPanel key="billing" tabId="billing" />}
         </AnimatePresence>
@@ -910,7 +921,7 @@ function WorkspaceMediaRail({ tabId, organizationId }) {
     <section className="dp-workspace-media-rail" aria-labelledby="workspace-media-title">
       <header>
         <div>
-          <p className="dp-workspace-eyebrow">Ready to use</p>
+          <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Ready to use</p>
           <h2 id="workspace-media-title">Approved media</h2>
           <p>Images available to {organization?.name || "this workspace"} for listings, campaigns, and reports.</p>
         </div>
@@ -1013,7 +1024,7 @@ function WorkspaceCapability({ eyebrow, title, description, actions = [] }) {
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
       className="rounded-[12px] border border-[rgba(11,31,51,0.07)] bg-white p-6 md:p-8 shadow-[0_2px_8px_rgba(11,31,51,0.04),0_8px_28px_rgba(11,31,51,0.05)]"
     >
-      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#BFA46A]">{eyebrow}</span>
+      <span className="inline-flex items-center gap-1.5 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</span>
       <h2 className="mt-2 font-body text-[20px] font-semibold leading-snug tracking-[-0.005em] text-[#0B1F33]">{title}</h2>
       <p className="mt-2.5 max-w-2xl text-[13.5px] leading-[1.65] text-[#0B1F33]/60">{description}</p>
       <div className="mt-6 grid gap-2.5 md:grid-cols-3">
@@ -1314,7 +1325,7 @@ function WorkspaceAgent({ user, scope, engagement = false }) {
   return (
     <motion.section className="dp-workspace-agent dp-workspace-agent--native" aria-labelledby="workspace-agent-title" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
       <header className="dp-workspace-agent__hero">
-        <div><p className="dp-workspace-eyebrow">{engagement ? "Engagement intelligence" : "Ask the Map"}</p><h1 id="workspace-agent-title">{engagement ? "Turn map signals into the next move." : "Make the next decision with the map."}</h1><p>Answers are grounded in the authorized workspace, canonical map inventory, and recorded activity. Missing evidence stays explicit.</p></div>
+        <div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{engagement ? "Engagement intelligence" : "Ask the Map"}</p><h1 id="workspace-agent-title">{engagement ? "Turn map signals into the next move." : "Make the next decision with the map."}</h1><p>Answers are grounded in the authorized workspace, canonical map inventory, and recorded activity. Missing evidence stays explicit.</p></div>
         <Link to={withPartnerWorkspaceScope("/map?mode=partner&tab=map&filter=All", scope)}>Open map <ArrowRight aria-hidden="true" /></Link>
       </header>
       <div className="dp-workspace-agent__context"><span>{contextLabel}</span><strong>{ownedEntities.length ? `${ownedEntities.length} connected ${ownedEntities.length === 1 ? "place" : "places"}` : "Map intelligence is ready when authorized scope loads"}</strong></div>
@@ -1338,7 +1349,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
     return (
       <motion.section className="dp-workspace-experience-report" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         <header className="dp-workspace-experience-report-header">
-          <p className="dp-workspace-eyebrow">Experience report</p>
+          <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Experience report</p>
           <h1>Downtown Austin Art & Parks Tour</h1>
           <p>A clear read on visits, survey answers, directions, and the downtown areas people used most.</p>
           <Link to="/partner-workspace/overview">Back to overview</Link>
@@ -1386,7 +1397,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
     >
       <header className="dp-workspace-analytics-header">
         <span>Results</span>
-        <h2>See what is working from one place.</h2>
+        <h2>See what needs attention and what is working.</h2>
         <p>
           Use this page to review the app link, read the reports, and see which partners, links, and campaigns need attention before the next release.
         </p>
@@ -1408,7 +1419,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
 
       <div className="dp-workspace-analytics-grid">
         <section>
-          <p className="dp-workspace-analytics-kicker">Reports</p>
+          <p className="dp-workspace-analytics-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Reports</p>
           <h3>Reports stay close to the work.</h3>
           <div className="dp-workspace-analytics-list">
             {reportStreams.map(([label, detail, href]) => (
@@ -1422,7 +1433,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
         </section>
 
         <section>
-          <p className="dp-workspace-analytics-kicker">Onboarding</p>
+          <p className="dp-workspace-analytics-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Onboarding</p>
           <h3>Focus the next three months on places people already ask about.</h3>
           <div className="dp-workspace-analytics-list is-static">
             {onboardingTargets.map(([label, detail]) => (
@@ -1436,7 +1447,7 @@ function WorkspaceAnalytics({ scope, hasPrivilegedAccess = false }) {
       </div>
 
       <section className="dp-workspace-analytics-next">
-        <p className="dp-workspace-analytics-kicker">Follow-up</p>
+        <p className="dp-workspace-analytics-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Follow-up</p>
         <h3>Keep the review tied to the work that matters.</h3>
         <div>
           {launchTasks.map(([label, detail]) => (
@@ -1541,7 +1552,7 @@ function WorkspaceAnalyticsSnapshotGraphs({ report }) {
     <section className="dp-workspace-analytics-snapshot" aria-labelledby="workspace-analytics-graph-title">
       <div className="dp-workspace-analytics-heading">
         <div>
-          <p className="dp-workspace-eyebrow">SEO Snapshot</p>
+          <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">SEO Snapshot</p>
           <h2 id="workspace-analytics-graph-title">Search activity at a glance.</h2>
           <p>These charts use the current snapshot only. They show searches, clicks, and average rank without guessing at trends that are not connected yet.</p>
         </div>
@@ -1711,7 +1722,7 @@ function NativeMobileWorkspaceDashboard({
         </button>
       </div> : null}
       <section className="dp-native-mobile-hero">
-        <p className="dp-native-mobile-kicker">{organization?.name || "Partner overview"}</p>
+        <p className="dp-native-mobile-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{organization?.name || "Partner overview"}</p>
         <h1>{heroMedia.headline}</h1>
         <p className="dp-native-mobile-hero-summary">{heroMedia.summary}</p>
         <div className="dp-native-mobile-meta"><span>{formatWorkspaceNumber(liveInventory?.connectedPlaces ?? ownedEntities.length)} connected places</span><span>{heroMedia.locationLabel || "Map-connected workspace"}</span></div>
@@ -1969,7 +1980,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
       <section className="dp-operating-header dp-os-header">
         <div className="dp-workspace-home-hero-copy">
           <div>
-            <p className="dp-workspace-eyebrow">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{selectedOrganization?.name || activation?.organizationName || "Partner workspace"}</p>
             <h1>{heroMedia.headline}</h1>
             <p>{heroMedia.summary}</p>
           </div>
@@ -1991,7 +2002,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
 
       <section className="dp-os-next-action" aria-labelledby="workspace-next-action-title">
         <div>
-          <p className="dp-workspace-eyebrow">{nextAction.eyebrow}</p>
+          <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{nextAction.eyebrow}</p>
           <h2 id="workspace-next-action-title">{nextAction.title}</h2>
           <p>{nextAction.description}</p>
         </div>
@@ -2024,7 +2035,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
 
       <section className="dp-operating-section" aria-labelledby="performance-summary-title">
         <div className="dp-operating-section-header">
-          <div><p className="dp-workspace-eyebrow">Results for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
+          <div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Results for</p><h2 id="performance-summary-title">{selectedOrganization?.name}</h2></div>
           {isLegends ? (
             <span className="dp-seo-period-note">Search results captured · {formatWorkspaceDate(legendsSeoReport.capturedAt)}</span>
           ) : (
@@ -2042,7 +2053,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
       ) : (
         <section className="dp-operating-analysis">
           <article className="dp-performance-trend">
-            <div className="dp-panel-heading"><div><p className="dp-workspace-eyebrow">Results trend</p><h2>More people are finding the listing.</h2></div><span>+18% vs. prior period</span></div>
+            <div className="dp-panel-heading"><div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Results trend</p><h2>More people are finding the listing.</h2></div><span>+18% vs. prior period</span></div>
             <svg viewBox="0 0 760 220" role="img" aria-label="Map views rising over the last 30 days" preserveAspectRatio="none">
               <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34" fill="none" stroke="#C8A96A" strokeWidth="5" />
               <path d="M0 188 C80 174 108 182 170 151 S280 163 352 119 S470 132 536 84 S650 91 760 34 L760 220 L0 220 Z" fill="rgba(200,169,106,.10)" />
@@ -2050,7 +2061,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
             <div className="dp-chart-axis"><span>30 days ago</span><span>Today</span></div>
           </article>
           <aside className="dp-recommended-action">
-            <p className="dp-workspace-eyebrow">Suggested next step</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Suggested next step</p>
             <h2>Publish a resident event between 3–6 PM.</h2>
             <p>Afternoons are strongest near Waterloo Park. Pair the event with one active offer so people have a clear reason to go.</p>
             <Link to="/partner-workspace/events">Create event <ArrowRight aria-hidden="true" /></Link>
@@ -2059,7 +2070,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
       )}
 
       <section className="dp-operating-section" aria-labelledby="current-work-title">
-        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow">Current activity</p><h2 id="current-work-title">Work that is live now.</h2></div></div>
+        <div className="dp-operating-section-header"><div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Current activity</p><h2 id="current-work-title">Work that is live now.</h2></div></div>
         <div className="dp-current-work-grid">
           <WorkspaceActivityPanel title="Active offers" items={activePerks} empty="No active offers" emptyAction="Create an offer to begin tracking resident use." actionLabel="Create offer" href="/partner-workspace/offers" />
           <WorkspaceActivityPanel title="Upcoming events" items={upcomingEvents} empty="No upcoming events" emptyAction="Publish an event when the date and location are ready." actionLabel="Publish event" href="/partner-workspace/events" />
@@ -2067,7 +2078,7 @@ function WorkspaceOverview({ user, setTab, scope, organizationId = "", activatio
         </div>
       </section>
 
-      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={withPartnerWorkspaceScope("/partner-workspace/analytics?range=30d&comparison=previous_period&view=overview", scope)}>Open analytics <ArrowRight aria-hidden="true" /></Link></section>
+      <section className="dp-overview-analytics-link" aria-labelledby="overview-analytics-link-title"><div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Analytics</p><h2 id="overview-analytics-link-title">Understand what changed and what to do next.</h2><p>Open the focused analytics workspace for audience, places, campaigns, offers, sources, geography, and reports.</p></div><Link to={withPartnerWorkspaceScope("/partner-workspace/analytics?range=30d&comparison=previous_period&view=overview", scope)}>Open analytics <ArrowRight aria-hidden="true" /></Link></section>
       </div>
     </motion.div>
   );
@@ -2105,7 +2116,7 @@ function DaaApprovedExperienceReport() {
     <div className="dp-approved-experience-report">
       <section className="dp-experience-summary" aria-labelledby="experience-summary-title">
         <div className="dp-experience-section-header">
-          <div><p className="dp-workspace-eyebrow">Last 30 days</p><h2 id="experience-summary-title">How the guide performed</h2></div>
+          <div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Last 30 days</p><h2 id="experience-summary-title">How the guide performed</h2></div>
           <label>Period<select defaultValue="30"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option></select></label>
         </div>
         <div className="dp-experience-metric-grid">
@@ -2115,13 +2126,13 @@ function DaaApprovedExperienceReport() {
 
       <section className="dp-experience-two-column">
         <article className="dp-experience-panel dp-time-analysis">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Activity pattern</p><h2>Afternoon is the strongest window.</h2><span>Share of peak activity</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Activity pattern</p><h2>Afternoon is the strongest window.</h2><span>Share of peak activity</span></div>
           <div className="dp-column-chart" role="img" aria-label="Activity by time of day, with afternoon highest">
             {timeBuckets.map(([label, value]) => <div key={label}><span style={{ height: `${value}%` }}><i>{value}%</i></span><small>{label}</small></div>)}
           </div>
         </article>
         <article className="dp-experience-panel dp-survey-analysis">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Survey themes</p><h2>What motivates visits.</h2><span>Relative response strength</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Survey themes</p><h2>What motivates visits.</h2><span>Relative response strength</span></div>
           <ol className="dp-horizontal-bars">
             {surveyThemes.map(([label, value]) => <li key={label}><div><strong>{label}</strong><span>{value}%</span></div><i><b style={{ width: `${value}%` }} /></i></li>)}
           </ol>
@@ -2130,13 +2141,13 @@ function DaaApprovedExperienceReport() {
 
       <section className="dp-experience-two-column">
         <article className="dp-experience-panel">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Places</p><h2>Most visited locations</h2><span>Verified visits and change</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Places</p><h2>Most visited locations</h2><span>Verified visits and change</span></div>
           <ol className="dp-ranked-locations">
             {rankedLocations.map(([label, value, change], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><span>{value}</span><em>{change}</em></li>)}
           </ol>
         </article>
         <article className="dp-experience-panel">
-          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">Progress</p><h2>From opening the guide to leaving feedback</h2><span>People completing each step</span></div>
+          <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Progress</p><h2>From opening the guide to leaving feedback</h2><span>People completing each step</span></div>
           <ol className="dp-experience-funnel">
             {funnel.map(([label, value], index) => <li key={label} style={{ width: `${100 - index * 10}%` }}><span>{label}</span><strong>{Number(value).toLocaleString()}</strong></li>)}
           </ol>
@@ -2144,14 +2155,14 @@ function DaaApprovedExperienceReport() {
       </section>
 
       <section className="dp-experience-panel dp-district-analysis">
-        <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow">District activity</p><h2>Where people used the guide most</h2><span>Activity by district</span></div>
+        <div className="dp-experience-panel-heading"><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">District activity</p><h2>Where people used the guide most</h2><span>Activity by district</span></div>
         <ol className="dp-district-distribution">
           {districts.map(([label, value], index) => <li key={label}><b>{index + 1}</b><strong>{label}</strong><i><span style={{ width: `${value}%` }} /></i><em>{value}</em></li>)}
         </ol>
       </section>
 
       <footer className="dp-experience-report-actions">
-        <div><p className="dp-workspace-eyebrow">Next action</p><h2>Use the afternoon window to connect the tour with nearby programming.</h2></div>
+        <div><p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Next action</p><h2>Use the afternoon window to connect the tour with nearby programming.</h2></div>
         <div><Link className="dp-button-primary" to="/partner-workspace/campaigns">Create campaign</Link><Link className="dp-button-secondary" to="/map?mode=partner&tab=map&filter=Civic">View on map</Link></div>
       </footer>
     </div>
@@ -2196,7 +2207,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       {activation && (
         <section className="dp-workspace-overview-section dp-workspace-activation-panel">
           <div>
-            <p className="dp-workspace-eyebrow">Workspace ready</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Workspace ready</p>
             <h2>{activation.organizationName} is active.</h2>
             <p>
               Your plan is connected. Start with the map listing, then publish the first offer, event, survey, or campaign when the content is ready.
@@ -2221,7 +2232,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       {isPreviewMode && (
         <section className="dp-workspace-overview-section dp-workspace-intake-panel">
           <div className="dp-workspace-section-copy">
-            <p className="dp-workspace-eyebrow">Partner setup</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner setup</p>
             <h2>Start once. Run it from one workspace.</h2>
             <p>
               Move from signup to plan, checkout, setup, and everyday updates without jumping between disconnected pages.
@@ -2266,7 +2277,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       <section className="dp-workspace-overview-section dp-workspace-switcher-section">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="dp-workspace-eyebrow">Organizations and workspaces</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Organizations and workspaces</p>
             <h2 className="dp-workspace-section-title">Manage multiple organizations from a single account.</h2>
             <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-[#0B1F33]/60">
               Switch between properties, venues, hotels, brands, civic programs, and listings without creating separate logins.
@@ -2296,7 +2307,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
                 >
                   <div className="flex items-center justify-between gap-3">
                     <strong className="text-[13px] font-semibold text-[#0B1F33]">{organization.name}</strong>
-                    <span className="rounded-[3px] border border-[rgba(11,31,51,0.08)] bg-white px-2 py-1 text-[10.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/56">
+                    <span className="rounded-[3px] border border-[rgba(11,31,51,0.08)] bg-white px-2 py-1 text-[#0B1F33]/56 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                       Role: {friendlyRoleLabel(organization.role)}
                     </span>
                   </div>
@@ -2325,7 +2336,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
               {ownedEntities.map((entity) => (
                 <div key={entity.id} className="rounded-[4px] border border-[rgba(11,31,51,0.08)] bg-white p-3">
                   <p className="text-[12.5px] font-semibold text-[#0B1F33]">{entity.display_name}</p>
-                  <p className="mt-1 text-[11.5px] uppercase tracking-normal text-[#0B1F33]/48">{entity.entity_type}</p>
+                  <p className="mt-1 text-[#0B1F33]/48 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{entity.entity_type}</p>
                 </div>
               ))}
             </div>
@@ -2342,7 +2353,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
       <section className="dp-workspace-overview-section dp-workspace-module-section">
         <div className="dp-workspace-section-head">
           <div>
-            <p className="dp-workspace-eyebrow">Workspace tools</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Workspace tools</p>
             <h2 className="dp-workspace-section-title">One place for partner work.</h2>
           </div>
           <p>
@@ -2394,10 +2405,10 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
             onClick={(event) => event.stopPropagation()}
           >
             <div className="dp-workspace-surface-controls dp-workspace-upgrade-controls">
-              <button type="button" aria-label="Go back from upgrade prompt" onClick={() => setUpgradePrompt(null)}><ChevronLeft aria-hidden="true" /><span>Back</span></button>
-              <button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}><X aria-hidden="true" /><span>Close</span></button>
+<button type="button" aria-label="Go back from upgrade prompt" onClick={() => setUpgradePrompt(null)}><ChevronLeft aria-hidden="true" /></button>
+<button type="button" className="dp-workspace-upgrade-close" aria-label="Close upgrade prompt" onClick={() => setUpgradePrompt(null)}><X aria-hidden="true" /></button>
             </div>
-            <p className="dp-workspace-eyebrow">Add-on</p>
+            <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Add-on</p>
             <h2 id="workspace-upgrade-title">Add {upgradePrompt.label}</h2>
             <p>
               Send a focused email or text to the residents, guests, buildings, or districts that matter. Preview it, schedule it, then see how people responded.
@@ -2424,7 +2435,7 @@ function LegacyWorkspaceOverview({ user, setTab, mode = "active", activation = n
             className="dp-workspace-quick-stat flex flex-col items-center justify-center p-5 rounded-[10px] border border-[rgba(11,31,51,0.07)] bg-white shadow-[0_1px_4px_rgba(11,31,51,0.04),0_4px_14px_rgba(11,31,51,0.04)] text-center"
           >
             <div className="font-body text-[26px] font-semibold leading-none tracking-tight text-[#0B1F33] tabular-nums">{s.value}</div>
-            <div className="text-[11px] font-medium text-[#0B1F33]/50 mt-1.5 uppercase tracking-[0.08em]">{s.label}</div>
+            <div className="text-[#0B1F33]/50 mt-1.5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{s.label}</div>
           </div>
         ))}
       </div>
@@ -2677,7 +2688,7 @@ function DaaCivicWorkspacePanel() {
     <section className="mb-8 rounded-[10px] border border-[rgba(11,31,51,.06)] bg-[#F7F8FB] p-5 shadow-[0_8px_24px_rgba(11,31,51,.04)]">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Downtown Austin Art & Parks Tour</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Austin Art & Parks Tour</div>
           <h3 className="font-body mt-2 text-[23px] font-semibold leading-snug tracking-normal text-[#0B1F33]">How People Use This Guide</h3>
           <p className="mt-2 max-w-[48ch] text-[13px] leading-6 text-[#0B1F33]/66">
             See opens, saves, visits, directions, and survey answers across the Downtown Austin Art & Parks Tour. Learn which places draw attention and where people come back.
@@ -2696,7 +2707,7 @@ function DaaCivicWorkspacePanel() {
       <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
         {daaDashboardContent.overview.slice(0, 8).map(([label, value]) => (
           <div key={label} className="rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/86 p-3">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{label}</div>
+            <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
             <p className="mt-1 text-[20px] font-semibold leading-tight tracking-normal text-[#0B1F33]">{value}</p>
           </div>
         ))}
@@ -2705,7 +2716,7 @@ function DaaCivicWorkspacePanel() {
       <div className="mt-5 rounded-[8px] border border-[rgba(11,31,51,.06)] bg-white/80 p-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">{activeRailItem.meta}</div>
+            <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{activeRailItem.meta}</div>
             <h4 className="font-body mt-1 text-[16px] font-semibold leading-snug tracking-normal text-[#0B1F33]">{activeRailItem.label}</h4>
             <p className="mt-2 max-w-[64ch] text-[13px] leading-6 text-[#0B1F33]/66">{activeRailItem.detail}</p>
           </div>
@@ -2759,7 +2770,7 @@ function DaaInsightRail({ section, activeLabel, onSelect }) {
                   : "border-[rgba(11,31,51,.06)] bg-[#F7F8FB] text-[#0B1F33]/70 hover:border-[#BFA46A]/45 hover:text-[#0B1F33]"
               }`}
             >
-              <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{item.meta}</span>
+              <span className="block text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{item.meta}</span>
               <span className="mt-1 block">{item.label}</span>
             </button>
           );
@@ -3067,7 +3078,7 @@ function EventForm({ user, event, scope, onClose, onSave }) {
         <FormField label="Event title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} required />
         <FormField label="Venue name" value={form.venue_name} onChange={v => setForm(f => ({ ...f, venue_name: v }))} />
         <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Category</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-normal mb-1.5">Category</label>
           <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
             className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             {EVENT_CATEGORIES.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
@@ -3080,7 +3091,7 @@ function EventForm({ user, event, scope, onClose, onSave }) {
           <FormField label="Description" value={form.description} onChange={v => setForm(f => ({ ...f, description: v }))} />
         </div>
         <div>
-          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">Status</label>
+          <label className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-normal mb-1.5">Status</label>
           <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
             className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors">
             <option value="upcoming">Upcoming</option>
@@ -3107,9 +3118,9 @@ function EventForm({ user, event, scope, onClose, onSave }) {
   );
 }
 
-// ─── PROFILE ──────────────────────────────────────────────────────────────────
+// ─── PROFILE ───────────────────────────────────────────────────────���──────────
 
-function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false }) {
+function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasPrivilegedAccess = false, onSignOut }) {
   const storedProfile = getStoredProfile() || {};
   const defaultStory = "";
   const defaultAction = "";
@@ -3293,7 +3304,7 @@ function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasP
     <motion.div className="dp-profile-editor dp-workspace-ia-profile" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
       <header className="dp-workspace-ia-header">
         <div>
-          <p className="dp-workspace-eyebrow">Account</p>
+          <p className="dp-workspace-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Account</p>
           <h2>Profile and settings</h2>
           <span>{organizationName || form.organization_name || form.partner_name || "Workspace scope pending"}</span>
         </div>
@@ -3354,12 +3365,20 @@ function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasP
         </section>
 
         <section className="dp-workspace-ia-summary" aria-label="Profile and settings overview">
-          {profileSections.map((section) => (
+          {profileSections.map((section) => {
+            const destination = section.title === "Public presence"
+              ? "/map?mode=partner&tab=map&filter=All"
+              : section.title === "Notifications"
+                ? "/partner-workspace/connections"
+                : section.title === "Active scope"
+                  ? "/partner-workspace/overview"
+                  : "/partner-workspace/settings";
+            return (
             <article key={section.title}>
-              <button type="button">
+              <Link to={destination} aria-label={`Open ${section.title.toLowerCase()} settings`}>
                 <span><strong>{section.title}</strong><small>{section.summary}</small></span>
                 <ChevronRight aria-hidden="true" />
-              </button>
+              </Link>
               <dl>
                 {section.rows.map(([label, value]) => (
                   <div key={label}>
@@ -3369,13 +3388,14 @@ function ProfileSection({ user, setUser, scope = {}, organizationName = "", hasP
                 ))}
               </dl>
             </article>
-          ))}
+            );
+          })}
         </section>
 
         <div className="dp-workspace-ia-actions">
           <Link to="/map?mode=partner&tab=map&filter=All">Preview public presence</Link>
           <Link to="/partner-workspace/settings">Billing and settings</Link>
-          <button type="button">Sign out</button>
+          <button type="button" onClick={onSignOut}>Sign out</button>
         </div>
       </form>
     </motion.div>
@@ -3419,12 +3439,12 @@ function ProfileTextarea({ label, helper, value, onChange, placeholder }) {
   );
 }
 
-// ─── SHARED UTILITIES ──────────────────────────────────────────────────��──────
+// ─── SHARED UTILITIES ────────���──��──────────────────────────────���───────��──────
 
 function FormField({ label, value, onChange, type = "text", required = false }) {
   return (
     <label className="block">
-      <span className="block text-[11px] font-semibold text-[#0B1F33]/44 uppercase tracking-[0.1em] mb-1.5">{label}</span>
+      <span className="block text-[#0B1F33]/44 mb-1.5 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
       <input
         type={type} value={value} onChange={e => onChange(e.target.value)} required={required}
         className="w-full bg-white border border-[rgba(11,31,51,0.12)] rounded-[7px] px-3.5 py-2.5 text-[13px] text-[#0B1F33] outline-none focus:border-[rgba(191,164,106,0.5)] focus:ring-2 focus:ring-[rgba(191,164,106,0.15)] transition-colors placeholder:text-[#0B1F33]/25"

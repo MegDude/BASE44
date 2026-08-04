@@ -27,7 +27,7 @@ export default function ExperienceGrid({ images = [] }) {
           transition={{ duration: 0.7 }}
           className="mb-12"
         >
-          <span className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.16em] block mb-4">
+          <span className="text-primary/70 block mb-4 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             The Experience
           </span>
           <h2 className="font-heading text-4xl md:text-4xl font-medium leading-[1.1] tracking-normal max-w-xl">
@@ -54,7 +54,7 @@ export default function ExperienceGrid({ images = [] }) {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-                <span className="absolute bottom-3 left-3 text-[11px] font-medium text-white/80 tracking-wide">
+                <span className="absolute bottom-3 left-3 text-[11px] font-medium text-white/80 tracking-normal">
                   {img.label}
                 </span>
               </motion.div>
@@ -72,7 +72,7 @@ export default function ExperienceGrid({ images = [] }) {
           {experiences.map((exp, i) => (
             <span
               key={i}
-              className="px-4 py-2 rounded-full border border-border/60 text-[12px] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all cursor-default"
+              className="px-4 py-2 rounded-xl border border-border/60 text-[12px] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all cursor-default"
             >
               {exp.label}
             </span>

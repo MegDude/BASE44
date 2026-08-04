@@ -20,7 +20,7 @@ html body #root .dp-partner-workspace-page .dp-analytics-page { display:grid; wi
 .dp-analytics-custom-range { display:flex; flex-wrap:wrap; gap:12px; }
 .dp-analytics-custom-range label { width:min(210px,100%); }
 .dp-analytics-data-status { display:flex; min-width:0; min-height:44px; align-items:center; gap:9px; padding:9px 12px; border-left:2px solid #c8a96a; color:#5f6b7a; font-size:12px; line-height:1.35; }
-.dp-analytics-data-status i { width:7px; height:7px; flex:0 0 auto; border-radius:50%; background:#c8a96a; }
+.dp-analytics-data-status i { width:7px; height:7px; flex:0 0 auto; border-radius: 12px; background:#c8a96a; }
 .dp-analytics-data-status.is-ready i { background:#3f8f66; }
 .dp-analytics-data-status.is-empty i { background:#8a94a1; }
 

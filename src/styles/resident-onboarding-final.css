@@ -113,7 +113,7 @@
   color: var(--dp-gold);
   font-size: 12px;
   font-weight: 650;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 .dp-onboarding-welcome {

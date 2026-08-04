@@ -71,7 +71,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-m
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button > b {
   display: grid !important; place-items: center !important; width: 36px !important; height: 36px !important; margin: 0 auto !important;
   border: 1px solid var(--tools-line) !important; border-radius: 11px !important; background: var(--tools-bg) !important;
-  color: var(--tools-ink) !important; font-size: 11px !important; font-weight: 720 !important; letter-spacing: .02em !important;
+  color: var(--tools-ink) !important; font-size: 11px !important; font-weight: 720 !important; letter-spacing: normal !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-logo-matrix button.is-selected {
   background: var(--tools-bg) !important; color: var(--tools-ink) !important; box-shadow: inset 0 -3px 0 var(--tools-gold) !important;
@@ -87,7 +87,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-detail
 }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-detail > p {
   margin: 0 0 24px !important; color: #9b7b39 !important; font-size: 10px !important; font-weight: 720 !important;
-  letter-spacing: .1em !important; text-transform: uppercase !important;
+  letter-spacing: normal !important; text-transform: uppercase !important;
 }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-integration-detail h3 {
   margin: 0 0 10px !important; color: var(--tools-ink) !important; font-size: clamp(28px,3.4vw,40px) !important;
@@ -167,7 +167,7 @@ html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-lis
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-program-list input:focus-visible { outline:3px solid rgba(200,169,106,.32)!important;outline-offset:3px!important; }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate { display:flex!important;flex-direction:column!important;min-width:0!important;padding:22px!important;border:1px solid var(--tools-line)!important;border-radius:15px!important;background:var(--tools-bg)!important; }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>div { display:grid!important;gap:8px!important; }
-html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>div span { color:#9b7b39!important;font-size:10px!important;font-weight:720!important;letter-spacing:.09em!important;text-transform:uppercase!important; }
+html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>div span { color:#9b7b39!important;font-size:10px!important;font-weight:720!important;letter-spacing: normal!important;text-transform:uppercase!important; }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>div strong { color:var(--tools-ink)!important;font-size:36px!important;font-weight:650!important;letter-spacing:-.04em!important; }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>p { margin:14px 0 24px!important;color:var(--tools-muted)!important;font-size:12px!important;line-height:1.5!important; }
 html body #root#root main.dp-partner-lifecycle-page-tools .dp-growth-estimate>a,html body #root#root main.dp-partner-lifecycle-page-tools .dp-partner-section-action { display:inline-flex!important;align-items:center!important;gap:8px!important;width:fit-content!important;min-height:44px!important;margin-top:auto!important;padding:0!important;border:0!important;background:transparent!important;color:var(--tools-ink)!important;font-size:13px!important;font-weight:660!important;text-decoration:none!important; }

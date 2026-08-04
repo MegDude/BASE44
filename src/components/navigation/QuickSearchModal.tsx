@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import {
-  Activity,
   ArrowLeft,
-  Building2,
-  CalendarDays,
   ChevronRight,
   Coffee,
+  LoaderCircle,
+  MapPin,
   Music,
   Search,
+  Sparkles,
   TicketPercent,
   Utensils,
   Wine,
@@ -29,6 +29,27 @@ type SearchSection = {
   kinds: SearchResultKind[];
   filter?: (result: SearchResult) => boolean;
 };
+
+type AgentEntity = {
+  id: string;
+  title: string;
+  reason?: string;
+  deepLink?: string;
+};
+
+type AgentSearchResponse = {
+  answer?: string;
+  entities?: AgentEntity[];
+  followUpPrompts?: string[];
+  source?: string;
+  degraded?: boolean;
+};
+
+type AgentState =
+  | { status: "idle" }
+  | { status: "loading"; query: string }
+  | { status: "success"; query: string; response: AgentSearchResponse }
+  | { status: "error"; query: string };
 
 const DISCOVERY_SECTIONS: SearchSection[] = [
   {
@@ -58,20 +79,17 @@ const DISCOVERY_SECTIONS: SearchSection[] = [
 ];
 
 const SEARCH_PLACEHOLDERS = [
-  "Search places and plans",
-  "Find an event or perk",
-  "Search downtown buildings",
+  "Ask about coffee, music, or perks",
+  "What is good nearby tonight?",
+  "Find something walkable downtown",
 ];
 
 const INTENT_SHORTCUTS = [
-  { label: "Coffee", query: "Coffee", icon: Coffee },
-  { label: "Happy Hour", query: "Happy hour", icon: Wine },
-  { label: "Live Music", query: "Live music", icon: Music },
-  { label: "Dinner", query: "Dinner", icon: Utensils },
-  { label: "Wellness", query: "Wellness", icon: Activity },
-  { label: "Events", query: "Events", icon: CalendarDays },
-  { label: "Buildings", query: "Downtown buildings", icon: Building2 },
-  { label: "Perks", query: "Resident perks", icon: TicketPercent },
+  { label: "Best Coffee Nearby", query: "Best coffee nearby", icon: Coffee },
+  { label: "Happy Hour Specials", query: "Happy hour specials nearby", icon: Wine },
+  { label: "Live Music Tonight", query: "Live music tonight", icon: Music },
+  { label: "Rainey Street Dining", query: "Rainey Street dining", icon: Utensils },
+  { label: "Active Perks", query: "Active resident perks", icon: TicketPercent },
 ];
 
 const FALLBACK_IMAGES: Record<SearchResultKind, string> = {
@@ -283,11 +301,16 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   const inputRef = useRef<HTMLInputElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const agentRequestRef = useRef<AbortController | null>(null);
+  const agentDelayRef = useRef<number | null>(null);
+  const agentRequestIdRef = useRef(0);
+  const resultsRef = useRef<SearchResult[]>([]);
   const { places, catalogState, runSearch, searchCatalog } = useSearchDrivenMapEntities();
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [agentState, setAgentState] = useState<AgentState>({ status: "idle" });
 
   const results = useMemo(() => {
     const seen = new Set<string>();
@@ -302,6 +325,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
         return true;
       });
   }, [catalogState.results, places]);
+  resultsRef.current = results;
 
   const normalizedQuery = query.trim().toLowerCase();
   const grouped = useMemo(
@@ -336,7 +360,15 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
   }, [isOpen, query]);
 
   useEffect(() => {
-    if (isOpen) setSubmittedQuery("");
+    if (isOpen) {
+      setSubmittedQuery("");
+      setAgentState({ status: "idle" });
+      return;
+    }
+    agentRequestRef.current?.abort();
+    agentRequestRef.current = null;
+    if (agentDelayRef.current !== null) window.clearTimeout(agentDelayRef.current);
+    agentDelayRef.current = null;
   }, [isOpen]);
 
   useEffect(() => {
@@ -353,6 +385,51 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
     return () => window.clearTimeout(timeoutId);
   }, [isOpen, places, query, searchCatalog]);
 
+  const requestAgentRecommendation = useCallback(async (cleanQuery: string) => {
+    agentRequestRef.current?.abort();
+    const controller = new AbortController();
+    const requestId = agentRequestIdRef.current + 1;
+    agentRequestIdRef.current = requestId;
+    agentRequestRef.current = controller;
+    setAgentState({ status: "loading", query: cleanQuery });
+
+    const mapContext = resultsRef.current.slice(0, 25).map((result) => ({
+      id: result.id,
+      title: result.title,
+      kind: result.kind,
+      category: result.category,
+      district: result.neighborhood,
+      address: result.address,
+      summary: result.context || result.subtitle,
+      offer: result.badge,
+      deepLink: result.route,
+    }));
+
+    try {
+      const response = await fetch("/api/ask-map", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: cleanQuery,
+          mode: "resident",
+          intent: "quick_search",
+          currentDistrict: "Downtown Austin",
+          activeFilter: "All",
+          mapContext,
+          agentContext: { entityRegistry: mapContext, selectedDistrict: "Downtown Austin" },
+        }),
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error("Search intelligence unavailable");
+      const data = await response.json() as AgentSearchResponse;
+      if (requestId !== agentRequestIdRef.current) return;
+      setAgentState({ status: "success", query: cleanQuery, response: data });
+    } catch (error) {
+      if (controller.signal.aborted || requestId !== agentRequestIdRef.current) return;
+      setAgentState({ status: "error", query: cleanQuery });
+    }
+  }, []);
+
   const executeQuickSearch = useCallback((nextQuery = query) => {
     const cleanQuery = nextQuery.trim();
     if (!cleanQuery || cleanQuery.length < 2) return;
@@ -368,13 +445,35 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
       activeEntityId: "",
       resultLimit: 8,
     }, "quick_search_submit");
-  }, [query, runSearch]);
+    if (agentDelayRef.current !== null) window.clearTimeout(agentDelayRef.current);
+    agentDelayRef.current = window.setTimeout(() => {
+      void requestAgentRecommendation(cleanQuery);
+    }, 220);
+  }, [query, requestAgentRecommendation, runSearch]);
 
   if (!isOpen) return null;
 
   function chooseResult(result: SearchResult) {
     onSelectResult(result);
     onClose();
+  }
+
+  function resolveAgentResult(entity: AgentEntity) {
+    const normalizedTitle = entity.title.trim().toLowerCase();
+    return results.find((result) => result.id === entity.id)
+      || results.find((result) => result.title.trim().toLowerCase() === normalizedTitle)
+      || null;
+  }
+
+  function clearSearch() {
+    agentRequestRef.current?.abort();
+    if (agentDelayRef.current !== null) window.clearTimeout(agentDelayRef.current);
+    agentDelayRef.current = null;
+    agentRequestIdRef.current += 1;
+    setQuery("");
+    setSubmittedQuery("");
+    setAgentState({ status: "idle" });
+    inputRef.current?.focus({ preventScroll: true });
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -395,6 +494,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
       setActiveIndex((index) => Math.max(0, index - 1));
       return;
     }
+
+    if (event.key === "Enter" && (event.nativeEvent.isComposing || event.keyCode === 229)) return;
 
     if (event.key === "Enter" && query.trim() && query.trim() !== submittedQuery) {
       event.preventDefault();
@@ -446,17 +547,17 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
         onKeyDown={handleKeyDown}
       >
         <div className="dp-quick-search-head">
+          <button type="button" className="dp-quick-search-back" onClick={onClose} aria-label="Go back from search">
+            <ArrowLeft size={16} aria-hidden="true" />
+          </button>
           <div>
-            <p className="dp-quick-search-eyebrow">Downtown Austin</p>
-            <h2 id="dp-quick-search-title">Search downtown</h2>
-            <p className="dp-quick-search-support">Find places, events, perks, and buildings.</p>
+            <p className="dp-quick-search-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Austin intelligence</p>
+            <h2 id="dp-quick-search-title">Ask Downtown</h2>
+            <p className="dp-quick-search-support">AI guidance grounded in the live map.</p>
           </div>
           <div className="dp-quick-search-actions" aria-label="Search controls">
-            <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Go back from search">
-              <ArrowLeft size={18} aria-hidden="true" /><span>Back</span>
-            </button>
             <button type="button" className="dp-quick-search-close" onClick={onClose} aria-label="Close search">
-              <X size={18} aria-hidden="true" /><span>Close</span>
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -471,7 +572,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             aria-label="Search Downtown Perks"
           />
           {query ? (
-            <button type="button" onClick={() => setQuery("")} aria-label="Clear search">
+            <button type="button" onClick={clearSearch} aria-label="Clear search">
               <X size={15} />
             </button>
           ) : (
@@ -479,8 +580,8 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           )}
         </div>
 
-        <div className="dp-quick-search-intents" aria-label="Popular searches">
-          <h3>Popular searches</h3>
+        <div className="dp-quick-search-intents" aria-label="Grounded discovery prompts">
+          <h3>Try a grounded search</h3>
           <div className="dp-quick-search-intent-rail">
             {INTENT_SHORTCUTS.map((intent) => {
               const Icon = intent.icon;
@@ -505,7 +606,51 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
           </div>
         </div>
 
-        <div className="dp-quick-search-results" role="listbox" aria-label="Search results">
+        <div className="dp-quick-search-results" aria-label="Search results">
+          {agentState.status === "loading" ? (
+            <section className="dp-quick-search-agent is-loading" role="status" aria-live="polite">
+              <LoaderCircle aria-hidden="true" />
+              <div><strong>Reading the live map</strong><p>Matching {agentState.query} to current places, events, and perks.</p></div>
+            </section>
+          ) : null}
+
+          {agentState.status === "success" ? (
+            <section className="dp-quick-search-agent" aria-labelledby="dp-agent-recommendation-title">
+              <div className="dp-quick-search-agent-label"><Sparkles aria-hidden="true" /><span id="dp-agent-recommendation-title">Map intelligence</span>{agentState.response.degraded ? <small>Local match</small> : null}</div>
+              <p className="dp-quick-search-agent-answer">{agentState.response.answer || "These are the strongest matches in the current downtown map."}</p>
+              {agentState.response.entities?.some((entity) => resolveAgentResult(entity)) ? (
+                <div className="dp-quick-search-agent-entities" aria-label="Recommended map results">
+                  {agentState.response.entities.map((entity) => {
+                    const matchedResult = resolveAgentResult(entity);
+                    if (!matchedResult) return null;
+                    return (
+                      <button key={entity.id} type="button" onClick={() => chooseResult(matchedResult)}>
+                        <MapPin aria-hidden="true" />
+                        <span><strong>{matchedResult.title}</strong><small>{entity.reason || matchedResult.subtitle || "Open on the downtown map"}</small></span>
+                        <ChevronRight aria-hidden="true" />
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+              {agentState.response.followUpPrompts?.length ? (
+                <div className="dp-quick-search-agent-followups" aria-label="Follow-up searches">
+                  {agentState.response.followUpPrompts.slice(0, 3).map((prompt) => (
+                    <button key={prompt} type="button" onClick={() => { setQuery(prompt); executeQuickSearch(prompt); }}>{prompt}</button>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+
+          {agentState.status === "error" ? (
+            <section className="dp-quick-search-agent is-error" role="status">
+              <Sparkles aria-hidden="true" />
+              <div><strong>Map results are still available</strong><p>Intelligent guidance could not load. Browse the grounded matches below or try again.</p></div>
+              <button type="button" onClick={() => executeQuickSearch(agentState.query)}>Try again</button>
+            </section>
+          ) : null}
+
           {noResults ? (
             <div className="dp-quick-search-no-results">
               <strong>No matching places yet.</strong>
@@ -515,7 +660,7 @@ export default function QuickSearchModal({ isOpen, onClose, onSelectResult }: Qu
             grouped.map((section) => (
               <section key={section.key} className="dp-quick-search-section">
                 <h3>{section.label}</h3>
-                <div className="dp-quick-search-row-list">
+                <div className="dp-quick-search-row-list" role="listbox" aria-label={`${section.label} results`}>
                   {section.matches.map((result) => {
                     resultCounter += 1;
                     const rowIndex = resultCounter;

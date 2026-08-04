@@ -92,6 +92,61 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
     if (typeof ref === "function") ref(node);
     else if (ref) ref.current = node;
   }, [ref]);
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell || !header) return;
+    const duplicateTitle = shell.querySelector(".dp-map-detail-navigation-title");
+    duplicateTitle?.style.setProperty("display", "none", "important");
+    const grabber = shell.querySelector(".dp-native-detail-grabber");
+    grabber?.style.setProperty("display", "grid", "important");
+    grabber?.style.setProperty("visibility", "visible", "important");
+    grabber?.style.setProperty("opacity", "1", "important");
+    grabber?.style.setProperty("left", "50%", "important");
+    grabber?.style.setProperty("transform", "translateX(-50%)", "important");
+    const close = shell.querySelector(".dp-map-detail-close");
+    close?.style.setProperty("grid-column", "3", "important");
+    close?.style.setProperty("justify-self", "end", "important");
+  }, [header]);
+  // Swipe-to-resize on the grip: dragging down steps the drawer toward the
+  // bottom (full → expanded → medium → peek → close); dragging up steps it back.
+  const dragRef = useRef({ y: 0, active: false, moved: false });
+  const handleGripPointerDown = useCallback((event) => {
+    dragRef.current = { y: event.clientY, active: true, moved: false };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  }, []);
+  const settleGripDrag = useCallback((clientY) => {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const dy = clientY - dragRef.current.y;
+    dragRef.current.moved = Math.abs(dy) >= 36;
+    if (!dragRef.current.moved) return;
+    const order = ["peek", "medium", "expanded", "full"];
+    const index = order.indexOf(drawerState);
+    if (dy > 0) {
+      if (index <= 0) onRequestClose?.();
+      else onDrawerStateChange?.(order[index - 1]);
+    } else if (index >= 0 && index < order.length - 1) {
+      onDrawerStateChange?.(order[index + 1]);
+    }
+  }, [drawerState, onDrawerStateChange, onRequestClose]);
+  const handleGripPointerUp = useCallback((event) => settleGripDrag(event.clientY), [settleGripDrag]);
+  const handleGripTouchStart = useCallback((event) => {
+    const touch = event.touches[0];
+    if (touch) dragRef.current = { y: touch.clientY, active: true, moved: false };
+  }, []);
+  const handleGripTouchEnd = useCallback((event) => {
+    const touch = event.changedTouches[0];
+    if (touch) settleGripDrag(touch.clientY);
+  }, [settleGripDrag]);
+  const cycleGripState = useCallback(() => {
+    if (dragRef.current.moved) {
+      dragRef.current.moved = false;
+      return;
+    }
+    const order = ["peek", "medium", "expanded", "full"];
+    const index = order.indexOf(drawerState);
+    onDrawerStateChange?.(order[Math.min(Math.max(index, 0) + 1, order.length - 1)]);
+  }, [drawerState, onDrawerStateChange]);
   const drawerClassName = [
     "dp-native-drawer",
     ...className.split(/\s+/).filter((token) => token && token !== "dp-native-drawer"),
@@ -110,14 +165,26 @@ export const NativeDrawerShell = forwardRef(function NativeDrawerShell({
       {...props}
     >
       <div className="dp-native-drawer-surface">
-        {header ? <div className="dp-native-drawer-header">{header}</div> : null}
-        <div className={`dp-native-drawer-content-viewport ${contentClassName}`.trim()}>
+        <button
+          type="button"
+          className="dp-native-drawer-grip flex w-full items-center justify-center py-2.5 shrink-0 cursor-grab active:cursor-grabbing bg-white border-0"
+          aria-label={`Drawer size: ${drawerState}. Swipe down to minimise, up to expand.`}
+          onPointerDown={handleGripPointerDown}
+          onPointerUp={handleGripPointerUp}
+          onTouchStart={handleGripTouchStart}
+          onTouchEnd={handleGripTouchEnd}
+          onClick={cycleGripState}
+        >
+          <span className="h-1 w-10 rounded-full bg-black/20" aria-hidden="true" />
+        </button>
+        {header ? <div className="dp-native-drawer-header shrink-0 border-b border-black/5 bg-white">{header}</div> : null}
+        <div className={`dp-native-drawer-content-viewport flex-1 min-h-0 overflow-y-auto px-5 py-5 overscroll-contain ${contentClassName}`.trim()}>
           <div ref={scrollRef} className={`dp-native-drawer-scroll ${scrollClassName}`.trim()} {...scrollProps}>
             {children}
             <div className="dp-native-drawer-content-end" aria-hidden="true" />
           </div>
         </div>
-        {actions ? <footer className="dp-native-drawer-actions">{actions}</footer> : null}
+        {actions ? <footer className="dp-native-drawer-actions shrink-0 border-t border-black/5 bg-white p-4">{actions}</footer> : null}
         <div className="dp-native-drawer-underlay" aria-hidden="true" />
       </div>
     </motion.aside>

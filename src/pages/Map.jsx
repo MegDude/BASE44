@@ -2394,7 +2394,14 @@ function isUtilityServiceEntity(place, utilityFilter = "") {
     "visitor info": /\b(visitor info|visitor information|tourist information)\b/i,
     shipping: /\b(shipping|mail|package|ups|post office)\b/i,
     services: /\b(service|errand|utility|concierge|coworking|business center)\b/i,
+    // Spec: plumbing, repair, and municipal maintenance are always search-only
+    plumbing: /\b(plumb|plumbing|plumber|pipe|drain|water heater|leak)\b/i,
+    repair: /\b(repair|restoration|water damage|roofing|roofer|contractor|hvac|electrician)\b/i,
   };
+
+  // Spec: "Local Service / *" category format from supplementalMapEntities is always a utility
+  const category = String(place?.category || place?.raw?.category || "").toLowerCase();
+  if (category.startsWith("local service")) return true;
 
   if (normalizedFilter && utilityMatchers[normalizedFilter]) return utilityMatchers[normalizedFilter].test(text);
   return Object.values(utilityMatchers).some((matcher) => matcher.test(text));
@@ -2403,7 +2410,10 @@ function isUtilityServiceEntity(place, utilityFilter = "") {
 function isSearchOnlyRuntimeUtility(place) {
   if (isHappyHourEntity(place)) return false;
   if (coreMatches(place, FILTER_MATCHERS.Wellness) || String(place.type || place.kind || place.raw?.kind || "").toLowerCase() === "wellness") return false;
-  return isParkingEntity(place) || isUtilityServiceEntity(place);
+  // Spec (utility-pin-cull): local service entities (plumbing, repair, contractors,
+  // municipal maintenance) are culled from ambient view; surfaced only on explicit
+  // search query or "Services" / "Utilities" filter activation.
+  return isParkingEntity(place) || isUtilityServiceEntity(place) || isLocalServiceEntity(place);
 }
 
 function isDiningEntity(place) {
@@ -4158,7 +4168,7 @@ function DemoQrTile({ code = "DP-RES-78701" }) {
   return (
     <div className="dp-info-row bg-white/72 p-2">
       <DemoQrCode code={code} className="mx-auto h-28 w-28" />
-      <code className="mt-1.5 block text-center font-mono text-[9px] font-semibold tracking-[0.1em] text-[#BFA46A]">
+      <code className="mt-1.5 block text-center font-mono text-[9px] font-semibold tracking-normal text-[#BFA46A]">
         {code}
       </code>
     </div>
@@ -4242,7 +4252,7 @@ function ResidentPerkRedemptionSheet({ data, onClose, onBack }) {
           transition={{ duration: 0.18, ease: "easeOut" }}
           onClick={(event) => event.stopPropagation()}
         >
-          <p className="dp-resident-qr-eyebrow">{isPerkRedemption ? "Resident perk" : "Verified resident"}</p>
+          <p className="dp-resident-qr-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isPerkRedemption ? "Resident perk" : "Verified resident"}</p>
           <h2 id="resident-qr-title">{title}</h2>
           <p className="dp-resident-qr-value">{valueLine}</p>
           <p className={`dp-resident-qr-status is-${redemptionStatus}`} role="status">{validityLabel}</p>
@@ -4418,7 +4428,7 @@ function PartnerQrScanner({ onVerified }) {
     <section className="mt-3 dp-info-section p-3 md:mt-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
+          <div className="flex items-center gap-1.5 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             Scan access
             <ScanLine className="h-3.5 w-3.5 text-[#BFA46A]" />
           </div>
@@ -4900,7 +4910,7 @@ function BusinessServiceDetails({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">
+          <div className="flex items-center gap-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
             <Building2 className="h-3.5 w-3.5 text-[#BFA46A]" />
             {panel.eyebrow || "Local service"}
           </div>
@@ -4911,7 +4921,7 @@ function BusinessServiceDetails({ place }) {
             {panel.description || place.raw?.summary || "Save this local service for later, get directions, or contact the business directly."}
           </p>
         </div>
-        <div className="shrink-0 px-0 py-1 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#BFA46A]">
+        <div className="shrink-0 px-0 py-1 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           Service
         </div>
       </div>
@@ -5617,98 +5627,131 @@ function LocalServiceRail({ title, items = [], onSelect, kind = "text" }) {
   );
 }
 
+function LocalServiceCapabilitiesGrid({ items = [] }) {
+  if (!items.length) return null;
+  // Pair items into 2-column grid cards; first 4 shown
+  const capped = items.slice(0, 4);
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {capped.map((item) => (
+        <div key={item} className="rounded-xl border border-black/10 bg-[#F8F9FA] p-3">
+          <strong className="block text-[13px] font-semibold text-[#0B1F33]">{item}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LocalServiceBuildingChips({ items = [] }) {
+  if (!items.length) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {items.map((item) => (
+        <span key={item} className="px-2.5 py-1 rounded-lg bg-[#F2F2F7] text-[12px] font-medium text-[#0B1F33]">{item}</span>
+      ))}
+    </div>
+  );
+}
+
 function LocalServiceDrawer({ place, places = [], savedIds, onSave, onSelect, answer, loading, onAsk, onCloseAnswer, mode = "resident" }) {
   const profile = getLocalServiceProfile(place);
-  const relatedServices = getServiceRelatedPlaces(place, places, profile);
   const isSaved = savedIds?.has?.(place?.id);
-  const whyChoose = getWhyPeopleChooseService(profile);
+  const categoryLabel = getLocalServiceCategoryLabel(profile);
+  const locationLabel = place.district || profile.serviceType || "Downtown Core";
+  const streetViewUrl = place?.streetViewUrl || place?.raw?.streetViewUrl ||
+    (place?.lat && place?.lng ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${place.lat}%2C${place.lng}` : null);
+  const websiteDisplay = profile.website ? profile.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : null;
 
   return (
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-local-service-drawer dp-business-detail-drawer">
-      <DestinationHero place={place} mode="resident" />
-      <header className="dp-entity-panel-header dp-entity-summary dp-local-service-summary">
-        <p className="dp-entity-eyebrow">{getLocalServiceCategoryLabel(profile)}</p>
-        <h2 className="dp-entity-title">{place.name}</h2>
-        <p className="dp-entity-meta">{profile.serviceType}{place.district ? ` · ${place.district}` : ""}</p>
-        <p className="dp-entity-dek">{profile.prompt}</p>
-        <p className="dp-business-one-line">{profile.oneSentence}</p>
-      </header>
+      <article className="dp-map-detail-content space-y-5">
 
-      <div className="dp-primary-action-row dp-editorial-hero-actions">
-        {profile.website && (
-          <a href={profile.website} target="_blank" rel="noreferrer" className="dp-panel-action dp-primary-action">
-            Website
-          </a>
+        {/* Entity Summary */}
+        <header className="dp-entity-panel-header space-y-1.5">
+          <p className="dp-entity-eyebrow text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">
+            {categoryLabel} · {locationLabel}
+          </p>
+          <h2 className="text-2xl font-semibold tracking-tight text-[#0B1F33]">{place.name}</h2>
+          {profile.oneSentence ? <p className="text-[14px] leading-relaxed text-[#0B1F33]/70">{profile.oneSentence}</p> : null}
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C9A66B]/10 text-[12px] font-semibold text-[#C9A66B]">
+            Verified Downtown Service Partner
+          </span>
+        </header>
+
+        {/* Core Capabilities grid */}
+        {profile.bestFor.length > 0 && (
+          <section className="space-y-3">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Core Capabilities</h3>
+            <LocalServiceCapabilitiesGrid items={profile.bestFor} />
+          </section>
         )}
-        {profile.phone && (
-          <a href={`tel:${profile.phone}`} className="dp-panel-action">
-            Call
-          </a>
+
+        {/* Connected Service Buildings chips */}
+        {profile.nearbyBuildings.length > 0 && (
+          <section className="space-y-2.5">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Connected Service Buildings</h3>
+            <p className="text-[12px] text-[#0B1F33]/70">Directly supporting resident infrastructure at nearby towers:</p>
+            <LocalServiceBuildingChips items={profile.nearbyBuildings} />
+          </section>
         )}
-        <button type="button" onClick={onSave} className="dp-panel-action">
-          {isSaved ? "Saved" : "Save"}
-        </button>
-        <a href={directionsUrl(place)} target="_blank" rel="noreferrer" className="dp-panel-action">
-          Directions
-        </a>
-      </div>
 
-      <DestinationSection title="About" className="dp-local-service-section">
-        <p>{profile.about}</p>
-      </DestinationSection>
+        {/* Service Details infobox */}
+        <section className="space-y-2 rounded-2xl bg-[#F8F9FA] p-4 border border-black/10">
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">Service Details</h3>
+          <div className="space-y-1 text-[13px] text-[#0B1F33]/80">
+            {websiteDisplay && <p><strong>Website:</strong> {websiteDisplay}</p>}
+            {profile.phone && <p><strong>Phone:</strong> {profile.phone}</p>}
+            <p><strong>Location:</strong> {place.address || `${locationLabel}, Austin, TX`}</p>
+            {profile.goodToKnow.length > 0 && (
+              <p className="text-[12px] text-[#0B1F33]/60 pt-0.5">{profile.goodToKnow[0]}</p>
+            )}
+          </div>
+        </section>
 
-      <DestinationSection title="Best for" className="dp-local-service-section">
-        <LocalServiceRail title="Services" items={profile.bestFor} />
-      </DestinationSection>
+        {onAsk && (
+          <EntityAssistant
+            place={place}
+            mode={mode}
+            answer={answer}
+            loading={loading}
+            onAsk={onAsk}
+            onClose={onCloseAnswer}
+            onSelect={onSelect}
+          />
+        )}
+      </article>
 
-      <DestinationSection title="Why people choose them" className="dp-local-service-section">
-        <LocalServiceRail title="Why people choose them" items={whyChoose} />
-      </DestinationSection>
-
-      <DestinationSection title="Good to know" className="dp-local-service-section">
-        <LocalServiceRail title="Good to know" items={profile.goodToKnow} />
-      </DestinationSection>
-
-      <DestinationSection title="Downtown connection" className="dp-local-service-section">
-        <p>{profile.downtownConnection}</p>
-      </DestinationSection>
-
-      <DestinationSection title="Nearby buildings" className="dp-local-service-section">
-        <LocalServiceRail title="Nearby buildings" items={profile.nearbyBuildings} />
-      </DestinationSection>
-
-      <NearbyImageRail
-        place={place}
-        places={places.filter((candidate) => !isServiceEntity(candidate))}
-        onSelect={onSelect}
-        title="Nearby perks"
-        support="Places nearby that help this service stay connected to the rest of downtown."
-      />
-
-      <DestinationSection title="Related services" className="dp-local-service-section">
-        <LocalServiceRail title="Similar businesses" items={relatedServices} onSelect={onSelect} kind="places" />
-      </DestinationSection>
-
-      <DestinationSection title="Contact" className="dp-local-service-section">
-        <div className="dp-business-contact-list">
-          {profile.website && <span><strong>Website</strong>{profile.website.replace(/^https?:\/\//, "")}</span>}
-          {profile.phone && <span><strong>Phone</strong>{profile.phone}</span>}
-          {place.address && <span><strong>Where</strong>{place.address}</span>}
-          <span><strong>Hours</strong>Check current availability before you go.</span>
+      {/* Single consolidated action footer */}
+      <footer className="dp-native-drawer-actions shrink-0 border-t border-black/5 bg-white p-4">
+        <div className="flex items-center gap-2">
+          <a
+            href={directionsUrl(place)}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 min-h-[46px] inline-flex items-center justify-center rounded-xl bg-[#0B1F33] px-4 text-[14px] font-semibold text-white shadow-sm transition-transform active:scale-95 hover:bg-[#0B1F33]/90"
+          >
+            Directions
+          </a>
+          <button
+            type="button"
+            aria-pressed={isSaved}
+            onClick={onSave}
+            className="min-h-[46px] px-5 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[14px] font-semibold text-[#0B1F33] transition-transform active:scale-95 hover:bg-black/15"
+          >
+            {isSaved ? "Saved" : "Save"}
+          </button>
+          {streetViewUrl && (
+            <a
+              href={streetViewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="min-h-[46px] px-4 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[14px] font-semibold text-[#0B1F33] transition-transform active:scale-95 hover:bg-black/15"
+            >
+              Street View
+            </a>
+          )}
         </div>
-      </DestinationSection>
-
-      {onAsk && (
-        <EntityAssistant
-          place={place}
-          mode={mode}
-          answer={answer}
-          loading={loading}
-          onAsk={onAsk}
-          onClose={onCloseAnswer}
-          onSelect={onSelect}
-        />
-      )}
+      </footer>
     </motion.div>
   );
 }
@@ -5798,7 +5841,7 @@ function buildCanonicalPerkModel(place, places = []) {
   );
   const offerWithoutVenue = rawOfferName.toLowerCase() === venueName.toLowerCase()
     ? rawOfferName
-    : rawOfferName.replace(new RegExp(`^${venueName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[-:–—]?\\s*`, "i"), "");
+    : rawOfferName.replace(new RegExp(`^${venueName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[-:–���]?\\s*`, "i"), "");
   const title = offerWithoutVenue
     .replace(/\s+Perk$/i, "")
     .trim() || cleanDisplayCopy(fallback.value || "Resident benefit");
@@ -6160,7 +6203,7 @@ function EventDetailDrawer({ place, places = [], savedIds, eventRsvps, onRsvp, o
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-event-detail-drawer">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary dp-event-summary">
-        <p className="dp-entity-eyebrow">{profile.eyebrow}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{profile.eyebrow}</p>
         <h2 className="dp-entity-title">{profile.title}</h2>
         <p className="dp-entity-dek">{profile.oneSentence}</p>
         {!!metaItems.length && (
@@ -6635,7 +6678,7 @@ function BurgerBarCongressDetails({ place, places = [], mode = "resident", saved
           <div className="grid gap-3 sm:grid-cols-2">
             {BURGER_BAR_CONGRESS_CONTENT.businessOverview.map(([label, value]) => (
               <div key={label} className="border-t border-[rgba(11,31,51,.06)] pt-3">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">{label}</div>
+                <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
                 <p className="mt-1 text-[13px] leading-5 text-[#0B1F33]/72">{value}</p>
               </div>
             ))}
@@ -6908,7 +6951,7 @@ function InKindResidentDrawer({ place, places = [], savedIds, onSave, onSelect, 
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-inkind-governed-drawer dp-inkind-resident-drawer" data-inkind-renderer="resident">
       <DestinationHero place={place} mode="resident" />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow">{venue.subcategory} · {venue.district}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{venue.subcategory} · {venue.district}</p>
         <h2 className="dp-entity-title">{venue.name}</h2>
         <p className="dp-entity-dek">{venue.residentView.summary}</p>
         <p className="dp-inkind-benefit-status">{activeBenefit ? "Downtown Perks benefit available" : "Benefit availability unverified"}</p>
@@ -6986,7 +7029,7 @@ function InKindPartnerOpportunityDrawer({ place, places = [], onSelect, answer, 
     <motion.div className="dp-map-panel-content dp-partner-detail-content dp-inkind-governed-drawer dp-inkind-partner-opportunity" data-inkind-renderer="partner">
       <DestinationHero place={place} mode="partner" />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow">inKind dining partner · {venue.district}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">inKind dining partner · {venue.district}</p>
         <h2 className="dp-entity-title">{venue.name}</h2>
         <p className="dp-entity-dek">{partnerCopy.description}</p>
       </header>
@@ -7060,7 +7103,7 @@ function HospitalityNetworkDrawer({ place, places = [], mode = "resident", saved
     <motion.div className="dp-map-panel-content dp-destination-content dp-detail-content dp-hospitality-network-drawer" data-hospitality-renderer={mode}>
       <DestinationHero place={place} mode={mode} />
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow">{isOffer ? "Hotel offer" : "Shared hotel amenity"} · {place.district || raw.district || "Downtown Austin"}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isOffer ? "Hotel offer" : "Shared hotel amenity"} · {place.district || raw.district || "Downtown Austin"}</p>
         <h2 className="dp-entity-title">{place.name}</h2>
         <p className="dp-entity-meta">{hotelName}</p>
         <p className="dp-entity-dek">{mode === "partner" ? partnerSummary : residentSummary}</p>
@@ -7139,46 +7182,35 @@ function getMapDetailNavigationTitle(place, hasPerkContext = false, mode = "resi
 }
 
 function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
-  const pointerStartRef = useRef(null);
-  const stateOrder = ["medium", "expanded", "full"];
-  const movePanel = (direction) => {
-    const currentIndex = Math.max(0, stateOrder.indexOf(panelState));
-    onPanelStateChange?.(stateOrder[Math.max(0, Math.min(stateOrder.length - 1, currentIndex + direction))]);
-  };
   const returnToMap = onBack || onClose;
+  const title = navigationTitle || place?.name || "Details";
   return (
-    <header className="dp-map-panel-header dp-map-detail-header" aria-label="Detail navigation">
+    <header className="flex items-center justify-between px-5 pt-3 pb-4" aria-label="Detail navigation">
+      {/* Back / Map control */}
       <button
         type="button"
-        className="dp-native-detail-grabber"
-        aria-label={`Panel size: ${panelState}. Activate to ${panelState === "full" ? "collapse" : "expand"}.`}
-        aria-expanded={panelState === "full"}
-        onClick={() => movePanel(panelState === "full" ? -1 : 1)}
-        onPointerDown={(event) => { pointerStartRef.current = event.clientY; event.currentTarget.setPointerCapture?.(event.pointerId); }}
-        onPointerUp={(event) => {
-          const start = pointerStartRef.current;
-          pointerStartRef.current = null;
-          if (!Number.isFinite(start)) return;
-          const delta = event.clientY - start;
-          if (Math.abs(delta) >= 28) movePanel(delta < 0 ? 1 : -1);
-        }}
-      ><span aria-hidden="true" /></button>
-      <nav className="dp-map-detail-navigation" aria-label="Panel controls">
-        <button
-          type="button"
-          onClick={returnToMap}
-          className="dp-map-detail-back"
-          data-map-drawer-back="true"
-          aria-label={canGoBack ? backLabel : "Return to map"}
-        >
-          <ArrowLeft aria-hidden="true" />
-        </button>
-        <span className="dp-map-detail-navigation-title" aria-hidden="true" data-navigation-title="true">{navigationTitle || place?.name || "Details"}</span>
-        <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
-          <X aria-hidden="true" />
-        </button>
-      </nav>
-      <span className="sr-only" role="status" aria-live="polite">Panel size {panelState}</span>
+        onClick={returnToMap}
+        data-map-drawer-back="true"
+        className="inline-flex min-h-[38px] items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0B1F33] transition-colors hover:text-[#C9A66B] focus-visible:outline-none"
+        aria-label={canGoBack ? backLabel : "Return to map"}
+      >
+        <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+        <span>{canGoBack ? backLabel : "Map"}</span>
+      </button>
+
+      {/* Centered label */}
+      <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#0B1F33]/60" aria-hidden="true">{title}</span>
+
+      {/* Close control */}
+      <button
+        type="button"
+        onClick={onClose}
+        data-map-drawer-close="true"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#0B1F33] transition-colors hover:bg-black/5 focus-visible:outline-none"
+        aria-label={`Close ${title}`}
+      >
+        <X aria-hidden="true" className="h-4 w-4" />
+      </button>
     </header>
   );
 }
@@ -7327,7 +7359,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </header>
 
       <section className="dp-drawer-section dp-partner-summary">
-        <p className="dp-drawer-eyebrow">Downtown dining network</p>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown dining network</p>
         <h1>inKind</h1>
         <p className="dp-drawer-deck">Discover participating restaurants, activate dining offers, and connect downtown residents, hotel guests, workers, and visitors with places they can use now.</p>
         <p className="dp-partner-context-line">Available through participating downtown venues and selected Downtown Perks campaigns.</p>
@@ -7348,7 +7380,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
 
       {activeOffer && (
         <section className="dp-drawer-section dp-inkind-active-offer">
-          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow">Available now</p><h2>Current dining offers</h2></div></div>
+          <div className="dp-section-heading-row"><div><p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Available now</p><h2>Current dining offers</h2></div></div>
           <article className="dp-offer-card">
             <span className="dp-offer-status">Available now</span>
             <h3>{activeOffer.offer || "Dining credit at participating downtown restaurants"}</h3>
@@ -7360,7 +7392,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
 
       <section className="dp-drawer-section dp-inkind-participating-venues">
         <div className="dp-section-heading-row">
-          <div><p className="dp-drawer-eyebrow">Nearby</p><h2>Participating restaurants</h2></div>
+          <div><p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby</p><h2>Participating restaurants</h2></div>
           <button type="button" className="dp-text-action" onClick={onShowVenues}>Show on map</button>
         </div>
         {participatingVenues.length ? (
@@ -7376,7 +7408,7 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </section>
 
       <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow">How it works</p><h2>How inKind works here</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p><h2>How inKind works here</h2>
         <p className="dp-drawer-intro">inKind brings the dining offer and restaurant network. Downtown Perks brings the local audience, map placement, building access, campaign targeting, and measurable resident action.</p>
         <ol className="dp-step-list">
           <li><span>01</span><div><h3>Restaurants provide the experience</h3><p>Participating restaurants supply the dining destination and any active inKind offer.</p></div></li>
@@ -7386,12 +7418,12 @@ function InKindPartnerDrawer({ place, places = [], savedIds, onSave, onSelectVen
       </section>
 
       <section className="dp-drawer-section">
-        <p className="dp-drawer-eyebrow">Useful context</p><h2>Built for downtown partner accounts</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Useful context</p><h2>Built for downtown partner accounts</h2>
         <div className="dp-partner-context-list">{partnerContexts.map(([title, copy]) => <div key={title}><h3>{title}</h3><p>{copy}</p></div>)}</div>
       </section>
 
       <section className="dp-drawer-section dp-inkind-related-collections">
-        <p className="dp-drawer-eyebrow">Related content</p><h2>Explore more downtown dining</h2>
+        <p className="dp-drawer-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Related content</p><h2>Explore more downtown dining</h2>
         <div className="dp-inkind-grid-list dp-inkind-related-list">{relatedCollections.map((label) => <button type="button" key={label} onClick={onShowVenues}>{label}</button>)}</div>
       </section>
       <p className="dp-partner-disclosure">Offers, eligibility, activation, and redemption are managed through participating restaurants and inKind. Downtown Perks provides discovery, local context, and map access.</p>
@@ -8419,11 +8451,22 @@ function getLegendsDirectoryRowCopy(place) {
   const listing = getResolvedLegendsListing(place);
   const profile = getLegendsResidentialProfileForPlace(place);
   const facts = listing ? getListingFactLine(listing) : "";
+
+  // Spec: never use generic filler. Derive a clean display address and use facts only when verified.
+  const rawAddress = place?.legendsListing?.address || place?.address || listing?.address || "";
+  const unit = place?.legendsListing?.unit || "";
+  const displayAddress = unit && !rawAddress.includes(`#${unit}`)
+    ? rawAddress.replace(/,\s*Austin.*/, ``) + (unit ? ` #${unit}` : "")
+    : rawAddress.replace(/,\s*Austin.*/, "") || place?.name || "Downtown residence";
+  const buildingName = place?.legendsListing?.buildingName || profile?.buildingName || "";
+  const district = place?.legendsListing?.neighborhood || place?.district || profile?.neighborhood || "Downtown Austin";
+  const contextLine = [buildingName, district].filter(Boolean).join(" · ");
+
   return {
-    meta: "Legends Real Estate",
-    title: place?.name || profile?.buildingName || listing?.address || "Downtown residence",
-    address: place?.address || profile?.neighborhood || place?.district || "Downtown Austin",
-    details: facts || "Listing interest with walkable context",
+    meta: "Legends Real Estate · Austin",
+    title: displayAddress,
+    address: contextLine || "Downtown Austin",
+    details: facts || null,
   };
 }
 
@@ -8497,7 +8540,7 @@ function MapSheetToolbar({ eyebrow, onBack, onClose }) {
 function MapPanelMatrix({ id, label, children }) {
   return (
     <section id={id} className="dp-map-panel-section" aria-label={label}>
-      <p className="dp-map-panel-section-label">{label}</p>
+      <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</p>
       <h3 className="dp-map-panel-section-title">Active resident access</h3>
       <div className="dp-map-panel-matrix">{children}</div>
     </section>
@@ -8536,7 +8579,7 @@ function InteractiveMatrix({
   if (!items.length) {
     return (
       <section className={`dp-interactive-matrix ${className}`.trim()}>
-        {eyebrow && <p className="dp-interactive-matrix-eyebrow">{eyebrow}</p>}
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
         <h3>{title}</h3>
         {description && <p className="dp-interactive-matrix-copy">{description}</p>}
         <div className="dp-matrix-empty-state">Nothing to show yet.</div>
@@ -8552,7 +8595,7 @@ function InteractiveMatrix({
   return (
     <section className={`dp-interactive-matrix ${className}`.trim()} aria-label={title}>
       <div className="dp-interactive-matrix-header">
-        {eyebrow && <p className="dp-interactive-matrix-eyebrow">{eyebrow}</p>}
+        {eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{eyebrow}</p>}
         <h3>{title}</h3>
         {description && <p className="dp-interactive-matrix-copy">{description}</p>}
       </div>
@@ -8577,7 +8620,7 @@ function InteractiveMatrix({
         </div>
 
         <div className="dp-matrix-detail-panel" role="tabpanel" aria-live="polite">
-          {selectedItem.eyebrow && <p className="dp-interactive-matrix-eyebrow">{selectedItem.eyebrow}</p>}
+          {selectedItem.eyebrow && <p className="dp-interactive-matrix-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{selectedItem.eyebrow}</p>}
           <h4>{selectedItem.title}</h4>
           {selectedItem.meta?.length ? (
             <div className="dp-matrix-meta-row">
@@ -8990,22 +9033,36 @@ function NearbyImageRail({ place, places = [], onSelect, mode = "resident", titl
     : getNearbyRecommendationCards(place, places, mode, 8, targetKind);
   if (!items.length) return null;
 
+  const displayTitle = getV4DestinationSectionTitle(title);
   return (
-    <DestinationSection title={title} support={support} className="dp-discovery-context-section dp-nearby-image-section">
-      <div className="dp-nearby-image-rail" aria-label={`${title} places`}>
+    <section className="dp-destination-section dp-discovery-context-section dp-nearby-image-section">
+      <div className="flex items-center justify-between">
+        <h3 className="dp-destination-section-h3">{displayTitle}</h3>
+        {support && <span className="text-[11px] font-medium text-[#0B1F33]/50 whitespace-nowrap pl-2">{support}</span>}
+      </div>
+      <div className="grid grid-cols-1 gap-3 dp-nearby-image-rail dp-nearby-list" aria-label={`${title} places`}>
         {items.map((item) => (
-          <button key={item.id} type="button" className="dp-nearby-image-card" onClick={() => onSelect?.(item.place)}>
-            <span className="dp-nearby-image-media">
-              <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} />
+          <button
+            key={item.id}
+            type="button"
+            className="group relative flex items-center gap-3.5 p-3 rounded-2xl border border-black/10 bg-[#F8F9FA] text-left transition-all hover:bg-white hover:border-[#C9A66B] dp-nearby-image-card dp-nearby-list-card"
+            onClick={() => onSelect?.(item.place)}
+          >
+            <span className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white shadow-sm flex items-center justify-center dp-nearby-image-media dp-nearby-list-thumb">
+              {item.image
+                ? <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A66B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="1" y2="4"/><line x1="10" x2="10" y1="1" y2="4"/><line x1="14" x2="14" y1="1" y2="4"/></svg>
+              }
             </span>
-            <span className="dp-nearby-image-copy">
-              <strong>{item.title}</strong>
-              <em>{item.meta}</em>
+            <span className="flex-1 min-w-0 space-y-0.5 dp-nearby-image-copy dp-nearby-list-copy">
+              <strong className="block text-[14px] font-semibold text-[#0B1F33] truncate">{item.title}</strong>
+              <em className="not-italic block text-[12px] font-medium text-[#C9A66B]">{item.meta}</em>
             </span>
+            <span className="text-[#C9A66B] pr-1 transition-transform group-hover:translate-x-0.5 dp-nearby-list-arrow" aria-hidden="true">→</span>
           </button>
         ))}
       </div>
-    </DestinationSection>
+    </section>
   );
 }
 
@@ -9034,7 +9091,9 @@ function NearbyContext({ place, places = [], onSelect, mode = "resident", route 
       ? isWaterlooGreenwayRoute(route)
       ? "Nearby perks, saved places, events, gardens, and next Waterloo stops tied to this route."
       : "Nearby stops, saved places, and civic context tied to this route."
-    : "";
+    : mode === "resident"
+      ? "Live nearby perks"
+      : "";
   return <NearbyImageRail place={place} places={places} onSelect={onSelect} mode={mode} title={title} support={support} route={route} savedIds={savedIds} targetKind={isHotelPanel ? "hotel" : ""} />;
 }
 
@@ -9253,7 +9312,7 @@ function PartnerSectionHeader({ label, title }) {
   return (
     <div className="dp-section-heading-block">
       <div className="dp-section-header">
-        <span className="dp-section-label">{label}</span>
+        <span className="dp-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</span>
         <div className="dp-section-rule" />
       </div>
       {title && <h3 className="dp-section-title">{title}</h3>}
@@ -9518,7 +9577,7 @@ function CommunityStoriesMapLayer() {
   return (
     <section className="dp-community-stories-map-layer" aria-label="Community Stories">
       <div>
-        <p className="dp-tab-eyebrow">Resident Favorite</p>
+        <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident Favorite</p>
         <h3>Community Stories</h3>
         <p>See how downtown residents are using local perks in real life.</p>
       </div>
@@ -9709,16 +9768,6 @@ function PartnerWorkspaceLink({ place, organizationId }) {
   );
 }
 
-function PartnerSourceSection({ place }) {
-  const sourceUrl = place?.sourceUrl || place?.raw?.sourceUrl || place?.website || place?.raw?.website;
-  return (
-    <section className="dp-partner-destination-section dp-partner-source-section" aria-labelledby={`partner-source-${place.id}`}>
-      <h3 id={`partner-source-${place.id}`}>Source</h3>
-      <p>Official place information and connected partner data.</p>
-      {sourceUrl && <a href={sourceUrl} target="_blank" rel="noreferrer" className="dp-partner-inline-action">Open source<ChevronRight aria-hidden="true" /></a>}
-    </section>
-  );
-}
 
 function PartnerIntelligenceDrawer({ place, places = [], onSelect, onViewNearby, organizationId }) {
   if (isCampaignEntity(place)) {
@@ -9743,7 +9792,6 @@ function PartnerIntelligenceDrawer({ place, places = [], onSelect, onViewNearby,
       <PartnerOpportunitySection place={place} organizationId={organizationId} />
       <PartnerNearbyPlacesSection place={place} places={places} onSelect={onSelect} onViewNearby={onViewNearby} />
       <PartnerWorkspaceLink place={place} organizationId={organizationId} />
-      <PartnerSourceSection place={place} />
     </motion.div>
   );
 }
@@ -9784,8 +9832,9 @@ function PartnerNearbyPlacesSection({ place, places = [], onSelect, onViewNearby
   }));
   const seen = new Set();
   const items = [...contextItems, ...relatedItems]
+    .filter((item) => Boolean(item.place?.id))
     .filter((item) => {
-      const key = String(item.place?.id || item.title || "").toLowerCase();
+      const key = String(item.place.id).toLowerCase();
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -9804,10 +9853,10 @@ function PartnerNearbyPlacesSection({ place, places = [], onSelect, onViewNearby
       <ul className="dp-partner-nearby-list">
         {items.map((item) => (
           <li key={item.id}>
-            <button type="button" onClick={() => item.place && onSelect(item.place)} disabled={!item.place}>
+            <button type="button" onClick={() => onSelect(item.place)} aria-label={`Open ${item.title}`}>
               <img src={item.image} data-fallback-src={item.fallbackImage} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
               <span><strong>{item.title}</strong>{item.meta && <small>{item.meta}</small>}</span>
-              {item.place && <ChevronRight aria-hidden="true" />}
+              <ChevronRight aria-hidden="true" />
             </button>
           </li>
         ))}
@@ -10008,7 +10057,7 @@ function WaterlooDetails({ place, mode }) {
       <div className="space-y-4">
         <p className="whitespace-pre-line text-[13px] leading-6 text-[#0B1F33]/68">{drawerCopy}</p>
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A]">Good for</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Good for</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.slice(0, 6).map((tag) => (
               <span key={tag} className="rounded-[5px] border border-[#0B1F33]/[0.08] px-2 py-1 text-[10px] font-medium text-[#0B1F33]/58">
@@ -10090,7 +10139,7 @@ function DaaCivicVideoRail({ place }) {
   return (
     <section className="dp-destination-section dp-daa-video-section" aria-label="DAA civic media">
       <div className="dp-daa-video-section-head">
-        <p className="dp-daa-kicker">DAA civic media</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA civic media</p>
         <h3>Downtown updates in motion.</h3>
       </div>
       <div className="dp-daa-video-rail">
@@ -10135,7 +10184,7 @@ function DaaArtWalkImageRail({ primaryImage }) {
   return (
     <section className="dp-destination-section dp-daa-art-image-section" aria-label="DAA Art Walk images">
       <div className="dp-daa-video-section-head">
-        <p className="dp-daa-kicker">DAA Art Walk</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">DAA Art Walk</p>
         <h3>Images from the route.</h3>
       </div>
       <div className="dp-daa-art-image-rail">
@@ -10230,7 +10279,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
   return (
     <div className="dp-daa-destination-panel dp-civic-guide-panel">
       <section className="dp-daa-story-block dp-civic-guide-intro" aria-label="Why people stop here">
-        <p className="dp-daa-kicker">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Stop {stopNumber} of {DAA_TOUR_STOP_COUNT}</p>
         <h3>{stop.detailHeadline || "Why stop here"}</h3>
         <p>{introCopy}</p>
         <p>{reasonCopy}</p>
@@ -10255,7 +10304,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       </section>
 
       <section className="dp-civic-image-card-section" aria-label="What this stop is good for">
-        <p className="dp-daa-kicker">What It's Good For</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">What It's Good For</p>
         {goodForLabels.length > 0 ? (
           <ul className="dp-daa-clean-list dp-daa-good-for-list" aria-label="Good for">
             {goodForLabels.map((item) => <li key={item}>{item}</li>)}
@@ -10276,7 +10325,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
       {stop.localTip && (
         <section className="dp-daa-story-block dp-daa-local-tip" aria-label="Local tip">
-          <p className="dp-daa-kicker">Local Tip</p>
+          <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Local Tip</p>
           <h3>Go before sunset.</h3>
           <p>{stop.localTip}</p>
         </section>
@@ -10284,7 +10333,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
 
       {stop.ctaHeadline && stop.ctaBody && (
         <section className="dp-daa-story-block dp-daa-stop-cta" aria-label="Downtown Perks note">
-          <p className="dp-daa-kicker">Downtown Perks</p>
+          <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Downtown Perks</p>
           <h3>{stop.ctaHeadline}</h3>
           <p>{stop.ctaBody}</p>
         </section>
@@ -10334,7 +10383,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
       </section>
 
       <section className="dp-daa-next-stops" aria-label="Next nearby stops">
-        <p className="dp-daa-kicker">Keep Exploring</p>
+        <p className="dp-daa-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Keep Exploring</p>
         <h3>Continue the route nearby.</h3>
         <div className="dp-daa-next-rail">
           {nearbyPlaces.map((nearby) => {
@@ -10347,7 +10396,7 @@ function DaaTourDetails({ place, places = [], onSelect, savedIds, onSave }) {
                 onClick={() => nearbyPlace && onSelect(nearbyPlace)}
                 className="dp-daa-next-card"
               >
-                <span className="dp-daa-next-card-kicker">Next stop</span>
+                <span className="dp-daa-next-card-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Next stop</span>
                 <strong>{nearbyStop.name}</strong>
                 <em>{nearbyStop.district || "Downtown Austin"} · 4 min walk</em>
               </button>
@@ -10783,7 +10832,7 @@ function LegendsContactForm({ listing, formId }) {
       }}
     >
       <div className="max-w-2xl text-left">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
+        <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
         <h3 className="mt-1 text-[14px] font-semibold leading-tight text-[#0B1F33] md:text-[15px]">{listing.address}</h3>
         <p className="mt-1 text-[12px] leading-5 text-[#425466]">
           Send interest directly from the map. Legends receives the listing, your timing, and how to follow up.
@@ -10791,19 +10840,19 @@ function LegendsContactForm({ listing, formId }) {
       </div>
 
       <div className="mt-5 grid max-w-2xl gap-3 sm:grid-cols-2">
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/58">
           Name
           <input required name="name" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Your name" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/58">
           Email
           <input required type="email" name="email" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="you@example.com" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/58">
           Phone
           <input required name="phone" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Phone number" />
         </label>
-        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+        <label className="grid gap-1 text-left text-[9.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/58">
           Move timeline
           <select name="moveTimeline" className="h-8 dp-soft-field rounded-[2px] bg-white px-2.5 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70">
             {["ASAP", "30-60 days", "60-90 days", "Just exploring"].map((timeline) => (
@@ -10813,7 +10862,7 @@ function LegendsContactForm({ listing, formId }) {
         </label>
       </div>
 
-      <label className="mt-2 grid max-w-2xl gap-1 text-left text-[9.5px] font-semibold uppercase tracking-[0.08em] text-[#0B1F33]/58">
+      <label className="mt-2 grid max-w-2xl gap-1 text-left text-[9.5px] font-semibold uppercase tracking-normal text-[#0B1F33]/58">
         Message optional
         <textarea name="message" className="min-h-16 dp-soft-field rounded-[2px] bg-white px-2.5 py-2 text-[12px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue={listing.prefilledMessage} />
       </label>
@@ -10870,7 +10919,7 @@ function LegendsListingDetails({ listing }) {
             className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
           />
           <div className="min-w-0 text-left">
-              <div className="inline-flex dp-map-status-badge px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.12em]">
+              <div className="inline-flex dp-map-status-badge px-2 py-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
               {listing.listingTypeLabel}
             </div>
             <h3 className="mt-2 text-[18px] font-semibold leading-tight text-[#0B1F33] md:text-[20px]">{title}</h3>
@@ -10878,7 +10927,7 @@ function LegendsListingDetails({ listing }) {
           </div>
         </div>
         <div className="text-left md:text-right">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">Listed at</div>
+          <div className="text-[#0B1F33]/46 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Listed at</div>
           <div className="mt-1 text-[20px] font-semibold text-[#0B1F33]">{listing.priceDisplay}</div>
         </div>
       </div>
@@ -10886,7 +10935,7 @@ function LegendsListingDetails({ listing }) {
       <div className="dp-editorial-detail-list mt-6 grid gap-0">
         {stats.map(([label, value]) => (
           <div key={label} className="dp-editorial-detail-row py-3 text-left">
-            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52">{label}</div>
+            <div className="text-[#0B1F33]/52 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
             <div className="mt-1 text-[13px] font-medium leading-5 text-[#0B1F33]">{value}</div>
           </div>
         ))}
@@ -10913,7 +10962,7 @@ function LegendsListingGallery({ listing }) {
 
   return (
     <div className="mt-4">
-      <div className="mb-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Listing images</div>
+      <div className="mb-2 text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Listing images</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {images.slice(0, 6).map((image, index) => (
           <div key={`${image}-${index}`} className="relative aspect-[4/3] overflow-hidden rounded-[14px]">
@@ -10956,7 +11005,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
               className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"
             />
             <div className="min-w-0">
-              <div className="inline-flex dp-map-status-badge px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.12em]">
+              <div className="inline-flex dp-map-status-badge px-2 py-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {listing.listingTypeLabel}
               </div>
               <h3 className="mt-2 text-[18px] font-semibold leading-tight text-[#0B1F33] md:text-[20px]">{title}</h3>
@@ -10964,7 +11013,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
             </div>
           </div>
           <div className="text-left md:text-right">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B1F33]/46">Partner read</div>
+            <div className="text-[#0B1F33]/46 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner read</div>
             <div className="mt-1 text-[18px] font-semibold text-[#0B1F33] md:text-[20px]">{insights.placement}</div>
           </div>
         </div>
@@ -10976,7 +11025,7 @@ function LegendsPartnerListingDetails({ listing, place }) {
         <div className="dp-editorial-detail-list mt-6 grid gap-0">
           {stats.map(([label, value]) => (
             <div key={label} className="dp-editorial-detail-row py-3">
-              <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/45">{label}</div>
+              <div className="text-[#0B1F33]/45 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{label}</div>
               <div className="mt-1 text-[13px] font-semibold text-[#0B1F33]">{value}</div>
             </div>
           ))}
@@ -11188,7 +11237,7 @@ function MapNativeCampaignDetails({ place, mode }) {
 
   return (
     <section className="dp-destination-section dp-map-native-campaign-detail">
-      <p className="dp-destination-section-kicker">{mode === "partner" ? "Active campaign" : "Featured experience"}</p>
+      <p className="dp-destination-section-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{mode === "partner" ? "Active campaign" : "Featured experience"}</p>
       <h3>{mode === "partner" ? "What this campaign is for" : "How to use it"}</h3>
       {(place.partnerLine || place.sponsorName) && (
         <p className="dp-destination-section-note">Featured by {place.partnerLine || place.sponsorName}</p>
@@ -11708,7 +11757,7 @@ function TheShoreResidentialEntityDrawer({
           </div>
 
           <section className="dp-entity-section dp-shore-partner-lead">
-            <span className="dp-shore-partner-kicker">The Shore</span>
+            <span className="dp-shore-partner-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">The Shore</span>
             <h3>A Rainey residential address connected to downtown routines.</h3>
             <p>
               The Shore sits between Lady Bird Lake, Rainey Street, Hotel Van Zandt, and the downtown core.
@@ -11920,7 +11969,7 @@ function TheShoreResidentialEntityDrawer({
             }}
           >
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
+              <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
               <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Contact Listing Agent</h3>
             </div>
             {agentFormSubmitted ? (
@@ -11928,19 +11977,19 @@ function TheShoreResidentialEntityDrawer({
             ) : (
               <>
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                     Name
                     <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Your name" />
                   </label>
-                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                     Email
                     <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="you@example.com" />
                   </label>
-                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                     Phone
                     <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" placeholder="Phone number" />
                   </label>
-                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                  <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                     Timeline
                     <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70">
                       <option>ASAP</option>
@@ -11950,7 +11999,7 @@ function TheShoreResidentialEntityDrawer({
                     </select>
                   </label>
                 </div>
-                <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                   Notes
                   <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue="I would like more information about available homes at The Shore." />
                 </label>
@@ -12260,7 +12309,7 @@ function LegendsResidentialIntelligenceDrawer({
       </figure>
 
       <header className="dp-entity-panel-header dp-entity-summary">
-        <p className="dp-entity-eyebrow">{isListingPanel ? `${isTopLegendsListingPanel ? "Legends Top Listing" : "For sale"} · ${panelTitle}` : `Residential · ${panelEyebrow}`}</p>
+        <p className="dp-entity-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isListingPanel ? `${isTopLegendsListingPanel ? "Legends Top Listing" : "For sale"} · ${panelTitle}` : `Residential · ${panelEyebrow}`}</p>
         <h2 className="dp-entity-title">{panelTitle}</h2>
         <p className="dp-entity-meta">{panelMeta}</p>
         {isListingPanel && listingFacts && <p className="dp-entity-meta">{listingFacts}</p>}
@@ -12679,7 +12728,7 @@ function DrawerContactStrip({ place }) {
             key={`${item.kind}-${item.value}`}
             type="button"
             onClick={() => setActiveContact(item)}
-            className="text-left text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="text-left text-[10px] font-semibold uppercase tracking-normal text-[#0B1F33]/62 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
             aria-expanded={activeContact?.kind === item.kind}
           >
             {item.label}
@@ -12699,7 +12748,7 @@ function DrawerContactStrip({ place }) {
             <div className="grid gap-2 bg-white/72 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.68)]">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/52">{activeLabel}</div>
+                  <div className="text-[#0B1F33]/52 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{activeLabel}</div>
                   <div className="mt-1 break-words text-[12px] font-medium leading-5 text-[#0B1F33]">
                     {activeContact.value}
                   </div>
@@ -12717,7 +12766,7 @@ function DrawerContactStrip({ place }) {
                 href={activeContact.href}
                 target={activeContact.kind === "website" ? "_blank" : undefined}
                 rel={activeContact.kind === "website" ? "noreferrer" : undefined}
-                className="inline-flex h-8 w-fit items-center justify-center bg-white/72 px-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#0B1F33] shadow-[0_8px_18px_rgba(11,31,51,0.045)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+                className="inline-flex h-8 w-fit items-center justify-center bg-white/72 px-3 text-[10px] font-semibold uppercase tracking-normal text-[#0B1F33] shadow-[0_8px_18px_rgba(11,31,51,0.045)] transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
               >
                 {activeAction}
               </a>
@@ -12893,7 +12942,7 @@ function PanelInsightGrid({ items, columns = "md:grid-cols-3" }) {
       {visibleItems.map((item) => {
         const content = (
           <>
-            <div className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">{item.label}</div>
+            <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{item.label}</div>
             <p className={`mt-1.5 text-[12px] leading-5 ${item.emphasis ? "font-semibold text-[#0B1F33]" : "text-[#425466]"}`}>
               {item.value || item.body}
             </p>
@@ -12934,10 +12983,10 @@ function PartnerBusinessInsights({ place }) {
     <section className="mt-4 dp-info-section p-3 md:mt-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Nearby guide</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Nearby guide</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">How this place fits downtown</h3>
         </div>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.13em] text-[#0B1F33]/70 md:text-[11px]">
+        <div className="text-[#0B1F33]/70 md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
           {insights.placement}
         </div>
       </div>
@@ -12954,7 +13003,7 @@ function PartnerMetricInsight({ place }) {
     <section className="mt-4 dp-info-section p-3">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#BFA46A]">Partner next step</div>
+          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner next step</div>
           <h3 className="mt-1 text-[18px] font-semibold leading-tight tracking-[-0.015em] text-[#0B1F33] md:text-[20px]">What should happen next</h3>
           <p className="mt-2 max-w-2xl text-[13px] leading-5 text-[#425466]">{insights.action}</p>
         </div>
@@ -13324,7 +13373,7 @@ function GoogleMapCanvas({
     const routeStopNumberById = new Map((collectionRoute?.stops || []).map((stop, index) => [stop.id, index + 1]));
 
     const markerPositionKey = (position) => `${Number(position?.lat).toFixed(7)}:${Number(position?.lng).toFixed(7)}`;
-    const updateMarker = (marker, { position, content, title, icon, zIndex = 1 }) => {
+    const updateMarker = (marker, { position, content, title, icon, iconKey, zIndex = 1 }) => {
       const nextPositionKey = markerPositionKey(position);
       const positionChanged = marker.__dpLastPositionKey !== nextPositionKey;
       if (canUseAdvancedMarkers && "content" in marker) {
@@ -13334,17 +13383,37 @@ function GoogleMapCanvas({
         // content on every selection/filter pass can momentarily detach the
         // projected element while Google Maps is moving it.
         if (marker.content !== content) marker.content = content;
-        marker.title = title;
-        marker.zIndex = zIndex;
-        marker.map = map;
+        if (marker.__dpLastTitle !== title) {
+          marker.title = title;
+          marker.__dpLastTitle = title;
+        }
+        if (marker.__dpLastZIndex !== zIndex) {
+          marker.zIndex = zIndex;
+          marker.__dpLastZIndex = zIndex;
+        }
+        if (marker.map !== map) marker.map = map;
         return;
       }
       if (positionChanged) marker.setPosition?.(position);
       marker.__dpLastPositionKey = nextPositionKey;
-      marker.setTitle?.(title);
-      marker.setIcon?.(icon);
-      marker.setZIndex?.(zIndex);
-      marker.setMap?.(map);
+      if (marker.__dpLastTitle !== title) {
+        marker.setTitle?.(title);
+        marker.__dpLastTitle = title;
+      }
+      // Only re-apply the icon when its rendered signature actually changes.
+      // Re-setting a freshly built data-URI icon on every reconciliation pass
+      // forces Google to redecode the image, which flashes the pin during pans,
+      // drags, and zooms. Guarding it keeps every classic marker rock-steady.
+      const nextIconKey = iconKey || (typeof icon === "object" && icon ? icon.url || "" : String(icon || ""));
+      if (marker.__dpLastIconKey !== nextIconKey) {
+        marker.setIcon?.(icon);
+        marker.__dpLastIconKey = nextIconKey;
+      }
+      if (marker.__dpLastZIndex !== zIndex) {
+        marker.setZIndex?.(zIndex);
+        marker.__dpLastZIndex = zIndex;
+      }
+      if (marker.getMap?.() !== map) marker.setMap?.(map);
     };
 
     const openCluster = (item) => {
@@ -13361,7 +13430,7 @@ function GoogleMapCanvas({
       });
     };
 
-    mapItems.forEach((item) => {
+    const reconcileVisibleMarkers = () => mapItems.forEach((item) => {
       if (item.type === "cluster") {
         const clusterPlaces = Array.isArray(item.places) ? item.places : [];
         if (collectionStopIds.size && !clusterPlaces.some((place) => collectionStopIds.has(place.id))) return;
@@ -13370,22 +13439,29 @@ function GoogleMapCanvas({
         const existing = registry.get(key);
         const element = existing?.element || document.createElement("button");
         if (!existing) element.type = "button";
-        element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
-        element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
-        element.setAttribute("aria-label", `Open ${item.count} places nearby`);
+        // Only rewrite cluster markup when the count changes; panning/dragging at a
+        // steady count leaves the cluster untouched and anchored without flashing.
+        const clusterSignature = `count:${item.count}`;
+        if (!existing || existing.contentSignature !== clusterSignature) {
+          element.className = `dp-map-cluster ${item.count > 49 ? "is-large" : ""}`;
+          element.innerHTML = `<span>${item.count > 99 ? "99+" : item.count}</span>`;
+          element.setAttribute("aria-label", `Open ${item.count} places nearby`);
+          if (existing) existing.contentSignature = clusterSignature;
+        }
         applyZoomMarkerStyle(element, markerRenderZoom, { clusterCount: item.count });
         const markerOptions = {
           position: { lat: item.coords[0], lng: item.coords[1] },
           content: element,
           title: `${item.count} places nearby`,
           icon: legacyDowntownClusterIcon(maps, item.count, markerRenderZoom),
+          iconKey: `cluster|${item.count}|${markerRenderZoom}`,
           zIndex: 500,
         };
         if (existing) {
           existing.currentItem = item;
           updateMarker(existing.marker, markerOptions);
         } else {
-          const entry = { currentItem: item, type: "cluster", marker: null, element };
+          const entry = { currentItem: item, type: "cluster", marker: null, element, contentSignature: clusterSignature };
           element.addEventListener("click", () => openCluster(entry.currentItem));
           entry.marker = createDowntownMarker({
             maps,
@@ -13415,41 +13491,70 @@ function GoogleMapCanvas({
 
       const existing = registry.get(key);
       const wrapper = existing?.element || document.createElement("div");
+      const entry = existing || { currentPlace: place, type: "pin", marker: null, element: wrapper };
+      // Keep the closure source of truth fresh so listeners bound once still act
+      // on the latest place data across reconciliation passes.
+      entry.currentPlace = place;
       wrapper.className = "dp-google-map-marker-shell";
       wrapper.dataset.markerEntityId = markerRecord.markerId;
       wrapper.dataset.entityId = markerRecord.entityId;
       wrapper.dataset.sourceVersion = markerRecord.sourceVersion;
+      // Sizing is driven by CSS custom properties on the shell, so refreshing it
+      // every pass is cheap and never repaints (or reflows) the pin content.
       applyZoomMarkerStyle(wrapper, markerRenderZoom, { selected: markerSelected });
-      wrapper.innerHTML = mapPinButtonHtml({
-        place,
-        pin: resolveEntityPin(place),
-        ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
-        selected: markerSelected,
-        pulsing: markerRecord.markerId === pulsingPinId || place.id === pulsingPinId,
-        classes: `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`,
-        zoom: markerRenderZoom,
-      });
-      const button = wrapper.querySelector(".dp-map-pin");
-      button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
-      button?.setAttribute("data-entity-id", markerRecord.entityId);
-      button?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        markUserNavigated();
-        markerActionHandlersRef.current.onSelect?.(place);
-      });
-      button?.addEventListener("dblclick", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        markUserNavigated();
-        markerActionHandlersRef.current.onSelectNearestLegends?.(place);
-      });
+
+      const markerPulsing = markerRecord.markerId === pulsingPinId || place.id === pulsingPinId;
+      const stopNumber = Number(place?.routeStopNumber || 0);
+      const pinClasses = `${isEventEntity(place) ? "dp-live-pin--event" : ""} ${isHappyHourEntity(place) ? "dp-live-pin--happy-hour" : ""} ${isCampaignEntity(place) ? "dp-live-pin--campaign" : ""} ${isLegendsMapPlace(place) || getLegendsListing(place) ? "dp-live-pin--legends dp-live-pin--legends-logo" : ""} ${isInKindEntity(place) ? "dp-live-pin--inkind dp-live-pin--inkind-logo" : ""} ${isRentalEntity(place) ? "dp-live-pin--rental" : ""} ${collectionStopIds.size && !collectionStopIds.has(place.id) ? "is-muted" : ""}`;
+      // Only rebuild the pin's DOM when its own visual signature changes. Panning,
+      // dragging, and zooming never alter an individual pin's markup, so this keeps
+      // every anchored pin perfectly stable and flash-free during map gestures.
+      const contentSignature = [
+        markerRecord.sourceVersion,
+        markerRecord.markerId,
+        place.name,
+        markerSelected ? "s" : "",
+        markerPulsing ? "p" : "",
+        stopNumber,
+        pinClasses,
+      ].join("|");
+      if (entry.contentSignature !== contentSignature) {
+        entry.contentSignature = contentSignature;
+        wrapper.innerHTML = mapPinButtonHtml({
+          place,
+          pin: resolveEntityPin(place),
+          ariaLabel: isLegendsMapPlace(place) || getLegendsListing(place) ? `Open ${place.name}, Legends Real Estate listing` : `Open ${place.name}`,
+          selected: markerSelected,
+          pulsing: markerPulsing,
+          classes: pinClasses,
+          zoom: markerRenderZoom,
+        });
+        const button = wrapper.querySelector(".dp-map-pin");
+        button?.setAttribute("data-marker-entity-id", markerRecord.markerId);
+        button?.setAttribute("data-entity-id", markerRecord.entityId);
+        button?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          markUserNavigated();
+          markerActionHandlersRef.current.onSelect?.(entry.currentPlace);
+        });
+        button?.addEventListener("dblclick", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          markUserNavigated();
+          markerActionHandlersRef.current.onSelectNearestLegends?.(entry.currentPlace);
+        });
+      }
 
       const markerOptions = {
         position: { lat: coords[0], lng: coords[1] },
         content: wrapper,
         title: place.name,
         icon: legacyDowntownMarkerIcon(maps, place, markerSelected, markerRenderZoom),
+        // Pin icon art is constant across zoom (only cluster art scales), so the
+        // signature omits zoom: the icon is only redecoded on selection or data
+        // changes, never during a pan/drag/zoom gesture.
+        iconKey: `pin|${place.id}|${markerRecord.sourceVersion}|${markerSelected ? "s" : ""}|${pinClasses.trim()}`,
         zIndex: markerSelected
           ? 1000
           : isLegendsMapPlace(place) || getLegendsListing(place) || isInKindEntity(place)
@@ -13457,10 +13562,8 @@ function GoogleMapCanvas({
             : 1,
       };
       if (existing) {
-        existing.currentPlace = place;
         updateMarker(existing.marker, markerOptions);
       } else {
-        const entry = { currentPlace: place, type: "pin", marker: null, element: wrapper };
         entry.marker = createDowntownMarker({
           maps,
           map,
@@ -13476,32 +13579,39 @@ function GoogleMapCanvas({
       }
     });
 
-    const reconciliation = reconcileMarkerIds(registry.keys(), nextKeys);
-    reconciliation.release.forEach((key) => {
-      const entry = registry.get(key);
-      if (!entry) return;
-      removeGoogleMapMarker(entry.marker);
-      registry.delete(key);
-      releasedMarkerCount += 1;
-    });
-    containerRef.current?.setAttribute("data-marker-count", String(registry.size));
-    containerRef.current?.setAttribute("data-result-item-count", String(mapItems.length));
+    let markerWorkFrame = window.requestAnimationFrame(() => {
+      markerWorkFrame = 0;
+      reconcileVisibleMarkers();
 
-    if (typeof window !== "undefined" && import.meta.env.DEV) {
-      window.__DP_MAP_MARKER_LIFECYCLE__ = {
-        mountedMarkerCount: registry.size,
-        markerRegistrySize: registry.size,
-        releasedMarkerCount,
-        reusedMarkerCount: reconciliation.keep.length,
-        createdMarkerCount: reconciliation.create.length,
-        resultItemCount: mapItems.length,
-        updatedAt: new Date().toISOString(),
-      };
-      const visibleLimit = window.innerWidth <= 767 ? 15 : 25;
-      if (registry.size > visibleLimit) {
-        console.warn("[map-search] mounted marker count exceeds cap", registry.size);
+      const reconciliation = reconcileMarkerIds(registry.keys(), nextKeys);
+      reconciliation.release.forEach((key) => {
+        const entry = registry.get(key);
+        if (!entry) return;
+        removeGoogleMapMarker(entry.marker);
+        registry.delete(key);
+        releasedMarkerCount += 1;
+      });
+      containerRef.current?.setAttribute("data-marker-count", String(registry.size));
+      containerRef.current?.setAttribute("data-result-item-count", String(mapItems.length));
+
+      if (typeof window !== "undefined" && import.meta.env.DEV) {
+        window.__DP_MAP_MARKER_LIFECYCLE__ = {
+          mountedMarkerCount: registry.size,
+          markerRegistrySize: registry.size,
+          releasedMarkerCount,
+          reusedMarkerCount: reconciliation.keep.length,
+          createdMarkerCount: reconciliation.create.length,
+          resultItemCount: mapItems.length,
+          updatedAt: new Date().toISOString(),
+        };
+        const visibleLimit = window.innerWidth <= 767 ? 15 : 25;
+        if (registry.size > visibleLimit) console.warn("[map-search] mounted marker count exceeds cap", registry.size);
       }
-    }
+    });
+
+    return () => {
+      if (markerWorkFrame) window.cancelAnimationFrame(markerWorkFrame);
+    };
   }, [collectionRoute, loadState, mapItems, markerRenderZoom, pulsingPinId, runProgrammaticMove, selectedId, markUserNavigated]);
 
   useEffect(() => () => {
@@ -13822,6 +13932,13 @@ function MapSearchConsole({
     });
   };
   const handleSearchInputKeyDown = (event) => {
+    // Submit on Enter — guard against CJK IME composition (Safari desktop
+    // reports keyCode 229 on the final composition event which is unreliable).
+    if (event.key === "Enter" && !event.nativeEvent.isComposing && event.keyCode !== 229) {
+      event.preventDefault();
+      onSubmit?.(event);
+      return;
+    }
     if (event.key !== "ArrowDown" || !showCatalogResults) return;
     const firstResult = consolePanelRef.current?.querySelector?.("[data-search-result-id]");
     if (!firstResult) return;
@@ -14175,7 +14292,10 @@ function MapSearchConsole({
             <input
               id="dp-ask-map-search-input"
               ref={inputRef}
-              type="text"
+              type="search"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
               className="dp-ask-map-input"
               aria-label="Ask the Map search"
               role="combobox"
@@ -15155,8 +15275,11 @@ export default function MapPage() {
     () => effectiveSearch ? sortSearchPlaces(displayPlaces, effectiveSearch) : sortDiscoverPlaces(displayPlaces),
     [displayPlaces, effectiveSearch],
   );
-  const activePerkItems = useMemo(() => discoverDisplayPlaces
-    .filter((place) => hasActivePerkData(place))
+  const activePerkItems = useMemo(() => {
+    const scopedPerks = discoverDisplayPlaces.filter((place) => hasActivePerkData(place));
+    const catalogPerks = places.filter((place) => hasActivePerkData(place));
+    const perkPlaces = scopedPerks.length ? scopedPerks : catalogPerks;
+    return perkPlaces
     .slice(0, 40)
     .map((place) => {
       const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
@@ -15175,7 +15298,8 @@ export default function MapPage() {
         perkId: getCanonicalResidentPerkId(place),
         place,
       };
-    }), [discoverDisplayPlaces]);
+    });
+  }, [discoverDisplayPlaces, places]);
   const visiblePlaces = discoverDisplayPlaces;
   const activeCollection = useMemo(
     () => getMapCollectionById(urlState.collection),
@@ -16029,7 +16153,7 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Partner activity</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Partner activity</p>
             <h2>Nearby activity, simplified.</h2>
             <p>See what people open, save, scan, and use without the extra noise.</p>
           </section>
@@ -16161,13 +16285,13 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel dp-campaign-drawer">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero dp-campaign-hero">
-            <p className="dp-tab-eyebrow">{isCampaignOverview ? "Partner campaigns" : isBrandActivation ? "Brand activation" : "Campaign"}</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{isCampaignOverview ? "Partner campaigns" : isBrandActivation ? "Brand activation" : "Campaign"}</p>
             <h2>{isCampaignOverview ? "Campaigns built around real downtown decisions." : `${partnerLabel}: ${campaignTitle}`}</h2>
             <p>{strategyLine}</p>
           </section>
 
           <section className="dp-campaign-moment">
-            <p className="dp-tab-eyebrow">Best move</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Best move</p>
             <h3>{bestMoveTitle}</h3>
             <p>{bestMoveCopy}</p>
             <div className="dp-campaign-meta-row" aria-label="Recommended campaign context">
@@ -16183,7 +16307,7 @@ export default function MapPage() {
           </div>
 
           <section className="dp-campaign-suggestion">
-            <p className="dp-tab-eyebrow">Campaign brief</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Campaign brief</p>
             <h3>{campaignTitle}</h3>
             <p>{momentLine}</p>
             <div className="dp-campaign-detail-list">
@@ -16195,7 +16319,7 @@ export default function MapPage() {
 
           {isCampaignOverview ? (
             <section className="dp-campaign-layer-list" aria-label="Recommended campaign options">
-              <p className="dp-tab-eyebrow">Recommended campaign options</p>
+              <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Recommended campaign options</p>
               <div>
                 {recommendedCampaignRows.map((campaign) => (
                   <button
@@ -16219,7 +16343,7 @@ export default function MapPage() {
           ) : null}
 
           <section className="dp-campaign-readout" aria-label="Campaign readiness">
-            <p className="dp-tab-eyebrow">Check before launch</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Check before launch</p>
             <div>
               {[
                 ["Map placement", selectedPinCopy],
@@ -16578,7 +16702,7 @@ export default function MapPage() {
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero dp-info-guide-hero">
             <div>
-              <p className="dp-tab-eyebrow">{content.eyebrow}</p>
+              <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.eyebrow}</p>
               <h2>{content.headline}</h2>
               <p>{content.copy}</p>
             </div>
@@ -16603,7 +16727,7 @@ export default function MapPage() {
           />
 
           <section className="dp-partner-info-steps" aria-label="Getting started">
-            <p className="dp-tab-eyebrow">Getting started</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Getting started</p>
             {content.steps.map((step, index) => (
               <div key={step}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
@@ -16613,7 +16737,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-partner-feed-list dp-info-guide-list" aria-label="How it works">
-            <p className="dp-tab-eyebrow">How it works</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">How it works</p>
             {content.how.map(([title, copy]) => (
               <article key={title} className="dp-tab-row dp-partner-feed-row">
                 <span className="dp-partner-feed-main">
@@ -16625,14 +16749,14 @@ export default function MapPage() {
           </section>
 
           <section className="dp-info-guide-tips" aria-label={content.tipsTitle}>
-            <p className="dp-tab-eyebrow">{content.tipsTitle}</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{content.tipsTitle}</p>
             <div>
               {content.tips.map((tip) => <span key={tip}>{tip}</span>)}
             </div>
           </section>
 
           <section className="dp-info-guide-faq" aria-label="Frequently Asked Questions">
-            <p className="dp-tab-eyebrow">Frequently Asked Questions</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Frequently Asked Questions</p>
             {content.faq.map(([question, answer], index) => (
               <details key={question} open={index === 0}>
                 <summary><span>{question}</span><ChevronDown aria-hidden="true" /></summary>
@@ -16672,7 +16796,7 @@ export default function MapPage() {
       <div className="dp-tabs-content dp-partner-readable-panel dp-civic-readable-panel">
         <div className="dp-tab-stack">
           <section className="dp-partner-readable-hero">
-            <p className="dp-tab-eyebrow">Civic</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic</p>
             <h2>Public places in the map.</h2>
             <p>Art Walk, parks, plazas, trailheads, and civic stops with nearby context.</p>
           </section>
@@ -16707,7 +16831,7 @@ export default function MapPage() {
           </section>
 
           <section className="dp-campaign-panel">
-            <p className="dp-tab-eyebrow">Civic pins</p>
+            <p className="dp-tab-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Civic pins</p>
             <div className="dp-partner-feed-list dp-horizontal-entity-rail" aria-label="Civic map entities">
               {civicPlaces.map((place) => renderCompactEntityRow(place, "Open"))}
             </div>
@@ -17813,7 +17937,12 @@ export default function MapPage() {
   }
 
   function switchMode(mode, tab = "map", requestedFilter = "", options = {}) {
-    const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
+  if (mode === "resident" && tab === "pass" && !isLoadingAuth && !isAuthenticated) {
+  const returnTo = "/map?mode=resident&tab=pass";
+  navigate(`/residents/login?returnTo=${encodeURIComponent(returnTo)}`);
+  return;
+  }
+  const nextFilter = requestedFilter || (mode === "partner" ? "All" : tab === "pass" ? "All" : activeFilter === "Saved" ? "Saved" : "All");
     clearOpenMapSelection();
     setSearch("");
     setActiveFilter(nextFilter);
@@ -18397,7 +18526,7 @@ export default function MapPage() {
               <button type="button" onClick={restorePreviousMapPanel} className="dp-panel-back" aria-label="Back to previous panel">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </button>
-              <span className="dp-panel-header-title text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">
+              <span className="dp-panel-header-title text-[#BFA46A] md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 Partner scanner
               </span>
               <button type="button" onClick={() => switchMode(urlState.mode, "map")} className="dp-panel-close inline-flex h-8 w-8 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A] md:h-9 md:w-9" aria-label="Close">
@@ -18406,7 +18535,7 @@ export default function MapPage() {
             </div>
             <div className="dp-pass-panel-body min-h-0 flex-1 overflow-y-auto px-2.5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2 sm:px-4 md:pb-4 md:pt-3">
                 <div className="px-3 pt-1 sm:px-3">
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#BFA46A] md:text-[10px] md:tracking-[0.16em]">QR verification</p>
+                  <p className="text-[#BFA46A] md: dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">QR verification</p>
                   <h2 className="mt-1 text-[22px] font-semibold leading-none tracking-[-0.025em] text-[#0B1F33] md:mt-1.5 md:text-[25px]">Scan a resident pass</h2>
                   <p className="mt-1.5 text-[12px] leading-5 text-[#425466]">
                     Check eligibility, review the perk, and record the result.
@@ -18438,14 +18567,14 @@ export default function MapPage() {
             <div className="dp-map-sheet-scroll">
               {!isAuthenticated && !isLoadingAuth ? (
                 <section className="dp-resident-card-identity dp-resident-card-identity--signed-out">
-                  <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
+                  <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                   <h2 className="dp-map-panel-title">Sign in to your resident card.</h2>
                   <p className="dp-map-panel-subtitle">See your membership, home property, saved places, and one-time QR pass in one secure view.</p>
                 </section>
               ) : null}
               {isLoadingAuth ? (
                 <section className="dp-resident-card-identity" role="status">
-                  <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
+                  <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                   <h2 className="dp-map-panel-title">Checking your account.</h2>
                   <p className="dp-map-panel-subtitle">Your resident details will appear here when they are ready.</p>
                 </section>
@@ -18453,7 +18582,7 @@ export default function MapPage() {
               {isAuthenticated ? (
                 <>
                   <section className="dp-resident-card-identity">
-                    <p className="dp-map-panel-eyebrow">RESIDENT ACCESS</p>
+                    <p className="dp-map-panel-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">RESIDENT ACCESS</p>
                     <h2 className="dp-map-panel-title">{residentAccount?.fullName || "Your Downtown Card"}</h2>
                     <p className="dp-map-panel-subtitle">
                       {residentAccount?.buildingName ? `${residentAccount.buildingName} is connected to this resident card.` : "Use your card when a participating place or event asks to confirm resident access."}
@@ -18462,7 +18591,7 @@ export default function MapPage() {
 
                   <section className={`dp-card-credential ${passPresented ? "is-ready" : ""}`} aria-label="Resident QR code">
                     <div className="dp-card-credential-header">
-                      <span className="dp-card-credential-kicker">{residentAccountStatus(residentAccount).toUpperCase()}</span>
+                      <span className="dp-card-credential-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{residentAccountStatus(residentAccount).toUpperCase()}</span>
                       <span className="dp-card-credential-status">{passPresented ? "Scanned" : "Ready"}</span>
                     </div>
                     <h3 className="dp-card-credential-title">{residentAccount?.buildingName || residentAccount?.buildingDistrict || "Downtown Austin"}</h3>
@@ -18489,13 +18618,13 @@ export default function MapPage() {
                   </MapPanelMatrix>
 
                   <section className="dp-map-panel-section dp-map-panel-section--compact" aria-label="Current access">
-                    <p className="dp-map-panel-section-label">WHAT YOU CAN USE</p>
+                    <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">WHAT YOU CAN USE</p>
                     <h3 className="dp-map-panel-section-title">Resident benefits nearby</h3>
                     <p className="dp-map-panel-body-copy">Open a participating perk to review its current terms, then show a one-time QR when the partner asks.</p>
                   </section>
 
                   <section className="dp-map-panel-note">
-                    <p className="dp-map-panel-section-label">BUILDING MEMBERSHIP</p>
+                    <p className="dp-map-panel-section-label dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">BUILDING MEMBERSHIP</p>
                     <p className="dp-map-panel-body-copy">If your building is an active Downtown Perks or DANA member, eligible resident access is included automatically.</p>
                   </section>
                 </>
@@ -18514,7 +18643,7 @@ export default function MapPage() {
               ) : !isLoadingAuth ? (
                 <div className="dp-map-sheet-action-grid">
                   <MapPanelButton action="open-detail" label="Sign in" ariaLabel="Sign in to resident access" variant="primary" onPress={() => navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}`)} />
-                  <MapPanelButton action="open-detail" label="Create account" ariaLabel="Create a resident account" variant="secondary" onPress={() => navigate("/residents/membership")} />
+                  <MapPanelButton action="open-detail" label="Create account" ariaLabel="Create a resident account" variant="secondary" onPress={() => navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}&intent=create-account`)} />
                 </div>
               ) : null}
             </footer>
@@ -18595,7 +18724,19 @@ export default function MapPage() {
                   <Sparkles className="h-4 w-4" />
                   <span className="dp-native-tab-label">Events</span>
                 </button>
-                <button type="button" role="tab" aria-label="Card" onClick={() => switchMode("resident", "pass")} aria-selected={urlState.tab === "pass"}>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-label="Card"
+                  onClick={() => {
+                    if (!isAuthenticated && !isLoadingAuth) {
+                      navigate(`/residents/login?returnTo=${encodeURIComponent("/map?mode=resident&tab=pass")}`);
+                      return;
+                    }
+                    switchMode("resident", "pass");
+                  }}
+                  aria-selected={urlState.tab === "pass"}
+                >
                   <CreditCard className="h-4 w-4" />
                   <span className="dp-native-tab-label">Card</span>
                 </button>
@@ -18697,14 +18838,15 @@ export default function MapPage() {
             aria-modal="true"
             aria-label={isLegendsDirectoryLayer ? "Legends Real Estate listings" : urlState.mode === "partner" && activePartnerPanel === "reports" ? "Partner map reports" : urlState.mode === "partner" ? "Partner map results" : "Map results"}
           >
-            <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
+            <div className={isLegendsDirectoryLayer ? "dp-map-directory-toolbar grid grid-cols-[44px_minmax(0,1fr)_44px] items-center min-h-[56px] px-3 shrink-0 border-b border-black/[0.09] bg-white" : "dp-panel-toolbar mb-2 flex shrink-0 items-center justify-between gap-2 md:mb-3 md:gap-3"}>
               {isLegendsDirectoryLayer ? (
                 <>
-                  <MapPanelButton action="back" label="Back" ariaLabel="Return to previous panel" variant="secondary" size="sm" className="dp-map-directory-back" onPress={restorePreviousMapPanel}>
-                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  <MapPanelButton action="back" label="Back" ariaLabel="Return to previous panel" variant="secondary" size="sm" className="dp-map-directory-back h-11 w-11 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[#0B1F33]" onPress={restorePreviousMapPanel}>
+                    <ArrowLeft className="h-[18px] w-[18px]" aria-hidden="true" />
                   </MapPanelButton>
-                  <MapPanelButton action="close" label="Close" ariaLabel="Close Legends Real Estate listings panel" variant="icon" size="sm" className="dp-map-directory-close" onPress={closeDirectoryToMap}>
-                    <X className="h-4 w-4" aria-hidden="true" />
+                  <span className="text-center text-[14px] font-semibold text-[#0B1F33] tracking-tight truncate px-1">Legends Real Estate MLS</span>
+                  <MapPanelButton action="close" label="Close" ariaLabel="Close Legends Real Estate listings panel" variant="icon" size="sm" className="dp-map-directory-close h-11 w-11 inline-flex items-center justify-center rounded-xl bg-[#F2F2F7] text-[#0B1F33]" onPress={closeDirectoryToMap}>
+                    <X className="h-[18px] w-[18px]" aria-hidden="true" />
                   </MapPanelButton>
                 </>
               ) : (
@@ -18726,63 +18868,99 @@ export default function MapPage() {
             </div>
 
             <div
-              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "dp-map-directory-body flex-1 overflow-y-auto" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
+              className={`dp-panel-body dp-panel-scroll min-h-0 ${isLegendsDirectoryLayer ? "dp-map-directory-body flex-1 overflow-y-auto overscroll-contain" : urlState.mode === "partner" ? "flex-1 overflow-y-auto" : "hidden"}`}
               data-panel-body
             >
               {isLegendsDirectoryLayer && (
                 <>
-                  <section className="dp-map-directory-header">
-                    <p className="dp-map-directory-eyebrow">LEGENDS REAL ESTATE</p>
-                    <h2 className="dp-map-directory-title">Downtown listings, in context.</h2>
-                    <span className="dp-map-directory-subtitle">
-                      Active Legends homes with building context, walkable demand, and nearby lifestyle details for each address.
-                    </span>
-                    <strong className="dp-map-directory-count">
-                      {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "listing" : "listings"}
-                    </strong>
+                  {/* ── Partner inventory header ─────────────────────── */}
+                  <section className="dp-map-directory-header space-y-3 px-5 py-5 border-b border-black/[0.06]">
+                    <p className="dp-map-directory-eyebrow text-[11px] font-bold uppercase tracking-[0.15em] text-[#C9A66B]">
+                      Legends Real Estate · Founding Real Estate Partner · Downtown Austin
+                    </p>
+                    <h2 className="dp-map-directory-title text-[21px] font-semibold tracking-tight text-[#0B1F33] leading-snug">
+                      Homes currently represented by Legends, with relevant building and neighborhood context.
+                    </h2>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="dp-map-directory-count inline-flex items-center px-3 py-1 rounded-full bg-[#C9A66B]/10 text-[12px] font-semibold text-[#C9A66B]">
+                        {legendsDirectoryPlaces.length} active {legendsDirectoryPlaces.length === 1 ? "home" : "homes"}
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#F2F2F7] text-[11px] font-medium text-[#0B1F33]/60">
+                        Live inventory
+                      </span>
+                    </div>
                   </section>
-                  <div className="dp-map-directory-list">
-                    {legendsDirectoryPlaces.map((place) => (
-                      isRentalEntity(place) ? (
-                        <LegendsRentalResultRow
+
+                  {/* ── Inventory list ───────────────────────────────── */}
+                  <div className="dp-map-directory-list divide-y divide-black/[0.06]">
+                    {legendsDirectoryPlaces.map((place) => {
+                      const row = getLegendsDirectoryRowCopy(place);
+                      const primaryImage = place?.gallery?.[0] || place?.image || place?.legendsListing?.image || null;
+                      const isSelected = place.id === selectedId;
+                      return (
+                        <button
                           key={place.id}
-                          place={place}
-                          selected={place.id === selectedId}
-                          onSelect={() => selectPlace(place)}
-                        />
-                      ) : (
-                        (() => {
-                          const row = getLegendsDirectoryRowCopy(place);
-                          return (
-                            <button
-                              key={place.id}
-                              type="button"
-                              className="dp-legends-result-row"
-                              data-action="select"
-                              data-selected={place.id === selectedId ? "true" : "false"}
-                              onClick={() => selectPlace(place)}
-                              aria-label={`View ${row.title}`}
+                          type="button"
+                          className={`dp-legends-listing-row group w-full text-left bg-white transition-colors hover:bg-[#F7F6F3] focus-visible:outline-2 focus-visible:outline-[#C9A66B] focus-visible:outline-offset-[-2px]${isSelected ? " bg-[#F7F6F3]" : ""}`}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "56px minmax(0,1fr) 20px",
+                            alignItems: "center",
+                            gap: "12px",
+                            minHeight: "88px",
+                            padding: "16px 20px",
+                            border: "0",
+                            borderBottom: "1px solid rgba(11,31,51,0.06)",
+                          }}
+                          data-action="select-listing"
+                          data-listing-id={place.id}
+                          data-selected={isSelected ? "true" : "false"}
+                          onClick={() => selectPlace(place)}
+                          aria-label={`View ${row.title}`}
+                        >
+                          {/* Listing image or Legends brand mark */}
+                          {primaryImage ? (
+                            <img
+                              className="dp-legends-listing-image object-cover bg-[#F2F2F7]"
+                              src={primaryImage}
+                              alt=""
+                              aria-hidden="true"
+                              style={{ width: 56, height: 56, borderRadius: 4, flexShrink: 0, display: "block" }}
+                            />
+                          ) : (
+                            <span
+                              aria-hidden="true"
+                              style={{ display: "flex", width: 56, height: 56, flexShrink: 0, alignItems: "center", justifyContent: "center", background: "#0B1F33", borderRadius: 4, border: "1px solid rgba(11,31,51,0.12)" }}
                             >
-                              <span className="dp-legends-result-pin" aria-hidden="true">
-                                <PinBadge place={place} selected={place.id === selectedId} size="sm" />
-                              </span>
-                              <span className="min-w-0">
-                                <span className="dp-legends-result-meta">{row.meta}</span>
-                                <span className="dp-legends-result-title">{row.title}</span>
-                                <span className="dp-legends-result-address">{row.address}</span>
-                                <span className="dp-legends-result-details">{row.details}</span>
-                              </span>
-                              <span className="dp-legends-result-action">View</span>
-                            </button>
-                          );
-                        })()
-                      )
-                    ))}
+                              <img style={{ width: 30, height: 30, objectFit: "contain", display: "block" }} src="/pins/downtown-perks/legends-logo-gold.svg" alt="" aria-hidden="true" />
+                            </span>
+                          )}
+
+                          {/* Listing content */}
+                          <span style={{ display: "grid", minWidth: 0, gap: 3 }}>
+                            <span className="dp-legends-listing-title" style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 15, fontWeight: 650, lineHeight: "20px", color: "#0B1F33" }}>{row.title}</span>
+                            {row.details ? (
+                              <span style={{ display: "block", fontSize: 13, lineHeight: "18px", color: "rgba(11,31,51,0.72)" }}>{row.details}</span>
+                            ) : null}
+                            <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 12, lineHeight: "16px", color: "rgba(11,31,51,0.52)" }}>{row.address}</span>
+                          </span>
+
+                          {/* Chevron */}
+                          <ChevronRight style={{ width: 16, height: 16, flexShrink: 0, color: "rgba(11,31,51,0.3)", display: "block" }} aria-hidden="true" />
+                        </button>
+                      );
+                    })}
                     {!legendsDirectoryPlaces.length && (
-                      <div className="dp-info-row bg-white p-4 text-[13px] leading-6 text-[#425466]">
-                        No active Legends inventory is visible yet. Try Legends, Listings, or a nearby real estate search.
+                      <div className="px-5 py-10 text-center space-y-3">
+                        <p className="text-[14px] font-medium text-[#0B1F33]">No active Legends homes are currently published.</p>
+                        <p className="text-[13px] text-[#0B1F33]/60">For current availability or a private showing, contact Legends Real Estate.</p>
                       </div>
                     )}
+                  </div>
+
+                  {/* ── Source footer ────────────────────────────────── */}
+                  <div className="px-5 py-4 border-t border-black/[0.06]">
+                    <p className="text-[11px] text-[#0B1F33]/40">Inventory from Legends&apos; verified listing feed. Contact Legends to confirm current availability.</p>
                   </div>
                 </>
               )}
@@ -18811,7 +18989,7 @@ export default function MapPage() {
                       ["What to try next", "Places and moments that are close enough for people to act on."],
                     ]).map(([title, body]) => (
                   <div key={title} className="dp-partner-intel-card p-3">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#0B1F33]">{title}</div>
+                    <div className="text-[#0B1F33] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">{title}</div>
                     <p className="mt-1 text-[12px] leading-5 text-[#0B1F33]/68">{body}</p>
                   </div>
                 ))}
@@ -18988,12 +19166,11 @@ export default function MapPage() {
                 urlState.update({ entityId: "", drawerClosed: "" });
               }}
             />}
-            scrollClassName="dp-grouped-list dp-context-list-scroll"
+            scrollClassName="dp-grouped-list dp-context-list-scroll space-y-2"
           >
-              <section className="dp-context-list-heading">
-                <h2 id="dp-cluster-results-title" className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
-                <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
-                <span>{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</span>
+              <section className="dp-context-list-heading mb-6 space-y-1">
+                <h2 id="dp-cluster-results-title" className="font-serif text-2xl font-semibold tracking-tight text-[#0B1F33]">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
+                <p className="text-[13px] font-light text-[#0B1F33]/60">{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</p>
               </section>
               {clusterPlacesForDrawer.map((place) => {
                 const listing = getLegendsListing(place);
@@ -19003,22 +19180,24 @@ export default function MapPage() {
                   ? [listing.price, listing.beds ? `${listing.beds} bd` : "", listing.baths ? `${listing.baths} ba` : "", listing.sqft ? `${listing.sqft} sqft` : ""].filter(Boolean).join(" · ")
                   : "";
                 const offerLine = listingMeta || explicitOffer;
+                const metaLine = [rowMeta, offerLine].filter(Boolean).join(" · ");
                 return (
                   <button
                     key={place.id}
                     type="button"
                     onClick={() => selectPlace(place)}
-                    className="dp-grouped-row"
+                    className="dp-grouped-row group flex w-full items-center justify-between gap-4 border-b border-black/5 bg-white py-3.5 text-left transition-colors hover:bg-transparent"
                   >
-                    <span className="dp-grouped-icon">
-                      <PinBadge place={place} />
-                    </span>
-                    <span className="dp-grouped-copy">
-                      <span className="dp-grouped-title">{place.name}</span>
-                      <span className="dp-grouped-meta">{rowMeta}</span>
-                      {offerLine && <span className="dp-grouped-offer">{offerLine}</span>}
-                    </span>
-                    <span className="dp-grouped-status">
+                    <div className="flex min-w-0 items-center gap-3.5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFF9F0] text-[#C9A66B]" aria-hidden="true">
+                        <PinBadge place={place} />
+                      </span>
+                      <div className="min-w-0 space-y-0.5">
+                        <strong className="block text-[15px] font-semibold text-[#0B1F33] transition-colors group-hover:text-[#C9A66B] truncate">{place.name}</strong>
+                        <small className="block text-[12px] font-light text-[#0B1F33]/60 truncate">{metaLine}</small>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#C9A66B] shrink-0">
                       {listing ? "Contact" : "Open"}
                     </span>
                   </button>
@@ -19656,7 +19835,7 @@ export default function MapPage() {
                         className="dp-contact-continuation mt-8 md:mt-10"
                       >
                         <div>
-                          <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#BFA46A]">Interested?</div>
+                          <div className="text-[#BFA46A] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Interested?</div>
                           <h3 className="mt-1 text-[16px] font-semibold text-[#0B1F33]">Interested in living here?</h3>
                         </div>
 
@@ -19667,19 +19846,19 @@ export default function MapPage() {
                         ) : (
                           <>
                             <div className="mt-3 grid gap-2 sm:grid-cols-2 md:mt-4">
-                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                                 Name
                                 <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="Your name" />
                               </label>
-                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                                 Email
                                 <input required type="email" className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="you@example.com" />
                               </label>
-                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                                 Phone
                                 <input required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10" placeholder="Phone number" />
                               </label>
-                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                              <label className="grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                                 Move Timeline
                                 <select required className="h-9 dp-soft-field rounded-[8px] bg-white px-3 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70 md:h-10">
                                   <option>ASAP</option>
@@ -19689,7 +19868,7 @@ export default function MapPage() {
                                 </select>
                               </label>
                             </div>
-                            <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1F33]/54">
+                            <label className="mt-2 grid gap-1 text-[11px] font-semibold uppercase tracking-normal text-[#0B1F33]/54">
                               Message optional
                               <textarea name="message" className="min-h-20 dp-soft-field rounded-[8px] bg-white px-3 py-2 text-[13px] font-medium normal-case tracking-normal text-[#0B1F33] outline-none focus:border-[#BFA46A]/70" defaultValue={`I would like more information about ${selected.name}.`} />
                             </label>

@@ -66,7 +66,10 @@ export function resolveCheckoutTarget(key: CheckoutKey) {
   const label = CHECKOUT_LABELS[key];
   const mode = key.toLowerCase().includes("annual") || key === "residentJoinBuildingNotMember" ? "subscription" : "payment";
 
-  if (product.checkoutUrl && mode !== "subscription") return { type: "url" as const, url: product.checkoutUrl, label, mode };
+  // Payment Link is always preferred — it works without STRIPE_SECRET_KEY and
+  // routes through Stripe's hosted page. Fall back to session API (priceId/
+  // productId) only when no Payment Link is available.
+  if (product.checkoutUrl) return { type: "url" as const, url: product.checkoutUrl, label, mode };
   if (product.priceId) return { type: "price" as const, priceId: product.priceId, label, mode };
   if (product.productId) return { type: "product" as const, productId: product.productId, label, mode };
 

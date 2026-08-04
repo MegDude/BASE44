@@ -7,12 +7,12 @@ import { NotificationDemoPanel } from "../../../components/downtown-perks/brands
 const demo = (
   <div className="rounded-xl border border-border/60 bg-card/60 overflow-hidden">
     <div className="p-5 border-b border-border/40">
-      <div className="text-[11px] font-medium text-primary/70 uppercase tracking-[0.14em] mb-1">Premium Guest Experience</div>
+      <div className="text-primary/70 mb-1 dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Premium Guest Experience</div>
       <div className="font-heading font-semibold text-lg text-foreground">Downtown Austin Guide</div>
       <div className="text-[12px] text-muted-foreground mt-1 leading-relaxed">
         Curated nearby experiences for today, tonight, and tomorrow morning.
       </div>
-      <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-primary text-primary-foreground text-[12px] font-medium">
+      <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-[12px] font-medium">
         <Zap className="w-3 h-3" /> Open Guest Guide
       </div>
     </div>

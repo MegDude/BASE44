@@ -43,7 +43,7 @@ const ROUTER_FUTURE_FLAGS = {
 function MarketingFallback() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-full animate-spin" />
+      <div className="w-5 h-5 border-2 border-[rgba(11,31,51,0.12)] border-t-[#0B1F33] rounded-xl animate-spin" />
     </div>
   );
 }
@@ -55,10 +55,11 @@ function ProtectedRoute({ children }) {
   if (isAuthenticated) {
     const role = String(user?.role || "resident").toLowerCase();
     if (role === "resident") return <Navigate to={DEFAULT_RESIDENT_MAP_PATH} replace />;
-    if (["admin", "platform_admin", "super_admin"].includes(role)) {
+    if (["admin", "platform_admin", "super_admin"].includes(role) && !user?.is_impersonating) {
       const adminDestination = location.pathname === "/partner-workspace/residents" ? "/admin-studio/residents" : "/admin-studio/command-center";
       return <Navigate to={adminDestination} replace />;
     }
+    if (!user?.partner_id) return <Navigate to="/partners/sign-in?error=partner_access_required" replace />;
     return children;
   }
   return (
@@ -281,7 +282,7 @@ function ProductRoutes() {
           <Route path="/partners/civic" element={<Navigate to="/partners/sign-up?type=civic" replace />} />
           <Route path="/partners/real-estate" element={<Navigate to="/partners/sign-up?type=real-estate" replace />} />
           <Route path="/partners/legends" element={<Navigate to="/partners/sign-up?type=property" replace />} />
-          <Route path="/partners/dashboard" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/partners/dashboard" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
           <Route path="/partners/dashboard/map" element={<RedirectWithSearch to="/partner-workspace/map" />} />
           <Route path="/partners/dashboard/properties" element={<RedirectWithSearch to="/partner-workspace/buildings" />} />
           <Route path="/partners/dashboard/residential" element={<RedirectWithSearch to="/partner-workspace/buildings" />} />
@@ -344,7 +345,7 @@ function ProductRoutes() {
           <Route path="/workspace/billing" element={<RedirectWithSearch to="/partner-workspace/billing" />} />
           <Route path="/workspace/settings" element={<RedirectWithSearch to="/partner-workspace/settings" />} />
           {/* Legacy workspace URLs must enter the canonical workspace shell. */}
-          <Route path="/app/workspace" element={<RedirectWithSearch to="/partner-workspace/home" />} />
+          <Route path="/app/workspace" element={<RedirectWithSearch to="/partner-workspace/overview" />} />
           <Route path="/app/workspace/home" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/app/workspace/overview" element={<RedirectWithSearch to="/partner-workspace/home" />} />
           <Route path="/app/workspace/map" element={<RedirectWithSearch to="/partner-workspace/map" />} />
@@ -357,7 +358,7 @@ function ProductRoutes() {
           <Route path="/app/workspace/share-links" element={<RedirectWithSearch to="/partner-workspace/share-links" />} />
           <Route path="/app/workspace/reports" element={<RedirectWithSearch to="/partner-workspace/reports" />} />
           <Route path="/app/workspace/redemptions" element={<RedirectWithSearch to="/partner-workspace/results" />} />
-          <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/results" />} />
+          <Route path="/app/workspace/analytics" element={<RedirectWithSearch to="/partner-workspace/analytics" />} />
           <Route path="/app/workspace/assistant" element={<RedirectWithSearch to="/partner-workspace/assistant" />} />
           <Route path="/app/workspace/profile" element={<RedirectWithSearch to="/partner-workspace/profile" />} />
           <Route path="/app/workspace/team" element={<RedirectWithSearch to="/partner-workspace/team" />} />

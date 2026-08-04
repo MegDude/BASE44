@@ -247,7 +247,7 @@
     color: var(--dp-native-gold);
     font-size: 11px;
     font-weight: 750;
-    letter-spacing: 0.08em;
+    letter-spacing: normal;
   }
 
   .dp-workspace-row-copy {
@@ -346,4 +346,27 @@
   .dp-native-bottom-nav-list button {
     transition: none !important;
   }
+}
+
+/* ── Map jitter & layout-shift elimination ───────────────────────────────── */
+/* Prevent touch-action bounce, rubber-banding, and container reflows during
+   drag/zoom on mobile. Applied globally so both map canvas and overlay
+   controls stay on the GPU compositor thread.                               */
+.dp-map-page,
+.dp-map-container,
+.map-canvas-wrapper {
+  touch-action: none !important;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden !important;
+}
+
+/* Promote floating controls and search console to their own compositor layer
+   so pan/zoom gestures don't trigger layout or paint on these elements.     */
+.dp-map-floating-controls,
+.dp-map-search-console {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }

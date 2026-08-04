@@ -84,7 +84,7 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   background: transparent !important;
   color: rgba(11, 31, 51, 0.5) !important;
   font: 500 11px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0 !important;
+  letter-spacing: normal !important;
   text-transform: none !important;
 }
 
@@ -164,6 +164,14 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
 html body #root .dp-map-page .dp-ask-map-input::placeholder {
   color: rgba(11, 31, 51, 0.42) !important;
   opacity: 1 !important;
+}
+
+/* Suppress the browser-native clear (×) button that appears on
+   type="search" inputs — the component renders its own clear control. */
+html body #root .dp-map-page .dp-ask-map-input::-webkit-search-cancel-button,
+html body #root .dp-map-page .dp-ask-map-input::-webkit-search-decoration {
+  -webkit-appearance: none !important;
+  display: none !important;
 }
 
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-ask-map-panel :is(.dp-search-intent-clear, .dp-ask-map-submit) {
@@ -288,7 +296,7 @@ html body #root .dp-map-page .dp-platform-search-group h3 {
   padding: 7px 2px 5px !important;
   color: rgba(11, 31, 51, 0.5) !important;
   font: 600 10px/1 Inter, system-ui, sans-serif !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

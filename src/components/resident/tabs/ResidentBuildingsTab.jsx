@@ -60,7 +60,7 @@ export default function ResidentBuildingsTab({ user }) {
                     {building.amenities.map((amenity) => (
                       <span
                         key={amenity}
-                        className="text-[10px] font-medium px-2 py-1 bg-white rounded-full"
+                        className="text-[10px] font-medium px-2 py-1 bg-white rounded-xl"
                       >
                         {amenity}
                       </span>
@@ -98,7 +98,7 @@ export default function ResidentBuildingsTab({ user }) {
                     <p className="text-xs font-medium text-muted-foreground">
                       {building.units} units
                     </p>
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-xl">
                       View building
                     </span>
                   </div>

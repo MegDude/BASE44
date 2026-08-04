@@ -27,7 +27,7 @@ export default function BrandHero({ eyebrow, headline, support, ctaLabel, ctaHre
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              <span className="dp-editorial-kicker">
+              <span className="dp-editorial-kicker dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
                 {eyebrow}
               </span>
               <h1 className="dp-editorial-hero-title">

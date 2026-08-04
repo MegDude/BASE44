@@ -74,7 +74,7 @@ html body #root .dp-partner-workspace-page .dp-workspace-experiences :is(.dp-wor
   margin: 0 0 6px !important;
   color: #A98445 !important;
   font: 700 10px/1.2 Inter, sans-serif !important;
-  letter-spacing: .1em !important;
+  letter-spacing: normal !important;
   text-transform: uppercase !important;
 }
 

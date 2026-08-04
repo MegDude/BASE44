@@ -153,10 +153,15 @@ export function GlobalWorkspaceSearch({ open, onClose, scope }) {
   return createPortal(<div className="dp-workspace-search-layer" role="dialog" aria-modal="true" aria-label="Search workspace">
     <button className="dp-workspace-search-backdrop" type="button" onClick={onClose} aria-label="Close search" />
     <section className="dp-workspace-search-sheet">
-      <header><button type="button" onClick={onClose} aria-label="Go back from workspace search"><ArrowLeft aria-hidden="true" /><span>Back</span></button><Search aria-hidden="true" /><input autoFocus type="search" placeholder="Search workspace" aria-label="Search workspace" onInput={(event) => {
-        const query = event.currentTarget.value.trim().toLowerCase();
-        event.currentTarget.closest("section")?.querySelectorAll("[data-search-text]").forEach((row) => { row.hidden = Boolean(query) && !row.dataset.searchText.includes(query); });
-      }} /><button type="button" onClick={onClose} aria-label="Close search"><X aria-hidden="true" /><span>Close</span></button></header>
+      <header>
+        <button type="button" onClick={onClose} aria-label="Go back from workspace search"><ArrowLeft aria-hidden="true" /></button>
+        <Search aria-hidden="true" />
+        <input autoFocus type="search" placeholder="Search workspace" aria-label="Search workspace" onInput={(event) => {
+          const query = event.currentTarget.value.trim().toLowerCase();
+          event.currentTarget.closest("section")?.querySelectorAll("[data-search-text]").forEach((row) => { row.hidden = Boolean(query) && !row.dataset.searchText.includes(query); });
+        }} />
+        <button type="button" onClick={onClose} aria-label="Close search"><X aria-hidden="true" /></button>
+      </header>
       <div className="dp-workspace-destination-list" aria-label="Workspace tools">
         {modules.map((module) => <WorkspaceModuleRow key={module.id} module={module} scope={scope} onClick={onClose} />)}
       </div>

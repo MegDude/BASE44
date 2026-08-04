@@ -342,10 +342,10 @@ const integrationLogoAliases = {
 };
 
 const timelineSteps = [
-  "Choose the plan that fits your location",
-  "Set up your partner account",
-  "Publish an offer, event, or profile update",
-  "Review what residents use",
+  { title: "Match your location", description: "Choose the ideal tier based on your footprint and neighborhood goals.", timing: "Est. 2 minutes" },
+  { title: "Configure account", description: "Securely set up your workspace and connect optional hospitality integrations.", timing: "Est. 5 minutes" },
+  { title: "Publish live assets", description: "Deploy offers, curated events, or profile updates directly to the map.", timing: "Instant deployment" },
+  { title: "Track engagement", description: "Monitor map saves, direction requests, and resident redemptions.", timing: "Live analytics" },
 ];
 
 const faqItems = [
@@ -548,10 +548,11 @@ function ChooseBusinessSection({ setup, setSetup }) {
   return (
     <section id="partners" className="dp-partner-lifecycle-section dp-partner-business-section">
       <div className="dp-partner-lifecycle-section-head">
+        <p>Classification</p>
         <h2>Choose your business</h2>
-        <span>Choose the closest match. We’ll recommend the right membership.</span>
+        <span>Swipe or select your category to configure your ecosystem.</span>
       </div>
-      <div className="dp-partner-lifestyle-grid">
+      <div className="dp-partner-business-carousel" role="radiogroup" aria-label="Partner category selection">
         {publicPartnerTypes.map((type) => {
           const isSelected = selectedType.id === type.id;
           const TypeIcon = type.icon;
@@ -559,8 +560,9 @@ function ChooseBusinessSection({ setup, setSetup }) {
             <button
               key={type.id}
               type="button"
+              role="radio"
               className={isSelected ? "is-selected" : ""}
-              aria-pressed={isSelected}
+              aria-checked={isSelected}
               onClick={() => selectType(type)}
             >
               <span className="dp-partner-business-icon" aria-hidden="true"><TypeIcon /></span>
@@ -568,7 +570,10 @@ function ChooseBusinessSection({ setup, setSetup }) {
                 <strong>{type.eyebrow}</strong>
                 <small>{type.outcome}</small>
               </span>
-              <span className="dp-partner-business-state">{isSelected ? "Selected" : "Select"}</span>
+              <span className="dp-partner-business-state">
+                <span>{isSelected ? "Selected" : "Select"}</span>
+                <ArrowRight aria-hidden="true" />
+              </span>
             </button>
           );
         })}
@@ -580,7 +585,7 @@ function ChooseBusinessSection({ setup, setSetup }) {
 function RecommendedMembership({ setup }) {
   const selectedType = getSelectedPartnerType(setup);
   const total = formatPlanTotal(setup, selectedType.price?.replace(" annually", "") || "$99");
-  const pricingHref = `/pricing?intent=partner-registration&partnerType=${encodeURIComponent(selectedType.id)}`;
+  const pricingHref = `/partners/sign-up?intent=partner-registration&partnerType=${encodeURIComponent(selectedType.id)}`;
 
   return (
     <section className="dp-partner-lifecycle-section dp-partner-recommendation-section">
@@ -608,7 +613,7 @@ function RecommendedMembership({ setup }) {
           <summary>View all memberships</summary>
           <div>
             {publicPartnerTypes.map((type) => (
-              <Link key={type.id} to={`/pricing?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
+              <Link key={type.id} to={`/partners/sign-up?intent=partner-registration&partnerType=${encodeURIComponent(type.id)}`}>
                 <span>{type.label}</span>
                 <strong>{type.plan}</strong>
                 <em>{type.price}</em>
@@ -724,7 +729,7 @@ function GrowthProgramsSection() {
               ? `${selectedPrograms.length} selected${customCount ? ` · ${customCount} custom quote` : ""}`
               : "Select programs to build an estimate."}
           </p>
-          <Link to={`/pricing?intent=partner-registration&modules=${encodeURIComponent(selectedPrograms.join(","))}`}>
+          <Link to={`/partners/sign-up?intent=partner-registration&modules=${encodeURIComponent(selectedPrograms.join(","))}`}>
             Continue with estimate
             <ArrowRight aria-hidden="true" />
           </Link>
@@ -858,16 +863,21 @@ function IntegrationsSection() {
 
 function TimelineSection() {
   return (
-    <section className="dp-partner-lifecycle-section dp-partner-timeline-section">
+    <section id="launch-timeline" className="dp-partner-lifecycle-section dp-partner-timeline-section">
       <div className="dp-partner-lifecycle-section-head">
+        <p>Operational roadmap</p>
         <h2>How launch works</h2>
-        <span>Most partners can publish within a few days.</span>
+        <span>From initial configuration to live resident engagement in four streamlined steps.</span>
       </div>
       <ol className="dp-partner-timeline" aria-label="Partner launch timeline">
         {timelineSteps.map((step, index) => (
-          <li key={step}>
+          <li key={step.title}>
             <b>0{index + 1}</b>
-            <span>{step}</span>
+            <div>
+              <strong>{step.title}</strong>
+              <p>{step.description}</p>
+            </div>
+            <small>{step.timing}</small>
           </li>
         ))}
       </ol>
@@ -899,7 +909,7 @@ function FinalCtaSection() {
       <h2>Ready to join?</h2>
       <span>Choose a membership and bring your business into the downtown map.</span>
       <div>
-        <Link to="/pricing">Choose a plan</Link>
+        <Link to="/partners/sign-up">Choose a plan</Link>
         <Link to="/contact">Contact us</Link>
       </div>
     </section>
@@ -1083,6 +1093,17 @@ function CheckoutStage({ setup, setSetup }) {
     };
     setSetup(nextSetup);
     saveSetup(nextSetup);
+
+    // Direct Payment Link — open immediately without creating a session.
+    if (checkoutTarget?.type === "url" && checkoutTarget.url) {
+      trackLifecycleEvent("stripe_checkout_started", {
+        partnerType: nextSetup.partnerType,
+        plan: selectedPlan,
+        checkoutTargetType: "url",
+      });
+      window.location.assign(checkoutTarget.url);
+      return;
+    }
 
     if (isStripeReady && (checkoutTarget.priceId || checkoutTarget.productId)) {
       setIsSubmittingCheckout(true);

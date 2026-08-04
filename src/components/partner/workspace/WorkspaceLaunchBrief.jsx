@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Check, CheckCircle2, Copy, ExternalLink, ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Check, CheckCircle2, Copy, ExternalLink, LockKeyhole, ShieldCheck } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import {
   launchDecisions,
   launchMetrics,
@@ -10,11 +10,38 @@ import {
   launchWorkingRecords,
 } from "@/data/launchOutreachPlan";
 import { withPartnerWorkspaceContext } from "@/lib/partnerWorkspaceContext";
+import WorkspaceFoundingPartnerTargets from "@/components/partner/workspace/WorkspaceFoundingPartnerTargets";
+import { fetchFoundingPartnerOperations } from "@/lib/partner/foundingPartnerOperationsClient";
 
 const NINA_BRIEF = "Meg is launching Downtown Perks through Frost Tower, a small group of ready residential buildings, and several hospitality partners; she has a practical 30-day pilot and needs introductions to the people who can approve the first properties, tenant communications, and multi-venue offers.";
 
 export default function WorkspaceLaunchBrief({ organizationId }) {
+  const location = useLocation();
+  const view = new URLSearchParams(location.search).get("view") || "overview";
   const [copied, setCopied] = useState(false);
+  const [accessState, setAccessState] = useState("checking");
+  const [operations, setOperations] = useState(null);
+
+  useEffect(() => {
+    if (view !== "targets") return undefined;
+    let active = true;
+    setAccessState("checking");
+    fetchFoundingPartnerOperations()
+      .then((data) => {
+        if (!active) return;
+        setOperations(data);
+        setAccessState("granted");
+      })
+      .catch((error) => {
+        if (!active) return;
+        const denied = error?.code === "COLLECTION_OPERATIONS_FORBIDDEN" || error?.message === "AUTH_REQUIRED";
+        setAccessState(denied ? "denied" : "error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [view]);
+
   const copyBrief = async () => {
     try {
       await navigator.clipboard.writeText(NINA_BRIEF);
@@ -25,12 +52,47 @@ export default function WorkspaceLaunchBrief({ organizationId }) {
     }
   };
 
+  if (view === "targets") {
+    if (accessState === "granted" && operations) {
+      return <WorkspaceFoundingPartnerTargets operations={operations} organizationId={organizationId} />;
+    }
+    return (
+      <section className="dp-target-directory dp-target-directory--gate" aria-labelledby="target-gate-title">
+        <div className="dp-target-directory__gate-card" role="status" aria-live="polite">
+          <LockKeyhole aria-hidden="true" />
+          <p>Downtown Perks · Founding Partner Collection</p>
+          <h1 id="target-gate-title">
+            {accessState === "checking"
+              ? "Verifying operator access…"
+                : accessState === "denied"
+                  ? "Authorized operations access required."
+                  : "This confidential brief could not be loaded."}
+          </h1>
+          <span>
+            {accessState === "checking"
+              ? "Confirming your Downtown Perks operator credentials before revealing relationship data."
+              : accessState === "denied"
+                ? "Sign in with an authorized Downtown Perks operator account to open the Founding Partner target directory."
+                : "Please retry in a moment. If this persists, confirm your session is still active."}
+          </span>
+          <div className="dp-target-directory__gate-actions">
+            <Link to={withPartnerWorkspaceContext("/partner-workspace/launch", organizationId)}>Return to launch overview</Link>
+            <a href="/founding-partners" target="_blank" rel="noreferrer">
+              Public invitation
+              <ExternalLink aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return <section className="dp-launch-brief" aria-labelledby="launch-brief-title">
     <header className="dp-launch-brief__hero">
       <p>Launch</p>
       <h1 id="launch-brief-title">Turn a few relationships into downtown reach.</h1>
       <span>Start with Frost Tower, convert warm relationships into proof, then expand through portfolios.</span>
-      <div><Link to={withPartnerWorkspaceContext("/partner-workspace/campaigns", organizationId)}>Open campaigns</Link><Link to="/map?mode=partner&tab=map&filter=All">Open partner map<ExternalLink aria-hidden="true" /></Link></div>
+      <div><Link to={withPartnerWorkspaceContext("/partner-workspace/launch?view=targets", organizationId)}>Open all targets<LockKeyhole aria-hidden="true" /></Link><Link to={withPartnerWorkspaceContext("/partner-workspace/campaigns", organizationId)}>Open campaigns</Link><Link to="/map?mode=partner&tab=map&filter=All">Open partner map<ExternalLink aria-hidden="true" /></Link></div>
     </header>
 
     <section className="dp-launch-brief__minute" aria-labelledby="launch-minute-title">

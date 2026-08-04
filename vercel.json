@@ -18,6 +18,14 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/founding-partners",
+      "destination": "/founding-partners.html"
+    },
+    {
+      "source": "/founding-partner-collection",
+      "destination": "/founding-partners.html"
+    },
+    {
       "source": "/app/:path*",
       "destination": "/index.html"
     },
