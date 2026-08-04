@@ -1,0 +1,6 @@
+name = "downtown-perks-independent"
+compatibility_date = "2026-08-04"
+pages_build_output_dir = "dist"
+
+# The production API remains a separately deployed, server-authorized service.
+# Configure VITE_API_BASE_URL in Cloudflare Pages; never ship server keys here.

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronUp, MapPin, Menu, Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -139,8 +139,9 @@ function DropdownGroup({ id, label, links, openMenu, setOpenMenu, isActiveGroup 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
-  const [mobileAudience, setMobileAudience] = useState("residents");
   const [scrolled, setScrolled] = useState(false);
+  const closeButtonRef = useRef(null);
+  const triggerRef = useRef(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -152,7 +153,6 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false);
     setOpenMenu(null);
-    setMobileAudience(location.pathname.startsWith("/partners") || location.search.includes("mode=partner") ? "partners" : "residents");
   }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
@@ -182,8 +182,22 @@ export default function Navbar() {
 
   useEffect(() => {
     document.documentElement.toggleAttribute("data-dp-nav-open", open);
+    if (open) {
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+      return () => {
+        document.body.style.overflow = previousOverflow;
+        document.documentElement.removeAttribute("data-dp-nav-open");
+      };
+    }
     return () => document.documentElement.removeAttribute("data-dp-nav-open");
   }, [open]);
+
+  function closeNavigation() {
+    setOpen(false);
+    window.requestAnimationFrame(() => triggerRef.current?.focus());
+  }
 
   const isActive = (to) => {
     if (!to) return false;
@@ -318,6 +332,7 @@ export default function Navbar() {
             </button>
           )}
           <button
+            ref={triggerRef}
             type="button"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close navigation" : "Open navigation"}
@@ -332,59 +347,44 @@ export default function Navbar() {
       <AnimatePresence mode="wait" initial={false}>
         {open && (
           <motion.div
-            data-dp-nav-menu
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed left-0 right-0 top-[64px] z-[1400] pointer-events-auto border-b border-[rgba(11,31,51,0.06)] shadow-[0_16px_60px_rgba(11,31,51,0.09)]"
-            style={{
-              backgroundColor: "rgba(250, 250, 252, 0.96)",
-              backdropFilter: "blur(24px) saturate(1.12)",
-              WebkitBackdropFilter: "blur(24px) saturate(1.12)",
-            }}
+            className="fixed inset-0 z-[1400] bg-[#0B1F33]/24"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+            onClick={closeNavigation}
           >
-            <div className="mx-auto max-h-[calc(100vh-64px)] max-w-4xl overflow-y-auto px-5 py-5 text-[#0B1F33]">
-              <div className="flex items-center justify-between gap-4">
-                <div className="text-[#425466] dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">
-                  Navigation
-                </div>
-                {!isCommerceRoute && (
-                  <div className="flex shrink-0 items-center gap-5" role="tablist" aria-label="Navigation audience">
-                    {[
-                      ["residents", "Residents"],
-                      ["partners", "Partners"],
-                    ].map(([value, label]) => (
-                      <button
-                        key={value}
-                        type="button"
-                        role="tab"
-                        aria-selected={mobileAudience === value}
-                        onClick={() => setMobileAudience(value)}
-                        className={`relative h-7 border-0 bg-transparent px-0 text-[11px] font-semibold uppercase tracking-normal shadow-none outline-none transition focus-visible:outline-none focus-visible:ring-0 ${
-                          mobileAudience === value
-                            ? "text-[#BFA46A] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#BFA46A]"
-                            : "text-[#425466] hover:text-[#0B1F33]"
-                        }`}
-                        style={{ border: 0, boxShadow: "none", background: "transparent" }}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-              <div className="mt-5 h-px bg-[linear-gradient(90deg,rgba(11,31,51,0.04),rgba(11,31,51,0.07),rgba(11,31,51,0.03))]" />
-
-	              <div className="pt-5">
-	                <NavSection
-	                  links={isCommerceRoute ? COMMERCE_LINKS : mobileAudience === "residents" ? HAMBURGER_RESIDENT_LINKS : HAMBURGER_PARTNER_LINKS}
-	                  close={() => setOpen(false)}
-	                />
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed bottom-0 right-0 top-0 z-[1401] flex h-full w-[88%] max-w-sm flex-col bg-white text-[#0B1F33] shadow-2xl"
+          >
+            <div className="flex shrink-0 items-center justify-between border-b border-black/5 px-6 py-5">
+              <Link to="/map?mode=resident&tab=map&filter=Perks" onClick={closeNavigation} className="inline-flex items-center gap-3" aria-label="Downtown Perks home">
+                <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-[#0B1F33] text-[#C9A66B]" aria-hidden="true"><MapPin className="h-4 w-4" /></span>
+                <span className="text-lg font-bold uppercase leading-none tracking-[0.08em] text-[#0B1F33]">Downtown<span className="text-[#C9A66B]">Perks</span></span>
+              </Link>
+              <button ref={closeButtonRef} type="button" onClick={closeNavigation} className="flex h-10 w-10 items-center justify-center rounded-full text-[#0B1F33]/70 transition-colors hover:bg-black/5 hover:text-[#0B1F33] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A66B]" aria-label="Close navigation menu"><X className="h-5 w-5" aria-hidden="true" /></button>
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6">
+              <div className="grid grid-cols-2 gap-x-7">
+                <NavSection label="Residents" links={isCommerceRoute ? COMMERCE_LINKS.slice(0, 2) : HAMBURGER_RESIDENT_LINKS} close={closeNavigation} />
+                <NavSection label="Partners" links={isCommerceRoute ? COMMERCE_LINKS.slice(2) : HAMBURGER_PARTNER_LINKS} close={closeNavigation} />
               </div>
             </div>
-          </motion.div>
+          </motion.aside>
         )}
       </AnimatePresence>
 
@@ -392,22 +392,23 @@ export default function Navbar() {
   );
 }
 
-function NavSection({ links, close }) {
+function NavSection({ label, links, close }) {
   return (
-    <div>
-      <div className="grid gap-1">
+    <section aria-label={label}>
+      <h2 className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#C9A66B]">{label}</h2>
+      <div className="grid gap-0">
         {links.map((link) => (
           <NavLinkItem
             key={link.to}
             link={link}
             onClick={close}
-            className="group flex items-center justify-between px-0 py-2 text-[15px] font-medium text-[#0B1F33] transition-all hover:translate-x-0.5 hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="group flex min-h-11 items-center justify-between border-b border-black/5 py-2 text-[13px] font-medium leading-tight text-[#0B1F33] transition-colors hover:text-[#C9A66B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A66B]"
           >
             <span>{link.label}</span>
             <span className="text-[#BFA46A]/70 transition group-hover:translate-x-0.5 group-hover:text-[#BFA46A]">→</span>
           </NavLinkItem>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

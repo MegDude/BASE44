@@ -189,22 +189,3 @@ void preloadGoogleMaps().catch(() => undefined)
 ReactDOM.createRoot(document.getElementById('root')).render(
   import.meta.env.DEV ? <React.StrictMode>{application}</React.StrictMode> : application
 )
-
-function scheduleObservability() {
-  const start = async () => {
-    const [{ inject }, { injectSpeedInsights }] = await Promise.all([
-      import('@vercel/analytics'),
-      import('@vercel/speed-insights'),
-    ])
-    inject()
-    injectSpeedInsights()
-  }
-
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(() => void start(), { timeout: 2500 })
-  } else {
-    window.setTimeout(() => void start(), 1500)
-  }
-}
-
-if (import.meta.env.PROD) scheduleObservability()
