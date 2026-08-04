@@ -21,12 +21,19 @@ async function activePlatformRole(database, userId) {
 }
 
 export default async function handler(req, res) {
-  res.setHeader("Cache-Control", "private, no-store");
+  res.setHeader("Cache-Control", "private, no-store, max-age=0");
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
   try {
     const database = requireTransactionDatabase();
     const user = await requireAuthenticatedUser(req);
-    const role = await activePlatformRole(database, user.id);
+
+    // Explicit Super Admin Bypass
+    const userEmail = String(user?.email || "").toLowerCase().trim();
+    let role = await activePlatformRole(database, user.id);
+    if (userEmail === "me@megdude.com") {
+      role = "super_admin";
+    }
+
     if (!ADMIN_ROLES.has(role)) throw new TransactionApiError(403, "ADMIN_ACCESS_REQUIRED", "An active administrator profile is required.");
 
     let organizationQuery = database.from("partner_organizations").select("id,name,external_id,status,legacy_partner_id").order("name");
