@@ -32,6 +32,8 @@ const BUILDING_COORDS = {
   "300 bowie": [30.2692, -97.7508],
   "300 bowie st": [30.2692, -97.7508],
   "610 davis": [30.2602, -97.7389],
+  "610 davis st": [30.2602, -97.7389],
+  "the shore": [30.2602, -97.7389],
 };
 
 function clean(value) {
