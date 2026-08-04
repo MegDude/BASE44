@@ -13,6 +13,7 @@ html body .dp-native-drawer > .dp-native-drawer-surface {
   width: 100% !important;
   max-width: 100% !important;
   height: 100% !important;
+  max-height: 85dvh !important;
   min-width: 0 !important;
   min-height: 0 !important;
   overflow: hidden !important;
@@ -26,22 +27,35 @@ html body .dp-native-drawer > .dp-native-drawer-surface > * {
   min-width: 0 !important;
 }
 
+/* Grip button is the first grid row — must never absorb any of the scroll region */
+html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-grip {
+  flex-shrink: 0 !important;
+  align-self: auto !important;
+}
+
 html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-header,
 html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-actions {
   position: static !important;
   z-index: auto !important;
   flex: none !important;
+  flex-shrink: 0 !important;
   width: auto !important;
   min-width: 0 !important;
+  /* grid auto rows — these must never grow or shrink into the scroll region */
+  align-self: auto !important;
+  overflow: hidden !important;
 }
 
 html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport {
   display: block !important;
   min-width: 0 !important;
   min-height: 0 !important;
-  height: auto !important;
+  height: 100% !important;
   max-height: none !important;
   overflow: hidden !important;
+  /* The grid row is minmax(0,1fr) — height:100% fills it so the scroll child
+     stays bounded. Without this the viewport collapses to content-height and
+     the surface overflows the 85dvh cap. */
 }
 
 html body .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawer-content-viewport > .dp-native-drawer-scroll {
@@ -83,6 +97,6 @@ html body #root .dp-native-drawer > .dp-native-drawer-surface > .dp-native-drawe
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   max-height: none !important;
 }
