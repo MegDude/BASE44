@@ -33,3 +33,21 @@ PR #223 remains a bounded BASE44 app migration with no marketing changes, deploy
 | Responsive QA | Cloudflare staging preview | 393x852, 768x1024, 1440x900 | No overflow; stable map/entity/drawer routes | Installed-browser screenshots and interaction checks | Roll back Worker version |
 
 Authenticated browser cases remain blocked until dedicated staging credentials exist. Credentials must not be fabricated or copied from production.
+
+## Comprehensive reconciliation
+
+| Requested area | Disposition |
+| --- | --- |
+| Full env and Worker binding matrix | Implemented in `APP_BACKEND_DEPENDENCY_MATRIX.md`; backend-only `process.env` names are classified by boundary rather than copied into the app Worker. |
+| Proxy CORS, allowlist, open-proxy, redirect, streaming, WebSocket analysis | Implemented in Worker code, app-shell tests, and dependency matrix. WebSockets are deliberately unsupported here because they require a separately reviewed Backend Platform transport. |
+| Expanded routes and external `returnTo` rejection | Covered for resident pass, audience, connections, callback loops, external/protocol-relative/backslash-host inputs, and role destinations. |
+| Restricted admin, expired session, missing membership | Static route/auth contracts are covered; live browser verification is blocked pending dedicated staging identities. |
+| Resident Home and `tab=pass` normalization | Canonical routes documented and contract-tested. `tab=card` is treated as a requested compatibility check, not introduced as a competing canonical URL. |
+| Map deep links and entity stability | Map marker contract plus installed-browser marker selection passed on mobile and desktop. |
+| Legends identity and PII-safe analytics | Listing/parent identity, SEO Snapshot, and strategic privacy contracts cover identity and cross-business analytics privacy. Live source/account authorization remains a staging blocker. |
+| Workspace false success, sample data, server scope | Existing protected workspace and admin-scope contracts pass; production mode forces live workspace behavior. A full removal of legacy demo/local workspace implementation is intentionally omitted because it is broader than app-shell migration and requires Backend Platform parity first. Production cutover remains blocked until no local sample fallback is observed with staging accounts. |
+| Requested focused tests | `test:map-marker-stability` and `test:waterloo-native-sheet` passed; the Waterloo assertion was updated to match the current accessible Back-label implementation. |
+| Browser QA | Public routes passed at representative mobile, tablet, and desktop sizes. Authenticated cases were not run without staging credentials. |
+| Five requested docs | Added without replacing broader historical documentation. |
+| DNS and rollback | Prepared only; no action applied. |
+| Manual instructions | Release blocker table includes dashboard/page, field, expected value, verification, and rollback. |
