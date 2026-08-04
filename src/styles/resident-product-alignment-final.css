@@ -27,6 +27,14 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   box-shadow: 0 0 0 2px #C8A96A !important;
 }
 
+/* Span / text nodes inside auth buttons must inherit the button's own color,
+   not the sitewide  html body #root :is(span…) { color: rgba(11,31,51,.66) }
+   reset that overrides all descendant spans globally.                       */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white button span {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
 /* Primary submit button: navy rounded-xl */
 html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.min-h-screen.bg-white button[type="submit"] {
   background-color: #0B1F33 !important;
