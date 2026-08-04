@@ -19,7 +19,7 @@ const checks = [
   [!map.includes("December 2026"), "resident renewal is not hard-coded"],
   [auth.includes('redirectPath = ""') && auth.includes('isResidentAccount ? "/residents/login"'), "logout returns each audience to its own sign-in"],
   [workflows.includes('authHeaders["Idempotency-Key"]'), "transaction requests send their idempotency key"],
-  [platformClient.includes("https://downtown-perks-backend.vercel.app"), "production account clients use the public backend domain"],
+  [platformClient.includes("VITE_OPERATIONS_API_BASE_URL") && platformClient.includes("VITE_BACKEND_PLATFORM_URL"), "production account clients use the configured backend domain"],
   [workflows.includes("PLATFORM_WORKFLOW_PREFIXES") && workflows.includes("workflowUrl(endpoint)"), "protected resident and redemption workflows use the backend service"],
 ];
 
