@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, KeyRound } from "lucide-react";
+import { ArrowLeft, Check, KeyRound, MapPin } from "lucide-react";
 import { supabaseClient } from "@/lib/supabase/client";
 
 function recoveryError(location) {
@@ -91,31 +91,98 @@ export default function ResidentResetPassword() {
     window.setTimeout(() => navigate("/residents/login?reset=complete", { replace: true }), 700);
   };
 
-  // A validation/API error should remain editable when the recovery session is
-  // still valid. Only a missing/expired recovery session locks the form.
   const canSubmit = recoveryReady && state.status !== "saving" && state.status !== "complete";
+
   return (
-    <main className="dp-resident-signin-page dp-resident-password-reset">
-      <div className="dp-resident-signin-shell">
-        <header className="dp-resident-signin-header">
-          <Link to="/" aria-label="Downtown Perks home"><span aria-hidden="true" />Downtown Perks</Link>
-          <Link to="/residents/login"><ArrowLeft aria-hidden="true" />Sign in</Link>
+    <main className="min-h-screen bg-white px-5 py-12 text-[#0B1F33]">
+      <div className="mx-auto max-w-md space-y-8">
+
+        {/* Header Navigation */}
+        <header className="flex items-center justify-between border-b border-black/5 pb-4">
+          <Link to="/" aria-label="Downtown Perks home" className="flex items-center gap-2 text-[14.5px] font-semibold text-[#0B1F33] hover:text-[#C8A96A] transition-colors">
+            <MapPin size={16} className="text-[#C8A96A]" aria-hidden="true" />
+            <span>Downtown Perks</span>
+          </Link>
+          <Link to="/residents/login" className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F33]/60 hover:text-[#0B1F33] transition-colors">
+            <ArrowLeft size={15} aria-hidden="true" />
+            <span>Sign in</span>
+          </Link>
         </header>
-        <section className="dp-resident-signin-content" aria-labelledby="resident-reset-title">
-          <p className="dp-resident-signin-eyebrow dp-eyebrow text-[11px] font-bold uppercase tracking-[0.15em]">Resident access</p>
-          <h1 id="resident-reset-title">Set a new password.</h1>
-          <p>Use the secure link from your email to update your Downtown Perks password.</p>
-          {state.status === "complete" ? <p className="dp-resident-signin-status is-success" role="status"><Check aria-hidden="true" />{state.message}</p> : (
-            <form onSubmit={submit}>
-              <label htmlFor="resident-new-password">New password</label>
-              <input id="resident-new-password" type="password" autoComplete="new-password" minLength={8} required disabled={!canSubmit} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="At least 8 characters" />
-              <label htmlFor="resident-confirm-password">Confirm new password</label>
-              <input id="resident-confirm-password" type="password" autoComplete="new-password" minLength={8} required disabled={!canSubmit} value={confirmation} onChange={(event) => setConfirmation(event.target.value)} placeholder="Enter it again" />
-              <p className={`dp-resident-signin-status is-${state.status === "error" ? "error" : "info"}`} role={state.status === "error" ? "alert" : "status"}>{state.message}</p>
-              <button type="submit" disabled={!canSubmit}><KeyRound aria-hidden="true" />{state.status === "saving" ? "Updating…" : "Update password"}</button>
+
+        {/* Content */}
+        <section className="space-y-6" aria-labelledby="resident-reset-title">
+
+          <div className="space-y-1.5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#C8A96A]">Resident Access</p>
+            <h1 id="resident-reset-title" className="text-3xl font-semibold tracking-tight text-[#0B1F33]">Set a new password.</h1>
+            <p className="text-[14px] leading-relaxed text-[#0B1F33]/70">Use the secure link from your email to update your Downtown Perks password.</p>
+          </div>
+
+          {state.status === "complete" ? (
+            <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-[14px] text-emerald-700" role="status">
+              <Check size={16} aria-hidden="true" />
+              <span>{state.message}</span>
+            </div>
+          ) : (
+            <form className="space-y-4" onSubmit={submit}>
+              <div className="space-y-1">
+                <label htmlFor="resident-new-password" className="block text-[13px] font-semibold text-[#0B1F33]">New password</label>
+                <input
+                  id="resident-new-password"
+                  type="password"
+                  autoComplete="new-password"
+                  minLength={8}
+                  required
+                  disabled={!canSubmit}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="At least 8 characters"
+                  className="w-full bg-[#F2F2F7] px-4 py-3 rounded-xl text-[15px] text-[#0B1F33] outline-none transition-all focus:ring-2 focus:ring-[#C8A96A] placeholder:text-[#0B1F33]/30 disabled:opacity-50"
+                />
+              </div>
+              <div className="space-y-1">
+                <label htmlFor="resident-confirm-password" className="block text-[13px] font-semibold text-[#0B1F33]">Confirm new password</label>
+                <input
+                  id="resident-confirm-password"
+                  type="password"
+                  autoComplete="new-password"
+                  minLength={8}
+                  required
+                  disabled={!canSubmit}
+                  value={confirmation}
+                  onChange={(e) => setConfirmation(e.target.value)}
+                  placeholder="Enter it again"
+                  className="w-full bg-[#F2F2F7] px-4 py-3 rounded-xl text-[15px] text-[#0B1F33] outline-none transition-all focus:ring-2 focus:ring-[#C8A96A] placeholder:text-[#0B1F33]/30 disabled:opacity-50"
+                />
+              </div>
+
+              <p
+                className={`text-[13px] rounded-xl px-4 py-2.5 ${state.status === "error" ? "bg-red-50 text-red-700" : "bg-[#F2F2F7] text-[#0B1F33]/60"}`}
+                role={state.status === "error" ? "alert" : "status"}
+              >
+                {state.message}
+              </p>
+
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#0B1F33] px-5 text-[14px] font-semibold text-white shadow-sm transition-transform active:scale-95 hover:bg-[#0B1F33]/90 disabled:opacity-50 disabled:cursor-wait"
+              >
+                <KeyRound size={16} className="text-[#C8A96A]" aria-hidden="true" />
+                <span>{state.status === "saving" ? "Updating…" : "Update password"}</span>
+              </button>
             </form>
           )}
-          {state.status === "error" ? <Link className="dp-resident-resend-confirmation" to="/residents/login">Request a new reset link</Link> : null}
+
+          {state.status === "error" ? (
+            <Link
+              className="block text-center text-[13px] font-semibold text-[#C8A96A] hover:underline"
+              to="/residents/login"
+            >
+              Request a new reset link
+            </Link>
+          ) : null}
+
         </section>
       </div>
     </main>
