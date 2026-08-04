@@ -51,3 +51,7 @@ Authenticated browser cases remain blocked until dedicated staging credentials e
 | Five requested docs | Added without replacing broader historical documentation. |
 | DNS and rollback | Prepared only; no action applied. |
 | Manual instructions | Release blocker table includes dashboard/page, field, expected value, verification, and rollback. |
+
+## Auth and Partner Intelligence product audit
+
+See `APP_AUTH_AND_INTELLIGENCE_ARCHITECTURE.md`. The canonical datastore remains Supabase plus the Backend Platform; Firebase collections do not exist and were not introduced. Public guest browsing and server-authorized resident/partner gates are retained. Complete redemption history and metric-backed Partner Intelligence across opens, saves, RSVPs, scans, visits, lift, and repeat activity remain explicit Backend Platform dependencies, not client-side placeholder work.

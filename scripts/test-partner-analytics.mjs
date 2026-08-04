@@ -15,7 +15,7 @@ assert.match(component, /getPartnerRedemptionOverview/);
 assert.match(component, /Completed redemptions/);
 assert.match(detailedPage, /URL\.createObjectURL/);
 assert.match(component, /\/map\?mode=partner&tab=map/);
-assert.match(workspace, /<PartnerAnalyticsExperience\s*\/>/);
+assert.match(workspace, /<PartnerAnalyticsExperience\s+scopeOverride=\{scope\}\s+adminMode=\{hasPrivilegedAccess\}\s*\/>/);
 assert.doesNotMatch(workspace, /<section className="dp-featured-experience">/);
 assert.doesNotMatch(workspace, /<section className="dp-operating-section dp-recent-activity"/);
 assert.match(styles, /@media\s*\(max-width:\s*560px\)/);

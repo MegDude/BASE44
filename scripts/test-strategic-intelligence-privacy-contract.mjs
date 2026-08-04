@@ -40,6 +40,6 @@ assert.equal(disclosure.scope.accessScope, "portfolio");
 assert.equal(disclosure.sources[0].metricDefinition, "Verified partner-owned or privacy-safe aggregate signal");
 assert.doesNotMatch(analyticsSource, /another business.{0,80}(impressions|opens|clicks|redemptions|spend|revenue)/i, "Partner intelligence copy must not expose another business's private metrics");
 assert.match(workspaceAgentSource, /organizationId,\n\s+listingIds: scope\?\.listingId/, "Workspace agent payload must carry active organization and listing scope");
-assert.match(workspaceAgentSource, /Places used in this answer/, "Workspace agent must expose a data-used control to partners");
+assert.match(workspaceAgentSource, /Evidence used/, "Workspace agent must expose the evidence used in its answer");
 
 console.log("Strategic Intelligence privacy contract: PASS");
