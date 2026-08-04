@@ -1,8 +1,9 @@
 /* ==========================================================================
-   DOWNTOWN PERKS: UNIVERSAL NATIVE MOBILE DRAWER & PANEL ARCHITECTURE
-   Enforces viewport containment, eliminates double scrolling, and delivers
-   Apple-grade typography and high-contrast button states on every drawer.
-   Loaded last — overrides all previous drawer/panel CSS on mobile.
+   DOWNTOWN PERKS: UNIVERSAL NATIVE MOBILE DRAWER & PANEL ARCHITECTURAL FIX
+   Forces every single drawer, detail sheet, and route panel instance to
+   respect viewport bounds, eliminate double scrolling, and maintain high-
+   contrast readable actions with Apple-grade polish.
+   Loaded last in main.jsx — wins the cascade on every mobile surface.
    ========================================================================== */
 
 @media (max-width: 767px) {
@@ -49,17 +50,6 @@
     border-top-right-radius: 0 !important;
   }
 
-  /* High-specificity override: beats the #root×64 rules in
-     map-bottom-drawer-contract-final.css for default (medium) state */
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-native-drawer:not([data-drawer-state="peek"]):not([data-drawer-state="expanded"]):not([data-drawer-state="full"]) {
-    max-height: 82vh !important;
-    border-top-left-radius: 28px !important;
-    border-top-right-radius: 28px !important;
-  }
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-native-drawer[data-drawer-state="expanded"] {
-    max-height: 90vh !important;
-  }
-
   /* 02. Internal Flex Surface Binding */
   html body .dp-native-drawer > .dp-native-drawer-surface {
     display: flex !important;
@@ -71,40 +61,7 @@
     background: #ffffff !important;
   }
 
-  /* 03. Grip / Handle */
-  html body .dp-native-drawer-grip,
-  html body .dp-native-drawer .dp-route-sheet-grabber {
-    display: flex !important;
-    width: 100% !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 10px 0 6px !important;
-    flex-shrink: 0 !important;
-    background: transparent !important;
-    border: 0 !important;
-    cursor: grab !important;
-  }
-  html body .dp-native-drawer-grip > span,
-  html body .dp-native-drawer .dp-route-sheet-grabber > i {
-    display: block !important;
-    width: 36px !important;
-    height: 5px !important;
-    border-radius: 12px !important;
-    background: rgba(11, 31, 51, 0.18) !important;
-  }
-
-  /* 04. Sticky Header */
-  html body .dp-native-drawer-header,
-  html body .dp-map-panel-header,
-  html body .dp-map-detail-header,
-  html body .dp-route-sheet-header {
-    flex-shrink: 0 !important;
-    background: #ffffff !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
-    z-index: 10 !important;
-  }
-
-  /* 05. Zero Double-Scrolling — Single Scrollable Viewport */
+  /* 03. Zero Double Scrolling & Clean Viewporting */
   html body .dp-native-drawer-content-viewport,
   html body .dp-native-drawer-scroll,
   html body .dp-map-detail-scroll,
@@ -117,9 +74,20 @@
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
+    padding: 16px 20px !important;
   }
 
-  /* 06. Sticky Footer Actions */
+  /* 04. Sticky Headers & Action Footers (No Overflows) */
+  html body .dp-native-drawer-header,
+  html body .dp-map-panel-header,
+  html body .dp-map-detail-header,
+  html body .dp-route-sheet-header {
+    flex-shrink: 0 !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    z-index: 10 !important;
+  }
+
   html body .dp-native-drawer-actions,
   html body .dp-universal-action-rail,
   html body .dp-route-active-action-bar {
@@ -130,7 +98,7 @@
     z-index: 10 !important;
   }
 
-  /* 07. High-Contrast Touch Targets — baseline */
+  /* 05. High-Contrast Readable Button & Touch State Enforcement */
   html body .dp-native-drawer button,
   html body .dp-native-drawer a,
   html body .dp-map-panel button,
@@ -146,7 +114,7 @@
     transition: transform 0.1s ease, background-color 0.15s ease !important;
   }
 
-  /* Primary action: navy + white */
+  /* Primary Action Contrast */
   html body .dp-native-drawer .dp-route-primary-action,
   html body .dp-native-drawer .is-primary,
   html body .dp-native-drawer .dp-primary-action,
@@ -163,7 +131,7 @@
     background-color: rgba(11, 31, 51, 0.9) !important;
   }
 
-  /* Secondary action: soft grey + navy (zero white-on-white) */
+  /* Secondary Action Contrast (Zero White-on-White) */
   html body .dp-native-drawer .dp-route-secondary-action,
   html body .dp-native-drawer button:not(.dp-route-primary-action):not(.is-primary):not(.dp-primary-action):not(.dp-native-drawer-grip):not([aria-label*="Drawer"]):not([aria-label*="drawer"]),
   html body .dp-native-drawer a:not(.dp-route-primary-action):not(.is-primary):not(.dp-primary-action) {
@@ -178,35 +146,22 @@
     background-color: rgba(0, 0, 0, 0.1) !important;
   }
 
-  /* Icon-only control buttons: grip / close / back / menu — no fill override */
-  html body .dp-native-drawer .dp-native-drawer-grip,
-  html body .dp-native-drawer .dp-map-detail-close,
-  html body .dp-native-drawer .dp-map-detail-back,
-  html body .dp-native-drawer .dp-route-sheet-size,
-  html body .dp-native-drawer button[aria-label*="Close"],
-  html body .dp-native-drawer button[aria-label*="Back"],
-  html body .dp-native-drawer button[aria-label*="More"],
-  html body .dp-native-drawer button[aria-label*="Drawer"],
-  html body .dp-native-drawer button[aria-label*="Route sheet"],
-  html body .dp-native-drawer button[aria-label*="route"] {
-    background-color: #F2F2F7 !important;
-    color: #0B1F33 !important;
-    -webkit-text-fill-color: #0B1F33 !important;
-  }
+  /* Grip: transparent, no fill */
   html body .dp-native-drawer .dp-native-drawer-grip {
     background-color: transparent !important;
     border-radius: 0 !important;
     min-height: unset !important;
+    border: 0 !important;
   }
 
-  /* Spans inside buttons: always inherit the button's own colour */
+  /* Spans inside buttons: inherit the button's own colour */
   html body .dp-native-drawer button span,
   html body .dp-native-drawer a span {
     color: inherit !important;
     -webkit-text-fill-color: inherit !important;
   }
 
-  /* 08. Hero Presentation */
+  /* 06. Hero Presentation & Spacing Polish */
   html body .dp-panel-detail-hero,
   html body .dp-destination-hero {
     max-height: 175px !important;
@@ -223,39 +178,7 @@
     object-position: center !important;
   }
 
-/* ── High-specificity overrides: beat #root×48 rules on buttons inside drawers */
-@media (max-width: 767px) {
-  /* Secondary / neutral buttons: grey pill, navy text */
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer button:not(.dp-route-primary-action):not(.is-primary):not(.dp-primary-action):not(.dp-native-drawer-grip):not([aria-label*="Drawer"]):not([aria-label*="Route sheet"]):not([aria-label*="route"]):not([aria-label*="Close"]):not([aria-label*="Back"]):not([aria-label*="More"]):not([data-route-stop-btn]) {
-    background-color: #F2F2F7 !important;
-    color: #0B1F33 !important;
-    -webkit-text-fill-color: #0B1F33 !important;
-    border: none !important;
-    border-radius: 12px !important;
-    min-height: 44px !important;
-    font-weight: 600 !important;
-  }
-  /* Primary action buttons: navy */
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-route-primary-action,
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .is-primary,
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-primary-action {
-    background-color: #0B1F33 !important;
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-    border: none !important;
-    border-radius: 12px !important;
-    min-height: 44px !important;
-    font-weight: 600 !important;
-  }
-  /* Spans inside buttons: always inherit */
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer button span,
-  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer a span {
-    color: inherit !important;
-    -webkit-text-fill-color: inherit !important;
-  }
-}
-
-  /* 09. Route stop list: spec card style */
+  /* 07. Route stop list */
   html body .dp-native-drawer .dp-route-stop-list {
     list-style: none !important;
     margin: 0 !important;
@@ -322,13 +245,12 @@
     color: #C9A66B !important;
     -webkit-text-fill-color: #C9A66B !important;
   }
-  /* Visited/completed stops: muted gold becomes muted grey */
   html body .dp-native-drawer .dp-route-stop-list li > button.is-visited .dp-route-stop-list__copy small {
     color: rgba(11, 31, 51, 0.5) !important;
     -webkit-text-fill-color: rgba(11, 31, 51, 0.5) !important;
   }
 
-  /* 10. Route hero block */
+  /* 08. Route hero block */
   html body .dp-native-drawer .dp-route-hero {
     border-radius: 16px !important;
     background: #F8F9FA !important;
@@ -359,10 +281,9 @@
     color: #0B1F33 !important;
     -webkit-text-fill-color: #0B1F33 !important;
     min-height: unset !important;
-    border-radius: 8px !important;
   }
 
-  /* 11. Section headings inside drawers (eyebrow style) */
+  /* 09. Section eyebrow headings */
   html body .dp-native-drawer .dp-route-stop-section > header > h3,
   html body .dp-native-drawer .dp-route-details h3,
   html body .dp-native-drawer section > h3[id] {
@@ -373,5 +294,54 @@
     color: #C9A66B !important;
     -webkit-text-fill-color: #C9A66B !important;
     margin: 0 0 10px !important;
+  }
+}
+
+/* ==========================================================================
+   HIGH-SPECIFICITY OVERRIDES
+   Beats the #root×48–65 rules in map-bottom-drawer-contract-final.css and
+   ios-native-system-restoration.css that override button appearance globally.
+   ========================================================================== */
+
+/* Max-height: 82vh for default (medium/no-state) drawer */
+@media (max-width: 767px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-native-drawer:not([data-drawer-state="peek"]):not([data-drawer-state="expanded"]):not([data-drawer-state="full"]) {
+    max-height: 82vh !important;
+    border-top-left-radius: 28px !important;
+    border-top-right-radius: 28px !important;
+  }
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page .dp-native-drawer[data-drawer-state="expanded"] {
+    max-height: 90vh !important;
+  }
+
+  /* Primary action buttons: navy */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-route-primary-action,
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .is-primary,
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer .dp-primary-action {
+    background-color: #0B1F33 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    min-height: 44px !important;
+    font-weight: 600 !important;
+  }
+
+  /* Secondary / neutral buttons: grey pill, navy text */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer button:not(.dp-route-primary-action):not(.is-primary):not(.dp-primary-action):not(.dp-native-drawer-grip):not([aria-label*="Drawer"]):not([aria-label*="Route sheet"]):not([aria-label*="route"]):not([aria-label*="Close"]):not([aria-label*="Back"]):not([aria-label*="More"]) {
+    background-color: #F2F2F7 !important;
+    color: #0B1F33 !important;
+    -webkit-text-fill-color: #0B1F33 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    min-height: 44px !important;
+    font-weight: 600 !important;
+  }
+
+  /* Spans inside any drawer button: always inherit */
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer button span,
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page .dp-native-drawer a span {
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
   }
 }
