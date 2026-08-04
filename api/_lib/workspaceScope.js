@@ -18,11 +18,17 @@ function isExternalId(value) {
 
 // Production-global billing & workspace bypass — functions globally across
 // Production, Preview, and Development deployments.
-export function isBillingCheckBypassed(req) {
+//
+// SECURITY: This must only consult deployment-level environment toggles. It must
+// NEVER derive identity from client-controlled request data (e.g. the
+// `x-user-email` header), otherwise any authenticated caller could spoof a
+// super-admin identity and escalate privileges. Super-admin determination is
+// handled separately in resolveAuthorizedWorkspaceScope using the
+// server-authenticated `user.email` / DB role lookup.
+export function isBillingCheckBypassed() {
   const envBypass = process.env.BYPASS_BILLING_CHECK === "true";
   const globalProductionBypass = process.env.FORCE_PRODUCTION_WORKSPACES === "true";
-  const userEmail = String(req?.headers?.["x-user-email"] || req?.user?.email || "").toLowerCase().trim();
-  return envBypass || globalProductionBypass || userEmail === "me@megdude.com";
+  return envBypass || globalProductionBypass;
 }
 
 export async function resolveAuthorizedWorkspaceScope(req, database) {
@@ -31,7 +37,7 @@ export async function resolveAuthorizedWorkspaceScope(req, database) {
 
   // Super admin email bypass — resolve directly without DB profile lookup
   const userEmail = String(user?.email || "").toLowerCase().trim();
-  if (userEmail === "me@megdude.com" || isBillingCheckBypassed(req)) {
+  if (userEmail === "me@megdude.com" || isBillingCheckBypassed()) {
     let query = database
       .from("partner_organizations")
       .select("id,external_id,legacy_partner_id,name,organization_type,status")
