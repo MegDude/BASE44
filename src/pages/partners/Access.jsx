@@ -183,7 +183,7 @@ function toPricingPartnerType(value) {
 }
 
 const accessActionClass =
-  "dp-partner-access-action inline-flex min-h-11 items-center justify-start gap-2 border-0 bg-transparent px-0 py-2 text-[13px] font-semibold normal-case tracking-normal text-[#0B1F33] shadow-none transition hover:text-[#B8963E] focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:text-[#0B1F33]/40";
+  "dp-partner-access-action inline-flex min-h-[52px] items-center justify-center gap-2 border-0 px-5 py-3 text-[14px] font-semibold normal-case tracking-normal shadow-none transition-transform active:scale-95 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50";
 
 export default function PartnerAccess({ mode = "sign-in" }) {
   const isSignUp = mode === "sign-up";
@@ -432,7 +432,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
           <button
             type="button"
             onClick={() => navigate("/partners")}
-            className="dp-partner-back-button inline-flex items-center justify-center text-[#0B1F33]/68 transition hover:text-[#0B1F33] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFA46A]"
+            className="dp-partner-back-button inline-flex min-h-[52px] min-w-[52px] items-center justify-center text-[#0B1F33]/68 transition-transform active:scale-95"
             aria-label="Back to partners"
             title="Back to partners"
           >
@@ -473,7 +473,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
             </div>
           </div>
 
-          <div className="dp-partner-access-panel border border-[#0B1F33]/[0.08] bg-white/88 p-5">
+          <div className="dp-partner-access-panel bg-white p-2">
             {isSignUp ? (
               <form onSubmit={handleSubmit} className="dp-partner-access-form space-y-4">
                 <div className="dp-partner-access-form-head">
@@ -522,7 +522,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                   <select
                     value={form.timeline}
                     onChange={(event) => updateField("timeline", event.target.value)}
-                    className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full min-h-[52px] bg-[#F2F2F7] px-4 py-3 text-[14px] text-[#0B1F33] outline-none transition"
                   >
                     {TIMELINES.map((timeline) => (
                       <option key={timeline} value={timeline}>{timeline}</option>
@@ -538,7 +538,7 @@ export default function PartnerAccess({ mode = "sign-in" }) {
                     rows={4}
                     value={form.bio}
                     onChange={(event) => updateField("bio", event.target.value)}
-                    className="dp-partner-access-control w-full resize-none border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+                    className="dp-partner-access-control w-full resize-none bg-[#F2F2F7] px-4 py-3 text-[14px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35"
                     placeholder="Tell us the organization, location, plan, add-ons, launch timing, or custom request you want connected to this account."
                   />
                 </div>
@@ -731,7 +731,7 @@ function PartnerAccessField({ label, value, onChange, type = "text", required = 
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="dp-partner-access-control w-full border border-[#0B1F33]/10 bg-white px-4 py-2.5 text-[13px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35 focus:border-[#BFA46A]/55"
+        className="dp-partner-access-control w-full min-h-[52px] bg-[#F2F2F7] px-4 py-3 text-[14px] text-[#0B1F33] outline-none transition placeholder:text-[#0B1F33]/35"
       />
     </div>
   );

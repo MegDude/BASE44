@@ -193,6 +193,198 @@ html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root
   text-transform: uppercase !important;
 }
 
+/* Partner access: borderless clean-surface system with one mobile alignment axis. */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page {
+  padding-right: 20px !important;
+  padding-left: 20px !important;
+  background: #fff !important;
+  color: #0b1f33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-shell,
+  .dp-partner-access-grid,
+  .dp-partner-access-copy,
+  .dp-partner-access-panel,
+  .dp-partner-access-signin,
+  .dp-partner-access-form,
+  .dp-partner-type-section,
+  .dp-partner-type-grid,
+  .dp-partner-access-actions
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-panel {
+  padding: 8px !important;
+  background: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-list > div,
+  .dp-partner-type-section-head,
+  .dp-partner-type-grid,
+  .dp-partner-access-setup,
+  .dp-partner-access-setup-head,
+  .dp-partner-access-setup dl,
+  .dp-partner-access-setup dl > div,
+  .dp-partner-access-type-row,
+  .dp-partner-type-card
+) {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup {
+  padding: 20px !important;
+  background: #f2f2f7 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  input.dp-partner-access-control,
+  select.dp-partner-access-control,
+  textarea.dp-partner-access-control,
+  .dp-admin-workspace-search input
+) {
+  min-height: 52px !important;
+  padding: 12px 16px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: #f2f2f7 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+  box-shadow: none !important;
+  font-size: 16px !important;
+  letter-spacing: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-setup select.dp-partner-access-control {
+  background: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-edit-plan {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-height: 52px !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page textarea.dp-partner-access-control {
+  min-height: 120px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  button,
+  a,
+  [role="button"],
+  [role="radio"],
+  .dp-partner-access-action
+) {
+  min-height: 52px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  letter-spacing: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  button,
+  [role="button"],
+  [role="radio"],
+  .dp-partner-access-action
+):active {
+  transform: scale(0.95) !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-action.dp-acquisition-primary {
+  justify-content: center !important;
+  width: 100% !important;
+  padding: 12px 20px !important;
+  background: #0b1f33 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-action.dp-acquisition-secondary {
+  justify-content: center !important;
+  width: 100% !important;
+  padding: 12px 20px !important;
+  background: #f2f2f7 !important;
+  color: #0b1f33 !important;
+  -webkit-text-fill-color: #0b1f33 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page :is(
+  .dp-partner-access-label,
+  .dp-partner-access-setup-label,
+  .dp-partner-type-card span,
+  .dp-partner-type-card strong,
+  label,
+  button,
+  a,
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  strong,
+  small
+):not(.dp-partner-access-eyebrow) {
+  letter-spacing: normal !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-eyebrow {
+  color: #bfa46a !important;
+  -webkit-text-fill-color: #bfa46a !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-type-row {
+  padding: 14px 0 !important;
+  background: transparent !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-type-row[data-active="true"] {
+  padding-left: 14px !important;
+  background: #f2f2f7 !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-type-row::after {
+  content: none !important;
+}
+
+@media (max-width: 639px) {
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page {
+    padding-top: calc(64px + 16px) !important;
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-grid {
+    gap: 40px !important;
+  }
+
+  html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root main.dp-partner-access-page.dp-partner-access-page .dp-partner-access-panel {
+    padding: 0 !important;
+  }
+}
+
 /* Terminal map-panel contract: every active entity panel uses one fixed-height
    shell, one scroll owner, and one in-flow action footer. */
 html body #root .dp-map-page #dp-active-map-drawer.dp-native-drawer {
