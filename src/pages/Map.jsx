@@ -7182,46 +7182,35 @@ function getMapDetailNavigationTitle(place, hasPerkContext = false, mode = "resi
 }
 
 function MapDetailHeader({ place, navigationTitle, backLabel = "Back", canGoBack, onBack, onClose, panelState = "medium", onPanelStateChange }) {
-  const pointerStartRef = useRef(null);
-  const stateOrder = ["medium", "expanded", "full"];
-  const movePanel = (direction) => {
-    const currentIndex = Math.max(0, stateOrder.indexOf(panelState));
-    onPanelStateChange?.(stateOrder[Math.max(0, Math.min(stateOrder.length - 1, currentIndex + direction))]);
-  };
   const returnToMap = onBack || onClose;
+  const title = navigationTitle || place?.name || "Details";
   return (
-    <header className="dp-map-panel-header dp-map-detail-header" aria-label="Detail navigation">
+    <header className="flex items-center justify-between px-5 pt-3 pb-4" aria-label="Detail navigation">
+      {/* Back / Map control */}
       <button
         type="button"
-        className="dp-native-detail-grabber"
-        aria-label={`Panel size: ${panelState}. Activate to ${panelState === "full" ? "collapse" : "expand"}.`}
-        aria-expanded={panelState === "full"}
-        onClick={() => movePanel(panelState === "full" ? -1 : 1)}
-        onPointerDown={(event) => { pointerStartRef.current = event.clientY; event.currentTarget.setPointerCapture?.(event.pointerId); }}
-        onPointerUp={(event) => {
-          const start = pointerStartRef.current;
-          pointerStartRef.current = null;
-          if (!Number.isFinite(start)) return;
-          const delta = event.clientY - start;
-          if (Math.abs(delta) >= 28) movePanel(delta < 0 ? 1 : -1);
-        }}
-      ><span aria-hidden="true" /></button>
-      <nav className="dp-map-detail-navigation" aria-label="Panel controls">
-        <button
-          type="button"
-          onClick={returnToMap}
-          className="dp-map-detail-back"
-          data-map-drawer-back="true"
-          aria-label={canGoBack ? backLabel : "Return to map"}
-        >
-          <ArrowLeft aria-hidden="true" />
-        </button>
-        <span className="dp-map-detail-navigation-title" aria-hidden="true" data-navigation-title="true">{navigationTitle || place?.name || "Details"}</span>
-        <button type="button" onClick={onClose} data-map-drawer-close="true" className="dp-map-detail-close" aria-label={`Close ${place?.name || "details"}`}>
-          <X aria-hidden="true" />
-        </button>
-      </nav>
-      <span className="sr-only" role="status" aria-live="polite">Panel size {panelState}</span>
+        onClick={returnToMap}
+        data-map-drawer-back="true"
+        className="inline-flex min-h-[38px] items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0B1F33] transition-colors hover:text-[#C9A66B] focus-visible:outline-none"
+        aria-label={canGoBack ? backLabel : "Return to map"}
+      >
+        <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+        <span>{canGoBack ? backLabel : "Map"}</span>
+      </button>
+
+      {/* Centered label */}
+      <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#0B1F33]/60" aria-hidden="true">{title}</span>
+
+      {/* Close control */}
+      <button
+        type="button"
+        onClick={onClose}
+        data-map-drawer-close="true"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#0B1F33] transition-colors hover:bg-black/5 focus-visible:outline-none"
+        aria-label={`Close ${title}`}
+      >
+        <X aria-hidden="true" className="h-4 w-4" />
+      </button>
     </header>
   );
 }
@@ -19188,12 +19177,11 @@ export default function MapPage() {
                 urlState.update({ entityId: "", drawerClosed: "" });
               }}
             />}
-            scrollClassName="dp-grouped-list dp-context-list-scroll"
+            scrollClassName="dp-grouped-list dp-context-list-scroll space-y-2"
           >
-              <section className="dp-context-list-heading">
-                <h2 id="dp-cluster-results-title" className="dp-panel-title">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
-                <p className="dp-panel-subtitle">{getClusterSubtitle(clusterDrawer, urlState.mode)}</p>
-                <span>{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</span>
+              <section className="dp-context-list-heading mb-6 space-y-1">
+                <h2 id="dp-cluster-results-title" className="font-serif text-2xl font-semibold tracking-tight text-[#0B1F33]">{getClusterTitle(clusterDrawer, urlState.mode)}</h2>
+                <p className="text-[13px] font-light text-[#0B1F33]/60">{clusterPlacesForDrawer.length} {clusterPlacesForDrawer.length === 1 ? "result" : "results"} · Tap one to see details</p>
               </section>
               {clusterPlacesForDrawer.map((place) => {
                 const listing = getLegendsListing(place);
@@ -19203,22 +19191,24 @@ export default function MapPage() {
                   ? [listing.price, listing.beds ? `${listing.beds} bd` : "", listing.baths ? `${listing.baths} ba` : "", listing.sqft ? `${listing.sqft} sqft` : ""].filter(Boolean).join(" · ")
                   : "";
                 const offerLine = listingMeta || explicitOffer;
+                const metaLine = [rowMeta, offerLine].filter(Boolean).join(" · ");
                 return (
                   <button
                     key={place.id}
                     type="button"
                     onClick={() => selectPlace(place)}
-                    className="dp-grouped-row"
+                    className="dp-grouped-row group flex w-full items-center justify-between gap-4 border-b border-black/5 bg-white py-3.5 text-left transition-colors hover:bg-transparent"
                   >
-                    <span className="dp-grouped-icon">
-                      <PinBadge place={place} />
-                    </span>
-                    <span className="dp-grouped-copy">
-                      <span className="dp-grouped-title">{place.name}</span>
-                      <span className="dp-grouped-meta">{rowMeta}</span>
-                      {offerLine && <span className="dp-grouped-offer">{offerLine}</span>}
-                    </span>
-                    <span className="dp-grouped-status">
+                    <div className="flex min-w-0 items-center gap-3.5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFF9F0] text-[#C9A66B]" aria-hidden="true">
+                        <PinBadge place={place} />
+                      </span>
+                      <div className="min-w-0 space-y-0.5">
+                        <strong className="block text-[15px] font-semibold text-[#0B1F33] transition-colors group-hover:text-[#C9A66B] truncate">{place.name}</strong>
+                        <small className="block text-[12px] font-light text-[#0B1F33]/60 truncate">{metaLine}</small>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#C9A66B] shrink-0">
                       {listing ? "Contact" : "Open"}
                     </span>
                   </button>
