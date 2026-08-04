@@ -6,13 +6,26 @@
  * Loads after map-detail-panel-product-final.css so specificity wins cleanly.
  */
 
+/* ── Section header h3: gold uppercase label ──────────────────────────────── */
+/* Must beat the #root-repeated h3 rule in map-detail-panel-product-final.css  */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer .dp-nearby-image-section .dp-destination-section-h3 {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  color: #C9A66B !important;
+  -webkit-text-fill-color: #C9A66B !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 /* ── Rail: vertical grid, no horizontal scroll ────────────────────────────── */
 html body #root .dp-map-page #dp-active-map-drawer .dp-nearby-list {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;
   grid-auto-rows: auto !important;
   flex-flow: unset !important;
-  gap: 10px !important;
+  gap: 12px !important;
   width: 100% !important;
   padding: 2px 0 4px !important;
   overflow-x: visible !important;
@@ -22,6 +35,15 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-nearby-list {
 }
 
 /* ── Card: horizontal row layout ──────────────────────────────────────────── */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer .dp-nearby-list-card {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
 html body #root .dp-map-page #dp-active-map-drawer .dp-nearby-list-card {
   flex: unset !important;
   display: flex !important;
@@ -51,6 +73,21 @@ html body #root .dp-map-page #dp-active-map-drawer .dp-nearby-list-card:focus-vi
 }
 
 /* ── Thumbnail ────────────────────────────────────────────────────────────── */
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer .dp-nearby-list-thumb {
+  flex: 0 0 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+
+html body #root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root#root .dp-map-page.dp-map-page #dp-active-map-drawer .dp-nearby-list-copy {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
 html body #root .dp-map-page #dp-active-map-drawer .dp-nearby-list-thumb {
   flex: 0 0 48px !important;
   display: flex !important;

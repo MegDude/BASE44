@@ -8990,23 +8990,36 @@ function NearbyImageRail({ place, places = [], onSelect, mode = "resident", titl
     : getNearbyRecommendationCards(place, places, mode, 8, targetKind);
   if (!items.length) return null;
 
+  const displayTitle = getV4DestinationSectionTitle(title);
   return (
-    <DestinationSection title={title} support={support} className="dp-discovery-context-section dp-nearby-image-section">
-      <div className="dp-nearby-image-rail dp-nearby-list" aria-label={`${title} places`}>
+    <section className="dp-destination-section dp-discovery-context-section dp-nearby-image-section">
+      <div className="flex items-center justify-between">
+        <h3 className="dp-destination-section-h3">{displayTitle}</h3>
+        {support && <span className="text-[11px] font-medium text-[#0B1F33]/50 whitespace-nowrap pl-2">{support}</span>}
+      </div>
+      <div className="grid grid-cols-1 gap-3 dp-nearby-image-rail dp-nearby-list" aria-label={`${title} places`}>
         {items.map((item) => (
-          <button key={item.id} type="button" className="dp-nearby-image-card dp-nearby-list-card" onClick={() => onSelect?.(item.place)}>
-            <span className="dp-nearby-image-media dp-nearby-list-thumb">
-              <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} />
+          <button
+            key={item.id}
+            type="button"
+            className="group relative flex items-center gap-3.5 p-3 rounded-2xl border border-black/10 bg-[#F8F9FA] text-left transition-all hover:bg-white hover:border-[#C9A66B] dp-nearby-image-card dp-nearby-list-card"
+            onClick={() => onSelect?.(item.place)}
+          >
+            <span className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white shadow-sm flex items-center justify-center dp-nearby-image-media dp-nearby-list-thumb">
+              {item.image
+                ? <img src={item.image} alt="" loading="lazy" decoding="async" data-fallback-src={item.fallbackImage} onError={handlePanelImageError} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A66B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="1" y2="4"/><line x1="10" x2="10" y1="1" y2="4"/><line x1="14" x2="14" y1="1" y2="4"/></svg>
+              }
             </span>
-            <span className="dp-nearby-image-copy dp-nearby-list-copy">
-              <strong>{item.title}</strong>
-              <em>{item.meta}</em>
+            <span className="flex-1 min-w-0 space-y-0.5 dp-nearby-image-copy dp-nearby-list-copy">
+              <strong className="block text-[14px] font-semibold text-[#0B1F33] truncate">{item.title}</strong>
+              <em className="not-italic block text-[12px] font-medium text-[#C9A66B]">{item.meta}</em>
             </span>
-            <span className="dp-nearby-list-arrow" aria-hidden="true">→</span>
+            <span className="text-[#C9A66B] pr-1 transition-transform group-hover:translate-x-0.5 dp-nearby-list-arrow" aria-hidden="true">→</span>
           </button>
         ))}
       </div>
-    </DestinationSection>
+    </section>
   );
 }
 
@@ -9035,7 +9048,9 @@ function NearbyContext({ place, places = [], onSelect, mode = "resident", route 
       ? isWaterlooGreenwayRoute(route)
       ? "Nearby perks, saved places, events, gardens, and next Waterloo stops tied to this route."
       : "Nearby stops, saved places, and civic context tied to this route."
-    : "";
+    : mode === "resident"
+      ? "Live nearby perks"
+      : "";
   return <NearbyImageRail place={place} places={places} onSelect={onSelect} mode={mode} title={title} support={support} route={route} savedIds={savedIds} targetKind={isHotelPanel ? "hotel" : ""} />;
 }
 
