@@ -9784,8 +9784,9 @@ function PartnerNearbyPlacesSection({ place, places = [], onSelect, onViewNearby
   }));
   const seen = new Set();
   const items = [...contextItems, ...relatedItems]
+    .filter((item) => Boolean(item.place?.id))
     .filter((item) => {
-      const key = String(item.place?.id || item.title || "").toLowerCase();
+      const key = String(item.place.id).toLowerCase();
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -9804,10 +9805,10 @@ function PartnerNearbyPlacesSection({ place, places = [], onSelect, onViewNearby
       <ul className="dp-partner-nearby-list">
         {items.map((item) => (
           <li key={item.id}>
-            <button type="button" onClick={() => item.place && onSelect(item.place)} disabled={!item.place}>
+            <button type="button" onClick={() => onSelect(item.place)} aria-label={`Open ${item.title}`}>
               <img src={item.image} data-fallback-src={item.fallbackImage} alt="" loading="lazy" decoding="async" onError={handlePanelImageError} />
               <span><strong>{item.title}</strong>{item.meta && <small>{item.meta}</small>}</span>
-              {item.place && <ChevronRight aria-hidden="true" />}
+              <ChevronRight aria-hidden="true" />
             </button>
           </li>
         ))}
@@ -15216,8 +15217,11 @@ export default function MapPage() {
     () => effectiveSearch ? sortSearchPlaces(displayPlaces, effectiveSearch) : sortDiscoverPlaces(displayPlaces),
     [displayPlaces, effectiveSearch],
   );
-  const activePerkItems = useMemo(() => discoverDisplayPlaces
-    .filter((place) => hasActivePerkData(place))
+  const activePerkItems = useMemo(() => {
+    const scopedPerks = discoverDisplayPlaces.filter((place) => hasActivePerkData(place));
+    const catalogPerks = places.filter((place) => hasActivePerkData(place));
+    const perkPlaces = scopedPerks.length ? scopedPerks : catalogPerks;
+    return perkPlaces
     .slice(0, 40)
     .map((place) => {
       const offer = getCanonicalResidentOffer(place) || getResidentPerkDetails(place);
@@ -15236,7 +15240,8 @@ export default function MapPage() {
         perkId: getCanonicalResidentPerkId(place),
         place,
       };
-    }), [discoverDisplayPlaces]);
+    });
+  }, [discoverDisplayPlaces, places]);
   const visiblePlaces = discoverDisplayPlaces;
   const activeCollection = useMemo(
     () => getMapCollectionById(urlState.collection),

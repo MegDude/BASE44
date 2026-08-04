@@ -121,10 +121,12 @@ export default function ActivePerksSheet({
   const safeState = normalizeDrawerState(drawerState, "list");
   const nextState = nextDrawerState(safeState, "list");
   const [selectedFilter, setSelectedFilter] = useState("Active");
-  const filteredItems = useMemo(
+  const matchingItems = useMemo(
     () => items.filter((item) => matchesPerkFilter(item, selectedFilter, savedIds)),
     [items, savedIds, selectedFilter],
   );
+  const filteredItems = matchingItems.length || selectedFilter === "Active" ? matchingItems : items;
+  const isCatalogFallback = selectedFilter !== "Active" && matchingItems.length === 0;
 
   return (
     <NativeDrawerShell
@@ -171,7 +173,11 @@ export default function ActivePerksSheet({
       {safeState !== "peek" && (
         <div className="dp-active-perks-body">
           <p className="dp-active-perks-context">
-            {selectedFilter === "Active" ? "Available near this map area" : `${selectedFilter} perks near you`}
+            {selectedFilter === "Active"
+              ? "Available near this map area"
+              : isCatalogFallback
+                ? `No exact ${selectedFilter.toLowerCase()} matches yet — showing all active perks`
+                : `${selectedFilter} perks near you`}
           </p>
           <div className="dp-perks-filter-rail" role="group" aria-label="Perk filters">
             {PERK_FILTERS.map(({ label, icon: Icon }) => (
@@ -186,30 +192,19 @@ export default function ActivePerksSheet({
               </button>
             ))}
           </div>
-          {filteredItems.length ? (
-            <div className="dp-active-perks-collection" role="list">
-              {filteredItems.map((item) => (
-                <PerkRow
-                  key={item.id}
-                  item={item}
-                  saved={savedIds.has(item.id)}
-                  redeemed={redeemedIds.has(item.perkId) || redeemedIds.has(item.id)}
-                  onOpen={onOpen}
-                  onRedeem={onRedeem}
-                  onSave={onSave}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="dp-active-perks-empty" role="status">
-              <strong>No {selectedFilter.toLowerCase()} perks found.</strong>
-              <span>Choose another filter or return to the map to explore a wider area.</span>
-              <div className="dp-active-perks-empty-actions">
-                <button type="button" className="is-primary" onClick={() => setSelectedFilter("Active")}>Show active perks</button>
-                <button type="button" className="is-secondary" onClick={onClose}>Back to map</button>
-              </div>
-            </div>
-          )}
+          <div className="dp-active-perks-collection" role="list">
+            {filteredItems.map((item) => (
+              <PerkRow
+                key={item.id}
+                item={item}
+                saved={savedIds.has(item.id)}
+                redeemed={redeemedIds.has(item.perkId) || redeemedIds.has(item.id)}
+                onOpen={onOpen}
+                onRedeem={onRedeem}
+                onSave={onSave}
+              />
+            ))}
+          </div>
         </div>
       )}
     </NativeDrawerShell>

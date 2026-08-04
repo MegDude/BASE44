@@ -12,7 +12,9 @@ const shellSource = await readFile(new URL("../src/components/map/NativeDrawerSh
 const mainSource = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 
 assert.match(mapSource, /"Featured"/, "Featured must remain a canonical resident filter");
-assert.match(mapSource, /discoverDisplayPlaces\s*\.filter\(\(place\) => hasActivePerkData\(place\)\)\s*\.slice\(0,\s*40\)/s, "active perks must be derived from canonical map data and capped at 40");
+assert.match(mapSource, /const scopedPerks = discoverDisplayPlaces\.filter\(\(place\) => hasActivePerkData\(place\)\)/, "active perks must use the current map scope first");
+assert.match(mapSource, /const catalogPerks = places\.filter\(\(place\) => hasActivePerkData\(place\)\)/, "empty map scopes must fall back to the canonical perk catalog");
+assert.match(mapSource, /perkPlaces\s*\.slice\(0,\s*40\)/s, "the canonical perk catalog must remain capped at 40");
 assert.match(mapSource, /getCanonicalResidentPerkId/, "perk selection must use the canonical perk resolver");
 assert.match(mapSource, /tab: "map", entityId:[^\n]+perkId: nextPerkId/, "perk rows must write entity and perk context into the canonical map URL");
 assert.match(mapSource, /openResidentQrModal\(item\.place/, "Redeem must use the existing resident QR workflow");
@@ -36,6 +38,8 @@ assert.match(sheetSource, /aria-live="polite"/);
 assert.match(sheetSource, /aria-label="Close perks"/);
 assert.match(sheetSource, /const \[selectedFilter, setSelectedFilter\] = useState\("Active"\)/, "perk filters must retain interactive selection state");
 assert.match(sheetSource, /items\.filter\(\(item\) => matchesPerkFilter\(item, selectedFilter, savedIds\)\)/, "rendered perks must be filtered using the selected control");
+assert.match(sheetSource, /matchingItems\.length \|\| selectedFilter === "Active" \? matchingItems : items/, "empty secondary filters must fall back to the active catalog");
+assert.doesNotMatch(sheetSource, /dp-active-perks-empty/, "perks filters must not produce a dead-end empty state");
 assert.match(sheetSource, /aria-pressed=\{selectedFilter === label\}/, "filter controls must expose their selected state");
 assert.match(sheetSource, /onClick=\{\(\) => setSelectedFilter\(label\)\}/, "every filter must be interactive");
 assert.match(sheetSource, /aria-pressed=\{saved\}/);
@@ -60,6 +64,9 @@ assert.match(sheetCss, /\.dp-active-perks-sheet\s+\.dp-active-perks-handle\s*\{[
 assert.match(sheetCss, /\.dp-active-perk-actions\s*>\s*button:first-child\s*\{[^}]*white-space:\s*nowrap/s, "the Redeem action must never wrap or clip");
 assert.match(sheetCss, /grid-template-columns:\s*64px\s+minmax\(0,\s*1fr\)/);
 assert.match(surfaceCss, /\.dp-active-perk-actions\s*\{[^}]*grid-template-columns:\s*68px\s+44px\s*!important/s, "mobile action tracks must fit Redeem and Save without clipping");
+const mobileSystemCss = await readFile(new URL("../src/styles/perks-saved-nearby-mobile-system.css", import.meta.url), "utf8");
+assert.match(mobileSystemCss, /\.dp-active-perks-collection\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s, "mobile perks must render as a two-column card grid");
+assert.match(mobileSystemCss, /\.dp-active-perks-close\s*\{[^}]*position:\s*absolute[^}]*right:\s*8px/s, "the perks close control must remain anchored at top-right");
 assert.match(sheetCss, /max-width:\s*760px/);
 assert.doesNotMatch(sheetCss, /#[0-9a-f]{3,8}/i, "the sheet stylesheet must use design tokens only");
 assert.doesNotMatch(sheetCss, /border-radius:\s*(?:999|9999)px/i, "pill geometry is forbidden");
