@@ -25,7 +25,7 @@
         "API_BASE_URL": "https://api.downtownperks.com"
       },
       "services": [
-        { "binding": "API", "service": "downtown-perks-api" }
+        { "binding": "API", "service": "downtown-perks-api-production" }
       ],
       "routes": [
         { "pattern": "app.downtownperks.com", "custom_domain": true }
