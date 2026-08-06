@@ -54,7 +54,7 @@ Database joins require a protected service-role key and are skipped when it is u
 Optional:
 
 ```text
-DP_CANONICAL_BASE_URL=https://base-44-downtown-perks-live.vercel.app
+DP_CANONICAL_BASE_URL=https://app.downtownperks.com
 ```
 
 ## Quality gates

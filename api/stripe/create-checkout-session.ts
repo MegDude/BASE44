@@ -51,8 +51,7 @@ function getStripeClient() {
 
 function getAppBaseUrl() {
   if (process.env.APP_BASE_URL) return process.env.APP_BASE_URL.replace(/\/$/, '');
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return 'https://downtownperks.com';
+  return 'https://app.downtownperks.com';
 }
 
 function normalizeMetadata(metadata: unknown) {
@@ -79,7 +78,7 @@ function buildWorkspaceSuccessUrl(appBaseUrl: string, metadata: Record<string, s
       if (metadata[key]) params.set(key, metadata[key]);
     });
 
-    return `${appBaseUrl}/app?${params.toString()}&session_id={CHECKOUT_SESSION_ID}`;
+    return `${appBaseUrl}/map?${params.toString()}&session_id={CHECKOUT_SESSION_ID}`;
   }
 
   const params = new URLSearchParams({

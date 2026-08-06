@@ -2,14 +2,14 @@
 
 ## Decision
 
-Treat `MegDude/BASE44` and the Vercel project `base-44-downtown-perks-live` as the only production application path. Older repositories and deployments are reference material only. New fixes must land on `main`, pass the integration gate, and deploy through the connected production project.
+Treat `MegDude/BASE44` and the Cloudflare project `base-44-downtown-perks-live` as the only production application path. Older repositories and deployments are reference material only. New fixes must land on `main`, pass the integration gate, and deploy through the connected production project.
 
 ## Current production contract
 
 - Canonical repository: `MegDude/BASE44`
 - Canonical branch: `main`
-- Canonical Vercel project: `base-44-downtown-perks-live`
-- Canonical production alias: `base-44-downtown-perks-live-meg-dude.vercel.app`
+- Canonical Cloudflare project: `base-44-downtown-perks-live`
+- Canonical production alias: `app.downtownperks.com`
 - Primary surfaces: resident map, partner map, resident account, partner access, partner workspace, reports, campaigns, pricing and admin
 - Authentication: Supabase in production, with Base44 compatibility retained for legacy token hydration
 - Owner access: allowlisted super-admin account must retain cross-organization workspace access
@@ -47,7 +47,7 @@ Treat `MegDude/BASE44` and the Vercel project `base-44-downtown-perks-live` as t
 4. Consolidate the drawer stack without changing entity behavior.
 5. Split resident presentation from partner operations in property panels.
 6. Run content verification across all launch buildings.
-7. Retire stale branches and duplicate Vercel projects only after production parity is proven.
+7. Retire stale branches and duplicate Cloudflare projects only after production parity is proven.
 
 ## Required release checks
 

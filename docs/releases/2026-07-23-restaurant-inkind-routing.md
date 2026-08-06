@@ -17,7 +17,7 @@
 - Generated content inventory: passed
 - Map intent regression coverage: passed
 - Playwright application suite: passed
-- Vercel preview: passed
+- Cloudflare preview: passed
 - Production deployment: triggered from `main`
 
 This release note intentionally contains no secrets, contact data, or environment configuration.

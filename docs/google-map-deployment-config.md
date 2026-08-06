@@ -7,7 +7,7 @@ Project scope: BASE44 only
 
 Local BASE44 on `127.0.0.1:5173` can load the map canvas when the Google Maps public env is present.
 
-The deployed preview `base-44-downtown-perks-live-meg-dude.vercel.app` renders the shell but falls into:
+The deployed preview `app.downtownperks.com` renders the shell but falls into:
 
 ```text
 Map service needs attention.
@@ -59,13 +59,13 @@ import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
 
 ## Deployment repair checklist
 
-For the BASE44 Vercel project only:
+For the BASE44 Cloudflare project only:
 
 ```text
 meg-dude/base-44-h2iq
 ```
 
-Verify env vars exist for the relevant Vercel scopes:
+Verify env vars exist for the relevant Cloudflare scopes:
 
 | Variable | Scope | Required | Notes |
 | -------- | ----- | -------- | ----- |
@@ -80,9 +80,9 @@ Allowed referrers should include:
 ```text
 http://127.0.0.1:5173/*
 http://localhost:5173/*
-https://base-44-h2iq.vercel.app/*
-https://base-44-h2iq-meg-dude.vercel.app/*
-https://base-44-h2iq-megdude-meg-dude.vercel.app/*
+https://app.downtownperks.com/*
+https://app.downtownperks.com/*
+https://app.downtownperks.com/*
 approved base-44-h2iq preview deployment URLs
 future approved app domain
 ```

@@ -13,7 +13,7 @@ import {
 } from "../src/server/foundingPartnerBriefSupport.js";
 
 const publicPage = readFileSync("public/founding-partners.html", "utf8");
-const vercel = JSON.parse(readFileSync("vercel.json", "utf8"));
+const worker = readFileSync("worker/index.ts", "utf8");
 const main = readFileSync("src/main.jsx", "utf8");
 const qrStyles = readFileSync("src/styles/perk-action-visibility-final.css", "utf8");
 const targetStyles = readFileSync("src/styles/workspace-founding-partner-targets-final.css", "utf8");
@@ -103,9 +103,8 @@ assert.match(publicPage, /font-family:\s*Canela, Georgia/, "Editorial display ty
 assert.match(publicPage, /meta name="robots" content="index,follow"/, "Public page must be indexable");
 assert.match(publicPage, /rel="canonical" href="https:\/\/downtownperks\.com\/founding-partners"/, "Canonical Founding Partners URL is missing");
 
-const rewrites = new Map(vercel.rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
-assert.equal(rewrites.get("/founding-partners"), "/founding-partners.html", "Founding Partners route is missing");
-assert.equal(rewrites.get("/founding-partner-collection"), "/founding-partners.html", "Collection alias is missing");
+assert.match(worker, /url\.pathname === "\/founding-partner-collection"/, "Collection alias is missing");
+assert.match(worker, /url\.pathname = "\/founding-partners\.html"/, "Founding Partners asset route is missing");
 
 assert.ok(main.includes('import "@/styles/workspace-founding-partner-targets-final.css"'), "Target directory styles are not imported");
 assert.ok(main.trim().includes('import "@/styles/perk-action-visibility-final.css"'), "Show QR correction stylesheet is not imported");

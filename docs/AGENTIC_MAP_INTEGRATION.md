@@ -28,7 +28,7 @@ The third layer is an operational fallback. It uses only the supplied map entiti
 ## Authentication and secrets
 
 - Base44 conversations use the authenticated Base44 SDK session.
-- OpenAI credentials are read only inside the Vercel serverless route.
+- OpenAI credentials are read only inside the Cloudflare serverless route.
 - No provider key is accepted from browser payloads.
 - No API key is stored in source, local storage, session storage, analytics, or agent messages.
 - Conversation IDs are stored in session storage and separated by mode and organization.

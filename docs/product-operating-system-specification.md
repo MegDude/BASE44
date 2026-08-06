@@ -15,7 +15,7 @@ The resident should not feel like they are moving between disconnected pages. Th
 ### Working foundation
 
 - The canonical resident map surface is `/map`; `/app` remains the launch/guest entry and the retired `/app/map` alias redirects into `/map` without owning UI or data.
-- The app has a working Vite/React build, lazy route loading, Vercel deployment, API routes under `api/`, database/schema modules under `src/db` and `src/lib/database`, and map-specific domain code under `src/lib/map`.
+- The app has a working Vite/React build, lazy route loading, Cloudflare deployment, API routes under `api/`, database/schema modules under `src/db` and `src/lib/database`, and map-specific domain code under `src/lib/map`.
 - There are useful primitives already present: Radix UI, Vaul, Framer Motion, Zustand, TanStack Query, Leaflet, shared button components, query client, Supabase clients, and map registry build/QA scripts.
 - The product direction is already partly documented in existing map and platform architecture docs.
 

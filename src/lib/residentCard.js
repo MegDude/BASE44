@@ -1,4 +1,4 @@
-const DEFAULT_ORIGIN = "https://base-44-h2iq.vercel.app";
+const DEFAULT_ORIGIN = "https://app.downtownperks.com";
 
 export const RESIDENT_CARD_STORAGE_KEY = "dp_resident_card:current";
 export const RESIDENT_ACCESS_STORAGE_KEY = "dp_resident_access:current";

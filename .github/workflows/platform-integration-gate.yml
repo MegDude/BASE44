@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      # Static CI build only. Production receives the restricted key from Vercel.
+      # Static CI build only. Production receives the restricted key from Cloudflare.
       VITE_GOOGLE_MAPS_API_KEY: AIzaSyA000000000000000000000000000000000
       DP_SKIP_PUBLIC_COPY: "true"
     steps:

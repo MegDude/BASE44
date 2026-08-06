@@ -8,10 +8,10 @@ Captured read-only on 2026-07-29 before any v2 feature flags, schema changes, im
 | --- | --- |
 | Repository | `MegDude/BASE44` |
 | Production commit | `70f34413a0adaa83d5709dc1d5c2cedb9ea300ec` |
-| Vercel project | `base-44-downtown-perks-live` |
+| Cloudflare project | `base-44-downtown-perks-live` |
 | Production deployment | `dpl_7da8saK2e84EVa9o9AoqnPPhUfDR` |
 | Deployment state | `READY` |
-| Canonical alias | `base-44-downtown-perks-live-meg-dude.vercel.app` |
+| Canonical alias | `app.downtownperks.com` |
 | Supabase project reference | `zubqpvyfklnbxlufhhfq` |
 
 The live Admin scope endpoint returns `401 AUTH_REQUIRED` without a bearer session and now applies `Cache-Control: private, no-store`.

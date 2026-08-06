@@ -6,7 +6,7 @@ Audit date: 2026-07-11
 
 - Canonical localhost source: `/Users/megdude/Downloads/BASE44 2`, verified as the process working directory serving port `5173`.
 - Clean integration checkout: `/Users/megdude/Documents/CLEAN MAP BUILD` on `codex/session-019f4f10-map-integration`.
-- Deployed reference: `base-44-h2iq-6e41lfzmp-meg-dude.vercel.app/map` (content-validation reference; no presentation markup copied).
+- Deployed reference: `app.downtownperks.com/map` (content-validation reference; no presentation markup copied).
 
 ## Component inventory
 

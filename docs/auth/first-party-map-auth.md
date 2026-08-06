@@ -25,7 +25,7 @@ Add these exact Redirect URLs:
 - `https://www.downtownperks.com/auth/callback`
 - `http://localhost:5173/auth/callback`
 
-If Vercel previews are used for authentication QA, add a team-scoped preview wildcard separately. Production callbacks should remain exact.
+If Cloudflare previews are used for authentication QA, add a team-scoped preview wildcard separately. Production callbacks should remain exact.
 
 The magic-link email template must use `{{ .RedirectTo }}` when a flow supplies `emailRedirectTo`; otherwise Supabase can fall back to the Site URL and lose the requested map state.
 
@@ -43,9 +43,9 @@ Do not use user-editable `user_metadata` for role authorization. Accounts withou
 
 ## Deployment requirements
 
-The production Vercel project must expose:
+The production Cloudflare project must expose:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY` or the project publishable key in that variable
 
-The existing Vercel SPA rewrite serves `/map`, `/sign-in`, and `/auth/callback` from the same application. The retired `/app/map` alias redirects immediately to `/map`; no cross-origin map rewrite or iframe is permitted.
+The existing Cloudflare SPA rewrite serves `/map`, `/sign-in`, and `/auth/callback` from the same application. The retired `/app/map` alias redirects immediately to `/map`; no cross-origin map rewrite or iframe is permitted.

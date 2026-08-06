@@ -43,7 +43,7 @@ The backend should aggregate canonical analytics events by authenticated `worksp
 - The restored frontend has no canonical aggregate analytics client yet.
 - Visible values are deterministic fixtures tied only to organizations marked `is_demo`; the UI labels them as demo data.
 - Server-side isolation, permissions, entitlements, survey aggregation, PDF/XLSX, and production report generation remain backend work.
-- Managed network policy blocked browser screenshot and interaction QA. Lint, typecheck, local build, contract test, and Vercel build completed successfully.
+- Managed network policy blocked browser screenshot and interaction QA. Lint, typecheck, local build, contract test, and Cloudflare build completed successfully.
 
 ## Rollback
 

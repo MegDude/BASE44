@@ -10,7 +10,7 @@ const ROOT = process.cwd();
 const execFileAsync = promisify(execFile);
 let trackedFilesPromise;
 const OUTPUT_DIR = path.join(ROOT, "inventory", "generated");
-const BASE_URL = (process.env.DP_CANONICAL_BASE_URL || "https://base-44-downtown-perks-live.vercel.app").replace(/\/$/, "");
+const BASE_URL = (process.env.DP_CANONICAL_BASE_URL || "https://app.downtownperks.com").replace(/\/$/, "");
 const APP_ROUTE_FILE = "src/App.jsx";
 const PRODUCTION_ENTITY_FILE = "src/data/production/production-map-inventory.json";
 const SOURCE_DIRS = ["src/content", "src/data", "src/config", "src/pages", "src/components", "src/lib"];

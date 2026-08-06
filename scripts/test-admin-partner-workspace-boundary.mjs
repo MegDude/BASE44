@@ -28,7 +28,7 @@ assert.match(workspace, /hasPrivilegedWorkspaceAccess \? <WorkspaceRegistryPanel
 assert.match(workspace, /<WorkspaceReportsSurface key="reports" scope=\{workspaceScope\}/, "reports do not receive the server-authorized scope");
 assert.match(workspace, /onSwitchWorkspace=\{hasPrivilegedAccess \? undefined/, "admin overview still exposes the demo-only workspace switcher");
 assert.match(switcher, /\/partner-workspace\/residents/, "admin mode does not link to the in-shell people directory");
-assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.vercel\.app|downtown-perks-backend\.vercel\.app/, "workspace links to a separate admin application");
+assert.doesNotMatch(switcher, /ADMIN_WORKSPACE_URL|downtown-perks-platform\.cloudflare\.app|downtown-perks-backend\.cloudflare\.app/, "workspace links to a separate admin application");
 assert.match(app, /path="\/admin-studio\/command-center" element=\{<ProtectedAdminStudio \/>\}/, "admin command center is not protected by the canonical admin boundary");
 assert.match(app, /path="\/admin-studio\/campaign-builder" element=\{<ProtectedAdminStudio \/>\}/, "campaign builder is not routed through the canonical admin studio");
 assert.match(app, /path="\/admin-studio\/residents" element=\{<ProtectedAdminStudio \/>\}/, "people and access is not routed through the canonical admin studio");

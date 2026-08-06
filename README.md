@@ -45,7 +45,7 @@ or:
 
 Without these variables, the app must run in demo/temporary mode. Sign-in is disabled in production until the Supabase frontend auth variables are present, and write flows must show demo-session status instead of implying permanent account, CRM, campaign, checkout, registration, event, perk, or workspace records.
 
-For the map to load locally and in Vercel, set:
+For the map to load locally and in Cloudflare, set:
 - `VITE_GOOGLE_MAPS_API_KEY`
 
 **Publish your changes**

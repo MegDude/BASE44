@@ -10,7 +10,7 @@ const access = read("src/pages/partners/Access.jsx");
 const auth = read("src/lib/AuthContext.jsx");
 const admin = read("src/pages/AdminMarketingStudio.jsx");
 const registry = read("src/content/downtown-perks/downtownPerksPartnerWorkspaceRegistry.ts");
-const vercel = read("vercel.json");
+const worker = read("worker/index.ts");
 
 const requiredRoutes = [
   "/map", "/pricing", "/partners", "/partners/apply", "/partners/sign-in", "/partners/sign-up",
@@ -70,7 +70,7 @@ for (const apiFile of [
   "api/partner/published-content.js", "api/stripe/create-checkout-session-local.js",
 ]) assert.ok(existsSync(apiFile), `missing API module: ${apiFile}`);
 
-assert.match(vercel, /\"source\":\s*\"\/resident-app\"/, "legacy resident CTA does not have a canonical redirect");
-assert.match(vercel, /mode=resident&tab=map/, "resident CTA redirect does not enter the resident map");
+assert.match(worker, /url\.pathname === "\/resident-app"/, "legacy resident CTA does not have a canonical redirect");
+assert.match(worker, /url\.searchParams\.set\("mode", "resident"\)/, "resident CTA redirect does not enter resident mode");
 
 console.log("Platform interaction completeness: routes, tabs, CTAs, auth, admin actions, workspace modules, and API boundaries are wired.");

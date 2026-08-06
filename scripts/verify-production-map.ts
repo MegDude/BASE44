@@ -1,7 +1,7 @@
 import { chromium } from "@playwright/test";
 
 const DEFAULT_URL =
-  "https://base-44-downtown-perks-live-meg-dude.vercel.app/map?mode=resident&tab=map&filter=All&previewFor=partner-preview&source=partner-resident-preview&returnTo=%2Fmap%3Fmode%3Dpartner%26tab%3Dmap%26filter%3DAll";
+  "https://app.downtownperks.com/map?mode=resident&tab=map&filter=All&previewFor=partner-preview&source=partner-resident-preview&returnTo=%2Fmap%3Fmode%3Dpartner%26tab%3Dmap%26filter%3DAll";
 const targetUrl = process.env.MAP_VERIFY_URL || DEFAULT_URL;
 
 const browser = await chromium.launch({ headless: true });

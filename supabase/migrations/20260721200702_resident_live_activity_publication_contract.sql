@@ -1,6 +1,6 @@
 -- One canonical publication contract for Partner Workspace and Resident Home.
 -- Partner writes remain server-only; Resident Home reads through a sanitized
--- Vercel function rather than receiving service-role database access.
+-- Cloudflare function rather than receiving service-role database access.
 
 alter table public.perks
   add column if not exists metadata jsonb not null default '{}'::jsonb;

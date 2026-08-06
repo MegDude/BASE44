@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      DP_CANONICAL_BASE_URL: https://base-44-downtown-perks-live.vercel.app
+      DP_CANONICAL_BASE_URL: https://app.downtownperks.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4

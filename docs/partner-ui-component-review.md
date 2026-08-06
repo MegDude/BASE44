@@ -4,17 +4,17 @@
 
 | Item | Reviewed value |
 | --- | --- |
-| Production alias | `https://base-44-h2iq.vercel.app` |
+| Production alias | `https://app.downtownperks.com` |
 | Reviewed deployment | `dpl_6uRrYDDp4afSbEfdnCPV4T44d5Z6` |
-| Deployment URL | `https://base-44-h2iq-f3td2d508-meg-dude.vercel.app` |
+| Deployment URL | `https://app.downtownperks.com` |
 | Deployment status | Ready / Production |
-| Deployment commit | Not exposed by Vercel for this CLI prebuilt deployment |
+| Deployment commit | Not exposed by Cloudflare for this CLI prebuilt deployment |
 | Local audited HEAD | `88c5604eb1016956763c4143682738d2ce031f8d` (`Tighten partner page typography scale`) |
 | Cached `origin/main` | `15f01b0348b2e79d48a91db6ad2c3dc48fef9b76` |
 | Remote refresh | Blocked because this checkout has no GitHub credential available |
 | User-cited `68bd110` build | Stale and not the current production alias target |
 
-The live alias was compared with the local audited build. Because the deployment was created from a prebuilt CLI artifact, Vercel does not provide a trustworthy Git commit field for it. No commit-to-deployment claim is inferred from the deployment timestamp.
+The live alias was compared with the local audited build. Because the deployment was created from a prebuilt CLI artifact, Cloudflare does not provide a trustworthy Git commit field for it. No commit-to-deployment claim is inferred from the deployment timestamp.
 
 ## Decision model
 

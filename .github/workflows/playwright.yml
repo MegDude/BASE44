@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       preview_url:
-        description: Vercel preview base URL
+        description: Cloudflare preview base URL
         required: false
         type: string
   push:
@@ -50,29 +50,3 @@ jobs:
           path: playwright-report/
           if-no-files-found: warn
           retention-days: 7
-
-  vercel-preview-e2e:
-    if: github.event_name == 'pull_request' && github.event.pull_request.number == 110
-    needs: e2e
-    runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_BASE_URL: https://base-44-downtown-perks-live-git-codex-platform-a4a37c-meg-dude.vercel.app
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps
-      - name: Wait for final Vercel preview
-        run: |
-          for attempt in {1..30}; do
-            if curl --fail --silent --show-error "$PLAYWRIGHT_BASE_URL/map?mode=resident&tab=map&filter=Legends" >/dev/null; then
-              exit 0
-            fi
-            sleep 10
-          done
-          exit 1
-      - name: Run viewport and route tests against Vercel
-        run: npx playwright test
