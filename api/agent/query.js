@@ -1,4 +1,4 @@
-const DEFAULT_AGENT_BASE_URL = "https://downtown-perks-live.base44.app";
+const DEFAULT_AGENT_BASE_URL = "https://api.downtownperks.com";
 
 function getAgentBaseUrl() {
   return (

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, CreditCard, MapPin, QrCode, ScanLine, Shield, Smartphone, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
+const LIVE_CARD_URL = "https://app.downtownperks.com/card";
 const DEMO_CARD_CODE = "DP-DEMO-78701";
 const PUBLIC_CARD_USER = {
   email: "resident@downtownperks.local",

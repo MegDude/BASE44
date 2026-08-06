@@ -1,4 +1,4 @@
-const DEFAULT_PLATFORM_BASE_URL = "https://downtown-perks-live.base44.app";
+const DEFAULT_PLATFORM_BASE_URL = "https://api.downtownperks.com";
 
 const SAFE_SUMMARY_FIELDS = [
   "entities",

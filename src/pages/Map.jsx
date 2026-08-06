@@ -1298,7 +1298,7 @@ function getAllAreaLabel(mode, activeFilter) {
   return getAreaRailType(mode, activeFilter) === "districts" ? "All districts" : "All neighborhoods";
 }
 
-const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
+const LIVE_CARD_URL = "https://app.downtownperks.com/card";
 const DEMO_CARD_CODE = "DP-RES-78701";
 const PERKS_CARD_QR_SRC = "/images/card/perks-card-qr.png";
 const RESIDENT_ACCESS_STORAGE_KEY = "dp_resident_access:current";

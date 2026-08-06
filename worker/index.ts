@@ -1,5 +1,6 @@
 type Env = {
   ASSETS: { fetch(request: Request): Promise<Response> };
+  API?: { fetch(request: Request): Promise<Response> };
   API_BASE_URL: string;
 };
 
@@ -19,19 +20,27 @@ async function proxyApi(request: Request, env: Env) {
   }
 
   const incomingUrl = new URL(request.url);
-  const upstreamUrl = new URL(`${incomingUrl.pathname}${incomingUrl.search}`, env.API_BASE_URL);
+  const apiPath = incomingUrl.pathname.slice(4) || "/";
+  const upstreamPath = apiPath === "/agent/query" || apiPath === "/ask-map" ? "/agent" : apiPath;
+  const upstreamUrl = new URL(`${upstreamPath}${incomingUrl.search}`, env.API_BASE_URL);
   const headers = new Headers(request.headers);
   headers.delete("host");
   headers.set("X-Forwarded-Host", incomingUrl.host);
   headers.set("X-Forwarded-Proto", incomingUrl.protocol.replace(":", ""));
 
-  const upstream = await fetch(upstreamUrl, {
+  const upstreamRequest = new Request(upstreamUrl, {
     method: request.method,
     headers,
     body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
     redirect: "manual",
   });
+  const upstream = env.API ? await env.API.fetch(upstreamRequest) : await fetch(upstreamRequest);
   if (upstream.headers.get("Content-Type")?.includes("text/html")) {
+    console.error("product_api_invalid_response", {
+      path: upstreamPath,
+      status: upstream.status,
+      contentType: upstream.headers.get("Content-Type"),
+    });
     return Response.json(
       { error: "The canonical API returned an invalid response." },
       { status: 502, headers: { "Cache-Control": "no-store" } },

@@ -6,8 +6,11 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "vars": {
-    "API_BASE_URL": "https://downtown-perks-live.base44.app"
+    "API_BASE_URL": "https://downtown-perks-api.meganatx.workers.dev"
   },
+  "services": [
+    { "binding": "API", "service": "downtown-perks-api" }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -19,8 +22,11 @@
       "name": "downtown-perks-app-production",
       "workers_dev": false,
       "vars": {
-        "API_BASE_URL": "https://downtown-perks-live.base44.app"
+        "API_BASE_URL": "https://api.downtownperks.com"
       },
+      "services": [
+        { "binding": "API", "service": "downtown-perks-api" }
+      ],
       "routes": [
         { "pattern": "app.downtownperks.com", "custom_domain": true }
       ]

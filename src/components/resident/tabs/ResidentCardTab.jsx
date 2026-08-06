@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
 
-const LIVE_CARD_URL = "https://downtown-perks-live.base44.app/card";
+const LIVE_CARD_URL = "https://app.downtownperks.com/card";
 
 function getQrUrl(cardCode) {
   const cardUrl = `${LIVE_CARD_URL}?code=${encodeURIComponent(cardCode)}&source=resident-app`;
